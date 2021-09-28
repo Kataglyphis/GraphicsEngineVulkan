@@ -7,34 +7,34 @@
 #include <glm/mat4x4.hpp>
 
 #include <iostream>
+#include <stdexcept>
+#include <vector>
 #include <memory>
+#include "MyWindow.h"
+
+#include "VulkanRenderer.h"
 
 int main() {
 
-    glfwInit();
+    int window_width = 1200;
+    int window_height = 768;
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(800,600, "Epic Graphics", nullptr, nullptr);
+    std::shared_ptr<MyWindow> main_window = std::make_shared<MyWindow>(window_width, window_height);
+    main_window->initialize();
 
-    uint32_t extension_count = 0;
-    vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, nullptr);
-
-    printf("Extension count = %i\n", extension_count);
-
-    glm::mat4 test_matrix(1.0f);
-    glm::vec4 test_vector(1.0f);
-
-    auto result = test_matrix * test_vector;
-
-    while (!glfwWindowShouldClose(window)) {
-
-        glfwPollEvents();
-
+    VulkanRenderer vulkan_renderer{};
+    if (vulkan_renderer.init(main_window) == EXIT_FAILURE) {
+        return EXIT_FAILURE;
     }
 
-    glfwDestroyWindow(window);
+    while (!main_window->get_should_close()) {
     
-    glfwTerminate();
+        //poll all events incoming from user
+        glfwPollEvents();
+
+        main_window->swap_buffers();
+
+    }
 
     return 0;
 
