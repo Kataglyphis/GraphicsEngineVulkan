@@ -36,6 +36,8 @@ int main() {
 
     }
 
+    vulkan_renderer.clean_up();
+
     return 0;
 
 }
