@@ -1,6 +1,6 @@
 #pragma once
 
-# define GLFW_INCLUDE_VULKAN
+#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 #include <stdexcept>
@@ -11,6 +11,27 @@
 
 #include "MyWindow.h"
 #include "Utilities.h"
+
+inline VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger)
+{
+	auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+	if (func != nullptr) {
+		return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+	}
+	else {
+		return VK_ERROR_EXTENSION_NOT_PRESENT;
+	}
+}
+
+inline  void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator)
+{
+
+	auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+	if (func != nullptr) {
+		func(instance, debugMessenger, pAllocator);
+	}
+
+}
 
 class VulkanRenderer
 {
@@ -35,13 +56,19 @@ public:
 
 private:
 
-	//wrapper class for GLFWwindow
-	std::shared_ptr<MyWindow> window;
-
 	// use the standard validation layers from the SDK for error checking
 	const std::vector<const char*> validationLayers = {
 						"VK_LAYER_KHRONOS_validation"
 	};
+
+	#ifdef NDEBUG
+		const bool enableValidationLayers = false;
+	#else
+		const bool enableValidationLayers = true;
+	#endif
+
+	//wrapper class for GLFWwindow
+	std::shared_ptr<MyWindow> window;
 
 	//Vulkan components
 	VkInstance instance;
@@ -60,8 +87,6 @@ private:
 	void create_instance();
 	void create_logical_device();
 	void create_debug_messenger();
-	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
-	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 	//get functions
 	void get_physical_device();

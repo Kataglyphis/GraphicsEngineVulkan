@@ -29,29 +29,17 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 void VulkanRenderer::clean_up()
 {
 
-	#ifdef NDEBUG
-		const bool enableValidationLayers = false;
-	#else
-		const bool enableValidationLayers = true;
-	#endif
-
 	if (enableValidationLayers) {
 		DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
 	}
 
-	vkDestroyDevice(MainDevice.logical_device, nullptr);
+	//vkDestroyDevice(MainDevice.logical_device, nullptr);
 	vkDestroyInstance(instance, nullptr);
 
 }
 
 void VulkanRenderer::create_instance()
 {
-
-	#ifdef NDEBUG
-		const bool enableValidationLayers = false;
-	#else
-		const bool enableValidationLayers = true;
-	#endif
 
 	// take care we 
 	if (enableValidationLayers && !checkValidationLayerSupport()) {
@@ -122,10 +110,6 @@ void VulkanRenderer::create_instance()
 	create_info.enabledExtensionCount = static_cast<uint32_t>(instance_extensions.size());
 	create_info.ppEnabledExtensionNames = instance_extensions.data();
 
-	// TODO: setup validation layers
-	create_info.enabledLayerCount = 0;
-	create_info.ppEnabledLayerNames = nullptr;
-
 	// create instance 
 	VkResult result = vkCreateInstance(&create_info, nullptr, &instance);
 
@@ -179,12 +163,6 @@ void VulkanRenderer::create_logical_device()
 void VulkanRenderer::create_debug_messenger()
 {
 
-	#ifdef NDEBUG
-		const bool enableValidationLayers = false;
-	#else
-		const bool enableValidationLayers = true;
-	#endif
-
 	if (!enableValidationLayers) return;
 
 	VkDebugUtilsMessengerCreateInfoEXT create_info;
@@ -192,27 +170,6 @@ void VulkanRenderer::create_debug_messenger()
 
 	if (CreateDebugUtilsMessengerEXT(instance, &create_info, nullptr, &debugMessenger) != VK_SUCCESS) {
 		throw std::runtime_error("failed to set up debug messenger!");
-	}
-
-}
-
-VkResult VulkanRenderer::CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger)
-{
-	auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
-	if (func != nullptr) {
-		return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
-	}
-	else {
-		return VK_ERROR_EXTENSION_NOT_PRESENT;
-	}
-}
-
-void VulkanRenderer::DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator)
-{
-
-	auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
-	if (func != nullptr) {
-		func(instance, debugMessenger, pAllocator);
 	}
 
 }
@@ -274,6 +231,12 @@ bool VulkanRenderer::check_instance_extension_support(std::vector<const char*>* 
 	// create a list of VkExtensionProperties using count
 	std::vector<VkExtensionProperties> extensions(extension_count);
 	vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, extensions.data());
+
+	std::cout << "available extensions:\n";
+
+	for (const auto& extension : extensions) {
+		std::cout << '\t' << extension.extensionName << '\n';
+	}
 
 	// check if given extensions are in list of available extensions 
 	for (const auto& check_extension  : *check_extensions) {
