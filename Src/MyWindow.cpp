@@ -76,10 +76,10 @@ int MyWindow::initialize() {
     init_callbacks();
     glfwSetInputMode(main_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-    glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_DEPTH_TEST);
 
     // setup viewport size
-    glViewport(0, 0, window_buffer_width, window_buffer_height);
+    // glViewport(0, 0, window_buffer_width, window_buffer_height);
 
     glfwSetWindowUserPointer(main_window, this);
 
@@ -90,7 +90,7 @@ void MyWindow::update_viewport() {
 
     glfwGetFramebufferSize(main_window, &window_buffer_width, &window_buffer_height);
     // setup viewport size
-    glViewport(0, 0, window_buffer_width, window_buffer_height);
+    //glViewport(0, 0, window_buffer_width, window_buffer_height);
 
 }
 
