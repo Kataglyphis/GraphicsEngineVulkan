@@ -49,7 +49,6 @@ void VulkanRenderer::create_instance()
 	create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	create_info.pApplicationInfo = &app_info;
 
-	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
 	//add validation layers IF enabled to the creeate info struct
 	if (enableValidationLayers) {
 
@@ -119,7 +118,7 @@ void VulkanRenderer::create_logical_device()
 
 		VkDeviceQueueCreateInfo queue_create_info{};
 		queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-		queue_create_info.queueFamilyIndex = indices.graphics_family;															// the index of the family to create a queue from
+		queue_create_info.queueFamilyIndex = queue_family_index;															// the index of the family to create a queue from
 		queue_create_info.queueCount = 1;																											// number of queues to create
 		float priority = 1.0f;
 		queue_create_info.pQueuePriorities = &priority;																						//Vulkan needs to know how to handle multiple queues, so decide priority (1 = highest)
