@@ -8,46 +8,17 @@
 #include <memory>
 #include <cstring>
 #include <iostream>
+#include <set>
 
 #include "MyWindow.h"
 #include "Utilities.h"
 
-inline VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger)
-{
-	auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
-	if (func != nullptr) {
-		return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
-	}
-	else {
-		return VK_ERROR_EXTENSION_NOT_PRESENT;
-	}
-}
-
-inline  void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator)
-{
-
-	auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
-	if (func != nullptr) {
-		func(instance, debugMessenger, pAllocator);
-	}
-
-}
 
 class VulkanRenderer
 {
 public:
 
 	VulkanRenderer();
-
-	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-																												VkDebugUtilsMessageTypeFlagsEXT messageType,
-																												const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-																												void* pUserData) {
-
-		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-
-		return VK_FALSE;
-	}
 
 	int init(std::shared_ptr<MyWindow> window);
 	void clean_up();
@@ -72,8 +43,6 @@ private:
 
 	//Vulkan components
 	VkInstance instance;
-	//specific messenger for debugging; we are responsible for creating and destroying
-	VkDebugUtilsMessengerEXT debugMessenger;
 
 	struct {
 		VkPhysicalDevice physical_device;
@@ -81,25 +50,32 @@ private:
 	} MainDevice;
 
 	VkQueue graphics_queue;
+	VkQueue presentation_queue;
+
+	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
+	VkSurfaceKHR surface; 
 
 	//Vulkan functions
 	// all create functions
 	void create_instance();
 	void create_logical_device();
-	void create_debug_messenger();
-	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+	void create_surface();
+
 	//get functions
 	void get_physical_device();
 
 	// support functions
 	// checker functions
 	bool check_instance_extension_support(std::vector<const char*>* check_extensions);
+	bool check_device_extension_support(VkPhysicalDevice device);
 	bool check_device_suitable(VkPhysicalDevice device);
 
 	// getter functions
 	QueueFamilyIndices get_queue_families(VkPhysicalDevice device);
+	SwapChainDetails get_swapchain_details(VkPhysicalDevice device);
 
 	//validation layers
 	bool checkValidationLayerSupport();
+
 };
 
