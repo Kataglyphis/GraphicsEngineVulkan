@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <set>
+#include <algorithm>
 
 #include "MyWindow.h"
 #include "Utilities.h"
@@ -55,11 +56,20 @@ private:
 	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
 	VkSurfaceKHR surface; 
 
+	VkSwapchainKHR swapchain;
+	std::vector<SwapChainImage> swap_chain_images;
+
+
+	// utilities
+	VkFormat swap_chain_image_format;
+	VkExtent2D swap_chain_extent;
+
 	//Vulkan functions
 	// all create functions
 	void create_instance();
 	void create_logical_device();
 	void create_surface();
+	void create_swap_chain();
 
 	//get functions
 	void get_physical_device();
@@ -76,6 +86,14 @@ private:
 
 	//validation layers
 	bool checkValidationLayerSupport();
+
+	// choose functions
+	VkSurfaceFormatKHR choose_best_surface_format(const std::vector<VkSurfaceFormatKHR>& formats);
+	VkPresentModeKHR choose_best_presentation_mode(const std::vector<VkPresentModeKHR>& presentation_modes);
+	VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR& surface_capabilities);
+
+	// create functions
+	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
 
 };
 
