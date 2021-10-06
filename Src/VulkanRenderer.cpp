@@ -294,15 +294,49 @@ void VulkanRenderer::create_render_pass()
 	subpass.pColorAttachments = &color_attachment_reference;
 
 	// need to determine when layout transitions occur using subpass dependencies
+	std::array<VkSubpassDependency, 2> subpass_dependencies;
 
+	// conversion from VK_IMAGE_LAYOUT_UNDEFINED to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+	// transition must happen after ....
+	subpass_dependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL;											// subpass index (VK_SUBPASS_EXTERNAL = Special value meaning outside of renderpass)
+	subpass_dependencies[0].srcStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;	// pipeline stage 
+	subpass_dependencies[0].srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;						// stage access mask (memory access)
 
+	// but must happen before ...
+	subpass_dependencies[0].dstSubpass = 0;
+	subpass_dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	subpass_dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	subpass_dependencies[0].dependencyFlags = 0;
+
+	// conversion from VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL to VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+	// transition must happen after ....
+	subpass_dependencies[1].srcSubpass = 0;																																												// subpass index 
+	subpass_dependencies[1].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;																		// pipeline stage 
+	subpass_dependencies[1].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;	// stage access mask (memory access)
+
+	// but must happen before ...
+	subpass_dependencies[1].dstSubpass = VK_SUBPASS_EXTERNAL;
+	subpass_dependencies[1].dstStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+	subpass_dependencies[1].dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+	subpass_dependencies[1].dependencyFlags = 0;
+
+	// create info for render pass 
 	VkRenderPassCreateInfo render_pass_create_info{};
 	render_pass_create_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 	render_pass_create_info.attachmentCount = 1;
 	render_pass_create_info.pAttachments = &color_attachment;
 	render_pass_create_info.subpassCount = 1;
 	render_pass_create_info.pSubpasses = &subpass;
+	render_pass_create_info.dependencyCount = static_cast<uint32_t>(subpass_dependencies.size());
+	render_pass_create_info.pDependencies = subpass_dependencies.data();
 
+	VkResult result = vkCreateRenderPass(MainDevice.logical_device, &render_pass_create_info, nullptr, &render_pass);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create render pass!");
+
+	}
 }
 
 void VulkanRenderer::create_graphics_pipeline()
@@ -442,7 +476,35 @@ void VulkanRenderer::create_graphics_pipeline()
 	// -- DEPTH STENCIL TESTING --
 	// TODO: set up depth stencil testing
 
+	// -- GRAPHICS PIPELINE CREATION --
+	VkGraphicsPipelineCreateInfo graphics_pipeline_create_info{};
+	graphics_pipeline_create_info.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+	graphics_pipeline_create_info.stageCount = 2;
+	graphics_pipeline_create_info.pStages = shader_stages;
+	graphics_pipeline_create_info.pVertexInputState = &vertex_input_create_info;
+	graphics_pipeline_create_info.pInputAssemblyState = &input_assembly;
+	graphics_pipeline_create_info.pViewportState = &viewport_state_create_info;
+	graphics_pipeline_create_info.pDynamicState = nullptr;
+	graphics_pipeline_create_info.pRasterizationState = &rasterizer_create_info;
+	graphics_pipeline_create_info.pMultisampleState = &multisample_create_info;
+	graphics_pipeline_create_info.pColorBlendState = &color_blending_create_info;
+	graphics_pipeline_create_info.pDepthStencilState = nullptr;
+	graphics_pipeline_create_info.layout = pipeline_layout;																// pipeline layout pipeline should use 
+	graphics_pipeline_create_info.renderPass = render_pass;															// renderpass description the pipeline is compatible with
+	graphics_pipeline_create_info.subpass = 0;																					// subpass of renderpass to use with pipeline
+	
+	// pipeline derivatives : can create multiple pipelines that derive from one another for optimization
+	graphics_pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;								// existing pipeline to derive from ...
+	graphics_pipeline_create_info.basePipelineIndex = -1;																// or index of pipeline being created to derive from (in case creating multiple at once)
 
+	// create graphics pipeline 
+	result = vkCreateGraphicsPipelines(MainDevice.logical_device, VK_NULL_HANDLE, 1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create a graphics pipeline!");
+
+	}
 
 	// Destroy shader modules, no longer needed after pipeline created
 	vkDestroyShaderModule(MainDevice.logical_device, vertex_shader_module, nullptr);
@@ -818,7 +880,9 @@ VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& cod
 void VulkanRenderer::clean_up()
 {
 
+	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
+	vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
 
 	for (auto image : swap_chain_images) {
 
