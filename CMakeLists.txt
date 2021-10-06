@@ -65,7 +65,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}/../Src"
 
 install(FILES "${PROJECT_BINARY_DIR}/Src/Config.h" DESTINATION include)
 
-# file(COPY Resources/Shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# file(COPY Resources/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # file(COPY Resources/Models DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # file(COPY Resources/Textures DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

@@ -1,5 +1,5 @@
 #version 450								// use GLSL 4.5
-#extension GL_KHR_vulkan_glsl : enable
+// #extension GL_KHR_vulkan_glsl : enable
 
 layout(location=0) out vec3 frag_color;   // output color for vertex
 
