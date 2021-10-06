@@ -59,6 +59,8 @@ private:
 	VkSwapchainKHR swapchain;
 	std::vector<SwapChainImage> swap_chain_images;
 
+	// --PIPELINE --
+	VkPipelineLayout pipeline_layout;
 
 	// utilities
 	VkFormat swap_chain_image_format;
@@ -70,6 +72,8 @@ private:
 	void create_logical_device();
 	void create_surface();
 	void create_swap_chain();
+	void create_render_pass();
+	void create_graphics_pipeline();
 
 	//get functions
 	void get_physical_device();
@@ -94,6 +98,7 @@ private:
 
 	// create functions
 	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
+	VkShaderModule create_shader_module(const std::vector<char>& code);
 
 };
 

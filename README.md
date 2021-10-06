@@ -44,6 +44,7 @@ Getting started with Vulkan
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#shaders">Shaders</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -90,6 +91,8 @@ You might only clone the repo and get to go immediately :)
 ### Prerequisites
 
 Right now everything is included. So after cloning you are ready to go :))
+
+### Shaders
 
 ### Installation
 
