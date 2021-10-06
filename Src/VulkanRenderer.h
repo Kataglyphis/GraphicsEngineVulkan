@@ -10,6 +10,7 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include <array>
 
 #include "MyWindow.h"
 #include "Utilities.h"
@@ -60,7 +61,9 @@ private:
 	std::vector<SwapChainImage> swap_chain_images;
 
 	// --PIPELINE --
+	VkPipeline graphics_pipeline;
 	VkPipelineLayout pipeline_layout;
+	VkRenderPass render_pass;
 
 	// utilities
 	VkFormat swap_chain_image_format;
