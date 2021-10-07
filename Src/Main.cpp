@@ -31,8 +31,8 @@ int main() {
     
         //poll all events incoming from user
         glfwPollEvents();
-
-        main_window->swap_buffers();
+        vulkan_renderer.draw();
+        //main_window->swap_buffers();
 
     }
 

@@ -21,6 +21,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 		create_command_pool();
 		create_command_buffers();
 		record_commands();
+		create_synchronization();
 
 	}
 	catch (const std::runtime_error &e) {
@@ -31,6 +32,83 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 	}
 
 	return 0;
+}
+
+void VulkanRenderer::draw()
+{
+
+	// -- GET NEXT IMAGE --
+	VkResult result = vkWaitForFences(MainDevice.logical_device, 1, &draw_fences[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max());
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Failed to wait for fences!");
+	}
+
+	result = vkResetFences(MainDevice.logical_device, 1, &draw_fences[current_frame]);
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Failed to reset fences!");
+	}
+
+	// 1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
+	// wait for given fence to signal (open) from last draw before continuing
+	uint32_t image_index;
+	result = vkAcquireNextImageKHR(MainDevice.logical_device, swapchain, std::numeric_limits<uint64_t>::max(), image_available[current_frame], VK_NULL_HANDLE, &image_index);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to acquire next image!");
+
+	}
+
+
+	// 2. Submit command buffer to queue for execution, making sure it waits for the image to be signalled as available before drawing
+	// and signals when it has finished rendering 
+	// -- SUBMIT COMMAND BUFFER TO RENDER --
+	VkSubmitInfo submit_info{};
+	submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submit_info.waitSemaphoreCount = 1;																			// number of semaphores to wait on
+	submit_info.pWaitSemaphores = &image_available[current_frame];						// list of semaphores to wait on
+	
+	VkPipelineStageFlags wait_stages[] = {
+	
+		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
+
+	};
+
+	submit_info.pWaitDstStageMask = wait_stages;															// stages to check semaphores at
+	submit_info.commandBufferCount = 1;																			// number of command buffers to submit
+	submit_info.pCommandBuffers = &command_buffers[image_index];						// command buffer to submit
+	submit_info.signalSemaphoreCount = 1;																			// number of semaphores to signal
+	submit_info.pSignalSemaphores = &render_finished[current_frame];						// semaphores to signal when command buffer finishes 
+
+	// submit command buffer to queue
+	result = vkQueueSubmit(graphics_queue, 1, &submit_info, draw_fences[current_frame]);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to submit command buffer to queue!");
+
+	}
+
+	// 3. Present image to screen when it has signalled finished rendering 
+	// -- PRESENT RENDERED IMAGE TO SCREEN --
+	VkPresentInfoKHR present_info{};
+	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	present_info.waitSemaphoreCount = 1;																			// number of semaphores to wait on
+	present_info.pWaitSemaphores = &render_finished[current_frame];						// semaphores to wait on
+	present_info.swapchainCount = 1;																					// number of swapchains to present to
+	present_info.pSwapchains = &swapchain;																		// swapchains to present images to 
+	present_info.pImageIndices = &image_index;																// index of images in swapchain to present
+
+	result = vkQueuePresentKHR(presentation_queue, &present_info);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to present image!");
+
+	}
+
+	current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
+	 
 }
 
 void VulkanRenderer::create_instance()
@@ -497,22 +575,22 @@ void VulkanRenderer::create_graphics_pipeline()
 	graphics_pipeline_create_info.renderPass = render_pass;															// renderpass description the pipeline is compatible with
 	graphics_pipeline_create_info.subpass = 0;																					// subpass of renderpass to use with pipeline
 	
-	// pipeline derivatives : can create multiple pipelines that derive from one another for optimization
-	graphics_pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;								// existing pipeline to derive from ...
-	graphics_pipeline_create_info.basePipelineIndex = -1;																// or index of pipeline being created to derive from (in case creating multiple at once)
+// pipeline derivatives : can create multiple pipelines that derive from one another for optimization
+graphics_pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;								// existing pipeline to derive from ...
+graphics_pipeline_create_info.basePipelineIndex = -1;																// or index of pipeline being created to derive from (in case creating multiple at once)
 
-	// create graphics pipeline 
-	result = vkCreateGraphicsPipelines(MainDevice.logical_device, VK_NULL_HANDLE, 1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
+// create graphics pipeline 
+result = vkCreateGraphicsPipelines(MainDevice.logical_device, VK_NULL_HANDLE, 1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
 
-	if (result != VK_SUCCESS) {
+if (result != VK_SUCCESS) {
 
-		throw std::runtime_error("Failed to create a graphics pipeline!");
+	throw std::runtime_error("Failed to create a graphics pipeline!");
 
-	}
+}
 
-	// Destroy shader modules, no longer needed after pipeline created
-	vkDestroyShaderModule(MainDevice.logical_device, vertex_shader_module, nullptr);
-	vkDestroyShaderModule(MainDevice.logical_device, fragment_shader_module, nullptr);
+// Destroy shader modules, no longer needed after pipeline created
+vkDestroyShaderModule(MainDevice.logical_device, vertex_shader_module, nullptr);
+vkDestroyShaderModule(MainDevice.logical_device, fragment_shader_module, nullptr);
 
 }
 
@@ -536,7 +614,7 @@ void VulkanRenderer::create_framebuffers()
 		frame_buffer_create_info.width = swap_chain_extent.width;																	// framebuffer width
 		frame_buffer_create_info.height = swap_chain_extent.height;																// framebuffer height
 		frame_buffer_create_info.layers = 1;																											// framebuffer layer 
-		
+
 		VkResult result = vkCreateFramebuffer(MainDevice.logical_device, &frame_buffer_create_info, nullptr, &swap_chain_framebuffers[i]);
 
 		if (result != VK_SUCCESS) {
@@ -589,13 +667,44 @@ void VulkanRenderer::create_command_buffers()
 
 }
 
+void VulkanRenderer::create_synchronization()
+{
+
+	image_available.resize(MAX_FRAME_DRAWS);
+	render_finished.resize(MAX_FRAME_DRAWS);
+	draw_fences.resize(MAX_FRAME_DRAWS);
+
+	// semaphore creation information
+	VkSemaphoreCreateInfo semaphore_create_info{};
+	semaphore_create_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+	// fence creation information
+	VkFenceCreateInfo fence_create_info{};
+	fence_create_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	fence_create_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
+
+		if ((vkCreateSemaphore(MainDevice.logical_device, &semaphore_create_info, nullptr, &image_available[i]) != VK_SUCCESS) ||
+			(vkCreateSemaphore(MainDevice.logical_device, &semaphore_create_info, nullptr, &render_finished[i]) != VK_SUCCESS) || 
+			vkCreateFence(MainDevice.logical_device, &fence_create_info, nullptr, &draw_fences[i])							!= VK_SUCCESS) {
+
+			throw std::runtime_error("Failed to create a semaphore and/or fence!");
+
+		}
+
+	}
+
+}
+
 void VulkanRenderer::record_commands()
 {
 
 	// information about how to begin each command buffer
 	VkCommandBufferBeginInfo buffer_begin_info{};
 	buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;					// buffer can be resubmitted when it has already been submitted and is awaiting execution
+	// this falg is not longer needed because we synchronize with fences and semaphores
+	// buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;					// buffer can be resubmitted when it has already been submitted and is awaiting execution
 	
 	// information about how to begin a render pass (only needed for graphical applications)
 	VkRenderPassBeginInfo render_pass_begin_info{};
@@ -1016,6 +1125,17 @@ VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& cod
 
 void VulkanRenderer::clean_up()
 {
+
+	// wait until no actions being run on device before destroying
+	vkDeviceWaitIdle(MainDevice.logical_device);
+	
+	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
+
+		vkDestroySemaphore(MainDevice.logical_device, render_finished[i], nullptr);
+		vkDestroySemaphore(MainDevice.logical_device, image_available[i], nullptr);
+		vkDestroyFence(MainDevice.logical_device, draw_fences[i], nullptr);
+
+	}
 
 	vkDestroyCommandPool(MainDevice.logical_device, graphics_command_pool, nullptr);
 
