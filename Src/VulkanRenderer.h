@@ -23,6 +23,7 @@ public:
 	VulkanRenderer();
 
 	int init(std::shared_ptr<MyWindow> window);
+	void draw();
 	void clean_up();
 
 	~VulkanRenderer();
@@ -42,6 +43,8 @@ private:
 
 	//wrapper class for GLFWwindow
 	std::shared_ptr<MyWindow> window;
+
+	int current_frame = 0;
 
 	//Vulkan components
 	VkInstance instance;
@@ -74,6 +77,11 @@ private:
 	VkFormat swap_chain_image_format;
 	VkExtent2D swap_chain_extent;
 
+	// -- SYNCHRONIZATION --
+	std::vector<VkSemaphore> image_available;
+	std::vector<VkSemaphore> render_finished;
+	std::vector<VkFence> draw_fences;
+
 	//Vulkan functions
 	// all create functions
 	void create_instance();
@@ -85,6 +93,7 @@ private:
 	void create_framebuffers();
 	void create_command_pool();
 	void create_command_buffers();
+	void create_synchronization();
 
 	// - record functions
 	void record_commands();
