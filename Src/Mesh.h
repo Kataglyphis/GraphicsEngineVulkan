@@ -25,10 +25,12 @@ private:
 
 	int vertex_count;
 	VkBuffer vertex_buffer;
+	VkDeviceMemory vertex_buffer_memory;
 
 	VkPhysicalDevice physical_device;
 	VkDevice device;
 
-	VkBuffer create_vertex_buffer(std::vector<Vertex>* vertices);
+	void create_vertex_buffer(std::vector<Vertex>* vertices);
+	uint32_t find_memory_type_index(uint32_t allowed_types, VkMemoryPropertyFlags properties);
 
 };

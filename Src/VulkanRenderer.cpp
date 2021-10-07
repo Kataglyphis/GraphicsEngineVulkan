@@ -14,6 +14,16 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 		create_surface();
 		get_physical_device();
 		create_logical_device();
+
+		// create meshes 
+		std::vector<Vertex> mesh_vertices = {
+						{{0.0f, -0.4f, 0.0f}},
+						{{0.4f, 0.4f, 0.0f}},
+						{{-0.4f, 0.4f, 0.0f}}
+		};
+
+		first_mesh = Mesh(MainDevice.physical_device, MainDevice.logical_device, &mesh_vertices);
+
 		create_swap_chain();
 		create_render_pass();
 		create_graphics_pipeline();
@@ -758,8 +768,13 @@ void VulkanRenderer::record_commands()
 		// bind pipeline to be used in render pass
 		vkCmdBindPipeline(command_buffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
 
+		// list of vertex buffers we want to draw 
+		VkBuffer vertex_buffers[] = {first_mesh.get_vertex_buffer()};																						// buffers to bind 
+		VkDeviceSize offsets[] = { 0 };																																				// offsets into buffers being bound
+		vkCmdBindVertexBuffers(command_buffers[i], 0, 1, vertex_buffers, offsets);															// command to bind vertex buffer before drawing with them
+
 		// execute pipeline
-		vkCmdDraw(command_buffers[i], 3, 1, 0, 0);
+		vkCmdDraw(command_buffers[i], static_cast<uint32_t>(first_mesh.get_vertex_count()), 1, 0, 0);
 
 		// end render pass 
 		vkCmdEndRenderPass(command_buffers[i]);
@@ -1148,6 +1163,8 @@ void VulkanRenderer::clean_up()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
+	first_mesh.destroy_vertex_buffer();
+
 	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
 
 		vkDestroySemaphore(MainDevice.logical_device, render_finished[i], nullptr);

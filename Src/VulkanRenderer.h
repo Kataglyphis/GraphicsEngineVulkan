@@ -14,7 +14,7 @@
 
 #include "MyWindow.h"
 #include "Utilities.h"
-
+#include "Mesh.h"
 
 class VulkanRenderer
 {
@@ -45,6 +45,9 @@ private:
 	std::shared_ptr<MyWindow> window;
 
 	int current_frame = 0;
+
+	// scene objects
+	Mesh first_mesh;
 
 	//Vulkan components
 	VkInstance instance;
