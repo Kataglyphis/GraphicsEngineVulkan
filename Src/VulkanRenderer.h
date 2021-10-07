@@ -59,11 +59,16 @@ private:
 
 	VkSwapchainKHR swapchain;
 	std::vector<SwapChainImage> swap_chain_images;
+	std::vector<VkFramebuffer> swap_chain_framebuffers;
+	std::vector<VkCommandBuffer> command_buffers;
 
 	// --PIPELINE --
 	VkPipeline graphics_pipeline;
 	VkPipelineLayout pipeline_layout;
 	VkRenderPass render_pass;
+
+	// -- POOLS --
+	VkCommandPool graphics_command_pool;
 
 	// utilities
 	VkFormat swap_chain_image_format;
@@ -77,6 +82,12 @@ private:
 	void create_swap_chain();
 	void create_render_pass();
 	void create_graphics_pipeline();
+	void create_framebuffers();
+	void create_command_pool();
+	void create_command_buffers();
+
+	// - record functions
+	void record_commands();
 
 	//get functions
 	void get_physical_device();
