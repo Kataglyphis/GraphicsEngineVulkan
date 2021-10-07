@@ -450,14 +450,33 @@ void VulkanRenderer::create_graphics_pipeline()
 																									fragment_shader_create_info};
 
 
+	// how the data for a single vertex (including info such as position, color, texture coords, normals, etc) is as a whole 
+	VkVertexInputBindingDescription binding_description{};
+	binding_description.binding = 0;																																		// can bind multiple streams of data, this defines which one 
+	binding_description.stride = sizeof(Vertex);																													// size of a single vertex object
+	binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;																		// how to move between data after each vertex.
+																																																	// VK_VERTEX_INPUT_RATE_VERTEX : Move on to the next vertex
+																																																	// VK_VERTEX_INPUT_RATE_INSTANCE : Move on to the next instance
+	
+	// how the data for an attribute is defined within a vertex
+	std::array<VkVertexInputAttributeDescription, 1> attribute_describtions;
+
+	// Position attribute
+	attribute_describtions[0].binding = 0;																																// which binding the data is at (should be same as above)
+	attribute_describtions[0].location = 0;																															// location in shader where data will be read from
+	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;																	// format data will take (also helps define size of data)
+	attribute_describtions[0].offset = offsetof(Vertex, pos);																								// where this attribute is defined in the data for a single vertex
+
+	// Color attribute TODO
+
 	// CREATE PIPELINE
 	// 1.) Vertex input (TODO: Put in vertex descriptions when resources created)
 	VkPipelineVertexInputStateCreateInfo vertex_input_create_info{};
 	vertex_input_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	vertex_input_create_info.vertexBindingDescriptionCount = 0;
-	vertex_input_create_info.pVertexBindingDescriptions = nullptr;																				// list of vertex binding descriptions(data spacing/ stride information)
-	vertex_input_create_info.vertexAttributeDescriptionCount = 0;
-	vertex_input_create_info.pVertexAttributeDescriptions = nullptr;																			// list of vertex attribute descriptions (data format and where to bind to/from)
+	vertex_input_create_info.vertexBindingDescriptionCount = 1;
+	vertex_input_create_info.pVertexBindingDescriptions = &binding_description;																	// list of vertex binding descriptions(data spacing/ stride information)
+	vertex_input_create_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(attribute_describtions.size());
+	vertex_input_create_info.pVertexAttributeDescriptions = attribute_describtions.data();													// list of vertex attribute descriptions (data format and where to bind to/from)
 
 	// input assembly 
 	VkPipelineInputAssemblyStateCreateInfo input_assembly{};

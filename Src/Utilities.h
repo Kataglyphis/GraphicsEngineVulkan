@@ -2,10 +2,19 @@
 
 #include <fstream>
 
+#include <glm/glm.hpp>
+
 const int MAX_FRAME_DRAWS = 2;
 
 const std::vector<const char*> device_extensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
+};
+
+// vertex data representation (layout)
+struct Vertex {
+
+	glm::vec3 pos; // vertex position (x,y,z)
+
 };
 
 // Indices (locations) of Queue families (if they exist at all)
