@@ -14,21 +14,46 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 		create_surface();
 		get_physical_device();
 		create_logical_device();
-
-		// create meshes 
-		std::vector<Vertex> mesh_vertices = {
-						{{0.0f, -0.4f, 0.0f}},
-						{{0.4f, 0.4f, 0.0f}},
-						{{-0.4f, 0.4f, 0.0f}}
-		};
-
-		first_mesh = Mesh(MainDevice.physical_device, MainDevice.logical_device, &mesh_vertices);
-
 		create_swap_chain();
 		create_render_pass();
 		create_graphics_pipeline();
 		create_framebuffers();
 		create_command_pool();
+
+		// create meshes 
+		// vertex data
+		std::vector<Vertex> mesh_vertices = {
+						{{-0.1f, -0.4f, 0.0f}},
+						{{-0.1f, 0.4f, 0.0f}},
+						{{-0.8f, 0.4f, 0.0f}},
+						{{-0.8f, -0.4f, 0.0f}}
+		};
+
+		std::vector<Vertex> mesh_vertices2 = {
+						{{0.9f, -0.4f, 0.0f}},
+						{{0.9f, 0.4f, 0.0f}},
+						{{0.1f, 0.4f, 0.0f}},
+						{{0.1f, -0.4f, 0.0f}}
+		};
+
+		// index data
+		std::vector<uint32_t> mesh_indices = {
+
+			0, 1, 2,
+			2, 3, 0
+
+		};
+
+		// graphics queues are actually transfer queues
+		Mesh first_mesh = Mesh(MainDevice.physical_device, MainDevice.logical_device, graphics_queue, graphics_command_pool,
+										&mesh_vertices, &mesh_indices);
+
+		Mesh second_mesh = Mesh(MainDevice.physical_device, MainDevice.logical_device, graphics_queue, graphics_command_pool,
+			&mesh_vertices2, &mesh_indices);
+
+		meshes.push_back(first_mesh);
+		meshes.push_back(second_mesh);
+
 		create_command_buffers();
 		record_commands();
 		create_synchronization();
@@ -768,13 +793,22 @@ void VulkanRenderer::record_commands()
 		// bind pipeline to be used in render pass
 		vkCmdBindPipeline(command_buffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
 
-		// list of vertex buffers we want to draw 
-		VkBuffer vertex_buffers[] = {first_mesh.get_vertex_buffer()};																						// buffers to bind 
-		VkDeviceSize offsets[] = { 0 };																																				// offsets into buffers being bound
-		vkCmdBindVertexBuffers(command_buffers[i], 0, 1, vertex_buffers, offsets);															// command to bind vertex buffer before drawing with them
+		// 
+		for (size_t m = 0; m < meshes.size(); m++) {
 
-		// execute pipeline
-		vkCmdDraw(command_buffers[i], static_cast<uint32_t>(first_mesh.get_vertex_count()), 1, 0, 0);
+			// list of vertex buffers we want to draw 
+			VkBuffer vertex_buffers[] = {meshes[m].get_vertex_buffer()};																						// buffers to bind 
+			VkDeviceSize offsets[] = { 0 };																																				// offsets into buffers being bound
+			vkCmdBindVertexBuffers(command_buffers[i], 0, 1, vertex_buffers, offsets);															// command to bind vertex buffer before drawing with them
+		
+			// bind mesh index buffer with 0 offset and using the uint32 type
+			vkCmdBindIndexBuffer(command_buffers[i], meshes[m].get_index_buffer(), 0, VK_INDEX_TYPE_UINT32);			// command to bind index buffer before drawing with them
+
+			// execute pipeline
+			vkCmdDrawIndexed(command_buffers[i], static_cast<uint32_t>(meshes[m].get_index_count()), 1, 0, 0, 0);
+
+		}
+
 
 		// end render pass 
 		vkCmdEndRenderPass(command_buffers[i]);
@@ -1163,7 +1197,11 @@ void VulkanRenderer::clean_up()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
-	first_mesh.destroy_vertex_buffer();
+	for (Mesh& mesh : meshes) {
+
+		mesh.destroy_buffers();
+
+	}
 
 	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
 

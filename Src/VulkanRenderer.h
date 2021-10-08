@@ -47,7 +47,7 @@ private:
 	int current_frame = 0;
 
 	// scene objects
-	Mesh first_mesh;
+	std::vector<Mesh> meshes;
 
 	//Vulkan components
 	VkInstance instance;
