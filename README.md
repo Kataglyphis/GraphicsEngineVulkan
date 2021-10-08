@@ -108,6 +108,9 @@ provided.
 For Linux user: Open Terminal and navigate to "Resources/Shader" directory. Then: 
                 ```sh
                 chmod +x compile.sh
+                ```
+
+                ```sh
                 ./compile.sh
                 ```
 
