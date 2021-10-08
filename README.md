@@ -106,13 +106,10 @@ You will have to compile the shaders manually. A proper script to automate it is
 provided.
 
 For Linux user: Open Terminal and navigate to "Resources/Shader" directory. Then: 
-                ```sh
-                chmod +x compile.sh
-                ```
-
-                ```sh
-                ./compile.sh
-                ```
+```sh
+chmod +x compile.sh
+./compile.sh
+```
 
 For Windows user: run the batch file (double click on the 'compile.bat' in the Resources/Shader folder)
 
