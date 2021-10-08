@@ -9,13 +9,13 @@ Getting started with Vulkan
   <br>
 </h1>
 
-<h4 align="center">A graphics engine built on top of OpenGL <a href="https://jotrocken.blog/" target="_blank"></a>.</h4>
+<h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrocken.blog/" target="_blank"></a>.</h4>
 
-<p align="center">
+<!-- <p align="center">
   <a href="https://paypal.me/JonasHeinle?locale.x=de_DE">
     <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
   </a>
-</p>
+</p> -->
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -61,8 +61,14 @@ Getting started with Vulkan
 
 [![Kataglyphis Engine][product-screenshot]](https://jotrocken.blog/)
 
-There is a high demand in high-performance real-time graphic applications.
-With this project you get access to a tool enabling you to build such.
+The thought behind this project is to implement modern algortihms and 
+techniques that modern graphic engines rely on. 
+Furthermore it should serve as a framework to enable further investigations
+in own research topics.
+Feel free to contribute and adding stuff :)
+Reminder: This project is based on my interest in implementing algortihms by
+my own and make own research. Hence you might encounter some bugs. Feel free 
+to report.
 
 ### Key Features
 
@@ -77,11 +83,13 @@ With this project you get access to a tool enabling you to build such.
 
 ### Built With
 
-* [OpenGL 4.6](https://www.opengl.org//)
+* [Vulkan 1.2](https://www.vulkan.org/)
 * [GLM](https://github.com/g-truc/glm)
 * [GLFW](https://www.glfw.org/)
 * [ASSIMP](https://github.com/assimp/assimp)
-
+* [STB](https://github.com/nothings/stb)
+* [DOXYGEN](https://www.doxygen.nl/index.html)
+* [GTEST](https://github.com/google/googletest)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -90,15 +98,26 @@ You might only clone the repo and get to go immediately :)
 
 ### Prerequisites
 
-Right now everything is included. So after cloning you are ready to go :))
+You will need OpenGL. If you want to build documantaries you will need [DOXYGEN] (https://www.doxygen.nl/index.html).
 
 ### Shaders
+
+You will have to compile the shaders manually. A proper script to automate it is 
+provided.
+
+For Linux user: Open Terminal and navigate to "Resources/Shader" directory. Then: 
+                ```sh
+                chmod +x compile.sh
+                ./compile.sh
+                ```
+
+For Windows user: run the batch file (double click on the 'compile.bat' in the Resources/Shader folder)
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone --recurse-submodules git@github.com:Kataglyphis/OpenGLEngine.git
+   git clone --recurse-submodules git@github.com:Kataglyphis/GraphicsEngineVulkan.git
    ```
    Important for init the submodules
 
@@ -107,7 +126,6 @@ Right now everything is included. So after cloning you are ready to go :))
 ## Usage
 
 _For more examples, please refer to the [Documentation](https://jotrocken.blog/)_
-
 
 
 <!-- ROADMAP -->
@@ -136,22 +154,25 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
 
-
 <!-- CONTACT -->
 ## Contact
 
 Jonas Heinle - [@your_twitter](https://twitter.com/Cataglyphis_) - jonasheinle@googlemail.com
 
-Project Link: [https://github.com/Kataglyphis/OpenGLEngine](https://github.com/Kataglyphis/OpenGLEngine)
+Project Link: [https://github.com/Kataglyphis/GraphicsEngineVulkan](https://github.com/Kataglyphis/OpenGLEngine)
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-* [OpenGL 4.6](https://www.opengl.org//)
-* [GLM](https://github.com/g-truc/glm)
-* [GLFW](https://www.glfw.org/)
 
+
+## Literature 
+
+Some very helpful literature, tutorials, etc. 
+
+Vulkan
+* [Udemy course by Ben Cook](https://www.udemy.com/share/102M903@JMHgpMsdMW336k2s5Ftz9FMx769wYAEQ7p6GMAPBsFuVUbWRgq7k2uY6qBCG6UWNPQ==/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
