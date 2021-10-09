@@ -3,14 +3,18 @@
 
 layout(location=0) in vec3 positions; 
 
-layout(binding = 0) uniform MVP {
+layout(binding = 0) uniform UboViewProjection {
 															mat4 projection;
 															mat4 view;
+} ubo_view_projection;
+
+layout(binding = 1) uniform UboModel {
 															mat4 model;
-} mvp;
+} ubo_model;
+
 
 void main () {
 
-	gl_Position = mvp.projection * mvp.view * mvp.model * vec4(positions, 1.0f);
+	gl_Position = ubo_view_projection.projection * ubo_view_projection.view * ubo_model.model * vec4(positions, 1.0f);
 
 }

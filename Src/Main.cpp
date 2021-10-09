@@ -36,7 +36,7 @@ int main() {
         //poll all events incoming from user
         glfwPollEvents();
 
-        float now = glfwGetTime();
+        float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
         last_time = now;
 
@@ -45,7 +45,18 @@ int main() {
             angle = 0.0f;
         }
 
-        vulkan_renderer.update_model(glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0.0f,0.0f,1.0f)));
+        glm::mat4 first_model(1.0f);
+        glm::mat4 second_model(1.0f);
+
+        first_model = glm::translate(first_model, glm::vec3(-2.0f, 0.0f, -5.0f));
+        first_model = glm::rotate(first_model, glm::radians(angle), glm::vec3(0.0f,0.0f,1.0f));
+
+        second_model = glm::translate(second_model, glm::vec3(2.0f, 0.0f, -5.0f));
+        second_model = glm::rotate(second_model, glm::radians(-angle*100), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        vulkan_renderer.update_model(0, first_model);
+        vulkan_renderer.update_model(1, second_model);
+
         vulkan_renderer.draw();
         //main_window->swap_buffers();
 

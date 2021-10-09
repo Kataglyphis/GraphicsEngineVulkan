@@ -7,12 +7,28 @@ Mesh::Mesh()
 Mesh::Mesh(VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_queue,
 						VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices)
 {
+
 	index_count = static_cast<uint32_t>(indices->size());
 	vertex_count = static_cast<uint32_t>(vertices->size());
 	this->physical_device = physical_device;
 	this->device = device;
 	create_vertex_buffer(transfer_queue, transfer_command_pool, vertices);
 	create_index_buffer(transfer_queue, transfer_command_pool, indices);
+
+	ubo_model.model = glm::mat4(1.0f);
+
+}
+
+void Mesh::set_model(glm::mat4 new_model)
+{
+
+	ubo_model.model = new_model;
+
+}
+
+UboModel Mesh::get_model()
+{
+	return ubo_model;
 }
 
 int Mesh::get_vertex_count()
