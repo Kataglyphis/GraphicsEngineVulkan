@@ -84,7 +84,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 void VulkanRenderer::update_model(int model_id, glm::mat4 new_model)
 {
 
-	if (model_id >= meshes.size() || model_id < 0) {
+	if (model_id >= static_cast<int32_t>(meshes.size()) || model_id < 0) {
 
 		throw std::runtime_error("Wrong model id value!");
 
@@ -758,6 +758,11 @@ void VulkanRenderer::create_command_pool()
 	// create a graphics queue family command pool
 	VkResult result = vkCreateCommandPool(MainDevice.logical_device, &pool_info, nullptr, &graphics_command_pool);
 
+	if(result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create command pool!");
+
+	}
 }
 
 void VulkanRenderer::create_command_buffers()
@@ -1097,7 +1102,7 @@ void VulkanRenderer::allocate_dynamic_buffer_transfer_space()
 	model_uniform_alignment = (sizeof(UboModel) + min_uniform_buffer_offset - 1) & ~(min_uniform_buffer_offset - 1);
 
 	// create space in memory to hold dynamic buffer that is aligned to our required alignment and holds MAX_OBJECTS
-	model_transfer_space = (UboModel*)std::aligned_alloc(model_uniform_alignment * MAX_OBJECTS, model_uniform_alignment);
+	model_transfer_space = (UboModel*)std::aligned_alloc(model_uniform_alignment, model_uniform_alignment * MAX_OBJECTS);
 
 }
 
