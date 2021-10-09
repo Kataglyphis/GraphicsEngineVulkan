@@ -26,7 +26,7 @@ public:
 
 	int init(std::shared_ptr<MyWindow> window);
 
-	void update_model(glm::mat4 new_model);
+	void update_model(int model_id, glm::mat4 new_model);
 
 	void draw();
 	void clean_up();
@@ -55,11 +55,10 @@ private:
 	std::vector<Mesh> meshes;
 
 	// scene settings
-	struct MVP {
+	struct UboViewProjection {
 		glm::mat4 projection;
 		glm::mat4 view;
-		glm::mat4 model;
-	} mvp;
+	} ubo_view_projection;
 
 	//Vulkan components
 	VkInstance instance;
@@ -86,8 +85,17 @@ private:
 	VkDescriptorPool descriptor_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
 
-	std::vector<VkBuffer> uniform_buffer;
-	std::vector<VkDeviceMemory> uniform_buffer_memory;
+	// for every model
+	std::vector<VkBuffer> vp_uniform_buffer;
+	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
+
+	// changes between meshes  
+	std::vector<VkBuffer> model_dynamic_uniform_buffer;
+	std::vector<VkDeviceMemory> model_dynamic_uniform_buffer_memory;
+
+	VkDeviceSize min_uniform_buffer_offset;
+	size_t model_uniform_alignment;
+	UboModel* model_transfer_space;
 
 	// --PIPELINE --
 	VkPipeline graphics_pipeline;
@@ -124,13 +132,16 @@ private:
 	void create_descriptor_pool();
 	void create_descriptor_sets();
 
-	void update_uniform_buffer(uint32_t image_index);
+	void update_uniform_buffers(uint32_t image_index);
 
 	// - record functions
 	void record_commands();
 
 	//get functions
 	void get_physical_device();
+
+	// allocate functions
+	void allocate_dynamic_buffer_transfer_space();
 
 	// support functions
 	// checker functions

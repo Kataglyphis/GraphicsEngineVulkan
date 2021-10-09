@@ -8,6 +8,10 @@
 
 #include "Utilities.h"
 
+struct UboModel {
+	glm::mat4 model;
+};
+
 class Mesh {
 
 public:
@@ -15,6 +19,9 @@ public:
 	Mesh();
 	Mesh(VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_queue, 
 				VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices);
+
+	void set_model(glm::mat4 new_model);
+	UboModel get_model();
 
 	int get_vertex_count();
 	int get_index_count();
@@ -26,6 +33,8 @@ public:
 	~Mesh();
 
 private:
+
+	UboModel ubo_model;
 
 	int vertex_count;
 	VkBuffer vertex_buffer;
