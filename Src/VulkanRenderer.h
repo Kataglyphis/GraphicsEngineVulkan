@@ -13,6 +13,8 @@
 #include <set>
 #include <algorithm>
 #include <array>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "MyWindow.h"
 #include "Utilities.h"

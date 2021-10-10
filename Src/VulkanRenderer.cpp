@@ -1102,7 +1102,13 @@ void VulkanRenderer::allocate_dynamic_buffer_transfer_space()
 	model_uniform_alignment = (sizeof(UboModel) + min_uniform_buffer_offset - 1) & ~(min_uniform_buffer_offset - 1);
 
 	// create space in memory to hold dynamic buffer that is aligned to our required alignment and holds MAX_OBJECTS
-	model_transfer_space = (UboModel*)std::aligned_alloc(model_uniform_alignment, model_uniform_alignment * MAX_OBJECTS);
+	// it was impossible for MSVC to implement std::aligned_alloc; use MSVC specific function instead!
+	#if defined (_WIN32) 
+		model_transfer_space = (UboModel*)_aligned_malloc(model_uniform_alignment * MAX_OBJECTS, model_uniform_alignment);
+	#elif defined (__linux__)
+		model_transfer_space = (UboModel*) std::aligned_alloc(model_uniform_alignment, model_uniform_alignment * MAX_OBJECTS);
+	#endif	
+	
 
 }
 
@@ -1451,7 +1457,11 @@ void VulkanRenderer::clean_up()
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
 	// free all space we allocated for all model matrices for each object in our scene
-	std::free(model_transfer_space);
+	#if defined (_WIN32) 
+		_aligned_free(model_transfer_space);
+	#elif defined (__linux__)
+		std::free(model_transfer_space);
+	#endif	
 
 	vkDestroyDescriptorPool(MainDevice.logical_device, descriptor_pool, nullptr);
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
