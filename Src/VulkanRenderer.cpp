@@ -67,7 +67,8 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 		create_uniform_buffers();
 		create_descriptor_pool();
 		create_descriptor_sets();
-		record_commands();
+		// no longer initial record needed for we record them every single frame
+		//record_commands();
 		create_synchronization();
 
 	}
@@ -118,6 +119,9 @@ void VulkanRenderer::draw()
 		throw std::runtime_error("Failed to acquire next image!");
 
 	}
+
+	// only update soecific command buffer not in use 
+	record_commands(current_frame);
 
 	update_uniform_buffers(image_index);
 
@@ -753,6 +757,7 @@ void VulkanRenderer::create_command_pool()
 
 	VkCommandPoolCreateInfo pool_info{};
 	pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	pool_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;									// we are ready now to re-record our command buffers
 	pool_info.queueFamilyIndex = queue_family_indices.graphics_family;													// queue family type that buffers from this command pool will use 
 
 	// create a graphics queue family command pool
@@ -979,7 +984,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 
 }
 
-void VulkanRenderer::record_commands()
+void VulkanRenderer::record_commands(uint32_t current_image)
 {
 
 	// information about how to begin each command buffer
@@ -1002,54 +1007,51 @@ void VulkanRenderer::record_commands()
 	render_pass_begin_info.pClearValues = clear_values;
 	render_pass_begin_info.clearValueCount = 1;
 
-	for (size_t i = 0; i < command_buffers.size(); i++) {
 
-		render_pass_begin_info.framebuffer = swap_chain_framebuffers[i];												// used framebuffer depends on the swap chain and therefore is changing for each command buffer
+	render_pass_begin_info.framebuffer = swap_chain_framebuffers[current_image];												// used framebuffer depends on the swap chain and therefore is changing for each command buffer
 
-		// start recording commands to command buffer
-		VkResult result = vkBeginCommandBuffer(command_buffers[i], &buffer_begin_info);
+	// start recording commands to command buffer
+	VkResult result = vkBeginCommandBuffer(command_buffers[current_image], &buffer_begin_info);
 
-		if (result != VK_SUCCESS) {
+	if (result != VK_SUCCESS) {
 
-			throw std::runtime_error("Failed to start recording a command buffer!");
+		throw std::runtime_error("Failed to start recording a command buffer!");
 
-		}
+	}
 
-		// begin render pass
-		vkCmdBeginRenderPass(command_buffers[i], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
+	// begin render pass
+	vkCmdBeginRenderPass(command_buffers[current_image], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
 
-		// bind pipeline to be used in render pass
-		vkCmdBindPipeline(command_buffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
+	// bind pipeline to be used in render pass
+	vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
 
-		// 
-		for (size_t m = 0; m < meshes.size(); m++) {
+	// 
+	for (size_t m = 0; m < meshes.size(); m++) {
 
-			// list of vertex buffers we want to draw 
-			VkBuffer vertex_buffers[] = {meshes[m].get_vertex_buffer()};																						// buffers to bind 
-			VkDeviceSize offsets[] = { 0 };																																				// offsets into buffers being bound
-			vkCmdBindVertexBuffers(command_buffers[i], 0, 1, vertex_buffers, offsets);															// command to bind vertex buffer before drawing with them
+		// list of vertex buffers we want to draw 
+		VkBuffer vertex_buffers[] = {meshes[m].get_vertex_buffer()};																						// buffers to bind 
+		VkDeviceSize offsets[] = { 0 };																																				// offsets into buffers being bound
+		vkCmdBindVertexBuffers(command_buffers[current_image], 0, 1, vertex_buffers, offsets);															// command to bind vertex buffer before drawing with them
 		
-			// bind mesh index buffer with 0 offset and using the uint32 type
-			vkCmdBindIndexBuffer(command_buffers[i], meshes[m].get_index_buffer(), 0, VK_INDEX_TYPE_UINT32);			// command to bind index buffer before drawing with them
+		// bind mesh index buffer with 0 offset and using the uint32 type
+		vkCmdBindIndexBuffer(command_buffers[current_image], meshes[m].get_index_buffer(), 0, VK_INDEX_TYPE_UINT32);			// command to bind index buffer before drawing with them
 
-			// danamic offset amount
-			uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
+		// danamic offset amount
+		uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
 				 
-			// bind descriptor sets 
-			vkCmdBindDescriptorSets(command_buffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline_layout, 
-																									0, 1, &descriptor_sets[i], 1, &dynamic_offset);
+		// bind descriptor sets 
+		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline_layout, 
+																								0, 1, &descriptor_sets[current_image], 1, &dynamic_offset);
 
-			// execute pipeline
-			vkCmdDrawIndexed(command_buffers[i], static_cast<uint32_t>(meshes[m].get_index_count()), 1, 0, 0, 0);
-
-		}
+		// execute pipeline
+		vkCmdDrawIndexed(command_buffers[current_image], static_cast<uint32_t>(meshes[m].get_index_count()), 1, 0, 0, 0);
 
 
 		// end render pass 
-		vkCmdEndRenderPass(command_buffers[i]);
+		vkCmdEndRenderPass(command_buffers[current_image]);
 
 		// stop recording to command buffer
-		result = vkEndCommandBuffer(command_buffers[i]);
+		result = vkEndCommandBuffer(command_buffers[current_image]);
 
 		if (result != VK_SUCCESS) {
 

@@ -137,7 +137,7 @@ private:
 	void update_uniform_buffers(uint32_t image_index);
 
 	// - record functions
-	void record_commands();
+	void record_commands(uint32_t current_image);
 
 	//get functions
 	void get_physical_device();

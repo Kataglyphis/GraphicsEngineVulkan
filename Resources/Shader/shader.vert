@@ -8,10 +8,16 @@ layout(binding = 0) uniform UboViewProjection {
 															mat4 view;
 } ubo_view_projection;
 
+// NOT IN USE, LEFT FOR REFERENCE 
 layout(binding = 1) uniform UboModel {
 															mat4 model;
 } ubo_model;
 
+layout(push_constant) uniform PushModel {
+
+	mat4 model;
+
+} push_model;
 
 void main () {
 
