@@ -83,6 +83,7 @@ private:
 
 	// - Descriptors
 	VkDescriptorSetLayout descriptor_set_layout;
+	VkPushConstantRange push_constant_range;
 
 	VkDescriptorPool descriptor_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
@@ -95,9 +96,9 @@ private:
 	std::vector<VkBuffer> model_dynamic_uniform_buffer;
 	std::vector<VkDeviceMemory> model_dynamic_uniform_buffer_memory;
 
-	VkDeviceSize min_uniform_buffer_offset;
-	size_t model_uniform_alignment;
-	Model* model_transfer_space;
+	/*VkDeviceSize min_uniform_buffer_offset;
+	size_t model_uniform_alignment;*/
+	// Model* model_transfer_space;
 
 	// --PIPELINE --
 	VkPipeline graphics_pipeline;
@@ -124,6 +125,7 @@ private:
 	void create_swap_chain();
 	void create_render_pass();
 	void create_descriptor_set_layout();
+	void create_push_constant_range();
 	void create_graphics_pipeline();
 	void create_framebuffers();
 	void create_command_pool();
