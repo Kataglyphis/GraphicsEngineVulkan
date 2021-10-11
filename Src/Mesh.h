@@ -8,7 +8,7 @@
 
 #include "Utilities.h"
 
-struct UboModel {
+struct Model {
 	glm::mat4 model;
 };
 
@@ -21,7 +21,7 @@ public:
 				VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices);
 
 	void set_model(glm::mat4 new_model);
-	UboModel get_model();
+	Model get_model();
 
 	int get_vertex_count();
 	int get_index_count();
@@ -34,7 +34,7 @@ public:
 
 private:
 
-	UboModel ubo_model;
+	Model model;
 
 	int vertex_count;
 	VkBuffer vertex_buffer;

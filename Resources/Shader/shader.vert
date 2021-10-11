@@ -21,6 +21,6 @@ layout(push_constant) uniform PushModel {
 
 void main () {
 
-	gl_Position = ubo_view_projection.projection * ubo_view_projection.view * ubo_model.model * vec4(positions, 1.0f);
+	gl_Position = ubo_view_projection.projection * ubo_view_projection.view * push_model.model * vec4(positions, 1.0f);
 
 }
