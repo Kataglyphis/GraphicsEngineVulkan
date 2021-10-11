@@ -97,7 +97,7 @@ private:
 
 	VkDeviceSize min_uniform_buffer_offset;
 	size_t model_uniform_alignment;
-	UboModel* model_transfer_space;
+	Model* model_transfer_space;
 
 	// --PIPELINE --
 	VkPipeline graphics_pipeline;
