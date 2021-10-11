@@ -75,11 +75,7 @@ to report.
 
 |          Feature                |   Implement Status | ◾ Other Configs |
 | --------------------------------| :----------------: | :-------------: |
-| Directional Lights              |         ✔️         |        ❌      |
-| Point Lights                    |         ✔️         |        ❌      |
-| Spot Lights                     |         ✔️         |        ❌      |
-| Directional Shadow Mapping      |         ✔️         |        ❌      |
-| Omni-Directional Shadow Mapping |         ✔️         |        ❌      |
+| Core functionality              |         ✔️         |        ❌      |
 
 ### Built With
 
@@ -104,6 +100,10 @@ You will need OpenGL. If you want to build documantaries you will need [DOXYGEN]
 
 You will have to compile the shaders manually. A proper script to automate it is 
 provided.
+
+Update your script/batch file with the proper path/vulkan version. Otherwise 
+it will fail to compile shadres! (The very moment I wrote this readme I used 
+the vulkan version 1.2.176.1 and installed the SDK directly under C:\\)
 
 For Linux user: Open Terminal and navigate to "Resources/Shader" directory. Then: 
 ```sh
