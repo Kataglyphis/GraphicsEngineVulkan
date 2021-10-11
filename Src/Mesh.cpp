@@ -15,20 +15,20 @@ Mesh::Mesh(VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_q
 	create_vertex_buffer(transfer_queue, transfer_command_pool, vertices);
 	create_index_buffer(transfer_queue, transfer_command_pool, indices);
 
-	ubo_model.model = glm::mat4(1.0f);
+	model.model = glm::mat4(1.0f);
 
 }
 
 void Mesh::set_model(glm::mat4 new_model)
 {
 
-	ubo_model.model = new_model;
+	model.model = new_model;
 
 }
 
-UboModel Mesh::get_model()
+Model Mesh::get_model()
 {
-	return ubo_model;
+	return model;
 }
 
 int Mesh::get_vertex_count()

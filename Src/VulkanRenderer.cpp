@@ -969,18 +969,18 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
 
 	// copy Model data
-	for (size_t i = 0; i < meshes.size(); i++) {
+	//for (size_t i = 0; i < meshes.size(); i++) {
 
-		UboModel* thisModel = (UboModel*)((uint64_t)model_transfer_space + (i * model_uniform_alignment));
-		*thisModel = meshes[i].get_model();
+	//	Model* thisModel = (Model*)((uint64_t)model_transfer_space + (i * model_uniform_alignment));
+	//	*thisModel = meshes[i].get_model();
 
-	}
+	//}
 
-	// map the list of model data
-	vkMapMemory(MainDevice.logical_device, model_dynamic_uniform_buffer_memory[image_index], 0,
-								model_uniform_alignment * meshes.size(), 0, &data);
-	memcpy(data, model_transfer_space, model_uniform_alignment * meshes.size());
-	vkUnmapMemory(MainDevice.logical_device, model_dynamic_uniform_buffer_memory[image_index]);
+	//// map the list of model data
+	//vkMapMemory(MainDevice.logical_device, model_dynamic_uniform_buffer_memory[image_index], 0,
+	//							model_uniform_alignment * meshes.size(), 0, &data);
+	//memcpy(data, model_transfer_space, model_uniform_alignment * meshes.size());
+	//vkUnmapMemory(MainDevice.logical_device, model_dynamic_uniform_buffer_memory[image_index]);
 
 }
 
@@ -1101,16 +1101,15 @@ void VulkanRenderer::allocate_dynamic_buffer_transfer_space()
 {
 
 	// calculate alignment of model data
-	model_uniform_alignment = (sizeof(UboModel) + min_uniform_buffer_offset - 1) & ~(min_uniform_buffer_offset - 1);
+	//model_uniform_alignment = (sizeof(Model) + min_uniform_buffer_offset - 1) & ~(min_uniform_buffer_offset - 1);
 
-	// create space in memory to hold dynamic buffer that is aligned to our required alignment and holds MAX_OBJECTS
-	// it was impossible for MSVC to implement std::aligned_alloc; use MSVC specific function instead!
-	#if defined (_WIN32) 
-		model_transfer_space = (UboModel*)_aligned_malloc(model_uniform_alignment * MAX_OBJECTS, model_uniform_alignment);
-	#elif defined (__linux__)
-		model_transfer_space = (UboModel*) std::aligned_alloc(model_uniform_alignment, model_uniform_alignment * MAX_OBJECTS);
-	#endif	
-	
+	//// create space in memory to hold dynamic buffer that is aligned to our required alignment and holds MAX_OBJECTS
+	//// it was impossible for MSVC to implement std::aligned_alloc; use MSVC specific function instead!
+	//#if defined (_WIN32) 
+	//	model_transfer_space = (Model*)_aligned_malloc(model_uniform_alignment * MAX_OBJECTS, model_uniform_alignment);
+	//#elif defined (__linux__)
+	//	model_transfer_space = (Model*) std::aligned_alloc(model_uniform_alignment, model_uniform_alignment * MAX_OBJECTS);
+	//#endif	
 
 }
 
