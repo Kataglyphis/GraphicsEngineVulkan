@@ -23,6 +23,8 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 		create_framebuffers();
 		create_command_pool();
 
+		int first_texture = create_texture("first_texture.jpg");
+
 		ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
 																		0.1f, 100.f);
 		ubo_view_projection.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1603,12 +1605,100 @@ VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& cod
 
 }
 
+int VulkanRenderer::create_texture(std::string filename)
+{
+
+	int width, height;
+	VkDeviceSize image_size;
+	stbi_uc* image_data = load_texture_file(filename, &width, &height, &image_size);
+
+	// create staging buffer to hold loaded data, ready to copy to device
+	VkBuffer image_staging_buffer;
+	VkDeviceMemory image_staging_buffer_memory;
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, image_size, 
+							VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | 
+							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+							&image_staging_buffer, &image_staging_buffer_memory);
+
+	// copy image data to staging buffer 
+	void* data;
+	vkMapMemory(MainDevice.logical_device, image_staging_buffer_memory, 0, image_size, 0, &data);
+	memcpy(data, image_data, static_cast<size_t>(image_size));
+	vkUnmapMemory(MainDevice.logical_device, image_staging_buffer_memory);
+
+	// free original image data
+	stbi_image_free(image_data);
+
+	// create image to hold final texture
+	VkImage texture_image;
+	VkDeviceMemory texture_image_memory;
+	texture_image = create_image(width, height, VK_FORMAT_R8G8B8A8_UNORM,
+																				VK_IMAGE_TILING_OPTIMAL,
+																				VK_IMAGE_USAGE_TRANSFER_DST_BIT |
+																				VK_IMAGE_USAGE_SAMPLED_BIT, 
+																				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+																				&texture_image_memory);
+
+	// copy data to image
+	// transition image to be DST for copy operation
+	transition_image_layout(MainDevice.logical_device, graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_UNDEFINED,
+												VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+
+	// copy data to image
+	copy_image_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, image_staging_buffer, 
+									texture_image, width, height);
+
+	// transition image to be shader readable for shader stage
+
+	transition_image_layout(MainDevice.logical_device, graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+												VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+
+	// add texture data to vector for reference
+	texture_images.push_back(texture_image);
+	texture_images_memory.push_back(texture_image_memory);
+
+	// destroy staging buffers
+	vkDestroyBuffer(MainDevice.logical_device, image_staging_buffer, nullptr);
+	vkFreeMemory(MainDevice.logical_device, image_staging_buffer_memory, nullptr);
+
+	// return index to element in vector
+	return texture_images.size() - 1;
+}
+
+stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size)
+{
+
+	// number of channels image uses
+	int channels;
+	// load pixel data for image
+	std::string file_loc = "../Resources/Textures/" + file_name;
+	stbi_uc* image = stbi_load(file_loc.c_str(), width, height, &channels, STBI_rgb_alpha);
+
+	if (!image) {
+
+		throw std::runtime_error("Failed to load a texture file! (" + file_name + ")");
+
+	}
+
+	// calculate image size using given and known data
+	*image_size = *width * *height * 4;
+
+	return image;
+}
+
 void VulkanRenderer::clean_up()
 {
 
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
+	for (size_t i = 0; i < texture_images.size(); i++) {
+
+		vkDestroyImage(MainDevice.logical_device, texture_images[i], nullptr);
+		vkFreeMemory(MainDevice.logical_device, texture_images_memory[i], nullptr);
+
+	}
+
 	vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
 	vkDestroyImage(MainDevice.logical_device, depth_buffer_image, nullptr);
 	vkFreeMemory(MainDevice.logical_device, depth_buffer_image_memory, nullptr);
