@@ -68,13 +68,13 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 
 		create_command_buffers();
 		//allocate_dynamic_buffer_transfer_space();
+		create_texture_sampler();
 		create_uniform_buffers();
 		create_descriptor_pool();
 		create_descriptor_sets();
 		// no longer initial record needed for we record them every single frame
 		//record_commands();
 		create_synchronization();
-
 	}
 	catch (const std::runtime_error &e) {
 
@@ -291,6 +291,7 @@ void VulkanRenderer::create_logical_device()
 	
 	// physical device features the logical device will be using 
 	VkPhysicalDeviceFeatures device_features{};
+	device_features.samplerAnisotropy = VK_TRUE;
 
 	device_create_info.pEnabledFeatures = &device_features;
 
@@ -513,6 +514,7 @@ void VulkanRenderer::create_render_pass()
 
 void VulkanRenderer::create_descriptor_set_layout()
 {
+	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 
 	//ubo_view_projection Binding info
 	VkDescriptorSetLayoutBinding ubo_view_projection_layout_binding{};
@@ -547,6 +549,20 @@ void VulkanRenderer::create_descriptor_set_layout()
 		throw std::runtime_error("Failed to create descriptor set layout!");
 
 	}
+
+	// CREATE TEXTURE SAMPLER DESCRIPTOR SET LAYOUT
+	// texture binding info
+	VkDescriptorSetLayoutBinding sampler_layout_binding{};
+	sampler_layout_binding.binding = 0;
+	sampler_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	sampler_layout_binding.descriptorCount = 1;
+	sampler_layout_binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+	sampler_layout_binding. = ;
+	sampler_layout_binding. = ;
+
+	VkDescriptorSetLayoutCreateInfo texture_layout_create_info{};
+	texture_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	texture_layout_create_info.bindingCount = 1;
 
 }
 
@@ -886,6 +902,36 @@ void VulkanRenderer::create_synchronization()
 
 }
 
+void VulkanRenderer::create_texture_sampler()
+{
+
+	// sampler create info
+	VkSamplerCreateInfo sampler_create_info{};
+	sampler_create_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+	sampler_create_info.magFilter = VK_FILTER_LINEAR;
+	sampler_create_info.minFilter = VK_FILTER_LINEAR;
+	sampler_create_info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+	sampler_create_info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+	sampler_create_info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+	sampler_create_info.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK;
+	sampler_create_info.unnormalizedCoordinates = VK_FALSE;
+	sampler_create_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+	sampler_create_info.mipLodBias = 0.0f;
+	sampler_create_info.minLod = 0.0f;
+	sampler_create_info.maxLod = 0.0f;
+	sampler_create_info.anisotropyEnable = VK_TRUE;
+	sampler_create_info.maxAnisotropy = 16;																							// max anisotropy sample level
+
+	VkResult result = vkCreateSampler(MainDevice.logical_device, &sampler_create_info, nullptr, &texture_sampler);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create a texture sampler!");
+
+	}
+
+}
+
 void VulkanRenderer::create_uniform_buffers()
 {
 
@@ -919,6 +965,9 @@ void VulkanRenderer::create_uniform_buffers()
 void VulkanRenderer::create_descriptor_pool()
 {
 
+	// CREATE UNIFORM DESCRIPTOR POOL
+
+
 	// type of descriptors + how many descriptors, not descriptor sets (combined makes the pool size)
 	// ViewProjection Pool 
 	VkDescriptorPoolSize vp_pool_size{};
@@ -944,9 +993,31 @@ void VulkanRenderer::create_descriptor_pool()
 
 	if (result != VK_SUCCESS) {
 
-		throw std::runtime_error("Failed to create a descriptor pool");
+		throw std::runtime_error("Failed to create a descriptor pool!");
 		  
 	}
+
+	// CREATE SAMPLER DESCRIPTOR POOL
+	// TEXTURE SAMPLER POOL
+	VkDescriptorPoolSize sampler_pool_size{};
+	sampler_pool_size.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	sampler_pool_size.descriptorCount = MAX_OBJECTS;
+	
+	VkDescriptorPoolCreateInfo sampler_pool_create_info{};
+	sampler_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	sampler_pool_create_info.maxSets = MAX_OBJECTS;
+	sampler_pool_create_info.poolSizeCount = 1;
+	sampler_pool_create_info.pPoolSizes = &sampler_pool_size;
+
+	// create descriptor pool
+	VkResult result = vkCreateDescriptorPool(MainDevice.logical_device, &sampler_pool_create_info, nullptr, &sampler_descriptor_pool);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create a sampler descriptor pool!");
+
+	}
+
 }
 
 void VulkanRenderer::create_descriptor_sets()
@@ -1287,7 +1358,7 @@ bool VulkanRenderer::check_device_suitable(VkPhysicalDevice device)
 	} 
 
 
-	return indices.is_valid() && extensions_supported && swap_chain_valid;
+	return indices.is_valid() && extensions_supported && swap_chain_valid && device_features.samplerAnisotropy;
 }
 
 QueueFamilyIndices VulkanRenderer::get_queue_families(VkPhysicalDevice device)
@@ -1605,7 +1676,7 @@ VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& cod
 
 }
 
-int VulkanRenderer::create_texture(std::string filename)
+int VulkanRenderer::create_texture_image(std::string filename)
 {
 
 	int width, height;
@@ -1665,6 +1736,22 @@ int VulkanRenderer::create_texture(std::string filename)
 	return texture_images.size() - 1;
 }
 
+int VulkanRenderer::create_texture(std::string filename)
+{
+	// create texture image and get its location in array
+	int texture_image_location = create_texture_image(filename);
+
+	// create image view and add to list
+	VkImageView image_view = create_image_view(texture_images[texture_image_location], VK_FORMAT_R8G8B8A8_UNORM, 
+																					VK_IMAGE_ASPECT_COLOR_BIT);
+	texture_image_views.push_back(image_view);
+
+	// TODO: create descriptor set here
+
+
+	return 0;
+}
+
 stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size)
 {
 
@@ -1692,8 +1779,11 @@ void VulkanRenderer::clean_up()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
+	vkDestroySampler(MainDevice.logical_device, texture_sampler, nullptr);
+
 	for (size_t i = 0; i < texture_images.size(); i++) {
 
+		vkDestroyImageView(MainDevice.logical_device, texture_image_views[i], nullptr);
 		vkDestroyImage(MainDevice.logical_device, texture_images[i], nullptr);
 		vkFreeMemory(MainDevice.logical_device, texture_images_memory[i], nullptr);
 
