@@ -37,6 +37,7 @@ public:
 
 	int init(std::shared_ptr<MyWindow> window);
 
+	int create_mesh_model(std::string model_file);
 	void update_model(int model_id, glm::mat4 new_model);
 
 	void draw();
@@ -63,7 +64,8 @@ private:
 	int current_frame = 0;
 
 	// scene objects
-	std::vector<Mesh> meshes;
+	std::vector<MeshModel> model_list;
+	// std::vector<Mesh> meshes;
 
 	// scene settings
 	struct UboViewProjection {
@@ -118,8 +120,6 @@ private:
 	// Model* model_transfer_space;
 
 	// assets
-	std::vector<MeshModel> model_list;
-
 	VkSampler texture_sampler;
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
@@ -202,8 +202,6 @@ private:
 	int create_texture_image(std::string filename);
 	int create_texture(std::string filename);
 	int create_texture_descriptor(VkImageView texture_image);
-
-	void create_mesh_model(std::string model_file);
 
 	// loader functions
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
