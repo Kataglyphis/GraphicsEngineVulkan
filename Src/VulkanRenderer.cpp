@@ -73,6 +73,8 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 		meshes.push_back(first_mesh);
 		meshes.push_back(second_mesh);
 
+		create_mesh_model("../Resources/Model/Dragon_2.6_Cycles.gltf");
+
 	}
 	catch (const std::runtime_error &e) {
 
