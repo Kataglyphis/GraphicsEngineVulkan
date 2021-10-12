@@ -31,6 +31,9 @@ int main() {
     float angle = 0.0f;
     float delta_time = 0.0f;
     float last_time = 0.0f;
+    
+    //int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_3ds.3ds");
+    int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx");
 
     while (!main_window->get_should_close()) {
     
@@ -45,8 +48,13 @@ int main() {
         if (angle > 360.f) {
             angle = 0.0f;
         }
+        
+        glm::mat4 dragon_model(1.0f);
+        dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -70.0f));
+        dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
+        vulkan_renderer.update_model(dragon, dragon_model);
 
-        glm::mat4 first_model(1.0f);
+        /*glm::mat4 first_model(1.0f);
         glm::mat4 second_model(1.0f);
 
         first_model = glm::translate(first_model, glm::vec3(-2.0f, 0.0f, -5.0f));
@@ -56,7 +64,7 @@ int main() {
         second_model = glm::rotate(second_model, glm::radians(-angle*100), glm::vec3(0.0f, 0.0f, 1.0f));
 
         vulkan_renderer.update_model(0, first_model);
-        vulkan_renderer.update_model(1, second_model);
+        vulkan_renderer.update_model(1, second_model);*/
 
         vulkan_renderer.draw();
         //main_window->swap_buffers();
