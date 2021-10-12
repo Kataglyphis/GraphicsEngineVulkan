@@ -17,7 +17,8 @@ const std::vector<const char*> device_extensions = {
 // vertex data representation (layout)
 struct Vertex {
 
-	glm::vec3 pos; // vertex position (x,y,z)
+	glm::vec3 pos; 
+	glm::vec2 texture_coords; 
 
 };
 

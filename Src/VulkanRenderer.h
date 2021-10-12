@@ -96,6 +96,7 @@ private:
 	VkDescriptorPool descriptor_pool;
 	VkDescriptorPool sampler_descriptor_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
+	std::vector<VkDescriptorSet> sampler_descriptor_sets;				// these are no swap chain dependend descriptors, doesn't change over frames
 
 	// for every model
 	std::vector<VkBuffer> vp_uniform_buffer;
@@ -191,6 +192,7 @@ private:
 
 	int create_texture_image(std::string filename);
 	int create_texture(std::string filename);
+	int create_texture_descriptor(VkImageView texture_image);
 
 	// loader functions
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);

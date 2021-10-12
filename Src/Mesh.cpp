@@ -5,7 +5,8 @@ Mesh::Mesh()
 }
 
 Mesh::Mesh(VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_queue,
-						VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices)
+						VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices,
+						int new_texture_id)
 {
 
 	index_count = static_cast<uint32_t>(indices->size());
@@ -16,6 +17,7 @@ Mesh::Mesh(VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_q
 	create_index_buffer(transfer_queue, transfer_command_pool, indices);
 
 	model.model = glm::mat4(1.0f);
+	texture_id = new_texture_id;
 
 }
 
@@ -29,6 +31,11 @@ void Mesh::set_model(glm::mat4 new_model)
 Model Mesh::get_model()
 {
 	return model;
+}
+
+int Mesh::get_texture_id()
+{
+	return texture_id;
 }
 
 int Mesh::get_vertex_count()

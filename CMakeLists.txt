@@ -84,7 +84,7 @@ target_link_libraries(${PROJECT_NAME} glfw)
 
 # add ASSIMP to our cmake build
 add_subdirectory(ExternalLib/ASSIMP/assimp-5.0.1)
-target_link_libraries(${PROJECT_NAME} assimp-vc140-mt)
+# target_link_libraries(${PROJECT_NAME} assimp-vc140-mt)
 
 # add tests 
 # include(CTest)
