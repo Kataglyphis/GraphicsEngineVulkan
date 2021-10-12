@@ -3,7 +3,13 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+// the importer from the assimp library
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include <stdexcept>
 #include <vector>
@@ -21,6 +27,7 @@
 #include "MyWindow.h"
 #include "Utilities.h"
 #include "Mesh.h"
+#include "MeshModel.h"
 
 class VulkanRenderer
 {
@@ -111,6 +118,8 @@ private:
 	// Model* model_transfer_space;
 
 	// assets
+	std::vector<MeshModel> model_list;
+
 	VkSampler texture_sampler;
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
@@ -193,6 +202,8 @@ private:
 	int create_texture_image(std::string filename);
 	int create_texture(std::string filename);
 	int create_texture_descriptor(VkImageView texture_image);
+
+	void create_mesh_model(std::string model_file);
 
 	// loader functions
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
