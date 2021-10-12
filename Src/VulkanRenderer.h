@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "stb_image.h"
+
 #include "MyWindow.h"
 #include "Utilities.h"
 #include "Mesh.h"
@@ -105,6 +107,10 @@ private:
 	size_t model_uniform_alignment;*/
 	// Model* model_transfer_space;
 
+	// assets
+	std::vector<VkImage> texture_images;
+	std::vector<VkDeviceMemory> texture_images_memory;
+
 	// --PIPELINE --
 	VkPipeline graphics_pipeline;
 	VkPipelineLayout pipeline_layout;
@@ -177,6 +183,11 @@ private:
 											VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
 	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
 	VkShaderModule create_shader_module(const std::vector<char>& code);
+
+	int create_texture(std::string filename);
+
+	// loader functions
+	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
 
 };
 

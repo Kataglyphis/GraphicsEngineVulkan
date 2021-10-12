@@ -1,3 +1,4 @@
+#define STB_IMAGE_IMPLEMENTATION
 # define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
