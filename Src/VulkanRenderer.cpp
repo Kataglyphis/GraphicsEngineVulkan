@@ -1839,9 +1839,42 @@ void VulkanRenderer::create_mesh_model(std::string model_file)
 		throw std::runtime_error("Failed to load model! (" + model_file + ")");
 
 	}
-
+	
 	// get vector of all materials with 1:1 ID placement
-	std::vector<std::string> texture_names;
+	std::vector<std::string> texture_names = MeshModel::load_materials(scene);
+
+	// conversion from the materials list IDs to our descriptor array IDs
+	std::vector<int> mat_to_tex(texture_names.size());
+
+	// loop over texture_names and create textures for them
+	for (size_t i = 0; texture_names.size(); i++) {
+
+		// if material no texture set 0 to indicate no texture, texture 0 will be reserved for a default texture
+		if (texture_names[i].empty()) {
+
+			mat_to_tex[i] = 0;
+
+		}
+		else {
+
+			// otherwise, create texture and set value to index of new texture
+			mat_to_tex[i] = create_texture(texture_names[i]);
+
+		}
+
+	}
+
+	// load in all our meshes
+	std::vector<Mesh> model_meshes = MeshModel::load_node(MainDevice.physical_device, 
+															MainDevice.logical_device, 
+															graphics_queue, 
+															graphics_command_pool, 
+															scene->mRootNode, 
+															scene, mat_to_tex);
+
+	// create mesh model and add to list
+	MeshModel mesh_model = MeshModel(model_meshes);
+	model_list.push_back(mesh_model);
 
 }
 
@@ -1872,6 +1905,12 @@ void VulkanRenderer::clean_up()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
+	for (size_t i = 0; i < model_list.size(); i++) {
+
+		model_list[i].destroy_mesh_model();
+
+	}
+
 	vkDestroyDescriptorPool(MainDevice.logical_device, sampler_descriptor_pool, nullptr);
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, sampler_set_layout, nullptr);
 
