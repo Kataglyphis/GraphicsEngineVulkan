@@ -36,7 +36,7 @@ ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/*.h
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_glfw.h
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_opengl3.h
 ${VULKAN_INCLUDE_DIRS}
-${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/assimp/*.h)
+${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/*.h)
 
 
 # add the executable

@@ -1821,6 +1821,26 @@ int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 
 }
 
+void VulkanRenderer::create_mesh_model(std::string model_file)
+{
+
+	// import model "scene"
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(model_file, aiProcess_Triangulate |
+																							aiProcess_FlipUVs | 
+																							aiProcess_JoinIdenticalVertices);
+
+	if (!scene) {
+
+		throw std::runtime_error("Failed to load model! (" + model_file + ")");
+
+	}
+
+	// get vector of all materials with 1:1 ID placement
+	std::vector<std::string> texture_names;
+
+}
+
 stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size)
 {
 
