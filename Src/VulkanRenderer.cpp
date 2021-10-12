@@ -1188,13 +1188,17 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		// danamic offset amount
 		// uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
 		
-		// jsut "Push" constants to given shader stage directly (no buffer)
+		// just "Push" constants to given shader stage directly (no buffer)
+		
+		// for GCC doen't allow references on rvalues go like that ... 
+		Model temp_model = meshes[m].get_model();
+
 		vkCmdPushConstants(command_buffers[current_image],
 											pipeline_layout,
 											VK_SHADER_STAGE_VERTEX_BIT,				// stage to push constants to 
 											0,																	// offset to push constants to update
 											sizeof(Model),												// size of data being pushed 
-											&meshes[m].get_model());							// using model of current mesh (can be array)
+											&temp_model);							// using model of current mesh (can be array)
 
 		std::array<VkDescriptorSet, 2> descriptor_set_group = {descriptor_sets[current_image], 
 																									sampler_descriptor_sets[meshes[m].get_texture_id()]};
