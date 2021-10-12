@@ -23,10 +23,6 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 # we depend on vulkan 
 find_package(Vulkan REQUIRED)
 
-# find_package(X11 REQUIRED)
-# link_libraries(${X11_LIBRARIES})
-# add_definitions(-DVK_USE_PLATFORM_XLIB_KHR)
-
 #set all your sources accordingly
 file(GLOB SOURCES "Src/*.cpp"
 "Src/*.c"
@@ -39,7 +35,8 @@ file(GLOB HEADERS "Src/*.h"
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/*.h
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_glfw.h
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_opengl3.h
-${VULKAN_INCLUDE_DIRS})
+${VULKAN_INCLUDE_DIRS}
+${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/assimp/*.h)
 
 
 # add the executable
@@ -58,7 +55,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}/../Src"
                                             PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI"
                                             PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/STB"
                                             PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/TOL"
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends")
+                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends"
+                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/assimp")
 
 
 
@@ -83,6 +81,10 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(ExternalLib/GLFW/glfw-3.3.4)
 
 target_link_libraries(${PROJECT_NAME} glfw)
+
+# add ASSIMP to our cmake build
+add_subdirectory(ExternalLib/ASSIMP/assimp-5.0.1)
+target_link_libraries(${PROJECT_NAME} assimp-vc140-mt)
 
 # add tests 
 # include(CTest)

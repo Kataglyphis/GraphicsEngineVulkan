@@ -89,10 +89,12 @@ private:
 	VkFormat depth_format;
 
 	// - Descriptors
-	VkDescriptorSetLayout descriptor_set_layout;
+	VkDescriptorSetLayout descriptor_set_layout;								// for normal uniform values
+	VkDescriptorSetLayout sampler_set_layout;									// descriptor set layout for our samplers
 	VkPushConstantRange push_constant_range;
 
 	VkDescriptorPool descriptor_pool;
+	VkDescriptorPool sampler_descriptor_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
 
 	// for every model
@@ -108,8 +110,10 @@ private:
 	// Model* model_transfer_space;
 
 	// assets
+	VkSampler texture_sampler;
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
+	std::vector<VkImageView> texture_image_views;
 
 	// --PIPELINE --
 	VkPipeline graphics_pipeline;
@@ -143,6 +147,7 @@ private:
 	void create_command_pool();
 	void create_command_buffers();
 	void create_synchronization();
+	void create_texture_sampler();
 
 	void create_uniform_buffers();
 	void create_descriptor_pool();
@@ -184,6 +189,7 @@ private:
 	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
+	int create_texture_image(std::string filename);
 	int create_texture(std::string filename);
 
 	// loader functions
