@@ -28,6 +28,7 @@
 #include "Utilities.h"
 #include "Mesh.h"
 #include "MeshModel.h"
+#include "Camera.h"
 
 class VulkanRenderer
 {
@@ -35,10 +36,11 @@ public:
 
 	VulkanRenderer();
 
-	int init(std::shared_ptr<MyWindow> window);
+	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye);
 
 	int create_mesh_model(std::string model_file);
 	void update_model(int model_id, glm::mat4 new_model);
+	void update_view(glm::mat4 view);
 
 	void draw();
 	void clean_up();
