@@ -176,6 +176,8 @@ Some very helpful literature, tutorials, etc.
 
 Vulkan
 * [Udemy course by Ben Cook](https://www.udemy.com/share/102M903@JMHgpMsdMW336k2s5Ftz9FMx769wYAEQ7p6GMAPBsFuVUbWRgq7k2uY6qBCG6UWNPQ==/)
+* [Vulkan Tutorial](https://vulkan-tutorial.com/)
+* [Vulkan Raytracing Tutorial](https://developer.nvidia.com/rtx/raytracing/vkray)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
