@@ -4,7 +4,7 @@ VulkanRenderer::VulkanRenderer()
 {
 }
 
-int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
+int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye )
 {
 	this->window = window;
 	
@@ -34,7 +34,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window)
 
 		ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
 																		0.1f, 100.f);
-		ubo_view_projection.view = glm::lookAt(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// for reasons that vulkan needs the y-coordinate in an inverse manner
 		ubo_view_projection.projection[1][1] *= -1;
@@ -97,6 +97,13 @@ void VulkanRenderer::update_model(int model_id, glm::mat4 new_model)
 	}
 
 	model_list[model_id].set_model(new_model);
+
+}
+
+void VulkanRenderer::update_view(glm::mat4 view)
+{
+
+	ubo_view_projection.view = view;
 
 }
 

@@ -23,15 +23,29 @@ int main() {
     std::shared_ptr<MyWindow> main_window = std::make_shared<MyWindow>(window_width, window_height);
     main_window->initialize();
 
+    glm::vec3 start_position = glm::vec3(0.0f, 0.0f, 0.0f);
     VulkanRenderer vulkan_renderer{};
-    if (vulkan_renderer.init(main_window) == EXIT_FAILURE) {
+    if (vulkan_renderer.init(main_window, start_position) == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
 
     float angle = 0.0f;
     float delta_time = 0.0f;
     float last_time = 0.0f;
-    
+    float near_plane = 0.1f;
+    float far_plane = 100.f;
+    float fov = 60.f;
+
+    glm::vec3 start_up = glm::vec3(0.0f, 1.0f, 0.0f);
+    float start_yaw = -60.f;
+    float start_pitch = 0.0f;
+    float start_move_speed = 75.f;
+    float start_turn_speed = 0.25f;
+
+    Camera camera{ start_position, start_up, start_yaw, start_pitch,
+                                    start_move_speed, start_turn_speed,
+                                    near_plane, far_plane, fov };
+
     //int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_3ds.3ds");
     int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx");
 
@@ -39,6 +53,12 @@ int main() {
     
         //poll all events incoming from user
         glfwPollEvents();
+
+        // handle events for the camera
+        camera.key_control(main_window->get_keys(), delta_time);
+        camera.mouse_control(main_window->get_x_change(), main_window->get_y_change());
+
+        vulkan_renderer.update_view(camera.calculate_viewmatrix());
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
