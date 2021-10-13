@@ -23,22 +23,23 @@ int main() {
     std::shared_ptr<MyWindow> main_window = std::make_shared<MyWindow>(window_width, window_height);
     main_window->initialize();
 
-    glm::vec3 start_position = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 start_position = glm::vec3(0.0f, 100.0f, -80.0f);
+    float near_plane = 0.1f;
+    float far_plane = 500.f;
+
     VulkanRenderer vulkan_renderer{};
-    if (vulkan_renderer.init(main_window, start_position) == EXIT_FAILURE) {
+    if (vulkan_renderer.init(main_window, start_position, near_plane, far_plane) == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
 
     float angle = 0.0f;
     float delta_time = 0.0f;
     float last_time = 0.0f;
-    float near_plane = 0.1f;
-    float far_plane = 100.f;
     float fov = 60.f;
 
     glm::vec3 start_up = glm::vec3(0.0f, 1.0f, 0.0f);
-    float start_yaw = -60.f;
-    float start_pitch = 0.0f;
+    float start_yaw = 80.f;
+    float start_pitch = -40.0f;
     float start_move_speed = 75.f;
     float start_turn_speed = 0.25f;
 
@@ -48,6 +49,7 @@ int main() {
 
     //int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_3ds.3ds");
     int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx");
+    int floor = vulkan_renderer.create_mesh_model("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj");
 
     while (!main_window->get_should_close()) {
     
@@ -70,9 +72,18 @@ int main() {
         }
         
         glm::mat4 dragon_model(1.0f);
-        dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -70.0f));
+        //dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
+        dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
         dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        glm::mat4 floor_model(1.0f);
+        floor_model = glm::scale(floor_model, glm::vec3(70.f));
+        floor_model = glm::rotate(floor_model, glm::radians(130.f), glm::vec3(1.0f, 0.0f, 0.0f));
+        floor_model = glm::translate(floor_model, glm::vec3(0.0f, 0.0f, -3.75f));
+        //floor_model = glm::rotate(floor_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
+
         vulkan_renderer.update_model(dragon, dragon_model);
+        vulkan_renderer.update_model(floor, floor_model);
 
         /*glm::mat4 first_model(1.0f);
         glm::mat4 second_model(1.0f);
@@ -87,7 +98,6 @@ int main() {
         vulkan_renderer.update_model(1, second_model);*/
 
         vulkan_renderer.draw();
-        //main_window->swap_buffers();
 
     }
 

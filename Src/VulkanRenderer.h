@@ -36,7 +36,7 @@ public:
 
 	VulkanRenderer();
 
-	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye);
+	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane);
 
 	int create_mesh_model(std::string model_file);
 	void update_model(int model_id, glm::mat4 new_model);

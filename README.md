@@ -166,7 +166,9 @@ Project Link: [https://github.com/Kataglyphis/GraphicsEngineVulkan](https://gith
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-
+Thanks for free 3D Models: 
+* [Dragon 3d Model](https://free3d.com/3d-model/black-dragon-rigged-and-game-ready-92023.html)
+* [Dirty Ground Floor]("Dirty Ground Floor 01" (https://skfb.ly/MsMo) by dee_van_hoven is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).)
 ## Literature 
 
 Some very helpful literature, tutorials, etc. 
