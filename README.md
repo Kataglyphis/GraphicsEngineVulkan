@@ -6,8 +6,13 @@ Getting started with Vulkan
   <a href="https://jotrocken.blog/"><img src="images/logo.png" alt="OpenGLEngine" width="200"></a>
   <a href="https://jotrocken.blog/"><img src="images/vulkan-logo.png" alt="OpenGLEngine" width="400"></a>
   <br>
-  Cataglyphis_Engine
+  Cataglyphis Engine
   <br>
+</h1>
+
+<h1 align="center">
+  <br>
+  <a href="https://jotrocken.blog/"><img src="images/Engine_logo.png" alt="OpenGLEngine" width="200"></a>
 </h1>
 
 <h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrocken.blog/" target="_blank"></a>.</h4>
