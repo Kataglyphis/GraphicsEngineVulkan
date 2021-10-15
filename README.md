@@ -4,6 +4,7 @@ Getting started with Vulkan
 <h1 align="center">
   <br>
   <a href="https://jotrocken.blog/"><img src="images/logo.png" alt="OpenGLEngine" width="200"></a>
+  <a href="https://jotrocken.blog/"><img src="images/vulkan-logo.png" alt="OpenGLEngine" width="200"></a>
   <br>
   Cataglyphis_Engine
   <br>

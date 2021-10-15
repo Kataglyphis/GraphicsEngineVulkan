@@ -68,6 +68,13 @@ int main() {
     float start_move_speed = 75.f;
     float start_turn_speed = 0.25f;
 
+    // GUI variables
+    float direcional_light_ambient_intensity = 10.f;
+    float directional_light_color[3] = {1.f,1.f,1.f};
+    float directional_light_direction[3] = {1.f,1.f,1.f};
+
+    int gui_logo = vulkan_renderer.create_texture("Engine_logo.png");
+
     Camera camera{ start_position, start_up, start_yaw, start_pitch,
                                     start_move_speed, start_turn_speed,
                                     near_plane, far_plane, fov };
@@ -127,8 +134,66 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Now all the GUI elements
-        ImGui::ShowDemoWindow();
+        // ImGui::ShowDemoWindow();
+
+        // render your GUI
+        ImGui::Begin("GUI v1.0");
+
+        if (ImGui::CollapsingHeader("Hot shader reload")) {
+
+            ImGui::Text("Upcoming :)");
+
+        }
+
+        ImGui::Separator();
+
+
+        if (ImGui::CollapsingHeader("Graphic Settings")) {
+
+            if (ImGui::TreeNode("Directional Light")) {
+                ImGui::Separator();
+                ImGui::SliderFloat("Ambient intensity", &direcional_light_ambient_intensity, 0.0f, 50.0f);
+                ImGui::Separator();
+                // Edit a color (stored as ~4 floats)
+                ImGui::ColorEdit3("Directional Light Color", directional_light_color);
+                ImGui::Separator();
+                ImGui::SliderFloat3("Light Direction", directional_light_direction, -1.f, 1.0f);
+
+                ImGui::TreePop();
+            }
+
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::CollapsingHeader("GUI Settings")) {
+
+            ImGuiStyle& style = ImGui::GetStyle();
+
+            if (ImGui::SliderFloat("Frame Rounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f")) {
+                style.GrabRounding = style.FrameRounding; // Make GrabRounding always the same value as FrameRounding
+            }
+            { bool border = (style.FrameBorderSize > 0.0f);  if (ImGui::Checkbox("FrameBorder", &border)) { style.FrameBorderSize = border ? 1.0f : 0.0f; } }
+            ImGui::SliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 12.0f, "%.0f");
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::CollapsingHeader("KEY Bindings")) {
+
+            ImGui::Text("WASD for moving Forward, backward and to the side\n QE for rotating ");
+
+        }
+
+        ImGui::Separator();
+
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        //ImGui::ShowDemoWindow();
+        // (void*)(intptr_t)&
+        VkDescriptorSet ds = vulkan_renderer.get_texture_descriptor_set(gui_logo);
+        ImGui::Image((void*)ds, ImVec2(300, 150));
+
+        ImGui::End();
 
         // Rendering
 
