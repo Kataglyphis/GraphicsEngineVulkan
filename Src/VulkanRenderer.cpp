@@ -6,6 +6,7 @@ VulkanRenderer::VulkanRenderer()
 
 int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane)
 {
+
 	this->window = window;
 	
 	try {
@@ -27,6 +28,8 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_texture_sampler();
 		create_uniform_buffers();
 		create_descriptor_pool();
+		create_gui_context();
+		create_fonts_and_upload();
 		create_descriptor_sets();
 		// no longer initial record needed for we record them every single frame
 		//record_commands();
@@ -105,6 +108,12 @@ void VulkanRenderer::update_view(glm::mat4 view)
 {
 
 	ubo_view_projection.view = view;
+
+}
+
+void VulkanRenderer::update_gui_draw_data(ImDrawData* gui_draw_data)
+{
+	this->gui_draw_data = gui_draw_data;
 
 }
 
@@ -519,6 +528,20 @@ void VulkanRenderer::create_render_pass()
 		throw std::runtime_error("Failed to create render pass!");
 
 	}
+
+}
+
+void VulkanRenderer::create_fonts_and_upload()
+{
+
+	VkCommandBuffer command_buffer = beginSingleTimeCommands(MainDevice.logical_device, graphics_command_pool);
+	ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
+	endSingleTimeCommands(command_buffer, graphics_queue, MainDevice.logical_device, graphics_command_pool);
+
+	//clear font textures from cpu data
+	ImGui_ImplVulkan_DestroyFontUploadObjects();
+
+
 }
 
 void VulkanRenderer::create_descriptor_set_layout()
@@ -1046,6 +1069,67 @@ void VulkanRenderer::create_descriptor_pool()
 
 	}
 
+
+
+}
+
+void VulkanRenderer::create_gui_context()
+{
+
+	// UI
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+
+	// Create Descriptor Pool
+	VkDescriptorPoolSize gui_pool_sizes[] =
+	{
+		{ VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+		{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+		{ VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+		{ VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+	};
+
+	VkDescriptorPoolCreateInfo gui_pool_info = {};
+	gui_pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	gui_pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+	gui_pool_info.maxSets = 1000 * IM_ARRAYSIZE(gui_pool_sizes);
+	gui_pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(gui_pool_sizes);
+	gui_pool_info.pPoolSizes = gui_pool_sizes;
+
+	VkResult result = vkCreateDescriptorPool(MainDevice.logical_device, &gui_pool_info, nullptr, &gui_descriptor_pool);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create a gui descriptor pool!");
+
+	}
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForVulkan(window->get_window(), true);
+
+	ImGui_ImplVulkan_InitInfo init_info = {};
+	init_info.Instance = instance;
+	init_info.PhysicalDevice = MainDevice.physical_device;
+	init_info.Device = MainDevice.logical_device;
+	init_info.QueueFamily = get_queue_families(MainDevice.physical_device).graphics_family;
+	init_info.Queue = graphics_queue;
+	init_info.DescriptorPool = gui_descriptor_pool;
+	init_info.MinImageCount = MAX_FRAME_DRAWS;
+	init_info.PipelineCache = VK_NULL_HANDLE;																					// we do not need those 
+	init_info.ImageCount = MAX_FRAME_DRAWS;
+	init_info.Allocator = VK_NULL_HANDLE;
+	init_info.CheckVkResultFn = VK_NULL_HANDLE;
+	init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+
+	ImGui_ImplVulkan_Init(&init_info, render_pass);
+
 }
 
 void VulkanRenderer::create_descriptor_sets()
@@ -1211,7 +1295,8 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 			// uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
 
 			std::array<VkDescriptorSet, 2> descriptor_set_group = {descriptor_sets[current_image], 
-																										sampler_descriptor_sets[model_list[m].get_mesh(k)->get_texture_id()]};
+																										sampler_descriptor_sets[model_list[m].get_mesh(k)->get_texture_id()]/*,
+																										gui_descriptor_sets[current_image] */};
 
 			// bind descriptor sets 
 			vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline_layout, 
@@ -1224,6 +1309,9 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		}
 
 	}
+
+	// Record dear imgui primitives into command buffer
+	ImGui_ImplVulkan_RenderDrawData(gui_draw_data, command_buffers[current_image]);										// record data for drawing the GUI 
 
 	// end render pass 
 	vkCmdEndRenderPass(command_buffers[current_image]);
