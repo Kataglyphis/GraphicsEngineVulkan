@@ -47,8 +47,6 @@ public:
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 
-	void update_gui_draw_data(ImDrawData* gui_draw_data);
-
 	void draw();
 
 	void clean_up();
@@ -69,7 +67,6 @@ private:
 	#endif
 	
 	// all GUI stuff
-	ImDrawData* gui_draw_data;
 	VkDescriptorPool gui_descriptor_pool;
 
 	//wrapper class for GLFWwindow

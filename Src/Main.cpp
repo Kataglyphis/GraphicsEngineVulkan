@@ -133,9 +133,6 @@ int main() {
         // Rendering
 
         ImGui::Render();
-        ImDrawData* draw_data = ImGui::GetDrawData();
-
-        vulkan_renderer.update_gui_draw_data(draw_data);
 
         vulkan_renderer.draw();
 
