@@ -30,6 +30,11 @@
 #include "MeshModel.h"
 #include "Camera.h"
 
+// all IMGUI stuff
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_vulkan.h"
+
 class VulkanRenderer
 {
 public:
@@ -42,7 +47,10 @@ public:
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 
+	void update_gui_draw_data(ImDrawData* gui_draw_data);
+
 	void draw();
+
 	void clean_up();
 
 	~VulkanRenderer();
@@ -59,6 +67,10 @@ private:
 	#else
 		const bool enableValidationLayers = true;
 	#endif
+	
+	// all GUI stuff
+	ImDrawData* gui_draw_data;
+	VkDescriptorPool gui_descriptor_pool;
 
 	//wrapper class for GLFWwindow
 	std::shared_ptr<MyWindow> window;
@@ -79,8 +91,10 @@ private:
 	VkInstance instance;
 
 	struct {
+
 		VkPhysicalDevice physical_device;
 		VkDevice logical_device;
+
 	} MainDevice;
 
 	VkQueue graphics_queue;
@@ -163,6 +177,8 @@ private:
 
 	void create_uniform_buffers();
 	void create_descriptor_pool();
+	void create_gui_context();
+	void create_fonts_and_upload();
 	void create_descriptor_sets();
 
 	void update_uniform_buffers(uint32_t image_index);

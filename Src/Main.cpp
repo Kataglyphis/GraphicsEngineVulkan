@@ -7,6 +7,11 @@
 #include <glm/glm.hpp>
 #include <glm/mat4x4.hpp>
 
+// all IMGUI stuff
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_vulkan.h"
+
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -17,6 +22,14 @@
 
 int main() {
 
+    // Setup Vulkan
+    /*if (!glfwVulkanSupported())
+    {
+        printf("GLFW: Vulkan Not Supported\n");
+
+        return EXIT_FAILURE;
+    }*/
+
     int window_width = 1200;
     int window_height = 768;
 
@@ -26,6 +39,18 @@ int main() {
     glm::vec3 start_position = glm::vec3(0.0f, 100.0f, -80.0f);
     float near_plane = 0.1f;
     float far_plane = 500.f;
+
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
 
     VulkanRenderer vulkan_renderer{};
     if (vulkan_renderer.init(main_window, start_position, near_plane, far_plane) == EXIT_FAILURE) {
@@ -97,9 +122,30 @@ int main() {
         vulkan_renderer.update_model(0, first_model);
         vulkan_renderer.update_model(1, second_model);*/
 
+        // Start the Dear ImGui frame
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // Now all the GUI elements
+        ImGui::ShowDemoWindow();
+
+        // Rendering
+
+        ImGui::Render();
+        ImDrawData* draw_data = ImGui::GetDrawData();
+
+        vulkan_renderer.update_gui_draw_data(draw_data);
+
         vulkan_renderer.draw();
 
+
     }
+
+    // clean up of GUI stuff
+    ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     vulkan_renderer.clean_up();
 

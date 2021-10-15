@@ -28,13 +28,13 @@ file(GLOB SOURCES "Src/*.cpp"
 "Src/*.c"
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/*.cpp
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_opengl3.cpp)
+${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp)
 
 file(GLOB HEADERS "Src/*.h"
 "Src/*.hpp"
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/*.h
 ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_glfw.h
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_opengl3.h
+${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_vulkan.h
 ${VULKAN_INCLUDE_DIRS}
 ${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/*.h)
 
