@@ -195,7 +195,6 @@ void VulkanRenderer::draw()
 void VulkanRenderer::create_instance()
 {
 
-	// take care we 
 	if (enableValidationLayers && !check_validation_layer_support()) {
 		throw std::runtime_error("Validation layers requested, but not available!");
 	}
@@ -206,9 +205,9 @@ void VulkanRenderer::create_instance()
 	app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	app_info.pApplicationName = "Epic Graphics";								// custom name of app
 	app_info.applicationVersion = VK_MAKE_VERSION(1,0,0);			// custom version of app
-	app_info.pEngineName = "No Engine";											// custom engine name
-	app_info.engineVersion = VK_MAKE_VERSION(1,0,0);					// custom engine version 
-	app_info.apiVersion = VK_API_VERSION_1_1;									// the vulkan version
+	app_info.pEngineName = "Cataglyphis Renderer";						// custom engine name
+	app_info.engineVersion = VK_MAKE_VERSION(1,0,3);					// custom engine version 
+	app_info.apiVersion = VK_API_VERSION_1_2;									// the vulkan version
 
 	// creation info for a VkInstance
 	VkInstanceCreateInfo create_info{};
@@ -233,8 +232,9 @@ void VulkanRenderer::create_instance()
 	std::vector<const char*> instance_extensions = std::vector<const char*>();
 
 	//Setup extensions the instance will use 
-	uint32_t glfw_extensions_count = 0;											// GLFW may require multiple extensions
-	const char** glfw_extensions;														// Extensions passed as array of cstrings, so need pointer(array) to pointer (the cstring)
+	uint32_t glfw_extensions_count = 0;																													// GLFW may require multiple extensions
+	const char** glfw_extensions;																																// Extensions passed as array of cstrings, so need pointer(array) to pointer
+																																														// (the cstring)
 
 	//set GLFW extensions
 	glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extensions_count);
@@ -319,6 +319,7 @@ void VulkanRenderer::create_logical_device()
 	// From given logical device of given queue family, of given queue index (0 since only one queue), place reference in given VkQueue
 	vkGetDeviceQueue(MainDevice.logical_device, indices.graphics_family, 0, &graphics_queue);
 	vkGetDeviceQueue(MainDevice.logical_device, indices.presentation_family, 0, &presentation_queue);
+
 }
 
 void VulkanRenderer::create_surface()
@@ -615,6 +616,12 @@ void VulkanRenderer::create_push_constant_range()
 
 void VulkanRenderer::create_graphics_pipeline()
 {
+
+	#if defined (_WIN32)
+		system("..\\Resources\\Shader\\compile.bat");
+	#elif defined (__linux__)
+		system("../Resources/Shader/compile.sh");
+	#endif	
 
 	auto vertex_shader_code = read_file("../Resources/Shader/vert.spv");
 	auto fragment_shader_code = read_file("../Resources/Shader/frag.spv");
@@ -1075,6 +1082,15 @@ void VulkanRenderer::create_gui_context()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	float size_pixels = 18;
+	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/Roboto-Medium.ttf", size_pixels);
+	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/Cousine-Regular.ttf", size_pixels);
+	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/DroidSans.ttf", size_pixels);
+	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/Karla-Regular.ttf", size_pixels);
+	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/ProggyClean.ttf", size_pixels);
+	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/ProggyTiny.ttf", size_pixels);
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1);
