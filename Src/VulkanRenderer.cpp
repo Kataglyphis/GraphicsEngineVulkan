@@ -111,6 +111,17 @@ void VulkanRenderer::update_view(glm::mat4 view)
 
 }
 
+void VulkanRenderer::hot_reload_all_shader()
+{
+
+	// wait until no actions being run on device before destroying
+	vkDeviceWaitIdle(MainDevice.logical_device);
+	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
+	create_graphics_pipeline();
+
+}
+
 void VulkanRenderer::draw()
 {
 
@@ -618,10 +629,59 @@ void VulkanRenderer::create_graphics_pipeline()
 {
 
 	#if defined (_WIN32)
-		system("..\\Resources\\Shader\\compile.bat");
+		int result_system = system("..\\Resources\\Shader\\compile.bat");
+
+		if (result_system == -1) {
+
+			throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+		}
+		else if (result_system == 127) {
+
+			throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+		}
+		else if (result_system = 0) {
+
+			throw std::runtime_error("Shader creation: system(): no shell available");
+
+		}
+
 	#elif defined (__linux__)
-		system("chmod +x ../Resources/Shader/compile.sh");
-		system("../Resources/Shader/compile.sh");
+		int result_system = system("chmod +x ../Resources/Shader/compile.sh");
+
+		if (result_system == -1) {
+
+			throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+		}
+		else if (result_system == 127) {
+
+			throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+		} else if(result_system = 0) {
+
+			throw std::runtime_error("Shader creation: system(): no shell available");
+
+		} 
+
+		result_system = system("../Resources/Shader/compile.sh");
+
+		if (result_system == -1) {
+
+			throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+		}
+		else if (result_system == 127) {
+
+			throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+		}
+		else if (result_system = 0) {
+
+			throw std::runtime_error("Shader creation: system(): no shell available");
+
+		}
 	#endif	
 
 	auto vertex_shader_code = read_file("../Resources/Shader/vert.spv");

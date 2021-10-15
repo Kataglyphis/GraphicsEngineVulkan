@@ -8,6 +8,7 @@ layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
 
 void main() {
 
-	//color = texture(texture_sampler, texture_coordinates);
-	color = vec4(1.0f, 0.0f,0.0f,1.0f);
+	color = texture(texture_sampler, texture_coordinates);
+	//color = vec4(1.0f,0.0f,1.0f,1.0f);
+
 }

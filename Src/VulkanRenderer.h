@@ -47,6 +47,8 @@ public:
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 
+	void hot_reload_all_shader();
+
 	void draw();
 
 	void clean_up();
