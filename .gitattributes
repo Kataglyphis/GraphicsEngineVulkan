@@ -1,4 +1,5 @@
 # exclude all files from language analysis which do not directly contribute to engine
+ExternalLib/ASSIMP* linguist-vendored
 ExternalLib/* linguist-vendored
 Documents/* linguist-vendored
 build/* linguist-vendored
