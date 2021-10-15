@@ -1882,11 +1882,6 @@ int VulkanRenderer::create_texture(std::string filename)
 	return descriptor_location;
 }
 
-VkDescriptorSet VulkanRenderer::get_texture_descriptor_set(int id)
-{
-	return sampler_descriptor_sets[id];
-}
-
 int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 {
 

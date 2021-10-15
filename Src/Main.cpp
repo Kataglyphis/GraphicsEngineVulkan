@@ -73,8 +73,6 @@ int main() {
     float directional_light_color[3] = {1.f,1.f,1.f};
     float directional_light_direction[3] = {1.f,1.f,1.f};
 
-    int gui_logo = vulkan_renderer.create_texture("Engine_logo.png");
-
     Camera camera{ start_position, start_up, start_yaw, start_pitch,
                                     start_move_speed, start_turn_speed,
                                     near_plane, far_plane, fov };
@@ -189,9 +187,6 @@ int main() {
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         //ImGui::ShowDemoWindow();
-        // (void*)(intptr_t)&
-        VkDescriptorSet ds = vulkan_renderer.get_texture_descriptor_set(gui_logo);
-        ImGui::Image((void*)ds, ImVec2(300, 150));
 
         ImGui::End();
 
