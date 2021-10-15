@@ -142,11 +142,6 @@ int main() {
 
     }
 
-    // clean up of GUI stuff
-    ImGui_ImplVulkan_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
     vulkan_renderer.clean_up();
 
     return EXIT_SUCCESS;

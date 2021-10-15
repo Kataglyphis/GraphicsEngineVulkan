@@ -543,7 +543,6 @@ void VulkanRenderer::create_fonts_and_upload()
 	//clear font textures from cpu data
 	ImGui_ImplVulkan_DestroyFontUploadObjects();
 
-
 }
 
 void VulkanRenderer::create_descriptor_set_layout()
@@ -2007,6 +2006,11 @@ void VulkanRenderer::clean_up()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	
+	// clean up of GUI stuff
+	ImGui_ImplVulkan_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	for (size_t i = 0; i < model_list.size(); i++) {
 
 		model_list[i].destroy_mesh_model();
