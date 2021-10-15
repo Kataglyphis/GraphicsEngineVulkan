@@ -538,6 +538,8 @@ void VulkanRenderer::create_fonts_and_upload()
 	ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
 	endSingleTimeCommands(command_buffer, graphics_queue, MainDevice.logical_device, graphics_command_pool);
 
+	// wait until no actions being run on device before destroying
+	vkDeviceWaitIdle(MainDevice.logical_device);
 	//clear font textures from cpu data
 	ImGui_ImplVulkan_DestroyFontUploadObjects();
 
@@ -2035,6 +2037,7 @@ void VulkanRenderer::clean_up()
 		std::free(model_transfer_space);
 	#endif	*/
 
+	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 	vkDestroyDescriptorPool(MainDevice.logical_device, descriptor_pool, nullptr);
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
 	
