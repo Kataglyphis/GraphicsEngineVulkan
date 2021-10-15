@@ -140,7 +140,11 @@ int main() {
 
         if (ImGui::CollapsingHeader("Hot shader reload")) {
 
-            ImGui::Text("Upcoming :)");
+            if(ImGui::Button("All shader!")) {
+
+                vulkan_renderer.hot_reload_all_shader();
+
+            }
 
         }
 
