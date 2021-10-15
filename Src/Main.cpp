@@ -127,15 +127,16 @@ int main() {
         vulkan_renderer.update_model(0, first_model);
         vulkan_renderer.update_model(1, second_model);*/
 
+
         // Start the Dear ImGui frame
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
         // ImGui::ShowDemoWindow();
-
+        //ImGui::PushFont(roboto_medium);
         // render your GUI
-        ImGui::Begin("GUI v1.0");
+        ImGui::Begin("GUI v1.1.2");
 
         if (ImGui::CollapsingHeader("Hot shader reload")) {
 
@@ -186,7 +187,6 @@ int main() {
         ImGui::Separator();
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        //ImGui::ShowDemoWindow();
 
         ImGui::End();
 
