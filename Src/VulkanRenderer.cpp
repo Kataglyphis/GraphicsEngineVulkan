@@ -1075,7 +1075,9 @@ void VulkanRenderer::create_gui_context()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10);
+	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10);
+	ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1);
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -1878,6 +1880,11 @@ int VulkanRenderer::create_texture(std::string filename)
 	int descriptor_location = create_texture_descriptor(image_view);
 
 	return descriptor_location;
+}
+
+VkDescriptorSet VulkanRenderer::get_texture_descriptor_set(int id)
+{
+	return sampler_descriptor_sets[id];
 }
 
 int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)

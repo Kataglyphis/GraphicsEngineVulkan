@@ -47,6 +47,14 @@ public:
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 
+	int create_texture(std::string filename);
+
+	int create_texture_image(std::string filename);
+
+	int create_texture_descriptor(VkImageView texture_image);
+
+	VkDescriptorSet get_texture_descriptor_set(int id);
+
 	void draw();
 
 	void clean_up();
@@ -214,9 +222,7 @@ private:
 	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
-	int create_texture_image(std::string filename);
-	int create_texture(std::string filename);
-	int create_texture_descriptor(VkImageView texture_image);
+	
 
 	// loader functions
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
