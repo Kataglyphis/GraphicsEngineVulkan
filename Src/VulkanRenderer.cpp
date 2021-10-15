@@ -111,12 +111,6 @@ void VulkanRenderer::update_view(glm::mat4 view)
 
 }
 
-void VulkanRenderer::update_gui_draw_data(ImDrawData* gui_draw_data)
-{
-	this->gui_draw_data = gui_draw_data;
-
-}
-
 void VulkanRenderer::draw()
 {
 
@@ -541,7 +535,7 @@ void VulkanRenderer::create_fonts_and_upload()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	//clear font textures from cpu data
-	ImGui_ImplVulkan_DestroyFontUploadObjects();
+	// ImGui_ImplVulkan_DestroyFontUploadObjects();
 
 }
 
@@ -1078,8 +1072,16 @@ void VulkanRenderer::create_gui_context()
 {
 
 	// UI
+	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
 
 	// Create Descriptor Pool
 	VkDescriptorPoolSize gui_pool_sizes[] =
@@ -1122,8 +1124,8 @@ void VulkanRenderer::create_gui_context()
 	init_info.QueueFamily = get_queue_families(MainDevice.physical_device).graphics_family;
 	init_info.Queue = graphics_queue;
 	init_info.DescriptorPool = gui_descriptor_pool;
-	init_info.MinImageCount = MAX_FRAME_DRAWS;
 	init_info.PipelineCache = VK_NULL_HANDLE;																					// we do not need those 
+	init_info.MinImageCount = MAX_FRAME_DRAWS;
 	init_info.ImageCount = MAX_FRAME_DRAWS;
 	init_info.Allocator = VK_NULL_HANDLE;
 	init_info.CheckVkResultFn = VK_NULL_HANDLE;
@@ -1264,6 +1266,7 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 
 	}
 
+
 	// begin render pass
 	vkCmdBeginRenderPass(command_buffers[current_image], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
 
@@ -1312,10 +1315,11 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 	}
 
 	// Record dear imgui primitives into command buffer
-	ImGui_ImplVulkan_RenderDrawData(gui_draw_data, command_buffers[current_image]);										// record data for drawing the GUI 
+	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), command_buffers[current_image]);										// record data for drawing the GUI 
 
 	// end render pass 
 	vkCmdEndRenderPass(command_buffers[current_image]);
+
 
 	// stop recording to command buffer
 	result = vkEndCommandBuffer(command_buffers[current_image]);
@@ -2005,11 +2009,6 @@ void VulkanRenderer::clean_up()
 
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
-	
-	// clean up of GUI stuff
-	ImGui_ImplVulkan_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 
 	for (size_t i = 0; i < model_list.size(); i++) {
 
@@ -2041,7 +2040,6 @@ void VulkanRenderer::clean_up()
 		std::free(model_transfer_space);
 	#endif	*/
 
-	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 	vkDestroyDescriptorPool(MainDevice.logical_device, descriptor_pool, nullptr);
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
 	
@@ -2070,6 +2068,13 @@ void VulkanRenderer::clean_up()
 		vkDestroyFramebuffer(MainDevice.logical_device, framebuffer, nullptr);
 
 	}
+
+	// clean up of GUI stuff
+	ImGui_ImplVulkan_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
+	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 
 	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
