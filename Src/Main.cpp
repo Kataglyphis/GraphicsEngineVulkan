@@ -140,7 +140,7 @@ int main() {
 
         if (ImGui::CollapsingHeader("Hot shader reload")) {
 
-            if(ImGui::Button("All shader!")) {
+            if (ImGui::Button("All shader!")) {
 
                 vulkan_renderer.hot_reload_all_shader();
 
@@ -193,7 +193,6 @@ int main() {
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
         ImGui::End();
-
         // Rendering
 
         ImGui::Render();
