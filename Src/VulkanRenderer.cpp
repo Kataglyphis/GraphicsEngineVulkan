@@ -620,6 +620,7 @@ void VulkanRenderer::create_graphics_pipeline()
 	#if defined (_WIN32)
 		system("..\\Resources\\Shader\\compile.bat");
 	#elif defined (__linux__)
+		system("chmod +x ../Resources/Shader/compile.sh");
 		system("../Resources/Shader/compile.sh");
 	#endif	
 
