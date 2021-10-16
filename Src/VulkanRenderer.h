@@ -52,7 +52,6 @@ public:
 	void draw();
 
 	void clean_up_swapchain();
-	void clean_up_gui();
 	void clean_up();
 
 	~VulkanRenderer();
@@ -76,8 +75,10 @@ private:
 	//wrapper class for GLFWwindow
 	std::shared_ptr<MyWindow> window;
 
+
 	// indices index into current frame
 	int current_frame = 0;
+	// -- ALL FUNCTIONALITY FOR RESIZING WINDOW
 	// in case extension VK_ERROR_OUT_OF_DATE_KHR is not supported by driver add this
 	bool framebuffer_resized = false;
 
@@ -95,10 +96,8 @@ private:
 	VkInstance instance;
 
 	struct {
-
 		VkPhysicalDevice physical_device;
 		VkDevice logical_device;
-
 	} MainDevice;
 
 	VkQueue graphics_queue;
@@ -139,7 +138,7 @@ private:
 	size_t model_uniform_alignment;*/
 	// Model* model_transfer_space;
 
-	// assets
+	// -- TEXTURE --
 	VkSampler texture_sampler;
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
@@ -161,9 +160,9 @@ private:
 	std::vector<VkSemaphore> image_available;
 	std::vector<VkSemaphore> render_finished;
 	std::vector<VkFence> draw_fences;
+	std::vector<VkFence> images_in_flight_fences;
 	// vkAcquireNextImageKHR may return images out-of-order or
 	// //MAX_FRAMES_IN_FLIGHT is higher than number of swap chain images
-	std::vector<VkFence> images_in_flight_fences;
 
 	//Vulkan functions
 	// all create functions
@@ -184,12 +183,10 @@ private:
 
 	void create_uniform_buffers();
 	void create_descriptor_pool();
-	void create_gui_context();
-	void create_fonts_and_upload();
+	void create_gui();
 	void create_descriptor_sets();
 
 	void update_uniform_buffers(uint32_t image_index);
-	void recreate_swap_chain();
 
 	// - record functions
 	void record_commands(uint32_t current_image);
@@ -200,7 +197,7 @@ private:
 	// allocate functions
 	void allocate_dynamic_buffer_transfer_space();
 
-	// support functions
+	// -- SUPPORT functions -- 
 	// checker functions
 	bool check_instance_extension_support(std::vector<const char*>* check_extensions);
 	bool check_device_extension_support(VkPhysicalDevice device);
@@ -219,12 +216,13 @@ private:
 	VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR& surface_capabilities);
 	VkFormat choose_supported_format(const std::vector<VkFormat>& formats, VkImageTiling tiling, VkFormatFeatureFlags feature_flags);
 
-	// create functions
+	// CREATE FUNCTIONS
 	VkImage create_image(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
 											VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
 	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
+	// -- TEXTURE FUNCTIONS --
 	int create_texture(std::string filename);
 	int create_texture_image(std::string filename);
 	int create_texture_descriptor(VkImageView texture_image);
@@ -232,8 +230,15 @@ private:
 	// loader functions
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
 
+	// RESIZING WINDOW FUNCTIONALITY
 	// checker functions for window
+	void recreate_swap_chain();
 	void check_changed_framebuffer_size();
+
+
+	// -- GUI HELPER
+	void create_gui_context();
+	void create_fonts_and_upload();
 
 };
 

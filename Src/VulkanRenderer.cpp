@@ -28,8 +28,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_texture_sampler();
 		create_uniform_buffers();
 		create_descriptor_pool();
-		create_gui_context();
-		create_fonts_and_upload();
+		create_gui();
 		create_descriptor_sets();
 		// no longer initial record needed for we record them every single frame
 		//record_commands();
@@ -1164,6 +1163,12 @@ void VulkanRenderer::create_descriptor_pool()
 
 }
 
+void VulkanRenderer::create_gui()
+{
+	create_gui_context();
+	create_fonts_and_upload();
+}
+
 void VulkanRenderer::create_gui_context()
 {
 
@@ -1356,8 +1361,6 @@ void VulkanRenderer::recreate_swap_chain()
 	create_depthbuffer_image();
 	create_render_pass();
 	create_graphics_pipeline();
-	create_gui_context();
-	create_fonts_and_upload();
 	create_framebuffers();
 	create_command_buffers();
 
@@ -2178,20 +2181,9 @@ void VulkanRenderer::clean_up_swapchain()
 
 	}
 
-	clean_up_gui();
+	//clean_up_gui();
 
 	vkDestroySwapchainKHR(MainDevice.logical_device, swapchain, nullptr);
-
-}
-
-void VulkanRenderer::clean_up_gui()
-{
-
-	ImGui_ImplVulkan_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
-	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 
 }
 
@@ -2262,7 +2254,10 @@ void VulkanRenderer::clean_up()
 	}*/
 
 	// clean up of GUI stuff
-	clean_up_gui();
+	ImGui_ImplVulkan_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
+	ImGui::DestroyContext();
 
 	clean_up_swapchain();
 	//vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
