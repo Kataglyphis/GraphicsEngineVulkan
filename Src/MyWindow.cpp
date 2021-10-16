@@ -1,6 +1,6 @@
 #include "MyWindow.h"
 
-MyWindow::MyWindow() {
+MyWindow::MyWindow() : framebuffer_resized(false) {
     //at least sth useful
     window_width = 800;
     window_height = 600;
@@ -14,9 +14,9 @@ MyWindow::MyWindow() {
 }
 
 //please use this constructor; never the standard
-MyWindow::MyWindow(GLint window_width, GLint window_height) {
-    this->window_width = window_width;
-    this->window_height = window_height;
+MyWindow::MyWindow(GLint window_width, GLint window_height) : framebuffer_resized(false), 
+                                                                                                                        window_width(window_width),  
+                                                                                                                        window_height(window_height) {
 
     // all keys non-pressed in the beginning
     for (size_t i = 0; i < 1024; i++) {
@@ -44,12 +44,6 @@ int MyWindow::initialize() {
     //lets work with nothing older than version 3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-    // core profile = no backward compatibility
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // allow forward compatibility
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     
     //allow it to resize
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -83,6 +77,9 @@ int MyWindow::initialize() {
 
     glfwSetWindowUserPointer(main_window, this);
 
+    //you need to register function for handling changing window sizes
+    glfwSetFramebufferSizeCallback(main_window, framebuffer_size_callback);
+
     return 0;
 }
 
@@ -113,6 +110,11 @@ GLfloat MyWindow::get_y_change()
     return the_change;
 }
 
+bool MyWindow::framebuffer_size_has_changed()
+{
+    return framebuffer_resized;
+}
+
 
 void MyWindow::init_callbacks()
 {
@@ -126,6 +128,16 @@ void MyWindow::init_callbacks()
 
 void MyWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+
+    auto app = reinterpret_cast<MyWindow*>(glfwGetWindowUserPointer(window));
+    app->framebuffer_resized = true;
+
+}
+
+void MyWindow::reset_framebuffer_has_changed()
+{
+    this->framebuffer_resized = false;
+
 }
 
 void MyWindow::key_callback(GLFWwindow* window, int key, int code, int action, int mode)
