@@ -2171,17 +2171,16 @@ void VulkanRenderer::clean_up_swapchain()
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
 	vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
 
+	// -- CLEAN DEPTH BUFFER
+	// only destroy the view; keep image and memory
 	vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
 	vkDestroyImage(MainDevice.logical_device, depth_buffer_image, nullptr);
 	vkFreeMemory(MainDevice.logical_device, depth_buffer_image_memory, nullptr);
-
 	for (auto image : swap_chain_images) {
 
 		vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
 
 	}
-
-	//clean_up_gui();
 
 	vkDestroySwapchainKHR(MainDevice.logical_device, swapchain, nullptr);
 
@@ -2236,7 +2235,6 @@ void VulkanRenderer::clean_up()
 
 	}
 
-
 	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
 
 		vkDestroySemaphore(MainDevice.logical_device, render_finished[i], nullptr);
@@ -2247,30 +2245,15 @@ void VulkanRenderer::clean_up()
 
 	vkDestroyCommandPool(MainDevice.logical_device, graphics_command_pool, nullptr);
 
-	/*for (auto framebuffer : swap_chain_framebuffers) {
-
-		vkDestroyFramebuffer(MainDevice.logical_device, framebuffer, nullptr);
-
-	}*/
-
 	// clean up of GUI stuff
 	ImGui_ImplVulkan_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 	ImGui::DestroyContext();
 
+	// -- SUBSUMMARIZE ALL SWAPCHAIN DEPENDEND THINGS
 	clean_up_swapchain();
-	//vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
-	//vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
-	//vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
 
-	//for (auto image : swap_chain_images) {
-
-	//	vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
-
-	//}
-
-	// vkDestroySwapchainKHR(MainDevice.logical_device, swapchain, nullptr);
 	vkDestroySurfaceKHR(instance, surface, nullptr);
 	vkDestroyDevice(MainDevice.logical_device, nullptr);
 	vkDestroyInstance(instance, nullptr);
