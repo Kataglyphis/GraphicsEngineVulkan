@@ -125,15 +125,13 @@ void VulkanRenderer::hot_reload_all_shader()
 void VulkanRenderer::draw()
 {
 
+	check_changed_framebuffer_size();
+
 	// -- GET NEXT IMAGE --
 	VkResult result = vkWaitForFences(MainDevice.logical_device, 1, &draw_fences[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max());
+
 	if (result != VK_SUCCESS) {
 		throw std::runtime_error("Failed to wait for fences!");
-	}
-
-	result = vkResetFences(MainDevice.logical_device, 1, &draw_fences[current_frame]);
-	if (result != VK_SUCCESS) {
-		throw std::runtime_error("Failed to reset fences!");
 	}
 
 	// 1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
@@ -141,11 +139,25 @@ void VulkanRenderer::draw()
 	uint32_t image_index;
 	result = vkAcquireNextImageKHR(MainDevice.logical_device, swapchain, std::numeric_limits<uint64_t>::max(), image_available[current_frame], VK_NULL_HANDLE, &image_index);
 
-	if (result != VK_SUCCESS) {
+	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+
+		recreate_swap_chain();
+		return;
+
+	}
+	else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
 
 		throw std::runtime_error("Failed to acquire next image!");
 
 	}
+
+	// check if previous frame is using this image (i.e. there is its fence to wait on)
+	if (images_in_flight_fences[image_index] != VK_NULL_HANDLE) {
+		vkWaitForFences(MainDevice.logical_device, 1, &images_in_flight_fences[image_index], VK_TRUE, UINT64_MAX);
+	}
+
+	// mark the image as now being in use by this frame
+	images_in_flight_fences[image_index] = draw_fences[current_frame];
 
 	// only update soecific command buffer not in use 
 	record_commands(image_index);
@@ -172,6 +184,11 @@ void VulkanRenderer::draw()
 	submit_info.signalSemaphoreCount = 1;																			// number of semaphores to signal
 	submit_info.pSignalSemaphores = &render_finished[current_frame];						// semaphores to signal when command buffer finishes 
 
+	result = vkResetFences(MainDevice.logical_device, 1, &draw_fences[current_frame]);
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Failed to reset fences!");
+	}
+
 	// submit command buffer to queue
 	result = vkQueueSubmit(graphics_queue, 1, &submit_info, draw_fences[current_frame]);
 
@@ -193,9 +210,16 @@ void VulkanRenderer::draw()
 
 	result = vkQueuePresentKHR(presentation_queue, &present_info);
 
-	if (result != VK_SUCCESS) {
+	if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebuffer_resized) {
 
-		throw std::runtime_error("Failed to present image!");
+		framebuffer_resized = false;
+		recreate_swap_chain();
+		return;
+
+	}
+	else if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to acquire next image!");
 
 	}
 
@@ -426,6 +450,9 @@ void VulkanRenderer::create_swap_chain()
 	vkGetSwapchainImagesKHR(MainDevice.logical_device, swapchain, &swapchain_image_count, nullptr);
 	std::vector<VkImage> images(swapchain_image_count);
 	vkGetSwapchainImagesKHR(MainDevice.logical_device, swapchain, &swapchain_image_count, images.data());
+
+	swap_chain_images.clear();
+	//swap_chain_images.resize(swapchain_image_count);
 
 	for (VkImage image : images) {
 
@@ -992,6 +1019,7 @@ void VulkanRenderer::create_synchronization()
 	image_available.resize(MAX_FRAME_DRAWS);
 	render_finished.resize(MAX_FRAME_DRAWS);
 	draw_fences.resize(MAX_FRAME_DRAWS);
+	images_in_flight_fences.resize(swap_chain_images.size(), VK_NULL_HANDLE);
 
 	// semaphore creation information
 	VkSemaphoreCreateInfo semaphore_create_info{};
@@ -1306,6 +1334,34 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	//							model_uniform_alignment * meshes.size(), 0, &data);
 	//memcpy(data, model_transfer_space, model_uniform_alignment * meshes.size());
 	//vkUnmapMemory(MainDevice.logical_device, model_dynamic_uniform_buffer_memory[image_index]);
+
+}
+
+void VulkanRenderer::recreate_swap_chain()
+{
+
+	// capture case of minification
+	int width = 0, height = 0;
+	glfwGetFramebufferSize(window->get_window(), &width, &height);
+	while (width == 0 || height == 0) {
+		glfwGetFramebufferSize(window->get_window(), &width, &height);
+		glfwWaitEvents();
+	}
+
+	vkDeviceWaitIdle(MainDevice.logical_device);
+
+	clean_up_swapchain();
+
+	create_swap_chain();
+	create_depthbuffer_image();
+	create_render_pass();
+	create_graphics_pipeline();
+	create_gui_context();
+	create_fonts_and_upload();
+	create_framebuffers();
+	create_command_buffers();
+
+	images_in_flight_fences.resize(swap_chain_images.size(), VK_NULL_HANDLE);
 
 }
 
@@ -2083,6 +2139,62 @@ stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, in
 	return image;
 }
 
+void VulkanRenderer::check_changed_framebuffer_size()
+{
+
+	if (window->framebuffer_size_has_changed()) {
+
+		window->reset_framebuffer_has_changed();
+		framebuffer_resized = true;
+
+	}
+}
+
+void VulkanRenderer::clean_up_swapchain()
+{
+
+
+	for (auto framebuffer : swap_chain_framebuffers) {
+
+		vkDestroyFramebuffer(MainDevice.logical_device, framebuffer, nullptr);
+
+	}
+
+	// instead of recreate command pool from scretch empty command buffers
+	//vkFreeCommandBuffers(MainDevice.logical_device, graphics_command_pool, 
+	//											static_cast<uint32_t>(command_buffers.size()), command_buffers.data());
+
+	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
+	vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
+
+	vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
+	vkDestroyImage(MainDevice.logical_device, depth_buffer_image, nullptr);
+	vkFreeMemory(MainDevice.logical_device, depth_buffer_image_memory, nullptr);
+
+	for (auto image : swap_chain_images) {
+
+		vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
+
+	}
+
+	clean_up_gui();
+
+	vkDestroySwapchainKHR(MainDevice.logical_device, swapchain, nullptr);
+
+}
+
+void VulkanRenderer::clean_up_gui()
+{
+
+	ImGui_ImplVulkan_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
+	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
+
+}
+
 void VulkanRenderer::clean_up()
 {
 
@@ -2108,9 +2220,9 @@ void VulkanRenderer::clean_up()
 
 	}
 
-	vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
+	/*vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
 	vkDestroyImage(MainDevice.logical_device, depth_buffer_image, nullptr);
-	vkFreeMemory(MainDevice.logical_device, depth_buffer_image_memory, nullptr);
+	vkFreeMemory(MainDevice.logical_device, depth_buffer_image_memory, nullptr);*/
 
 	// free all space we allocated for all model matrices for each object in our scene
 	/*#if defined (_WIN32) 
@@ -2132,6 +2244,7 @@ void VulkanRenderer::clean_up()
 
 	}
 
+
 	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
 
 		vkDestroySemaphore(MainDevice.logical_device, render_finished[i], nullptr);
@@ -2142,30 +2255,27 @@ void VulkanRenderer::clean_up()
 
 	vkDestroyCommandPool(MainDevice.logical_device, graphics_command_pool, nullptr);
 
-	for (auto framebuffer : swap_chain_framebuffers) {
+	/*for (auto framebuffer : swap_chain_framebuffers) {
 
 		vkDestroyFramebuffer(MainDevice.logical_device, framebuffer, nullptr);
 
-	}
+	}*/
 
 	// clean up of GUI stuff
-	ImGui_ImplVulkan_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+	clean_up_gui();
 
-	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
+	clean_up_swapchain();
+	//vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
+	//vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
+	//vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
 
-	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
-	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
-	vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
+	//for (auto image : swap_chain_images) {
 
-	for (auto image : swap_chain_images) {
+	//	vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
 
-		vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
+	//}
 
-	}
-
-	vkDestroySwapchainKHR(MainDevice.logical_device, swapchain, nullptr);
+	// vkDestroySwapchainKHR(MainDevice.logical_device, swapchain, nullptr);
 	vkDestroySurfaceKHR(instance, surface, nullptr);
 	vkDestroyDevice(MainDevice.logical_device, nullptr);
 	vkDestroyInstance(instance, nullptr);

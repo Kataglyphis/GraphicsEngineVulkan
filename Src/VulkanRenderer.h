@@ -51,6 +51,8 @@ public:
 
 	void draw();
 
+	void clean_up_swapchain();
+	void clean_up_gui();
 	void clean_up();
 
 	~VulkanRenderer();
@@ -74,7 +76,10 @@ private:
 	//wrapper class for GLFWwindow
 	std::shared_ptr<MyWindow> window;
 
+	// indices index into current frame
 	int current_frame = 0;
+	// in case extension VK_ERROR_OUT_OF_DATE_KHR is not supported by driver add this
+	bool framebuffer_resized = false;
 
 	// scene objects
 	std::vector<MeshModel> model_list;
@@ -156,6 +161,9 @@ private:
 	std::vector<VkSemaphore> image_available;
 	std::vector<VkSemaphore> render_finished;
 	std::vector<VkFence> draw_fences;
+	// vkAcquireNextImageKHR may return images out-of-order or
+	// //MAX_FRAMES_IN_FLIGHT is higher than number of swap chain images
+	std::vector<VkFence> images_in_flight_fences;
 
 	//Vulkan functions
 	// all create functions
@@ -181,6 +189,7 @@ private:
 	void create_descriptor_sets();
 
 	void update_uniform_buffers(uint32_t image_index);
+	void recreate_swap_chain();
 
 	// - record functions
 	void record_commands(uint32_t current_image);
@@ -222,6 +231,9 @@ private:
 
 	// loader functions
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
+
+	// checker functions for window
+	void check_changed_framebuffer_size();
 
 };
 
