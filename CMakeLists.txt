@@ -38,9 +38,15 @@ ${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_vulkan.h
 ${VULKAN_INCLUDE_DIRS}
 ${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/*.h)
 
+# add filters to the solution explorer for the shaders :))
+set(SHADER_FILTER   
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/shader.vert
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/shader.frag)
+
+source_group("Shader" FILES ${SHADER_FILTER})
 
 # add the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILTER})
 
 target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
 
