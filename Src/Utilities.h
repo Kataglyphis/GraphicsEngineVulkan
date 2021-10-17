@@ -18,7 +18,8 @@ const std::vector<const char*> device_extensions = {
 struct Vertex {
 
 	glm::vec3 pos; 
-	glm::vec2 texture_coords; 
+	alignas(16) glm::vec2 texture_coords; 
+	glm::vec3 normal;
 
 };
 

@@ -3,6 +3,7 @@
 
 layout (location = 0) in vec3 positions; 
 layout (location = 1) in vec2 tex_coords;
+layout (location = 2) in vec3 normal;
 
 layout (set = 0, binding = 0) uniform UboViewProjection {
 															mat4 projection;
@@ -21,6 +22,7 @@ layout (push_constant) uniform PushModel {
 } push_model;
 
 layout (location = 0) out vec2 texture_coordinates;
+layout (location = 1) out vec3 shading_normal;
 
 void main () {
 	
@@ -28,8 +30,9 @@ void main () {
 	// -- THEREFORE TAKE THE DIFFERENT COORDINATE SYSTEMS INTO ACCOUNT
 	vec4 opengl_position = ubo_view_projection.projection * ubo_view_projection.view * push_model.model * vec4(positions, 1.0f);
 	vec4 vulkan_position = vec4(opengl_position.x, -opengl_position.y, opengl_position.z, opengl_position.w);
-	gl_Position = vulkan_position;
 
+	shading_normal = normal;
 	texture_coordinates = tex_coords;
 
+	gl_Position = vulkan_position;
 }
