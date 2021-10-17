@@ -27,7 +27,8 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		//allocate_dynamic_buffer_transfer_space();
 		create_texture_sampler();
 		create_uniform_buffers();
-		create_descriptor_pool();
+		create_descriptor_pool_vp();
+		create_descriptor_pool_sampler();
 		create_gui();
 		create_descriptor_sets();
 		create_synchronization();
@@ -36,9 +37,6 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 																		near_plane, far_plane);
 
 		ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-		// for reasons that vulkan needs the y-coordinate in an inverse manner
-		// ubo_view_projection.projection[1][1] *= -1;
 
 		// create our default no texture texture
 		create_texture("plain.png");
@@ -530,14 +528,14 @@ void VulkanRenderer::create_render_pass()
 void VulkanRenderer::create_fonts_and_upload()
 {
 
-	VkCommandBuffer command_buffer = beginSingleTimeCommands(MainDevice.logical_device, graphics_command_pool);
+	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
 	ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
-	endSingleTimeCommands(command_buffer, graphics_queue, MainDevice.logical_device, graphics_command_pool);
+	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
 
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	//clear font textures from cpu data
-	// ImGui_ImplVulkan_DestroyFontUploadObjects();
+	ImGui_ImplVulkan_DestroyFontUploadObjects();
 
 }
 
@@ -1067,12 +1065,10 @@ void VulkanRenderer::create_uniform_buffers()
 	}
 }
 
-void VulkanRenderer::create_descriptor_pool()
+void VulkanRenderer::create_descriptor_pool_vp()
 {
 
 	// CREATE UNIFORM DESCRIPTOR POOL
-
-
 	// type of descriptors + how many descriptors, not descriptor sets (combined makes the pool size)
 	// ViewProjection Pool 
 	VkDescriptorPoolSize vp_pool_size{};
@@ -1099,15 +1095,20 @@ void VulkanRenderer::create_descriptor_pool()
 	if (result != VK_SUCCESS) {
 
 		throw std::runtime_error("Failed to create a descriptor pool!");
-		  
+
 	}
+
+}
+
+void VulkanRenderer::create_descriptor_pool_sampler()
+{
 
 	// CREATE SAMPLER DESCRIPTOR POOL
 	// TEXTURE SAMPLER POOL
 	VkDescriptorPoolSize sampler_pool_size{};
 	sampler_pool_size.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	sampler_pool_size.descriptorCount = MAX_OBJECTS;
-	
+
 	VkDescriptorPoolCreateInfo sampler_pool_create_info{};
 	sampler_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	sampler_pool_create_info.maxSets = MAX_OBJECTS;
@@ -1115,15 +1116,13 @@ void VulkanRenderer::create_descriptor_pool()
 	sampler_pool_create_info.pPoolSizes = &sampler_pool_size;
 
 	// create descriptor pool
-	result = vkCreateDescriptorPool(MainDevice.logical_device, &sampler_pool_create_info, nullptr, &sampler_descriptor_pool);
+	VkResult result = vkCreateDescriptorPool(MainDevice.logical_device, &sampler_pool_create_info, nullptr, &sampler_descriptor_pool);
 
 	if (result != VK_SUCCESS) {
 
 		throw std::runtime_error("Failed to create a sampler descriptor pool!");
 
 	}
-
-
 
 }
 
@@ -1310,7 +1309,7 @@ void VulkanRenderer::recreate_swap_chain()
 	create_graphics_pipeline();
 	create_framebuffers();
 	create_uniform_buffers();
-	create_descriptor_pool();
+	create_descriptor_pool_vp();
 	create_descriptor_sets();
 	create_command_buffers();
 
@@ -2104,6 +2103,8 @@ void VulkanRenderer::check_changed_framebuffer_size()
 void VulkanRenderer::clean_up_swapchain()
 {
 
+	// wait until no actions being run on device before destroying
+	vkDeviceWaitIdle(MainDevice.logical_device);
 
 	for (auto framebuffer : swap_chain_framebuffers) {
 
@@ -2149,9 +2150,15 @@ void VulkanRenderer::clean_up_swapchain()
 
 void VulkanRenderer::clean_up()
 {
-
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
+
+	// -- SUBSUMMARIZE ALL SWAPCHAIN DEPENDEND THINGS
+	clean_up_swapchain();
+
+	// -- DESTROY ALL LAYOUTS
+	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
+	vkDestroyDescriptorSetLayout(MainDevice.logical_device, sampler_set_layout, nullptr);
 
 	for (size_t i = 0; i < model_list.size(); i++) {
 
@@ -2161,8 +2168,6 @@ void VulkanRenderer::clean_up()
 
 	// -- TEXTURE REALTED
 	vkDestroyDescriptorPool(MainDevice.logical_device, sampler_descriptor_pool, nullptr);
-	vkDestroyDescriptorSetLayout(MainDevice.logical_device, sampler_set_layout, nullptr);
-
 	vkDestroySampler(MainDevice.logical_device, texture_sampler, nullptr);
 
 	for (size_t i = 0; i < texture_images.size(); i++) {
@@ -2172,6 +2177,7 @@ void VulkanRenderer::clean_up()
 		vkFreeMemory(MainDevice.logical_device, texture_images_memory[i], nullptr);
 
 	}
+
 
 	/*vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
 	vkDestroyImage(MainDevice.logical_device, depth_buffer_image, nullptr);
@@ -2183,8 +2189,6 @@ void VulkanRenderer::clean_up()
 	#elif defined (__linux__)
 		std::free(model_transfer_space);
 	#endif	*/
-
-	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
 
 	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
 
@@ -2199,11 +2203,8 @@ void VulkanRenderer::clean_up()
 	// clean up of GUI stuff
 	ImGui_ImplVulkan_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
-	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 	ImGui::DestroyContext();
-
-	// -- SUBSUMMARIZE ALL SWAPCHAIN DEPENDEND THINGS
-	clean_up_swapchain();
+	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 
 	vkDestroySurfaceKHR(instance, surface, nullptr);
 	vkDestroyDevice(MainDevice.logical_device, nullptr);

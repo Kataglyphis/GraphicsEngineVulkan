@@ -75,7 +75,6 @@ private:
 	//wrapper class for GLFWwindow
 	std::shared_ptr<MyWindow> window;
 
-
 	// indices index into current frame
 	int current_frame = 0;
 	// -- ALL FUNCTIONALITY FOR RESIZING WINDOW
@@ -152,7 +151,7 @@ private:
 	// -- POOLS --
 	VkCommandPool graphics_command_pool;
 
-	// utilities
+	// -- UTILITIES --
 	VkFormat swap_chain_image_format;
 	VkExtent2D swap_chain_extent;
 
@@ -161,10 +160,11 @@ private:
 	std::vector<VkSemaphore> render_finished;
 	std::vector<VkFence> draw_fences;
 	std::vector<VkFence> images_in_flight_fences;
+
 	// vkAcquireNextImageKHR may return images out-of-order or
 	// //MAX_FRAMES_IN_FLIGHT is higher than number of swap chain images
 
-	//Vulkan functions
+	// Vulkan functions
 	// all create functions
 	void create_instance();
 	void create_logical_device();
@@ -182,13 +182,15 @@ private:
 	void create_texture_sampler();
 
 	void create_uniform_buffers();
-	void create_descriptor_pool();
-	void create_gui();
+	void create_descriptor_pool_vp();
+	void create_descriptor_pool_sampler();
 	void create_descriptor_sets();
 
-	void update_uniform_buffers(uint32_t image_index);
+	// -- ALL GUI CREATION
+	void create_gui();
 
-	// - record functions
+	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
+	void update_uniform_buffers(uint32_t image_index);
 	void record_commands(uint32_t current_image);
 
 	//get functions
@@ -234,7 +236,6 @@ private:
 	// checker functions for window
 	void recreate_swap_chain();
 	void check_changed_framebuffer_size();
-
 
 	// -- GUI HELPER
 	void create_gui_context();
