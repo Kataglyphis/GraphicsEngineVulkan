@@ -4,7 +4,7 @@ MeshModel::MeshModel()
 {
 }
 
-MeshModel::MeshModel(std::vector<Mesh> new_mesh_list)
+MeshModel::MeshModel(std::vector<Mesh> new_mesh_list) 
 {
     meshes = new_mesh_list;
     model = glm::mat4(1.0f);
@@ -86,7 +86,9 @@ std::vector<std::string> MeshModel::load_materials(const aiScene* scene)
 
 }
 
-std::vector<Mesh> MeshModel::load_node(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue, VkCommandPool command_pool, aiNode* node, const aiScene* scene, std::vector<int> mat_to_tex)
+std::vector<Mesh> MeshModel::load_node(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue,
+                                                                            VkCommandPool command_pool, aiNode* node, const aiScene* scene, 
+                                                                            std::vector<int> mat_to_tex, bool flip_y)
 {
 
     std::vector<Mesh> mesh_list;
@@ -98,7 +100,7 @@ std::vector<Mesh> MeshModel::load_node(VkPhysicalDevice new_physical_device, VkD
         mesh_list.push_back(
                             load_mesh(new_physical_device, new_device, transfer_queue,
                                         command_pool, scene->mMeshes[node->mMeshes[i]],
-                                        scene, mat_to_tex)
+                                        scene, mat_to_tex, flip_y)
                             );
 
     }
@@ -109,7 +111,7 @@ std::vector<Mesh> MeshModel::load_node(VkPhysicalDevice new_physical_device, VkD
 
         std::vector<Mesh> new_list = load_node(new_physical_device, new_device, transfer_queue,
                                                                             command_pool, node->mChildren[i], scene,
-                                                                            mat_to_tex);
+                                                                            mat_to_tex, flip_y);
 
         mesh_list.insert(mesh_list.end(), new_list.begin(), new_list.end());
 
@@ -121,7 +123,9 @@ std::vector<Mesh> MeshModel::load_node(VkPhysicalDevice new_physical_device, VkD
 
 }
 
-Mesh MeshModel::load_mesh(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue, VkCommandPool command_pool, aiMesh* mesh, const aiScene* scene, std::vector<int> mat_to_tex)
+Mesh MeshModel::load_mesh(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue, 
+                                                        VkCommandPool command_pool, aiMesh* mesh, const aiScene* scene, 
+                                                        std::vector<int> mat_to_tex, bool flip_y)
 {
 
     std::vector<Vertex> vertices;
@@ -138,6 +142,8 @@ Mesh MeshModel::load_mesh(VkPhysicalDevice new_physical_device, VkDevice new_dev
                             mesh->mVertices[i].y,
                             mesh->mVertices[i].z};
 
+        // if (flip_y) vertices[i].pos.y *= -1;
+
         // set tex coords
         if(mesh->mTextureCoords[0]) {
             
@@ -149,6 +155,16 @@ Mesh MeshModel::load_mesh(VkPhysicalDevice new_physical_device, VkDevice new_dev
             vertices[i].texture_coords = {0.0f, 0.0f};
 
         }
+
+        if (mesh->HasNormals()) {
+
+            vertices[i].normal = { mesh->mNormals[i].x,
+                                                    mesh->mNormals[i].y,
+                                                    mesh->mNormals[i].z };
+
+            if (flip_y) vertices[i].normal.y *= -1;
+
+        } 
 
     }
 

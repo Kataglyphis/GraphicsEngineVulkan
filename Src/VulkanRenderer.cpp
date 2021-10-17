@@ -710,7 +710,7 @@ void VulkanRenderer::create_graphics_pipeline()
 																																																	// VK_VERTEX_INPUT_RATE_INSTANCE : Move on to the next instance
 	
 	// how the data for an attribute is defined within a vertex
-	std::array<VkVertexInputAttributeDescription, 2> attribute_describtions;
+	std::array<VkVertexInputAttributeDescription, 3> attribute_describtions;
 
 	// Position attribute
 	attribute_describtions[0].binding = 0;																																// which binding the data is at (should be same as above)
@@ -724,7 +724,11 @@ void VulkanRenderer::create_graphics_pipeline()
 	attribute_describtions[1].format = VK_FORMAT_R32G32_SFLOAT;																					// format data will take (also helps define size of data)
 	attribute_describtions[1].offset = offsetof(Vertex, texture_coords);																				// where this attribute is defined in the data for a single vertex
 
-	// Color attribute TODO
+	// normal coord attribute
+	attribute_describtions[2].binding = 0;																																// which binding the data is at (should be same as above)
+	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
+	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
+	attribute_describtions[2].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
 
 	// CREATE PIPELINE
 	// 1.) Vertex input (TODO: Put in vertex descriptions when resources created)
@@ -2035,7 +2039,7 @@ int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 
 }
 
-int VulkanRenderer::create_mesh_model(std::string model_file)
+int VulkanRenderer::create_mesh_model(std::string model_file, bool flip_y)
 {
 
 	// import model "scene"
@@ -2080,7 +2084,7 @@ int VulkanRenderer::create_mesh_model(std::string model_file)
 															graphics_queue, 
 															graphics_command_pool, 
 															scene->mRootNode, 
-															scene, mat_to_tex);
+															scene, mat_to_tex, flip_y);
 
 	// create mesh model and add to list
 	MeshModel mesh_model = MeshModel(model_meshes);
