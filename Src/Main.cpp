@@ -81,8 +81,8 @@ int main() {
                                     near_plane, far_plane, fov };
 
     //int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_3ds.3ds");
-    int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx");
-    int floor = vulkan_renderer.create_mesh_model("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj");
+    int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx", false);
+    int floor = vulkan_renderer.create_mesh_model("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true );
 
     while (!main_window->get_should_close()) {
     
@@ -111,7 +111,7 @@ int main() {
 
         glm::mat4 floor_model(1.0f);
         floor_model = glm::scale(floor_model, glm::vec3(70.f));
-        floor_model = glm::rotate(floor_model, glm::radians(130.f), glm::vec3(1.0f, 0.0f, 0.0f));
+        floor_model = glm::rotate(floor_model, glm::radians(115.f), glm::vec3(1.0f, 0.0f, 0.0f));
         floor_model = glm::translate(floor_model, glm::vec3(0.0f, 0.0f, -3.75f));
         //floor_model = glm::rotate(floor_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 

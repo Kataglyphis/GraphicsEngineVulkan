@@ -43,7 +43,7 @@ public:
 
 	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane);
 
-	int create_mesh_model(std::string model_file);
+	int create_mesh_model(std::string model_file, bool flip_y);
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 
