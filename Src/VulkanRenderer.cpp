@@ -1,6 +1,8 @@
 #include "VulkanRenderer.h"
 
-VulkanRenderer::VulkanRenderer()
+VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
+																	current_frame(0),
+																framebuffer_resized(false)
 {
 }
 
@@ -415,12 +417,13 @@ void VulkanRenderer::create_swap_chain()
 	swap_chain_images.clear();
 	//swap_chain_images.resize(swapchain_image_count);
 
-	for (VkImage image : images) {
+	for (size_t i = 0; i < images.size(); i++) {
 
+		VkImage image = images[static_cast<uint32_t>(i)];
 		// store image handle
 		SwapChainImage swap_chain_image{};
 		swap_chain_image.image = image;
-		swap_chain_image.image_view = create_image_view(image, swap_chain_image_format, VK_IMAGE_ASPECT_COLOR_BIT);
+		swap_chain_image.image_view = create_image_view(image, swap_chain_image_format, VK_IMAGE_ASPECT_COLOR_BIT, 1);
 		
 		// add to swapchain image list 
 		swap_chain_images.push_back(swap_chain_image);
@@ -885,12 +888,14 @@ void VulkanRenderer::create_depthbuffer_image()
 																			VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
 
 	// create depth buffer image
-	depth_buffer_image = create_image(swap_chain_extent.width, swap_chain_extent.height, depth_format, VK_IMAGE_TILING_OPTIMAL,
+	// MIP LEVELS: for depth texture we only want 1 level :)
+	depth_buffer_image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1, depth_format, VK_IMAGE_TILING_OPTIMAL,
 																	VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, 
 																	VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &depth_buffer_image_memory);
 
 	// depth buffer image view 
-	depth_buffer_image_view = create_image_view(depth_buffer_image, depth_format, VK_IMAGE_ASPECT_DEPTH_BIT);
+	// MIP LEVELS: for depth texture we only want 1 level :)
+	depth_buffer_image_view = create_image_view(depth_buffer_image, depth_format, VK_IMAGE_ASPECT_DEPTH_BIT, 1);
 
 }
 
@@ -1021,7 +1026,7 @@ void VulkanRenderer::create_texture_sampler()
 	sampler_create_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
 	sampler_create_info.mipLodBias = 0.0f;
 	sampler_create_info.minLod = 0.0f;
-	sampler_create_info.maxLod = 0.0f;
+	sampler_create_info.maxLod = (float) max_levels;
 	sampler_create_info.anisotropyEnable = VK_TRUE;
 	sampler_create_info.maxAnisotropy = 16;																							// max anisotropy sample level
 
@@ -1780,7 +1785,8 @@ VkFormat VulkanRenderer::choose_supported_format(const std::vector<VkFormat>& fo
 }
 
 
-VkImage VulkanRenderer::create_image(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags, VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory)
+VkImage VulkanRenderer::create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, 
+																		VkImageUsageFlags use_flags, VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory)
 {
 
 	// CREATE image
@@ -1791,7 +1797,7 @@ VkImage VulkanRenderer::create_image(uint32_t width, uint32_t height, VkFormat f
 	image_create_info.extent.width = width;																		// width if image extent
 	image_create_info.extent.height = height;																	// height if image extent
 	image_create_info.extent.depth = 1;																				// height if image extent
-	image_create_info.mipLevels = 1;																					// number of mipmap levels 
+	image_create_info.mipLevels = mip_levels;																	// number of mipmap levels 
 	image_create_info.arrayLayers = 1;																				// number of levels in image array
 	image_create_info.format = format;																				// format type of image 
 	image_create_info.tiling = tiling;																					// tiling of image ("arranged" for optimal reading)
@@ -1833,9 +1839,10 @@ VkImage VulkanRenderer::create_image(uint32_t width, uint32_t height, VkFormat f
 	vkBindImageMemory(MainDevice.logical_device, image, *image_memory, 0);
 
 	return image;
+
 }
 
-VkImageView VulkanRenderer::create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags)
+VkImageView VulkanRenderer::create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels)
 {
 
 	VkImageViewCreateInfo view_create_info{};
@@ -1851,7 +1858,7 @@ VkImageView VulkanRenderer::create_image_view(VkImage image, VkFormat format, Vk
 	// subresources allow the view to view only a part of an image 
 	view_create_info.subresourceRange.aspectMask = aspect_flags;												// which aspect of an image to view (e.g. color bit for viewing color)
 	view_create_info.subresourceRange.baseMipLevel = 0;																	// start mipmap level to view from
-	view_create_info.subresourceRange.levelCount = 1;																		// number of mipmap levels to view 
+	view_create_info.subresourceRange.levelCount = mip_levels;														// number of mipmap levels to view 
 	view_create_info.subresourceRange.baseArrayLayer = 0;																// start array level to view from 
 	view_create_info.subresourceRange.layerCount = 1;																		// number of array levels to view 
 
@@ -1896,6 +1903,12 @@ int VulkanRenderer::create_texture_image(std::string filename)
 	VkDeviceSize image_size;
 	stbi_uc* image_data = load_texture_file(filename, &width, &height, &image_size);
 
+	// find the number of mip level we want to create 
+	int mip_levels = static_cast<uint32_t>(std::floor(std::log2(std::max(width, height)))) + 1;
+
+	// update the max level amount; we will need it later for creating the sampler
+	max_levels = std::min(max_levels, mip_levels);
+
 	// create staging buffer to hold loaded data, ready to copy to device
 	VkBuffer image_staging_buffer;
 	VkDeviceMemory image_staging_buffer_memory;
@@ -1916,8 +1929,9 @@ int VulkanRenderer::create_texture_image(std::string filename)
 	// create image to hold final texture
 	VkImage texture_image;
 	VkDeviceMemory texture_image_memory;
-	texture_image = create_image(width, height, VK_FORMAT_R8G8B8A8_UNORM,
+	texture_image = create_image(width, height, mip_levels, VK_FORMAT_R8G8B8A8_UNORM,
 																				VK_IMAGE_TILING_OPTIMAL,
+																				VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
 																				VK_IMAGE_USAGE_TRANSFER_DST_BIT |
 																				VK_IMAGE_USAGE_SAMPLED_BIT, 
 																				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
@@ -1926,7 +1940,7 @@ int VulkanRenderer::create_texture_image(std::string filename)
 	// copy data to image
 	// transition image to be DST for copy operation
 	transition_image_layout(MainDevice.logical_device, graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_UNDEFINED,
-												VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+												VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mip_levels);
 
 	// copy data to image
 	copy_image_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, image_staging_buffer, 
@@ -1934,16 +1948,24 @@ int VulkanRenderer::create_texture_image(std::string filename)
 
 	// transition image to be shader readable for shader stage
 
-	transition_image_layout(MainDevice.logical_device, graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-												VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+	//transition_image_layout(MainDevice.logical_device, graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+	//											VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, mip_levels);
+
 
 	// add texture data to vector for reference
 	texture_images.push_back(texture_image);
 	texture_images_memory.push_back(texture_image_memory);
 
+	// update mip level
+	texture_mip_levels.push_back(mip_levels);
+
 	// destroy staging buffers
 	vkDestroyBuffer(MainDevice.logical_device, image_staging_buffer, nullptr);
 	vkFreeMemory(MainDevice.logical_device, image_staging_buffer_memory, nullptr);
+
+	// generate mipmaps
+	generate_mipmaps(MainDevice.physical_device, MainDevice.logical_device, graphics_command_pool, graphics_queue, 
+										texture_image, VK_FORMAT_R8G8B8A8_SRGB, width, height, mip_levels);
 
 	// return index to element in vector
 	return texture_images.size() - 1;
@@ -1956,7 +1978,7 @@ int VulkanRenderer::create_texture(std::string filename)
 
 	// create image view and add to list
 	VkImageView image_view = create_image_view(texture_images[texture_image_location], VK_FORMAT_R8G8B8A8_UNORM, 
-																					VK_IMAGE_ASPECT_COLOR_BIT);
+																					VK_IMAGE_ASPECT_COLOR_BIT, texture_mip_levels[texture_image_location]);
 	texture_image_views.push_back(image_view);
 
 	// create texture descriptor set here
