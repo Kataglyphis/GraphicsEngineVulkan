@@ -23,8 +23,13 @@ layout (push_constant) uniform PushModel {
 layout (location = 0) out vec2 texture_coordinates;
 
 void main () {
+	
+	// -- WE ARE CALCULATION THE MVP WITH THE GLM LIBRARY WHO IS DESIGNED FOR OPENGL
+	// -- THEREFORE TAKE THE DIFFERENT COORDINATE SYSTEMS INTO ACCOUNT
+	vec4 opengl_position = ubo_view_projection.projection * ubo_view_projection.view * push_model.model * vec4(positions, 1.0f);
+	vec4 vulkan_position = vec4(opengl_position.x, -opengl_position.y, opengl_position.z, opengl_position.w);
+	gl_Position = vulkan_position;
 
-	gl_Position = ubo_view_projection.projection * ubo_view_projection.view * push_model.model * vec4(positions, 1.0f);
 	texture_coordinates = tex_coords;
 
 }
