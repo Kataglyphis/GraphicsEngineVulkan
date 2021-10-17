@@ -76,10 +76,10 @@ private:
 	std::shared_ptr<MyWindow> window;
 
 	// indices index into current frame
-	int current_frame = 0;
+	int current_frame;
 	// -- ALL FUNCTIONALITY FOR RESIZING WINDOW
 	// in case extension VK_ERROR_OUT_OF_DATE_KHR is not supported by driver add this
-	bool framebuffer_resized = false;
+	bool framebuffer_resized;
 
 	// scene objects
 	std::vector<MeshModel> model_list;
@@ -139,6 +139,8 @@ private:
 
 	// -- TEXTURE --
 	VkSampler texture_sampler;
+	int max_levels;
+	std::vector<uint32_t> texture_mip_levels;
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
 	std::vector<VkImageView> texture_image_views;
@@ -219,9 +221,9 @@ private:
 	VkFormat choose_supported_format(const std::vector<VkFormat>& formats, VkImageTiling tiling, VkFormatFeatureFlags feature_flags);
 
 	// CREATE FUNCTIONS
-	VkImage create_image(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
+	VkImage create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
 											VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
-	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags);
+	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
 	// -- TEXTURE FUNCTIONS --
