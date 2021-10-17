@@ -41,11 +41,13 @@ public:
 
 	VulkanRenderer();
 
-	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane);
+	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane,
+					glm::vec3 light_dir, glm::vec3 view_dir);
 
 	int create_mesh_model(std::string model_file, bool flip_y);
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
+	void update_directions(glm::vec3 light_dir, glm::vec3 view_dir);
 
 	void hot_reload_all_shader();
 
@@ -85,11 +87,20 @@ private:
 	std::vector<MeshModel> model_list;
 	// std::vector<Mesh> meshes;
 
-	// scene settings
+	// --UNIFORMS
 	struct UboViewProjection {
+
 		glm::mat4 projection;
 		glm::mat4 view;
+
 	} ubo_view_projection;
+
+	struct UboDirections {
+
+		glm::vec3 light_dir;
+		glm::vec3 view_dir;
+
+	} ubo_directions;
 
 	//Vulkan components
 	VkInstance instance;
@@ -130,8 +141,8 @@ private:
 	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
 
 	// changes between meshes  
-	std::vector<VkBuffer> model_dynamic_uniform_buffer;
-	std::vector<VkDeviceMemory> model_dynamic_uniform_buffer_memory;
+	std::vector<VkBuffer>directions_uniform_buffer;
+	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
 
 	/*VkDeviceSize min_uniform_buffer_offset;
 	size_t model_uniform_alignment;*/
@@ -184,7 +195,7 @@ private:
 	void create_texture_sampler();
 
 	void create_uniform_buffers();
-	void create_descriptor_pool_vp();
+	void create_descriptor_pool_uniforms();
 	void create_descriptor_pool_sampler();
 	void create_descriptor_sets();
 

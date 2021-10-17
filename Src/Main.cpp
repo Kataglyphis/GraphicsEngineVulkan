@@ -52,10 +52,6 @@ int main() {
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsClassic();
 
-    VulkanRenderer vulkan_renderer{};
-    if (vulkan_renderer.init(main_window, start_position, near_plane, far_plane) == EXIT_FAILURE) {
-        return EXIT_FAILURE;
-    }
 
     float angle = 0.0f;
     float delta_time = 0.0f;
@@ -80,6 +76,13 @@ int main() {
                                     start_move_speed, start_turn_speed,
                                     near_plane, far_plane, fov };
 
+    VulkanRenderer vulkan_renderer{};
+    if (vulkan_renderer.init(main_window, start_position, near_plane, far_plane, { 1.f,1.f,1.f }, 
+                                                                                    camera.get_camera_direction()) == EXIT_FAILURE) {
+        
+        return EXIT_FAILURE;
+
+    }
     //int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_3ds.3ds");
     int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx", false);
     int floor = vulkan_renderer.create_mesh_model("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true );
@@ -94,6 +97,7 @@ int main() {
         camera.mouse_control(main_window->get_x_change(), main_window->get_y_change());
 
         vulkan_renderer.update_view(camera.calculate_viewmatrix());
+        vulkan_renderer.update_directions({1.f,1.f,1.f}, camera.get_camera_direction());
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
