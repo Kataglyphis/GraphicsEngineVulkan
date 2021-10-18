@@ -655,21 +655,152 @@ void VulkanRenderer::create_TLAS()
 
 void VulkanRenderer::create_raytracing_pipeline() {
 
+
 	PFN_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =
 												(PFN_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateRayTracingPipelinesKHR");
 
 	compile_shaders(SHADER_COMPILATION_FLAG::RAYTRACING);
 
+	auto raygen_shader_code = read_file("../Resources/Shader/raytrace.rgen.spv");
+	auto raychit_shader_code = read_file("../Resources/Shader/raytrace.rchit.spv");
+	auto raymiss_shader_code = read_file("../Resources/Shader/raytrace.rmiss.spv");
+	auto raymiss_shadow_shader_code = read_file("../Resources/Shader/raytraceShadow.rmissfrag.spv");
+
+	// build shader modules to link to graphics pipeline
+	VkShaderModule raygen_shader_module = create_shader_module(raygen_shader_code);
+	VkShaderModule raychit_shader_module = create_shader_module(raychit_shader_code);
+	VkShaderModule raymiss_shader_module = create_shader_module(raymiss_shader_code);
+	VkShaderModule raymiss_shadow_shader_module = create_shader_module(raymiss_shadow_shader_code);
+
+	// create all shader stage infos for creating a group
+	VkPipelineShaderStageCreateInfo rgen_shader_stage_info{};
+	rgen_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	rgen_shader_stage_info.stage = VK_SHADER_STAGE_RAYGEN_BIT_KHR;
+	rgen_shader_stage_info.module = raygen_shader_module;
+	rgen_shader_stage_info.pName = "main";
+
+	VkPipelineShaderStageCreateInfo rmiss_shader_stage_info{};
+	rmiss_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	rmiss_shader_stage_info.stage = VK_SHADER_STAGE_MISS_BIT_KHR;
+	rmiss_shader_stage_info.module = raymiss_shader_module;
+	rmiss_shader_stage_info.pName = "main";
+
+	VkPipelineShaderStageCreateInfo rmiss_shadow_shader_stage_info{};
+	rmiss_shadow_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	rmiss_shadow_shader_stage_info.stage = VK_SHADER_STAGE_MISS_BIT_KHR;
+	rmiss_shadow_shader_stage_info.module = raymiss_shadow_shader_module;
+	rmiss_shadow_shader_stage_info.pName = "main";
+
+	VkPipelineShaderStageCreateInfo rchit_shader_stage_info{};
+	rchit_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	rchit_shader_stage_info.stage = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+	rchit_shader_stage_info.module = raychit_shader_module;
+	rchit_shader_stage_info.pName = "main";
+
+	// we have all shader stages together
+	std::array<VkPipelineShaderStageCreateInfo, 4> shader_stages = { rgen_shader_stage_info , rmiss_shader_stage_info , 
+																															rmiss_shadow_shader_stage_info,  rchit_shader_stage_info };
+
+	VkRayTracingShaderGroupCreateInfoKHR shader_group_create_infos[4];
+
+	shader_group_create_infos[0].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
+	shader_group_create_infos[0].pNext = nullptr;
+	shader_group_create_infos[0].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
+	shader_group_create_infos[0].generalShader = 0;
+	shader_group_create_infos[0].closestHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[0].anyHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[0].intersectionShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[0].pShaderGroupCaptureReplayHandle = nullptr;
+
+	shader_group_create_infos[1].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
+	shader_group_create_infos[1].pNext = nullptr;
+	shader_group_create_infos[1].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
+	shader_group_create_infos[1].generalShader = 1;
+	shader_group_create_infos[1].closestHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[1].anyHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[1].intersectionShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[1].pShaderGroupCaptureReplayHandle = nullptr;
+
+	shader_group_create_infos[2].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
+	shader_group_create_infos[2].pNext = nullptr;
+	shader_group_create_infos[2].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
+	shader_group_create_infos[2].generalShader = 2;
+	shader_group_create_infos[2].closestHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[2].anyHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[2].intersectionShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[2].pShaderGroupCaptureReplayHandle = nullptr;
+
+	shader_group_create_infos[3].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
+	shader_group_create_infos[3].pNext = nullptr;
+	shader_group_create_infos[3].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
+	shader_group_create_infos[3].generalShader = 3;
+	shader_group_create_infos[3].closestHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[3].anyHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[3].intersectionShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[3].pShaderGroupCaptureReplayHandle = nullptr;
+
+	VkPipelineLayoutCreateInfo pipeline_layout_create_info{};
+	pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	pipeline_layout_create_info.setLayoutCount = static_cast<uint32_t>(raytracing_descriptor_set_layout.size());
+	pipeline_layout_create_info.pSetLayouts = raytracing_descriptor_set_layout.data();
+	pipeline_layout_create_info.pushConstantRangeCount = 0;
+
+	VkResult result = vkCreatePipelineLayout(MainDevice.logical_device, &pipeline_layout_create_info, nullptr, &raytracing_pipeline_layout);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create raytracing pipeline layout!");
+
+	}
+
+	VkPipelineLibraryCreateInfoKHR pipeline_library_create_info{};
+	pipeline_library_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LIBRARY_CREATE_INFO_KHR;
+	pipeline_library_create_info.pNext = nullptr;
+	pipeline_library_create_info.libraryCount = 0;
+	pipeline_library_create_info.pLibraries = nullptr;
+
+	VkRayTracingPipelineCreateInfoKHR raytracing_pipeline_create_info{};
+	raytracing_pipeline_create_info.sType = VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_KHR;
+	raytracing_pipeline_create_info.pNext = nullptr;
+	raytracing_pipeline_create_info.flags = 0;
+	raytracing_pipeline_create_info.stageCount = 0;
+	raytracing_pipeline_create_info.pStages = shader_stages.data();
+	raytracing_pipeline_create_info.groupCount = 4;
+	raytracing_pipeline_create_info.pGroups = shader_group_create_infos;
+	raytracing_pipeline_create_info.pLibraryInfo = &pipeline_library_create_info;
+	raytracing_pipeline_create_info.pLibraryInterface = NULL;
+	raytracing_pipeline_create_info.maxPipelineRayRecursionDepth = 16;
+	raytracing_pipeline_create_info.layout = raytracing_pipeline_layout;
+	raytracing_pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;
+	raytracing_pipeline_create_info.basePipelineIndex = -1;
+
+	VkResult result = pvkCreateRayTracingPipelinesKHR(MainDevice.logical_device, VK_NULL_HANDLE, VK_NULL_HANDLE, 1, 
+																									&raytracing_pipeline_create_info, nullptr, &raytracing_pipeline);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create raytracing pipeline!");
+
+	}
+
+
+	vkDestroyShaderModule(MainDevice.logical_device, raygen_shader_module, nullptr);
+	vkDestroyShaderModule(MainDevice.logical_device, raymiss_shader_module, nullptr);
+	vkDestroyShaderModule(MainDevice.logical_device, raymiss_shadow_shader_module, nullptr);
+	vkDestroyShaderModule(MainDevice.logical_device, raychit_shader_module, nullptr);
 }
 
 void VulkanRenderer::create_shader_binding_table()
 {
 }
 
-void VulkanRenderer::create_descriptor_set_layout()
+void VulkanRenderer::create_descriptor_set_layouts()
 {
-	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 
+	// resize our #descriptor sets for raytracing
+	raytracing_descriptor_set_layout.resize(NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS);
+
+	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 	//ubo_view_projection Binding info
 	VkDescriptorSetLayoutBinding ubo_view_projection_layout_binding{};
 	ubo_view_projection_layout_binding.binding = 0;																												// binding point in shader (designated by binding number in shader)

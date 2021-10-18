@@ -169,7 +169,7 @@ private:
 
 	// ----- DESCRIPTORS
 	VkDescriptorSet raytracing_descriptor_set;
-	VkDescriptorSetLayout raytracing_descriptor_set_layout;
+	std::vector<VkDescriptorSetLayout> raytracing_descriptor_set_layout;
 
 	// ----- PIPELINE
 	VkPipeline raytracing_pipeline;
@@ -218,7 +218,7 @@ private:
 	void create_surface();
 	void create_swap_chain();
 	void create_render_pass();
-	void create_descriptor_set_layout();
+	void create_descriptor_set_layouts();
 	void create_push_constant_range();
 	void create_rasterizer_graphics_pipeline();
 	void create_depthbuffer_image();
