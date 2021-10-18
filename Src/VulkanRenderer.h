@@ -220,7 +220,7 @@ private:
 	void create_render_pass();
 	void create_descriptor_set_layout();
 	void create_push_constant_range();
-	void create_graphics_pipeline();
+	void create_rasterizer_graphics_pipeline();
 	void create_depthbuffer_image();
 	void create_framebuffers();
 	void create_command_pool();
@@ -289,7 +289,16 @@ private:
 	void create_fonts_and_upload();
 
 	// -- RAYTRACING HELPER
+	// ----- INITIALIZER
 	void init_raytracing();
+
+	// ----- CREATE FUNCS
+	// ----- BOTTOM LEVEL ACCELERATION STRUCTURE
+	void create_BLAS();
+	// ----- TOP LEVEL ACCELERATION STRUCTURE
+	void create_TLAS();
+	void create_raytracing_pipeline();
+	void create_shader_binding_table();
 
 	// -- DEBUGGING
 	VkDebugUtilsMessengerEXT debug_messenger;

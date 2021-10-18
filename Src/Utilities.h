@@ -10,6 +10,11 @@
 const int MAX_FRAME_DRAWS = 2;
 const int MAX_OBJECTS = 20;
 
+enum SHADER_COMPILATION_FLAG {
+	RASTERIZATION,
+	RAYTRACING
+};
+
 const std::vector<const char*> device_extensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
@@ -17,6 +22,7 @@ const std::vector<const char*> device_extensions = {
 // DEVICE EXTENSIONS FOR RAYTRACING
 const std::vector<const char*> device_extensions_for_raytracing = {
 
+	"VK_KHR_get_physical_device_properties2",
 	VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 	VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME, 
 	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
@@ -418,10 +424,87 @@ static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, 
 
 }
 
-static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, 
+																										VkDebugUtilsMessageTypeFlagsEXT messageType, 
+																										const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, 
+																										void* pUserData) {
+
 	if (messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT || messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
 		printf("\033[22;36mvalidation layer\033[0m: \033[22;33m%s\033[0m\n", pCallbackData->pMessage);
 	}
 
 	return VK_FALSE;
+
+}
+
+static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
+
+#if defined (_WIN32)
+	int result_system;
+
+	if (flag == RASTERIZATION) {
+
+		result_system = system("..\\Resources\\Shader\\compile_rasterizer_shader.bat");
+
+	}
+	else if (flag == RAYTRACING) {
+
+		result_system = system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
+
+	}
+
+	if (result_system == -1) {
+
+		throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+	}
+	else if (result_system == 127) {
+
+		throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+	}
+	else if (result_system = 0) {
+
+		throw std::runtime_error("Shader creation: system(): no shell available");
+
+	}
+
+#elif defined (__linux__)
+	int result_system = system("chmod +x ../Resources/Shader/compile.sh");
+
+	if (result_system == -1) {
+
+		throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+	}
+	else if (result_system == 127) {
+
+		throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+	}
+	else if (result_system = 0) {
+
+		throw std::runtime_error("Shader creation: system(): no shell available");
+
+	}
+
+	result_system = system("../Resources/Shader/compile.sh");
+
+	if (result_system == -1) {
+
+		throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+	}
+	else if (result_system == 127) {
+
+		throw std::runtime_error("Shader creation: system(): child process could not be created");
+
+	}
+	else if (result_system = 0) {
+
+		throw std::runtime_error("Shader creation: system(): no shell available");
+
+	}
+#endif
+
 }
