@@ -14,6 +14,15 @@ const std::vector<const char*> device_extensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
+// DEVICE EXTENSIONS FOR RAYTRACING
+const std::vector<const char*> device_extensions_for_raytracing = {
+
+	VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
+	VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME, 
+	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
+
+};
+
 // vertex data representation (layout)
 struct Vertex {
 
@@ -407,4 +416,12 @@ static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, 
 
 	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
 
+}
+
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
+	if (messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT || messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+		printf("\033[22;36mvalidation layer\033[0m: \033[22;33m%s\033[0m\n", pCallbackData->pMessage);
+	}
+
+	return VK_FALSE;
 }

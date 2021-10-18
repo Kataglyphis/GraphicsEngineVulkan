@@ -2,12 +2,14 @@
 
 VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
 																	current_frame(0),
-																framebuffer_resized(false)
+																framebuffer_resized(false),
+																raytracing(false)
 {
 }
 
 int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane, 
-											glm::vec3 light_dir, glm::vec3 view_dir)
+											glm::vec3 light_dir, glm::vec3 view_dir, bool raytracing) 
+
 {
 
 	this->window = window;
@@ -34,6 +36,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_descriptor_pool_sampler();
 		create_gui();
 		create_descriptor_sets();
+		if(raytracing) init_raytracing();
 		create_synchronization();
 
 		ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
@@ -43,6 +46,9 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 
 		ubo_directions.light_dir = light_dir;
 		ubo_directions.view_dir = view_dir;
+
+		// -- RAYTRACING STUFF
+		this->raytracing = raytracing;
 
 		// create our default no texture texture
 		create_texture("plain.png");
@@ -97,7 +103,7 @@ void VulkanRenderer::hot_reload_all_shader()
 
 }
 
-void VulkanRenderer::draw()
+void VulkanRenderer::rasterize()
 {
 
 	check_changed_framebuffer_size();
@@ -205,7 +211,7 @@ void VulkanRenderer::draw()
 void VulkanRenderer::create_instance()
 {
 
-	if (enableValidationLayers && !check_validation_layer_support()) {
+	if (ENABLE_VALIDATION_LAYERS && !check_validation_layer_support()) {
 		throw std::runtime_error("Validation layers requested, but not available!");
 	}
 
@@ -224,8 +230,27 @@ void VulkanRenderer::create_instance()
 	create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	create_info.pApplicationInfo = &app_info;
 
+	VkDebugUtilsMessengerCreateInfoEXT messengerCreateInfo = {};
 	//add validation layers IF enabled to the creeate info struct
-	if (enableValidationLayers) {
+	if (ENABLE_VALIDATION_LAYERS) {
+
+		uint32_t layerCount = 1;
+		const char** layerNames = (const char**)malloc(sizeof(const char*) * layerCount);
+		layerNames[0] = "VK_LAYER_KHRONOS_validation";
+
+		messengerCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+
+		messengerCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | 
+																					VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | 
+																					VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+
+		messengerCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |	
+																			VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | 
+																				VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+
+		messengerCreateInfo.pfnUserCallback = debugCallback;
+
+		create_info.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&messengerCreateInfo;
 
 		create_info.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 		create_info.ppEnabledLayerNames = validationLayers.data();
@@ -256,10 +281,20 @@ void VulkanRenderer::create_instance()
 
 	}
 
-	if (enableValidationLayers) {
+	if (ENABLE_VALIDATION_LAYERS) {
+
 		instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+
 	}
 	
+	if (raytracing) {
+
+		// COPY ALL NECESSARY EXTENSIONS TO THE NECESSARY ARRAY
+		instance_extensions.insert(instance_extensions.begin(), device_extensions_for_raytracing.begin(), 
+																												device_extensions_for_raytracing.end());
+
+	}
+
 	// check instance extensions supported
 	if (!check_instance_extension_support(&instance_extensions)) {
 
@@ -276,6 +311,17 @@ void VulkanRenderer::create_instance()
 	if (result != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create a Vulkan instance!");
 	}
+
+	if (ENABLE_VALIDATION_LAYERS) {
+
+		PFN_vkCreateDebugUtilsMessengerEXT pvkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)
+																																						vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+		if (pvkCreateDebugUtilsMessengerEXT(instance, &messengerCreateInfo, NULL, &debug_messenger) == VK_SUCCESS) {
+			printf("created debug messenger\n");
+		}
+
+	}
+
 
 }
 
@@ -303,19 +349,49 @@ void VulkanRenderer::create_logical_device()
 
 	}
 
+	// -- ALL EXTENSION WE NEED
+	VkPhysicalDeviceFeatures2 features2{};
+	features2.pNext = nullptr;
+	features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+	features2.features.samplerAnisotropy = VK_TRUE;
+
+	// --ENABLE RAY TRACING PIPELINE
+	VkPhysicalDeviceRayTracingPipelineFeaturesKHR ray_tracing_pipeline_features{};
+	ray_tracing_pipeline_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_FEATURES_KHR;
+	ray_tracing_pipeline_features.pNext = &features2;
+	ray_tracing_pipeline_features.rayTracingPipeline = VK_TRUE;
+
+	// -- ENABLE ACCELERATION STRUCTURES
+	VkPhysicalDeviceAccelerationStructureFeaturesKHR acceleration_structure_features{};
+	acceleration_structure_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ACCELERATION_STRUCTURE_FEATURES_KHR;
+	acceleration_structure_features.pNext = &ray_tracing_pipeline_features;
+	acceleration_structure_features.accelerationStructure = VK_TRUE;
+	acceleration_structure_features.accelerationStructureCaptureReplay = VK_TRUE;
+	acceleration_structure_features.accelerationStructureIndirectBuild = VK_FALSE;
+	acceleration_structure_features.accelerationStructureHostCommands = VK_FALSE;
+	acceleration_structure_features.descriptorBindingAccelerationStructureUpdateAfterBind = VK_FALSE;
+
 	// information to create logical device (sometimes called "device") 
 	VkDeviceCreateInfo device_create_info{};
 	device_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	device_create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());		// number of queue create infos
 	device_create_info.pQueueCreateInfos = queue_create_infos.data();														// list of queue create infos so device can create required queues
 	device_create_info.enabledExtensionCount = static_cast<uint32_t>(device_extensions.size());		// number of enabled logical device extensions
-	device_create_info.ppEnabledExtensionNames = device_extensions.data();;																			// list of enabled logical device extensions 
-	
-	// physical device features the logical device will be using 
-	VkPhysicalDeviceFeatures device_features{};
-	device_features.samplerAnisotropy = VK_TRUE;
+	device_create_info.ppEnabledExtensionNames = device_extensions.data();											// list of enabled logical device extensions 
+	device_create_info.flags = 0;
+	device_create_info.pEnabledFeatures = NULL;
 
-	device_create_info.pEnabledFeatures = &device_features;
+	if (raytracing) {
+		device_create_info.pNext = &acceleration_structure_features;
+	}
+	else {
+		device_create_info.pNext = &features2;
+	}
+
+	//// physical device features the logical device will be using 
+	//VkPhysicalDeviceFeatures device_features{};
+	//device_features.samplerAnisotropy = VK_TRUE;
+	//device_create_info.pEnabledFeatures = &device_features;
 
 	// create logical device for the given physical device
 	VkResult result = vkCreateDevice(MainDevice.physical_device, &device_create_info, nullptr, &MainDevice.logical_device);
@@ -551,6 +627,21 @@ void VulkanRenderer::create_fonts_and_upload()
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	//clear font textures from cpu data
 	ImGui_ImplVulkan_DestroyFontUploadObjects();
+
+}
+
+void VulkanRenderer::init_raytracing()
+{
+
+	raytracing_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR{};
+	raytracing_properties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_PROPERTIES_KHR;
+
+	// this query will look for all capabilities of the GPU (max. recursion depth, shader header size)
+	VkPhysicalDeviceProperties2 properties2;
+	properties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+	properties2.pNext = &raytracing_properties;
+
+	vkGetPhysicalDeviceProperties2(MainDevice.physical_device, &properties2);
 
 }
 
@@ -2159,6 +2250,10 @@ void VulkanRenderer::check_changed_framebuffer_size()
 	}
 }
 
+void VulkanRenderer::raytrace()
+{
+}
+
 void VulkanRenderer::clean_up_swapchain()
 {
 
@@ -2210,6 +2305,13 @@ void VulkanRenderer::clean_up_swapchain()
 
 void VulkanRenderer::clean_up()
 {
+	// -- EXPLICITLY LOAD FUNCTIONS
+	PFN_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =
+																			(PFN_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkDestroyAccelerationStructureKHR");
+
+	PFN_vkDestroyDebugUtilsMessengerEXT pvkDestroyDebugUtilsMessengerEXT =
+																			(PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
 
@@ -2266,9 +2368,14 @@ void VulkanRenderer::clean_up()
 	ImGui::DestroyContext();
 	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 
+	if (ENABLE_VALIDATION_LAYERS) {
+		pvkDestroyDebugUtilsMessengerEXT(instance, debug_messenger, NULL);
+	}
+
 	vkDestroySurfaceKHR(instance, surface, nullptr);
 	vkDestroyDevice(MainDevice.logical_device, nullptr);
 	vkDestroyInstance(instance, nullptr);
+
 
 }
 

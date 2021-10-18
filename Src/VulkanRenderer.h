@@ -42,7 +42,7 @@ public:
 	VulkanRenderer();
 
 	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane,
-					glm::vec3 light_dir, glm::vec3 view_dir);
+					glm::vec3 light_dir, glm::vec3 view_dir, bool raytracing);
 
 	int create_mesh_model(std::string model_file, bool flip_y);
 	void update_model(int model_id, glm::mat4 new_model);
@@ -51,7 +51,8 @@ public:
 
 	void hot_reload_all_shader();
 
-	void draw();
+	void rasterize();
+	void raytrace();
 
 	void clean_up_swapchain();
 	void clean_up();
@@ -66,9 +67,9 @@ private:
 	};
 
 	#ifdef NDEBUG
-		const bool enableValidationLayers = false;
+		const bool ENABLE_VALIDATION_LAYERS = false;
 	#else
-		const bool enableValidationLayers = true;
+		const bool ENABLE_VALIDATION_LAYERS = true;
 	#endif
 	
 	// all GUI stuff
@@ -82,6 +83,9 @@ private:
 	// -- ALL FUNCTIONALITY FOR RESIZING WINDOW
 	// in case extension VK_ERROR_OUT_OF_DATE_KHR is not supported by driver add this
 	bool framebuffer_resized;
+
+	// --EN/-DISABLE RAYTRACING
+	bool raytracing;
 
 	// scene objects
 	std::vector<MeshModel> model_list;
@@ -144,9 +148,39 @@ private:
 	std::vector<VkBuffer>directions_uniform_buffer;
 	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
 
-	/*VkDeviceSize min_uniform_buffer_offset;
-	size_t model_uniform_alignment;*/
-	// Model* model_transfer_space;
+	// -- RAYTRACING VARS
+	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
+
+	// ----- ACCELERATION STRUCTURE
+	// ----- BOTTOM LEVEL
+	VkAccelerationStructureKHR bottom_level_acceleration_structure;
+	VkBuffer bottom_level_acceleration_structure_buffer;
+	VkDeviceMemory bottom_level_acceleration_structure_buffer_memory;
+
+	// ----- TOP LEVEL
+	VkAccelerationStructureKHR top_level_acceleration_structure;
+	VkBuffer top_level_acceleration_structure_buffer;
+	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
+
+	// ----- IMAGE VIEW
+	VkImageView raytracing_image_view;
+	VkImage raytracing_image;
+	VkDeviceMemory ray_trace_image_memory;
+
+	// ----- DESCRIPTORS
+	VkDescriptorSet raytracing_descriptor_set;
+	VkDescriptorSetLayout raytracing_descriptor_set_layout;
+
+	// ----- PIPELINE
+	VkPipeline raytracing_pipeline;
+	VkPipelineLayout raytracing_pipeline_layout;
+
+	// ----- SHADER BINDINGS
+	VkBuffer shader_binding_table_buffer;
+	VkDeviceMemory shader_binding_table_buffer_memory;
+
+	// --PROPERTIES
+	VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
 
 	// -- TEXTURE --
 	VkSampler texture_sampler;
@@ -254,5 +288,10 @@ private:
 	void create_gui_context();
 	void create_fonts_and_upload();
 
+	// -- RAYTRACING HELPER
+	void init_raytracing();
+
+	// -- DEBUGGING
+	VkDebugUtilsMessengerEXT debug_messenger;
 };
 
