@@ -12,6 +12,8 @@ layout(location = 0) rayPayloadEXT Payload {
     vec3 indirect_color;
     int ray_depth;
 
+    int rayActive;
+
 } payload;
 
 layout(set = 0, binding = 0) uniform accelerationStructureEXT TLAS;
