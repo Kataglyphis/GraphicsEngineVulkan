@@ -1,0 +1,55 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+
+#define M_PI 3.1415926535897932384626433832795
+
+layout(location = 0) rayPayloadEXT Payload {
+
+    vec3 ray_origin;
+    vec3 ray_direction;
+    
+    vec3 direct_color;
+    vec3 indirect_color;
+    int ray_depth;
+
+} payload;
+
+layout(set = 0, binding = 0) uniform accelerationStructureEXT TLAS;
+layout(set = 0, binding = 1, rgba32f) uniform image2D image;
+layout(set = 0, binding = 2) uniform Camera {
+
+    vec4 position;
+    vec4 right; 
+    vec4 up;
+    vec4 forward;
+
+    uint frame_count;
+
+} camera;
+
+void main() {
+
+    const vec2 pixel_center = vec2(gl_LaunchIDEXT.xy);
+    const vec2 pixel_center_UV = pixel_center/vec2(gl_LaunchSizeEXT.xy);
+
+    // keep in mind we are in Vulkan screen coordinates! (0,0) should be the upper left corner :)
+    pixel_center_UV = (pixel_center_UV * 2.f - 1.f) * vec2(1.f, -1.f);
+
+    payload.ray_origin = camera.position.xyz; 
+    payload.ray_direction = normalize(pixel_center_UV * camera.right + pixel_center_UV.y * camera.up + camera.forward).xyz; 
+    payload.ray_depth = 0;
+
+    payload.direct_color = vec3(0.f);
+    payload.indirect_color = vec3(0.f);
+
+    for(int x = 0; x < 16; x++) {
+
+        traceRayExt(TLAS, gl_RayFlagsOpaqueEXT, 0xFF, 0, 0, 0, payload.ray_origin, 0.001, payload.ray_direction, 10000.0, 0);
+
+    }
+
+    vec4 color =vec4(payload.direct_color + payload.indirect_color, 1.0f);
+
+    imageStore(image, ivec2(gl_LaunchIDEXT.xy), color);
+
+}

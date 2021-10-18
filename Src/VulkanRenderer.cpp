@@ -24,7 +24,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_render_pass();
 		create_descriptor_set_layout();
 		create_push_constant_range();
-		create_graphics_pipeline();
+		create_rasterizer_graphics_pipeline();
 		create_depthbuffer_image();
 		create_framebuffers();
 		create_command_pool();
@@ -99,7 +99,7 @@ void VulkanRenderer::hot_reload_all_shader()
 	vkDeviceWaitIdle(MainDevice.logical_device);
 	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
-	create_graphics_pipeline();
+	create_rasterizer_graphics_pipeline();
 
 }
 
@@ -645,6 +645,27 @@ void VulkanRenderer::init_raytracing()
 
 }
 
+void VulkanRenderer::create_BLAS()
+{
+}
+
+void VulkanRenderer::create_TLAS()
+{
+}
+
+void VulkanRenderer::create_raytracing_pipeline() {
+
+	PFN_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =
+												(PFN_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateRayTracingPipelinesKHR");
+
+	compile_shaders(SHADER_COMPILATION_FLAG::RAYTRACING);
+
+}
+
+void VulkanRenderer::create_shader_binding_table()
+{
+}
+
 void VulkanRenderer::create_descriptor_set_layout()
 {
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
@@ -719,64 +740,10 @@ void VulkanRenderer::create_push_constant_range()
 
 }
 
-void VulkanRenderer::create_graphics_pipeline()
+void VulkanRenderer::create_rasterizer_graphics_pipeline()
 {
 
-	#if defined (_WIN32)
-		int result_system = system("..\\Resources\\Shader\\compile.bat");
-
-		if (result_system == -1) {
-
-			throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-		}
-		else if (result_system == 127) {
-
-			throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-		}
-		else if (result_system = 0) {
-
-			throw std::runtime_error("Shader creation: system(): no shell available");
-
-		}
-
-	#elif defined (__linux__)
-		int result_system = system("chmod +x ../Resources/Shader/compile.sh");
-
-		if (result_system == -1) {
-
-			throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-		}
-		else if (result_system == 127) {
-
-			throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-		} else if(result_system = 0) {
-
-			throw std::runtime_error("Shader creation: system(): no shell available");
-
-		} 
-
-		result_system = system("../Resources/Shader/compile.sh");
-
-		if (result_system == -1) {
-
-			throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-		}
-		else if (result_system == 127) {
-
-			throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-		}
-		else if (result_system = 0) {
-
-			throw std::runtime_error("Shader creation: system(): no shell available");
-
-		}
-	#endif	
+	compile_shaders(SHADER_COMPILATION_FLAG::RASTERIZATION);
 
 	auto vertex_shader_code = read_file("../Resources/Shader/vert.spv");
 	auto fragment_shader_code = read_file("../Resources/Shader/frag.spv");
@@ -1439,7 +1406,7 @@ void VulkanRenderer::recreate_swap_chain()
 	create_swap_chain();
 	create_depthbuffer_image();
 	create_render_pass();
-	create_graphics_pipeline();
+	create_rasterizer_graphics_pipeline();
 	create_framebuffers();
 	create_uniform_buffers();
 	create_descriptor_pool_uniforms();
