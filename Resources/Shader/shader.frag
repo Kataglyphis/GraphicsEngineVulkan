@@ -20,6 +20,6 @@ void main() {
 	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler, texture_coordinates).xyz;
 	vec3 specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
 
-	color = vec4(ambient * 0.5f + diffuse + specular * 0.01f,1.0f);
+	color = vec4(ambient * 0.3f + diffuse + specular * 0.001f,1.0f);
 
 }

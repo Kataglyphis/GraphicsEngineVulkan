@@ -4,12 +4,22 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-
 #include <glm/glm.hpp>
 
 const int MAX_FRAME_DRAWS = 2;
 const int MAX_OBJECTS = 20;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
+
+// use the standard validation layers from the SDK for error checking
+const std::vector<const char*> validationLayers = {
+					"VK_LAYER_KHRONOS_validation"
+};
+
+#ifdef NDEBUG
+const bool ENABLE_VALIDATION_LAYERS = false;
+#else
+const bool ENABLE_VALIDATION_LAYERS = true;
+#endif
 
 enum SHADER_COMPILATION_FLAG {
 	RASTERIZATION,
@@ -23,7 +33,6 @@ const std::vector<const char*> device_extensions = {
 // DEVICE EXTENSIONS FOR RAYTRACING
 const std::vector<const char*> device_extensions_for_raytracing = {
 
-	"VK_KHR_get_physical_device_properties2",
 	VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 	VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME, 
 	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
@@ -44,11 +53,12 @@ struct QueueFamilyIndices {
 
 	int graphics_family = -1;																// location of graphics family
 	int presentation_family = -1;														// location of presentation queue family
+	int compute_family = -1;																// location of compute queue family
 
 	//check if queue families are valid 
 	bool is_valid() {
 
-		return graphics_family >= 0 && presentation_family >= 0;
+		return graphics_family >= 0 && presentation_family >= 0 && compute_family >= 0;
 
 	}
 
