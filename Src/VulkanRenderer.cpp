@@ -2,8 +2,8 @@
 
 VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
 																	current_frame(0),
-																framebuffer_resized(false),
-																raytracing(false)
+																	framebuffer_resized(false),
+																	raytracing(false)
 {
 }
 
@@ -13,7 +13,18 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 {
 
 	this->window = window;
-	
+
+	ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
+																	near_plane, far_plane);
+
+	ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	ubo_directions.light_dir = light_dir;
+	ubo_directions.view_dir = view_dir;
+
+	// -- RAYTRACING STUFF
+	this->raytracing = raytracing;
+
 	try {
 
 		create_instance();
@@ -21,6 +32,29 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		get_physical_device();
 		create_logical_device();
 		create_swap_chain();
+
+		init_rasterizer();
+
+		if(raytracing) init_raytracing();
+		create_synchronization();
+
+	// create our default no texture texture
+	create_texture("plain.png");
+
+	}
+	catch (const std::runtime_error& e) {
+
+		printf("ERROR: %s\n", e.what());
+		return EXIT_FAILURE;
+
+	}
+
+	return EXIT_SUCCESS;
+}
+
+void VulkanRenderer::init_rasterizer()
+{
+
 		create_render_pass();
 		create_descriptor_set_layouts();
 		create_push_constant_range();
@@ -36,32 +70,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_descriptor_pool_sampler();
 		create_gui();
 		create_descriptor_sets();
-		if(raytracing) init_raytracing();
-		create_synchronization();
 
-		ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
-																		near_plane, far_plane);
-
-		ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-		ubo_directions.light_dir = light_dir;
-		ubo_directions.view_dir = view_dir;
-
-		// -- RAYTRACING STUFF
-		this->raytracing = raytracing;
-
-		// create our default no texture texture
-		create_texture("plain.png");
-
-	}
-	catch (const std::runtime_error &e) {
-
-		printf("ERROR: %s\n", e.what());
-		return EXIT_FAILURE;
-
-	}
-
-	return 0;
 }
 
 void VulkanRenderer::update_model(int model_id, glm::mat4 new_model)
@@ -236,7 +245,7 @@ void VulkanRenderer::create_instance()
 
 		uint32_t layerCount = 1;
 		const char** layerNames = (const char**)malloc(sizeof(const char*) * layerCount);
-		layerNames[0] = "VK_LAYER_KHRONOS_validation";
+		//layerNames[0] = "VK_LAYER_KHRONOS_validation";
 
 		messengerCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 
@@ -286,14 +295,6 @@ void VulkanRenderer::create_instance()
 		instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 
 	}
-	
-	if (raytracing) {
-
-		// COPY ALL NECESSARY EXTENSIONS TO THE NECESSARY ARRAY
-		instance_extensions.insert(instance_extensions.begin(), device_extensions_for_raytracing.begin(), 
-																												device_extensions_for_raytracing.end());
-
-	}
 
 	// check instance extensions supported
 	if (!check_instance_extension_support(&instance_extensions)) {
@@ -316,6 +317,7 @@ void VulkanRenderer::create_instance()
 
 		PFN_vkCreateDebugUtilsMessengerEXT pvkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)
 																																						vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+
 		if (pvkCreateDebugUtilsMessengerEXT(instance, &messengerCreateInfo, NULL, &debug_messenger) == VK_SUCCESS) {
 			printf("created debug messenger\n");
 		}
@@ -333,7 +335,7 @@ void VulkanRenderer::create_logical_device()
 
 	// vector for queue creation information and set for family indices
 	std::vector<VkDeviceQueueCreateInfo> queue_create_infos;
-	std::set<int> queue_family_indices = {indices.graphics_family, indices.presentation_family};
+	std::set<int> queue_family_indices = {indices.graphics_family, indices.presentation_family, indices.compute_family};
 
 	// Queue the logical device needs to create and info to do so (only 1 for now, will add more later!)
 	for (int queue_family_index : queue_family_indices) {
@@ -355,10 +357,18 @@ void VulkanRenderer::create_logical_device()
 	features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 	features2.features.samplerAnisotropy = VK_TRUE;
 
+	// -- NEEDED FOR QUERING THE DEVICE ADDRESS WHEN CREATING ACCELERATION STRUCTURES
+	VkPhysicalDeviceBufferDeviceAddressFeaturesEXT buffer_device_address_features{};
+	buffer_device_address_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES_EXT;
+	buffer_device_address_features.pNext = &features2;
+	buffer_device_address_features.bufferDeviceAddress = VK_TRUE;
+	buffer_device_address_features.bufferDeviceAddressCaptureReplay = VK_FALSE;
+	buffer_device_address_features.bufferDeviceAddressMultiDevice = VK_FALSE;
+
 	// --ENABLE RAY TRACING PIPELINE
 	VkPhysicalDeviceRayTracingPipelineFeaturesKHR ray_tracing_pipeline_features{};
 	ray_tracing_pipeline_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_FEATURES_KHR;
-	ray_tracing_pipeline_features.pNext = &features2;
+	ray_tracing_pipeline_features.pNext = &buffer_device_address_features;
 	ray_tracing_pipeline_features.rayTracingPipeline = VK_TRUE;
 
 	// -- ENABLE ACCELERATION STRUCTURES
@@ -371,13 +381,24 @@ void VulkanRenderer::create_logical_device()
 	acceleration_structure_features.accelerationStructureHostCommands = VK_FALSE;
 	acceleration_structure_features.descriptorBindingAccelerationStructureUpdateAfterBind = VK_FALSE;
 
+	// -- PREPARE FOR HAVING MORE EXTENSION BECAUSE WE NEED RAYTRACING CAPABILITIES
+	std::vector<const char*> extensions(device_extensions);
+
+	if (raytracing) {
+
+		// COPY ALL NECESSARY EXTENSIONS FOR RAYTRACING TO THE EXTENSION
+		extensions.insert(extensions.begin(), device_extensions_for_raytracing.begin(),
+												device_extensions_for_raytracing.end());
+
+	}
+
 	// information to create logical device (sometimes called "device") 
 	VkDeviceCreateInfo device_create_info{};
 	device_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	device_create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());		// number of queue create infos
 	device_create_info.pQueueCreateInfos = queue_create_infos.data();														// list of queue create infos so device can create required queues
-	device_create_info.enabledExtensionCount = static_cast<uint32_t>(device_extensions.size());		// number of enabled logical device extensions
-	device_create_info.ppEnabledExtensionNames = device_extensions.data();											// list of enabled logical device extensions 
+	device_create_info.enabledExtensionCount = static_cast<uint32_t>(extensions.size());		// number of enabled logical device extensions
+	device_create_info.ppEnabledExtensionNames = extensions.data();											// list of enabled logical device extensions 
 	device_create_info.flags = 0;
 	device_create_info.pEnabledFeatures = NULL;
 
@@ -405,6 +426,7 @@ void VulkanRenderer::create_logical_device()
 	// From given logical device of given queue family, of given queue index (0 since only one queue), place reference in given VkQueue
 	vkGetDeviceQueue(MainDevice.logical_device, indices.graphics_family, 0, &graphics_queue);
 	vkGetDeviceQueue(MainDevice.logical_device, indices.presentation_family, 0, &presentation_queue);
+	vkGetDeviceQueue(MainDevice.logical_device, indices.compute_family, 0, &compute_queue);
 
 }
 
@@ -465,10 +487,11 @@ void VulkanRenderer::create_swap_chain()
 		uint32_t queue_family_indices[] = {
 						(uint32_t)indices.graphics_family,
 						(uint32_t)indices.presentation_family,
+						(uint32_t)indices.compute_family
 		};
 
 		swap_chain_create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;									// image share handling
-		swap_chain_create_info.queueFamilyIndexCount = 2;																					// number of queues to share images between
+		swap_chain_create_info.queueFamilyIndexCount = 3;																					// number of queues to share images between
 		swap_chain_create_info.pQueueFamilyIndices = queue_family_indices;														// array of queues to share between 
 
 	}
@@ -1153,10 +1176,8 @@ void VulkanRenderer::create_shader_binding_table()
 {
 }
 
-void VulkanRenderer::create_raytracing_descriptor_sets()
+void VulkanRenderer::create_raytracing_descriptor_pool()
 {
-
-	raytracing_descriptor_set_layouts.resize(2);
 
 	VkDescriptorPoolSize descriptor_pool_sizes[4];
 	descriptor_pool_sizes[0].type = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
@@ -1184,6 +1205,13 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		throw std::runtime_error("Failed to create command pool!");
 
 	}
+
+}
+
+void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
+
+	raytracing_descriptor_set_layouts.resize(2);
+
 
 	VkDescriptorSetLayoutBinding descriptor_set_layout_bindings[5];
 	descriptor_set_layout_bindings[0].binding = 0;
@@ -1218,6 +1246,74 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 	descriptor_set_layout_bindings[4].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 	descriptor_set_layout_bindings[4].pImmutableSamplers = nullptr;
 	descriptor_set_layout_bindings[4].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+
+	VkDescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{};
+	descriptor_set_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	descriptor_set_layout_create_info.bindingCount = 5;
+	descriptor_set_layout_create_info.pBindings = descriptor_set_layout_bindings;
+
+	VkResult result = vkCreateDescriptorSetLayout(MainDevice.logical_device, &descriptor_set_layout_create_info, nullptr, &raytracing_descriptor_set_layouts[0]);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to create raytracing descriptor set layout!");
+
+	}
+
+	VkDescriptorSetAllocateInfo descriptor_set_allocate_info{};
+	descriptor_set_allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;;
+	descriptor_set_allocate_info.descriptorPool = raytracing_descriptor_pool;
+	descriptor_set_allocate_info.descriptorSetCount = 1;
+	descriptor_set_allocate_info.pSetLayouts = &raytracing_descriptor_set_layouts[0];
+
+	result = vkAllocateDescriptorSets(MainDevice.logical_device, &descriptor_set_allocate_info, &raytracing_descriptor_set);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to allocate raytracing descriptor set!");
+
+	}
+
+	VkWriteDescriptorSet write_descriptor_sets[5];
+
+	VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
+	descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
+	descriptor_set_acceleration_structure.pNext = nullptr;
+	descriptor_set_acceleration_structure.accelerationStructureCount = 1;
+	descriptor_set_acceleration_structure.pAccelerationStructures = &top_level_acceleration_structure;
+
+	write_descriptor_sets[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	write_descriptor_sets[0].pNext = &descriptor_set_acceleration_structure;
+	write_descriptor_sets[0].dstSet = raytracing_descriptor_set;
+	write_descriptor_sets[0].dstBinding = 0;
+	write_descriptor_sets[0].dstArrayElement = 0;
+	write_descriptor_sets[0].descriptorCount = 1;
+	write_descriptor_sets[0].descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
+	write_descriptor_sets[0].pImageInfo = nullptr;
+	write_descriptor_sets[0].pBufferInfo = nullptr;
+	write_descriptor_sets[0].pTexelBufferView = nullptr;
+
+	VkDescriptorImageInfo image_info{};
+	// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
+	image_info.imageView = raytracing_image_view;
+	image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
+
+	write_descriptor_sets[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	write_descriptor_sets[1].pNext = nullptr;
+	write_descriptor_sets[1].dstSet = raytracing_descriptor_set;
+	write_descriptor_sets[1].dstBinding = 1;
+	write_descriptor_sets[1].dstArrayElement = 0;
+	write_descriptor_sets[1].descriptorCount = 1;
+	write_descriptor_sets[1].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
+	write_descriptor_sets[1].pImageInfo = &image_info;
+	write_descriptor_sets[1].pBufferInfo = nullptr;
+	write_descriptor_sets[1].pTexelBufferView = nullptr;
+
+}
+
+void VulkanRenderer::create_raytracing_descriptor_sets()
+{
+
 
 }
 
@@ -2256,13 +2352,22 @@ QueueFamilyIndices VulkanRenderer::get_queue_families(VkPhysicalDevice device)
 
 		}
 
+		if (queue_family.queueCount > 0 && queue_family.queueFlags & VK_QUEUE_COMPUTE_BIT) {
+
+			indices.compute_family = index;
+
+		}
+
 		// check if queue family suppports presentation
 		VkBool32 presentation_support = false;
 		vkGetPhysicalDeviceSurfaceSupportKHR(device, index, surface, &presentation_support);
 		// check if queue is presentation type (can be both graphics and presentation)
 		if (queue_family.queueCount > 0 && presentation_support) {
+
 			indices.presentation_family = index;
+
 		}
+
 
 		// check if queue family indices are in a valid state
 		if (indices.is_valid()) {
