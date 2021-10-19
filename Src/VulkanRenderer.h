@@ -153,9 +153,9 @@ private:
 
 	// ----- ACCELERATION STRUCTURE
 	// ----- BOTTOM LEVEL
-	VkAccelerationStructureKHR bottom_level_acceleration_structure;
-	VkBuffer bottom_level_acceleration_structure_buffer;
-	VkDeviceMemory bottom_level_acceleration_structure_buffer_memory;
+	std::vector<VkAccelerationStructureKHR> bottom_level_acceleration_structure;
+	std::vector<VkBuffer> bottom_level_acceleration_structure_buffer;
+	std::vector<VkDeviceMemory> bottom_level_acceleration_structure_buffer_memory;
 
 	// ----- TOP LEVEL
 	VkAccelerationStructureKHR top_level_acceleration_structure;
@@ -182,7 +182,6 @@ private:
 
 	// ---- PROPERTIES
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
-
 
 	// -- TEXTURE --
 	VkSampler texture_sampler;
@@ -297,11 +296,12 @@ private:
 
 	// ----- CREATE FUNCS
 	// ----- BOTTOM LEVEL ACCELERATION STRUCTURE
-	void create_BLAS();
+	void create_BLAS(Mesh mesh, uint32_t index);
 	// ----- TOP LEVEL ACCELERATION STRUCTURE
 	void create_TLAS();
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
+	void create_raytracing_descriptor_sets();
 
 	// -- DEBUGGING
 	VkDebugUtilsMessengerEXT debug_messenger;
