@@ -88,6 +88,7 @@ private:
 	std::vector<VkCommandBuffer> command_buffers;
 	VkFormat swap_chain_image_format;
 	VkExtent2D swap_chain_extent;
+	void recreate_swap_chain();
 
 	// core create functions
 	void create_instance();
@@ -95,7 +96,7 @@ private:
 	void create_surface();
 	void create_swap_chain();
 
-	// -- SUPPORT functions 
+	// -- support functions 
 	// helper create functions
 	VkImage create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
 												VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
@@ -130,14 +131,47 @@ private:
 	VkDebugUtilsMessengerEXT debug_messenger;
 	bool check_validation_layer_support();
 
-	// -- pools --
+	// -- pools
 	VkCommandPool graphics_command_pool;
 	
+	// -- synchronization
+	std::vector<VkSemaphore> image_available;
+	std::vector<VkSemaphore> render_finished;
+	std::vector<VkFence> draw_fences;
+	std::vector<VkFence> images_in_flight_fences;
+	void create_synchronization();
 
 	// ----- VULKAN CORE COMPONENTS ----- END
 
-	
-	// ----- UNIFORMS FOR RASTERIZER
+	// ----- ALL RASTERIZER SPECIFICS ----- BEGIN 
+	// -- pipeline
+	VkPipeline graphics_pipeline;
+	VkPipelineLayout pipeline_layout;
+	VkRenderPass render_pass;
+
+	// depth
+	VkImage depth_buffer_image;
+	VkDeviceMemory depth_buffer_image_memory;
+	VkImageView depth_buffer_image_view;
+	VkFormat depth_format;
+
+	// all create functions
+	void create_render_pass();
+	void create_descriptor_set_layouts();
+	void create_push_constant_range();
+	void create_rasterizer_graphics_pipeline();
+	void create_depthbuffer_image();
+	void create_framebuffers();
+	void create_command_pool();
+	void create_command_buffers();
+	void create_texture_sampler();
+
+	void create_uniform_buffers();
+	void create_descriptor_pool_uniforms();
+	void create_descriptor_pool_sampler();
+	void create_descriptor_sets();
+
+	// uniforms
 	struct UboViewProjection {
 
 		glm::mat4 projection;
@@ -152,28 +186,23 @@ private:
 
 	} ubo_directions;
 
-	VkImage depth_buffer_image;
-	VkDeviceMemory depth_buffer_image_memory;
-	VkImageView depth_buffer_image_view;
-	VkFormat depth_format;
+	// uniform buffer
+	std::vector<VkBuffer> vp_uniform_buffer;
+	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
+	std::vector<VkBuffer> directions_uniform_buffer;
+	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
 
-	// - Descriptors
+	// ----- ALL RASTERIZER SPECIFICS ----- END 
+
+	// - descriptors
 	VkDescriptorSetLayout descriptor_set_layout;								// for normal uniform values
 	VkDescriptorSetLayout sampler_set_layout;									// descriptor set layout for our samplers
 	VkPushConstantRange push_constant_range;
-
 	VkDescriptorPool descriptor_pool;
 	VkDescriptorPool sampler_descriptor_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
 	std::vector<VkDescriptorSet> sampler_descriptor_sets;				// these are no swap chain dependend descriptors, doesn't change over frames
 
-	// for every model
-	std::vector<VkBuffer> vp_uniform_buffer;
-	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
-
-
-	std::vector<VkBuffer> directions_uniform_buffer;
-	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
 
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
@@ -194,7 +223,7 @@ private:
 
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
 
-	// -- ACCELERATION STRUCTURE
+	// -- acceleration structure
 	// -- bottom level
 	std::vector<VkAccelerationStructureKHR> bottom_level_acceleration_structure;
 	std::vector<VkBuffer> bottom_level_acceleration_structure_buffer;
@@ -236,48 +265,14 @@ private:
 	std::vector<VkDeviceMemory> texture_images_memory;
 	std::vector<VkImageView> texture_image_views;
 
-	// ----- ALL RASTERIZER SPECIFICS ----- BEGIN 
-	// ----- PIPELINE -----
-	VkPipeline graphics_pipeline;
-	VkPipelineLayout pipeline_layout;
-	VkRenderPass render_pass;
-
-	// -- SYNCHRONIZATION --
-	std::vector<VkSemaphore> image_available;
-	std::vector<VkSemaphore> render_finished;
-	std::vector<VkFence> draw_fences;
-	std::vector<VkFence> images_in_flight_fences;
-
-	// vkAcquireNextImageKHR may return images out-of-order or
-	// //MAX_FRAMES_IN_FLIGHT is higher than number of swap chain images
-
-	// all create functions
-	void create_render_pass();
-	void create_descriptor_set_layouts();
-	void create_push_constant_range();
-	void create_rasterizer_graphics_pipeline();
-	void create_depthbuffer_image();
-	void create_framebuffers();
-	void create_command_pool();
-	void create_command_buffers();
-	void create_synchronization();
-	void create_texture_sampler();
-
-	void create_uniform_buffers();
-	void create_descriptor_pool_uniforms();
-	void create_descriptor_pool_sampler();
-	void create_descriptor_sets();
-
-	// ----- ALL RASTERIZER SPECIFICS ----- END 
-
 	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
 	void update_uniform_buffers(uint32_t image_index);
 	void record_commands(uint32_t current_image);
 
-	// loader functions
+	// ---- HELPER ---- BEGIN
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
-
-
+	// ---- HELPER ---- END
+	
 	// ----- GUI STUFF ----- BEGIN
 	VkDescriptorPool gui_descriptor_pool;
 	void create_gui();
@@ -285,15 +280,13 @@ private:
 	void create_fonts_and_upload();
 	// ----- GUI STUFF ----- END
 
-	// ----- COMMUNICATE WITH THE GLFW INSTANCE
+	// ----- VARS ----- BEGIN
 	std::shared_ptr<MyWindow> window;
-	// -- RESIZING WINDOW FUNCTIONALITY
-	void recreate_swap_chain();
 	void check_changed_framebuffer_size();
 	bool framebuffer_resized;
-
 	// indices index into current frame
 	int current_frame;
+	// ----- VARS ----- END
 
 	// ----- EVERYTHING FOR THE SCENE ----- BEGIN
 	std::vector<MeshModel> model_list;
