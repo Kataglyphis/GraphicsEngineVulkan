@@ -163,13 +163,14 @@ private:
 	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
 
 	// ----- IMAGE VIEW
-	VkImageView raytracing_image_view;
-	VkImage raytracing_image;
-	VkDeviceMemory ray_trace_image_memory;
+	//VkImageView raytracing_image_view;
+	//VkImage raytracing_image;
+	//VkDeviceMemory ray_trace_image_memory;
 
 	// ----- DESCRIPTORS
+	VkDescriptorPool raytracing_descriptor_pool;
 	VkDescriptorSet raytracing_descriptor_set;
-	std::vector<VkDescriptorSetLayout> raytracing_descriptor_set_layout;
+	std::vector<VkDescriptorSetLayout> raytracing_descriptor_set_layouts;
 
 	// ----- PIPELINE
 	VkPipeline raytracing_pipeline;
@@ -179,8 +180,9 @@ private:
 	VkBuffer shader_binding_table_buffer;
 	VkDeviceMemory shader_binding_table_buffer_memory;
 
-	// --PROPERTIES
+	// ---- PROPERTIES
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
+
 
 	// -- TEXTURE --
 	VkSampler texture_sampler;
@@ -190,15 +192,16 @@ private:
 	std::vector<VkDeviceMemory> texture_images_memory;
 	std::vector<VkImageView> texture_image_views;
 
-	// --PIPELINE --
+	// -- RASTERIZER
+	// ----- PIPELINE --
 	VkPipeline graphics_pipeline;
 	VkPipelineLayout pipeline_layout;
 	VkRenderPass render_pass;
 
-	// -- POOLS --
+	// ----- POOLS --
 	VkCommandPool graphics_command_pool;
 
-	// -- UTILITIES --
+	// ----- UTILITIES --
 	VkFormat swap_chain_image_format;
 	VkExtent2D swap_chain_extent;
 
