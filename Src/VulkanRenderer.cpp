@@ -22,7 +22,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_logical_device();
 		create_swap_chain();
 		create_render_pass();
-		create_descriptor_set_layout();
+		create_descriptor_set_layouts();
 		create_push_constant_range();
 		create_rasterizer_graphics_pipeline();
 		create_depthbuffer_image();
@@ -647,10 +647,109 @@ void VulkanRenderer::init_raytracing()
 
 void VulkanRenderer::create_BLAS()
 {
+
+	// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING
+	PFN_vkGetAccelerationStructureBuildSizesKHR pvkGetAccelerationStructureBuildSizesKHR = (PFN_vkGetAccelerationStructureBuildSizesKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetAccelerationStructureBuildSizesKHR");
+
+	PFN_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR = (PFN_vkCreateAccelerationStructureKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateAccelerationStructureKHR");
+
+	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddressKHR");
+
+	PFN_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR = (PFN_vkCmdBuildAccelerationStructuresKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkCmdBuildAccelerationStructuresKHR");
+
+
+
+
 }
 
 void VulkanRenderer::create_TLAS()
 {
+
+	// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING
+	PFN_vkGetAccelerationStructureBuildSizesKHR pvkGetAccelerationStructureBuildSizesKHR = (PFN_vkGetAccelerationStructureBuildSizesKHR)
+																																				vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetAccelerationStructureBuildSizesKHR");
+
+	PFN_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR = (PFN_vkCreateAccelerationStructureKHR)
+																																				vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateAccelerationStructureKHR");
+
+	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
+																																				vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddressKHR");
+
+	PFN_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR = (PFN_vkCmdBuildAccelerationStructuresKHR)
+																																				vkGetDeviceProcAddr(MainDevice.logical_device, "vkCmdBuildAccelerationStructuresKHR");
+
+	PFN_vkGetAccelerationStructureDeviceAddressKHR pvkGetAccelerationStructureDeviceAddressKHR = (PFN_vkGetAccelerationStructureDeviceAddressKHR)
+																																				vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetAccelerationStructureDeviceAddressKHR");
+
+	// BUILD IDENTITY MATRIX
+	VkTransformMatrixKHR transform_matrix{};
+	transform_matrix.matrix[0][0] = 1.0f;
+	transform_matrix.matrix[1][1] = 1.0f;
+	transform_matrix.matrix[2][2] = 1.0f;
+
+	VkAccelerationStructureDeviceAddressInfoKHR acceleration_structure_device_address_info{};
+	acceleration_structure_device_address_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_DEVICE_ADDRESS_INFO_KHR;
+	acceleration_structure_device_address_info.accelerationStructure = bottom_level_acceleration_structure;
+
+	VkDeviceAddress acceleration_structure_device_address = pvkGetAccelerationStructureDeviceAddressKHR(MainDevice.logical_device, &acceleration_structure_device_address_info);
+
+	VkAccelerationStructureInstanceKHR geometry_instance{};
+	geometry_instance.transform = transform_matrix;
+	geometry_instance.instanceCustomIndex = 0;
+	geometry_instance.mask = 0xFF;
+	geometry_instance.instanceShaderBindingTableRecordOffset = 0;
+	geometry_instance.flags = VK_GEOMETRY_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT_KHR;
+	geometry_instance.accelerationStructureReference = acceleration_structure_device_address;
+
+	VkDeviceSize geometry_instance_buffer_size = sizeof(VkAccelerationStructureInstanceKHR);
+
+	VkBuffer geometry_instance_staging_buffer;
+	VkDeviceMemory geometry_instance_staging_buffer_memory;
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, geometry_instance_buffer_size, 
+								VK_BUFFER_USAGE_TRANSFER_SRC_BIT,	VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | 
+																											VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, 
+								&geometry_instance_staging_buffer, &geometry_instance_staging_buffer_memory);
+
+	void* geometry_instance_data;
+	vkMapMemory(MainDevice.logical_device, geometry_instance_staging_buffer_memory, 0, geometry_instance_buffer_size, 0, &geometry_instance_data);
+	memcpy(geometry_instance_data, &geometry_instance, geometry_instance_buffer_size);
+	vkUnmapMemory(MainDevice.logical_device, geometry_instance_staging_buffer_memory);
+
+	VkBuffer geometry_instance_buffer;
+	VkDeviceMemory geometry_instance_buffer_memory;
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, geometry_instance_buffer_size, 
+																						VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+																						VK_BUFFER_USAGE_TRANSFER_DST_BIT | 
+																						VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT, 
+																						VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &geometry_instance_buffer, &geometry_instance_buffer_memory);
+
+	copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, 
+																				geometry_instance_staging_buffer, geometry_instance_buffer, geometry_instance_buffer_size);
+
+	vkDestroyBuffer(MainDevice.logical_device, geometry_instance_staging_buffer, nullptr);
+	vkFreeMemory(MainDevice.logical_device, geometry_instance_staging_buffer_memory, nullptr);
+
+	VkBufferDeviceAddressInfo geometry_instance_buffer_device_address_info{};
+	geometry_instance_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
+	geometry_instance_buffer_device_address_info.buffer = geometry_instance_buffer;
+
+	VkDeviceAddress geometry_instance_buffer_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &geometry_instance_buffer_device_address_info);
+
+	VkDeviceOrHostAddressConstKHR geometry_instance_device_or_host_address_const{};
+	geometry_instance_device_or_host_address_const.deviceAddress = geometry_instance_buffer_address;
+
+	VkAccelerationStructureGeometryInstancesDataKHR acceleration_structure_geometry_instances_data{};
+	acceleration_structure_geometry_instances_data.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_INSTANCES_DATA_KHR;
+	acceleration_structure_geometry_instances_data.pNext = nullptr;
+	acceleration_structure_geometry_instances_data.arrayOfPointers = VK_FALSE;
+	acceleration_structure_geometry_instances_data.data = geometry_instance_device_or_host_address_const;
+	
+
+
 }
 
 void VulkanRenderer::create_raytracing_pipeline() {
@@ -741,8 +840,8 @@ void VulkanRenderer::create_raytracing_pipeline() {
 
 	VkPipelineLayoutCreateInfo pipeline_layout_create_info{};
 	pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	pipeline_layout_create_info.setLayoutCount = static_cast<uint32_t>(raytracing_descriptor_set_layout.size());
-	pipeline_layout_create_info.pSetLayouts = raytracing_descriptor_set_layout.data();
+	pipeline_layout_create_info.setLayoutCount = static_cast<uint32_t>(raytracing_descriptor_set_layouts.size());
+	pipeline_layout_create_info.pSetLayouts = raytracing_descriptor_set_layouts.data();
 	pipeline_layout_create_info.pushConstantRangeCount = 0;
 
 	VkResult result = vkCreatePipelineLayout(MainDevice.logical_device, &pipeline_layout_create_info, nullptr, &raytracing_pipeline_layout);
@@ -798,7 +897,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 {
 
 	// resize our #descriptor sets for raytracing
-	raytracing_descriptor_set_layout.resize(NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS);
+	raytracing_descriptor_set_layouts.resize(NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS);
 
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 	//ubo_view_projection Binding info
