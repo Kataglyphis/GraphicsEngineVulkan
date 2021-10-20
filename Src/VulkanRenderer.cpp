@@ -668,7 +668,86 @@ void VulkanRenderer::init_raytracing()
 
 }
 
-void VulkanRenderer::create_BLAS(MeshModel mesh_list, uint32_t index)
+VkAccelerationStructure object_to_VkGeometryKHR(Mesh* mesh) {
+
+	// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING
+	// all functionality from extensions has to be loaded in the beginning
+	// we need a reference to the device location of our geometry laying on the graphics card
+	// we already uploaded objects and created vertex and index buffers respectively
+	PFN_vkGetAccelerationStructureBuildSizesKHR pvkGetAccelerationStructureBuildSizesKHR = (PFN_vkGetAccelerationStructureBuildSizesKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetAccelerationStructureBuildSizesKHR");
+
+	PFN_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR = (PFN_vkCreateAccelerationStructureKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateAccelerationStructureKHR");
+
+	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddressKHR");
+
+	PFN_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR = (PFN_vkCmdBuildAccelerationStructuresKHR)
+		vkGetDeviceProcAddr(MainDevice.logical_device, "vkCmdBuildAccelerationStructuresKHR");
+
+	// all starts with the address of our vertex and index data we already uploaded 
+	// in buffers earlier when loading the meshes/models
+	VkBufferDeviceAddressInfo vertex_buffer_device_address_info{};
+	vertex_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
+	vertex_buffer_device_address_info.buffer = mesh_list.get_mesh(i)->get_vertex_buffer();
+
+	VkBufferDeviceAddressInfo index_buffer_device_address_info{};
+	vertex_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
+	vertex_buffer_device_address_info.buffer = mesh_list.get_mesh(i)->get_index_buffer();
+
+	// receiving address to move on 
+	VkDeviceAddress vertex_buffer_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &vertex_buffer_device_address_info);
+	VkDeviceAddress index_buffer_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &index_buffer_device_address_info);
+
+	// convert to const address for further processing
+	VkDeviceOrHostAddressConstKHR  vertex_device_or_host_address_const{};
+	vertex_device_or_host_address_const.deviceAddress = vertex_buffer_address;
+
+	VkDeviceOrHostAddressConstKHR index_device_or_host_address_const{};
+	index_device_or_host_address_const.deviceAddress = index_buffer_address;
+
+	VkAccelerationStructureGeometryTrianglesDataKHR acceleration_structure_triangles_data{};
+	acceleration_structure_triangles_data.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR;
+	acceleration_structure_triangles_data.pNext = nullptr;
+	acceleration_structure_triangles_data.vertexFormat = VK_FORMAT_R32G32B32_SFLOAT;
+	acceleration_structure_triangles_data.vertexData = vertex_device_or_host_address_const;
+	acceleration_structure_triangles_data.vertexStride = sizeof(float) * 3;
+	acceleration_structure_triangles_data.maxVertex = mesh_list.get_mesh(i)->get_vertex_count();
+	acceleration_structure_triangles_data.indexType = VK_INDEX_TYPE_UINT32;
+	acceleration_structure_triangles_data.indexData = index_device_or_host_address_const;
+
+	// can also be instances or AABBs; not covered here
+	// but to identify as triangles put it ito these struct
+	VkAccelerationStructureGeometryDataKHR acceleration_structure_geometry_data{};
+	acceleration_structure_geometry_data.triangles = acceleration_structure_triangles_data;
+
+	VkAccelerationStructureGeometryKHR acceleration_structure_geometry{};
+	acceleration_structure_geometry.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_KHR;
+	acceleration_structure_geometry.pNext = nullptr;
+	acceleration_structure_geometry.geometryType = VK_GEOMETRY_TYPE_TRIANGLES_KHR;
+	acceleration_structure_geometry.geometry = acceleration_structure_geometry_data;
+	acceleration_structure_geometry.flags = VK_GEOMETRY_OPAQUE_BIT_KHR;
+
+
+
+}
+
+void VulkanRenderer::create_all_BLAS() {
+
+	// we will create one BLAS for every Model(each consists of multiple meshes
+	// with each possessing their vertex and index buffer) in the scene
+	bottom_level_acceleration_structure.reserve(model_list.size());
+
+	for(size_t i = 0; i < model_list.size(); i++) {
+
+		bottom_level_acceleration_structure.push_back(create_single_BLAS(model_list[i]));
+
+	}
+
+}
+
+void VulkanRenderer::create_single_BLAS(MeshModel mesh_list)
 {
 
 	// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING
@@ -695,43 +774,9 @@ void VulkanRenderer::create_BLAS(MeshModel mesh_list, uint32_t index)
 
 	for (size_t i = 0; i < mesh_list.get_mesh_count(); i++) {
 
-		VkBufferDeviceAddressInfo vertex_buffer_device_address_info{};
-		vertex_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
-		vertex_buffer_device_address_info.buffer = mesh_list.get_mesh(i)->get_vertex_buffer();
-
-		VkBufferDeviceAddressInfo index_buffer_device_address_info{};
-		vertex_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
-		vertex_buffer_device_address_info.buffer = mesh_list.get_mesh(i)->get_index_buffer();
-
-		VkDeviceAddress vertex_buffer_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &vertex_buffer_device_address_info);
-		VkDeviceAddress index_buffer_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &index_buffer_device_address_info);
-
-		VkDeviceOrHostAddressConstKHR  vertex_device_or_host_address_const{};
-		vertex_device_or_host_address_const.deviceAddress = vertex_buffer_address;
-
-		VkDeviceOrHostAddressConstKHR index_device_or_host_address_const{};
-		index_device_or_host_address_const.deviceAddress = index_buffer_address;
-
-		VkAccelerationStructureGeometryTrianglesDataKHR acceleration_structure_triangles_data{};
-		acceleration_structure_triangles_data.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR;
-		acceleration_structure_triangles_data.pNext = nullptr;
-		acceleration_structure_triangles_data.vertexFormat = VK_FORMAT_R32G32B32_SFLOAT;
-		acceleration_structure_triangles_data.vertexData = vertex_device_or_host_address_const;
-		acceleration_structure_triangles_data.vertexStride = sizeof(float) * 3;
-		acceleration_structure_triangles_data.maxVertex = mesh_list.get_mesh(i)->get_vertex_count();
-		acceleration_structure_triangles_data.indexType = VK_INDEX_TYPE_UINT32;
-		acceleration_structure_triangles_data.indexData = index_device_or_host_address_const;
-
-		VkAccelerationStructureGeometryDataKHR acceleration_structure_geometry_data{};
-		acceleration_structure_geometry_data.triangles = acceleration_structure_triangles_data;
-
-		VkAccelerationStructureGeometryKHR acceleration_structure_geometry{};
-		acceleration_structure_geometry.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_KHR;
-		acceleration_structure_geometry.pNext = nullptr;
-		acceleration_structure_geometry.geometryType = VK_GEOMETRY_TYPE_TRIANGLES_KHR;
-		acceleration_structure_geometry.geometry = acceleration_structure_geometry_data;
-		acceleration_structure_geometry.flags = VK_GEOMETRY_OPAQUE_BIT_KHR;
-
+		
+		// this only specifies the acceleration structure 
+		// we are building it in the end for the whole model with the build command
 		VkAccelerationStructureBuildGeometryInfoKHR acceleration_structure_build_geometry_info{};
 		acceleration_structure_build_geometry_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_GEOMETRY_INFO_KHR;
 		acceleration_structure_build_geometry_info.pNext = nullptr;
@@ -743,6 +788,13 @@ void VulkanRenderer::create_BLAS(MeshModel mesh_list, uint32_t index)
 		acceleration_structure_build_geometry_info.geometryCount = 1;
 		acceleration_structure_build_geometry_info.pGeometries = &acceleration_structure_geometry;
 		acceleration_structure_build_geometry_info.ppGeometries = nullptr;
+
+		VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info = new VkAccelerationStructureBuildRangeInfoKHR;
+		// we have triangles so divide the number of vertices with 3!!
+		acceleration_structure_build_range_info->primitiveCount = mesh_list.get_mesh(i)->get_vertex_count() / 3;
+		acceleration_structure_build_range_info->primitiveOffset = 0;
+		acceleration_structure_build_range_info->firstVertex = 0;
+		acceleration_structure_build_range_info->transformOffset = 0;
 
 		VkAccelerationStructureBuildSizesInfoKHR acceleration_structure_build_sizes_info{};
 		acceleration_structure_build_sizes_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR;
@@ -798,12 +850,6 @@ void VulkanRenderer::create_BLAS(MeshModel mesh_list, uint32_t index)
 		pvkCreateAccelerationStructureKHR(MainDevice.logical_device, &acceleration_structure_create_info, nullptr, &bottom_level_acceleration_structure[index]);
 
 		acceleration_structure_build_geometry_info.dstAccelerationStructure = bottom_level_acceleration_structure[index];
-
-		VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info = new VkAccelerationStructureBuildRangeInfoKHR;
-		acceleration_structure_build_range_info->primitiveCount = mesh_list.get_mesh(i)->get_vertex_count();
-		acceleration_structure_build_range_info->primitiveOffset = 0;
-		acceleration_structure_build_range_info->firstVertex = 0;
-		acceleration_structure_build_range_info->transformOffset = 0;
 
 		acceleration_structure_build_geometry_infos.push_back(acceleration_structure_build_geometry_info);
 		acceleration_structure_build_range_infos.push_back(acceleration_structure_build_range_info);
@@ -1150,6 +1196,47 @@ void VulkanRenderer::create_raytracing_pipeline() {
 
 void VulkanRenderer::create_shader_binding_table()
 {
+
+	// load in functionality for raytracing shader group handles
+	PFN_vkGetRayTracingShaderGroupHandlesKHR pvkGetRayTracingShaderGroupHandlesKHR = (PFN_vkGetRayTracingShaderGroupHandlesKHR)
+															vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetRayTracingShaderGroupHandlesKHR");
+
+
+	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
+	ray_tracing_properties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_PROPERTIES_KHR;
+
+	VkPhysicalDeviceProperties2 properties{};
+	properties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+	properties.pNext = &raytracing_properties;
+
+	vkGetPhysicalDeviceProperties2(MainDevice.physical_device, &properties);
+
+	VkDeviceSize shader_binding_table_size = raytracing_properties.shaderGroupHandleSize * 4;
+
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, shader_binding_table_size,
+				VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR |
+				VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
+				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+				shader_binding_table_buffer);
+
+	std::vector<uint8_t> handles(shader_binding_table_size);
+
+	VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(MainDevice.logical_device,
+										raytracing_pipeline, 0, 4, shader_binding_table_size, 
+										handles.data());
+
+	if(result != VK_SUCCESS) {
+		
+		throw std::runtime_error("Failed to get ray tracing shader group handles!");
+
+	}
+
+	void* data;
+	vkMapMemory(MainDevice.logical_device, shader_binding_table_buffer_memory);
+	memcpy(data, handles.data(), raytracing_properties.shaderGroupHandleSize);
+	vkUnmapMemory(MainDevice.logical_device, shader_binding_table_buffer_memory);
+	// vector<> shader_handle_storages
+
 }
 
 void VulkanRenderer::create_raytracing_descriptor_pool()

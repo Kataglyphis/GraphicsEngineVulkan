@@ -212,7 +212,17 @@ private:
 
 	// -- create funcs
 	// -- bottom level acceleration structure
-	void create_BLAS(MeshModel mesh_list, uint32_t index);
+	struct VkAccelerationStructure {
+
+		VkAccelerationStructureGeometryKHR acceleration_structure_geometry;
+		VkAccelerationStructureBuildRangeInfoKHR acceleration_structure_build_range;
+
+	};
+
+	VkAccelerationStructureKHR create_single_BLAS(MeshModel mesh_list);
+	void create_all_BLAS();
+	VkAccelerationStructure object_to_VkGeometryKHR(Mesh* mesh);
+
 	// -- top level acceleration structure
 	void create_TLAS();
 	void create_raytracing_pipeline();
