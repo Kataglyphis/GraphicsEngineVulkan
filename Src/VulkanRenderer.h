@@ -212,7 +212,7 @@ private:
 
 	// -- create funcs
 	// -- bottom level acceleration structure
-	void create_BLAS(Mesh mesh, uint32_t index);
+	void create_BLAS(MeshModel mesh_list, uint32_t index);
 	// -- top level acceleration structure
 	void create_TLAS();
 	void create_raytracing_pipeline();
