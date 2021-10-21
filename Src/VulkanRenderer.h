@@ -203,33 +203,29 @@ private:
 	std::vector<VkDescriptorSet> descriptor_sets;
 	std::vector<VkDescriptorSet> sampler_descriptor_sets;				// these are no swap chain dependend descriptors, doesn't change over frames
 
-
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
 	bool raytracing;
-
 	void init_raytracing();
 
 	// -- create funcs
 	// -- bottom level acceleration structure
-	struct VkAccelerationStructure {
-
-		VkAccelerationStructureGeometryKHR acceleration_structure_geometry;
-		VkAccelerationStructureBuildRangeInfoKHR acceleration_structure_build_range;
-
-	};
-
-	VkAccelerationStructureKHR create_single_BLAS(MeshModel mesh_list);
+	void create_single_BLAS(MeshModel mesh_list);
 	void create_all_BLAS();
-	VkAccelerationStructure object_to_VkGeometryKHR(Mesh* mesh);
-
+	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
+																							VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info);
+	void create_acceleration_structure_infos_BLAS(VkAccelerationStructureBuildGeometryInfoKHR& acceleration_structure_build_geometry_info,
+																				VkAccelerationStructureGeometryKHR acceleration_structure_geometry, 
+																				int index);
 	// -- top level acceleration structure
 	void create_TLAS();
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
 	void create_raytracing_descriptor_pool();
 	void create_raytracing_descriptor_set_layouts();
+	void update_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
+	void create_raytracing_image();
 
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
 
