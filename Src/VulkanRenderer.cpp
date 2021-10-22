@@ -675,7 +675,7 @@ void VulkanRenderer::create_all_BLAS() {
 
 	for (size_t i = 0; i < model_list.size(); i++) {
 
-		//bottom_level_acceleration_structure.push_back(create_single_BLAS(model_list[i]));
+		create_single_BLAS(model_list[i]);
 
 	}
 
@@ -1116,8 +1116,10 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	rchit_shader_stage_info.pName = "main";
 
 	// we have all shader stages together
-	std::array<VkPipelineShaderStageCreateInfo, 4> shader_stages = { rgen_shader_stage_info , rmiss_shader_stage_info , 
-																															rmiss_shadow_shader_stage_info,  rchit_shader_stage_info };
+	std::array<VkPipelineShaderStageCreateInfo, 4> shader_stages = { rgen_shader_stage_info ,
+																															rmiss_shader_stage_info , 
+																															rmiss_shadow_shader_stage_info, 
+																															rchit_shader_stage_info };
 
 	VkRayTracingShaderGroupCreateInfoKHR shader_group_create_infos[4];
 
