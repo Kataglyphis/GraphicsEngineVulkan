@@ -2301,10 +2301,125 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		pvkCmdTraceRaysKHR(command_buffers[current_image], &raygen_shader_binding_table, &raymiss_shader_binding_table,
 																&raychit_shader_binding_table, &callable_shader_binding_table, 
 																swap_chain_extent.width, swap_chain_extent.height, 1);
+		
+		VkImageSubresourceRange subresource_range{};
+		subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		subresource_range.baseMipLevel = 0;
+		subresource_range.levelCount = 1;
+		subresource_range.baseArrayLayer = 0;
+		subresource_range.layerCount = 1;
+
+		{
+		
+			VkImageMemoryBarrier image_memory_barrier{};
+			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+			image_memory_barrier.pNext = nullptr;
+			image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+			image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+			image_memory_barrier.image = raytracing_image;
+			image_memory_barrier.subresourceRange = subresource_range;
+			image_memory_barrier.srcAccessMask = 0;
+			image_memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+
+			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+													VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
+		
+		}
+		{
+		
+			VkImageMemoryBarrier image_memory_barrier{};
+			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+			image_memory_barrier.pNext = nullptr;
+			image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+			image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+			image_memory_barrier.image = swap_chain_images[current_image].image;
+			image_memory_barrier.subresourceRange = subresource_range;
+			image_memory_barrier.srcAccessMask = 0;
+			image_memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+
+			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
+		
+		}
+
+		{
+		
+			VkImageSubresourceLayers subresource_layers{};
+			subresource_layers.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			subresource_layers.mipLevel = 0;
+			subresource_layers.baseArrayLayer = 0;
+			subresource_layers.layerCount = 1;
+
+			VkOffset3D offset{};
+			offset.x = 0;
+			offset.y = 0;
+			offset.z = 0;
+
+			VkExtent3D extent{};
+			extent.width = swap_chain_extent.width;
+			extent.height = swap_chain_extent.height;
+			extent.depth = 1;
+
+			VkImageCopy image_copy{};
+			image_copy.srcSubresource = subresource_layers;
+			image_copy.srcOffset = offset;
+			image_copy.dstSubresource = subresource_layers;
+			image_copy.dstOffset = offset;
+			image_copy.extent = extent;
+
+			vkCmdCopyImage(command_buffers[current_image], raytracing_image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+											swap_chain_images[current_image].image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+											1, &image_copy);
+
+		}
+		{
+
+			VkImageSubresourceRange subresource_range{};
+			subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			subresource_range.baseMipLevel = 0;
+			subresource_range.levelCount = 1; 
+			subresource_range.baseArrayLayer = 0;
+			subresource_range.layerCount = 1;
+
+			VkImageMemoryBarrier image_memory_barrier{};
+			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+			image_memory_barrier.pNext = nullptr;
+			image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+			image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+			image_memory_barrier.image = raytracing_image;
+			image_memory_barrier.subresourceRange = subresource_range;
+			image_memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			image_memory_barrier.dstAccessMask = 0;
+
+			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+			VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
+		
+		}
+		{
+		
+		VkImageSubresourceRange subresource_range{};
+		subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		subresource_range.baseMipLevel = 0;
+		subresource_range.levelCount = 1;
+		subresource_range.baseArrayLayer = 0;
+		subresource_range.layerCount = 1;
 
 		VkImageMemoryBarrier image_memory_barrier{};
 		image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		image_memory_barrier.pNext = ;
+		image_memory_barrier.pNext = nullptr;
+		image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+		image_memory_barrier.image = swap_chain_images[current_image].image;
+		image_memory_barrier.subresourceRange = subresource_range;
+		image_memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		image_memory_barrier.dstAccessMask = 0;
+
+		vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 
+											VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, 
+											&image_memory_barrier);
+
+		}
+
 	}
 	else {
 
