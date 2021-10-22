@@ -32,21 +32,16 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		get_physical_device();
 		create_logical_device();
 		create_swap_chain();
+		create_command_pool();
 
+		init_raytracing();
+		init_rasterizer();
 
-		if (raytracing) {
-			init_raytracing();
-		}
-		else {
-
-			init_rasterizer();
-
-		}
-
+		create_gui();
 		create_synchronization();
 
-	// create our default no texture texture
-	create_texture("plain.png");
+		// create our default no texture texture
+		create_texture("plain.png");
 
 	}
 	catch (const std::runtime_error& e) {
@@ -68,14 +63,12 @@ void VulkanRenderer::init_rasterizer()
 		create_rasterizer_graphics_pipeline();
 		create_depthbuffer_image();
 		create_framebuffers();
-		create_command_pool();
 		create_command_buffers();
 		//allocate_dynamic_buffer_transfer_space();
 		create_texture_sampler();
 		create_uniform_buffers();
 		create_descriptor_pool_uniforms();
 		create_descriptor_pool_sampler();
-		create_gui();
 		create_descriptor_sets();
 
 }
@@ -113,13 +106,18 @@ void VulkanRenderer::hot_reload_all_shader()
 
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
+
 	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
 	create_rasterizer_graphics_pipeline();
 
+	vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, raytracing_pipeline_layout, nullptr);
+	create_raytracing_pipeline();
+
 }
 
-void VulkanRenderer::rasterize()
+void VulkanRenderer::draw()
 {
 
 	check_changed_framebuffer_size();
@@ -391,13 +389,10 @@ void VulkanRenderer::create_logical_device()
 	// -- PREPARE FOR HAVING MORE EXTENSION BECAUSE WE NEED RAYTRACING CAPABILITIES
 	std::vector<const char*> extensions(device_extensions);
 
-	if (raytracing) {
+	// COPY ALL NECESSARY EXTENSIONS FOR RAYTRACING TO THE EXTENSION
+	extensions.insert(extensions.begin(), device_extensions_for_raytracing.begin(),
+											device_extensions_for_raytracing.end());
 
-		// COPY ALL NECESSARY EXTENSIONS FOR RAYTRACING TO THE EXTENSION
-		extensions.insert(extensions.begin(), device_extensions_for_raytracing.begin(),
-												device_extensions_for_raytracing.end());
-
-	}
 
 	// information to create logical device (sometimes called "device") 
 	VkDeviceCreateInfo device_create_info{};
@@ -409,12 +404,9 @@ void VulkanRenderer::create_logical_device()
 	device_create_info.flags = 0;
 	device_create_info.pEnabledFeatures = NULL;
 
-	if (raytracing) {
-		device_create_info.pNext = &acceleration_structure_features;
-	}
-	else {
-		device_create_info.pNext = &features2;
-	}
+
+	device_create_info.pNext = &acceleration_structure_features;
+	//device_create_info.pNext = &features2;
 
 	//// physical device features the logical device will be using 
 	//VkPhysicalDeviceFeatures device_features{};
@@ -493,8 +485,7 @@ void VulkanRenderer::create_swap_chain()
 
 		uint32_t queue_family_indices[] = {
 						(uint32_t)indices.graphics_family,
-						(uint32_t)indices.presentation_family,
-						(uint32_t)indices.compute_family
+						(uint32_t)indices.presentation_family
 		};
 
 		swap_chain_create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;									// image share handling
@@ -662,27 +653,19 @@ void VulkanRenderer::create_fonts_and_upload()
 
 void VulkanRenderer::init_raytracing() {
 
+	create_raytracing_image();
 	create_raytracing_descriptor_pool();
-	create_raytracing_descriptor_set_layouts();
-	update_raytracing_descriptor_set_layouts();
-	create_raytracing_descriptor_sets();
-	create_raytracing_pipeline();
-	create_shader_binding_table();
-
-	raytracing_image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1, 
-																VK_FORMAT_R8G8B8A8_UNORM,
-																VK_IMAGE_TILING_OPTIMAL,
-																VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-																VK_IMAGE_USAGE_STORAGE_BIT |
-																VK_IMAGE_USAGE_SAMPLED_BIT,
-																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-																&ray_trace_image_memory);
-
-	raytracing_image_view = create_image_view(raytracing_image, VK_FORMAT_R8G8B8A8_UNORM,
-											VK_IMAGE_ASPECT_COLOR_BIT,1);
 
 	create_all_BLAS(),
 	create_TLAS();
+
+	create_raytracing_uniform_buffers();
+	create_raytracing_descriptor_set_layouts();
+	update_raytracing_descriptor_set_layouts();
+	create_raytracing_descriptor_sets();
+
+	create_raytracing_pipeline();
+	create_shader_binding_table();
 
 }
 
@@ -1236,7 +1219,7 @@ void VulkanRenderer::create_shader_binding_table()
 															vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetRayTracingShaderGroupHandlesKHR");
 
 
-	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
+	raytracing_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR{};
 	raytracing_properties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_PROPERTIES_KHR;
 
 	VkPhysicalDeviceProperties2 properties{};
@@ -1471,29 +1454,27 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 
 		}
 	}
-	{
-		VkDescriptorSetAllocateInfo descriptor_set_allocate_info{};
-		descriptor_set_allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;;
-		descriptor_set_allocate_info.descriptorPool = raytracing_descriptor_pool;
-		descriptor_set_allocate_info.descriptorSetCount = 1;
-		descriptor_set_allocate_info.pSetLayouts = &raytracing_descriptor_set_layouts[1];
-
-		VkResult result = vkAllocateDescriptorSets(MainDevice.logical_device, &descriptor_set_allocate_info, &raytracing_descriptor_set);
-
-		if (result != VK_SUCCESS) {
-
-			throw std::runtime_error("Failed to allocate raytracing descriptor set!");
-
-		}
-	}
-	
 
 }
 
 void VulkanRenderer::create_raytracing_image() {
 
+	raytracing_image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1,
+		VK_FORMAT_R8G8B8A8_UNORM,
+		VK_IMAGE_TILING_OPTIMAL,
+		VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+		VK_IMAGE_USAGE_STORAGE_BIT |
+		VK_IMAGE_USAGE_SAMPLED_BIT,
+		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+		&ray_tracing_image_memory);
 
+	raytracing_image_view = create_image_view(raytracing_image, VK_FORMAT_R8G8B8A8_UNORM,
+		VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
+}
+
+void VulkanRenderer::create_raytracing_uniform_buffers()
+{
 }
 
 void VulkanRenderer::create_descriptor_set_layouts()
@@ -2196,14 +2177,23 @@ void VulkanRenderer::create_descriptor_sets()
 void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 {
 	// COPY VP data 
-	void* data;
-	vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(UboViewProjection), 0, &data);
-	memcpy(data, &ubo_view_projection, sizeof(UboViewProjection));
-	vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
+	if (raytracing) {
 
-	vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(UboDirections), 0, &data);
-	memcpy(data, &ubo_directions, sizeof(UboDirections));
-	vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);
+
+
+	}
+	else {
+
+		void* data;
+		vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(UboViewProjection), 0, &data);
+		memcpy(data, &ubo_view_projection, sizeof(UboViewProjection));
+		vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
+
+		vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(UboDirections), 0, &data);
+		memcpy(data, &ubo_directions, sizeof(UboDirections));
+		vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);
+
+	}
 
 	// copy Model data
 	//for (size_t i = 0; i < meshes.size(); i++) {
@@ -2253,29 +2243,13 @@ void VulkanRenderer::recreate_swap_chain()
 void VulkanRenderer::record_commands(uint32_t current_image)
 {
 
+	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddressKHR");
+	PFN_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR = (PFN_vkCmdTraceRaysKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkCmdTraceRaysKHR");
+
+	// BOTH: RAYTRACING AND RASTERIZER WRITING TO THE SAME COMMAND BUFFER FOR NOW 
 	// information about how to begin each command buffer
 	VkCommandBufferBeginInfo buffer_begin_info{};
 	buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	// this falg is not longer needed because we synchronize with fences and semaphores
-	// buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;					// buffer can be resubmitted when it has already been submitted and is awaiting execution
-	
-	// information about how to begin a render pass (only needed for graphical applications)
-	VkRenderPassBeginInfo render_pass_begin_info{};
-	render_pass_begin_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-	render_pass_begin_info.renderPass = render_pass;																				// render pass to begin 
-	render_pass_begin_info.renderArea.offset = {0,0};																				// start point of render pass in pixels 
-	render_pass_begin_info.renderArea.extent = swap_chain_extent;													// size of region to run render pass on (starting at offset)
-
-	// make sure the order you put the values into the array matches with the attchment order you have defined previous
-	std::array<VkClearValue, 2> clear_values = {};
-	clear_values[0].color = {0.6f, 0.65f,0.4f, 1.0f};
-	clear_values[1].depthStencil.depth = 1.0f;
-
-	render_pass_begin_info.pClearValues = clear_values.data();
-	render_pass_begin_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
-
-
-	render_pass_begin_info.framebuffer = swap_chain_framebuffers[current_image];												// used framebuffer depends on the swap chain and therefore is changing for each command buffer
 
 	// start recording commands to command buffer
 	VkResult result = vkBeginCommandBuffer(command_buffers[current_image], &buffer_begin_info);
@@ -2286,68 +2260,139 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 
 	}
 
-	// begin render pass
-	vkCmdBeginRenderPass(command_buffers[current_image], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
+	if (raytracing) {
 
-	// bind pipeline to be used in render pass
-	vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
+		VkDeviceSize shader_group_base_alignment = raytracing_properties.shaderGroupBaseAlignment;
+		VkDeviceSize raygen_offset = 0;
+		// we have 2 miss shaders 
+		VkDeviceSize miss_offset = 1 * shader_group_base_alignment;
+		VkDeviceSize hit_group_offset = 3 * shader_group_base_alignment;
 
-	for (size_t m = 0; m < model_list.size(); m++) {
+		VkBufferDeviceAddressInfo shader_binding_table_buffer_device_address_info{};
+		shader_binding_table_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
+		shader_binding_table_buffer_device_address_info.buffer = shader_binding_table_buffer;
 
-		// for GCC doen't allow references on rvalues go like that ... 
-		glm::mat4 temp_model = model_list[m].get_model();
-		// just "Push" constants to given shader stage directly (no buffer)
-		vkCmdPushConstants(command_buffers[current_image],
-											pipeline_layout,
-											VK_SHADER_STAGE_VERTEX_BIT,				// stage to push constants to 
-											0,																	// offset to push constants to update
-											sizeof(Model),												// size of data being pushed 
-											&temp_model);							// using model of current mesh (can be array)
+		VkDeviceAddress shader_binding_table_buffer_device_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &shader_binding_table_buffer_device_address_info);
 
-		for (size_t k = 0; k < model_list[m].get_mesh_count(); k++) {
+		VkDeviceSize shader_program_size = (VkDeviceSize)(shader_group_base_alignment * 4);
+		VkStridedDeviceAddressRegionKHR raygen_shader_binding_table{};
+		// no offset here; here it starts
+		raygen_shader_binding_table.deviceAddress = shader_binding_table_buffer_device_address;
+		raygen_shader_binding_table.stride = shader_program_size;
+		raygen_shader_binding_table.size = shader_program_size * 1;
 
-			// list of vertex buffers we want to draw 
-			VkBuffer vertex_buffers[] = { model_list[m].get_mesh(k)->get_vertex_buffer()};																						// buffers to bind 
-			VkDeviceSize offsets[] = { 0 };																																											// offsets into buffers being bound
-			vkCmdBindVertexBuffers(command_buffers[current_image], 0, 1, vertex_buffers, offsets);																// command to bind vertex buffer before drawing with them
-		
-			// bind mesh index buffer with 0 offset and using the uint32 type
-			vkCmdBindIndexBuffer(command_buffers[current_image], model_list[m].get_mesh(k)->get_index_buffer(), 0, VK_INDEX_TYPE_UINT32);			// command to bind index buffer before drawing with them
+		VkStridedDeviceAddressRegionKHR raymiss_shader_binding_table{};
+		// no offset here; here it starts
+		raymiss_shader_binding_table.deviceAddress = shader_binding_table_buffer_device_address + 1 * shader_program_size;
+		raymiss_shader_binding_table.stride = shader_program_size;
+		raymiss_shader_binding_table.size = shader_program_size * 2;
 
-			// danamic offset amount
-			// uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
+		VkStridedDeviceAddressRegionKHR raychit_shader_binding_table{};
+		// no offset here; here it starts
+		raychit_shader_binding_table.deviceAddress = shader_binding_table_buffer_device_address + 3 * shader_program_size;
+		raychit_shader_binding_table.stride = shader_program_size;
+		raychit_shader_binding_table.size = shader_program_size * 1;
 
-			std::array<VkDescriptorSet, 2> descriptor_set_group = {descriptor_sets[current_image], 
-																										sampler_descriptor_sets[model_list[m].get_mesh(k)->get_texture_id()]};
+		VkStridedDeviceAddressRegionKHR callable_shader_binding_table{};
 
-			// bind descriptor sets 
-			vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline_layout, 
-																									0, static_cast<uint32_t>(descriptor_set_group.size()), 
-																									descriptor_set_group.data(), 0, nullptr);
+		vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline);
+		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout, 0, 1, &raytracing_descriptor_set, 0, 0);
 
-			// execute pipeline
-			vkCmdDrawIndexed(command_buffers[current_image], static_cast<uint32_t>(model_list[m].get_mesh(k)->get_index_count()), 1, 0, 0, 0);
+		pvkCmdTraceRaysKHR(command_buffers[current_image], &raygen_shader_binding_table, &raymiss_shader_binding_table,
+																&raychit_shader_binding_table, &callable_shader_binding_table, 
+																swap_chain_extent.width, swap_chain_extent.height, 1);
+
+		VkImageMemoryBarrier image_memory_barrier{};
+		image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		image_memory_barrier.pNext = ;
+	}
+	else {
+
+
+		// this falg is not longer needed because we synchronize with fences and semaphores
+		// buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;					// buffer can be resubmitted when it has already been submitted and is awaiting execution
+
+		// information about how to begin a render pass (only needed for graphical applications)
+		VkRenderPassBeginInfo render_pass_begin_info{};
+		render_pass_begin_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		render_pass_begin_info.renderPass = render_pass;																				// render pass to begin 
+		render_pass_begin_info.renderArea.offset = { 0,0 };																				// start point of render pass in pixels 
+		render_pass_begin_info.renderArea.extent = swap_chain_extent;													// size of region to run render pass on (starting at offset)
+
+		// make sure the order you put the values into the array matches with the attchment order you have defined previous
+		std::array<VkClearValue, 2> clear_values = {};
+		clear_values[0].color = { 0.6f, 0.65f,0.4f, 1.0f };
+		clear_values[1].depthStencil.depth = 1.0f;
+
+		render_pass_begin_info.pClearValues = clear_values.data();
+		render_pass_begin_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
+		render_pass_begin_info.framebuffer = swap_chain_framebuffers[current_image];												// used framebuffer depends on the swap chain and therefore is changing for each command buffer
+
+
+		// begin render pass
+		vkCmdBeginRenderPass(command_buffers[current_image], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
+
+		// bind pipeline to be used in render pass
+		vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
+
+		for (size_t m = 0; m < model_list.size(); m++) {
+
+			// for GCC doen't allow references on rvalues go like that ... 
+			glm::mat4 temp_model = model_list[m].get_model();
+			// just "Push" constants to given shader stage directly (no buffer)
+			vkCmdPushConstants(command_buffers[current_image],
+				pipeline_layout,
+				VK_SHADER_STAGE_VERTEX_BIT,				// stage to push constants to 
+				0,																	// offset to push constants to update
+				sizeof(Model),												// size of data being pushed 
+				&temp_model);							// using model of current mesh (can be array)
+
+			for (size_t k = 0; k < model_list[m].get_mesh_count(); k++) {
+
+				// list of vertex buffers we want to draw 
+				VkBuffer vertex_buffers[] = { model_list[m].get_mesh(k)->get_vertex_buffer() };																						// buffers to bind 
+				VkDeviceSize offsets[] = { 0 };																																											// offsets into buffers being bound
+				vkCmdBindVertexBuffers(command_buffers[current_image], 0, 1, vertex_buffers, offsets);																// command to bind vertex buffer before drawing with them
+
+				// bind mesh index buffer with 0 offset and using the uint32 type
+				vkCmdBindIndexBuffer(command_buffers[current_image], model_list[m].get_mesh(k)->get_index_buffer(), 0, VK_INDEX_TYPE_UINT32);			// command to bind index buffer before drawing with them
+
+				// danamic offset amount
+				// uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
+
+				std::array<VkDescriptorSet, 2> descriptor_set_group = { descriptor_sets[current_image],
+																											sampler_descriptor_sets[model_list[m].get_mesh(k)->get_texture_id()] };
+
+				// bind descriptor sets 
+				vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline_layout,
+					0, static_cast<uint32_t>(descriptor_set_group.size()),
+					descriptor_set_group.data(), 0, nullptr);
+
+				// execute pipeline
+				vkCmdDrawIndexed(command_buffers[current_image], static_cast<uint32_t>(model_list[m].get_mesh(k)->get_index_count()), 1, 0, 0, 0);
+
+			}
+
+		}
+
+		// Record dear imgui primitives into command buffer
+		ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), command_buffers[current_image]);										// record data for drawing the GUI 
+
+		// end render pass 
+		vkCmdEndRenderPass(command_buffers[current_image]);
+
+
+		// stop recording to command buffer
+		result = vkEndCommandBuffer(command_buffers[current_image]);
+
+		if (result != VK_SUCCESS) {
+
+			throw std::runtime_error("Failed to stop recording a command buffer!");
 
 		}
 
 	}
-
-	// Record dear imgui primitives into command buffer
-	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), command_buffers[current_image]);										// record data for drawing the GUI 
-
-	// end render pass 
-	vkCmdEndRenderPass(command_buffers[current_image]);
-
-
-	// stop recording to command buffer
-	result = vkEndCommandBuffer(command_buffers[current_image]);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to stop recording a command buffer!");
-
-	}
-
+	
 }
 
 void VulkanRenderer::get_physical_device()
@@ -3059,8 +3104,15 @@ void VulkanRenderer::check_changed_framebuffer_size()
 	}
 }
 
-void VulkanRenderer::raytrace()
+void VulkanRenderer::clean_up_gui()
 {
+
+	// clean up of GUI stuff
+	ImGui_ImplVulkan_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
+
 }
 
 void VulkanRenderer::clean_up_swapchain()
@@ -3112,11 +3164,50 @@ void VulkanRenderer::clean_up_swapchain()
 
 }
 
-void VulkanRenderer::clean_up()
+void VulkanRenderer::clean_up_rasterizer()
+{
+
+}
+
+void VulkanRenderer::clean_up_raytracing()
 {
 	// -- EXPLICITLY LOAD FUNCTIONS
 	PFN_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =
 																			(PFN_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkDestroyAccelerationStructureKHR");
+
+
+	vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline);
+	vkDestroyPipelineLayout(MainDevice.logical_device, raytracing_pipeline_layout, nullptr);
+
+	for (int index = 0; index < 2; index++) {
+		vkDestroyDescriptorSetLayout(MainDevice.logical_device, raytracing_descriptor_set_layouts[index], nullptr);
+	}
+
+	vkDestroyDescriptorPool(MainDevice.logical_device, raytracing_descriptor_pool, nullptr);
+
+	pvkDestroyAccelerationStructureKHR(MainDevice.logical_device, top_level_acceleration_structure, nullptr);
+	vkDestroyBuffer(MainDevice.logical_device, top_level_acceleration_structure_buffer, nullptr);
+	vkFreeMemory(MainDevice.logical_device, top_level_acceleration_structure_buffer_memory, nullptr);
+
+	for (size_t index = 0; index < bottom_level_acceleration_structure.size(); index++) {
+
+		pvkDestroyAccelerationStructureKHR(MainDevice.logical_device, bottom_level_acceleration_structure[index], nullptr);
+		vkDestroyBuffer(MainDevice.logical_device, bottom_level_acceleration_structure_buffer[index], nullptr);
+		vkFreeMemory(MainDevice.logical_device, bottom_level_acceleration_structure_buffer_memory[index], nullptr);
+
+	}
+
+	vkDestroyBuffer(MainDevice.logical_device, shader_binding_table_buffer, nullptr);
+	vkFreeMemory(MainDevice.logical_device, shader_binding_table_buffer_memory);
+
+	vkDestroyImageView(MainDevice.logical_device, raytracing_image_view, nullptr);
+	vkFreeMemory(MainDevice.logical_device, ray_tracing_image_memory, nullptr);
+	vkDestroyImage(MainDevice.logical_device, raytracing_image, nullptr);
+
+}
+
+void VulkanRenderer::clean_up()
+{
 
 	PFN_vkDestroyDebugUtilsMessengerEXT pvkDestroyDebugUtilsMessengerEXT =
 																			(PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
@@ -3126,6 +3217,9 @@ void VulkanRenderer::clean_up()
 
 	// -- SUBSUMMARIZE ALL SWAPCHAIN DEPENDEND THINGS
 	clean_up_swapchain();
+
+	// -- CLEAN UP RAYTRACING STUFF
+	clean_up_raytracing();
 
 	// -- DESTROY ALL LAYOUTS
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
@@ -3149,11 +3243,6 @@ void VulkanRenderer::clean_up()
 
 	}
 
-
-	/*vkDestroyImageView(MainDevice.logical_device, depth_buffer_image_view, nullptr);
-	vkDestroyImage(MainDevice.logical_device, depth_buffer_image, nullptr);
-	vkFreeMemory(MainDevice.logical_device, depth_buffer_image_memory, nullptr);*/
-
 	// free all space we allocated for all model matrices for each object in our scene
 	/*#if defined (_WIN32) 
 		_aligned_free(model_transfer_space);
@@ -3171,11 +3260,7 @@ void VulkanRenderer::clean_up()
 
 	vkDestroyCommandPool(MainDevice.logical_device, graphics_command_pool, nullptr);
 
-	// clean up of GUI stuff
-	ImGui_ImplVulkan_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
+	clean_up_gui();
 
 	if (ENABLE_VALIDATION_LAYERS) {
 		pvkDestroyDebugUtilsMessengerEXT(instance, debug_messenger, NULL);
