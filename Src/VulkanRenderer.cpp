@@ -33,6 +33,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 		create_logical_device();
 		create_swap_chain();
 		create_command_pool();
+		create_uniform_buffers();
 
 		init_raytracing();
 		init_rasterizer();
@@ -66,7 +67,6 @@ void VulkanRenderer::init_rasterizer()
 		create_command_buffers();
 		//allocate_dynamic_buffer_transfer_space();
 		create_texture_sampler();
-		create_uniform_buffers();
 		create_descriptor_pool_uniforms();
 		create_descriptor_pool_sampler();
 		create_descriptor_sets();
@@ -659,9 +659,7 @@ void VulkanRenderer::init_raytracing() {
 	create_all_BLAS(),
 	create_TLAS();
 
-	create_raytracing_uniform_buffers();
 	create_raytracing_descriptor_set_layouts();
-	update_raytracing_descriptor_set_layouts();
 	create_raytracing_descriptor_sets();
 
 	create_raytracing_pipeline();
@@ -1293,37 +1291,44 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 
 void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 
-	raytracing_descriptor_set_layouts.resize(2);
+	raytracing_descriptor_set_layouts.resize(1);
 
 	{
 		VkDescriptorSetLayoutBinding descriptor_set_layout_bindings[5];
+		// here comes the top level acceleration structure
 		descriptor_set_layout_bindings[0].binding = 0;
 		descriptor_set_layout_bindings[0].descriptorCount = 1;
 		descriptor_set_layout_bindings[0].descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
 		descriptor_set_layout_bindings[0].pImmutableSamplers = nullptr;
+		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[0].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-			VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
-
+																								VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+		// here comes to previous rendered image
 		descriptor_set_layout_bindings[1].binding = 1;
 		descriptor_set_layout_bindings[1].descriptorCount = 1;
 		descriptor_set_layout_bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 		descriptor_set_layout_bindings[1].pImmutableSamplers = nullptr;
+		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[1].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-			VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+																								VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
+		// here comes the uniform with all information about the camera
 		descriptor_set_layout_bindings[2].binding = 2;
 		descriptor_set_layout_bindings[2].descriptorCount = 1;
 		descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 		descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
+		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[2].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-			VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+																								VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
-		descriptor_set_layout_bindings[3].binding = 4;
+		//the index data is only needed in the chlosest hit shader stage
+		descriptor_set_layout_bindings[3].binding = 3;
 		descriptor_set_layout_bindings[3].descriptorCount = 1;
 		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 		descriptor_set_layout_bindings[3].pImmutableSamplers = nullptr;
 		descriptor_set_layout_bindings[3].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
+		// the vertex data we need in the closest hit shader
 		descriptor_set_layout_bindings[4].binding = 4;
 		descriptor_set_layout_bindings[4].descriptorCount = 1;
 		descriptor_set_layout_bindings[4].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
@@ -1347,112 +1352,127 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 
 }
 
-void VulkanRenderer::update_raytracing_descriptor_set_layouts() {
-
-	VkWriteDescriptorSet write_descriptor_sets[5];
-
-	VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
-	descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
-	descriptor_set_acceleration_structure.pNext = nullptr;
-	descriptor_set_acceleration_structure.accelerationStructureCount = 1;
-	descriptor_set_acceleration_structure.pAccelerationStructures = &top_level_acceleration_structure;
-
-	write_descriptor_sets[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	write_descriptor_sets[0].pNext = &descriptor_set_acceleration_structure;
-	write_descriptor_sets[0].dstSet = raytracing_descriptor_set;
-	write_descriptor_sets[0].dstBinding = 0;
-	write_descriptor_sets[0].dstArrayElement = 0;
-	write_descriptor_sets[0].descriptorCount = 1;
-	write_descriptor_sets[0].descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
-	write_descriptor_sets[0].pImageInfo = nullptr;
-	write_descriptor_sets[0].pBufferInfo = nullptr;
-	write_descriptor_sets[0].pTexelBufferView = nullptr;
-
-	VkDescriptorImageInfo image_info{};
-	// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
-	image_info.imageView = raytracing_image_view;
-	image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
-
-	write_descriptor_sets[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	write_descriptor_sets[1].pNext = nullptr;
-	write_descriptor_sets[1].dstSet = raytracing_descriptor_set;
-	write_descriptor_sets[1].dstBinding = 1;
-	write_descriptor_sets[1].dstArrayElement = 0;
-	write_descriptor_sets[1].descriptorCount = 1;
-	write_descriptor_sets[1].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
-	write_descriptor_sets[1].pImageInfo = &image_info;
-	write_descriptor_sets[1].pBufferInfo = nullptr;
-	write_descriptor_sets[1].pTexelBufferView = nullptr;
-
-	VkDescriptorBufferInfo buffer_info{};
-	buffer_info.buffer = ;
-	buffer_info.offset = 0;
-	buffer_info.range = VK_WHOLE_SIZE;
-
-	write_descriptor_sets[2].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	write_descriptor_sets[2].pNext = nullptr;
-	write_descriptor_sets[2].dstSet = raytracing_descriptor_set;
-	write_descriptor_sets[2].dstBinding = 2;
-	write_descriptor_sets[2].dstArrayElement = 0;
-	write_descriptor_sets[2].descriptorCount = 1;
-	write_descriptor_sets[2].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	write_descriptor_sets[2].pImageInfo = nullptr;
-	write_descriptor_sets[2].pBufferInfo = &buffer_info;
-	write_descriptor_sets[2].pTexelBufferView = nullptr;
-
-	VkDescriptorBufferInfo index_buffer_info{};
-	index_buffer_info.buffer = ;
-	index_buffer_info.offset = 0;
-	index_buffer_info.range = VK_WHOLE_SIZE;
-
-	write_descriptor_sets[3].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	write_descriptor_sets[3].pNext = nullptr;
-	write_descriptor_sets[3].dstSet = raytracing_descriptor_set;
-	write_descriptor_sets[3].dstBinding = 3;
-	write_descriptor_sets[3].dstArrayElement = 0;
-	write_descriptor_sets[3].descriptorCount = 1;
-	write_descriptor_sets[3].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-	write_descriptor_sets[3].pImageInfo = nullptr;
-	write_descriptor_sets[3].pBufferInfo = &index_buffer_info;
-	write_descriptor_sets[3].pTexelBufferView = nullptr;
-
-	VkDescriptorBufferInfo vertex_buffer_info{};
-	vertex_buffer_info.buffer = ;
-	vertex_buffer_info.offset = 0;
-	vertex_buffer_info.range = VK_WHOLE_SIZE;
-
-	write_descriptor_sets[4].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	write_descriptor_sets[4].pNext = nullptr;
-	write_descriptor_sets[4].dstSet = raytracing_descriptor_set;
-	write_descriptor_sets[4].dstBinding = 3;
-	write_descriptor_sets[4].dstArrayElement = 0;
-	write_descriptor_sets[4].descriptorCount = 1;
-	write_descriptor_sets[4].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-	write_descriptor_sets[4].pImageInfo = nullptr;
-	write_descriptor_sets[4].pBufferInfo = &vertex_buffer_info;
-	write_descriptor_sets[4].pTexelBufferView = nullptr;
-
-	vkUpdateDescriptorSets(MainDevice.logical_device, 5, write_descriptor_sets, 0, nullptr);
-
-}
-
 void VulkanRenderer::create_raytracing_descriptor_sets()
 {
+
+	raytracing_descriptor_sets.resize(swap_chain_images.size());
+
 	{
 
 		VkDescriptorSetAllocateInfo descriptor_set_allocate_info{};
 		descriptor_set_allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;;
 		descriptor_set_allocate_info.descriptorPool = raytracing_descriptor_pool;
-		descriptor_set_allocate_info.descriptorSetCount = 1;
+		descriptor_set_allocate_info.descriptorSetCount = static_cast<uint32_t>(raytracing_descriptor_sets.size());
 		descriptor_set_allocate_info.pSetLayouts = &raytracing_descriptor_set_layouts[0];
 
-		VkResult result = vkAllocateDescriptorSets(MainDevice.logical_device, &descriptor_set_allocate_info, &raytracing_descriptor_set);
+		VkResult result = vkAllocateDescriptorSets(MainDevice.logical_device, &descriptor_set_allocate_info, raytracing_descriptor_sets.data());
 
 		if (result != VK_SUCCESS) {
 
 			throw std::runtime_error("Failed to allocate raytracing descriptor set!");
 
 		}
+
+	}
+
+	for (size_t i = 0; i < swap_chain_images.size(); i++) {
+	
+		VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
+		descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
+		descriptor_set_acceleration_structure.pNext = nullptr;
+		descriptor_set_acceleration_structure.accelerationStructureCount = 1;
+		descriptor_set_acceleration_structure.pAccelerationStructures = &top_level_acceleration_structure;
+
+		VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
+		write_descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		write_descriptor_set_acceleration_structure.pNext = &descriptor_set_acceleration_structure;
+		write_descriptor_set_acceleration_structure.dstSet = raytracing_descriptor_sets[i];
+		write_descriptor_set_acceleration_structure.dstBinding = 0;
+		write_descriptor_set_acceleration_structure.dstArrayElement = 0;
+		write_descriptor_set_acceleration_structure.descriptorCount = 1;
+		write_descriptor_set_acceleration_structure.descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
+		write_descriptor_set_acceleration_structure.pImageInfo = nullptr;
+		write_descriptor_set_acceleration_structure.pBufferInfo = nullptr;
+		write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
+
+		VkDescriptorImageInfo image_info{};
+		// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
+		image_info.imageView = raytracing_image_view;
+		image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
+
+		VkWriteDescriptorSet descriptor_image_writer{};
+		descriptor_image_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptor_image_writer.pNext = nullptr;
+		descriptor_image_writer.dstSet = raytracing_descriptor_sets[i];
+		descriptor_image_writer.dstBinding = 1;
+		descriptor_image_writer.dstArrayElement = 0;
+		descriptor_image_writer.descriptorCount = 1;
+		descriptor_image_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
+		descriptor_image_writer.pImageInfo = &image_info;
+		descriptor_image_writer.pBufferInfo = nullptr;
+		descriptor_image_writer.pTexelBufferView = nullptr;
+
+		VkDescriptorBufferInfo buffer_info{};
+		buffer_info.buffer = ;
+		buffer_info.offset = 0;
+		buffer_info.range = VK_WHOLE_SIZE;
+
+		VkWriteDescriptorSet write_descriptor_set_uniform_buffer;
+		write_descriptor_set_uniform_buffer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		write_descriptor_set_uniform_buffer.pNext = nullptr;
+		write_descriptor_set_uniform_buffer.dstSet = raytracing_descriptor_sets[i];
+		write_descriptor_set_uniform_buffer.dstBinding = 2;
+		write_descriptor_set_uniform_buffer.dstArrayElement = 0;
+		write_descriptor_set_uniform_buffer.descriptorCount = 1;
+		write_descriptor_set_uniform_buffer.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		write_descriptor_set_uniform_buffer.pImageInfo = nullptr;
+		write_descriptor_set_uniform_buffer.pBufferInfo = &buffer_info;
+		write_descriptor_set_uniform_buffer.pTexelBufferView = nullptr;
+
+		VkDescriptorBufferInfo index_buffer_info{};
+		index_buffer_info.buffer = ;
+		index_buffer_info.offset = 0;
+		index_buffer_info.range = VK_WHOLE_SIZE;
+
+		VkWriteDescriptorSet write_descriptor_set_index_buffer{};
+		write_descriptor_set_index_buffer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		write_descriptor_set_index_buffer.pNext = nullptr;
+		write_descriptor_set_index_buffer.dstSet = raytracing_descriptor_sets[i];
+		write_descriptor_set_index_buffer.dstBinding = 3;
+		write_descriptor_set_index_buffer.dstArrayElement = 0;
+		write_descriptor_set_index_buffer.descriptorCount = 1;
+		write_descriptor_set_index_buffer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+		write_descriptor_set_index_buffer.pImageInfo = nullptr;
+		write_descriptor_set_index_buffer.pBufferInfo = &index_buffer_info;
+		write_descriptor_set_index_buffer.pTexelBufferView = nullptr;
+
+		VkDescriptorBufferInfo vertex_buffer_info{};
+		vertex_buffer_info.buffer = ;
+		vertex_buffer_info.offset = 0;
+		vertex_buffer_info.range = VK_WHOLE_SIZE;
+
+		VkWriteDescriptorSet write_descriptor_set_vertex_buffer{};
+		write_descriptor_set_vertex_buffer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		write_descriptor_set_vertex_buffer.pNext = nullptr;
+		write_descriptor_set_vertex_buffer.dstSet = raytracing_descriptor_sets[i];
+		write_descriptor_set_vertex_buffer.dstBinding = 4;
+		write_descriptor_set_vertex_buffer.dstArrayElement = 0;
+		write_descriptor_set_vertex_buffer.descriptorCount = 1;
+		write_descriptor_set_vertex_buffer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+		write_descriptor_set_vertex_buffer.pImageInfo = nullptr;
+		write_descriptor_set_vertex_buffer.pBufferInfo = &vertex_buffer_info;
+		write_descriptor_set_vertex_buffer.pTexelBufferView = nullptr;
+
+		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { write_descriptor_set_acceleration_structure, 
+																														descriptor_image_writer,
+																														write_descriptor_set_uniform_buffer,
+																														write_descriptor_set_index_buffer,
+																														write_descriptor_set_vertex_buffer };
+
+		// update the descriptor sets with new buffer/binding info
+		vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
+																														write_descriptor_sets.data(), 0, nullptr);
+
 	}
 
 }
@@ -1471,10 +1491,6 @@ void VulkanRenderer::create_raytracing_image() {
 	raytracing_image_view = create_image_view(raytracing_image, VK_FORMAT_R8G8B8A8_UNORM,
 		VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
-}
-
-void VulkanRenderer::create_raytracing_uniform_buffers()
-{
 }
 
 void VulkanRenderer::create_descriptor_set_layouts()
@@ -1935,12 +1951,16 @@ void VulkanRenderer::create_uniform_buffers()
 	VkDeviceSize vp_buffer_size = sizeof(ubo_view_projection);
 	// buffer size will be size of model buffer (will offset to access)
 	VkDeviceSize directions_buffer_size = sizeof(ubo_directions);
+	// buffer size of raytracing uniform
+	VkDeviceSize raytracing_buffer_size = sizeof(ubo_raytracing);
 
 	// one uniform buffer for each image (and by extension, command buffer)
 	vp_uniform_buffer.resize(swap_chain_images.size());
 	vp_uniform_buffer_memory.resize(swap_chain_images.size());
 	directions_uniform_buffer.resize(swap_chain_images.size());
 	directions_uniform_buffer_memory.resize(swap_chain_images.size());
+	raytracing_uniform_buffer.resize(swap_chain_images.size());
+	raytracing_uniform_buffer_memory.resize(swap_chain_images.size());
 
 	// create uniform buffers 
 	for (size_t i = 0; i < swap_chain_images.size(); i++) {
@@ -1955,6 +1975,10 @@ void VulkanRenderer::create_uniform_buffers()
 																																							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 																																							&directions_uniform_buffer[i], &directions_uniform_buffer_memory[i]);
 
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, raytracing_buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+																																							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+																																							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+																																							&raytracing_uniform_buffer[i], &raytracing_uniform_buffer_memory[i]);
 	}
 }
 
@@ -2296,7 +2320,8 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		VkStridedDeviceAddressRegionKHR callable_shader_binding_table{};
 
 		vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline);
-		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout, 0, 1, &raytracing_descriptor_set, 0, 0);
+		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout, 0, 1, 
+																								&raytracing_descriptor_sets[current_image], 0, 0);
 
 		pvkCmdTraceRaysKHR(command_buffers[current_image], &raygen_shader_binding_table, &raymiss_shader_binding_table,
 																&raychit_shader_binding_table, &callable_shader_binding_table, 
@@ -2391,8 +2416,8 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 			image_memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
 			image_memory_barrier.dstAccessMask = 0;
 
-			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
-			VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
+			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+															VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
 		
 		}
 		{
@@ -3291,7 +3316,7 @@ void VulkanRenderer::clean_up_raytracing()
 																			(PFN_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkDestroyAccelerationStructureKHR");
 
 
-	vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline);
+	vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, raytracing_pipeline_layout, nullptr);
 
 	for (int index = 0; index < 2; index++) {
@@ -3313,7 +3338,7 @@ void VulkanRenderer::clean_up_raytracing()
 	}
 
 	vkDestroyBuffer(MainDevice.logical_device, shader_binding_table_buffer, nullptr);
-	vkFreeMemory(MainDevice.logical_device, shader_binding_table_buffer_memory);
+	vkFreeMemory(MainDevice.logical_device, shader_binding_table_buffer_memory, nullptr);
 
 	vkDestroyImageView(MainDevice.logical_device, raytracing_image_view, nullptr);
 	vkFreeMemory(MainDevice.logical_device, ray_tracing_image_memory, nullptr);
