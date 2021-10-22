@@ -53,10 +53,12 @@ public:
 
 	void hot_reload_all_shader();
 
-	void rasterize();
-	void raytrace();
+	void draw();
 
+	void clean_up_gui();
 	void clean_up_swapchain();
+	void clean_up_rasterizer();
+	void clean_up_raytracing();
 	void clean_up();
 
 	~VulkanRenderer();
@@ -226,6 +228,7 @@ private:
 	void update_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
 	void create_raytracing_image();
+	void create_raytracing_uniform_buffers();
 
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
 
@@ -243,7 +246,7 @@ private:
 	// -- image view
 	VkImageView raytracing_image_view;
 	VkImage raytracing_image;
-	VkDeviceMemory ray_trace_image_memory;
+	VkDeviceMemory ray_tracing_image_memory;
 
 	// -- descriptors
 	VkDescriptorPool raytracing_descriptor_pool;
