@@ -209,7 +209,7 @@ int main() {
 
         ImGui::Render();
 
-        vulkan_renderer.rasterize();
+        vulkan_renderer.draw();
 
 
     }

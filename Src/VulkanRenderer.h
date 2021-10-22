@@ -210,6 +210,16 @@ private:
 	bool raytracing;
 	void init_raytracing();
 
+	// uniform
+	struct UboRaytracing {
+
+		glm::vec4 camera_position;
+		glm::vec4 right;
+		glm::vec4 up;
+		glm::vec4 forward;
+
+	} ubo_raytracing;
+
 	// -- create funcs
 	// -- bottom level acceleration structure
 	void create_single_BLAS(MeshModel mesh_list);
@@ -225,10 +235,8 @@ private:
 	void create_shader_binding_table();
 	void create_raytracing_descriptor_pool();
 	void create_raytracing_descriptor_set_layouts();
-	void update_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
 	void create_raytracing_image();
-	void create_raytracing_uniform_buffers();
 
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
 
@@ -248,9 +256,13 @@ private:
 	VkImage raytracing_image;
 	VkDeviceMemory ray_tracing_image_memory;
 
+	// -- uniform buffers
+	std::vector<VkBuffer> raytracing_uniform_buffer;
+	std::vector<VkDeviceMemory> raytracing_uniform_buffer_memory;
+
 	// -- descriptors
 	VkDescriptorPool raytracing_descriptor_pool;
-	VkDescriptorSet raytracing_descriptor_set;
+	std::vector<VkDescriptorSet> raytracing_descriptor_sets;
 	std::vector<VkDescriptorSetLayout> raytracing_descriptor_set_layouts;
 
 	// -- pipeline
