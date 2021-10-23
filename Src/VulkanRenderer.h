@@ -174,19 +174,8 @@ private:
 	void create_descriptor_sets();
 
 	// uniforms
-	struct UboViewProjection {
-
-		glm::mat4 projection;
-		glm::mat4 view;
-
-	} ubo_view_projection;
-
-	struct UboDirections {
-
-		glm::vec3 light_dir;
-		glm::vec3 view_dir;
-
-	} ubo_directions;
+	UboViewProjection ubo_view_projection;
+	UboDirections ubo_directions;
 
 	// uniform buffer
 	std::vector<VkBuffer> vp_uniform_buffer;
@@ -210,19 +199,9 @@ private:
 	bool raytracing;
 	void init_raytracing();
 
-	// uniform
-	struct UboRaytracing {
-
-		glm::vec4 camera_position;
-		glm::vec4 right;
-		glm::vec4 up;
-		glm::vec4 forward;
-
-	} ubo_raytracing;
-
 	// -- create funcs
 	// -- bottom level acceleration structure
-	void create_single_BLAS(MeshModel mesh_list);
+	void create_single_BLAS(MeshModel mesh_model, int mesh_model_index);
 	void create_all_BLAS();
 	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
 																							VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info);
@@ -247,9 +226,9 @@ private:
 	std::vector<VkDeviceMemory> bottom_level_acceleration_structure_buffer_memory;
 
 	// -- top level
-	VkAccelerationStructureKHR top_level_acceleration_structure;
-	VkBuffer top_level_acceleration_structure_buffer;
-	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
+	std::vector<VkAccelerationStructureKHR> top_level_acceleration_structure;
+	std::vector<VkBuffer> top_level_acceleration_structure_buffer;
+	std::vector<VkDeviceMemory> top_level_acceleration_structure_buffer_memory;
 
 	// -- image view
 	VkImageView raytracing_image_view;

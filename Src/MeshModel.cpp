@@ -4,10 +4,11 @@ MeshModel::MeshModel()
 {
 }
 
-MeshModel::MeshModel(std::vector<Mesh> new_mesh_list) 
+MeshModel::MeshModel(std::vector<Mesh> new_mesh_list, uint32_t index) 
 {
     meshes = new_mesh_list;
     model = glm::mat4(1.0f);
+    mesh_model_index = index;
 }
 
 size_t MeshModel::get_mesh_count()
@@ -35,6 +36,11 @@ glm::mat4 MeshModel::get_model()
 void MeshModel::set_model(glm::mat4 model)
 {
     this->model = model;
+}
+
+uint32_t MeshModel::get_custom_instance_index()
+{
+    return mesh_model_index;
 }
 
 void MeshModel::destroy_mesh_model()
@@ -183,7 +189,7 @@ Mesh MeshModel::load_mesh(VkPhysicalDevice new_physical_device, VkDevice new_dev
     }
 
     // create new mesh with details and return it
-    Mesh new_mesh = Mesh(new_physical_device, new_device, transfer_queue, 
+    Mesh new_mesh = Mesh(new_device, new_physical_device, new_device, transfer_queue, 
                             command_pool, &vertices, &indices, 
                             mat_to_tex[mesh->mMaterialIndex]);
 
