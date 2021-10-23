@@ -70,7 +70,7 @@ int main() {
     float directional_light_direction[3] = {1.f,1.f,1.f};
 
     // -- RAY TRACING ON
-    bool raytracing = true;
+    bool raytracing = false;
 
     Camera camera{ start_position, start_up, start_yaw, start_pitch,
                                     start_move_speed, start_turn_speed,

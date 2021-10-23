@@ -17,7 +17,8 @@ class Mesh {
 public:
 
 	Mesh();
-	Mesh(VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_queue, 
+
+	Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkDevice device, VkQueue transfer_queue,
 				VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices,
 				int new_texture_id);
 
@@ -37,6 +38,8 @@ public:
 
 private:
 
+	ObjectDescription object_description;
+
 	Model model;
 
 	int texture_id;
@@ -49,10 +52,13 @@ private:
 	VkBuffer index_buffer;
 	VkDeviceMemory index_buffer_memory;
 
+	VkBuffer object_description_buffer;
+	VkDeviceMemory object_description_buffer_memory;
+
 	VkPhysicalDevice physical_device;
 	VkDevice device;
 
 	void create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices);
 	void create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<uint32_t>* indices);
-
+	void create_object_description_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, ObjectDescription object_description);
 };

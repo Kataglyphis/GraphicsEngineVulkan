@@ -6,6 +6,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "../Resources/Shader/host_device.h"
+
 const int MAX_FRAME_DRAWS = 2;
 const int MAX_OBJECTS = 20;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
@@ -36,15 +38,6 @@ const std::vector<const char*> device_extensions_for_raytracing = {
 	VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 	VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME, 
 	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
-
-};
-
-// vertex data representation (layout)
-struct Vertex {
-
-	glm::vec3 pos; 
-	alignas(16) glm::vec2 texture_coords; 
-	glm::vec3 normal;
 
 };
 

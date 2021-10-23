@@ -11,13 +11,15 @@ class MeshModel
 public:
 
 	MeshModel();
-	MeshModel(std::vector<Mesh> new_mesh_list);
+	MeshModel(std::vector<Mesh> new_mesh_list, uint32_t index);
 
 	size_t get_mesh_count();
 	Mesh* get_mesh(size_t index);
 
 	glm::mat4 get_model();
 	void set_model(glm::mat4 model);
+
+	uint32_t get_custom_instance_index();
 
 	void destroy_mesh_model();
 
@@ -37,6 +39,7 @@ public:
 
 private:
 
+	uint32_t mesh_model_index;
 	std::vector<Mesh> meshes;
 	glm::mat4 model;
 
