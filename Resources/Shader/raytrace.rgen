@@ -1,57 +1,66 @@
 #version 460
 #extension GL_EXT_ray_tracing : require
+#extension GL_GOOGLE_include_directive : enable
+#extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 
-#define M_PI 3.1415926535897932384626433832795
+#include "raycommon.glsl"
+#include "SetsAndBindings.glsl"
 
-layout(location = 0) rayPayloadEXT Payload {
+layout(location = 0) rayPayloadEXT HitPayload payload;
 
-    vec3 ray_origin;
-    vec3 ray_direction;
-    
-    vec3 direct_color;
-    vec3 indirect_color;
-    int ray_depth;
+layout(set = 0, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
+layout(set = 0, binding = OUT_IMAGE_BINDING, rgba32f) uniform image2D image;
 
-    int rayActive;
+layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform UboViewProjection {
+	
+	mat4 projection;
+	mat4 view;
 
-} payload;
+} ubo_view_projection;
 
-layout(set = 0, binding = 0) uniform accelerationStructureEXT TLAS;
-layout(set = 0, binding = 1, rgba32f) uniform image2D image;
-layout(set = 0, binding = 2) uniform Camera {
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform UboDirections {
 
-    vec4 position;
-    vec4 right; 
-    vec4 up;
-    vec4 forward;
+	vec3 light_dir;
+	vec3 view_dir; 
 
-    uint frame_count;
+} ubo_directions;
 
-} camera;
+layout(push_constant) uniform PushConstantRay {
+
+    vec4 clear_color;
+
+} pc_ray;
 
 void main() {
 
-    const vec2 pixel_center = vec2(gl_LaunchIDEXT.xy);
-    const vec2 pixel_center_UV = pixel_center/vec2(gl_LaunchSizeEXT.xy);
+    const vec2 pixel_center = vec2(gl_LaunchIDEXT.xy) + vec2(0.5);
+    const vec2 pixel_center_UV = pixel_center / vec2(gl_LaunchSizeEXT.xy);
+    vec2 pixel_center_cs = pixel_center_UV * 2.0f - 1.0f;
 
-    // keep in mind we are in Vulkan screen coordinates! (0,0) should be the upper left corner :)
-    pixel_center_UV = (pixel_center_UV * 2.f - 1.f) * vec2(1.f, -1.f);
+    // vec4(0,0,0,1) in homogenous coordinates hints that it is the position in the origin
+    // assumption: origin is the standpoint from the viewer
+    // the inverse gets us the actual world space position
+    vec4 origin = inverse(ubo_view_projection.view) * vec4(0, 0, 0, 1);
+    vec4 target = inverse(ubo_view_projection.view) * vec4(pixel_center_cs.x, pixel_center_cs.y, 1, 1);
+    vec4 direction = inverse(ubo_view_projection.view) * vec4(normalize(target.xyz), 0);
 
-    payload.ray_origin = camera.position.xyz; 
-    payload.ray_direction = normalize(pixel_center_UV * camera.right + pixel_center_UV.y * camera.up + camera.forward).xyz; 
-    payload.ray_depth = 0;
+    uint ray_flags = gl_RayFlagsOpaqueEXT;
+    float t_min = 0.001;
+    float t_max = 10000;
 
-    payload.direct_color = vec3(0.f);
-    payload.indirect_color = vec3(0.f);
+    traceRayExt(TLAS,
+                        ray_flags, 
+                        0xFF, // cull mask 
+                        0,       // sbt record offset 
+                        0,      //record stride
+                        0,      // miss index
+                        origin,
+                        t_min,
+                        direction,
+                        t_max,
+                        0);         // payload (location = 0)
 
-    for(int x = 0; x < 16; x++) {
 
-        traceRayExt(TLAS, gl_RayFlagsOpaqueEXT, 0xFF, 0, 0, 0, payload.ray_origin, 0.001, payload.ray_direction, 10000.0, 0);
-
-    }
-
-    vec4 color =vec4(payload.direct_color + payload.indirect_color, 1.0f);
-
-    imageStore(image, ivec2(gl_LaunchIDEXT.xy), color);
+    imageStore(image, ivec2(gl_LaunchIDEXT.xy), vec4(payload.hit_value, 1.0));
 
 }

@@ -1,22 +1,20 @@
 #version 460
 #extension GL_EXT_ray_tracing : require
+#extension GL_GOOGLE_include_directive : enable
+#extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 
-layout(location = 0) rayPayloadInEXT Payload {
+#include "raycommon.glsl"
 
-  vec3 rayOrigin;
-  vec3 rayDirection;
-  vec3 previousNormal;
+layout(location = 0) rayPayloadEXT HitPayload payload;
 
-  vec3 directColor;
-  vec3 indirectColor;
-  int rayDepth;
+layout(push_constant) uniform PushConstantRay {
 
-  int rayActive;
+    vec4 clear_color;
 
-} payload;
+} pc_ray;
 
 void main() {
 
-	payload.rayActive = 0;
+	payload.hit_value = pc_ray.clear_color.xyz * 0.8f;
     
 }
