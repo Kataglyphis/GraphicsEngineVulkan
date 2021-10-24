@@ -32,7 +32,7 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkDevice d
 	model.model = glm::mat4(1.0f);
 	texture_id = new_texture_id;
 
-	//create_object_description_buffer();
+	// create_object_description_buffer(transfer_queue, transfer_command_pool, object_description);
 
 }
 
