@@ -227,9 +227,9 @@ private:
 	std::vector<VkDeviceMemory> bottom_level_acceleration_structure_buffer_memory;
 
 	// -- top level
-	std::vector<VkAccelerationStructureKHR> top_level_acceleration_structure;
-	std::vector<VkBuffer> top_level_acceleration_structure_buffer;
-	std::vector<VkDeviceMemory> top_level_acceleration_structure_buffer_memory;
+	VkAccelerationStructureKHR top_level_acceleration_structure;
+	VkBuffer top_level_acceleration_structure_buffer;
+	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
 
 	// -- image view
 	VkImageView raytracing_image_view;
@@ -255,6 +255,9 @@ private:
 
 	// -- properties
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
+
+	PushConstantRaytracing pc_ray;
+	VkPushConstantRange pc_ray_ranges;
 
 	// ----- ALL RAYTRACING SPECIFICS ----- END
 

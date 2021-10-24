@@ -105,7 +105,7 @@ struct PushConstantRaster
 
 };
 
-struct RaytracingPushConstants {
+struct PushConstantRaytracing {
 
 	glm::vec4 clear_color;
 

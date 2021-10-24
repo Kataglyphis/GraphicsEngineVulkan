@@ -25,14 +25,14 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkDevice d
 	index_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO_KHR;
 	index_info.buffer = index_buffer;
 
-	/*object_description.index_address = vkGetBufferDeviceAddress(logical_device, &index_info);
-	object_description.vertex_address = vkGetBufferDeviceAddress(logical_device, &vertex_info);*/
+	object_description.index_address = vkGetBufferDeviceAddress(logical_device, &index_info);
+	object_description.vertex_address = vkGetBufferDeviceAddress(logical_device, &vertex_info);
 	object_description.texture_offset = new_texture_id;
 
 	model.model = glm::mat4(1.0f);
 	texture_id = new_texture_id;
 
-	// create_object_description_buffer(transfer_queue, transfer_command_pool, object_description);
+	create_object_description_buffer(transfer_queue, transfer_command_pool, object_description);
 
 }
 
