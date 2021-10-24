@@ -14,6 +14,10 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 
 	this->window = window;
 
+	ubo_view_projection = UboViewProjection{};
+	ubo_directions = UboDirections{};
+	pc_raster = PushConstantRaster{};
+
 	ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
 																	near_plane, far_plane);
 
@@ -25,9 +29,6 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 	// -- RAYTRACING STUFF
 	this->raytracing = raytracing;
 
-	ubo_view_projection = UboViewProjection{};
-	ubo_directions = UboDirections{};
-	pc_raster = PushConstantRaster{};
 
 	try {
 

@@ -1,27 +1,27 @@
 // #extension GL_KHR_vulkan_glsl : enable
 
 #version 450																										// use GLSL 4.6
-//#extension gl_arb_separate_shader_objects : enable
-//#extension gl_ext_scalar_block_layout : enable
-//#extension gl_google_include_directive : enable
-//
-//#extension gl_ext_shader_explicit_arithmetic_types_int64 : require
+#extension gl_arb_separate_shader_objects : enable
+#extension gl_ext_scalar_block_layout : enable
+#extension gl_google_include_directive : enable
 
-//#include "raycommon.glsl"
-//#include "SetsAndBindings.glsl"
+#extension gl_ext_shader_explicit_arithmetic_types_int64 : require
+
+#include "raycommon.glsl"
+#include "SetsAndBindings.glsl"
 
 layout (location = 0) in vec3 positions; 
 layout (location = 1) in vec2 tex_coords;
 layout (location = 2) in vec3 normal;
 
-layout (set = 0, binding = 0) uniform UboViewProjection {
+layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform UboViewProjection {
 	
 	mat4 projection;
 	mat4 view;
 
 } ubo_view_projection;
 
-layout (set = 0, binding = 1) uniform UboDirections {
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform UboDirections {
 
 	vec3 light_dir;
 	vec3 view_dir; 
