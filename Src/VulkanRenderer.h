@@ -176,6 +176,7 @@ private:
 	// uniforms
 	UboViewProjection ubo_view_projection;
 	UboDirections ubo_directions;
+	PushConstantRaster pc_raster;
 
 	// uniform buffer
 	std::vector<VkBuffer> vp_uniform_buffer;

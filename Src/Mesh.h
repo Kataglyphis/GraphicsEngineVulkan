@@ -61,4 +61,5 @@ private:
 	void create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices);
 	void create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<uint32_t>* indices);
 	void create_object_description_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, ObjectDescription object_description);
+
 };

@@ -27,6 +27,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float 
 
 	ubo_view_projection = UboViewProjection{};
 	ubo_directions = UboDirections{};
+	pc_raster = PushConstantRaster{};
 
 	try {
 
@@ -114,9 +115,9 @@ void VulkanRenderer::hot_reload_all_shader()
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
 	create_rasterizer_graphics_pipeline();
 
-	vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
+	/*vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, raytracing_pipeline_layout, nullptr);
-	create_raytracing_pipeline();
+	create_raytracing_pipeline();*/
 
 }
 
@@ -393,8 +394,8 @@ void VulkanRenderer::create_logical_device()
 	std::vector<const char*> extensions(device_extensions);
 
 	// COPY ALL NECESSARY EXTENSIONS FOR RAYTRACING TO THE EXTENSION
-	extensions.insert(extensions.begin(), device_extensions_for_raytracing.begin(),
-											device_extensions_for_raytracing.end());
+	/*extensions.insert(extensions.begin(), device_extensions_for_raytracing.begin(),
+											device_extensions_for_raytracing.end());*/
 
 
 	// information to create logical device (sometimes called "device") 
@@ -408,8 +409,8 @@ void VulkanRenderer::create_logical_device()
 	device_create_info.pEnabledFeatures = NULL;
 
 
-	device_create_info.pNext = &acceleration_structure_features;
-	//device_create_info.pNext = &features2;
+	//device_create_info.pNext = &acceleration_structure_features;
+	device_create_info.pNext = &features2;
 
 	//// physical device features the logical device will be using 
 	//VkPhysicalDeviceFeatures device_features{};
@@ -1481,15 +1482,15 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 	//ubo_view_projection Binding info
 	VkDescriptorSetLayoutBinding ubo_view_projection_layout_binding{};
-	ubo_view_projection_layout_binding.binding = 0;																												// binding point in shader (designated by binding number in shader)
-	ubo_view_projection_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;						// type of descriptor (uniform, dynamic uniform, image sampler, etc)
-	ubo_view_projection_layout_binding.descriptorCount = 1;																								// number of descriptors for binding
+	ubo_view_projection_layout_binding.binding = UBO_VIEW_PROJECTION_BINDING;													// binding point in shader (designated by binding number in shader)
+	ubo_view_projection_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor (uniform, dynamic uniform, image sampler, etc)
+	ubo_view_projection_layout_binding.descriptorCount = 1;																							// number of descriptors for binding
 	ubo_view_projection_layout_binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;												// we need to say at which shader we bind this uniform to
 	ubo_view_projection_layout_binding.pImmutableSamplers = nullptr;																			// for texture: can make sampler data unchangeable (immutable) by specifying in layout
 
 	// our model matrix which updates every frame for each object
 	VkDescriptorSetLayoutBinding directions_layout_binding{};
-	directions_layout_binding.binding = 1;
+	directions_layout_binding.binding = UBO_DIRECTIONS_BINDING;
 	directions_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	directions_layout_binding.descriptorCount = 1;
 	directions_layout_binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
@@ -1543,8 +1544,7 @@ void VulkanRenderer::create_push_constant_range()
 {
 
 	// define push constant values (no 'create' needed)
-	push_constant_range.stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
-																	VK_SHADER_STAGE_FRAGMENT_BIT;														// shader stage push constant will go to 
+	push_constant_range.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;														// shader stage push constant will go to 
 	push_constant_range.offset = 0;																															// offset into given data to pass tp push constant
 	push_constant_range.size = sizeof(PushConstantRaster);																				// size of data being passed
 
@@ -1555,8 +1555,8 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 
 	compile_shaders(SHADER_COMPILATION_FLAG::RASTERIZATION);
 
-	auto vertex_shader_code = read_file("../Resources/Shader/vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/frag.spv");
+	auto vertex_shader_code = read_file("../Resources/Shader/shader.vert.spv");
+	auto fragment_shader_code = read_file("../Resources/Shader/shader.frag.spv");
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -1611,7 +1611,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	attribute_describtions[2].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
 
 	// CREATE PIPELINE
-	// 1.) Vertex input (TODO: Put in vertex descriptions when resources created)
+	// 1.) Vertex input 
 	VkPipelineVertexInputStateCreateInfo vertex_input_create_info{};
 	vertex_input_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 	vertex_input_create_info.vertexBindingDescriptionCount = 1;
@@ -1928,9 +1928,9 @@ void VulkanRenderer::create_uniform_buffers()
 {
 
 	// buffer size will be size of all two variables (will offset to access) 
-	VkDeviceSize vp_buffer_size = sizeof(UboViewProjection);
+	VkDeviceSize vp_buffer_size = sizeof(ubo_view_projection);
 	// buffer size will be size of model buffer (will offset to access)
-	VkDeviceSize directions_buffer_size = sizeof(UboDirections);
+	VkDeviceSize directions_buffer_size = sizeof(ubo_directions);
 	// buffer size of raytracing uniform
 	VkDeviceSize raytracing_buffer_size = sizeof(UboRaytracing);
 
@@ -2139,7 +2139,7 @@ void VulkanRenderer::create_descriptor_sets()
 		VkDescriptorBufferInfo ubo_view_projection_buffer_info{};
 		ubo_view_projection_buffer_info.buffer = vp_uniform_buffer[i];																					// buffer to get data from 
 		ubo_view_projection_buffer_info.offset = 0;																													// position of start of data
-		ubo_view_projection_buffer_info.range = sizeof(UboViewProjection);																	// size of data
+		ubo_view_projection_buffer_info.range = sizeof(ubo_view_projection);																	// size of data
 
 		// data about connection between binding and buffer
 		VkWriteDescriptorSet ubo_view_projection_set_write{};
@@ -2156,7 +2156,7 @@ void VulkanRenderer::create_descriptor_sets()
 		VkDescriptorBufferInfo ubo_directions_buffer_info{};
 		ubo_directions_buffer_info.buffer = vp_uniform_buffer[i];																							// buffer to get data from 
 		ubo_directions_buffer_info.offset = 0;																																// position of start of data
-		ubo_directions_buffer_info.range = sizeof(UboDirections);																						// size of data
+		ubo_directions_buffer_info.range = sizeof(ubo_directions);																						// size of data
 
 		// data about connection between binding and buffer
 		VkWriteDescriptorSet ubo_directions_set_write{};
@@ -2189,12 +2189,12 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	else {
 
 		void* data;
-		vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(UboViewProjection), 0, &data);
-		memcpy(data, &ubo_view_projection, sizeof(UboViewProjection));
+		vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(ubo_view_projection), 0, &data);
+		memcpy(data, &ubo_view_projection, sizeof(ubo_view_projection));
 		vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
 
-		vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(UboDirections), 0, &data);
-		memcpy(data, &ubo_directions, sizeof(UboDirections));
+		vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(ubo_directions), 0, &data);
+		memcpy(data, &ubo_directions, sizeof(ubo_directions));
 		vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);
 
 	}
@@ -2441,7 +2441,7 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 
 		// make sure the order you put the values into the array matches with the attchment order you have defined previous
 		std::array<VkClearValue, 2> clear_values = {};
-		clear_values[0].color = { 0.6f, 0.65f,0.4f, 1.0f };
+		clear_values[0].color = { 0.2f, 0.65f,0.4f, 1.0f };
 		clear_values[1].depthStencil.depth = 1.0f;
 
 		render_pass_begin_info.pClearValues = clear_values.data();
@@ -2458,13 +2458,11 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		for (size_t m = 0; m < model_list.size(); m++) {
 
 			// for GCC doen't allow references on rvalues go like that ... 
-			PushConstantRaster pc_raster{};
 			pc_raster.model = model_list[m].get_model();
 			// just "Push" constants to given shader stage directly (no buffer)
 			vkCmdPushConstants(command_buffers[current_image],
 				pipeline_layout,
-				VK_SHADER_STAGE_VERTEX_BIT | 
-				VK_SHADER_STAGE_FRAGMENT_BIT,								// stage to push constants to 
+				VK_SHADER_STAGE_VERTEX_BIT,								// stage to push constants to 
 				0,																								// offset to push constants to update
 				sizeof(PushConstantRaster),												// size of data being pushed 
 				&pc_raster);																			// using model of current mesh (can be array)

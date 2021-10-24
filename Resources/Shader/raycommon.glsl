@@ -1,5 +1,4 @@
 
-#include "host_device.h"
 
 struct HitPayload {
 
