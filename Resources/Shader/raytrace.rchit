@@ -95,6 +95,9 @@ void main() {
         
             specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
 
+        } else {
+
+
         }
 
 
