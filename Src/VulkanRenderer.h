@@ -171,6 +171,7 @@ private:
 	void create_uniform_buffers();
 	void create_descriptor_pool_uniforms();
 	void create_descriptor_pool_sampler();
+	void create_descriptor_pool_object_description();
 	void create_descriptor_sets();
 
 	// uniforms
@@ -192,6 +193,7 @@ private:
 	VkPushConstantRange push_constant_range;
 	VkDescriptorPool descriptor_pool;
 	VkDescriptorPool sampler_descriptor_pool;
+	VkDescriptorPool object_description_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
 	std::vector<VkDescriptorSet> sampler_descriptor_sets;				// these are no swap chain dependend descriptors, doesn't change over frames
 
@@ -202,18 +204,21 @@ private:
 
 	// -- create funcs
 	// -- bottom level acceleration structure
-	void create_single_BLAS(MeshModel mesh_model, int mesh_model_index);
-	void create_all_BLAS();
+	void create_BLAS();
 	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
-																							VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info);
+																VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info);
+
 	void create_acceleration_structure_infos_BLAS(VkAccelerationStructureBuildGeometryInfoKHR& acceleration_structure_build_geometry_info,
 																				VkAccelerationStructureGeometryKHR acceleration_structure_geometry, 
 																				int index);
 	// -- top level acceleration structure
 	void create_TLAS();
+	void transfer_geometry_instance_to_gpu(VkAccelerationStructureInstanceKHR& geometry_instance, VkBuffer& geometry_instance_buffer, 
+																				VkDeviceMemory& geometry_instance_buffer_memory);
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
 	void create_raytracing_descriptor_pool();
+	void create_object_description_buffer();
 	void create_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
 	void create_raytracing_image();
@@ -294,6 +299,11 @@ private:
 
 	// ----- EVERYTHING FOR THE SCENE ----- BEGIN
 	std::vector<MeshModel> model_list;
+	// std::vector<Texture> textures;
+
+	std::vector<ObjectDescription> object_descriptions;
+	std::vector<VkBuffer> object_description_buffer;
+	std::vector<VkDeviceMemory> object_description_buffer_memory;
 	// ----- EVERYTHING FOR THE SCENE ----- END
 };
 

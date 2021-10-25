@@ -121,8 +121,6 @@ std::vector<Mesh> MeshModel::load_node(VkPhysicalDevice new_physical_device, VkD
 
         mesh_list.insert(mesh_list.end(), new_list.begin(), new_list.end());
 
-
-
     }
 
     return mesh_list;

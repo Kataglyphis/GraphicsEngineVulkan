@@ -7,11 +7,7 @@
 
 layout(location = 0) rayPayloadEXT HitPayload payload;
 
-layout(push_constant) uniform PushConstantRay {
-
-    vec4 clear_color;
-
-} pc_ray;
+layout(push_constant) uniform PushConstantRay pc_ray;
 
 void main() {
 

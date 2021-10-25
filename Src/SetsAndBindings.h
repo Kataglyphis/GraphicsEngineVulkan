@@ -5,4 +5,6 @@
 // ---- RAYTRACING BINDING ---- START
 #define TLAS_BINDING 0
 #define OUT_IMAGE 1
+#define TEXTURES 2
+#define OBJ_DESCRIPTION 3
 // ---- RAYTRACING BINDING ---- END

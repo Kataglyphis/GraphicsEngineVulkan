@@ -27,12 +27,10 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkDevice d
 
 	object_description.index_address = vkGetBufferDeviceAddress(logical_device, &index_info);
 	object_description.vertex_address = vkGetBufferDeviceAddress(logical_device, &vertex_info);
-	object_description.texture_offset = new_texture_id;
+	object_description.texture_id = new_texture_id;
 
 	model.model = glm::mat4(1.0f);
 	texture_id = new_texture_id;
-
-	create_object_description_buffer(transfer_queue, transfer_command_pool, object_description);
 
 }
 
@@ -46,6 +44,11 @@ void Mesh::set_model(glm::mat4 new_model)
 Model Mesh::get_model()
 {
 	return model;
+}
+
+ObjectDescription Mesh::get_object_description()
+{
+	return object_description;
 }
 
 int Mesh::get_texture_id()
@@ -160,43 +163,4 @@ void Mesh::create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_co
 	// clean up staging buffer parts
 	vkDestroyBuffer(device, staging_buffer, nullptr);
 	vkFreeMemory(device, staging_buffer_memory, nullptr);
-}
-
-void Mesh::create_object_description_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, ObjectDescription object_description)
-{
-
-	// get size of buffer need
-	VkDeviceSize buffer_size = sizeof(ObjectDescription);
-
-	// temporary buffer to "stage" index data before transfering to GPU
-	VkBuffer staging_buffer;
-	VkDeviceMemory staging_buffer_memory;
-
-	// create buffer and allocate memory to it
-	create_buffer(physical_device, device, buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		&staging_buffer, &staging_buffer_memory);
-
-	// Map memory to index buffer
-	void* data;																																			// 1.) create pointer to a point in normal memory
-	vkMapMemory(device, staging_buffer_memory, 0, buffer_size, 0, &data);							// 2.) map the object_description buffer memory to that point
-	memcpy(data, &object_description, (size_t)buffer_size);														// 3.) copy memory from object_description to the point
-	vkUnmapMemory(device, staging_buffer_memory);																	// 4.) unmap the object_description buffer memory
-
-	// create buffer for index data on GPU access only area
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	create_buffer(physical_device, device, buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-		VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
-		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-		&object_description_buffer,
-		&object_description_buffer_memory);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device, transfer_queue, transfer_command_pool, staging_buffer, object_description_buffer, buffer_size);
-
-	// clean up staging buffer parts
-	vkDestroyBuffer(device, staging_buffer, nullptr);
-	vkFreeMemory(device, staging_buffer_memory, nullptr);
-
 }
