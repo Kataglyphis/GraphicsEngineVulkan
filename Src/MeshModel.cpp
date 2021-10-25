@@ -81,7 +81,6 @@ std::vector<std::string> MeshModel::load_materials(const aiScene* scene)
 
                 texture_list[i] = file_name;
 
-
             }
 
         }

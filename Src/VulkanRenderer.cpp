@@ -1307,17 +1307,14 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 	descriptor_pool_sizes[1].type = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 	descriptor_pool_sizes[1].descriptorCount = 1;
 
-	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	descriptor_pool_sizes[2].descriptorCount = 1;
-
-	descriptor_pool_sizes[3].type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-	descriptor_pool_sizes[3].descriptorCount = 1;
+	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+	descriptor_pool_sizes[2].descriptorCount = MAX_OBJECTS;
 
 	VkDescriptorPoolCreateInfo descriptor_pool_create_info{};
 	descriptor_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	descriptor_pool_create_info.poolSizeCount = 4;
 	descriptor_pool_create_info.pPoolSizes = descriptor_pool_sizes;
-	descriptor_pool_create_info.maxSets = 2;
+	descriptor_pool_create_info.maxSets = MAX_OBJECTS;
 
 	VkResult result = vkCreateDescriptorPool(MainDevice.logical_device, &descriptor_pool_create_info, nullptr, &raytracing_descriptor_pool);
 
@@ -1338,7 +1335,7 @@ void VulkanRenderer::create_object_description_buffer()
 	// create uniform buffers 
 	for (size_t i = 0; i < swap_chain_images.size(); i++) {
 
-		create_buffer(MainDevice.physical_device, MainDevice.logical_device, static_cast<uint32_t>(object_descriptions.size()), 
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, static_cast<uint32_t>(object_descriptions.size() * sizeof(ObjectDescription)), 
 													VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
 													VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
 													VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
@@ -1647,7 +1644,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	fragment_shader_create_info.pName = "main";																											// entry point into shader
 
 	VkPipelineShaderStageCreateInfo shader_stages[] = {vertex_shader_create_info, 
-																									fragment_shader_create_info};
+																							fragment_shader_create_info};
 
 
 	// how the data for a single vertex (including info such as position, color, texture coords, normals, etc) is as a whole 
@@ -2093,14 +2090,14 @@ void VulkanRenderer::create_descriptor_pool_object_description()
 	object_description_pool_size.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 	object_description_pool_size.descriptorCount = MAX_OBJECTS;
 
-	VkDescriptorPoolCreateInfo sampler_pool_create_info{};
-	sampler_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	sampler_pool_create_info.maxSets = MAX_OBJECTS;
-	sampler_pool_create_info.poolSizeCount = 1;
-	sampler_pool_create_info.pPoolSizes = &object_description_pool_size;
+	VkDescriptorPoolCreateInfo object_description_pool_create_info{};
+	object_description_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	object_description_pool_create_info.maxSets = MAX_OBJECTS;
+	object_description_pool_create_info.poolSizeCount = 1;
+	object_description_pool_create_info.pPoolSizes = &object_description_pool_size;
 
 	// create descriptor pool
-	VkResult result = vkCreateDescriptorPool(MainDevice.logical_device, &sampler_pool_create_info, nullptr, &object_description_pool);
+	VkResult result = vkCreateDescriptorPool(MainDevice.logical_device, &object_description_pool_create_info, nullptr, &object_description_pool);
 
 	if (result != VK_SUCCESS) {
 
