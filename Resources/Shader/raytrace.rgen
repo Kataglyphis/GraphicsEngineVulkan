@@ -11,25 +11,11 @@ layout(location = 0) rayPayloadEXT HitPayload payload;
 layout(set = 0, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
 layout(set = 0, binding = OUT_IMAGE_BINDING, rgba32f) uniform image2D image;
 
-layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform UboViewProjection {
-	
-	mat4 projection;
-	mat4 view;
+layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform UboViewProjection ubo_view_projection;
 
-} ubo_view_projection;
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform UboDirections ubo_directions;
 
-layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform UboDirections {
-
-	vec3 light_dir;
-	vec3 view_dir; 
-
-} ubo_directions;
-
-layout(push_constant) uniform PushConstantRay {
-
-    vec4 clear_color;
-
-} pc_ray;
+layout(push_constant) uniform PushConstantRay pc_ray;
 
 void main() {
 

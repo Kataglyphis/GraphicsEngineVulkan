@@ -17,25 +17,18 @@ layout(location = 1) rayPayloadEXT bool isShadowed;
 
 layout(set = 0, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
 
-layout(set = 1, binding = TEXTURES_BINDING) uniform sampler2D texture_samplers[];
+layout(set = 0, binding = 0) uniform sampler2D sampler;
 
-layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform UboDirections {
+layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D textures[];
 
-	vec3 light_dir;
-	vec3 view_dir; 
-
-} ubo_directions;
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform UboDirections ubo_directions;
 
 layout(set = 1, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {ObjectDescription i[];} object_description;
 
 layout(buffer_reference, scalar) buffer Vertices {Vertex v[]; }; // Positions of an object
 layout(buffer_reference, scalar) buffer Indices {ivec3 i[]; }; // Triangle indices
 
-layout(push_constant) uniform PushConstantRay {
-
-    vec4 clear_color;
-
-} pc_ray;
+layout(push_constant) uniform PushConstantRay pc_ray;
 
 void main() {
 

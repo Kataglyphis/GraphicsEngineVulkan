@@ -1,5 +1,14 @@
 #pragma once
 
+#include <fstream>
+
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+
+#include <glm/glm.hpp>
+#include <vector>
+
 const int MAX_FRAME_DRAWS = 2;
 const int MAX_OBJECTS = 20;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
@@ -77,7 +86,7 @@ struct Vertex {
 
 struct ObjectDescription {
 
-	int texture_offset;
+	int texture_id;
 	uint64_t vertex_address;
 	uint64_t index_address;
 
@@ -111,12 +120,9 @@ struct PushConstantRaytracing {
 
 };
 
-// uniform
-struct UboRaytracing {
+struct Texture {
 
-	glm::vec4 camera_position;
-	glm::vec4 right;
-	glm::vec4 up;
-	glm::vec4 forward;
+	VkImage image;
+	VkImageView image_view;
 
 };
