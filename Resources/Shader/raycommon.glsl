@@ -43,7 +43,7 @@ struct PushConstantRaster
 
 };
 
-struct PushConstantRaytracing {
+struct PushConstantRay {
 
 	vec4 clear_color;
 

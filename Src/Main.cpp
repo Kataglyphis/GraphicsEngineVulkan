@@ -72,21 +72,26 @@ int main() {
     // -- RAY TRACING ON
     bool raytracing = false;
 
+    std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
+
     Camera camera{ start_position, start_up, start_yaw, start_pitch,
                                     start_move_speed, start_turn_speed,
                                     near_plane, far_plane, fov };
 
     VulkanRenderer vulkan_renderer{};
-    if (vulkan_renderer.init(main_window, start_position, near_plane, 
+
+    if (vulkan_renderer.init(main_window, initial_scene, start_position, near_plane,
                                             far_plane, { 1.f,1.f,1.f }, camera.get_camera_direction(),
                                             raytracing) == EXIT_FAILURE) {
         
         return EXIT_FAILURE;
 
     }
-    //int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_3ds.3ds");
-    int dragon = vulkan_renderer.create_mesh_model("../Resources/Model/Dragon 2.5_fbx.fbx", false);
-    int floor = vulkan_renderer.create_mesh_model("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true);
+
+    // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
+    // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
+
+    vulkan_renderer.init_raytracing();
 
     while (!main_window->get_should_close()) {
     
@@ -108,7 +113,7 @@ int main() {
         if (angle > 360.f) {
             angle = 0.0f;
         }
-        
+
         glm::mat4 dragon_model(1.0f);
         //dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
         dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -120,21 +125,8 @@ int main() {
         floor_model = glm::translate(floor_model, glm::vec3(0.0f, 0.0f, -3.75f));
         //floor_model = glm::rotate(floor_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        vulkan_renderer.update_model(dragon, dragon_model);
-        vulkan_renderer.update_model(floor, floor_model);
-
-        /*glm::mat4 first_model(1.0f);
-        glm::mat4 second_model(1.0f);
-
-        first_model = glm::translate(first_model, glm::vec3(-2.0f, 0.0f, -5.0f));
-        first_model = glm::rotate(first_model, glm::radians(angle), glm::vec3(0.0f,0.0f,1.0f));
-
-        second_model = glm::translate(second_model, glm::vec3(2.0f, 0.0f, -5.0f));
-        second_model = glm::rotate(second_model, glm::radians(-angle*100), glm::vec3(0.0f, 0.0f, 1.0f));
-
-        vulkan_renderer.update_model(0, first_model);
-        vulkan_renderer.update_model(1, second_model);*/
-
+        vulkan_renderer.update_model(0, dragon_model);
+        vulkan_renderer.update_model(1, floor_model);
 
         // Start the Dear ImGui frame
         ImGui_ImplVulkan_NewFrame();

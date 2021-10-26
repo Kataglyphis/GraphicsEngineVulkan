@@ -40,7 +40,8 @@ const std::vector<const char*> device_extensions_for_raytracing = {
 
 	VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 	VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
-	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
+	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
+	VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME
 
 };
 
@@ -117,12 +118,5 @@ struct PushConstantRaster
 struct PushConstantRaytracing {
 
 	glm::vec4 clear_color;
-
-};
-
-struct Texture {
-
-	VkImage image;
-	VkImageView image_view;
 
 };

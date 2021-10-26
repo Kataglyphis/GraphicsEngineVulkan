@@ -105,11 +105,11 @@ static void create_buffer(VkPhysicalDevice physical_device, VkDevice device, VkD
 
 	if (result != VK_SUCCESS) {
 
-		throw std::runtime_error("Failed to allocate memory for vertex buffer!");
+		throw std::runtime_error("Failed to allocate memory for buffer!");
 
 	}
 
-	// allocate memory to given vertex buffer
+	// allocate memory to given buffer
 	vkBindBufferMemory(device, *buffer, *buffer_memory, 0);
 
 }
@@ -141,7 +141,7 @@ static VkCommandBuffer begin_command_buffer(VkDevice device, VkCommandPool comma
 
 }
 
-static void end_and_submit_command_buffer(VkDevice device, VkCommandPool command_pool, VkQueue queue, VkCommandBuffer command_buffer) {
+static void end_and_submit_command_buffer(VkDevice device, VkCommandPool command_pool, VkQueue queue, VkCommandBuffer& command_buffer) {
 
 	// end commands
 	vkEndCommandBuffer(command_buffer);
@@ -237,7 +237,7 @@ static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPoo
 	}
 	else if (old_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
 
-		memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;						// memory access stage transition must after ...
+		memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;							// memory access stage transition must after ...
 		memory_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;								// memory access stage transition must before ...
 
 		src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
@@ -249,7 +249,7 @@ static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPoo
 	
 		command_buffer,
 		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
-		0,												// no dependency flags
+		0,													// no dependency flags
 		0, nullptr,									// memory barrier count + data
 		0, nullptr,									// buffer memory barrier count + data
 		1, &memory_barrier				// image memory barrier count + data
