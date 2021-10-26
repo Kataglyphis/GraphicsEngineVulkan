@@ -102,7 +102,8 @@ void Mesh::create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_c
 
 	// create buffer and allocate memory to it
 	create_buffer(physical_device, device, buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-												VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+																								VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+																								VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 												&staging_buffer, &staging_buffer_memory);
 
 	// Map memory to vertex buffer
@@ -114,7 +115,8 @@ void Mesh::create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_c
 	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
 	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
 	create_buffer(physical_device, device, buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-																								VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+																								VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | 
+																								VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
 																								VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 																								&vertex_buffer,
 																								&vertex_buffer_memory);
@@ -152,7 +154,8 @@ void Mesh::create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_co
 	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
 	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
 	create_buffer(physical_device, device, buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-																								VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+																								VK_BUFFER_USAGE_INDEX_BUFFER_BIT | 
+																								VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
 																								VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 																								&index_buffer,
 																								&index_buffer_memory);
@@ -163,4 +166,5 @@ void Mesh::create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_co
 	// clean up staging buffer parts
 	vkDestroyBuffer(device, staging_buffer, nullptr);
 	vkFreeMemory(device, staging_buffer_memory, nullptr);
+
 }

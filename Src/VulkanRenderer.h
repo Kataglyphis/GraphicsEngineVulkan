@@ -5,11 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-// the importer from the assimp library
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <stdexcept>
 #include <vector>
 #include <memory>
@@ -34,18 +29,26 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_vulkan.h"
 
+// the importer from the assimp library
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+#include "Scene.h"
+
 class VulkanRenderer
 {
 public:
 
 	VulkanRenderer();
 
-	int init(std::shared_ptr<MyWindow> window, glm::vec3 eye, float near_plane, float far_plane,
+	int create_mesh_model_for_scene(std::string model_file, bool flip_y);
+
+	int init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane,
 					glm::vec3 light_dir, glm::vec3 view_dir, bool raytracing);
 
 	void init_rasterizer();
-
-	int create_mesh_model(std::string model_file, bool flip_y);
+	void init_raytracing();
 
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
@@ -105,9 +108,7 @@ private:
 	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
-	// texture functions 
-	int create_texture(std::string filename);
-	int create_texture_image(std::string filename);
+	// texture functions
 	int create_texture_descriptor(VkImageView texture_image);
 
 	// allocate functions
@@ -135,7 +136,8 @@ private:
 
 	// -- pools
 	VkCommandPool graphics_command_pool;
-	
+	VkCommandPool compute_command_pool;
+
 	// -- synchronization
 	std::vector<VkSemaphore> image_available;
 	std::vector<VkSemaphore> render_finished;
@@ -200,7 +202,6 @@ private:
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
 	bool raytracing;
-	void init_raytracing();
 
 	// -- create funcs
 	// -- bottom level acceleration structure
@@ -248,7 +249,7 @@ private:
 	// -- descriptors
 	VkDescriptorPool raytracing_descriptor_pool;
 	std::vector<VkDescriptorSet> raytracing_descriptor_sets;
-	std::vector<VkDescriptorSetLayout> raytracing_descriptor_set_layouts;
+	VkDescriptorSetLayout raytracing_descriptor_set_layout;
 
 	// -- pipeline
 	VkPipeline raytracing_pipeline;
@@ -268,19 +269,27 @@ private:
 
 	// -- TEXTURE --
 	VkSampler texture_sampler;
-	int max_levels;
 	std::vector<uint32_t> texture_mip_levels;
+	std::vector<VkBuffer> object_description_buffer;
+	std::vector<VkDeviceMemory> object_description_buffer_memory;
+
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
 	std::vector<VkImageView> texture_image_views;
+	// mipmapping
+	int max_levels;
 
-	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
-	void update_uniform_buffers(uint32_t image_index);
-	void record_commands(uint32_t current_image);
+	// texture functions 
+	int create_texture(std::string filename);
+	int create_texture_image(std::string filename);
 
 	// ---- HELPER ---- BEGIN
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
 	// ---- HELPER ---- END
+
+	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
+	void update_uniform_buffers(uint32_t image_index);
+	void record_commands(uint32_t current_image);
 	
 	// ----- GUI STUFF ----- BEGIN
 	VkDescriptorPool gui_descriptor_pool;
@@ -297,13 +306,9 @@ private:
 	int current_frame;
 	// ----- VARS ----- END
 
-	// ----- EVERYTHING FOR THE SCENE ----- BEGIN
-	std::vector<MeshModel> model_list;
-	// std::vector<Texture> textures;
+	// ----- SCENE
+	std::shared_ptr<Scene> scene;
+	void init_scene();
 
-	std::vector<ObjectDescription> object_descriptions;
-	std::vector<VkBuffer> object_description_buffer;
-	std::vector<VkDeviceMemory> object_description_buffer_memory;
-	// ----- EVERYTHING FOR THE SCENE ----- END
 };
 
