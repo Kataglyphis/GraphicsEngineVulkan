@@ -9,9 +9,6 @@
 
 layout(location = 0) rayPayloadEXT HitPayload payload;
 
-layout(set = 0, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
-layout(set = 0, binding = OUT_IMAGE_BINDING, rgba32f) uniform image2D image;
-
 layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform _UboViewProjection {
     UboViewProjection ubo_view_projection;
 };
@@ -20,12 +17,15 @@ layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
     UboDirections ubo_directions;
 };
 
+layout(set = 2, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
+layout(set = 2, binding = OUT_IMAGE_BINDING, rgba32f) uniform image2D image;
+
 layout(push_constant) uniform _PushConstantRay {
     PushConstantRay pc_ray;
 };
 
 void main() {
-
+    
     const vec2 pixel_center = vec2(gl_LaunchIDEXT.xy) + vec2(0.5);
     const vec2 pixel_center_UV = pixel_center / vec2(gl_LaunchSizeEXT.xy);
     vec2 pixel_center_cs = pixel_center_UV * 2.0f - 1.0f;

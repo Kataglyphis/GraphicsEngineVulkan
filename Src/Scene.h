@@ -40,6 +40,7 @@ public:
 	uint32_t get_index_count(int model_index, int mesh_index);
 	uint32_t get_number_of_object_descriptions();
 	uint32_t get_number_of_meshes();
+	std::vector<ObjectDescription> get_object_descriptions();
 
 	void add_mesh_model(MeshModel mesh_model);
 	void add_object_description(ObjectDescription object_description);

@@ -15,7 +15,7 @@ layout(push_constant) uniform _PushConstantRay{
 };
 
 void main() {
-
+	
 	payload.hit_value = pc_ray.clear_color.xyz * 0.8f;
     
 }

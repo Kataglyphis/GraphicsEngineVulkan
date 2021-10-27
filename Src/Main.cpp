@@ -91,8 +91,6 @@ int main() {
     // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
 
-    vulkan_renderer.init_raytracing();
-
     while (!main_window->get_should_close()) {
     
         //poll all events incoming from user

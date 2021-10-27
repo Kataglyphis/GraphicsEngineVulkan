@@ -270,8 +270,8 @@ private:
 	// -- TEXTURE --
 	VkSampler texture_sampler;
 	std::vector<uint32_t> texture_mip_levels;
-	std::vector<VkBuffer> object_description_buffer;
-	std::vector<VkDeviceMemory> object_description_buffer_memory;
+	VkBuffer object_description_buffer;
+	VkDeviceMemory object_description_buffer_memory;
 
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
