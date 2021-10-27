@@ -144,7 +144,13 @@ static VkCommandBuffer begin_command_buffer(VkDevice device, VkCommandPool comma
 static void end_and_submit_command_buffer(VkDevice device, VkCommandPool command_pool, VkQueue queue, VkCommandBuffer& command_buffer) {
 
 	// end commands
-	vkEndCommandBuffer(command_buffer);
+	VkResult result = vkEndCommandBuffer(command_buffer);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to end command buffer!");
+
+	}
 
 	// queue submission information 
 	VkSubmitInfo submit_info{};
@@ -153,8 +159,22 @@ static void end_and_submit_command_buffer(VkDevice device, VkCommandPool command
 	submit_info.pCommandBuffers = &command_buffer;
 
 	// submit transfer command to transfer queue and wait until it finishes
-	vkQueueSubmit(queue, 1, &submit_info, VK_NULL_HANDLE);
-	vkQueueWaitIdle(queue);
+	result = vkQueueSubmit(queue, 1, &submit_info, VK_NULL_HANDLE);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to submit to queue!");
+
+	}
+
+	result = vkQueueWaitIdle(queue);
+
+	if (result != VK_SUCCESS) {
+
+		printf("%i", result);
+		throw std::runtime_error("Failed to wait Idle!");
+
+	}
 
 	// free temporary command buffer back to pool
 	vkFreeCommandBuffers(device, command_pool, 1, &command_buffer);

@@ -143,6 +143,7 @@ private:
 	std::vector<VkSemaphore> render_finished;
 	std::vector<VkFence> draw_fences;
 	std::vector<VkFence> images_in_flight_fences;
+	VkFence building_BLAS;
 	void create_synchronization();
 
 	// ----- VULKAN CORE COMPONENTS ----- END
@@ -207,11 +208,13 @@ private:
 	// -- bottom level acceleration structure
 	void create_BLAS();
 	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
-																VkAccelerationStructureBuildRangeInfoKHR* acceleration_structure_build_range_info);
+																						VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
 
 	void create_acceleration_structure_infos_BLAS(VkAccelerationStructureBuildGeometryInfoKHR& acceleration_structure_build_geometry_info,
-																				VkAccelerationStructureGeometryKHR acceleration_structure_geometry, 
-																				int index);
+																							std::vector<VkAccelerationStructureGeometryKHR>& acceleration_structure_geometry, 
+																							std::vector<VkAccelerationStructureBuildRangeInfoKHR> acceleration_structure_build_range_info, 
+																							uint32_t& current_scretch_size, uint32_t& current_size, 
+																							VkAccelerationStructureBuildSizesInfoKHR& acceleration_structure_build_sizes_info);
 	// -- top level acceleration structure
 	void create_TLAS();
 	void transfer_geometry_instance_to_gpu(VkAccelerationStructureInstanceKHR& geometry_instance, VkBuffer& geometry_instance_buffer, 
