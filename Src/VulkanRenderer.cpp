@@ -1412,11 +1412,14 @@ void VulkanRenderer::create_shader_binding_table()
 													&shader_binding_table_buffer,
 													&shader_binding_table_buffer_memory);
 
-	std::vector<uint8_t> handles(shader_binding_table_size);
+	/*std::vector<uint8_t> handles;
+	handles.reserve(static_cast<uint64_t>(shader_binding_table_size));*/
+
+	uint8_t* handles = new uint8_t[shader_binding_table_size];
 
 	VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(MainDevice.logical_device,
 										raytracing_pipeline, 0, 4, shader_binding_table_size, 
-										handles.data());
+										handles);
 
 	if(result != VK_SUCCESS) {
 		
@@ -1428,9 +1431,10 @@ void VulkanRenderer::create_shader_binding_table()
 	void* data;
 	vkMapMemory(MainDevice.logical_device, shader_binding_table_buffer_memory, 0, 
 							shader_binding_table_size, 0, &data);
-	memcpy(data, handles.data(), raytracing_properties.shaderGroupHandleSize);
+	memcpy(data, handles, raytracing_properties.shaderGroupHandleSize);
 	vkUnmapMemory(MainDevice.logical_device, shader_binding_table_buffer_memory);
-	// vector<> shader_handle_storages
+	
+	delete handles;
 
 }
 
@@ -2629,7 +2633,7 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 {
 
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
-																							vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddressKHR");
+																							vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddress");
 	PFN_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR = (PFN_vkCmdTraceRaysKHR)
 																							vkGetDeviceProcAddr(MainDevice.logical_device, "vkCmdTraceRaysKHR");
 
@@ -2686,7 +2690,7 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		pc_ray.clear_color = { 0.2f,0.65f,0.4f,1.0f };
 		// just "Push" constants to given shader stage directly (no buffer)
 		vkCmdPushConstants(command_buffers[current_image],
-			pipeline_layout,
+			raytracing_pipeline_layout,
 			VK_SHADER_STAGE_RAYGEN_BIT_KHR |
 			VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
 			VK_SHADER_STAGE_MISS_BIT_KHR,								// stage to push constants to 
