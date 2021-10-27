@@ -963,7 +963,7 @@ void VulkanRenderer::create_BLAS()
 
 		acceleration_structure_build_geometry_infos[i].scratchData = scratch_device_or_host_address;
 
-		create_buffer(MainDevice.physical_device, MainDevice.logical_device, max_scratch_size,
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, acceleration_structure_build_sizes_infos[i].accelerationStructureSize,
 															VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
 															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
 															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
