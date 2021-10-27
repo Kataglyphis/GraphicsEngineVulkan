@@ -17,19 +17,18 @@ hitAttributeEXT vec2 attribs;
 layout(location = 0) rayPayloadEXT HitPayload payload;
 layout(location = 1) rayPayloadEXT bool isShadowed;
 
-layout(set = 0, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
-
-layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
-
-layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D textures[MAX_OBJECTS];
-
 layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
     UboDirections ubo_directions;
 };
 
-layout(set = 1, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
+layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
+
+layout(set = 2, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
+layout(set = 2, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
     ObjectDescription i[];
 } object_description;
+layout(set = 2, binding = TEXTURES_BINDING) uniform texture2D textures[MAX_OBJECTS];
+
 
 layout(buffer_reference, scalar) buffer Vertices {
     Vertex v[]; 
@@ -44,7 +43,7 @@ layout(push_constant) uniform _PushConstantRay {
 };
 
 void main() {
-
+    
     ObjectDescription obj_res = object_description.i[gl_InstanceCustomIndexEXT];
     Indices indices = Indices(obj_res.index_address);
     Vertices vertices = Vertices(obj_res.vertex_address);

@@ -95,6 +95,11 @@ uint32_t Scene::get_number_of_meshes()
 	return number_of_meshes;
 }
 
+std::vector<ObjectDescription> Scene::get_object_descriptions()
+{
+	return object_descriptions;
+}
+
 Scene::~Scene() {
 
 }
