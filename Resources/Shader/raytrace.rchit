@@ -17,17 +17,17 @@ hitAttributeEXT vec2 attribs;
 layout(location = 0) rayPayloadEXT HitPayload payload;
 layout(location = 1) rayPayloadEXT bool isShadowed;
 
-layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
+layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
     UboDirections ubo_directions;
 };
 
-layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
+layout(set = SAMPLER_SET, binding = SAMPLER_BINDING) uniform sampler2D texture_sampler;
 
-layout(set = 2, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
-layout(set = 2, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
+layout(set = TLAS_SET, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
+layout(set = OBJECT_DESCRIPTION_SET, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
     ObjectDescription i[];
 } object_description;
-layout(set = 2, binding = TEXTURES_BINDING) uniform texture2D textures[MAX_OBJECTS];
+layout(set = TEXTURES_SET, binding = TEXTURES_BINDING) uniform texture2D textures[MAX_OBJECTS];
 
 
 layout(buffer_reference, scalar) buffer Vertices {
