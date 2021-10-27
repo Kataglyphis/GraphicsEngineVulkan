@@ -43,6 +43,19 @@ uint32_t MeshModel::get_custom_instance_index()
     return mesh_model_index;
 }
 
+uint32_t MeshModel::get_primitive_count()
+{
+    uint32_t number_of_indices = 0;
+
+    for (Mesh mesh : meshes) {
+
+        number_of_indices += mesh.get_index_count();
+
+    }
+
+    return number_of_indices / 3;
+}
+
 void MeshModel::destroy_mesh_model()
 {
     for (auto& mesh : meshes) {

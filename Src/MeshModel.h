@@ -15,11 +15,11 @@ public:
 
 	size_t get_mesh_count();
 	Mesh* get_mesh(size_t index);
-
 	glm::mat4 get_model();
-	void set_model(glm::mat4 model);
-
 	uint32_t get_custom_instance_index();
+	uint32_t get_primitive_count();
+
+	void set_model(glm::mat4 model);
 
 	void destroy_mesh_model();
 
