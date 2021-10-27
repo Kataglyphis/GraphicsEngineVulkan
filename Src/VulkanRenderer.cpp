@@ -1527,7 +1527,7 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 		descriptor_set_layout_bindings[0].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
 																								VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 		// here comes to previous rendered image
-		descriptor_set_layout_bindings[1].binding = OUT_IMAGE;
+		descriptor_set_layout_bindings[1].binding = OUT_IMAGE_BINDING;
 		descriptor_set_layout_bindings[1].descriptorCount = 1;
 		descriptor_set_layout_bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 		descriptor_set_layout_bindings[1].pImmutableSamplers = nullptr;
@@ -1536,15 +1536,14 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 																								VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 		
 		// here comes to previous rendered image
-		descriptor_set_layout_bindings[2].binding = OBJ_DESCRIPTION;
+		descriptor_set_layout_bindings[2].binding = OBJECT_DESCRIPTION_BINDING;
 		descriptor_set_layout_bindings[2].descriptorCount = static_cast<uint32_t>(scene->get_number_of_object_descriptions());
 		descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 		descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[2].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
-		// here comes to previous rendered image
-		descriptor_set_layout_bindings[3].binding = TEXTURES;
+		descriptor_set_layout_bindings[3].binding = TEXTURES_BINDING;
 		descriptor_set_layout_bindings[3].descriptorCount = static_cast<uint32_t>(texture_images.size());
 		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 		descriptor_set_layout_bindings[3].pImmutableSamplers = nullptr;
@@ -1615,7 +1614,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
 
 		VkDescriptorImageInfo image_info{};
-		// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
+		//image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
 		image_info.imageView = raytracing_image_view;
 		image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
 
@@ -1623,7 +1622,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_image_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		descriptor_image_writer.pNext = nullptr;
 		descriptor_image_writer.dstSet = raytracing_descriptor_sets[i];
-		descriptor_image_writer.dstBinding = OUT_IMAGE;
+		descriptor_image_writer.dstBinding = OUT_IMAGE_BINDING;
 		descriptor_image_writer.dstArrayElement = 0;
 		descriptor_image_writer.descriptorCount = 1;
 		descriptor_image_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
@@ -1641,7 +1640,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_object_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		descriptor_object_descriptions_writer.pNext = nullptr;
 		descriptor_object_descriptions_writer.dstSet = raytracing_descriptor_sets[i];
-		descriptor_object_descriptions_writer.dstBinding = OBJ_DESCRIPTION;
+		descriptor_object_descriptions_writer.dstBinding = OBJECT_DESCRIPTION_BINDING;
 		descriptor_object_descriptions_writer.dstArrayElement = 0;
 		descriptor_object_descriptions_writer.descriptorCount = 1;
 		descriptor_object_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
@@ -1654,7 +1653,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 
 		for (size_t i = 0; i < texture_images.size(); i++) {
 
-			descriptor_textures_infos[i].sampler = texture_sampler;
+			descriptor_textures_infos[i].sampler = nullptr;
 			descriptor_textures_infos[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 			descriptor_textures_infos[i].imageView = texture_image_views[i];
 		}
@@ -1664,7 +1663,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		textures_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		textures_descriptions_writer.pNext = nullptr;
 		textures_descriptions_writer.dstSet = raytracing_descriptor_sets[i];
-		textures_descriptions_writer.dstBinding = TEXTURES;
+		textures_descriptions_writer.dstBinding = TEXTURES_BINDING;
 		textures_descriptions_writer.dstArrayElement = 0;
 		textures_descriptions_writer.descriptorCount = static_cast<uint32_t>(texture_images.size());
 		textures_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
@@ -2699,8 +2698,14 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 			&pc_ray);
 
 		vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline);
-		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout, 0, 1, 
-																								&raytracing_descriptor_sets[current_image], 0, 0);
+
+		std::array<VkDescriptorSet, 3> sets = {descriptor_sets[current_image],
+																			sampler_descriptor_sets[1],
+																			  raytracing_descriptor_sets[current_image] };
+
+		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout,
+																								0, static_cast<uint32_t>(sets.size()), sets.data(),
+																								0, 0);
 
 		pvkCmdTraceRaysKHR(command_buffers[current_image], &raygen_shader_binding_table, &raymiss_shader_binding_table,
 																&raychit_shader_binding_table, &callable_shader_binding_table, 
@@ -2901,17 +2906,16 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		vkCmdEndRenderPass(command_buffers[current_image]);
 
 
-		// stop recording to command buffer
-		result = vkEndCommandBuffer(command_buffers[current_image]);
-
-		if (result != VK_SUCCESS) {
-
-			throw std::runtime_error("Failed to stop recording a command buffer!");
-
-		}
-
 	}
 	
+	// stop recording to command buffer
+	result = vkEndCommandBuffer(command_buffers[current_image]);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to stop recording a command buffer!");
+
+	}
 }
 
 void VulkanRenderer::get_physical_device()
