@@ -428,8 +428,13 @@ void VulkanRenderer::create_logical_device()
 	}
 
 	// -- ALL EXTENSION WE NEED
+
+	VkPhysicalDeviceDescriptorIndexingFeatures indexing_features{};
+	indexing_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
+	indexing_features.runtimeDescriptorArray = VK_TRUE;
+
 	VkPhysicalDeviceFeatures2 features2{};
-	features2.pNext = nullptr;
+	features2.pNext =&indexing_features;
 	features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 	features2.features.samplerAnisotropy = VK_TRUE;
 	features2.features.shaderInt64 = VK_TRUE;
@@ -1330,7 +1335,6 @@ void VulkanRenderer::create_raytracing_pipeline() {
 
 	std::vector<VkDescriptorSetLayout> layouts;
 	layouts.push_back(descriptor_set_layout);
-	layouts.push_back(sampler_set_layout);
 	layouts.push_back(raytracing_descriptor_set_layout);
 
 	VkPipelineLayoutCreateInfo pipeline_layout_create_info{};
@@ -1452,9 +1456,6 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 	descriptor_pool_sizes[2].descriptorCount = MAX_OBJECTS;
 
-	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-	descriptor_pool_sizes[2].descriptorCount = MAX_OBJECTS;
-
 	VkDescriptorPoolCreateInfo descriptor_pool_create_info{};
 	descriptor_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	descriptor_pool_create_info.poolSizeCount = descriptor_pool_sizes.size();
@@ -1474,17 +1475,27 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 void VulkanRenderer::create_object_description_buffer()
 {
 
+	// calculate requiredalignemnt based on minimum device offset alignment
+	size_t min_buffer_alignement = device_properties.limits.minStorageBufferOffsetAlignment;
+	size_t dynamic_alignment = sizeof(ObjectDescription);
 	// get size of buffer need
-	VkDeviceSize buffer_size = sizeof(ObjectDescription) * scene->get_number_of_object_descriptions();
+	if (min_buffer_alignement > 0) {
+		dynamic_alignment = (dynamic_alignment + min_buffer_alignement - 1) & ~(min_buffer_alignement - 1);
+	}
+	VkDeviceSize buffer_size = dynamic_alignment * scene->get_number_of_object_descriptions();
+
+	object_description_buffer_alignment = dynamic_alignment;
 
 	// temporary buffer to "stage" index data before transfering to GPU
 	VkBuffer staging_buffer;
 	VkDeviceMemory staging_buffer_memory;
 
 	// create buffer and allocate memory to it
-	create_buffer(MainDevice.physical_device, MainDevice.logical_device, buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		&staging_buffer, &staging_buffer_memory);
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, buffer_size,
+												VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+												VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+												VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+												&staging_buffer, &staging_buffer_memory);
 
 	// Map memory to index buffer
 	void* data;																																			// 1.) create pointer to a point in normal memory
@@ -1497,7 +1508,6 @@ void VulkanRenderer::create_object_description_buffer()
 	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
 	create_buffer(MainDevice.physical_device, MainDevice.logical_device, buffer_size, 
 																											VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-																											VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
 																											VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
 																											VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
 																											VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
@@ -1505,7 +1515,7 @@ void VulkanRenderer::create_object_description_buffer()
 																											&object_description_buffer_memory);
 
 	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(MainDevice.logical_device, compute_queue, compute_command_pool, staging_buffer, object_description_buffer, buffer_size);
+	copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, staging_buffer, object_description_buffer, buffer_size);
 
 	// clean up staging buffer parts
 	vkDestroyBuffer(MainDevice.logical_device, staging_buffer, nullptr);
@@ -1537,7 +1547,7 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 		
 		// here comes to previous rendered image
 		descriptor_set_layout_bindings[2].binding = OBJECT_DESCRIPTION_BINDING;
-		descriptor_set_layout_bindings[2].descriptorCount = static_cast<uint32_t>(scene->get_number_of_object_descriptions());
+		descriptor_set_layout_bindings[2].descriptorCount = 1;
 		descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 		descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
@@ -1545,11 +1555,10 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 
 		descriptor_set_layout_bindings[3].binding = TEXTURES_BINDING;
 		descriptor_set_layout_bindings[3].descriptorCount = static_cast<uint32_t>(texture_images.size());
-		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 		descriptor_set_layout_bindings[3].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[3].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
-
 
 		VkDescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{};
 		descriptor_set_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -1571,19 +1580,15 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 void VulkanRenderer::create_raytracing_descriptor_sets()
 {
 
-	raytracing_descriptor_sets.resize(swap_chain_images.size());
-
-	std::vector<VkDescriptorSetLayout> set_layouts(swap_chain_images.size(), raytracing_descriptor_set_layout);
-
 	{
 
 		VkDescriptorSetAllocateInfo descriptor_set_allocate_info{};
 		descriptor_set_allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;;
 		descriptor_set_allocate_info.descriptorPool = raytracing_descriptor_pool;
-		descriptor_set_allocate_info.descriptorSetCount = static_cast<uint32_t>(swap_chain_images.size());
-		descriptor_set_allocate_info.pSetLayouts = set_layouts.data();
+		descriptor_set_allocate_info.descriptorSetCount = 1;
+		descriptor_set_allocate_info.pSetLayouts = &raytracing_descriptor_set_layout;
 
-		VkResult result = vkAllocateDescriptorSets(MainDevice.logical_device, &descriptor_set_allocate_info, raytracing_descriptor_sets.data());
+		VkResult result = vkAllocateDescriptorSets(MainDevice.logical_device, &descriptor_set_allocate_info, &raytracing_descriptor_set);
 
 		if (result != VK_SUCCESS) {
 
@@ -1592,95 +1597,92 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		}
 
 	}
-
-	for (size_t i = 0; i < swap_chain_images.size(); i++) {
 	
-		VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
-		descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
-		descriptor_set_acceleration_structure.pNext = nullptr;
-		descriptor_set_acceleration_structure.accelerationStructureCount = 1;
-		descriptor_set_acceleration_structure.pAccelerationStructures = &top_level_acceleration_structure;
+	VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
+	descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
+	descriptor_set_acceleration_structure.pNext = nullptr;
+	descriptor_set_acceleration_structure.accelerationStructureCount = 1;
+	descriptor_set_acceleration_structure.pAccelerationStructures = &top_level_acceleration_structure;
 
-		VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
-		write_descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		write_descriptor_set_acceleration_structure.pNext = &descriptor_set_acceleration_structure;
-		write_descriptor_set_acceleration_structure.dstSet = raytracing_descriptor_sets[i];
-		write_descriptor_set_acceleration_structure.dstBinding = TLAS_BINDING;
-		write_descriptor_set_acceleration_structure.dstArrayElement = 0;
-		write_descriptor_set_acceleration_structure.descriptorCount = 1;
-		write_descriptor_set_acceleration_structure.descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
-		write_descriptor_set_acceleration_structure.pImageInfo = nullptr;
-		write_descriptor_set_acceleration_structure.pBufferInfo = nullptr;
-		write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
+	VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
+	write_descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	write_descriptor_set_acceleration_structure.pNext = &descriptor_set_acceleration_structure;
+	write_descriptor_set_acceleration_structure.dstSet = raytracing_descriptor_set;
+	write_descriptor_set_acceleration_structure.dstBinding = TLAS_BINDING;
+	write_descriptor_set_acceleration_structure.dstArrayElement = 0;
+	write_descriptor_set_acceleration_structure.descriptorCount = 1;
+	write_descriptor_set_acceleration_structure.descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
+	write_descriptor_set_acceleration_structure.pImageInfo = nullptr;
+	write_descriptor_set_acceleration_structure.pBufferInfo = nullptr;
+	write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
 
-		VkDescriptorImageInfo image_info{};
-		//image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
-		image_info.imageView = raytracing_image_view;
-		image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
+	VkDescriptorImageInfo image_info{};
+	//image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
+	image_info.imageView = raytracing_image_view;
+	image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
 
-		VkWriteDescriptorSet descriptor_image_writer{};
-		descriptor_image_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptor_image_writer.pNext = nullptr;
-		descriptor_image_writer.dstSet = raytracing_descriptor_sets[i];
-		descriptor_image_writer.dstBinding = OUT_IMAGE_BINDING;
-		descriptor_image_writer.dstArrayElement = 0;
-		descriptor_image_writer.descriptorCount = 1;
-		descriptor_image_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
-		descriptor_image_writer.pImageInfo = &image_info;
-		descriptor_image_writer.pBufferInfo = nullptr;
-		descriptor_image_writer.pTexelBufferView = nullptr;
+	VkWriteDescriptorSet descriptor_image_writer{};
+	descriptor_image_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	descriptor_image_writer.pNext = nullptr;
+	descriptor_image_writer.dstSet = raytracing_descriptor_set;
+	descriptor_image_writer.dstBinding = OUT_IMAGE_BINDING;
+	descriptor_image_writer.dstArrayElement = 0;
+	descriptor_image_writer.descriptorCount = 1;
+	descriptor_image_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
+	descriptor_image_writer.pImageInfo = &image_info;
+	descriptor_image_writer.pBufferInfo = nullptr;
+	descriptor_image_writer.pTexelBufferView = nullptr;
 
-		VkDescriptorBufferInfo object_descriptions_buffer_info{};
-		// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
-		object_descriptions_buffer_info.buffer = object_description_buffer;
-		object_descriptions_buffer_info.offset = 0;
-		object_descriptions_buffer_info.range = VK_WHOLE_SIZE;
+	VkDescriptorBufferInfo object_descriptions_buffer_info{};
+	// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
+	object_descriptions_buffer_info.buffer = object_description_buffer;
+	object_descriptions_buffer_info.offset = 0;
+	object_descriptions_buffer_info.range = VK_WHOLE_SIZE;
 
-		VkWriteDescriptorSet descriptor_object_descriptions_writer{};
-		descriptor_object_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptor_object_descriptions_writer.pNext = nullptr;
-		descriptor_object_descriptions_writer.dstSet = raytracing_descriptor_sets[i];
-		descriptor_object_descriptions_writer.dstBinding = OBJECT_DESCRIPTION_BINDING;
-		descriptor_object_descriptions_writer.dstArrayElement = 0;
-		descriptor_object_descriptions_writer.descriptorCount = 1;
-		descriptor_object_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-		descriptor_object_descriptions_writer.pImageInfo = nullptr;
-		descriptor_object_descriptions_writer.pBufferInfo = &object_descriptions_buffer_info;
-		descriptor_object_descriptions_writer.pTexelBufferView = nullptr;
+	VkWriteDescriptorSet descriptor_object_descriptions_writer{};
+	descriptor_object_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	descriptor_object_descriptions_writer.pNext = nullptr;
+	descriptor_object_descriptions_writer.dstSet = raytracing_descriptor_set;
+	descriptor_object_descriptions_writer.dstBinding = OBJECT_DESCRIPTION_BINDING;
+	descriptor_object_descriptions_writer.dstArrayElement = 0;
+	descriptor_object_descriptions_writer.descriptorCount = 1;
+	descriptor_object_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+	descriptor_object_descriptions_writer.pImageInfo = nullptr;
+	descriptor_object_descriptions_writer.pBufferInfo = &object_descriptions_buffer_info;
+	descriptor_object_descriptions_writer.pTexelBufferView = nullptr;
 
-		std::vector<VkDescriptorImageInfo> descriptor_textures_infos;
-		descriptor_textures_infos.resize(texture_images.size());
+	std::vector<VkDescriptorImageInfo> descriptor_textures_infos;
+	descriptor_textures_infos.resize(texture_images.size());
 
-		for (size_t i = 0; i < texture_images.size(); i++) {
+	for (size_t i = 0; i < texture_images.size(); i++) {
 
-			descriptor_textures_infos[i].sampler = nullptr;
-			descriptor_textures_infos[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			descriptor_textures_infos[i].imageView = texture_image_views[i];
-		}
-
-
-		VkWriteDescriptorSet  textures_descriptions_writer{};
-		textures_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		textures_descriptions_writer.pNext = nullptr;
-		textures_descriptions_writer.dstSet = raytracing_descriptor_sets[i];
-		textures_descriptions_writer.dstBinding = TEXTURES_BINDING;
-		textures_descriptions_writer.dstArrayElement = 0;
-		textures_descriptions_writer.descriptorCount = static_cast<uint32_t>(texture_images.size());
-		textures_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-		textures_descriptions_writer.pImageInfo = descriptor_textures_infos.data();
-		textures_descriptions_writer.pBufferInfo = nullptr;
-		textures_descriptions_writer.pTexelBufferView = nullptr;
-
-		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { write_descriptor_set_acceleration_structure, 
-																														descriptor_image_writer, 
-																														descriptor_object_descriptions_writer, 
-																														textures_descriptions_writer };
-
-		// update the descriptor sets with new buffer/binding info
-		vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
-																														write_descriptor_sets.data(), 0, nullptr);
-
+		descriptor_textures_infos[i].sampler = texture_sampler;
+		;
+		descriptor_textures_infos[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		descriptor_textures_infos[i].imageView = texture_image_views[i];
 	}
+
+	VkWriteDescriptorSet  textures_descriptions_writer{};
+	textures_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	textures_descriptions_writer.pNext = nullptr;
+	textures_descriptions_writer.dstSet = raytracing_descriptor_set;
+	textures_descriptions_writer.dstBinding = TEXTURES_BINDING;
+	textures_descriptions_writer.dstArrayElement = 0;
+	textures_descriptions_writer.descriptorCount = static_cast<uint32_t>(texture_images.size());
+	textures_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	textures_descriptions_writer.pImageInfo = descriptor_textures_infos.data();
+	textures_descriptions_writer.pBufferInfo = nullptr;
+	textures_descriptions_writer.pTexelBufferView = nullptr;
+
+	std::vector<VkWriteDescriptorSet> write_descriptor_sets = { write_descriptor_set_acceleration_structure, 
+																													descriptor_image_writer, 
+																													descriptor_object_descriptions_writer, 
+																													textures_descriptions_writer };
+
+	// update the descriptor sets with new buffer/binding info
+	vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
+																													write_descriptor_sets.data(), 0, nullptr);
+
 
 }
 
@@ -2694,14 +2696,13 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 			VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
 			VK_SHADER_STAGE_MISS_BIT_KHR,								// stage to push constants to 
 			0,																								// offset to push constants to update
-			sizeof(PushConstantRaytracing),												// size of data being pushed 
+			sizeof(PushConstantRaytracing),										// size of data being pushed 
 			&pc_ray);
 
 		vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline);
 
-		std::array<VkDescriptorSet, 3> sets = {descriptor_sets[current_image],
-																			sampler_descriptor_sets[1],
-																			  raytracing_descriptor_sets[current_image] };
+		std::array<VkDescriptorSet, 2> sets = {descriptor_sets[current_image],
+																			  raytracing_descriptor_set };
 
 		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout,
 																								0, static_cast<uint32_t>(sets.size()), sets.data(),
@@ -2945,7 +2946,6 @@ void VulkanRenderer::get_physical_device()
 	}
 
 	// get properties of our new device
-	VkPhysicalDeviceProperties device_properties;
 	vkGetPhysicalDeviceProperties(MainDevice.physical_device, &device_properties);
 
 	// min_uniform_buffer_offset = device_properties.limits.minUniformBufferOffsetAlignment;
