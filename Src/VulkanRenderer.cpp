@@ -2720,7 +2720,6 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		subresource_range.layerCount = 1;
 
 		{
-		
 			VkImageMemoryBarrier image_memory_barrier{};
 			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 			image_memory_barrier.pNext = nullptr;
