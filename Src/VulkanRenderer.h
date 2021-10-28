@@ -86,6 +86,8 @@ private:
 	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
 	VkSurfaceKHR surface;
 
+	VkPhysicalDeviceProperties device_properties;
+
 	// all regarding swapchain
 	VkSwapchainKHR swapchain;
 	std::vector<SwapChainImage> swap_chain_images;
@@ -251,7 +253,7 @@ private:
 
 	// -- descriptors
 	VkDescriptorPool raytracing_descriptor_pool;
-	std::vector<VkDescriptorSet> raytracing_descriptor_sets;
+	VkDescriptorSet raytracing_descriptor_set;
 	VkDescriptorSetLayout raytracing_descriptor_set_layout;
 
 	// -- pipeline
@@ -275,6 +277,7 @@ private:
 	std::vector<uint32_t> texture_mip_levels;
 	VkBuffer object_description_buffer;
 	VkDeviceMemory object_description_buffer_memory;
+	size_t object_description_buffer_alignment;
 
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;

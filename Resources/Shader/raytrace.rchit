@@ -21,13 +21,13 @@ layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _Ubo
     UboDirections ubo_directions;
 };
 
-layout(set = SAMPLER_SET, binding = SAMPLER_BINDING) uniform sampler2D texture_sampler;
+//layout(set = SAMPLER_SET, binding = SAMPLER_BINDING) uniform sampler2D texture_sampler;
 
 layout(set = TLAS_SET, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
 layout(set = OBJECT_DESCRIPTION_SET, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
     ObjectDescription i[];
 } object_description;
-layout(set = TEXTURES_SET, binding = TEXTURES_BINDING) uniform texture2D textures[MAX_OBJECTS];
+layout(set = TEXTURES_SET, binding = TEXTURES_BINDING) uniform sampler2D texture_sampler[];
 
 
 layout(buffer_reference, scalar) buffer Vertices {
@@ -73,8 +73,8 @@ void main() {
 
     vec2 texture_coordinates = v0.texture_coords * barycentrics.x + v1.texture_coords * barycentrics.y + v2.texture_coords * barycentrics.z;
 
-	vec3 ambient = texture(texture_sampler, texture_coordinates).xyz;
-	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler, texture_coordinates).xyz;
+	vec3 ambient = texture(texture_sampler[gl_InstanceCustomIndexEXT], texture_coordinates).xyz;
+	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler[gl_InstanceCustomIndexEXT], texture_coordinates).xyz;
     vec3 specular = vec3(0.f);
 
     if(dot(world_normal_hit, L) > 0) {

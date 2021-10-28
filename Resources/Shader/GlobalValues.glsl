@@ -1,1 +1,1 @@
-#define MAX_OBJECTS 20
+#define MAX_OBJECTS 5

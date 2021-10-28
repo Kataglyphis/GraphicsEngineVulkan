@@ -15,7 +15,7 @@ struct Vertex {
 
 struct ObjectDescription {
 
-	int texture_id;
+	uint64_t texture_id;
 	uint64_t vertex_address;
 	uint64_t index_address;
 
