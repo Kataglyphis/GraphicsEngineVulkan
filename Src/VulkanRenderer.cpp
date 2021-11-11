@@ -255,6 +255,7 @@ void VulkanRenderer::draw()
 		throw std::runtime_error("Failed to reset fences!");
 	}
 
+
 	// submit command buffer to queue
 	result = vkQueueSubmit(graphics_queue, 1, &submit_info, draw_fences[current_frame]);
 
@@ -432,6 +433,7 @@ void VulkanRenderer::create_logical_device()
 	VkPhysicalDeviceDescriptorIndexingFeatures indexing_features{};
 	indexing_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
 	indexing_features.runtimeDescriptorArray = VK_TRUE;
+	indexing_features.shaderSampledImageArrayNonUniformIndexing = VK_TRUE;
 
 	VkPhysicalDeviceFeatures2 features2{};
 	features2.pNext =&indexing_features;
@@ -549,7 +551,8 @@ void VulkanRenderer::create_swap_chain()
 	swap_chain_create_info.imageExtent = extent;																									// swapchain image extents
 	swap_chain_create_info.minImageCount = image_count;																					// minimum images in swapchain
 	swap_chain_create_info.imageArrayLayers = 1;																									// number of layers for each image in chain
-	swap_chain_create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;								// what attachment images will be used as 
+	swap_chain_create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
+																			| VK_IMAGE_USAGE_TRANSFER_DST_BIT;										// what attachment images will be used as 
 	swap_chain_create_info.preTransform = swap_chain_details.surface_capabilities.currentTransform;	// transform to perform on swap chain images
 	swap_chain_create_info.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;								// dont do blending; everything opaque
 	swap_chain_create_info.clipped = VK_TRUE;																											// of course activate clipping ! :) 
@@ -566,7 +569,7 @@ void VulkanRenderer::create_swap_chain()
 		};
 
 		swap_chain_create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;									// image share handling
-		swap_chain_create_info.queueFamilyIndexCount = 3;																					// number of queues to share images between
+		swap_chain_create_info.queueFamilyIndexCount = 2;																					// number of queues to share images between
 		swap_chain_create_info.pQueueFamilyIndices = queue_family_indices;														// array of queues to share between 
 
 	}
@@ -1691,14 +1694,36 @@ void VulkanRenderer::create_raytracing_image() {
 	raytracing_image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1,
 																VK_FORMAT_R8G8B8A8_UNORM,
 																VK_IMAGE_TILING_OPTIMAL,
+																VK_IMAGE_USAGE_TRANSFER_DST_BIT |
 																VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-																VK_IMAGE_USAGE_STORAGE_BIT |
-																VK_IMAGE_USAGE_SAMPLED_BIT,
+																VK_IMAGE_USAGE_STORAGE_BIT,
 																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 																&ray_tracing_image_memory);
 
 	raytracing_image_view = create_image_view(raytracing_image, VK_FORMAT_R8G8B8A8_UNORM,
 																VK_IMAGE_ASPECT_COLOR_BIT, 1);
+
+	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
+	VkImageSubresourceRange subresource_range = {};
+	subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subresource_range.baseMipLevel = 0;
+	subresource_range.levelCount = 1;
+	subresource_range.baseArrayLayer = 0;
+	subresource_range.layerCount = 1;
+
+	VkImageMemoryBarrier image_memory_barrier{};
+	image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	image_memory_barrier.pNext = NULL;
+	image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+	image_memory_barrier.image = raytracing_image;
+	image_memory_barrier.subresourceRange = subresource_range;
+	image_memory_barrier.srcAccessMask = 0;
+	image_memory_barrier.dstAccessMask = 0;
+
+	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	vkCmdPipelineBarrier(command_buffer, VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, NULL, 0, NULL, 1, &image_memory_barrier);
+	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
 
 }
 
