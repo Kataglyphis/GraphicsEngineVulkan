@@ -73,8 +73,9 @@ void main() {
 
     vec2 texture_coordinates = v0.texture_coords * barycentrics.x + v1.texture_coords * barycentrics.y + v2.texture_coords * barycentrics.z;
 
-	vec3 ambient = texture(texture_sampler[gl_InstanceCustomIndexEXT], texture_coordinates).xyz;
-	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler[gl_InstanceCustomIndexEXT], texture_coordinates).xyz;
+    uint texture_id = uint(object_description.i[gl_InstanceCustomIndexEXT].texture_id);
+	vec3 ambient = texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
+	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
     vec3 specular = vec3(0.f);
 
     if(dot(world_normal_hit, L) > 0) {
