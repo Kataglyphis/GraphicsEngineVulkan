@@ -9,6 +9,12 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkDevice d
 						int new_texture_id)
 {
 
+	VkTransformMatrixKHR transform_matrix{};
+	// glm uses column major matrices so transpose it for Vulkan want row major here
+	glm::mat4 transpose_transform = glm::transpose(glm::mat4(1.0f));
+	VkTransformMatrixKHR out_matrix;
+	memcpy(&out_matrix, &transpose_transform, sizeof(VkTransformMatrixKHR));
+
 	index_count = static_cast<uint32_t>(indices->size());
 	vertex_count = static_cast<uint32_t>(vertices->size());
 	this->physical_device = physical_device;

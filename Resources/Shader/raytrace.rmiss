@@ -6,9 +6,7 @@
 
 #include "raycommon.glsl"
 
-layout(location = 0) rayPayloadEXT _HitPayload {
-	HitPayload payload;
-};
+layout(location = 0) rayPayloadEXT HitPayload payload;
 
 layout(push_constant) uniform _PushConstantRay{
 	PushConstantRay pc_ray;
