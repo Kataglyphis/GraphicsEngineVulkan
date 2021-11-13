@@ -212,15 +212,17 @@ private:
 	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
 																						VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
 
-	void create_acceleration_structure_infos_BLAS(VkAccelerationStructureBuildGeometryInfoKHR& acceleration_structure_build_geometry_info,
-																							std::vector<VkAccelerationStructureGeometryKHR>& acceleration_structure_geometry, 
-																							std::vector<VkAccelerationStructureBuildRangeInfoKHR> acceleration_structure_build_range_info, 
-																							uint32_t& current_scretch_size, uint32_t& current_size, 
-																							VkAccelerationStructureBuildSizesInfoKHR& acceleration_structure_build_sizes_info);
+	void create_acceleration_structure_infos_BLAS(BuildAccelerationStructure& build_as_structure, BlasInput& blas_input,
+													VkDeviceSize& current_scretch_size, VkDeviceSize& current_size);
+
+	void create_single_blas(VkCommandBuffer command_buffer, BuildAccelerationStructure& build_as_structure, 
+								VkDeviceAddress scratch_device_or_host_address);
+
 	// -- top level acceleration structure
 	void create_TLAS();
-	void transfer_geometry_instance_to_gpu(VkAccelerationStructureInstanceKHR& geometry_instance, VkBuffer& geometry_instance_buffer, 
-																				VkDeviceMemory& geometry_instance_buffer_memory);
+	void create_geometry_instance_buffer(VkBuffer& geometry_instance_buffer, VkDeviceMemory& geometry_instance_buffer_memory,
+										std::vector<VkAccelerationStructureInstanceKHR> tlas_instances);
+
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
 	void create_raytracing_descriptor_pool();
@@ -233,14 +235,10 @@ private:
 
 	// -- acceleration structure
 	// -- bottom level
-	std::vector<VkAccelerationStructureKHR> bottom_level_acceleration_structure;
-	std::vector<VkBuffer> bottom_level_acceleration_structure_buffer;
-	std::vector<VkDeviceMemory> bottom_level_acceleration_structure_buffer_memory;
+	std::vector<BLAS> blas;
 
 	// -- top level
-	VkAccelerationStructureKHR top_level_acceleration_structure;
-	VkBuffer top_level_acceleration_structure_buffer;
-	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
+	TLAS tlas;
 
 	// -- image view
 	VkImageView raytracing_image_view;

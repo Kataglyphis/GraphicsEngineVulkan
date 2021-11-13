@@ -38,11 +38,21 @@ const std::vector<const char*> device_extensions = {
 // DEVICE EXTENSIONS FOR RAYTRACING
 const std::vector<const char*> device_extensions_for_raytracing = {
 
+	// raytracing related extensions 
 	VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 	VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
+	// required from VK_KHR_acceleration_structure
+	VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
 	VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
+	VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME,
+	// required for pipeline
+	VK_KHR_SPIRV_1_4_EXTENSION_NAME,
+	// required by VK_KHR_spirv_1_4
+	VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME,
+	//required for pipeline library
 	VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME, 
-	VK_EXT_SHADER_IMAGE_ATOMIC_INT64_EXTENSION_NAME
+
+
 
 };
 
@@ -121,3 +131,36 @@ struct PushConstantRaytracing {
 	glm::vec4 clear_color;
 
 };
+
+struct BLAS {
+
+	VkAccelerationStructureKHR accel = VK_NULL_HANDLE;
+	VkBuffer buffer;
+	VkDeviceMemory memory;
+
+};
+
+struct BuildAccelerationStructure {
+
+	VkAccelerationStructureBuildGeometryInfoKHR build_info;
+	VkAccelerationStructureBuildSizesInfoKHR size_info;
+	const VkAccelerationStructureBuildRangeInfoKHR* range_info;
+	BLAS single_blas;
+
+};
+
+struct BlasInput {
+
+	std::vector<VkAccelerationStructureGeometryKHR> as_geometry;
+	std::vector<VkAccelerationStructureBuildRangeInfoKHR> as_build_offset_info;
+
+};
+
+struct TLAS {
+
+	VkAccelerationStructureKHR top_level_acceleration_structure;
+	VkBuffer top_level_acceleration_structure_buffer;
+	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
+
+};
+
