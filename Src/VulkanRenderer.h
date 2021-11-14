@@ -259,8 +259,14 @@ private:
 	VkPipelineLayout raytracing_pipeline_layout;
 
 	// -- shader bindings
+	std::vector<VkRayTracingShaderGroupCreateInfoKHR> shader_groups;
 	VkBuffer shader_binding_table_buffer;
 	VkDeviceMemory shader_binding_table_buffer_memory;
+
+	VkStridedDeviceAddressRegionKHR rgen_region{};
+	VkStridedDeviceAddressRegionKHR miss_region{};
+	VkStridedDeviceAddressRegionKHR hit_region{};
+	VkStridedDeviceAddressRegionKHR call_region{};
 
 	// -- properties
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;

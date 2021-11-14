@@ -244,7 +244,7 @@ void VulkanRenderer::draw()
 
 	};
 
-	//submit_info.pWaitDstStageMask = wait_stages;															// stages to check semaphores at
+	submit_info.pWaitDstStageMask = wait_stages;															// stages to check semaphores at
 	submit_info.commandBufferCount = 1;																			// number of command buffers to submit
 	submit_info.pCommandBuffers = &command_buffers[image_index];						// command buffer to submit
 	submit_info.signalSemaphoreCount = 1;																			// number of semaphores to signal
@@ -1256,43 +1256,60 @@ void VulkanRenderer::create_raytracing_pipeline() {
 																	rmiss_shadow_shader_stage_info, 
 																	rchit_shader_stage_info };
 
+	enum StageIndices {
+		eRaygen,
+		eMiss,
+		eMiss2,
+		eClosestHit,
+		eShaderGroupCount
+	};
+
+	shader_groups.reserve(4);
 	VkRayTracingShaderGroupCreateInfoKHR shader_group_create_infos[4];
 
 	shader_group_create_infos[0].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
 	shader_group_create_infos[0].pNext = nullptr;
 	shader_group_create_infos[0].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
-	shader_group_create_infos[0].generalShader = 0;
+	shader_group_create_infos[0].generalShader = eRaygen;
 	shader_group_create_infos[0].closestHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[0].anyHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[0].intersectionShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[0].pShaderGroupCaptureReplayHandle = nullptr;
 
+	shader_groups.push_back(shader_group_create_infos[0]);
+
 	shader_group_create_infos[1].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
 	shader_group_create_infos[1].pNext = nullptr;
 	shader_group_create_infos[1].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
-	shader_group_create_infos[1].generalShader = 1;
+	shader_group_create_infos[1].generalShader = eMiss;
 	shader_group_create_infos[1].closestHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[1].anyHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[1].intersectionShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[1].pShaderGroupCaptureReplayHandle = nullptr;
 
+	shader_groups.push_back(shader_group_create_infos[1]);
+
 	shader_group_create_infos[2].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
 	shader_group_create_infos[2].pNext = nullptr;
 	shader_group_create_infos[2].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
-	shader_group_create_infos[2].generalShader = 2;
+	shader_group_create_infos[2].generalShader = eMiss2;
 	shader_group_create_infos[2].closestHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[2].anyHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[2].intersectionShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[2].pShaderGroupCaptureReplayHandle = nullptr;
 
+	shader_groups.push_back(shader_group_create_infos[2]);
+
 	shader_group_create_infos[3].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
 	shader_group_create_infos[3].pNext = nullptr;
 	shader_group_create_infos[3].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_TRIANGLES_HIT_GROUP_KHR;
 	shader_group_create_infos[3].generalShader = VK_SHADER_UNUSED_KHR;
-	shader_group_create_infos[3].closestHitShader = 3;
+	shader_group_create_infos[3].closestHitShader = eClosestHit;
 	shader_group_create_infos[3].anyHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[3].intersectionShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[3].pShaderGroupCaptureReplayHandle = nullptr;
+
+	shader_groups.push_back(shader_group_create_infos[3]);
 
 	std::vector<VkDescriptorSetLayout> layouts;
 	layouts.push_back(descriptor_set_layout);
@@ -1323,10 +1340,10 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	raytracing_pipeline_create_info.sType = VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_KHR;
 	raytracing_pipeline_create_info.pNext = nullptr;
 	raytracing_pipeline_create_info.flags = 0;
-	raytracing_pipeline_create_info.stageCount = 4;
+	raytracing_pipeline_create_info.stageCount = static_cast<uint32_t>(shader_stages.size());
 	raytracing_pipeline_create_info.pStages = shader_stages.data();
-	raytracing_pipeline_create_info.groupCount = 4;
-	raytracing_pipeline_create_info.pGroups = shader_group_create_infos;
+	raytracing_pipeline_create_info.groupCount = static_cast<uint32_t>(shader_groups.size());
+	raytracing_pipeline_create_info.pGroups = shader_groups.data();
 	raytracing_pipeline_create_info.pLibraryInfo = &pipeline_library_create_info;
 	raytracing_pipeline_create_info.pLibraryInterface = NULL;
 	// TODO: HARDCODED FOR NOW;
@@ -1344,7 +1361,6 @@ void VulkanRenderer::create_raytracing_pipeline() {
 
 	}
 
-
 	vkDestroyShaderModule(MainDevice.logical_device, raygen_shader_module, nullptr);
 	vkDestroyShaderModule(MainDevice.logical_device, raymiss_shader_module, nullptr);
 	vkDestroyShaderModule(MainDevice.logical_device, raymiss_shadow_shader_module, nullptr);
@@ -1356,7 +1372,7 @@ void VulkanRenderer::create_shader_binding_table()
 
 	// load in functionality for raytracing shader group handles
 	PFN_vkGetRayTracingShaderGroupHandlesKHR pvkGetRayTracingShaderGroupHandlesKHR = (PFN_vkGetRayTracingShaderGroupHandlesKHR)
-															vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetRayTracingShaderGroupHandlesKHR");
+										vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetRayTracingShaderGroupHandlesKHR");
 
 
 	raytracing_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR{};
@@ -1368,23 +1384,26 @@ void VulkanRenderer::create_shader_binding_table()
 
 	vkGetPhysicalDeviceProperties2(MainDevice.physical_device, &properties);
 
+	VkBuffer sbt_buffer;
+	VkDeviceMemory sbt_buffer_memory;
+
+	uint32_t handle_size = raytracing_properties.shaderGroupHandleSize;
+	uint32_t handle_size_aligned = align_up(handle_size, raytracing_properties.shaderGroupHandleAlignment);
+
+	rgen_region.stride = align_up(handle_size_aligned, raytracing_properties.shaderGroupBaseAlignment);
+	rgen_region.size = rgen_region.stride;
+	miss_region.stride = handle_size_aligned;
+	miss_region.size = align_up(2 * handle_size_aligned, raytracing_properties.shaderGroupBaseAlignment);
+	hit_region.stride = handle_size_aligned;
+	hit_region.size = align_up(1 * handle_size_aligned, raytracing_properties.shaderGroupBaseAlignment);
+
 	VkDeviceSize shader_binding_table_size = raytracing_properties.shaderGroupHandleSize * 4;
 
-	create_buffer(MainDevice.physical_device, MainDevice.logical_device, shader_binding_table_size,
-													VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR |
-													VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-													VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-													&shader_binding_table_buffer,
-													&shader_binding_table_buffer_memory);
-
-	/*std::vector<uint8_t> handles;
-	handles.reserve(static_cast<uint64_t>(shader_binding_table_size));*/
-
-	uint8_t* handles = new uint8_t[shader_binding_table_size];
+	std::vector<uint8_t> handles(shader_binding_table_size);
 
 	VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(MainDevice.logical_device,
 										raytracing_pipeline, 0, 4, shader_binding_table_size, 
-										handles);
+										handles.data());
 
 	if(result != VK_SUCCESS) {
 		
@@ -1392,14 +1411,50 @@ void VulkanRenderer::create_shader_binding_table()
 
 	}
 
+	VkDeviceSize sbt_size = rgen_region.size + miss_region.size + hit_region.size + call_region.size;
+
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, sbt_size,
+													VK_BUFFER_USAGE_TRANSFER_SRC_BIT |
+													VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR |
+													VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
+													VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+													VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+													&shader_binding_table_buffer,
+													&shader_binding_table_buffer_memory);
+
+	// find sbt addresses of each group
+	VkBufferDeviceAddressInfo info;
+	info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
+	info.pNext = nullptr;
+	info.buffer = shader_binding_table_buffer;
+
+	VkDeviceAddress sbt_address = vkGetBufferDeviceAddress(MainDevice.logical_device, &info);
+	rgen_region.deviceAddress = sbt_address;
+	miss_region.deviceAddress = sbt_address + rgen_region.size;
+	hit_region.deviceAddress = sbt_address + rgen_region.size + miss_region.size;
+
+	auto getHandle = [&](int i) { return handles.data() + i * handle_size; };
+
+	uint8_t* p_data = nullptr;
 	// which offset here to use ??? 
 	void* data;
 	vkMapMemory(MainDevice.logical_device, shader_binding_table_buffer_memory, 0, 
-							shader_binding_table_size, 0, &data);
-	memcpy(data, handles, raytracing_properties.shaderGroupHandleSize);
+									sbt_size, 0, &data);
+
+	p_data = reinterpret_cast<uint8_t*>(data);
+	memcpy(data, getHandle(0), handle_size);
+
+	p_data = reinterpret_cast<uint8_t*>(data) + rgen_region.size;
+	memcpy(data, getHandle(1), handle_size);
+
+	p_data = reinterpret_cast<uint8_t*>(data) + rgen_region.size + miss_region.stride;
+	memcpy(data, getHandle(2), handle_size);
+
+	p_data = reinterpret_cast<uint8_t*>(data) + rgen_region.size + miss_region.size;
+	memcpy(data, getHandle(3), handle_size);
+
 	vkUnmapMemory(MainDevice.logical_device, shader_binding_table_buffer_memory);
 	
-	delete handles;
 
 }
 
@@ -1761,8 +1816,8 @@ void VulkanRenderer::create_push_constant_range()
 	
 	// define push constant values (no 'create' needed)
 	pc_ray_ranges.stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-															VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
-															VK_SHADER_STAGE_MISS_BIT_KHR;																// shader stage push constant will go to 
+								VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+								VK_SHADER_STAGE_MISS_BIT_KHR;																// shader stage push constant will go to 
 	pc_ray_ranges.offset = 0;																															// offset into given data to pass tp push constant
 	pc_ray_ranges.size = sizeof(PushConstantRaytracing);	// size of data being passed
 
@@ -2635,39 +2690,6 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 
 	if (raytracing) {
 
-		VkDeviceSize shader_group_base_alignment = raytracing_properties.shaderGroupBaseAlignment;
-		VkDeviceSize raygen_offset = 0;
-		// we have 2 miss shaders 
-		VkDeviceSize miss_offset = 1 * shader_group_base_alignment;
-		VkDeviceSize hit_group_offset = 3 * shader_group_base_alignment;
-
-		VkBufferDeviceAddressInfo shader_binding_table_buffer_device_address_info{};
-		shader_binding_table_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
-		shader_binding_table_buffer_device_address_info.buffer = shader_binding_table_buffer;
-
-		VkDeviceAddress shader_binding_table_buffer_device_address = pvkGetBufferDeviceAddressKHR(MainDevice.logical_device, &shader_binding_table_buffer_device_address_info);
-
-		VkDeviceSize shader_program_size = (VkDeviceSize)(shader_group_base_alignment * 4);
-		VkStridedDeviceAddressRegionKHR raygen_shader_binding_table{};
-		// no offset here; here it starts
-		raygen_shader_binding_table.deviceAddress = shader_binding_table_buffer_device_address;
-		raygen_shader_binding_table.stride = shader_program_size;
-		raygen_shader_binding_table.size = shader_program_size * 1;
-
-		VkStridedDeviceAddressRegionKHR raymiss_shader_binding_table{};
-		// no offset here; here it starts
-		raymiss_shader_binding_table.deviceAddress = shader_binding_table_buffer_device_address + 1 * shader_program_size;
-		raymiss_shader_binding_table.stride = shader_program_size;
-		raymiss_shader_binding_table.size = shader_program_size * 2;
-
-		VkStridedDeviceAddressRegionKHR raychit_shader_binding_table{};
-		// no offset here; here it starts
-		raychit_shader_binding_table.deviceAddress = shader_binding_table_buffer_device_address + 3 * shader_program_size;
-		raychit_shader_binding_table.stride = shader_program_size;
-		raychit_shader_binding_table.size = shader_program_size * 1;
-
-		VkStridedDeviceAddressRegionKHR callable_shader_binding_table{};
-
 		// for GCC doen't allow references on rvalues go like that ... 
 		pc_ray.clear_color = { 0.2f,0.65f,0.4f,1.0f };
 		// just "Push" constants to given shader stage directly (no buffer)
@@ -2683,14 +2705,14 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		vkCmdBindPipeline(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline);
 
 		std::array<VkDescriptorSet, 2> sets = {descriptor_sets[current_image],
-																			  raytracing_descriptor_set };
+												raytracing_descriptor_set };
 
 		vkCmdBindDescriptorSets(command_buffers[current_image], VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, raytracing_pipeline_layout,
 																								0, static_cast<uint32_t>(sets.size()), sets.data(),
 																								0, 0);
 
-		pvkCmdTraceRaysKHR(command_buffers[current_image], &raygen_shader_binding_table, &raymiss_shader_binding_table,
-																&raychit_shader_binding_table, &callable_shader_binding_table, 
+		pvkCmdTraceRaysKHR(command_buffers[current_image], &rgen_region, &miss_region,
+																&hit_region, &call_region, 
 																swap_chain_extent.width, swap_chain_extent.height, 1);
 		
 		/*
