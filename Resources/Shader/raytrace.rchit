@@ -14,7 +14,7 @@
 
 hitAttributeEXT vec2 attribs;
 
-layout(location = 0) rayPayloadEXT HitPayload payload;
+layout(location = 0) rayPayloadInEXT HitPayload payload;
 layout(location = 1) rayPayloadEXT bool isShadowed;
 
 layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {

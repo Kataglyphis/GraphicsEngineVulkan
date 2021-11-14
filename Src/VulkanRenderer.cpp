@@ -238,23 +238,14 @@ void VulkanRenderer::draw()
 	submit_info.waitSemaphoreCount = 1;																			// number of semaphores to wait on
 	submit_info.pWaitSemaphores = &image_available[current_frame];						// list of semaphores to wait on
 	
-	VkPipelineStageFlags wait_stages_rasterizer[] = {
+	VkPipelineStageFlags wait_stages = {
 	
 		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
 
 	};
 
-	VkPipelineStageFlags wait_stages_raytracer[] = {
-
-		VK_PIPELINE_STAGE_ALL_COMMANDS_BIT
-
-	};
-	if (raytracing) {
-		submit_info.pWaitDstStageMask = wait_stages_raytracer;
-	}
-	else {
-		submit_info.pWaitDstStageMask = wait_stages_rasterizer;														// stages to check semaphores at
-	}
+	submit_info.pWaitDstStageMask = &wait_stages;														// stages to check semaphores at
+	
 	submit_info.commandBufferCount = 1;																			// number of command buffers to submit
 	submit_info.pCommandBuffers = &command_buffers[image_index];						// command buffer to submit
 	submit_info.signalSemaphoreCount = 1;																			// number of semaphores to signal
@@ -264,7 +255,6 @@ void VulkanRenderer::draw()
 	if (result != VK_SUCCESS) {
 		throw std::runtime_error("Failed to reset fences!");
 	}
-
 
 	// submit command buffer to queue
 	result = vkQueueSubmit(graphics_queue, 1, &submit_info, draw_fences[current_frame]);
@@ -299,6 +289,8 @@ void VulkanRenderer::draw()
 		throw std::runtime_error("Failed to acquire next image!");
 
 	}
+
+	//vkQueueWaitIdle(presentation_queue);
 
 	current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
 	 
@@ -337,16 +329,16 @@ void VulkanRenderer::create_instance()
 		messengerCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 
 		messengerCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | 
-																					VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | 
-																					VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+											VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | 
+											VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 
 		messengerCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |	
-																			VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | 
-																				VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+										VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | 
+										VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 
 		messengerCreateInfo.pfnUserCallback = debugCallback;
 
-		create_info.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&messengerCreateInfo;
+		//create_info.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&messengerCreateInfo;
 
 		create_info.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 		create_info.ppEnabledLayerNames = validationLayers.data();
@@ -959,7 +951,7 @@ void VulkanRenderer::create_BLAS()
 																VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
 																VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
 																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+																VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
 																&scratch_buffer,
 																&scratch_buffer_memory);
 
@@ -1201,10 +1193,10 @@ void VulkanRenderer::create_geometry_instance_buffer(VkBuffer& geometry_instance
 	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
 	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
 	create_buffer(MainDevice.physical_device, MainDevice.logical_device, geometry_instance_buffer_size, VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT
-		| VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
-		VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-		VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
-		&geometry_instance_buffer, &geometry_instance_buffer_memory);
+																| VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+																VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+																&geometry_instance_buffer, &geometry_instance_buffer_memory);
 
 	// copy staging buffer to vertex buffer on GPU
 	copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, 
@@ -1426,7 +1418,8 @@ void VulkanRenderer::create_shader_binding_table()
 	create_buffer(MainDevice.physical_device, MainDevice.logical_device, sbt_size,
 													VK_BUFFER_USAGE_TRANSFER_SRC_BIT |
 													VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR |
-													VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
+													VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | 
+													VK_BUFFER_USAGE_TRANSFER_DST_BIT,
 													VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
 													VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 													&shader_binding_table_buffer,
@@ -1533,12 +1526,12 @@ void VulkanRenderer::create_object_description_buffer()
 	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
 	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
 	create_buffer(MainDevice.physical_device, MainDevice.logical_device, buffer_size, 
-																											VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-																											VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-																											VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-																											VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-																											&object_description_buffer,
-																											&object_description_buffer_memory);
+												VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+												VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+												VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
+												VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+												&object_description_buffer,
+												&object_description_buffer_memory);
 
 	// copy staging buffer to vertex buffer on GPU
 	copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, staging_buffer, object_description_buffer, buffer_size);
