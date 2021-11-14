@@ -26,7 +26,8 @@ const bool ENABLE_VALIDATION_LAYERS = true;
 
 enum SHADER_COMPILATION_FLAG {
 	RASTERIZATION,
-	RAYTRACING
+	RAYTRACING,
+	POST
 };
 
 const std::vector<const char*> device_extensions = {
@@ -132,6 +133,12 @@ struct PushConstantRaytracing {
 
 };
 
+struct PushConstantPost {
+
+	float aspect_ratio;
+
+};
+
 struct BLAS {
 
 	VkAccelerationStructureKHR accel = VK_NULL_HANDLE;
@@ -161,6 +168,30 @@ struct TLAS {
 	VkAccelerationStructureKHR top_level_acceleration_structure;
 	VkBuffer top_level_acceleration_structure_buffer;
 	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
+
+};
+
+struct RayTracingImage {
+
+	VkImageView raytracing_image_view;
+	VkImage raytracing_image;
+	VkDeviceMemory ray_tracing_image_memory;
+
+};
+
+struct OffScreenRenderImage {
+
+	VkImageView image_view;
+	VkImage image;
+	VkDeviceMemory image_memory;
+
+};
+
+struct OffscreenTexture {
+
+	VkImageView image_view;
+	VkImage image;
+	VkDeviceMemory image_memory;
 
 };
 

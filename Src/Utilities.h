@@ -284,7 +284,7 @@ static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPoo
 }
 
 static void transition_image_layout_for_command_buffer(VkCommandBuffer command_buffer, VkImage image, VkImageLayout old_layout,
-											VkImageLayout new_layout, uint32_t mip_levels) {
+											VkImageLayout new_layout, uint32_t mip_levels, VkImageAspectFlags aspectMask) {
 
 	VkImageMemoryBarrier memory_barrier{};
 	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -293,7 +293,7 @@ static void transition_image_layout_for_command_buffer(VkCommandBuffer command_b
 	memory_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition from 
 	memory_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition to
 	memory_barrier.image = image;																							// image being accessed and modified as part of barrier
-	memory_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;			// aspect of image being altered
+	memory_barrier.subresourceRange.aspectMask = aspectMask;			// aspect of image being altered
 	memory_barrier.subresourceRange.baseMipLevel = 0;															// first mip level to start alterations on
 	memory_barrier.subresourceRange.levelCount = mip_levels;																// number of mip levels to alter starting from baseMipLevel
 	memory_barrier.subresourceRange.baseArrayLayer = 0;														// first layer to start alterations on
@@ -529,6 +529,11 @@ static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
 	else if (flag == RAYTRACING) {
 
 		result_system = system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
+
+	}
+	else if (flag == POST) {
+
+		result_system = system("..\\Resources\\Shader\\compile_post_shader.bat");
 
 	}
 
