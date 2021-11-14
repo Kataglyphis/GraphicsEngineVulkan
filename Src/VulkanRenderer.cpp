@@ -238,13 +238,23 @@ void VulkanRenderer::draw()
 	submit_info.waitSemaphoreCount = 1;																			// number of semaphores to wait on
 	submit_info.pWaitSemaphores = &image_available[current_frame];						// list of semaphores to wait on
 	
-	VkPipelineStageFlags wait_stages[] = {
+	VkPipelineStageFlags wait_stages_rasterizer[] = {
 	
 		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
 
 	};
 
-	submit_info.pWaitDstStageMask = wait_stages;															// stages to check semaphores at
+	VkPipelineStageFlags wait_stages_raytracer[] = {
+
+		VK_PIPELINE_STAGE_ALL_COMMANDS_BIT
+
+	};
+	if (raytracing) {
+		submit_info.pWaitDstStageMask = wait_stages_raytracer;
+	}
+	else {
+		submit_info.pWaitDstStageMask = wait_stages_rasterizer;														// stages to check semaphores at
+	}
 	submit_info.commandBufferCount = 1;																			// number of command buffers to submit
 	submit_info.pCommandBuffers = &command_buffers[image_index];						// command buffer to submit
 	submit_info.signalSemaphoreCount = 1;																			// number of semaphores to signal
@@ -1715,26 +1725,10 @@ void VulkanRenderer::create_raytracing_image() {
 																VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
 	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
-	VkImageSubresourceRange subresource_range = {};
-	subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-	subresource_range.baseMipLevel = 0;
-	subresource_range.levelCount = 1;
-	subresource_range.baseArrayLayer = 0;
-	subresource_range.layerCount = 1;
-
-	VkImageMemoryBarrier image_memory_barrier{};
-	image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-	image_memory_barrier.pNext = NULL;
-	image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-	image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
-	image_memory_barrier.image = raytracing_image;
-	image_memory_barrier.subresourceRange = subresource_range;
-	image_memory_barrier.srcAccessMask = 0;
-	image_memory_barrier.dstAccessMask = 0;
-
-	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
-	vkCmdPipelineBarrier(command_buffer, VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, NULL, 0, NULL, 1, &image_memory_barrier);
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
+	VkCommandBuffer cmdBuffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	transition_image_layout_for_command_buffer(cmdBuffer, raytracing_image, 
+								VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL, 1);
+	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, cmdBuffer);
 
 }
 
@@ -2718,46 +2712,11 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 		/*
 			Copy ray tracing output to swap chain image
 		*/
+		transition_image_layout_for_command_buffer(command_buffers[current_image], swap_chain_images[current_image].image,
+									VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1);
 
-		VkImageSubresourceRange subresource_range{};
-		subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		subresource_range.baseMipLevel = 0;
-		subresource_range.levelCount = 1;
-		subresource_range.baseArrayLayer = 0;
-		subresource_range.layerCount = 1;
-
-		{
-			VkImageMemoryBarrier image_memory_barrier{};
-			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-			image_memory_barrier.pNext = nullptr;
-			image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
-			image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-			image_memory_barrier.image = raytracing_image;
-			image_memory_barrier.subresourceRange = subresource_range;
-			image_memory_barrier.srcAccessMask = 0;
-			image_memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-
-			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-													VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
-		
-		}
-		{
-		
-			VkImageMemoryBarrier image_memory_barrier{};
-			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-			image_memory_barrier.pNext = nullptr;
-			image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-			image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
-			image_memory_barrier.image = swap_chain_images[current_image].image;
-			image_memory_barrier.subresourceRange = subresource_range;
-			image_memory_barrier.srcAccessMask = 0;
-			image_memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-
-			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
-		
-		}
-
+		transition_image_layout_for_command_buffer(command_buffers[current_image], raytracing_image,
+											VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, 1);
 		{
 		
 			VkImageSubresourceLayers subresource_layers{};
@@ -2788,53 +2747,12 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 											1, &image_copy);
 
 		}
-		{
-
-			VkImageSubresourceRange subresource_range{};
-			subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-			subresource_range.baseMipLevel = 0;
-			subresource_range.levelCount = 1; 
-			subresource_range.baseArrayLayer = 0;
-			subresource_range.layerCount = 1;
-
-			VkImageMemoryBarrier image_memory_barrier{};
-			image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-			image_memory_barrier.pNext = nullptr;
-			image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-			image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
-			image_memory_barrier.image = raytracing_image;
-			image_memory_barrier.subresourceRange = subresource_range;
-			image_memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-			image_memory_barrier.dstAccessMask = 0;
-
-			vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-															VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
 		
-		}
-		{
-		
-		VkImageSubresourceRange subresource_range{};
-		subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		subresource_range.baseMipLevel = 0;
-		subresource_range.levelCount = 1;
-		subresource_range.baseArrayLayer = 0;
-		subresource_range.layerCount = 1;
+		transition_image_layout_for_command_buffer(command_buffers[current_image], swap_chain_images[current_image].image,
+			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 1);
 
-		VkImageMemoryBarrier image_memory_barrier{};
-		image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		image_memory_barrier.pNext = nullptr;
-		image_memory_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
-		image_memory_barrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-		image_memory_barrier.image = swap_chain_images[current_image].image;
-		image_memory_barrier.subresourceRange = subresource_range;
-		image_memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-		image_memory_barrier.dstAccessMask = 0;
-
-		vkCmdPipelineBarrier(command_buffers[current_image], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 
-											VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0, 0, nullptr, 0, nullptr, 1, 
-											&image_memory_barrier);
-
-		}
+		transition_image_layout_for_command_buffer(command_buffers[current_image], raytracing_image,
+			VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL,1);
 
 	}
 	else {
