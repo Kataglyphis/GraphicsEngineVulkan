@@ -1,6 +1,9 @@
 #pragma once
 
 #include <fstream>
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream>      // std::stringstream
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -479,14 +482,36 @@ static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, 
 }
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, 
-																										VkDebugUtilsMessageTypeFlagsEXT messageType, 
-																										const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, 
-																										void* pUserData) {
+													VkDebugUtilsMessageTypeFlagsEXT messageType, 
+													const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, 
+													void* pUserData) {
 
-	if (messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT || messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
-		printf("\033[22;36mvalidation layer\033[0m: \033[22;33m%s\033[0m\n", pCallbackData->pMessage);
+	std::string prefix("");
+
+	if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+		prefix = "VERBOSE: ";
+	}
+	else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+		prefix = "INFO: ";
+	}
+	else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+		prefix = "WARNING: ";
+	}
+	else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+		prefix = "ERROR: ";
 	}
 
+
+	// Display message to default output (console/logcat)
+	std::stringstream debugMessage;
+	debugMessage << prefix << "[" << pCallbackData->messageIdNumber << "][" << pCallbackData->pMessageIdName << "] : " << pCallbackData->pMessage;
+	if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+		std::cerr << debugMessage.str() << "\n";
+	}
+	else {
+		std::cout << debugMessage.str() << "\n";
+	}
+	fflush(stdout);
 	return VK_FALSE;
 
 }

@@ -18,7 +18,7 @@ layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _Ubo
 };
 
 layout(set = TLAS_SET, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
-layout(set = OUT_IMAGE_SET, binding = OUT_IMAGE_BINDING, rgba8) uniform image2D image;
+layout(set = OUT_IMAGE_SET, binding = OUT_IMAGE_BINDING, rgba32f) uniform image2D image;
 
 layout(push_constant) uniform _PushConstantRay {
     PushConstantRay pc_ray;
@@ -39,19 +39,19 @@ void main() {
 
     uint ray_flags = gl_RayFlagsOpaqueEXT;
     float t_min = 0.001;
-    float t_max = 10000;
+    float t_max = 10000.0;
 
     traceRayEXT(TLAS,
-                        ray_flags, 
-                        0xFF, // cull mask 
-                        0,       // sbt record offset 
-                        0,      //record stride
-                        0,      // miss index
-                        origin.xyz,
-                        t_min,
-                        direction.xyz,
-                        t_max,
-                        0);         // payload (location = 0)
+                ray_flags, 
+                0xFF, // cull mask 
+                0,       // sbt record offset 
+                0,      //record stride
+                0,      // miss index
+                origin.xyz,
+                t_min,
+                direction.xyz,
+                t_max,
+                0);         // payload (location = 0)
 
 
     imageStore(image, ivec2(gl_LaunchIDEXT.xy), vec4(payload.hit_value, 1.0));
