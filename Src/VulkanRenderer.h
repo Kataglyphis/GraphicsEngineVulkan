@@ -156,6 +156,35 @@ private:
 	VkPipelineLayout pipeline_layout;
 	VkRenderPass render_pass;
 
+	// -- Offscreen render pass
+	VkRenderPass offscreen_render_pass;
+	VkFormat offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
+	std::vector<VkFramebuffer> offscreen_framebuffer;
+	std::vector<OffscreenTexture> offscreen_images;
+
+	VkImage offscreen_depth_buffer_image;
+	VkDeviceMemory offscreen_depth_buffer_image_memory;
+	VkImageView offscreen_depth_buffer_image_view;
+	VkFormat offscreen_depth_format;
+
+	void create_offscreen_textures();
+	void create_offscreen_render_pass();
+	void create_offscreen_framebuffers();
+	// -- Offscreen End 
+
+	// -- Post 
+	void create_post_pipeline();
+	void create_post_descriptor();
+	void update_post_descriptor_set();
+
+	VkPushConstantRange post_push_constant_range;
+	VkDescriptorPool post_descriptor_pool;
+	VkDescriptorSetLayout post_descriptor_set_layout;
+	std::vector<VkDescriptorSet> post_descriptor_set;
+	VkPipeline post_pipeline;
+	VkPipelineLayout post_pipeline_layout;
+	// -- Post - End
+
 	// depth
 	VkImage depth_buffer_image;
 	VkDeviceMemory depth_buffer_image_memory;
@@ -241,9 +270,7 @@ private:
 	TLAS tlas;
 
 	// -- image view
-	VkImageView raytracing_image_view;
-	VkImage raytracing_image;
-	VkDeviceMemory ray_tracing_image_memory;
+	std::vector<RayTracingImage> ray_tracing_images;
 
 	// -- uniform buffers
 	std::vector<VkBuffer> raytracing_uniform_buffer;
@@ -251,7 +278,7 @@ private:
 
 	// -- descriptors
 	VkDescriptorPool raytracing_descriptor_pool;
-	VkDescriptorSet raytracing_descriptor_set;
+	std::vector<VkDescriptorSet> raytracing_descriptor_set;
 	VkDescriptorSetLayout raytracing_descriptor_set_layout;
 
 	// -- pipeline
