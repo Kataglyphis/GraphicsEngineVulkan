@@ -280,6 +280,99 @@ static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPoo
 
 }
 
+static void transition_image_layout_for_command_buffer(VkCommandBuffer command_buffer, VkImage image, VkImageLayout old_layout,
+											VkImageLayout new_layout, uint32_t mip_levels) {
+
+	VkImageMemoryBarrier memory_barrier{};
+	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	memory_barrier.oldLayout = old_layout;
+	memory_barrier.newLayout = new_layout;
+	memory_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition from 
+	memory_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition to
+	memory_barrier.image = image;																							// image being accessed and modified as part of barrier
+	memory_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;			// aspect of image being altered
+	memory_barrier.subresourceRange.baseMipLevel = 0;															// first mip level to start alterations on
+	memory_barrier.subresourceRange.levelCount = mip_levels;																// number of mip levels to alter starting from baseMipLevel
+	memory_barrier.subresourceRange.baseArrayLayer = 0;														// first layer to start alterations on
+	memory_barrier.subresourceRange.layerCount = 1;																// number of layers to alter starting from baseArrayLayer
+
+	VkPipelineStageFlags src_stage;
+	VkPipelineStageFlags dst_stage;
+
+	// if transitioning from new image to image ready to receive data
+	if (old_layout == VK_IMAGE_LAYOUT_UNDEFINED && new_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+
+		memory_barrier.srcAccessMask = 0;																					// memory access stage transition must after ...
+		memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;						// memory access stage transition must before ...
+
+		src_stage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+		dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+
+		memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;							// memory access stage transition must after ...
+		memory_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;								// memory access stage transition must before ...
+
+		src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+		dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_UNDEFINED && new_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+
+		memory_barrier.srcAccessMask = 0;							// memory access stage transition must after ...
+		memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;								// memory access stage transition must before ...
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_GENERAL && new_layout == VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL) {
+
+		memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;								// memory access stage transition must before ...
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR) {
+
+		memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;							// memory access stage transition must after ...
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_GENERAL) {
+
+		memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;							// memory access stage transition must after ...
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_UNDEFINED && new_layout == VK_IMAGE_LAYOUT_GENERAL) {
+
+		memory_barrier.srcAccessMask = 0;							// memory access stage transition must after ...
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+
+	vkCmdPipelineBarrier(
+
+		command_buffer,
+		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
+		0,													// no dependency flags
+		0, nullptr,									// memory barrier count + data
+		0, nullptr,									// buffer memory barrier count + data
+		1, &memory_barrier				// image memory barrier count + data
+
+	);
+
+}
+
 // we have to create mipmap levels in staging buffers by our own
 static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, VkCommandPool command_pool,
 														VkQueue queue, VkImage image, VkFormat image_format,
