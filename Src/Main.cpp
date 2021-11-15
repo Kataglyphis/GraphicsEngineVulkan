@@ -41,16 +41,16 @@ int main() {
     float far_plane = 500.f;
 
 
-    // Setup Dear ImGui context
-    //IMGUI_CHECKVERSION();
-    //ImGui::CreateContext();
-    //ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ////io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    ////io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+     //Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-    //// Setup Dear ImGui style
-    //ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
 
 
     float angle = 0.0f;
@@ -70,7 +70,7 @@ int main() {
     float directional_light_direction[3] = {1.f,1.f,1.f};
 
     // -- RAY TRACING ON
-    bool raytracing = true;
+    bool raytracing = false;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 
@@ -90,7 +90,6 @@ int main() {
 
     // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
-
     while (!main_window->get_should_close()) {
     
         //poll all events incoming from user
@@ -126,78 +125,78 @@ int main() {
         vulkan_renderer.update_model(0, dragon_model);
         vulkan_renderer.update_model(1, floor_model);
 
-        //// Start the Dear ImGui frame
-        //ImGui_ImplVulkan_NewFrame();
-        //ImGui_ImplGlfw_NewFrame();
-        //ImGui::NewFrame();
+        // Start the Dear ImGui frame
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
-        //// ImGui::ShowDemoWindow();
-        ////ImGui::PushFont(roboto_medium);
-        //// render your GUI
-        //ImGui::Begin("GUI v1.1.2");
+        // ImGui::ShowDemoWindow();
+        //ImGui::PushFont(roboto_medium);
+        // render your GUI
+        ImGui::Begin("GUI v1.1.2");
 
-        //if (ImGui::CollapsingHeader("Hot shader reload")) {
+        if (ImGui::CollapsingHeader("Hot shader reload")) {
 
-        //    if (ImGui::Button("All shader!")) {
+            if (ImGui::Button("All shader!")) {
 
-        //        vulkan_renderer.hot_reload_all_shader();
+                vulkan_renderer.hot_reload_all_shader();
 
-        //    }
+            }
 
-        //}
+        }
 
-        //ImGui::Separator();
+        ImGui::Separator();
 
-        //ImGui::Checkbox("Ray tracing", &raytracing);
+        ImGui::Checkbox("Ray tracing", &raytracing);
 
-        //ImGui::Separator();
+        ImGui::Separator();
 
 
-        //if (ImGui::CollapsingHeader("Graphic Settings")) {
+        if (ImGui::CollapsingHeader("Graphic Settings")) {
 
-        //    if (ImGui::TreeNode("Directional Light")) {
-        //        ImGui::Separator();
-        //        ImGui::SliderFloat("Ambient intensity", &direcional_light_ambient_intensity, 0.0f, 50.0f);
-        //        ImGui::Separator();
-        //        // Edit a color (stored as ~4 floats)
-        //        ImGui::ColorEdit3("Directional Light Color", directional_light_color);
-        //        ImGui::Separator();
-        //        ImGui::SliderFloat3("Light Direction", directional_light_direction, -1.f, 1.0f);
+            if (ImGui::TreeNode("Directional Light")) {
+                ImGui::Separator();
+                ImGui::SliderFloat("Ambient intensity", &direcional_light_ambient_intensity, 0.0f, 50.0f);
+                ImGui::Separator();
+                // Edit a color (stored as ~4 floats)
+                ImGui::ColorEdit3("Directional Light Color", directional_light_color);
+                ImGui::Separator();
+                ImGui::SliderFloat3("Light Direction", directional_light_direction, -1.f, 1.0f);
 
-        //        ImGui::TreePop();
-        //    }
+                ImGui::TreePop();
+            }
 
-        //}
+        }
 
-        //ImGui::Separator();
+        ImGui::Separator();
 
-        //if (ImGui::CollapsingHeader("GUI Settings")) {
+        if (ImGui::CollapsingHeader("GUI Settings")) {
 
-        //    ImGuiStyle& style = ImGui::GetStyle();
+            ImGuiStyle& style = ImGui::GetStyle();
 
-        //    if (ImGui::SliderFloat("Frame Rounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f")) {
-        //        style.GrabRounding = style.FrameRounding; // Make GrabRounding always the same value as FrameRounding
-        //    }
-        //    { bool border = (style.FrameBorderSize > 0.0f);  if (ImGui::Checkbox("FrameBorder", &border)) { style.FrameBorderSize = border ? 1.0f : 0.0f; } }
-        //    ImGui::SliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 12.0f, "%.0f");
-        //}
+            if (ImGui::SliderFloat("Frame Rounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f")) {
+                style.GrabRounding = style.FrameRounding; // Make GrabRounding always the same value as FrameRounding
+            }
+            { bool border = (style.FrameBorderSize > 0.0f);  if (ImGui::Checkbox("FrameBorder", &border)) { style.FrameBorderSize = border ? 1.0f : 0.0f; } }
+            ImGui::SliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 12.0f, "%.0f");
+        }
 
-        //ImGui::Separator();
+        ImGui::Separator();
 
-        //if (ImGui::CollapsingHeader("KEY Bindings")) {
+        if (ImGui::CollapsingHeader("KEY Bindings")) {
 
-        //    ImGui::Text("WASD for moving Forward, backward and to the side\n QE for rotating ");
+            ImGui::Text("WASD for moving Forward, backward and to the side\n QE for rotating ");
 
-        //}
+        }
 
-        //ImGui::Separator();
+        ImGui::Separator();
 
-        //ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-        //ImGui::End();
-        //// Rendering
+        ImGui::End();
+        // Rendering
 
-        //ImGui::Render();
+        ImGui::Render();
 
         vulkan_renderer.draw();
 

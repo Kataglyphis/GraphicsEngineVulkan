@@ -60,7 +60,6 @@ public:
 
 	void clean_up_gui();
 	void clean_up_swapchain();
-	void clean_up_rasterizer();
 	void clean_up_raytracing();
 	void clean_up();
 
@@ -157,6 +156,8 @@ private:
 	VkRenderPass render_pass;
 
 	// -- Offscreen render pass
+	VkPipeline offscreen_graphics_pipeline;
+	VkPipelineLayout offscreen_pipeline_layout;
 	VkRenderPass offscreen_render_pass;
 	VkFormat offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
 	std::vector<VkFramebuffer> offscreen_framebuffer;
@@ -167,6 +168,7 @@ private:
 	VkImageView offscreen_depth_buffer_image_view;
 	VkFormat offscreen_depth_format;
 
+	void create_offscreen_graphics_pipeline();
 	void create_offscreen_textures();
 	void create_offscreen_render_pass();
 	void create_offscreen_framebuffers();
@@ -178,7 +180,7 @@ private:
 	void update_post_descriptor_set();
 
 	VkPushConstantRange post_push_constant_range;
-	VkDescriptorPool post_descriptor_pool;
+	VkDescriptorPool post_descriptor_pool{};
 	VkDescriptorSetLayout post_descriptor_set_layout;
 	std::vector<VkDescriptorSet> post_descriptor_set;
 	VkPipeline post_pipeline;
@@ -258,7 +260,6 @@ private:
 	void create_object_description_buffer();
 	void create_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
-	void create_raytracing_image();
 
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
 
@@ -268,13 +269,6 @@ private:
 
 	// -- top level
 	TLAS tlas;
-
-	// -- image view
-	std::vector<RayTracingImage> ray_tracing_images;
-
-	// -- uniform buffers
-	std::vector<VkBuffer> raytracing_uniform_buffer;
-	std::vector<VkDeviceMemory> raytracing_uniform_buffer_memory;
 
 	// -- descriptors
 	VkDescriptorPool raytracing_descriptor_pool;
