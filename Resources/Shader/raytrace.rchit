@@ -21,8 +21,6 @@ layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _Ubo
     UboDirections ubo_directions;
 };
 
-//layout(set = SAMPLER_SET, binding = SAMPLER_BINDING) uniform sampler2D texture_sampler;
-
 layout(set = TLAS_SET, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
 layout(set = OBJECT_DESCRIPTION_SET, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
     ObjectDescription i[];

@@ -1,0 +1,275 @@
+# Blender MTL File: 'None'
+# Material Count: 24
+
+newmtl Material__25
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/lion.jpg
+map_Bump assets/crytek-sponza/textures/lion_bump.png
+map_Ka assets/crytek-sponza/textures/lion.jpg
+
+newmtl Material__298
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/background.jpg
+map_Bump assets/crytek-sponza/textures/background_bump.png
+map_Ka assets/crytek-sponza/textures/background.jpg
+
+newmtl Material__47
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Material__57
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/vase_plant.jpg
+map_Ka assets/crytek-sponza/textures/vase_plant.jpg
+map_d assets/crytek-sponza/textures/vase_plant_mask.jpg
+
+newmtl arch
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_arch_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_arch_diff.jpg
+
+newmtl bricks
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/spnza_bricks_a_diff.jpg
+map_Bump assets/crytek-sponza/textures/spnza_bricks_a_diff.jpg
+map_Ka assets/crytek-sponza/textures/spnza_bricks_a_diff.jpg
+
+newmtl ceiling
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_ceiling_a_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_ceiling_a_diff.jpg
+
+newmtl chain
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/chain_texture.jpg
+map_Bump assets/crytek-sponza/textures/chain_texture_bump.png
+map_Ka assets/crytek-sponza/textures/chain_texture.jpg
+map_d assets/crytek-sponza/textures/chain_texture_mask.jpg
+
+newmtl column_a
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_column_a_diff.jpg
+map_Bump assets/crytek-sponza/textures/sponza_column_a_bump.png
+map_Ka assets/crytek-sponza/textures/sponza_column_a_diff.jpg
+
+newmtl column_b
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_column_b_diff.jpg
+map_Bump assets/crytek-sponza/textures/sponza_column_b_bump.png
+map_Ka assets/crytek-sponza/textures/sponza_column_b_diff.jpg
+
+newmtl column_c
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_column_c_diff.jpg
+map_Bump assets/crytek-sponza/textures/sponza_column_c_bump.png
+map_Ka assets/crytek-sponza/textures/sponza_column_c_diff.jpg
+
+newmtl details
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_details_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_details_diff.jpg
+
+newmtl fabric_a
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_fabric_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_fabric_diff.jpg
+
+newmtl fabric_c
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_curtain_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_curtain_diff.jpg
+
+newmtl fabric_d
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_fabric_blue_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_fabric_blue_diff.jpg
+
+newmtl fabric_e
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_fabric_green_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_fabric_green_diff.jpg
+
+newmtl fabric_f
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_curtain_green_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_curtain_green_diff.jpg
+
+newmtl fabric_g
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_curtain_blue_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_curtain_blue_diff.jpg
+
+newmtl flagpole
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_flagpole_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_flagpole_diff.jpg
+
+newmtl floor
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_floor_a_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_floor_a_diff.jpg
+
+newmtl roof
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/sponza_roof_diff.jpg
+map_Ka assets/crytek-sponza/textures/sponza_roof_diff.jpg
+
+newmtl vase
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/vase_dif.jpg
+map_Bump assets/crytek-sponza/textures/vase_bump.png
+map_Ka assets/crytek-sponza/textures/vase_dif.jpg
+
+newmtl vase_hanging
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd assets/crytek-sponza/textures/vase_hanging.jpg
+map_Ka assets/crytek-sponza/textures/vase_hanging.jpg
+
+newmtl vase_round
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.470400 0.470400 0.470400
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/vase_round.jpg
+map_Bump assets/crytek-sponza/textures/vase_round_bump.png
+map_Ka assets/crytek-sponza/textures/vase_round.jpg

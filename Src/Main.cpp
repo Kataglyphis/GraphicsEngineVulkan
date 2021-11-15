@@ -70,7 +70,7 @@ int main() {
     float directional_light_direction[3] = {1.f,1.f,1.f};
 
     // -- RAY TRACING ON
-    bool raytracing = false;
+    bool raytracing = true;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 
@@ -122,8 +122,8 @@ int main() {
         floor_model = glm::translate(floor_model, glm::vec3(0.0f, 0.0f, -3.75f));
         //floor_model = glm::rotate(floor_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        vulkan_renderer.update_model(0, dragon_model);
-        vulkan_renderer.update_model(1, floor_model);
+        /*vulkan_renderer.update_model(0, dragon_model);
+        vulkan_renderer.update_model(1, floor_model);*/
 
         // Start the Dear ImGui frame
         ImGui_ImplVulkan_NewFrame();
@@ -198,7 +198,7 @@ int main() {
 
         ImGui::Render();
 
-        vulkan_renderer.draw();
+        vulkan_renderer.drawFrame();
 
 
     }

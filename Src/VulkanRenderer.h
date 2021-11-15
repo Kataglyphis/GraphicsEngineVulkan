@@ -56,7 +56,7 @@ public:
 
 	void hot_reload_all_shader();
 
-	void draw();
+	void drawFrame();
 
 	void clean_up_gui();
 	void clean_up_swapchain();
@@ -144,7 +144,7 @@ private:
 	std::vector<VkSemaphore> render_finished;
 	std::vector<VkFence> draw_fences;
 	std::vector<VkFence> images_in_flight_fences;
-	VkFence building_BLAS;
+	//VkFence building_BLAS;
 	void create_synchronization();
 
 	// ----- VULKAN CORE COMPONENTS ----- END
@@ -166,7 +166,7 @@ private:
 	VkImage offscreen_depth_buffer_image;
 	VkDeviceMemory offscreen_depth_buffer_image_memory;
 	VkImageView offscreen_depth_buffer_image_view;
-	VkFormat offscreen_depth_format;
+	//VkFormat offscreen_depth_format;
 
 	void create_offscreen_graphics_pipeline();
 	void create_offscreen_textures();
@@ -261,7 +261,7 @@ private:
 	void create_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
 
-	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties;
+	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
 
 	// -- acceleration structure
 	// -- bottom level
@@ -290,7 +290,7 @@ private:
 	VkStridedDeviceAddressRegionKHR call_region{};
 
 	// -- properties
-	VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
+	// VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
 
 	PushConstantRaytracing pc_ray;
 	VkPushConstantRange pc_ray_ranges;

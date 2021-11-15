@@ -199,20 +199,20 @@ void VulkanRenderer::hot_reload_all_shader()
 
 }
 
-void VulkanRenderer::draw()
+void VulkanRenderer::drawFrame()
 {
 
 	check_changed_framebuffer_size();
 
-	// -- GET NEXT IMAGE --
+
+	 /*1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
+	 wait for given fence to signal (open) from last draw before continuing*/
 	VkResult result = vkWaitForFences(MainDevice.logical_device, 1, &draw_fences[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max());
 
 	if (result != VK_SUCCESS) {
 		throw std::runtime_error("Failed to wait for fences!");
 	}
-
-	// 1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
-	// wait for given fence to signal (open) from last draw before continuing
+	// -- GET NEXT IMAGE --
 	uint32_t image_index;
 	result = vkAcquireNextImageKHR(MainDevice.logical_device, swapchain, std::numeric_limits<uint64_t>::max(), image_available[current_frame], VK_NULL_HANDLE, &image_index);
 
@@ -268,7 +268,7 @@ void VulkanRenderer::draw()
 	}
 
 	// submit command buffer to queue
-	result = vkQueueSubmit(graphics_queue, 1, &submit_info, draw_fences[current_frame]);
+	result = vkQueueSubmit(graphics_queue, 1, &submit_info, draw_fences[current_frame]); 
 
 	if (result != VK_SUCCESS) {
 
@@ -1402,7 +1402,7 @@ void VulkanRenderer::create_fonts_and_upload()
 
 	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
 	ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, compute_queue, command_buffer);
+	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
 
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(MainDevice.logical_device);
@@ -1539,27 +1539,26 @@ void VulkanRenderer::create_single_blas(VkCommandBuffer command_buffer, BuildAcc
 
 	VkAccelerationStructureCreateInfoKHR acceleration_structure_create_info{};
 	acceleration_structure_create_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_KHR;
-	acceleration_structure_create_info.pNext = nullptr;
 	acceleration_structure_create_info.type = VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_KHR;
-	acceleration_structure_create_info.createFlags = 0;
-	acceleration_structure_create_info.offset = 0;
 	acceleration_structure_create_info.size = build_as_structure.size_info.accelerationStructureSize;
-	acceleration_structure_create_info.deviceAddress = 0;
 
 	create_buffer(MainDevice.physical_device, MainDevice.logical_device, build_as_structure.size_info.accelerationStructureSize, 
-						VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT
-						| VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-						VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT, &build_as_structure.single_blas.buffer, 
-						&build_as_structure.single_blas.memory);
+												VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR | 
+												VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+												VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+												VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &build_as_structure.single_blas.buffer, 
+												&build_as_structure.single_blas.memory);
 
 	acceleration_structure_create_info.buffer = build_as_structure.single_blas.buffer;
-
 	pvkCreateAccelerationStructureKHR(MainDevice.logical_device, &acceleration_structure_create_info, nullptr, &build_as_structure.single_blas.accel);
+
 
 	build_as_structure.build_info.dstAccelerationStructure = build_as_structure.single_blas.accel;
 	build_as_structure.build_info.scratchData.deviceAddress = scratch_device_or_host_address;
 
+
 	pvkCmdBuildAccelerationStructuresKHR(command_buffer, 1, &build_as_structure.build_info, &build_as_structure.range_info);
+
 
 }
 
@@ -1629,7 +1628,8 @@ void VulkanRenderer::create_BLAS()
 																VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
 																VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
 																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-																VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+																VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | 
+																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 																&scratch_buffer,
 																&scratch_buffer_memory);
 
@@ -1643,7 +1643,7 @@ void VulkanRenderer::create_BLAS()
 	scratch_device_or_host_address.deviceAddress = scratch_buffer_address;
 
 
-	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, compute_command_pool);
+	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
 
 	for (size_t i = 0; i < scene->get_model_count(); i++) {
 		
@@ -1660,7 +1660,7 @@ void VulkanRenderer::create_BLAS()
 
 	}
 
-	end_and_submit_command_buffer(MainDevice.logical_device, compute_command_pool, compute_queue, command_buffer);
+	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
 
 	for (auto& b : build_as_structures) {
 		blas.emplace_back(b.single_blas);
@@ -1722,7 +1722,7 @@ void VulkanRenderer::create_TLAS()
 		tlas_instances.emplace_back(geometry_instance);
 	}
 
-	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, compute_command_pool);
+	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
 
 	VkBuffer geometry_instance_buffer;
 	VkDeviceMemory geometry_instance_buffer_memory;
@@ -1784,7 +1784,8 @@ void VulkanRenderer::create_TLAS()
 																						VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
 																						VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | 
 																						VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-																						VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, 
+																						VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | 
+																						VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT, 
 																						&tlas.top_level_acceleration_structure_buffer, 
 																						&tlas.top_level_acceleration_structure_buffer_memory);
 
@@ -1807,7 +1808,8 @@ void VulkanRenderer::create_TLAS()
 																		VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
 																		VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
 																		VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-																		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+																		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+																		VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
 																		&scratch_buffer,
 																		&scratch_buffer_memory);
 
@@ -1835,7 +1837,7 @@ void VulkanRenderer::create_TLAS()
 	pvkCmdBuildAccelerationStructuresKHR(command_buffer, 1, &acceleration_structure_build_geometry_info,
 																								&acceleration_structure_build_range_infos);
 
-	end_and_submit_command_buffer(MainDevice.logical_device, compute_command_pool, compute_queue, command_buffer);
+	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
 
 	vkDestroyBuffer(MainDevice.logical_device, scratch_buffer, nullptr);
 	vkFreeMemory(MainDevice.logical_device, scratch_buffer_memory, nullptr);
@@ -1873,7 +1875,8 @@ void VulkanRenderer::create_geometry_instance_buffer(VkBuffer& geometry_instance
 	create_buffer(MainDevice.physical_device, MainDevice.logical_device, geometry_instance_buffer_size, VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT
 																| VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
 																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-																VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+																VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | 
+																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 																&geometry_instance_buffer, &geometry_instance_buffer_memory);
 
 	// copy staging buffer to vertex buffer on GPU
@@ -2099,7 +2102,8 @@ void VulkanRenderer::create_shader_binding_table()
 													VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | 
 													VK_BUFFER_USAGE_TRANSFER_DST_BIT,
 													VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-													VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+													VK_MEMORY_PROPERTY_HOST_COHERENT_BIT |
+													VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
 													&shader_binding_table_buffer,
 													&shader_binding_table_buffer_memory);
 
@@ -2200,7 +2204,8 @@ void VulkanRenderer::create_object_description_buffer()
 												VK_BUFFER_USAGE_TRANSFER_DST_BIT |
 												VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
 												VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-												VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+												VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | 
+												VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
 												&object_description_buffer,
 												&object_description_buffer_memory);
 
@@ -4035,7 +4040,7 @@ void VulkanRenderer::check_changed_framebuffer_size()
 void VulkanRenderer::init_scene()
 {
 
-	int dragon = create_mesh_model_for_scene("../Resources/Model/Dragon 2.5_fbx.fbx", false);
+	//int dragon = create_mesh_model_for_scene("../Resources/Model/Dragon 2.5_fbx.fbx", false);
 	int floor = create_mesh_model_for_scene("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true);
 
 }
