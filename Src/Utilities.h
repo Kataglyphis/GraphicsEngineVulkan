@@ -362,6 +362,48 @@ static void transition_image_layout_for_command_buffer(VkCommandBuffer command_b
 		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
 	}
+	else if (old_layout == VK_IMAGE_LAYOUT_UNDEFINED && new_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) {
+
+		memory_barrier.srcAccessMask = 0;							
+		memory_barrier.dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_GENERAL && new_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+
+		memory_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_GENERAL) {
+
+		memory_barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+		src_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_GENERAL && new_layout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL) {
+
+		memory_barrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+
+	}
+	else if (old_layout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+
+		memory_barrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		memory_barrier.dstAccessMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+
+		src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+
+	}
 
 	vkCmdPipelineBarrier(
 
