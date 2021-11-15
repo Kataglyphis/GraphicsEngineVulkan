@@ -141,7 +141,7 @@ struct PushConstantPost {
 
 struct BLAS {
 
-	VkAccelerationStructureKHR accel = VK_NULL_HANDLE;
+	VkAccelerationStructureKHR accel;
 	VkBuffer buffer;
 	VkDeviceMemory memory;
 

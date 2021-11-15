@@ -1,0 +1,23 @@
+#==================================================
+#Material list
+#This file has been created by PoseRay v3.8.18.390
+#3D model to POV-Ray/Moray Converter.
+#Author: FlyerX
+#Email: flyerx_2000@yahoo.com
+#Web: http://mysite.verizon.net/sfg0000/
+#==================================================
+ 
+#==================================================
+newmtl s_gensmts(TemplBumpSpec)/mat_metal_plate
+Ns 4.287094
+Ka 0 0 0
+Kd 0.5882353 0.5882353 0.5882353
+Ks 0.572549 0.572549 0.572549
+d 0
+map_Ka assets/generator/generator_diffuse.tga
+map_Kd assets/generator/generator_diffuse.tga
+map_Bump assets/generator/generator_bump.tga
+#r 0
+#blend 0
+#cell_hi
+ 

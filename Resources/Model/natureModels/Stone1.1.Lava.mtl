@@ -1,0 +1,13 @@
+# Blender MTL File: 'Stone1.1.Lava.blend'
+# Material Count: 1
+
+newmtl Base
+Ns 388.842975
+Ka 0.325843 0.325843 0.325843
+Kd 0.800000 0.800000 0.800000
+Ks 0.179775 0.179775 0.179775
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd lava_s.jpg

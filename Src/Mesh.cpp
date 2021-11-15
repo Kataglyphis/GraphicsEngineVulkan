@@ -125,7 +125,8 @@ void Mesh::create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_c
 														VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | 
 														VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR | 
 														VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-														VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+														VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+														VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
 														&vertex_buffer,
 														&vertex_buffer_memory);
 
@@ -166,7 +167,8 @@ void Mesh::create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_co
 														VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | 
 														VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
 														VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-														VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+														VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+														VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
 														&index_buffer,
 														&index_buffer_memory);
 

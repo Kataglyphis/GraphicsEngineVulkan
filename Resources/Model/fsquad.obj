@@ -1,0 +1,10 @@
+mtllib fstri.mtl
+o FSTri
+v -1 -1 0
+v  1 -1 0
+v -1  1 0
+v  1  1 0
+usemtl None
+s 1
+f 1// 2// 3//
+f 2// 3// 4//
