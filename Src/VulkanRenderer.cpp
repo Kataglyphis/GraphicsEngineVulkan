@@ -212,7 +212,6 @@ void VulkanRenderer::drawFrame()
 
 	check_changed_framebuffer_size();
 
-
 	 /*1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
 	 wait for given fence to signal (open) from last draw before continuing*/
 	VkResult result = vkWaitForFences(MainDevice.logical_device, 1, &draw_fences[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max());
@@ -246,8 +245,6 @@ void VulkanRenderer::drawFrame()
 
 	// only update soecific command buffer not in use 
 	record_commands(image_index);
-
-	update_uniform_buffers(image_index);
 
 	// 2. Submit command buffer to queue for execution, making sure it waits for the image to be signalled as available before drawing
 	// and signals when it has finished rendering 
@@ -1424,7 +1421,6 @@ void VulkanRenderer::init_raytracing() {
 	
 	create_BLAS();
 	create_TLAS();
-	//create_raytracing_image();
 
 	create_raytracing_descriptor_set_layouts();
 	create_raytracing_descriptor_sets();
@@ -2184,8 +2180,6 @@ void VulkanRenderer::create_object_description_buffer()
 
 	VkDeviceSize buffer_size = sizeof(ObjectDescription) * scene->get_number_of_object_descriptions();
 
-	//object_description_buffer_alignment = dynamic_alignment;
-
 	// temporary buffer to "stage" index data before transfering to GPU
 	VkBuffer staging_buffer;
 	VkDeviceMemory staging_buffer_memory;
@@ -2891,18 +2885,66 @@ void VulkanRenderer::create_uniform_buffers()
 	directions_uniform_buffer.resize(swap_chain_images.size());
 	directions_uniform_buffer_memory.resize(swap_chain_images.size());
 
+	// temporary buffer to "stage" vertex data before transfering to GPU
+	VkBuffer staging_buffer;
+	VkDeviceMemory staging_buffer_memory;
+
 	// create uniform buffers 
 	for (size_t i = 0; i < swap_chain_images.size(); i++) {
 
-		create_buffer(MainDevice.physical_device, MainDevice.logical_device, vp_buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-																							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-																							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-																							&vp_uniform_buffer[i], &vp_uniform_buffer_memory[i]);
+		// -- VIEW PROJECTION UBO
+		// create buffer and allocate memory to it
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, vp_buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+			VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+			&staging_buffer, &staging_buffer_memory);
 
-		create_buffer(MainDevice.physical_device, MainDevice.logical_device, directions_buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-																									VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-																									VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-																									&directions_uniform_buffer[i], &directions_uniform_buffer_memory[i]);
+		// Map memory to vertex buffer
+		void* data;																																			// 1.) create pointer to a point in normal memory
+		vkMapMemory(MainDevice.logical_device, staging_buffer_memory, 0, vp_buffer_size, 0, &data);							// 2.) map the vertex buffer memory to that point
+		memcpy(data, &ubo_view_projection, (size_t)vp_buffer_size);																// 3.) copy memory from vertices vector to the point
+		vkUnmapMemory(MainDevice.logical_device, staging_buffer_memory);																	// 4.) unmap the vertex buffer memory
+
+		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
+		// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, vp_buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT |
+			VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+			&vp_uniform_buffer[i], &vp_uniform_buffer_memory[i]);
+
+		// copy staging buffer to vertex buffer on GPU
+		copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, staging_buffer, vp_uniform_buffer[i], vp_buffer_size);
+
+		// clean up staging buffer parts
+		vkDestroyBuffer(MainDevice.logical_device, staging_buffer, nullptr);
+		vkFreeMemory(MainDevice.logical_device, staging_buffer_memory, nullptr);
+
+		// -- DIRECTIONS UBO
+		// create buffer and allocate memory to it
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, directions_buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+								VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+								VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+								&staging_buffer, &staging_buffer_memory);
+
+		// Map memory to vertex buffer																																	// 1.) create pointer to a point in normal memory
+		vkMapMemory(MainDevice.logical_device, staging_buffer_memory, 0, directions_buffer_size, 0, &data);							// 2.) map the vertex buffer memory to that point
+		memcpy(data, &ubo_directions, (size_t)directions_buffer_size);																// 3.) copy memory from vertices vector to the point
+		vkUnmapMemory(MainDevice.logical_device, staging_buffer_memory);																	// 4.) unmap the vertex buffer memory
+
+		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
+		// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
+		create_buffer(MainDevice.physical_device, MainDevice.logical_device, directions_buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT |
+			VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+			&directions_uniform_buffer[i], &directions_uniform_buffer_memory[i]);
+
+		// copy staging buffer to vertex buffer on GPU
+		copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, staging_buffer, directions_uniform_buffer[i], directions_buffer_size);
+
+		// clean up staging buffer parts
+		vkDestroyBuffer(MainDevice.logical_device, staging_buffer, nullptr);
+		vkFreeMemory(MainDevice.logical_device, staging_buffer_memory, nullptr);
+
 
 	}
 }
@@ -3125,7 +3167,7 @@ void VulkanRenderer::create_descriptor_sets()
 		// VIEW PROJECTION DESCRIPTOR
 		// buffer info and data offset info
 		VkDescriptorBufferInfo ubo_directions_buffer_info{};
-		ubo_directions_buffer_info.buffer = vp_uniform_buffer[i];																							// buffer to get data from 
+		ubo_directions_buffer_info.buffer = directions_uniform_buffer[i];																							// buffer to get data from 
 		ubo_directions_buffer_info.offset = 0;																																// position of start of data
 		ubo_directions_buffer_info.range = sizeof(ubo_directions);																						// size of data
 
@@ -3140,7 +3182,7 @@ void VulkanRenderer::create_descriptor_sets()
 		ubo_directions_set_write.pBufferInfo = &ubo_directions_buffer_info;																		// information about buffer data to bind
 
 		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { ubo_view_projection_set_write,
-																														ubo_directions_set_write };
+																	ubo_directions_set_write };
 
 		// update the descriptor sets with new buffer/binding info
 		vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
@@ -3265,20 +3307,78 @@ stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, in
 
 }
 
-void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
+void VulkanRenderer::update_uniform_buffers(VkCommandBuffer command_buffer, uint32_t image_index)
 {
  
-	void* data;
+	/*void* data;
 	vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(UboViewProjection), 0, &data);
 	memcpy(data, &ubo_view_projection, sizeof(UboViewProjection));
 	vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
 
 	vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(UboDirections), 0, &data);
 	memcpy(data, &ubo_directions, sizeof(UboDirections));
-	vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);
+	vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);*/
 
+	auto usage_stage_flags = VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_KHR | 
+							VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+							 
 
+	VkBufferMemoryBarrier before_barrier_uvp;
+	before_barrier_uvp.pNext = nullptr;
+	before_barrier_uvp.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+	before_barrier_uvp.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	before_barrier_uvp.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	before_barrier_uvp.buffer = vp_uniform_buffer[image_index];
+	before_barrier_uvp.offset = 0;
+	before_barrier_uvp.size = sizeof(ubo_view_projection);
+	before_barrier_uvp.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	before_barrier_uvp.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
+	VkBufferMemoryBarrier before_barrier_directions;
+	before_barrier_directions.pNext = nullptr;
+	before_barrier_directions.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+	before_barrier_directions.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	before_barrier_directions.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	before_barrier_directions.buffer = vp_uniform_buffer[image_index];
+	before_barrier_directions.offset = 0;
+	before_barrier_directions.size = sizeof(ubo_directions);
+	before_barrier_directions.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	before_barrier_directions.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+
+	vkCmdPipelineBarrier(command_buffer, usage_stage_flags,
+		VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 1, &before_barrier_uvp, 0, nullptr);
+	vkCmdPipelineBarrier(command_buffer, usage_stage_flags,
+		VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 1, &before_barrier_directions, 0, nullptr);
+
+	vkCmdUpdateBuffer(command_buffer, vp_uniform_buffer[image_index], 0, sizeof(UboViewProjection), &ubo_view_projection);
+	vkCmdUpdateBuffer(command_buffer, directions_uniform_buffer[image_index], 0, sizeof(UboDirections), &ubo_directions);
+
+	VkBufferMemoryBarrier after_barrier_uvp;
+	after_barrier_uvp.pNext = nullptr;
+	after_barrier_uvp.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+	after_barrier_uvp.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	after_barrier_uvp.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	after_barrier_uvp.buffer = vp_uniform_buffer[image_index];
+	after_barrier_uvp.offset = 0;
+	after_barrier_uvp.size = sizeof(UboViewProjection);
+	after_barrier_uvp.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	after_barrier_uvp.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+
+	VkBufferMemoryBarrier after_barrier_directions;
+	after_barrier_directions.pNext = nullptr;
+	after_barrier_directions.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+	after_barrier_directions.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	after_barrier_directions.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	after_barrier_directions.buffer = vp_uniform_buffer[image_index];
+	after_barrier_directions.offset = 0;
+	after_barrier_directions.size = sizeof(UboDirections);
+	after_barrier_directions.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	after_barrier_directions.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+
+	vkCmdPipelineBarrier(command_buffer, VK_PIPELINE_STAGE_TRANSFER_BIT, 
+		usage_stage_flags, 0, 0, nullptr, 1, &after_barrier_uvp, 0, nullptr);
+	vkCmdPipelineBarrier(command_buffer, VK_PIPELINE_STAGE_TRANSFER_BIT, 
+			usage_stage_flags, 0, 0, nullptr, 1, &after_barrier_directions, 0, nullptr);
 	// copy Model data
 	//for (size_t i = 0; i < meshes.size(); i++) {
 
@@ -3350,6 +3450,8 @@ void VulkanRenderer::record_commands(uint32_t current_image)
 
 	// start recording commands to command buffer
 	VkResult result = vkBeginCommandBuffer(command_buffers[current_image], &buffer_begin_info);
+	
+	update_uniform_buffers(command_buffers[current_image], current_image);
 
 	if (result != VK_SUCCESS) {
 
