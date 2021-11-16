@@ -67,10 +67,10 @@ int main() {
     // GUI variables
     float direcional_light_ambient_intensity = 10.f;
     float directional_light_color[3] = {1.f,1.f,1.f};
-    float directional_light_direction[3] = {1.f,1.f,1.f};
+    float directional_light_direction[3] = {0.f,1.f,1.f};
 
     // -- RAY TRACING ON
-    bool raytracing = false;
+    bool raytracing = true;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 

@@ -30,6 +30,11 @@ layout (push_constant) uniform _PushConstantRaster {
 layout (location = 0) out vec2 texture_coordinates;
 layout (location = 1) out vec3 shading_normal;
 
+out gl_PerVertex
+{
+  vec4 gl_Position;
+};
+
 void main () {
 	
 	// -- WE ARE CALCULATION THE MVP WITH THE GLM LIBRARY WHO IS DESIGNED FOR OPENGL

@@ -47,9 +47,6 @@ public:
 	int init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane,
 					glm::vec3 light_dir, glm::vec3 view_dir, bool raytracing);
 
-	void init_rasterizer();
-	void init_raytracing();
-
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 	void update_directions(glm::vec3 light_dir, glm::vec3 view_dir);
@@ -192,7 +189,8 @@ private:
 	VkDeviceMemory depth_buffer_image_memory;
 	VkImageView depth_buffer_image_view;
 	VkFormat depth_format;
-
+	
+	void init_rasterizer();
 	// all create functions
 	void create_render_pass();
 	void create_descriptor_set_layouts();
@@ -211,8 +209,8 @@ private:
 	void create_descriptor_sets();
 
 	// uniforms
-	UboViewProjection ubo_view_projection;
-	UboDirections ubo_directions;
+	UboViewProjection ubo_view_projection{};
+	UboDirections ubo_directions{};
 	PushConstantRaster pc_raster;
 
 	// uniform buffer
@@ -236,7 +234,7 @@ private:
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
 	bool raytracing;
-
+	void init_raytracing();
 	// -- create funcs
 	// -- bottom level acceleration structure
 	void create_BLAS();
@@ -319,7 +317,7 @@ private:
 	// ---- HELPER ---- END
 
 	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
-	void update_uniform_buffers(uint32_t image_index);
+	void update_uniform_buffers(VkCommandBuffer command_buffer, uint32_t image_index);
 	void record_commands(uint32_t current_image);
 	
 	// ----- GUI STUFF ----- BEGIN
