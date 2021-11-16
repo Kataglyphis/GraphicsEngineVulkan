@@ -1,4 +1,4 @@
-#include "VulkanRenderer.h"
+#include "VulkanRenderer.hpp"
 
 VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
 																	current_frame(0),
@@ -48,11 +48,11 @@ int VulkanRenderer::create_mesh_model_for_scene(std::string model_file, bool fli
 
 	// load in all our meshes
 	std::vector<Mesh> model_meshes = MeshModel::load_node(MainDevice.physical_device,
-																													MainDevice.logical_device,
-																													graphics_queue,
-																													graphics_command_pool,
-																													scene->mRootNode,
-																													scene, mat_to_tex, flip_y);
+														MainDevice.logical_device,
+														compute_queue,
+														compute_command_pool,
+														scene->mRootNode,
+														scene, mat_to_tex, flip_y);
 
 	// create mesh model and add to list
 	MeshModel mesh_model = MeshModel(model_meshes, static_cast<uint32_t>(this->scene->get_model_count()));
@@ -192,6 +192,14 @@ void VulkanRenderer::hot_reload_all_shader()
 	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
 	create_rasterizer_graphics_pipeline();
+
+	vkDestroyPipeline(MainDevice.logical_device, offscreen_graphics_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, offscreen_pipeline_layout, nullptr);
+	create_offscreen_graphics_pipeline();
+
+	vkDestroyPipeline(MainDevice.logical_device, post_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, post_pipeline_layout, nullptr);
+	create_post_pipeline();
 
 	/*vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, raytracing_pipeline_layout, nullptr);
@@ -851,7 +859,7 @@ void VulkanRenderer::create_offscreen_textures()
 	
 	offscreen_images.resize(swap_chain_images.size());
 
-	VkCommandBuffer cmdBuffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	VkCommandBuffer cmdBuffer = begin_command_buffer(MainDevice.logical_device, compute_command_pool);
 
 	for (int index = 0; index < swap_chain_images.size(); index++) {
 
@@ -875,7 +883,7 @@ void VulkanRenderer::create_offscreen_textures()
 
 	}
 
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, cmdBuffer);
+	end_and_submit_command_buffer(MainDevice.logical_device, compute_command_pool, compute_queue, cmdBuffer);
 
 	VkFormat depth_format = choose_supported_format({ VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D32_SFLOAT,  VK_FORMAT_D24_UNORM_S8_UINT },
 													VK_IMAGE_TILING_OPTIMAL,
@@ -893,11 +901,11 @@ void VulkanRenderer::create_offscreen_textures()
 																							VK_IMAGE_ASPECT_STENCIL_BIT, 1);
 
 	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
-	VkCommandBuffer cmdBuffer2 = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	VkCommandBuffer cmdBuffer2 = begin_command_buffer(MainDevice.logical_device, compute_command_pool);
 	transition_image_layout_for_command_buffer(cmdBuffer2, offscreen_depth_buffer_image,
 		VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1, VK_IMAGE_ASPECT_DEPTH_BIT |
 																						VK_IMAGE_ASPECT_STENCIL_BIT);
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, cmdBuffer2);
+	end_and_submit_command_buffer(MainDevice.logical_device, compute_command_pool, compute_queue, cmdBuffer2);
 	
 
 
@@ -1643,7 +1651,7 @@ void VulkanRenderer::create_BLAS()
 	scratch_device_or_host_address.deviceAddress = scratch_buffer_address;
 
 
-	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, compute_command_pool);
 
 	for (size_t i = 0; i < scene->get_model_count(); i++) {
 		
@@ -1660,7 +1668,7 @@ void VulkanRenderer::create_BLAS()
 
 	}
 
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
+	end_and_submit_command_buffer(MainDevice.logical_device, compute_command_pool, compute_queue, command_buffer);
 
 	for (auto& b : build_as_structures) {
 		blas.emplace_back(b.single_blas);
@@ -1722,7 +1730,7 @@ void VulkanRenderer::create_TLAS()
 		tlas_instances.emplace_back(geometry_instance);
 	}
 
-	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	VkCommandBuffer command_buffer = begin_command_buffer(MainDevice.logical_device, compute_command_pool);
 
 	VkBuffer geometry_instance_buffer;
 	VkDeviceMemory geometry_instance_buffer_memory;
@@ -1837,7 +1845,7 @@ void VulkanRenderer::create_TLAS()
 	pvkCmdBuildAccelerationStructuresKHR(command_buffer, 1, &acceleration_structure_build_geometry_info,
 																								&acceleration_structure_build_range_infos);
 
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, command_buffer);
+	end_and_submit_command_buffer(MainDevice.logical_device, compute_command_pool, compute_queue, command_buffer);
 
 	vkDestroyBuffer(MainDevice.logical_device, scratch_buffer, nullptr);
 	vkFreeMemory(MainDevice.logical_device, scratch_buffer_memory, nullptr);
@@ -1880,7 +1888,7 @@ void VulkanRenderer::create_geometry_instance_buffer(VkBuffer& geometry_instance
 																&geometry_instance_buffer, &geometry_instance_buffer_memory);
 
 	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, 
+	copy_buffer(MainDevice.logical_device, compute_queue, compute_command_pool,
 				staging_buffer, geometry_instance_buffer, geometry_instance_buffer_size);
 
 	// clean up staging buffer parts
@@ -2210,7 +2218,7 @@ void VulkanRenderer::create_object_description_buffer()
 												&object_description_buffer_memory);
 
 	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(MainDevice.logical_device, graphics_queue, graphics_command_pool, staging_buffer, object_description_buffer, buffer_size);
+	copy_buffer(MainDevice.logical_device, compute_queue, compute_command_pool, staging_buffer, object_description_buffer, buffer_size);
 
 	// clean up staging buffer parts
 	vkDestroyBuffer(MainDevice.logical_device, staging_buffer, nullptr);
@@ -3313,6 +3321,17 @@ void VulkanRenderer::recreate_swap_chain()
 	create_descriptor_sets();
 	create_command_buffers();
 
+	// init the offscreen render pass 
+	create_offscreen_textures();
+	create_offscreen_render_pass();
+	create_offscreen_framebuffers();
+	create_offscreen_graphics_pipeline();
+
+	// all post
+	create_post_descriptor();
+	update_post_descriptor_set();
+	create_post_pipeline();
+
 	images_in_flight_fences.resize(swap_chain_images.size(), VK_NULL_HANDLE);
 
 }
@@ -4040,7 +4059,7 @@ void VulkanRenderer::check_changed_framebuffer_size()
 void VulkanRenderer::init_scene()
 {
 
-	//int dragon = create_mesh_model_for_scene("../Resources/Model/Dragon 2.5_fbx.fbx", false);
+	int dragon = create_mesh_model_for_scene("../Resources/Model/Dragon 2.5_fbx.fbx", false);
 	int floor = create_mesh_model_for_scene("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true);
 
 }
@@ -4068,10 +4087,6 @@ void VulkanRenderer::clean_up_swapchain()
 
 	}
 
-	// instead of recreate command pool from scretch empty command buffers
-	//vkFreeCommandBuffers(MainDevice.logical_device, graphics_command_pool, 
-	//											static_cast<uint32_t>(command_buffers.size()), command_buffers.data());
-
 	vkDestroyPipeline(MainDevice.logical_device, graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, pipeline_layout, nullptr);
 	vkDestroyRenderPass(MainDevice.logical_device, render_pass, nullptr);
@@ -4098,6 +4113,36 @@ void VulkanRenderer::clean_up_swapchain()
 		vkDestroyBuffer(MainDevice.logical_device, directions_uniform_buffer[i], nullptr);
 		vkFreeMemory(MainDevice.logical_device, directions_uniform_buffer_memory[i], nullptr);
 	}
+
+	// -- POST 
+	vkDestroyPipeline(MainDevice.logical_device, post_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, post_pipeline_layout, nullptr);
+	vkDestroyDescriptorSetLayout(MainDevice.logical_device, post_descriptor_set_layout, nullptr);
+	vkDestroyDescriptorPool(MainDevice.logical_device, post_descriptor_pool, nullptr);
+
+	// -- OFFSCREEN
+	vkDestroyPipeline(MainDevice.logical_device, offscreen_graphics_pipeline, nullptr);
+	vkDestroyPipelineLayout(MainDevice.logical_device, offscreen_pipeline_layout, nullptr);
+	vkDestroyRenderPass(MainDevice.logical_device, offscreen_render_pass, nullptr);
+
+	for (auto framebuffer : offscreen_framebuffer) {
+
+		vkDestroyFramebuffer(MainDevice.logical_device, framebuffer, nullptr);
+
+	}
+
+	for (auto image : offscreen_images) {
+
+		vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
+		vkDestroyImage(MainDevice.logical_device, image.image, nullptr);
+		vkFreeMemory(MainDevice.logical_device, image.image_memory, nullptr);
+
+	}
+
+	// depth buffer
+	vkDestroyImageView(MainDevice.logical_device, offscreen_depth_buffer_image_view, nullptr);
+	vkDestroyImage(MainDevice.logical_device, offscreen_depth_buffer_image, nullptr);
+	vkFreeMemory(MainDevice.logical_device, offscreen_depth_buffer_image_memory, nullptr);
 
 	// -- UNIFORM VALUES CLEAN UP
 	// desriptor pool size depends on number of images in swapchain, therefore clean it up here
@@ -4179,36 +4224,6 @@ void VulkanRenderer::clean_up()
 	 //instead of recreate command pool from scretch empty command buffers
 	vkFreeCommandBuffers(MainDevice.logical_device, graphics_command_pool, 
 												static_cast<uint32_t>(command_buffers.size()), command_buffers.data());
-
-	// -- POST 
-	vkDestroyPipeline(MainDevice.logical_device, post_pipeline, nullptr);
-	vkDestroyPipelineLayout(MainDevice.logical_device, post_pipeline_layout, nullptr);
-	vkDestroyDescriptorSetLayout(MainDevice.logical_device, post_descriptor_set_layout, nullptr);
-	vkDestroyDescriptorPool(MainDevice.logical_device, post_descriptor_pool, nullptr);
-
-	// -- OFFSCREEN
-	vkDestroyPipeline(MainDevice.logical_device, offscreen_graphics_pipeline, nullptr);
-	vkDestroyPipelineLayout(MainDevice.logical_device, offscreen_pipeline_layout, nullptr);
-	vkDestroyRenderPass(MainDevice.logical_device, offscreen_render_pass, nullptr);
-
-	for (auto framebuffer : offscreen_framebuffer) {
-
-		vkDestroyFramebuffer(MainDevice.logical_device, framebuffer, nullptr);
-
-	}
-
-	for (auto image : offscreen_images) {
-
-		vkDestroyImageView(MainDevice.logical_device, image.image_view, nullptr);
-		vkDestroyImage(MainDevice.logical_device, image.image, nullptr);
-		vkFreeMemory(MainDevice.logical_device, image.image_memory, nullptr);
-
-	}
-
-	// depth buffer
-	vkDestroyImageView(MainDevice.logical_device, offscreen_depth_buffer_image_view, nullptr);
-	vkDestroyImage(MainDevice.logical_device, offscreen_depth_buffer_image, nullptr);
-	vkFreeMemory(MainDevice.logical_device, offscreen_depth_buffer_image_memory, nullptr);
 
 	// -- DESTROY ALL LAYOUTS
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, descriptor_set_layout, nullptr);
