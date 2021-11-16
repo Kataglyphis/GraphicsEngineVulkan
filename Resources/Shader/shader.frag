@@ -9,6 +9,7 @@
 #extension GL_EXT_buffer_reference2 : require
 
 #include "raycommon.glsl"
+#include "ShadingLib.glsl"
 
 //layout (push_constant) uniform PushConstantRaster {
 //
@@ -31,12 +32,18 @@ void main() {
 	vec3 N = normalize(shading_normal);
 	vec3 V = normalize(view_dir);
 	vec3 R = reflect(L, N);
+	vec3 H = normalize(V+L);
 
 	vec3 ambient = texture(texture_sampler, texture_coordinates).xyz;
 	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler, texture_coordinates).xyz;
 	vec3 specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
 
-	color = vec4(ambient * 0.3f + diffuse + specular * 0.00001f,1.0f);
+	float roughness = 5;
+	vec3 light_color = vec3(1.f);
+	float light_ambient_intensity = 1.f;
+
+	color = vec4(CookTorrence(ambient, N, H, L, V, roughness, 
+				light_color, light_ambient_intensity), 1.0f);//vec4(ambient * 0.3f + diffuse + specular * 0.00001f,1.0f);
 	// color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
