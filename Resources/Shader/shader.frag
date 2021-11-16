@@ -9,6 +9,7 @@
 #extension GL_EXT_buffer_reference2 : require
 
 #include "raycommon.glsl"
+#include "SetsAndBindings.glsl"
 #include "ShadingLib.glsl"
 
 //layout (push_constant) uniform PushConstantRaster {
@@ -19,8 +20,10 @@
 
 layout (location = 0) in vec2 texture_coordinates;
 layout (location = 1) in vec3 shading_normal;
-layout (location = 2) in vec3 light_dir;
-layout (location = 3) in vec3 view_dir;
+
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
+	UboDirections ubo_directions;
+};
 
 layout (location = 0) out vec4 color;																	//final output color (must have location)
 
@@ -28,9 +31,9 @@ layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
 
 void main() {
 	
-	vec3 L = vec3(light_dir);
+	vec3 L = normalize(vec3(ubo_directions.light_dir));
 	vec3 N = normalize(shading_normal);
-	vec3 V = normalize(view_dir);
+	vec3 V = normalize(ubo_directions.view_dir);
 	vec3 R = reflect(L, N);
 	vec3 H = normalize(V+L);
 

@@ -81,7 +81,9 @@ int main() {
     VulkanRenderer vulkan_renderer{};
 
     if (vulkan_renderer.init(main_window, initial_scene, start_position, near_plane,
-                                            far_plane, { 1.f,1.f,1.f }, camera.get_camera_direction(),
+                                            far_plane, { directional_light_direction[0],
+                                                        directional_light_direction[1],
+                                                        directional_light_direction[2] }, camera.get_camera_direction(),
                                             raytracing) == EXIT_FAILURE) {
         
         return EXIT_FAILURE;
@@ -90,6 +92,7 @@ int main() {
 
     // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
+
     while (!main_window->get_should_close()) {
     
         //poll all events incoming from user
@@ -100,7 +103,13 @@ int main() {
         camera.mouse_control(main_window->get_x_change(), main_window->get_y_change());
 
         vulkan_renderer.update_view(camera.calculate_viewmatrix());
-        vulkan_renderer.update_directions({1.f,1.f,1.f}, camera.get_camera_direction());
+
+        glm::vec3 light_dir = { directional_light_direction[0],
+                                directional_light_direction[1],
+                                directional_light_direction[2] };
+
+        vulkan_renderer.update_directions(light_dir, camera.get_camera_direction());
+
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;

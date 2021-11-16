@@ -29,8 +29,6 @@ layout (push_constant) uniform _PushConstantRaster {
 
 layout (location = 0) out vec2 texture_coordinates;
 layout (location = 1) out vec3 shading_normal;
-layout (location = 2) out vec3 light_dir;
-layout (location = 3) out vec3 view_dir;
 
 void main () {
 	
@@ -41,8 +39,6 @@ void main () {
 
 	shading_normal = vec3(transpose(inverse(pc_raster.model)) * vec4(normal, 1.0f));
 	texture_coordinates = tex_coords;
-	light_dir = ubo_directions.light_dir;
-	view_dir = ubo_directions.view_dir;
 
 	gl_Position = vulkan_position;
 }
