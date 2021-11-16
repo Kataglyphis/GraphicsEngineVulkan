@@ -123,7 +123,7 @@ struct UboDirections {
 struct PushConstantRaster
 {
 
-	glm::mat4  model;  // matrix of the instance
+	glm::mat4 model;  // matrix of the instance
 
 };
 

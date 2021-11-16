@@ -79,7 +79,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 	ubo_directions = UboDirections{};
 	pc_raster = PushConstantRaster{};
 
-	ubo_view_projection.projection = glm::perspective(glm::radians(45.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
+	ubo_view_projection.projection = glm::perspective(glm::radians(40.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
 																	near_plane, far_plane);
 
 	ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -236,12 +236,12 @@ void VulkanRenderer::drawFrame()
 
 	}
 
-	// check if previous frame is using this image (i.e. there is its fence to wait on)
+	//// check if previous frame is using this image (i.e. there is its fence to wait on)
 	if (images_in_flight_fences[image_index] != VK_NULL_HANDLE) {
 		vkWaitForFences(MainDevice.logical_device, 1, &images_in_flight_fences[image_index], VK_TRUE, UINT64_MAX);
 	}
 
-	// mark the image as now being in use by this frame
+	 //mark the image as now being in use by this frame
 	images_in_flight_fences[image_index] = draw_fences[current_frame];
 
 	// only update soecific command buffer not in use 
@@ -308,8 +308,6 @@ void VulkanRenderer::drawFrame()
 		throw std::runtime_error("Failed to acquire next image!");
 
 	}
-
-	//vkQueueWaitIdle(presentation_queue);
 
 	current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
 	 
@@ -2403,7 +2401,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	ubo_view_projection_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor (uniform, dynamic uniform, image sampler, etc)
 	ubo_view_projection_layout_binding.descriptorCount = 1;																							// number of descriptors for binding
 	ubo_view_projection_layout_binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
-																					VK_SHADER_STAGE_RAYGEN_BIT_KHR;												// we need to say at which shader we bind this uniform to
+													VK_SHADER_STAGE_RAYGEN_BIT_KHR;												// we need to say at which shader we bind this uniform to
 	ubo_view_projection_layout_binding.pImmutableSamplers = nullptr;																			// for texture: can make sampler data unchangeable (immutable) by specifying in layout
 
 	// our model matrix which updates every frame for each object
@@ -2412,8 +2410,9 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	directions_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	directions_layout_binding.descriptorCount = 1;
 	directions_layout_binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
-																	VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-																	VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+										VK_SHADER_STAGE_FRAGMENT_BIT |
+										VK_SHADER_STAGE_RAYGEN_BIT_KHR |
+										VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 	directions_layout_binding.pImmutableSamplers = nullptr;
 
 	std::vector<VkDescriptorSetLayoutBinding> layout_bindings = { ubo_view_projection_layout_binding,
@@ -2441,7 +2440,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	sampler_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	sampler_layout_binding.descriptorCount = 1;
 	sampler_layout_binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT |
-																		VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+										VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 	sampler_layout_binding.pImmutableSamplers = nullptr;
 
 	// create a descriptor set layout with given bindings for texture 
@@ -3269,14 +3268,14 @@ stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, in
 void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 {
  
-		void* data;
-		vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(ubo_view_projection), 0, &data);
-		memcpy(data, &ubo_view_projection, sizeof(ubo_view_projection));
-		vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
+	void* data;
+	vkMapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index], 0, sizeof(UboViewProjection), 0, &data);
+	memcpy(data, &ubo_view_projection, sizeof(UboViewProjection));
+	vkUnmapMemory(MainDevice.logical_device, vp_uniform_buffer_memory[image_index]);
 
-		vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(ubo_directions), 0, &data);
-		memcpy(data, &ubo_directions, sizeof(ubo_directions));
-		vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);
+	vkMapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index], 0, sizeof(UboDirections), 0, &data);
+	memcpy(data, &ubo_directions, sizeof(UboDirections));
+	vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);
 
 
 
