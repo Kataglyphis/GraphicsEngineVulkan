@@ -1,8 +1,4 @@
 #include "VulkanRenderer.hpp"
-// all IMGUI stuff
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_vulkan.h>
 
 VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
 																	current_frame(0),
@@ -180,11 +176,11 @@ void VulkanRenderer::update_view(glm::mat4 view)
 
 }
 
-void VulkanRenderer::update_directions(glm::vec3 light_dir, glm::vec3 view_dir)
+void VulkanRenderer::update_light_direction(glm::vec3 light_dir)
 {
 
 	ubo_directions.light_dir = light_dir;
-	ubo_directions.view_dir = view_dir;
+
 
 }
 
@@ -192,6 +188,12 @@ void VulkanRenderer::update_raytracing(bool raytracing_on)
 {
 
 	this->raytracing = raytracing_on;
+
+}
+
+void VulkanRenderer::update_view_direction(glm::vec3 view_dir)
+{
+	ubo_directions.view_dir = view_dir;
 
 }
 
@@ -257,10 +259,32 @@ void VulkanRenderer::drawFrame()
 
 	render_gui();
 
-	//update_uniform_buffers(image_index);
-	vkResetCommandPool(g_Device, fd->CommandPool, 0);
+	vkResetCommandBuffer(command_buffers[image_index], VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
+
+	VkCommandBufferBeginInfo buffer_begin_info{};
+	buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+	// start recording commands to command buffer
+	result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to start recording a command buffer!");
+
+	}
+
+	update_uniform_buffers(image_index);
+
 	record_commands(image_index);
 
+	// stop recording to command buffer
+	result = vkEndCommandBuffer(command_buffers[image_index]);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to stop recording a command buffer!");
+
+	}
 	// 2. Submit command buffer to queue for execution, making sure it waits for the image to be signalled as available before drawing
 	// and signals when it has finished rendering 
 	// -- SUBMIT COMMAND BUFFER TO RENDER --
@@ -271,9 +295,9 @@ void VulkanRenderer::drawFrame()
 	
 	VkPipelineStageFlags wait_stages = {
 	
-		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT /*|
 		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT |
-		VK_PIPELINE_STAGE_2_RAY_TRACING_SHADER_BIT_KHR
+		VK_PIPELINE_STAGE_2_RAY_TRACING_SHADER_BIT_KHR*/
 
 	};
 
@@ -868,14 +892,14 @@ void VulkanRenderer::create_offscreen_textures()
 
 		OffscreenTexture image{};
 		image.image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1,
-									offscreen_format,
+									swap_chain_image_format/*offscreen_format*/,
 									VK_IMAGE_TILING_OPTIMAL,
 									VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
 									| VK_IMAGE_USAGE_STORAGE_BIT,
 									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 									&image.image_memory);
 
-		image.image_view = create_image_view(image.image, offscreen_format,
+		image.image_view = create_image_view(image.image, swap_chain_image_format/*offscreen_format*/,
 										VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
 		// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
@@ -919,7 +943,7 @@ void VulkanRenderer::create_offscreen_render_pass()
 
 	// Color attachment of render pass
 	VkAttachmentDescription color_attachment{};
-	color_attachment.format = offscreen_format;													// format to use for attachment
+	color_attachment.format = swap_chain_image_format;//offscreen_format;													// format to use for attachment
 	color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;												// number of samples to write for multisampling
 	color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;									// describes what to do with attachment before rendering
 	color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;								// describes what to do with attachment after rendering 
@@ -928,7 +952,7 @@ void VulkanRenderer::create_offscreen_render_pass()
 
 	// framebuffer data will be stored as an image, but images can be given different layouts 
 	// to give optimal use for certain operations
-	color_attachment.initialLayout = VK_IMAGE_LAYOUT_GENERAL;								// image data layout before render pass starts
+	color_attachment.initialLayout = VK_IMAGE_LAYOUT_GENERAL;				// image data layout before render pass starts
 	color_attachment.finalLayout = VK_IMAGE_LAYOUT_GENERAL;					// image data layout after render pass (to change to)
 
 	// depth attachment of render pass
@@ -942,7 +966,7 @@ void VulkanRenderer::create_offscreen_render_pass()
 	depth_attachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
 	depth_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 	depth_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	depth_attachment.initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+	depth_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 	depth_attachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
 	// attachment reference uses an attachment index that refers to index in the attachment list passed to renderPassCreateInfo
@@ -1029,15 +1053,15 @@ void VulkanRenderer::create_offscreen_framebuffers()
 
 		std::array<VkImageView, 2> attachments = {
 							offscreen_images[i].image_view,
-							offscreen_depth_buffer_image_view
+							depth_buffer_image_view
 		};
 
 		VkFramebufferCreateInfo frame_buffer_create_info{};
 		frame_buffer_create_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		frame_buffer_create_info.renderPass = offscreen_render_pass;																				// render pass layout the framebuffer will be used with
 		frame_buffer_create_info.attachmentCount = static_cast<uint32_t>(attachments.size());
-		frame_buffer_create_info.pAttachments = attachments.data();															// list of attachments (1:1 with render pass)
-		frame_buffer_create_info.width = swap_chain_extent.width;																	// framebuffer width
+		frame_buffer_create_info.pAttachments = attachments.data();																// list of attachments (1:1 with render pass)
+		frame_buffer_create_info.width = swap_chain_extent.width;																// framebuffer width
 		frame_buffer_create_info.height = swap_chain_extent.height;																// framebuffer height
 		frame_buffer_create_info.layers = 1;																											// framebuffer layer 
 
@@ -1062,7 +1086,7 @@ void VulkanRenderer::create_post_renderpass()
 	color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;												// number of samples to write for multisampling
 	color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;									// describes what to do with attachment before rendering
 	color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;								// describes what to do with attachment after rendering 
-	color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;			// describes what to do with stencil before rendering
+	color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;		// describes what to do with stencil before rendering
 	color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;		// describes what to do with stencil after rendering
 
 	// framebuffer data will be stored as an image, but images can be given different layouts 
@@ -1112,8 +1136,8 @@ void VulkanRenderer::create_post_renderpass()
 	// but must happen before ...
 	subpass_dependencies[0].dstSubpass = 0;
 	subpass_dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-	subpass_dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-	subpass_dependencies[0].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+	subpass_dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+	subpass_dependencies[0].dependencyFlags = 0;
 
 	subpass_dependencies[1].srcSubpass = 0;													// subpass index (VK_SUBPASS_EXTERNAL = Special value meaning outside of renderpass)
 	subpass_dependencies[1].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// pipeline stage 
@@ -1307,7 +1331,7 @@ void VulkanRenderer::create_post_pipeline()
 	// -- DEPTH STENCIL TESTING --
 	VkPipelineDepthStencilStateCreateInfo depth_stencil_create_info{};
 	depth_stencil_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-	depth_stencil_create_info.depthTestEnable = VK_TRUE;																							// enable checking depth to determine fragment write
+	depth_stencil_create_info.depthTestEnable = VK_FALSE;																							// enable checking depth to determine fragment write
 	depth_stencil_create_info.depthWriteEnable = VK_TRUE;																						// enable writing to depth buffer for replacing old values
 	depth_stencil_create_info.depthCompareOp = VK_COMPARE_OP_LESS;
 	depth_stencil_create_info.depthBoundsTestEnable = VK_FALSE;																			// depth bounds test: does the depth value exist between 2 bounds
@@ -1622,8 +1646,6 @@ void VulkanRenderer::render_gui()
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	ImGui::End();
-
-	ImGui::Render();
 
 }
 
@@ -2930,7 +2952,7 @@ void VulkanRenderer::create_framebuffers()
 
 		std::array<VkImageView, 2> attachments = {
 							swap_chain_images[i].image_view,
-							 offscreen_depth_buffer_image_view
+							 depth_buffer_image_view
 		};
 
 		VkFramebufferCreateInfo frame_buffer_create_info{};
@@ -3328,7 +3350,7 @@ void VulkanRenderer::create_gui_context()
 	init_info.CheckVkResultFn = VK_NULL_HANDLE;
 	init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
 
-	ImGui_ImplVulkan_Init(&init_info, offscreen_render_pass);
+	ImGui_ImplVulkan_Init(&init_info, post_render_pass);
 
 }
 
@@ -3531,11 +3553,19 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	memcpy(data, &ubo_directions, sizeof(UboDirections));
 	vkUnmapMemory(MainDevice.logical_device, directions_uniform_buffer_memory[image_index]);*/
 
-	VkCommandBuffer cmdBuffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+	//VkCommandBuffer cmdBuffer = begin_command_buffer(MainDevice.logical_device, graphics_command_pool);
+
+	//VkCommandBufferBeginInfo buffer_begin_info{};
+	//buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	////buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+	//// start recording commands to command buffer
+	//VkResult result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
+
+	update_light_direction(glm::vec3(directional_light_direction[0], directional_light_direction[1], directional_light_direction[2]));
 
 	auto usage_stage_flags = VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_KHR | 
 							VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-							 
+		 
 
 	VkBufferMemoryBarrier before_barrier_uvp;
 	before_barrier_uvp.pNext = nullptr;
@@ -3559,13 +3589,13 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	before_barrier_directions.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	before_barrier_directions.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
-	vkCmdPipelineBarrier(cmdBuffer, usage_stage_flags,
+	vkCmdPipelineBarrier(command_buffers[image_index], usage_stage_flags,
 		VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 1, &before_barrier_uvp, 0, nullptr);
-	vkCmdPipelineBarrier(cmdBuffer, usage_stage_flags,
+	vkCmdPipelineBarrier(command_buffers[image_index], usage_stage_flags,
 		VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 1, &before_barrier_directions, 0, nullptr);
 
-	vkCmdUpdateBuffer(cmdBuffer, vp_uniform_buffer[image_index], 0, sizeof(UboViewProjection), &ubo_view_projection);
-	vkCmdUpdateBuffer(cmdBuffer, directions_uniform_buffer[image_index], 0, sizeof(UboDirections), &ubo_directions);
+	vkCmdUpdateBuffer(command_buffers[image_index], vp_uniform_buffer[image_index], 0, sizeof(UboViewProjection), &ubo_view_projection);
+	vkCmdUpdateBuffer(command_buffers[image_index], directions_uniform_buffer[image_index], 0, sizeof(UboDirections), &ubo_directions);
 
 	VkBufferMemoryBarrier after_barrier_uvp;
 	after_barrier_uvp.pNext = nullptr;
@@ -3589,12 +3619,21 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	after_barrier_directions.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	after_barrier_directions.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
-	vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT,
+	vkCmdPipelineBarrier(command_buffers[image_index], VK_PIPELINE_STAGE_TRANSFER_BIT,
 		usage_stage_flags, 0, 0, nullptr, 1, &after_barrier_uvp, 0, nullptr);
-	vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT,
+	vkCmdPipelineBarrier(command_buffers[image_index], VK_PIPELINE_STAGE_TRANSFER_BIT,
 			usage_stage_flags, 0, 0, nullptr, 1, &after_barrier_directions, 0, nullptr);
 
-	end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, cmdBuffer);
+	//// stop recording to command buffer
+	//result = vkEndCommandBuffer(command_buffers[image_index]);
+
+	//if (result != VK_SUCCESS) {
+
+	//	throw std::runtime_error("Failed to stop recording a command buffer!");
+
+	//}
+
+	//end_and_submit_command_buffer(MainDevice.logical_device, graphics_command_pool, graphics_queue, cmdBuffer);
 
 }
 
@@ -3649,17 +3688,19 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 	// BOTH: RAYTRACING AND RASTERIZER WRITING TO THE SAME COMMAND BUFFER FOR NOW 
 	// information about how to begin each command buffer
 
-	VkCommandBufferBeginInfo buffer_begin_info{};
-	buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-	// start recording commands to command buffer
-	VkResult result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
+	//vkResetCommandBuffer(command_buffers[image_index], VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
 
-	if (result != VK_SUCCESS) {
+	//VkCommandBufferBeginInfo buffer_begin_info{};
+	//buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	////buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+	//// start recording commands to command buffer
+	//VkResult result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
 
-		throw std::runtime_error("Failed to start recording a command buffer!");
+	//if (result != VK_SUCCESS) {
 
-	}
+	//	throw std::runtime_error("Failed to start recording a command buffer!");
+
+	//}
 
 	if (raytracing) {
 
@@ -3709,7 +3750,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 
 		render_pass_begin_info.pClearValues = clear_values.data();
 		render_pass_begin_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
-		render_pass_begin_info.framebuffer = offscreen_framebuffer[image_index];//swap_chain_framebuffers[current_image];												// used framebuffer depends on the swap chain and therefore is changing for each command buffer
+		render_pass_begin_info.framebuffer = offscreen_framebuffer[image_index];//swap_chain_framebuffers[current_image];	// used framebuffer depends on the swap chain and therefore is changing for each command buffer
 
 		/*transition_image_layout_for_command_buffer(command_buffers[current_image], offscreen_images[current_image].image,
 														VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
@@ -3728,16 +3769,16 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 			vkCmdPushConstants(command_buffers[image_index],
 				offscreen_pipeline_layout,
 				VK_SHADER_STAGE_VERTEX_BIT,								// stage to push constants to 
-				0,																								// offset to push constants to update
-				sizeof(PushConstantRaster),												// size of data being pushed 
-				&pc_raster);																			// using model of current mesh (can be array)
+				0,														// offset to push constants to update
+				sizeof(PushConstantRaster),								// size of data being pushed 
+				&pc_raster);											// using model of current mesh (can be array)
 
 			for (unsigned int k = 0; k < scene->get_mesh_count(m); k++) {
 
 				// list of vertex buffers we want to draw 
-				VkBuffer vertex_buffers[] = { scene->get_vertex_buffer(m,k) };																	// buffers to bind 
+				VkBuffer vertex_buffers[] = { scene->get_vertex_buffer(m,k) };					// buffers to bind 
 				VkDeviceSize offsets[] = { 0 };																																											// offsets into buffers being bound
-				vkCmdBindVertexBuffers(command_buffers[image_index], 0, 1, vertex_buffers, offsets);																// command to bind vertex buffer before drawing with them
+				vkCmdBindVertexBuffers(command_buffers[image_index], 0, 1, vertex_buffers, offsets);	// command to bind vertex buffer before drawing with them
 
 				// bind mesh index buffer with 0 offset and using the uint32 type
 				vkCmdBindIndexBuffer(command_buffers[image_index], scene->get_index_buffer(m, k), 0, VK_INDEX_TYPE_UINT32);			// command to bind index buffer before drawing with them
@@ -3759,8 +3800,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 			}
 
 		}
-
-
+		
 		// end render pass 
 		vkCmdEndRenderPass(command_buffers[image_index]);
 
@@ -3786,8 +3826,8 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 													VK_IMAGE_LAYOUT_GENERAL,
 													VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
 
-	//transition_image_layout_for_command_buffer(command_buffers[image_index], swap_chain_images[image_index].image,
-	//			VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_UNDEFINED, 1, VK_IMAGE_ASPECT_COLOR_BIT);
+	/*transition_image_layout_for_command_buffer(command_buffers[image_index], swap_chain_images[image_index].image,
+		VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 1, VK_IMAGE_ASPECT_COLOR_BIT);*/
 
 	// begin render pass
 	vkCmdBeginRenderPass(command_buffers[image_index], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
@@ -3802,26 +3842,27 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 	vkCmdDraw(command_buffers[image_index], 3, 1, 0, 0);
 
 	// Rendering
+	ImGui::Render();
 	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), command_buffers[image_index]);
 
 	// end render pass 
 	vkCmdEndRenderPass(command_buffers[image_index]);
 
 	/*transition_image_layout_for_command_buffer(command_buffers[image_index], swap_chain_images[image_index].image,
-		VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 1, VK_IMAGE_ASPECT_COLOR_BIT);*/
+		 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, VK_IMAGE_LAYOUT_UNDEFINED, 1, VK_IMAGE_ASPECT_COLOR_BIT);*/
 
 	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].image,
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
 
 
 	// stop recording to command buffer
-	result = vkEndCommandBuffer(command_buffers[image_index]);
+	// result = vkEndCommandBuffer(command_buffers[image_index]);
 
-	if (result != VK_SUCCESS) {
+	//if (result != VK_SUCCESS) {
 
-		throw std::runtime_error("Failed to stop recording a command buffer!");
+	//	throw std::runtime_error("Failed to stop recording a command buffer!");
 
-	}
+	//}
 	
 	
 }
@@ -4370,9 +4411,9 @@ void VulkanRenderer::check_changed_framebuffer_size()
 void VulkanRenderer::init_scene()
 {
 
-	/*int dragon = create_mesh_model_for_scene("../Resources/Model/Dragon 2.5_fbx.fbx", false);
-	int floor = create_mesh_model_for_scene("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true);*/
-	int sponza = create_mesh_model_for_scene("../Resources/Model/crytek-sponza/sponza_triag.obj", true);
+	int dragon = create_mesh_model_for_scene("../Resources/Model/Dragon 2.5_fbx.fbx", false);
+	int floor = create_mesh_model_for_scene("../Resources/Model/Photoscan - Koeln_Drecksfeld_01.obj", true);
+	//int sponza = create_mesh_model_for_scene("../Resources/Model/crytek-sponza/sponza_triag.obj", true);
 
 }
 

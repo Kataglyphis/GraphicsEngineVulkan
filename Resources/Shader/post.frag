@@ -15,4 +15,5 @@ void main()
   vec2  uv    = outUV;
   float gamma = 1. / 2.2;
   fragColor   = pow(texture(noisyTxt, uv).rgba, vec4(gamma));
+
 }
