@@ -313,7 +313,6 @@ private:
 	std::vector<uint32_t> texture_mip_levels;
 	VkBuffer object_description_buffer;
 	VkDeviceMemory object_description_buffer_memory;
-	size_t object_description_buffer_alignment;
 
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
