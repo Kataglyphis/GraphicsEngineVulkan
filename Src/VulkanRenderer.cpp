@@ -3229,9 +3229,6 @@ void VulkanRenderer::create_gui_context()
 
 	}
 
-	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForVulkan(window->get_window(), true);
-
 	ImGui_ImplVulkan_InitInfo init_info = {};
 	init_info.Instance = instance;
 	init_info.PhysicalDevice = MainDevice.physical_device;
@@ -3246,7 +3243,7 @@ void VulkanRenderer::create_gui_context()
 	init_info.CheckVkResultFn = VK_NULL_HANDLE;
 	init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
 
-	ImGui_ImplVulkan_Init(&init_info, render_pass);
+	ImGui_ImplVulkan_Init(&init_info, offscreen_render_pass);
 
 }
 
@@ -4299,7 +4296,7 @@ void VulkanRenderer::clean_up_gui()
 
 	// clean up of GUI stuff
 	ImGui_ImplVulkan_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
+	
 	ImGui::DestroyContext();
 	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 

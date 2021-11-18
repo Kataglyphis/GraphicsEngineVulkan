@@ -24,11 +24,8 @@
 #include "MeshModel.h"
 #include "Camera.h"
 
-// all IMGUI stuff
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_vulkan.h"
-
+#include <imgui.h>
+#include <imgui_impl_vulkan.h>
 // the importer from the assimp library
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
