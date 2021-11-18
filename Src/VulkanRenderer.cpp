@@ -169,8 +169,8 @@ void VulkanRenderer::init_raytracing() {
 	create_raytracing_descriptor_set_layouts();
 	create_raytracing_descriptor_sets();
 
-	create_shader_binding_table();
 	create_raytracing_pipeline();
+	create_shader_binding_table();
 
 
 }
@@ -278,7 +278,7 @@ void VulkanRenderer::drawFrame()
 
 	render_gui();
 
-	vkResetCommandBuffer(command_buffers[image_index], VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
+	//vkResetCommandBuffer(command_buffers[image_index], VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
 
 	VkCommandBufferBeginInfo buffer_begin_info{};
 	buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -353,11 +353,24 @@ void VulkanRenderer::drawFrame()
 
 	result = vkQueuePresentKHR(presentation_queue, &present_info);
 
+	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+
+		recreate_swap_chain();
+		return;
+
+	}
+	else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+
+		throw std::runtime_error("Failed to acquire next image!");
+
+	}
+
 	if (result != VK_SUCCESS) {
 
 		throw std::runtime_error("Failed to submit to present queue!");
 
 	}
+
 
 	current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
 	 
@@ -3652,6 +3665,7 @@ void VulkanRenderer::recreate_swap_chain()
 	}
 
 	vkDeviceWaitIdle(MainDevice.logical_device);
+	vkQueueWaitIdle(graphics_queue);
 
 	clean_up_swapchain();
 
@@ -3659,7 +3673,6 @@ void VulkanRenderer::recreate_swap_chain()
 	create_depthbuffer_image();
 	create_render_pass();
 	create_rasterizer_graphics_pipeline();
-	create_framebuffers();
 	create_uniform_buffers();
 	create_descriptor_pool_uniforms();
 	create_descriptor_sets();
@@ -3672,9 +3685,11 @@ void VulkanRenderer::recreate_swap_chain()
 	create_offscreen_graphics_pipeline();
 
 	// all post
+	create_post_renderpass();
 	create_post_descriptor();
 	update_post_descriptor_set();
 	create_post_pipeline();
+	create_framebuffers();
 
 	images_in_flight_fences.resize(swap_chain_images.size(), VK_NULL_HANDLE);
 
@@ -4519,6 +4534,7 @@ void VulkanRenderer::clean_up_raytracing()
 
 	vkDestroyDescriptorSetLayout(MainDevice.logical_device, raytracing_descriptor_set_layout, nullptr);
 
+	vkDestroyDescriptorPool(MainDevice.logical_device, object_description_pool, nullptr);
 	vkDestroyDescriptorPool(MainDevice.logical_device, raytracing_descriptor_pool, nullptr);
 	
 	vkDestroyBuffer(MainDevice.logical_device, object_description_buffer, nullptr);
