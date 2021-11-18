@@ -24,8 +24,6 @@
 #include "MeshModel.h"
 #include "Camera.h"
 
-#include <imgui.h>
-#include <imgui_impl_vulkan.h>
 // the importer from the assimp library
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -42,7 +40,7 @@ public:
 	int create_mesh_model_for_scene(std::string model_file, bool flip_y);
 
 	int init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane,
-					glm::vec3 light_dir, glm::vec3 view_dir, bool raytracing);
+					glm::vec3 view_dir, bool raytracing);
 
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
@@ -63,6 +61,11 @@ public:
 	~VulkanRenderer();
 
 private:
+
+	// GUI variables
+	float direcional_light_ambient_intensity = 10.f;
+	float directional_light_color[3] = { 1.f,1.f,1.f };
+	float directional_light_direction[3] = { 0.f,1.f,1.f };
 
 	// ----- VULKAN CORE COMPONENTS ----- BEGIN
 	VkInstance instance;
@@ -326,6 +329,8 @@ private:
 	void create_gui();
 	void create_gui_context();
 	void create_fonts_and_upload();
+	void render_gui();
+
 	// ----- GUI STUFF ----- END
 
 	// ----- VARS ----- BEGIN

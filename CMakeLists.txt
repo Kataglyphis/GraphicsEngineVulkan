@@ -28,6 +28,9 @@ find_package(Vulkan REQUIRED)
 #set all your sources accordingly
 file(GLOB SOURCES "Src/*.cpp"
                   "Src/*.c"
+                  "ExternalLib/IMGUI/*.cpp"
+                  "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
+                  "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp"
 )
 
 file(GLOB HEADERS "include/*.h"

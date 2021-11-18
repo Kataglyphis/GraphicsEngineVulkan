@@ -89,7 +89,7 @@ std::vector<std::string> MeshModel::load_materials(const aiScene* scene)
 
                 // cut off any directory information already present
                 // remove really dirty hard coded paths ...
-                int idx = std::string(path.data).find("\\");
+                int idx = static_cast<uint32_t>(std::string(path.data).find("\\"));
                 std::string file_name = std::string(path.data).substr(idx + 1); 
 
                 texture_list[i] = file_name;
