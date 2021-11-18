@@ -1,4 +1,4 @@
- #version 450																										// use GLSL 4.5
+ #version 460																									
 
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_nonuniform_qualifier : enable
@@ -47,6 +47,6 @@ void main() {
 
 	color = vec4(CookTorrence(ambient, N, H, L, V, roughness, 
 				light_color, light_ambient_intensity), 1.0f);//vec4(ambient * 0.3f + diffuse + specular * 0.00001f,1.0f);
-	//color = vec4(L, 1.0f);
+	//color = vec4(1.0f);
 
 }

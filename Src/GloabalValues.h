@@ -10,7 +10,7 @@
 #include <vector>
 
 const int MAX_FRAME_DRAWS = 3;
-const int MAX_OBJECTS = 20;
+const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
 
 // use the standard validation layers from the SDK for error checking
