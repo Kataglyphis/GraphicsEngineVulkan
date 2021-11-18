@@ -24,6 +24,11 @@
 #include "MeshModel.h"
 #include "Camera.h"
 
+// all IMGUI stuff
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
+
 // the importer from the assimp library
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -44,8 +49,9 @@ public:
 
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
-	void update_directions(glm::vec3 light_dir, glm::vec3 view_dir);
+	void update_light_direction(glm::vec3 light_dir);
 	void update_raytracing(bool raytracing_on);
+	void update_view_direction(glm::vec3 view_dir);
 
 	void record_commands(uint32_t image_index);
 
