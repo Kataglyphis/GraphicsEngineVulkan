@@ -70,7 +70,7 @@ int main() {
     float directional_light_direction[3] = {0.f,1.f,1.f};
 
     // -- RAY TRACING ON
-    bool raytracing = true;
+    bool raytracing = false;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 
@@ -92,7 +92,6 @@ int main() {
 
     // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
-
     while (!main_window->get_should_close()) {
     
         //poll all events incoming from user
@@ -109,7 +108,7 @@ int main() {
                                 directional_light_direction[2] };
 
         vulkan_renderer.update_directions(light_dir, camera.get_camera_direction());
-
+        vulkan_renderer.update_raytracing(raytracing);
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
@@ -132,7 +131,7 @@ int main() {
         //floor_model = glm::rotate(floor_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 
         vulkan_renderer.update_model(0, dragon_model);
-        vulkan_renderer.update_model(1, floor_model);
+        //vulkan_renderer.update_model(1, floor_model);
 
         // Start the Dear ImGui frame
         ImGui_ImplVulkan_NewFrame();
@@ -203,12 +202,10 @@ int main() {
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
         ImGui::End();
-        // Rendering
 
         ImGui::Render();
 
         vulkan_renderer.drawFrame();
-
 
     }
 

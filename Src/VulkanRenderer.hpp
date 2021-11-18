@@ -50,6 +50,9 @@ public:
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
 	void update_directions(glm::vec3 light_dir, glm::vec3 view_dir);
+	void update_raytracing(bool raytracing_on);
+
+	void record_commands(uint32_t image_index);
 
 	void hot_reload_all_shader();
 
@@ -139,7 +142,7 @@ private:
 	// -- synchronization
 	std::vector<VkSemaphore> image_available;
 	std::vector<VkSemaphore> render_finished;
-	std::vector<VkFence> draw_fences;
+	std::vector<VkFence> in_flight_fences;
 	std::vector<VkFence> images_in_flight_fences;
 	//VkFence building_BLAS;
 	void create_synchronization();
@@ -172,6 +175,7 @@ private:
 	// -- Offscreen End 
 
 	// -- Post 
+	void create_post_renderpass();
 	void create_post_pipeline();
 	void create_post_descriptor();
 	void update_post_descriptor_set();
@@ -180,7 +184,8 @@ private:
 	VkDescriptorPool post_descriptor_pool{};
 	VkDescriptorSetLayout post_descriptor_set_layout;
 	std::vector<VkDescriptorSet> post_descriptor_set;
-	VkPipeline post_pipeline;
+	VkRenderPass post_render_pass;
+	VkPipeline post_graphics_pipeline;
 	VkPipelineLayout post_pipeline_layout;
 	// -- Post - End
 
@@ -317,8 +322,7 @@ private:
 	// ---- HELPER ---- END
 
 	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
-	void update_uniform_buffers(VkCommandBuffer command_buffer, uint32_t image_index);
-	void record_commands(uint32_t current_image);
+	void update_uniform_buffers(uint32_t image_index);
 	
 	// ----- GUI STUFF ----- BEGIN
 	VkDescriptorPool gui_descriptor_pool;
