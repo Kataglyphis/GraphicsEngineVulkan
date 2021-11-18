@@ -89,7 +89,7 @@ uint32_t Scene::get_number_of_meshes()
 	uint32_t number_of_meshes = 0;
 	
 	for (MeshModel mesh_model : model_list) {
-		number_of_meshes += mesh_model.get_mesh_count();
+		number_of_meshes += static_cast<uint32_t>(mesh_model.get_mesh_count());
 	}
 
 	return number_of_meshes;

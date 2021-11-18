@@ -1,4 +1,8 @@
 #include "VulkanRenderer.hpp"
+// all IMGUI stuff
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
 
 VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
 																	current_frame(0),
@@ -69,7 +73,7 @@ int VulkanRenderer::create_mesh_model_for_scene(std::string model_file, bool fli
 }
 
 int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane,
-											glm::vec3 light_dir, glm::vec3 view_dir, bool raytracing) 
+											glm::vec3 view_dir, bool raytracing) 
 
 {
 
@@ -84,7 +88,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 
 	ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	ubo_directions.light_dir = light_dir;
+	ubo_directions.light_dir = glm::vec3(directional_light_direction[0], directional_light_direction[1], directional_light_direction[2]);
 	ubo_directions.view_dir = view_dir;
 
 	// ----- Update scene we are working on 
@@ -251,9 +255,11 @@ void VulkanRenderer::drawFrame()
 	 //mark the image as now being in use by this frame
 	images_in_flight_fences[image_index] = in_flight_fences[current_frame];
 
-	record_commands(image_index);
+	render_gui();
 
 	//update_uniform_buffers(image_index);
+	vkResetCommandPool(g_Device, fd->CommandPool, 0);
+	record_commands(image_index);
 
 	// 2. Submit command buffer to queue for execution, making sure it waits for the image to be signalled as available before drawing
 	// and signals when it has finished rendering 
@@ -1544,6 +1550,83 @@ void VulkanRenderer::create_fonts_and_upload()
 
 }
 
+void VulkanRenderer::render_gui()
+{
+
+	// Start the Dear ImGui frame
+		// ImGui_ImplVulkan_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+
+	// ImGui::ShowDemoWindow();
+	//ImGui::PushFont(roboto_medium);
+	// render your GUI
+	ImGui::Begin("GUI v1.1.2");
+
+	if (ImGui::CollapsingHeader("Hot shader reload")) {
+
+		if (ImGui::Button("All shader!")) {
+
+			hot_reload_all_shader();
+
+		}
+
+	}
+
+	ImGui::Separator();
+
+	ImGui::Checkbox("Ray tracing", &raytracing);
+
+	ImGui::Separator();
+
+
+	if (ImGui::CollapsingHeader("Graphic Settings")) {
+
+		if (ImGui::TreeNode("Directional Light")) {
+			ImGui::Separator();
+			ImGui::SliderFloat("Ambient intensity", &direcional_light_ambient_intensity, 0.0f, 50.0f);
+			ImGui::Separator();
+			// Edit a color (stored as ~4 floats)
+			ImGui::ColorEdit3("Directional Light Color", directional_light_color);
+			ImGui::Separator();
+			ImGui::SliderFloat3("Light Direction", directional_light_direction, -1.f, 1.0f);
+
+			ImGui::TreePop();
+		}
+
+	}
+
+	ImGui::Separator();
+
+	if (ImGui::CollapsingHeader("GUI Settings")) {
+
+		ImGuiStyle& style = ImGui::GetStyle();
+
+		if (ImGui::SliderFloat("Frame Rounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f")) {
+			style.GrabRounding = style.FrameRounding; // Make GrabRounding always the same value as FrameRounding
+		}
+		{ bool border = (style.FrameBorderSize > 0.0f);  if (ImGui::Checkbox("FrameBorder", &border)) { style.FrameBorderSize = border ? 1.0f : 0.0f; } }
+		ImGui::SliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 12.0f, "%.0f");
+	}
+
+	ImGui::Separator();
+
+	if (ImGui::CollapsingHeader("KEY Bindings")) {
+
+		ImGui::Text("WASD for moving Forward, backward and to the side\n QE for rotating ");
+
+	}
+
+	ImGui::Separator();
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+	ImGui::End();
+
+	ImGui::Render();
+
+}
+
 void VulkanRenderer::init_raytracing() {
 
 	create_object_description_buffer();
@@ -1713,7 +1796,7 @@ void VulkanRenderer::create_BLAS()
 
 	std::vector<BlasInput> blas_input(scene->get_model_count());
 
-	for (int model_index = 0; model_index < scene->get_model_count(); model_index++) {
+	for (unsigned int model_index = 0; model_index < scene->get_model_count(); model_index++) {
 
 		MeshModel mesh_model = scene->get_mesh_model_list()[model_index];
 		//blas_input.emplace_back();
@@ -1742,7 +1825,7 @@ void VulkanRenderer::create_BLAS()
 	VkDeviceSize max_scratch_size = 0;
 	VkDeviceSize total_size_all_BLAS = 0;
 
-	for (int i = 0; i < scene->get_model_count(); i++) {
+	for (unsigned int i = 0; i < scene->get_model_count(); i++) {
 
 		VkDeviceSize current_scretch_size = 0;
 		VkDeviceSize current_size = 0;
@@ -1832,7 +1915,7 @@ void VulkanRenderer::create_TLAS()
 	for (size_t model_index = 0; model_index < scene->get_model_count(); model_index++) {
 
 		// glm uses column major matrices so transpose it for Vulkan want row major here
-		glm::mat4 transpose_transform = glm::transpose(scene->get_model_matrix(model_index));
+		glm::mat4 transpose_transform = glm::transpose(scene->get_model_matrix(static_cast<int>(model_index)));
 		VkTransformMatrixKHR out_matrix;
 		memcpy(&out_matrix, &transpose_transform, sizeof(VkTransformMatrixKHR));
 
@@ -1905,7 +1988,7 @@ void VulkanRenderer::create_TLAS()
 	acceleration_structure_build_sizes_info.updateScratchSize = 0;
 	acceleration_structure_build_sizes_info.buildScratchSize = 0;
 
-	uint32_t count_instance = tlas_instances.size();
+	uint32_t count_instance = static_cast<uint32_t>(tlas_instances.size());
 	pvkGetAccelerationStructureBuildSizesKHR(MainDevice.logical_device, VK_ACCELERATION_STRUCTURE_BUILD_TYPE_HOST_KHR, 
 																						&acceleration_structure_build_geometry_info,
 																						&count_instance,
@@ -2199,8 +2282,8 @@ void VulkanRenderer::create_shader_binding_table()
 
 	vkGetPhysicalDeviceProperties2(MainDevice.physical_device, &properties);
 
-	VkBuffer sbt_buffer;
-	VkDeviceMemory sbt_buffer_memory;
+	/*VkBuffer sbt_buffer;
+	VkDeviceMemory sbt_buffer_memory;*/
 
 	uint32_t handle_size = raytracing_properties.shaderGroupHandleSize;
 	uint32_t handle_size_aligned = align_up(handle_size, raytracing_properties.shaderGroupHandleAlignment);
@@ -2291,7 +2374,7 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 
 	VkDescriptorPoolCreateInfo descriptor_pool_create_info{};
 	descriptor_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	descriptor_pool_create_info.poolSizeCount = descriptor_pool_sizes.size();
+	descriptor_pool_create_info.poolSizeCount = static_cast<uint32_t>(descriptor_pool_sizes.size());
 	descriptor_pool_create_info.pPoolSizes = descriptor_pool_sizes.data();
 	descriptor_pool_create_info.maxSets = static_cast<uint32_t>(swap_chain_images.size());
 
@@ -3198,6 +3281,8 @@ void VulkanRenderer::create_gui_context()
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
 
+	ImGui_ImplGlfw_InitForVulkan(window->get_window(), true);
+
 	// Create Descriptor Pool
 	VkDescriptorPoolSize gui_pool_sizes[] =
 	{
@@ -3635,7 +3720,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 		// bind pipeline to be used in render pass
 		vkCmdBindPipeline(command_buffers[image_index], VK_PIPELINE_BIND_POINT_GRAPHICS, offscreen_graphics_pipeline);
 
-		for (size_t m = 0; m < scene->get_model_count(); m++) {
+		for (unsigned int m = 0; m < scene->get_model_count(); m++) {
 
 			// for GCC doen't allow references on rvalues go like that ... 
 			pc_raster.model = scene->get_model_matrix(m);
@@ -3647,7 +3732,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 				sizeof(PushConstantRaster),												// size of data being pushed 
 				&pc_raster);																			// using model of current mesh (can be array)
 
-			for (size_t k = 0; k < scene->get_mesh_count(m); k++) {
+			for (unsigned int k = 0; k < scene->get_mesh_count(m); k++) {
 
 				// list of vertex buffers we want to draw 
 				VkBuffer vertex_buffers[] = { scene->get_vertex_buffer(m,k) };																	// buffers to bind 
@@ -4296,7 +4381,7 @@ void VulkanRenderer::clean_up_gui()
 
 	// clean up of GUI stuff
 	ImGui_ImplVulkan_Shutdown();
-	
+	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 	vkDestroyDescriptorPool(MainDevice.logical_device, gui_descriptor_pool, nullptr);
 

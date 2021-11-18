@@ -227,62 +227,6 @@ static void copy_image_buffer(VkDevice device, VkQueue transfer_queue, VkCommand
 
 }
 
-static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPool command_pool, VkImage image, VkImageLayout old_layout,
-															VkImageLayout new_layout, uint32_t mip_levels) {
-
-	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
-
-	VkImageMemoryBarrier memory_barrier{};
-	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-	memory_barrier.oldLayout = old_layout;
-	memory_barrier.newLayout = new_layout;
-	memory_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition from 
-	memory_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition to
-	memory_barrier.image = image;																							// image being accessed and modified as part of barrier
-	memory_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;			// aspect of image being altered
-	memory_barrier.subresourceRange.baseMipLevel = 0;															// first mip level to start alterations on
-	memory_barrier.subresourceRange.levelCount = mip_levels;																// number of mip levels to alter starting from baseMipLevel
-	memory_barrier.subresourceRange.baseArrayLayer = 0;														// first layer to start alterations on
-	memory_barrier.subresourceRange.layerCount = 1;																// number of layers to alter starting from baseArrayLayer
-
-	VkPipelineStageFlags src_stage;
-	VkPipelineStageFlags dst_stage;
-
-	// if transitioning from new image to image ready to receive data
-	if (old_layout == VK_IMAGE_LAYOUT_UNDEFINED && new_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
-
-		memory_barrier.srcAccessMask = 0;																					// memory access stage transition must after ...
-		memory_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;						// memory access stage transition must before ...
-
-		src_stage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-		dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-
-	}
-	else if (old_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && new_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
-
-		memory_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;							// memory access stage transition must after ...
-		memory_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;								// memory access stage transition must before ...
-
-		src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-		dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-
-	}
-
-	vkCmdPipelineBarrier(
-	
-		command_buffer,
-		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
-		0,													// no dependency flags
-		0, nullptr,									// memory barrier count + data
-		0, nullptr,									// buffer memory barrier count + data
-		1, &memory_barrier				// image memory barrier count + data
-
-	);
-
-	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
-
-}
-
 static VkAccessFlags access_flags_for_image_layout(VkImageLayout layout) {
 
 	switch (layout)
@@ -327,6 +271,46 @@ static VkPipelineStageFlags pipeline_stage_for_layout(VkImageLayout oldImageLayo
 	default:
 		return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
 	}
+
+}
+
+static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPool command_pool, VkImage image, VkImageLayout old_layout,
+	VkImageLayout new_layout, uint32_t mip_levels) {
+
+	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
+
+	VkImageMemoryBarrier memory_barrier{};
+	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	memory_barrier.oldLayout = old_layout;
+	memory_barrier.newLayout = new_layout;
+	memory_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition from 
+	memory_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;							// Queue family to transition to
+	memory_barrier.image = image;																							// image being accessed and modified as part of barrier
+	memory_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;			// aspect of image being altered
+	memory_barrier.subresourceRange.baseMipLevel = 0;															// first mip level to start alterations on
+	memory_barrier.subresourceRange.levelCount = mip_levels;																// number of mip levels to alter starting from baseMipLevel
+	memory_barrier.subresourceRange.baseArrayLayer = 0;														// first layer to start alterations on
+	memory_barrier.subresourceRange.layerCount = 1;																// number of layers to alter starting from baseArrayLayer
+
+	// if transitioning from new image to image ready to receive data
+	memory_barrier.srcAccessMask = access_flags_for_image_layout(old_layout);
+	memory_barrier.dstAccessMask = access_flags_for_image_layout(new_layout);
+
+	VkPipelineStageFlags src_stage = pipeline_stage_for_layout(old_layout);
+	VkPipelineStageFlags dst_stage = pipeline_stage_for_layout(new_layout);
+
+	vkCmdPipelineBarrier(
+
+		command_buffer,
+		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
+		0,													// no dependency flags
+		0, nullptr,									// memory barrier count + data
+		0, nullptr,									// buffer memory barrier count + data
+		1, &memory_barrier				// image memory barrier count + data
+
+	);
+
+	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
 
 }
 
@@ -511,7 +495,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityF
 static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
 
 #if defined (_WIN32)
-	int result_system;
+	int result_system = 0;
 
 	if (flag == RASTERIZATION) {
 
@@ -539,7 +523,7 @@ static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
 		throw std::runtime_error("Shader creation: system(): child process could not be created");
 
 	}
-	else if (result_system = 0) {
+	else if (result_system == 0) {
 
 		throw std::runtime_error("Shader creation: system(): no shell available");
 
