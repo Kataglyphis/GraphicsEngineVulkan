@@ -156,6 +156,25 @@ void VulkanRenderer::init_rasterizer()
 
 }
 
+void VulkanRenderer::init_raytracing() {
+
+	create_raytracing_descriptor_pool();
+	create_descriptor_pool_object_description();
+
+	create_object_description_buffer();
+
+	create_BLAS();
+	create_TLAS();
+
+	create_raytracing_descriptor_set_layouts();
+	create_raytracing_descriptor_sets();
+
+	create_shader_binding_table();
+	create_raytracing_pipeline();
+
+
+}
+
 void VulkanRenderer::update_model(int model_id, glm::mat4 new_model)
 {
 
@@ -1646,22 +1665,6 @@ void VulkanRenderer::render_gui()
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	ImGui::End();
-
-}
-
-void VulkanRenderer::init_raytracing() {
-
-	create_object_description_buffer();
-	create_raytracing_descriptor_pool();
-	
-	create_BLAS();
-	create_TLAS();
-
-	create_raytracing_descriptor_set_layouts();
-	create_raytracing_descriptor_sets();
-
-	create_raytracing_pipeline();
-	create_shader_binding_table();
 
 }
 

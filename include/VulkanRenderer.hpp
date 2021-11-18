@@ -216,7 +216,6 @@ private:
 	void create_uniform_buffers();
 	void create_descriptor_pool_uniforms();
 	void create_descriptor_pool_sampler();
-	void create_descriptor_pool_object_description();
 	void create_descriptor_sets();
 
 	// uniforms
@@ -265,7 +264,10 @@ private:
 
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
+
 	void create_raytracing_descriptor_pool();
+
+	void create_descriptor_pool_object_description();
 	void create_object_description_buffer();
 	void create_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
