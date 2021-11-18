@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.14)
 
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 # set the project name
 project(GraphicsEngine VERSION 1.0
                        DESCRIPTION "Epic Graphics"
                        LANGUAGES CXX)
 
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+add_subdirectory(ExternalLib)
 
 # control where the static and shared libraries are built so that on windows
 # we don't need to tinker with the path to run the executable
@@ -25,30 +27,26 @@ find_package(Vulkan REQUIRED)
 
 #set all your sources accordingly
 file(GLOB SOURCES "Src/*.cpp"
-"Src/*.c"
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/*.cpp
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp)
+                  "Src/*.c"
+)
 
-file(GLOB HEADERS "Src/*.h"
-"Src/*.hpp"
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/*.h
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_glfw.h
-${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends/imgui_impl_vulkan.h
-${VULKAN_INCLUDE_DIRS}
-${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/*.h)
+file(GLOB HEADERS "include/*.h"
+                  "include/*.hpp"
+                  ${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/*.h)
 
 # add filters to the solution explorer for the shaders :))
-set(SHADER_FILTER   
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/shader.vert
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/shader.frag)
+file(GLOB SHADER_FILTER   
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.vert
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.frag
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rgen
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rchit
+        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rmiss)
 
 source_group("Shader" FILES ${SHADER_FILTER})
+source_group("Header" FILES ${HEADERS})
 
 # add the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILTER})
-
-target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILTER}) 
 
 if(UNIX)
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -56,18 +54,10 @@ else()
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}/../Src" 
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/GLM"
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI"
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/STB"
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/TOL"
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/IMGUI/backends"
+target_include_directories(${PROJECT_NAME} PUBLIC ./include
                                             PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/assimp")
 
-
-
-
-install(FILES "${PROJECT_BINARY_DIR}/Src/Config.h" DESTINATION include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
 # file(COPY Resources/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # file(COPY Resources/Models DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -106,6 +96,8 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                        ${PROJECT_BINARY_DIR})
+
+target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan imgui stb glm tinyobjloader vma ktx)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

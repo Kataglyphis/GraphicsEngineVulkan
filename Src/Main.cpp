@@ -1,5 +1,11 @@
 #define STB_IMAGE_IMPLEMENTATION
-# define GLFW_INCLUDE_VULKAN
+
+// all IMGUI stuff
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
+
+#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 #define GLM_FORCE_RADIANS
@@ -7,10 +13,6 @@
 #include <glm/glm.hpp>
 #include <glm/mat4x4.hpp>
 
-// all IMGUI stuff
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_vulkan.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -51,7 +53,8 @@ int main() {
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
     ImGui::StyleColorsClassic();
-
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForVulkan(main_window->get_window(), true);
 
     float angle = 0.0f;
     float delta_time = 0.0f;
@@ -134,7 +137,7 @@ int main() {
         //vulkan_renderer.update_model(1, floor_model);
 
         // Start the Dear ImGui frame
-        ImGui_ImplVulkan_NewFrame();
+        // ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
@@ -208,6 +211,8 @@ int main() {
         vulkan_renderer.drawFrame();
 
     }
+
+    ImGui_ImplGlfw_Shutdown();
 
     vulkan_renderer.clean_up();
 
