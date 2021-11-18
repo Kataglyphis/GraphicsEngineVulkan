@@ -3569,7 +3569,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 
 	VkCommandBufferBeginInfo buffer_begin_info{};
 	buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	//buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+	buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 	// start recording commands to command buffer
 	VkResult result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
 
