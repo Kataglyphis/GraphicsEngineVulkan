@@ -24,6 +24,11 @@
 #include "MeshModel.h"
 #include "Camera.h"
 
+// all IMGUI stuff
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
+
 // the importer from the assimp library
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -44,8 +49,9 @@ public:
 
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
-	void update_directions(glm::vec3 light_dir, glm::vec3 view_dir);
+	void update_light_direction(glm::vec3 light_dir);
 	void update_raytracing(bool raytracing_on);
+	void update_view_direction(glm::vec3 view_dir);
 
 	void record_commands(uint32_t image_index);
 
@@ -210,7 +216,6 @@ private:
 	void create_uniform_buffers();
 	void create_descriptor_pool_uniforms();
 	void create_descriptor_pool_sampler();
-	void create_descriptor_pool_object_description();
 	void create_descriptor_sets();
 
 	// uniforms
@@ -259,7 +264,10 @@ private:
 
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
+
 	void create_raytracing_descriptor_pool();
+
+	void create_descriptor_pool_object_description();
 	void create_object_description_buffer();
 	void create_raytracing_descriptor_set_layouts();
 	void create_raytracing_descriptor_sets();
@@ -305,7 +313,6 @@ private:
 	std::vector<uint32_t> texture_mip_levels;
 	VkBuffer object_description_buffer;
 	VkDeviceMemory object_description_buffer_memory;
-	size_t object_description_buffer_alignment;
 
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;
