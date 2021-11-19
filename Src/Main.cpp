@@ -48,7 +48,7 @@ int main() {
     float start_turn_speed = 0.25f;
 
     // -- RAY TRACING ON
-    bool raytracing = false;
+    bool raytracing = true;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 
@@ -79,6 +79,7 @@ int main() {
 
         vulkan_renderer.update_view(camera.calculate_viewmatrix());
         vulkan_renderer.update_raytracing(raytracing);
+        vulkan_renderer.update_view_direction(camera.get_camera_direction());
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
@@ -101,9 +102,8 @@ int main() {
         //floor_model = glm::rotate(floor_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
 
         vulkan_renderer.update_model(0, dragon_model);
-        //vulkan_renderer.update_model(1, floor_model);
+        vulkan_renderer.update_model(1, floor_model);
 
-        
 
         vulkan_renderer.drawFrame();
 

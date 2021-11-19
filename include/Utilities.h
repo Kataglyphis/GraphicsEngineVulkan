@@ -495,76 +495,32 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityF
 static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
 
 #if defined (_WIN32)
-	int result_system = 0;
 
 	if (flag == RASTERIZATION) {
 
-		result_system = system("..\\Resources\\Shader\\compile_rasterizer_shader.bat");
+		system("..\\Resources\\Shader\\compile_rasterizer_shader.bat");
 
 	}
 	else if (flag == RAYTRACING) {
 
-		result_system = system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
+		system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
 
 	}
 	else if (flag == POST) {
 
-		result_system = system("..\\Resources\\Shader\\compile_post_shader.bat");
+		 system("..\\Resources\\Shader\\compile_post_shader.bat");
 
 	}
 
-	if (result_system == -1) {
-
-		throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-	}
-	else if (result_system == 127) {
-
-		throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-	}
-	else if (result_system == 0) {
-
-		throw std::runtime_error("Shader creation: system(): no shell available");
-
-	}
+	
 
 #elif defined (__linux__)
+
 	int result_system = system("chmod +x ../Resources/Shader/compile.sh");
-
-	if (result_system == -1) {
-
-		throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-	}
-	else if (result_system == 127) {
-
-		throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-	}
-	else if (result_system = 0) {
-
-		throw std::runtime_error("Shader creation: system(): no shell available");
-
-	}
 
 	result_system = system("../Resources/Shader/compile.sh");
 
-	if (result_system == -1) {
 
-		throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-	}
-	else if (result_system == 127) {
-
-		throw std::runtime_error("Shader creation: system(): child process could not be created");
-
-	}
-	else if (result_system = 0) {
-
-		throw std::runtime_error("Shader creation: system(): no shell available");
-
-	}
 #endif
 
 }
