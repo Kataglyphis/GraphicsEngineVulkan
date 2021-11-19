@@ -93,14 +93,15 @@ to report.
 * [DOXYGEN](https://www.doxygen.nl/index.html)
 * [GTEST](https://github.com/google/googletest)
 
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
-You might only clone the repo and get to go immediately :)
+You might only clone the repo, run cmake and you are good to go.
 
 ### Prerequisites
 
-You will need OpenGL. If you want to build documantaries you will need [DOXYGEN] (https://www.doxygen.nl/index.html).
+You will need Vulkan. If you want to build documantaries you will need [DOXYGEN] (https://www.doxygen.nl/index.html).
 
 ### Shaders
 
@@ -174,7 +175,8 @@ Project Link: [https://github.com/Kataglyphis/GraphicsEngineVulkan](https://gith
 
 Thanks for free 3D Models: 
 * [Dragon 3d Model](https://free3d.com/3d-model/black-dragon-rigged-and-game-ready-92023.html)
-* [Dirty Ground Floor]("Dirty Ground Floor 01" (https://skfb.ly/MsMo) by dee_van_hoven is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).)
+* [Dirty Ground Floor]("Dirty Ground Floor 01" (https://skfb.ly/MsMo) by dee_van_hoven is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/))
+* [GPUOPEN](https://gpuinfo.org/)
 
 ## Literature 
 
