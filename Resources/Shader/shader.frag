@@ -33,7 +33,7 @@ void main() {
 	
 	vec3 L = normalize(vec3(ubo_directions.light_dir)); // 
 	vec3 N = normalize(shading_normal);
-	vec3 V = normalize(ubo_directions.view_dir);
+	vec3 V = normalize(ubo_directions.view_dir.xyz);
 	vec3 R = reflect(L, N);
 	vec3 H = normalize(V+L);
 
@@ -45,7 +45,7 @@ void main() {
 	vec3 light_color = vec3(1.f);
 	float light_ambient_intensity = 1.f;
 
-	color = vec4(CookTorrence(ambient, N, H, L, V, roughness, 
+	color = vec4(CookTorrenceBRDF(ambient, N, H, L, V, roughness, 
 				light_color, light_ambient_intensity), 1.0f);//vec4(ambient * 0.3f + diffuse + specular * 0.00001f,1.0f);
 	//color = vec4(1.0f);
 

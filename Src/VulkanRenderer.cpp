@@ -84,8 +84,11 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 
 	ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	ubo_directions.light_dir = glm::vec3(directional_light_direction[0], directional_light_direction[1], directional_light_direction[2]);
-	ubo_directions.view_dir = view_dir;
+	ubo_directions.light_dir = glm::vec4(	directional_light_direction[0], 
+											directional_light_direction[1], 
+											directional_light_direction[2],
+											1.0f);
+	ubo_directions.view_dir = glm::vec4(view_dir,1.0f);
 
 	// ----- Update scene we are working on 
 	this->scene = scene;
@@ -198,7 +201,7 @@ void VulkanRenderer::update_view(glm::mat4 view)
 void VulkanRenderer::update_light_direction(glm::vec3 light_dir)
 {
 
-	ubo_directions.light_dir = light_dir;
+	ubo_directions.light_dir = glm::vec4(light_dir, 1.0f);
 
 
 }
@@ -212,7 +215,7 @@ void VulkanRenderer::update_raytracing(bool raytracing_on)
 
 void VulkanRenderer::update_view_direction(glm::vec3 view_dir)
 {
-	ubo_directions.view_dir = view_dir;
+	ubo_directions.view_dir = glm::vec4(view_dir,1.0f);
 
 }
 
@@ -294,6 +297,8 @@ void VulkanRenderer::drawFrame()
 
 	update_uniform_buffers(image_index);
 
+	if(raytracing) update_raytracing_descriptor_set(image_index);
+
 	record_commands(image_index);
 
 	// stop recording to command buffer
@@ -371,6 +376,7 @@ void VulkanRenderer::drawFrame()
 
 	}
 
+	//vkFreeCommandBuffers(MainDevice.logical_device, graphics_command_pool, 1, &command_buffers[image_index]);
 
 	current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
 	 
@@ -927,7 +933,7 @@ void VulkanRenderer::create_offscreen_textures()
 									swap_chain_image_format/*offscreen_format*/,
 									VK_IMAGE_TILING_OPTIMAL,
 									VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
-									| VK_IMAGE_USAGE_STORAGE_BIT,
+									| VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT,
 									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 									&image.image_memory);
 
@@ -1635,6 +1641,7 @@ void VulkanRenderer::render_gui()
 
 	ImGui::Separator();
 
+	ImGui::ShowDemoWindow();
 
 	if (ImGui::CollapsingHeader("Graphic Settings")) {
 
@@ -3695,6 +3702,48 @@ void VulkanRenderer::recreate_swap_chain()
 
 }
 
+void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
+{
+
+	VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
+	descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
+	descriptor_set_acceleration_structure.pNext = nullptr;
+	descriptor_set_acceleration_structure.accelerationStructureCount = 1;
+	descriptor_set_acceleration_structure.pAccelerationStructures = &(tlas.top_level_acceleration_structure);
+
+	VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
+	write_descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	write_descriptor_set_acceleration_structure.pNext = &descriptor_set_acceleration_structure;
+	write_descriptor_set_acceleration_structure.dstSet = raytracing_descriptor_set[image_index];
+	write_descriptor_set_acceleration_structure.dstBinding = TLAS_BINDING;
+	write_descriptor_set_acceleration_structure.dstArrayElement = 0;
+	write_descriptor_set_acceleration_structure.descriptorCount = 1;
+	write_descriptor_set_acceleration_structure.descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
+	write_descriptor_set_acceleration_structure.pImageInfo = nullptr;
+	write_descriptor_set_acceleration_structure.pBufferInfo = nullptr;
+	write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
+
+	VkDescriptorBufferInfo object_description_buffer_info{};
+	object_description_buffer_info.buffer = object_description_buffer;
+	object_description_buffer_info.offset = 0;
+	object_description_buffer_info.range = VK_WHOLE_SIZE;
+
+	VkWriteDescriptorSet object_description_buffer_write{};
+	object_description_buffer_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	object_description_buffer_write.dstSet = raytracing_descriptor_set[image_index];
+	object_description_buffer_write.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+	object_description_buffer_write.dstBinding = OBJECT_DESCRIPTION_BINDING;
+	object_description_buffer_write.pBufferInfo = &object_description_buffer_info;
+	object_description_buffer_write.descriptorCount = 1;
+
+	std::vector<VkWriteDescriptorSet> write_descriptor_sets = {	write_descriptor_set_acceleration_structure,
+																object_description_buffer_write };
+
+	vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
+		write_descriptor_sets.data(), 0, nullptr);
+
+}
+
 void VulkanRenderer::record_commands(uint32_t image_index)
 {
 
@@ -3744,9 +3793,8 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 			0, nullptr);
 
 		pvkCmdTraceRaysKHR(command_buffers[image_index], &rgen_region, &miss_region,
-			&hit_region, &call_region,
-			swap_chain_extent.width, swap_chain_extent.height, 1);
-
+							&hit_region, &call_region,
+							swap_chain_extent.width, swap_chain_extent.height, 1);
 
 	}
 	else {
@@ -4318,8 +4366,8 @@ VkImageView VulkanRenderer::create_image_view(VkImage image, VkFormat format, Vk
 
 	VkImageViewCreateInfo view_create_info{};
 	view_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	view_create_info.image = image;																											// image to create view for 
-	view_create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;																// typ of image
+	view_create_info.image = image;																	// image to create view for 
+	view_create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;												// typ of image
 	view_create_info.format = format;
 	view_create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;									// allows remapping of rgba components to other rgba values 
 	view_create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -4327,11 +4375,11 @@ VkImageView VulkanRenderer::create_image_view(VkImage image, VkFormat format, Vk
 	view_create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
 
 	// subresources allow the view to view only a part of an image 
-	view_create_info.subresourceRange.aspectMask = aspect_flags;												// which aspect of an image to view (e.g. color bit for viewing color)
-	view_create_info.subresourceRange.baseMipLevel = 0;																	// start mipmap level to view from
-	view_create_info.subresourceRange.levelCount = mip_levels;														// number of mipmap levels to view 
-	view_create_info.subresourceRange.baseArrayLayer = 0;																// start array level to view from 
-	view_create_info.subresourceRange.layerCount = 1;																		// number of array levels to view 
+	view_create_info.subresourceRange.aspectMask = aspect_flags;									// which aspect of an image to view (e.g. color bit for viewing color)
+	view_create_info.subresourceRange.baseMipLevel = 0;												// start mipmap level to view from
+	view_create_info.subresourceRange.levelCount = mip_levels;										// number of mipmap levels to view 
+	view_create_info.subresourceRange.baseArrayLayer = 0;											// start array level to view from 
+	view_create_info.subresourceRange.layerCount = 1;												// number of array levels to view 
 
 	// create image view 
 	VkImageView image_view;
@@ -4420,8 +4468,17 @@ void VulkanRenderer::check_changed_framebuffer_size()
 
 	if (window->framebuffer_size_has_changed()) {
 
+		int width, height;
+		glfwGetFramebufferSize(window->get_window(), &width, &height);
+
+		ubo_view_projection.projection = glm::perspective(glm::radians(40.0f), (float)width / (float)height,
+															0.1f, 1000.f);
+
 		window->reset_framebuffer_has_changed();
 		framebuffer_resized = true;
+
+
+
 
 	}
 }
