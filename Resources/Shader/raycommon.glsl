@@ -18,6 +18,7 @@ struct ObjectDescription {
 	uint64_t texture_id;
 	uint64_t vertex_address;
 	uint64_t index_address;
+	uint64_t placeholder;
 
 };
 
@@ -30,8 +31,8 @@ struct UboViewProjection {
 
 struct UboDirections {
 
-	vec3 light_dir;
-	vec3 view_dir;
+	vec4 light_dir;
+	vec4 view_dir;
 
 };
 

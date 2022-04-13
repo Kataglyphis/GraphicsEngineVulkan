@@ -91,7 +91,7 @@ struct SwapChainImage {
 struct Vertex {
 
 	glm::vec3 pos;
-	alignas(16) glm::vec2 texture_coords;
+	glm::vec2 texture_coords;
 	glm::vec3 normal;
 
 };
@@ -101,6 +101,7 @@ struct ObjectDescription {
 	uint64_t texture_id;
 	uint64_t vertex_address;
 	uint64_t index_address;
+	uint64_t placeholder;
 
 };
 
@@ -113,8 +114,8 @@ struct UboViewProjection {
 
 struct UboDirections {
 
-	glm::vec3 light_dir;
-	glm::vec3 view_dir;
+	glm::vec4 light_dir;
+	glm::vec4 view_dir;
 
 };
 

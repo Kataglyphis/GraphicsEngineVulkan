@@ -131,6 +131,8 @@ void MyWindow::framebuffer_size_callback(GLFWwindow* window, int width, int heig
 
     auto app = reinterpret_cast<MyWindow*>(glfwGetWindowUserPointer(window));
     app->framebuffer_resized = true;
+    app->window_width = width;
+    app->window_height = height;
 
 }
 

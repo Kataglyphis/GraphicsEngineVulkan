@@ -48,7 +48,7 @@ int main() {
     float start_turn_speed = 0.25f;
 
     // -- RAY TRACING ON
-    bool raytracing = true;
+    bool raytracing = false;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 
