@@ -5,6 +5,7 @@
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
 #include <glm/glm.hpp>
 #include <glm/mat4x4.hpp>
 
@@ -48,7 +49,7 @@ int main() {
     float start_turn_speed = 0.25f;
 
     // -- RAY TRACING ON
-    bool raytracing = true;
+    bool raytracing = false;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 

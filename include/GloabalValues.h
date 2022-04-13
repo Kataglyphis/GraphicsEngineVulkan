@@ -8,6 +8,9 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
+
 const int MAX_FRAME_DRAWS = 3;
 const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
@@ -94,7 +97,21 @@ struct Vertex {
 	alignas(16) glm::vec2 texture_coords;
 	glm::vec3 normal;
 
+	bool operator==(const Vertex& other) const {
+		return pos == other.pos && normal == other.normal && texture_coords == other.texture_coords;
+	}
+
 };
+
+namespace std {
+	template<> struct hash<Vertex> {
+		size_t operator()(Vertex const& vertex) const {
+			return ((hash<glm::vec3>()(vertex.pos) ^
+				(hash<glm::vec3>()(vertex.normal) << 1)) >> 1) ^
+				(hash<glm::vec2>()(vertex.texture_coords) << 1);
+		}
+	};
+}
 
 struct ObjectDescription {
 	
