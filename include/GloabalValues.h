@@ -14,6 +14,7 @@
 const int MAX_FRAME_DRAWS = 3;
 const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
+const int MAX_TEXTURE_COUNT = 40;
 
 // use the standard validation layers from the SDK for error checking
 const std::vector<const char*> validationLayers = {
@@ -96,6 +97,7 @@ struct Vertex {
 	glm::vec3 pos;
 	glm::vec2 texture_coords;
 	glm::vec3 normal;
+	glm::uint mat_id;
 
 	bool operator==(const Vertex& other) const {
 		return pos == other.pos && normal == other.normal && texture_coords == other.texture_coords;

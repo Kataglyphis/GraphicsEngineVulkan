@@ -8,17 +8,22 @@ VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()),
 }
 
 int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane,
+											float fov,
 											glm::vec3 view_dir, bool raytracing) 
 
 {
 
 	this->window = window;
 
+	this->near_plane = near_plane;
+	this->far_plane = far_plane;
+	this->fov = fov;
+
 	ubo_view_projection = UboViewProjection{};
 	ubo_directions = UboDirections{};
 	pc_raster = PushConstantRaster{};
 
-	ubo_view_projection.projection = glm::perspective(glm::radians(40.0f), (float) swap_chain_extent.width / (float) swap_chain_extent.height, 
+	ubo_view_projection.projection = glm::perspective(glm::radians(this->fov), (float) window->get_width() / (float)window->get_height(),
 																	near_plane, far_plane);
 
 	ubo_view_projection.view = glm::lookAt(eye, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -60,13 +65,12 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		create_post_pipeline();
 		create_framebuffers();
 		// this texture is used if the wanted texture could not be loaded :))
-		// create_texture("plain.png");
+		create_texture("../Resources/Textures/plain.png");
 
-		init_raytracing();
+		//init_raytracing();
 
 		create_gui();
 		create_synchronization();
-
 
 	}
 	catch (const std::runtime_error& e) {
@@ -81,7 +85,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 
 void VulkanRenderer::init_rasterizer()
 {
-
+		
 		create_render_pass();
 		create_descriptor_set_layouts();
 		create_push_constant_range();
@@ -694,7 +698,7 @@ void VulkanRenderer::create_offscreen_graphics_pipeline()
 																																																	// VK_VERTEX_INPUT_RATE_VERTEX : Move on to the next vertex
 																																																	// VK_VERTEX_INPUT_RATE_INSTANCE : Move on to the next instance
 	// how the data for an attribute is defined within a vertex
-	std::array<VkVertexInputAttributeDescription, 3> attribute_describtions;
+	std::array<VkVertexInputAttributeDescription, 4> attribute_describtions;
 
 	// Position attribute
 	attribute_describtions[0].binding = 0;																																// which binding the data is at (should be same as above)
@@ -713,6 +717,11 @@ void VulkanRenderer::create_offscreen_graphics_pipeline()
 	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
 	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
 	attribute_describtions[2].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
+
+	attribute_describtions[3].binding = 0;																																// which binding the data is at (should be same as above)
+	attribute_describtions[3].location = 3;																																// location in shader where data will be read from
+	attribute_describtions[3].format = VK_FORMAT_R32_UINT;																					// format data will take (also helps define size of data)
+	attribute_describtions[3].offset = offsetof(Vertex, mat_id);
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 
@@ -1578,7 +1587,7 @@ void VulkanRenderer::render_gui()
 
 	ImGui::Separator();
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	if (ImGui::CollapsingHeader("Graphic Settings")) {
 
@@ -2625,17 +2634,28 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	// texture binding info
 	VkDescriptorSetLayoutBinding sampler_layout_binding{};
 	sampler_layout_binding.binding = 0;
-	sampler_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	sampler_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
 	sampler_layout_binding.descriptorCount = 1;
 	sampler_layout_binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT |
 										VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 	sampler_layout_binding.pImmutableSamplers = nullptr;
 
+	VkDescriptorSetLayoutBinding sampled_image_layout_binding{};
+	sampled_image_layout_binding.binding = 1;
+	sampled_image_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+	sampled_image_layout_binding.descriptorCount = MAX_TEXTURE_COUNT;
+	sampled_image_layout_binding.stageFlags =	VK_SHADER_STAGE_FRAGMENT_BIT |
+												VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+	sampler_layout_binding.pImmutableSamplers = nullptr;
+
+	std::vector<VkDescriptorSetLayoutBinding> texture_layout_bindings = {	sampler_layout_binding,
+																			sampled_image_layout_binding };
+
 	// create a descriptor set layout with given bindings for texture 
 	VkDescriptorSetLayoutCreateInfo texture_layout_create_info{};
 	texture_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	texture_layout_create_info.bindingCount = 1;
-	texture_layout_create_info.pBindings = &sampler_layout_binding;
+	texture_layout_create_info.bindingCount = static_cast<uint32_t>(texture_layout_bindings.size());
+	texture_layout_create_info.pBindings = texture_layout_bindings.data();
 
 	// create descriptor set layout
 	result = vkCreateDescriptorSetLayout(MainDevice.logical_device, &texture_layout_create_info, nullptr, &sampler_set_layout);
@@ -2709,7 +2729,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 																																																	// VK_VERTEX_INPUT_RATE_VERTEX : Move on to the next vertex
 																																																	// VK_VERTEX_INPUT_RATE_INSTANCE : Move on to the next instance
 	// how the data for an attribute is defined within a vertex
-	std::array<VkVertexInputAttributeDescription, 3> attribute_describtions;
+	std::array<VkVertexInputAttributeDescription, 4> attribute_describtions;
 
 	// Position attribute
 	attribute_describtions[0].binding = 0;																																// which binding the data is at (should be same as above)
@@ -2728,6 +2748,12 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
 	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
 	attribute_describtions[2].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
+
+	// normal coord attribute
+	attribute_describtions[3].binding = 0;																																// which binding the data is at (should be same as above)
+	attribute_describtions[3].location = 3;																																// location in shader where data will be read from
+	attribute_describtions[3].format = VK_FORMAT_R32_UINT;																					// format data will take (also helps define size of data)
+	attribute_describtions[3].offset = offsetof(Vertex, mat_id);
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 
@@ -2798,9 +2824,9 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	// blend attachment state 
 	VkPipelineColorBlendAttachmentState color_state{};
 	color_state.colorWriteMask =   VK_COLOR_COMPONENT_R_BIT | 
-															VK_COLOR_COMPONENT_G_BIT | 
-															VK_COLOR_COMPONENT_B_BIT | 
-															VK_COLOR_COMPONENT_A_BIT;																				// apply to all channels 
+								VK_COLOR_COMPONENT_G_BIT | 
+								VK_COLOR_COMPONENT_B_BIT | 
+								VK_COLOR_COMPONENT_A_BIT;																				// apply to all channels 
 	
 	color_state.blendEnable = VK_TRUE;																																// enable BLENDING
 	// blending uses equation: (srcColorBlendFactor * new_color) color_blend_op (dstColorBlendFactor * old_color)
@@ -3186,7 +3212,7 @@ void VulkanRenderer::create_descriptor_pool_sampler()
 	// TEXTURE SAMPLER POOL
 	VkDescriptorPoolSize sampler_pool_size{};
 	sampler_pool_size.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	sampler_pool_size.descriptorCount = MAX_OBJECTS;
+	sampler_pool_size.descriptorCount = 2*MAX_OBJECTS;
 
 	VkDescriptorPoolCreateInfo sampler_pool_create_info{};
 	sampler_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -3385,7 +3411,7 @@ void VulkanRenderer::create_descriptor_sets()
 
 }
 
-int VulkanRenderer::create_texture(std::string filename)
+void VulkanRenderer::create_texture(std::string filename)
 {
 
 	// create texture image and get its location in array
@@ -3397,9 +3423,9 @@ int VulkanRenderer::create_texture(std::string filename)
 	texture_image_views.push_back(image_view);
 
 	// create texture descriptor set here
-	int descriptor_location = create_texture_descriptor(image_view);
+	// int descriptor_location = create_texture_descriptor(image_view);
 
-	return descriptor_location;
+	//return descriptor_location;
 
 }
 
@@ -3479,14 +3505,106 @@ int VulkanRenderer::create_texture_image(std::string filename)
 
 }
 
+void VulkanRenderer::create_sampler_array_descriptor_set()
+{
+
+	// descriptor set allocation info 
+	VkDescriptorSetAllocateInfo alloc_info{};
+	alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	alloc_info.descriptorPool = sampler_descriptor_pool;
+	alloc_info.descriptorSetCount = 1;
+	alloc_info.pSetLayouts = &sampler_set_layout;
+
+	// allocte descriptor sets
+	VkResult result = vkAllocateDescriptorSets(MainDevice.logical_device, &alloc_info, &sampler_descriptor_set);
+
+	if (result != VK_SUCCESS) {
+
+		throw std::runtime_error("Failed to allocate texture descriptor sets!");
+
+	}
+
+	// texture image info
+	std::vector<VkDescriptorImageInfo> image_info;
+	image_info.resize(texture_image_views.size());
+	for (int i = 0; i < texture_image_views.size(); i++) {
+		image_info[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		image_info[i].imageView = texture_image_views[i];
+		image_info[i].sampler = nullptr;
+	}
+
+	// descriptor write info
+	VkWriteDescriptorSet descriptor_write{};
+	descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	descriptor_write.dstSet = sampler_descriptor_set;
+	descriptor_write.dstBinding = 1;
+	descriptor_write.dstArrayElement = 0;
+	descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+	descriptor_write.descriptorCount = static_cast<uint32_t>(image_info.size());
+	descriptor_write.pImageInfo = image_info.data();
+
+	VkDescriptorImageInfo sampler_info;
+	sampler_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	sampler_info.imageView = nullptr;
+	sampler_info.sampler = texture_sampler;
+
+	// descriptor write info
+	VkWriteDescriptorSet descriptor_write_sampler{};
+	descriptor_write_sampler.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	descriptor_write_sampler.dstSet = sampler_descriptor_set;
+	descriptor_write_sampler.dstBinding = 0;
+	descriptor_write_sampler.dstArrayElement = 0;
+	descriptor_write_sampler.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
+	descriptor_write_sampler.descriptorCount = 1;
+	descriptor_write_sampler.pImageInfo = &sampler_info;
+
+	std::vector<VkWriteDescriptorSet> write_descriptor_sets = { descriptor_write,
+																 descriptor_write_sampler };
+
+	// update new descriptor set
+	vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
+							write_descriptor_sets.data(), 0, nullptr);
+
+}
+
+int VulkanRenderer::create_model(std::string modelFile)
+{
+	Model new_model = Model();
+
+	std::vector<std::string> textureNames = new_model.load_textures(modelFile);
+	std::vector<int> matToTex(textureNames.size());
+
+	// Loop over textureNames and create textures for them
+	for (size_t i = 0; i < textureNames.size(); i++)
+	{
+		// If material had no texture, set '0' to indicate no texture, texture 0 will be reserved for a default texture
+		if (!textureNames[i].empty())
+		{
+			// Otherwise, create texture and set value to index of new texture
+			create_texture(textureNames[i]);
+		}
+		
+	}
+
+	create_sampler_array_descriptor_set();
+
+	new_model.load_model_in_ram(MainDevice.physical_device, MainDevice.logical_device, graphics_queue, graphics_command_pool, 
+								modelFile);
+
+	scene->add_model(new_model);
+
+	return scene->get_model_count() - 1;
+
+}
+
 stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size)
 {
 
 	// number of channels image uses
 	int channels;
 	// load pixel data for image
-	std::string file_loc = "../Resources/Textures/" + file_name;
-	stbi_uc* image = stbi_load(file_loc.c_str(), width, height, &channels, STBI_rgb_alpha);
+	//std::string file_loc = "../Resources/Textures/" + file_name;
+	stbi_uc* image = stbi_load(file_name.c_str(), width, height, &channels, STBI_rgb_alpha);
 
 	if (!image) {
 
@@ -3790,7 +3908,8 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 				// uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
 
 				std::array<VkDescriptorSet, 2> descriptor_set_group = { descriptor_sets[image_index],
-																		sampler_descriptor_sets[scene->get_texture_id(m,k)] };
+																		sampler_descriptor_set
+																		/*sampler_descriptor_sets[scene->get_texture_id(m,k)]*/ };
 
 				// bind descriptor sets 
 				vkCmdBindDescriptorSets(command_buffers[image_index], VK_PIPELINE_BIND_POINT_GRAPHICS, offscreen_pipeline_layout,
@@ -3812,9 +3931,9 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 	// information about how to begin a render pass (only needed for graphical applications)
 	VkRenderPassBeginInfo render_pass_begin_info{};
 	render_pass_begin_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-	render_pass_begin_info.renderPass = post_render_pass;																				// render pass to begin 
-	render_pass_begin_info.renderArea.offset = { 0,0 };																				// start point of render pass in pixels 
-	render_pass_begin_info.renderArea.extent = swap_chain_extent;													// size of region to run render pass on (starting at offset)
+	render_pass_begin_info.renderPass = post_render_pass;												// render pass to begin 
+	render_pass_begin_info.renderArea.offset = { 0,0 };													// start point of render pass in pixels 
+	render_pass_begin_info.renderArea.extent = swap_chain_extent;										// size of region to run render pass on (starting at offset)
 
 	// make sure the order you put the values into the array matches with the attchment order you have defined previous
 	std::array<VkClearValue, 2> clear_values = {};
@@ -3823,7 +3942,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 
 	render_pass_begin_info.pClearValues = clear_values.data();
 	render_pass_begin_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
-	render_pass_begin_info.framebuffer = swap_chain_framebuffers[image_index];												// used framebuffer depends on the swap chain and therefore is changing for each command buffer
+	render_pass_begin_info.framebuffer = swap_chain_framebuffers[image_index];							// used framebuffer depends on the swap chain and therefore is changing for each command buffer
 
 	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].image,
 													VK_IMAGE_LAYOUT_GENERAL,
@@ -4393,10 +4512,10 @@ int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 	vkUpdateDescriptorSets(MainDevice.logical_device, 1, &descriptor_write, 0, nullptr);
 
 	// add descriptor set to list
-	sampler_descriptor_sets.push_back(descriptor_set);
+	//sampler_descriptor_sets.push_back(descriptor_set);
 
 	// return descriptor set location
-	return static_cast<uint32_t>(sampler_descriptor_sets.size()) - 1;
+	return 0;// static_cast<uint32_t>(sampler_descriptor_sets.size()) - 1;
 
 }
 
@@ -4413,9 +4532,6 @@ void VulkanRenderer::check_changed_framebuffer_size()
 
 		window->reset_framebuffer_has_changed();
 		framebuffer_resized = true;
-
-
-
 
 	}
 }

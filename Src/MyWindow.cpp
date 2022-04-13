@@ -15,8 +15,8 @@ MyWindow::MyWindow() : framebuffer_resized(false) {
 
 //please use this constructor; never the standard
 MyWindow::MyWindow(GLint window_width, GLint window_height) : framebuffer_resized(false), 
-                                                                                                                        window_width(window_width),  
-                                                                                                                        window_height(window_height) {
+                                                             window_width(window_width),  
+                                                             window_height(window_height) {
 
     // all keys non-pressed in the beginning
     for (size_t i = 0; i < 1024; i++) {
@@ -108,6 +108,16 @@ GLfloat MyWindow::get_y_change()
     GLfloat the_change = y_change;
     y_change = 0.0f;
     return the_change;
+}
+
+GLfloat MyWindow::get_height()
+{
+    return GLfloat(window_height);
+}
+
+GLfloat MyWindow::get_width()
+{
+    return GLfloat(window_width);
 }
 
 bool MyWindow::framebuffer_size_has_changed()

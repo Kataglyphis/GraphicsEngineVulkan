@@ -11,6 +11,7 @@
 #include "raycommon.glsl"
 #include "SetsAndBindings.glsl"
 #include "ShadingLib.glsl"
+#include "GlobalValues.glsl"
 
 //layout (push_constant) uniform PushConstantRaster {
 //
@@ -20,6 +21,7 @@
 
 layout (location = 0) in vec2 texture_coordinates;
 layout (location = 1) in vec3 shading_normal;
+layout (location = 2) flat in uint fragMaterialID;
 
 layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
 	UboDirections ubo_directions;
@@ -27,7 +29,9 @@ layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
 
 layout (location = 0) out vec4 color;																	//final output color (must have location)
 
-layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
+//layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
+layout(set = 1, binding = 0) uniform sampler texture_sampler;
+layout(set = 1, binding = 1) uniform texture2D tex[TEXTURE_COUNT];
 
 void main() {
 	
@@ -37,8 +41,8 @@ void main() {
 	vec3 R = reflect(L, N);
 	vec3 H = normalize(V+L);
 
-	vec3 ambient = texture(texture_sampler, texture_coordinates).xyz;
-	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler, texture_coordinates).xyz;
+	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
+	vec3 diffuse = max(dot(N,L),0.0f) * texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
 	vec3 specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
 
 	float roughness = 5;
