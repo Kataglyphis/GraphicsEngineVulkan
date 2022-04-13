@@ -2,9 +2,6 @@
 
 Scene::Scene() {
 
-	/*Model starting_model();
-	add_model(starting_model);*/
-
 }
 
 uint32_t Scene::get_model_count()
@@ -70,11 +67,6 @@ VkBuffer Scene::get_vertex_buffer(int model_index, int mesh_index)
 VkBuffer Scene::get_index_buffer(int model_index, int mesh_index)
 {
 	return model_list[model_index].get_mesh(mesh_index)->get_index_buffer();
-}
-
-uint32_t Scene::get_texture_id(int model_index, int mesh_index)
-{
-	return model_list[model_index].get_mesh(mesh_index)->get_texture_id();
 }
 
 uint32_t Scene::get_index_count(int model_index, int mesh_index)

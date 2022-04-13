@@ -40,8 +40,10 @@ public:
 
 	VulkanRenderer();
 
-	int init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane,
+	int init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane, float fov,
 					glm::vec3 view_dir, bool raytracing);
+
+	int create_model(std::string modelFile);
 
 	void update_model(int model_id, glm::mat4 new_model);
 	void update_view(glm::mat4 view);
@@ -69,6 +71,10 @@ private:
 	float direcional_light_ambient_intensity = 10.f;
 	float directional_light_color[3] = { 1.f,1.f,1.f };
 	float directional_light_direction[3] = { 0.f,1.f,1.f };
+
+	float near_plane;
+	float far_plane;
+	float fov;
 
 	// ----- VULKAN CORE COMPONENTS ----- BEGIN
 	VkInstance instance;
@@ -236,7 +242,7 @@ private:
 	VkDescriptorPool sampler_descriptor_pool;
 	VkDescriptorPool object_description_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
-	std::vector<VkDescriptorSet> sampler_descriptor_sets;				// these are no swap chain dependend descriptors, doesn't change over frames
+	VkDescriptorSet sampler_descriptor_set;				// these are no swap chain dependend descriptors, doesn't change over frames
 
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
@@ -318,8 +324,9 @@ private:
 	int max_levels;
 
 	// texture functions 
-	int create_texture(std::string filename);
+	void create_texture(std::string filename);
 	int create_texture_image(std::string filename);
+	void create_sampler_array_descriptor_set();
 
 	// ---- HELPER ---- BEGIN
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);

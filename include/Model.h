@@ -24,6 +24,8 @@ public:
     void load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue,
                             VkCommandPool command_pool, std::string model_path);
 
+    std::vector<std::string> load_textures(std::string modelFile);
+
     void set_model(glm::mat4 model);
 
     std::string get_base_dir(const std::string& filepath);
@@ -35,7 +37,7 @@ public:
 private:
 
     uint32_t mesh_model_index;
-    std::vector<Mesh> meshes;
+    Mesh mesh;
     glm::mat4 model;
 
     std::vector<std::string> texture_list;

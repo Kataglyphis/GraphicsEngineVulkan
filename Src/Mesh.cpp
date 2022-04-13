@@ -5,8 +5,7 @@ Mesh::Mesh()
 }
 
 Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkQueue transfer_queue,
-	VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices,
-	int new_texture_id)
+	VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices)
 {
 
 	VkTransformMatrixKHR transform_matrix{};
@@ -33,10 +32,9 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkQueue tr
 
 	object_description.index_address = vkGetBufferDeviceAddress(logical_device, &index_info);
 	object_description.vertex_address = vkGetBufferDeviceAddress(logical_device, &vertex_info);
-	object_description.texture_id = new_texture_id;
+	object_description.texture_id = 0;
 
 	model = glm::mat4(1.0f);
-	texture_id = new_texture_id;
 
 }
 
@@ -55,11 +53,6 @@ glm::mat4 Mesh::get_model()
 ObjectDescription Mesh::get_object_description()
 {
 	return object_description;
-}
-
-int Mesh::get_texture_id()
-{
-	return texture_id;
 }
 
 int Mesh::get_vertex_count()

@@ -36,7 +36,6 @@ public:
 	uint32_t get_mesh_count(int model_index);
 	VkBuffer get_vertex_buffer(int model_index, int mesh_index);
 	VkBuffer get_index_buffer(int model_index, int mesh_index);
-	uint32_t get_texture_id(int model_index, int mesh_index);
 	uint32_t get_index_count(int model_index, int mesh_index);
 	uint32_t get_number_of_object_descriptions();
 	uint32_t get_number_of_meshes();

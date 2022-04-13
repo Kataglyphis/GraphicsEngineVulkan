@@ -21,6 +21,10 @@ public:
 	GLfloat get_x_change();
 	GLfloat get_y_change();
 	GLFWwindow* get_window() {return main_window;}
+
+	GLfloat get_height();
+	GLfloat get_width();
+
 	bool* get_keys() { return keys; }
 	bool framebuffer_size_has_changed();
 	void reset_framebuffer_has_changed();
