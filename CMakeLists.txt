@@ -19,37 +19,72 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
-# configure a header file to pass the version number only
-# configure_file(Src/Config.h.in Src/Config.h)
+
+add_compile_definitions(SHADER_SRC_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader")
+add_compile_definitions(SHADER_SPV_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/spv")
+add_compile_definitions(SHADER_LOG_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/log")
 
 # we depend on vulkan 
 find_package(Vulkan REQUIRED)
 
-#set all your sources accordingly
-file(GLOB SOURCES "Src/*.cpp"
-                  "Src/*.c"
-                  "ExternalLib/IMGUI/*.cpp"
-                  "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
-                  "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp"
-)
+FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                      "Src/renderer/*.cpp"
+                                        "include/renderer/*.hpp")
+FILE(GLOB APP_FILTER                    "include/*.h"                                               "Src/*.cpp"
+                                        "include/*.hpp")
+FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                                     "ExternalLib/IMGUI/*.cpp"
+                                        "ExternalLib/IMGUI/backends/imgui_impl_glfw.h"              "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
+                                        "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp")
 
-file(GLOB HEADERS "include/*.h"
+source_group("gui"                                              FILES ${GUI_FILTER})
+source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
+source_group("app"                                              FILES ${APP_FILTER})
+
+#set all your sources accordingly
+file(GLOB_RECURSE SOURCES 
+            "Src/*.cpp" 
+            "Src/*.c"
+            "ExternalLib/IMGUI/imgui.cpp"
+            "ExternalLib/IMGUI/imgui_demo.cpp"
+            "ExternalLib/IMGUI/imgui_draw.cpp"
+            "ExternalLib/IMGUI/imgui_tables.cpp"
+            "ExternalLib/IMGUI/imgui_widgets.cpp"
+            "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
+            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp")
+
+file(GLOB_RECURSE HEADERS  
+                  "include/*.h"
                   "include/*.hpp"
-                  ${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/*.h)
+                  "include/renderer/*.h"
+                  )
+
+file(GLOB GUI_HEADERS 
+            "ExternalLib/IMGUI/*.h"
+            "ExternalLib/IMGUI/backends/imgui_impl_glfw.h"
+            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h")
 
 # add filters to the solution explorer for the shaders :))
+# add filters to the solution explorer for the shaders :))
 file(GLOB SHADER_FILTER   
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.vert
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.frag
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rgen
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rchit
-        ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rmiss)
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.vert
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.frag
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.glsl
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.comp
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.geom
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rgen
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rchit
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rahit
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rmiss
+      )
 
-source_group("Shader" FILES ${SHADER_FILTER})
-source_group("Header" FILES ${HEADERS})
+source_group("app/shaders" FILES ${SHADER_FILTER})
 
 # add the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILTER}) 
+add_executable(${PROJECT_NAME}
+${SHADER_FILTER}
+${RENDERER_FILTER}
+${APP_FILTER}
+${GUI_FILTER}
+)
 
 if(UNIX)
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -57,8 +92,8 @@ else()
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC ./include
-                                            PUBLIC "${PROJECT_BINARY_DIR}/../ExternalLib/ASSIMP/assimp-5.0.1/include/assimp")
+target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
+                                                    ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
@@ -80,10 +115,6 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(ExternalLib/GLFW/glfw-3.3.4)
 
 target_link_libraries(${PROJECT_NAME} glfw)
-
-# add ASSIMP to our cmake build
-add_subdirectory(ExternalLib/ASSIMP/assimp-5.0.1)
-target_link_libraries(${PROJECT_NAME} assimp)
 
 # add tests 
 # include(CTest)

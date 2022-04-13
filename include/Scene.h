@@ -19,7 +19,7 @@
 #include "MyWindow.h"
 #include "Utilities.h"
 #include "Mesh.h"
-#include "MeshModel.h"
+#include "Model.h"
 #include "Camera.h"
 
 #include <string>
@@ -42,10 +42,10 @@ public:
 	uint32_t get_number_of_meshes();
 	std::vector<ObjectDescription> get_object_descriptions();
 
-	void add_mesh_model(MeshModel mesh_model);
+	void add_model(Model model);
 	void add_object_description(ObjectDescription object_description);
 
-	std::vector<MeshModel> const & get_mesh_model_list();
+	std::vector<Model> const & get_model_list();
 
 	void update_model_matrix(glm::mat4 model_matrix, int model_id);
 
@@ -56,7 +56,7 @@ public:
 private:
 
 	std::vector<ObjectDescription> object_descriptions;
-	std::vector<MeshModel> model_list;
+	std::vector<Model> model_list;
 
 };
 
