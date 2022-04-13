@@ -2,6 +2,9 @@
 
 Scene::Scene() {
 
+	/*Model starting_model();
+	add_model(starting_model);*/
+
 }
 
 uint32_t Scene::get_model_count()
@@ -9,9 +12,9 @@ uint32_t Scene::get_model_count()
 	return static_cast<uint32_t>(model_list.size());
 }
 
-void Scene::add_mesh_model(MeshModel mesh_model)
+void Scene::add_model(Model model)
 {
-	model_list.push_back(mesh_model);
+	model_list.push_back(model);
 
 }
 
@@ -22,7 +25,7 @@ void Scene::add_object_description(ObjectDescription object_description)
 
 }
 
-std::vector<MeshModel> const & Scene::get_mesh_model_list()
+std::vector<Model> const & Scene::get_model_list()
 {
 	return model_list;
 }
@@ -39,7 +42,7 @@ void Scene::clean_up()
 
 	for (size_t i = 0; i < model_list.size(); i++) {
 
-		model_list[i].destroy_mesh_model();
+		model_list[i].destroy_model();
 
 	}
 
@@ -88,7 +91,7 @@ uint32_t Scene::get_number_of_meshes()
 {
 	uint32_t number_of_meshes = 0;
 	
-	for (MeshModel mesh_model : model_list) {
+	for (Model mesh_model : model_list) {
 		number_of_meshes += static_cast<uint32_t>(mesh_model.get_mesh_count());
 	}
 
