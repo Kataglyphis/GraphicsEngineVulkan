@@ -526,6 +526,6 @@ static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
 }
 
 // aligned piece of memory appropiately and when necessary return bigger piece
-static uint32_t align_up(uint32_t memory, size_t a) {
-	return uint32_t((memory + (uint32_t(a) - 1)) & ~uint32_t(a - 1));
+static uint32_t align_up(uint32_t memory, uint32_t alignment) {
+	return (memory + alignment - 1) & ~(alignment - 1);
 }

@@ -32,7 +32,6 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkQueue tr
 
 	object_description.index_address = vkGetBufferDeviceAddress(logical_device, &index_info);
 	object_description.vertex_address = vkGetBufferDeviceAddress(logical_device, &vertex_info);
-	object_description.texture_id = 0;
 
 	model = glm::mat4(1.0f);
 

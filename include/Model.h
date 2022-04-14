@@ -22,7 +22,9 @@ public:
     std::vector<std::string> get_texture_list();
 
     void load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue,
-                            VkCommandPool command_pool, std::string model_path);
+                            VkCommandPool command_pool, std::string model_path, std::vector<int> matToTex);
+
+    ObjectDescription get_object_description();
 
     std::vector<std::string> load_textures(std::string modelFile);
 
