@@ -12,7 +12,7 @@ uint32_t Scene::get_model_count()
 void Scene::add_model(Model model)
 {
 	model_list.push_back(model);
-
+	object_descriptions.push_back(model.get_object_description());
 }
 
 void Scene::add_object_description(ObjectDescription object_description)

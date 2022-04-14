@@ -41,8 +41,8 @@ void main() {
 	vec3 R = reflect(L, N);
 	vec3 H = normalize(V+L);
 
-	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
-	vec3 diffuse = max(dot(N,L),0.0f) * texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
+	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz; //
+	vec3 diffuse = max(dot(N,L),0.0f) * ambient;
 	vec3 specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
 
 	float roughness = 5;

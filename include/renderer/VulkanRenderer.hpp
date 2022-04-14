@@ -252,7 +252,7 @@ private:
 	// -- bottom level acceleration structure
 	void create_BLAS();
 	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
-																						VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
+								VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
 
 	void create_acceleration_structure_infos_BLAS(BuildAccelerationStructure& build_as_structure, BlasInput& blas_input,
 													VkDeviceSize& current_scretch_size, VkDeviceSize& current_size);
@@ -298,6 +298,15 @@ private:
 	VkBuffer shader_binding_table_buffer;
 	VkDeviceMemory shader_binding_table_buffer_memory;
 
+	VkBuffer raygen_shader_binding_table_buffer;
+	VkDeviceMemory raygen_shader_binding_table_buffer_memory;
+
+	VkBuffer miss_shader_binding_table_buffer;
+	VkDeviceMemory miss_shader_binding_table_buffer_memory;
+
+	VkBuffer hit_shader_binding_table_buffer;
+	VkDeviceMemory hit_shader_binding_table_buffer_memory;
+
 	VkStridedDeviceAddressRegionKHR rgen_region{};
 	VkStridedDeviceAddressRegionKHR miss_region{};
 	VkStridedDeviceAddressRegionKHR hit_region{};
@@ -314,6 +323,7 @@ private:
 	// -- TEXTURE --
 	VkSampler texture_sampler;
 	std::vector<uint32_t> texture_mip_levels;
+
 	VkBuffer object_description_buffer;
 	VkDeviceMemory object_description_buffer_memory;
 
@@ -324,7 +334,7 @@ private:
 	int max_levels;
 
 	// texture functions 
-	void create_texture(std::string filename);
+	int create_texture(std::string filename);
 	int create_texture_image(std::string filename);
 	void create_sampler_array_descriptor_set();
 

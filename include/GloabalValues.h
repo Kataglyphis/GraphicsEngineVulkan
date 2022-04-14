@@ -14,7 +14,7 @@
 const int MAX_FRAME_DRAWS = 3;
 const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
-const int MAX_TEXTURE_COUNT = 40;
+const int MAX_TEXTURE_COUNT = 24;
 
 // use the standard validation layers from the SDK for error checking
 const std::vector<const char*> validationLayers = {
@@ -117,10 +117,10 @@ namespace std {
 
 struct ObjectDescription {
 	
-	uint64_t texture_id;
 	uint64_t vertex_address;
 	uint64_t index_address;
-	uint64_t placeholder;
+	uint64_t placeholder1;
+	uint64_t placeholder2;
 
 };
 

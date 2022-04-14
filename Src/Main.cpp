@@ -49,7 +49,7 @@ int main() {
     float start_turn_speed = 0.25f;
 
     // -- RAY TRACING ON
-    bool raytracing = false;
+    bool raytracing = true;
 
     std::shared_ptr<Scene> initial_scene = std::make_shared<Scene>();
 
@@ -67,15 +67,13 @@ int main() {
 
     }
 
-    std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
-    vulkan_renderer.create_model(modelFile);
-
     glm::mat4 dragon_model(1.0f);
     //dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
     //dragon_model = glm::scale(dragon_model, glm::vec3(10.0f, 10.0f, 10.0f));
     /*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
     dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
     vulkan_renderer.update_model(0, dragon_model);
+    vulkan_renderer.update_raytracing(raytracing);
 
     // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
@@ -89,7 +87,6 @@ int main() {
         camera.mouse_control(main_window->get_x_change(), main_window->get_y_change());
 
         vulkan_renderer.update_view(camera.calculate_viewmatrix());
-        vulkan_renderer.update_raytracing(raytracing);
         vulkan_renderer.update_view_direction(camera.get_camera_direction());
 
         float now = static_cast<float>(glfwGetTime());

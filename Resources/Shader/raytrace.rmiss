@@ -4,7 +4,7 @@
 #extension GL_GOOGLE_include_directive : enable
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 
- #include "raycommon.glsl"
+#include "raycommon.glsl"
 
 layout(location = 0) rayPayloadInEXT HitPayload payload;
 

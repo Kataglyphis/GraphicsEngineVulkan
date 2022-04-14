@@ -14,7 +14,7 @@ Model::Model(std::vector<Mesh> new_mesh_list, uint32_t index)
 }
 
 void Model::load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue,
-                                VkCommandPool command_pool, std::string model_path) {
+                                VkCommandPool command_pool, std::string model_path, std::vector<int> matToTex) {
 
     tinyobj::ObjReaderConfig reader_config;
     //reader_config.mtl_search_path = ""; // Path to material files
@@ -78,7 +78,8 @@ void Model::load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new
                 vert.pos = pos;
                 vert.texture_coords = tex_coords;
                 vert.normal = normals;
-                vert.mat_id = shapes[s].mesh.material_ids[f];
+                vert.mat_id = matToTex[shapes[s].mesh.material_ids[f]];
+                //if(shapes[s].mesh.material_ids[f] == 24) std::cout << shapes[s].mesh.material_ids[f] << endl;
                 /* vertices.push_back(vert);
                 indices.push_back(indices.size());*/
 
@@ -167,6 +168,11 @@ void Model::load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new
 
 }
 
+ObjectDescription Model::get_object_description()
+{
+    return mesh.get_object_description();
+}
+
 std::vector<std::string> Model::load_textures(std::string modelFile)
 {
     tinyobj::ObjReaderConfig reader_config;
@@ -208,6 +214,11 @@ std::vector<std::string> Model::load_textures(std::string modelFile)
                 delete texture_list[i];
                 texture_list[i] = nullptr;
             }*/
+
+        }
+        else {
+
+            texture_list.push_back("");
 
         }
     }
