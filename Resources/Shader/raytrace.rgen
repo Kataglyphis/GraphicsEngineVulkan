@@ -34,7 +34,8 @@ void main() {
     // assumption: origin is the standpoint from the viewer
     // the inverse gets us the actual world space position
     vec4 origin = inverse(ubo_view_projection.view) * vec4(0, 0, 0, 1);
-    vec4 target = inverse(ubo_view_projection.view) * vec4(pixel_center_cs.x, pixel_center_cs.y, 1, 1);
+    // do not forget to invert the y-coord since we are in vulkan
+    vec4 target = inverse(ubo_view_projection.projection) * vec4(pixel_center_cs.x, -pixel_center_cs.y, 1, 1);
     vec4 direction = inverse(ubo_view_projection.view) * vec4(normalize(target.xyz), 0);
 
     uint ray_flags = gl_RayFlagsOpaqueEXT;
@@ -55,6 +56,6 @@ void main() {
 
 
     imageStore(image, ivec2(gl_LaunchIDEXT.xy), vec4(payload.hit_value, 1.0));
-    //imageStore(image, ivec2(gl_LaunchIDEXT.xy), vec4(1.0));
+    //imageStore(image, ivec2(gl_LaunchIDEXT.xy), vec4(gl_LaunchIDEXT.xy,0.0, 1.0));
 
 }

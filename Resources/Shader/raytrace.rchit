@@ -42,6 +42,9 @@ layout(push_constant) uniform _PushConstantRay {
 
 void main() {
     
+    const vec3 barycentricCoords = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
+    payload.hit_value = barycentricCoords; 
+
     ObjectDescription obj_res = object_description.i[gl_InstanceCustomIndexEXT];
     Indices indices = Indices(obj_res.index_address);
     Vertices vertices = Vertices(obj_res.vertex_address);
@@ -71,40 +74,40 @@ void main() {
 
     vec2 texture_coordinates = v0.texture_coords * barycentrics.x + v1.texture_coords * barycentrics.y + v2.texture_coords * barycentrics.z;
 
-    uint texture_id = uint(object_description.i[gl_InstanceCustomIndexEXT].texture_id);
-	vec3 ambient = texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
-	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
-    vec3 specular = vec3(0.f);
+//    uint texture_id = uint(object_description.i[gl_InstanceCustomIndexEXT].texture_id);
+//	vec3 ambient = texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
+//	vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
+//    vec3 specular = vec3(0.f);
 
-    if(dot(world_normal_hit, L) > 0) {
-    
-        float t_min = 0.001;
-        float t_max = 10000;
-        vec3 origin = gl_WorldRayOriginEXT + gl_WorldRayDirectionEXT * gl_HitTEXT;
-        vec3 ray_dir = L;
-        uint flags = gl_RayFlagsTerminateOnFirstHitEXT | gl_RayFlagsOpaqueEXT | gl_RayFlagsSkipClosestHitShaderEXT;
-        isShadowed = true;
-        traceRayEXT(TLAS,  // acceleration structure
-                                flags,       // rayFlags
-                                0xFF,        // cullMask
-                                0,           // sbtRecordOffset
-                                0,           // sbtRecordStride
-                                1,           // missIndex
-                                origin,      // ray origin
-                                t_min,        // ray min range
-                                ray_dir,      // ray direction
-                                t_max,        // ray max range
-                                1            // payload (location = 1)
-        );
-	    
-        if(!isShadowed) {
-        
-            specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
+//    if(dot(world_normal_hit, L) > 0) {
+//    
+//        float t_min = 0.001;
+//        float t_max = 10000;
+//        vec3 origin = gl_WorldRayOriginEXT + gl_WorldRayDirectionEXT * gl_HitTEXT;
+//        vec3 ray_dir = L;
+//        uint flags = gl_RayFlagsTerminateOnFirstHitEXT | gl_RayFlagsOpaqueEXT | gl_RayFlagsSkipClosestHitShaderEXT;
+//        isShadowed = true;
+//        traceRayEXT(TLAS,  // acceleration structure
+//                                flags,       // rayFlags
+//                                0xFF,        // cullMask
+//                                0,           // sbtRecordOffset
+//                                0,           // sbtRecordStride
+//                                1,           // missIndex
+//                                origin,      // ray origin
+//                                t_min,        // ray min range
+//                                ray_dir,      // ray direction
+//                                t_max,        // ray max range
+//                                1            // payload (location = 1)
+//        );
+//	    
+//        if(!isShadowed) {
+//        
+//            specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
+//
+//        } 
+//
+//    }
 
-        } 
-
-    }
-
-    payload.hit_value = ambient * 0.3f + diffuse + specular * 0.00001f; 
+    //payload.hit_value = ambient * 0.3f + diffuse + specular; 
 
 }
