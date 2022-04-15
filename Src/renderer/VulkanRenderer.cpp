@@ -717,22 +717,24 @@ void VulkanRenderer::create_offscreen_graphics_pipeline()
 	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;																			// format data will take (also helps define size of data)
 	attribute_describtions[0].offset = offsetof(Vertex, pos);																									// where this attribute is defined in the data for a single vertex
 
-	// texture coord attribute
+	// normal coord attribute
 	attribute_describtions[1].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[1].location = 1;																																// location in shader where data will be read from
-	attribute_describtions[1].format = VK_FORMAT_R32G32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[1].offset = offsetof(Vertex, texture_coords);																				// where this attribute is defined in the data for a single vertex
-
-	// normal coord attribute
+	attribute_describtions[1].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
+	attribute_describtions[1].offset = offsetof(Vertex, normal);
+																				// where this attribute is defined in the data for a single vertex
 	attribute_describtions[2].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
 	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[2].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
+	attribute_describtions[2].offset = offsetof(Vertex, mat_id);
 
+	// texture coord attribute
 	attribute_describtions[3].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[3].location = 3;																																// location in shader where data will be read from
-	attribute_describtions[3].format = VK_FORMAT_R32_UINT;																					// format data will take (also helps define size of data)
-	attribute_describtions[3].offset = offsetof(Vertex, mat_id);
+	attribute_describtions[3].format = VK_FORMAT_R32G32_SFLOAT;																					// format data will take (also helps define size of data)
+	attribute_describtions[3].offset = offsetof(Vertex, texture_coords);																				// where this attribute is defined in the data for a single vertex
+
+
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 
@@ -2316,7 +2318,7 @@ void VulkanRenderer::create_shader_binding_table()
 void VulkanRenderer::create_raytracing_descriptor_pool()
 {
 
-	std::array<VkDescriptorPoolSize,3> descriptor_pool_sizes;
+	std::array<VkDescriptorPoolSize,5> descriptor_pool_sizes;
 
 	descriptor_pool_sizes[0].type = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
 	descriptor_pool_sizes[0].descriptorCount = 1;
@@ -2326,6 +2328,12 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 
 	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 	descriptor_pool_sizes[2].descriptorCount = static_cast<uint32_t>(sizeof(ObjectDescription) * MAX_OBJECTS);
+
+	descriptor_pool_sizes[3].type = VK_DESCRIPTOR_TYPE_SAMPLER;
+	descriptor_pool_sizes[3].descriptorCount = 2;
+
+	descriptor_pool_sizes[4].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+	descriptor_pool_sizes[4].descriptorCount = MAX_TEXTURE_COUNT;
 
 	VkDescriptorPoolCreateInfo descriptor_pool_create_info{};
 	descriptor_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -2389,7 +2397,7 @@ void VulkanRenderer::create_object_description_buffer()
 void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 
 	{
-		std::array<VkDescriptorSetLayoutBinding, 4> descriptor_set_layout_bindings;
+		std::array<VkDescriptorSetLayoutBinding, 5> descriptor_set_layout_bindings;
 
 		// here comes the top level acceleration structure
 		descriptor_set_layout_bindings[0].binding = TLAS_BINDING;
@@ -2418,10 +2426,17 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 
 		descriptor_set_layout_bindings[3].binding = TEXTURES_BINDING;
 		descriptor_set_layout_bindings[3].descriptorCount = static_cast<uint32_t>(texture_images.size());
-		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 		descriptor_set_layout_bindings[3].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[3].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+
+		descriptor_set_layout_bindings[4].binding = SAMPLER_BINDING_RT;
+		descriptor_set_layout_bindings[4].descriptorCount = 1;
+		descriptor_set_layout_bindings[4].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
+		descriptor_set_layout_bindings[4].pImmutableSamplers = nullptr;
+		// load them into the raygeneration and chlosest hit shader
+		descriptor_set_layout_bindings[4].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
 		VkDescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{};
 		descriptor_set_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -2516,32 +2531,44 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_object_descriptions_writer.pBufferInfo = &object_descriptions_buffer_info;
 		descriptor_object_descriptions_writer.pTexelBufferView = nullptr;
 
-		std::vector<VkDescriptorImageInfo> descriptor_textures_infos;
-		descriptor_textures_infos.resize(texture_images.size());
-
-		for (size_t i = 0; i < texture_images.size(); i++) {
-
-			descriptor_textures_infos[i].sampler = texture_sampler;
-			descriptor_textures_infos[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			descriptor_textures_infos[i].imageView = texture_image_views[i];
+		// texture image info
+		std::vector<VkDescriptorImageInfo> image_info_textures;
+		image_info_textures.resize(texture_image_views.size());
+		for (int i = 0; i < texture_image_views.size(); i++) {
+			image_info_textures[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+			image_info_textures[i].imageView = texture_image_views[i];
+			image_info_textures[i].sampler = nullptr;
 		}
 
-		VkWriteDescriptorSet  textures_descriptions_writer{};
+		// descriptor write info
+		VkWriteDescriptorSet textures_descriptions_writer{};
 		textures_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		textures_descriptions_writer.pNext = nullptr;
 		textures_descriptions_writer.dstSet = raytracing_descriptor_set[i];
 		textures_descriptions_writer.dstBinding = TEXTURES_BINDING;
 		textures_descriptions_writer.dstArrayElement = 0;
-		textures_descriptions_writer.descriptorCount = static_cast<uint32_t>(texture_images.size());
-		textures_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-		textures_descriptions_writer.pImageInfo = descriptor_textures_infos.data();
-		textures_descriptions_writer.pBufferInfo = nullptr;
-		textures_descriptions_writer.pTexelBufferView = nullptr;
+		textures_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+		textures_descriptions_writer.descriptorCount = static_cast<uint32_t>(image_info_textures.size());
+		textures_descriptions_writer.pImageInfo = image_info_textures.data();
+
+		VkDescriptorImageInfo sampler_info;
+		sampler_info.imageView = nullptr;
+		sampler_info.sampler = texture_sampler;
+
+		// descriptor write info
+		VkWriteDescriptorSet descriptor_write_sampler{};
+		descriptor_write_sampler.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptor_write_sampler.dstSet = raytracing_descriptor_set[i];
+		descriptor_write_sampler.dstBinding = SAMPLER_BINDING_RT;
+		descriptor_write_sampler.dstArrayElement = 0;
+		descriptor_write_sampler.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
+		descriptor_write_sampler.descriptorCount = 1;
+		descriptor_write_sampler.pImageInfo = &sampler_info;
 
 		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { write_descriptor_set_acceleration_structure,
 																	descriptor_image_writer,
 																	descriptor_object_descriptions_writer,
-																	textures_descriptions_writer };
+																	textures_descriptions_writer, 
+																	descriptor_write_sampler };
 
 		// update the descriptor sets with new buffer/binding info
 		vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
@@ -2701,23 +2728,23 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;																			// format data will take (also helps define size of data)
 	attribute_describtions[0].offset = offsetof(Vertex, pos);																									// where this attribute is defined in the data for a single vertex
 
-	// texture coord attribute
+	// normal coord attribute
 	attribute_describtions[1].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[1].location = 1;																																// location in shader where data will be read from
-	attribute_describtions[1].format = VK_FORMAT_R32G32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[1].offset = offsetof(Vertex, texture_coords);																				// where this attribute is defined in the data for a single vertex
+	attribute_describtions[1].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
+	attribute_describtions[1].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
 
 	// normal coord attribute
 	attribute_describtions[2].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
 	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[2].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
+	attribute_describtions[2].offset = offsetof(Vertex, mat_id);
 
-	// normal coord attribute
+	// texture coord attribute
 	attribute_describtions[3].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[3].location = 3;																																// location in shader where data will be read from
-	attribute_describtions[3].format = VK_FORMAT_R32_UINT;																					// format data will take (also helps define size of data)
-	attribute_describtions[3].offset = offsetof(Vertex, mat_id);
+	attribute_describtions[3].format = VK_FORMAT_R32G32_SFLOAT;																					// format data will take (also helps define size of data)
+	attribute_describtions[3].offset = offsetof(Vertex, texture_coords);																				// where this attribute is defined in the data for a single vertex
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 

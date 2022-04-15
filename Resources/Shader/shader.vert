@@ -12,9 +12,9 @@
 #include "SetsAndBindings.glsl"
 
 layout (location = 0) in vec3 positions; 
-layout (location = 1) in vec2 tex_coords;
-layout (location = 2) in vec3 normal;
-layout (location = 3) in uint matID;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec3 matID;
+layout (location = 3) in vec2 tex_coords;
 
 layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform _UboViewProjection {
 	UboViewProjection ubo_view_projection;
@@ -47,7 +47,7 @@ void main () {
 	shading_normal = vec3(transpose(inverse(pc_raster.model)) * vec4(normal, 1.0f));
 	texture_coordinates = tex_coords;
 
-	fragMaterialID = matID;
+	fragMaterialID = uint(matID[0]);
 
 	gl_Position = vulkan_position;
 }

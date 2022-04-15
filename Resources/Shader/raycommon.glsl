@@ -8,17 +8,18 @@ struct HitPayload {
 struct Vertex {
 
 	vec3 pos;
-	vec2 texture_coords;
 	vec3 normal;
+	vec3 mat_id;
+	vec2 texture_coords;
 
 };
 
 struct ObjectDescription {
 
-	uint64_t texture_id;
 	uint64_t vertex_address;
 	uint64_t index_address;
-	uint64_t placeholder;
+	uint64_t placeholder1;
+	uint64_t placeholder2;
 
 };
 

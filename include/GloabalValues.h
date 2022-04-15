@@ -95,9 +95,9 @@ struct SwapChainImage {
 struct Vertex {
 
 	glm::vec3 pos;
-	glm::vec2 texture_coords;
 	glm::vec3 normal;
-	glm::uint mat_id;
+	glm::vec3 mat_id;
+	glm::vec2 texture_coords;
 
 	bool operator==(const Vertex& other) const {
 		return pos == other.pos && normal == other.normal && texture_coords == other.texture_coords;
