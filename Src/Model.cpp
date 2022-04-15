@@ -78,7 +78,7 @@ void Model::load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new
                 vert.pos = pos;
                 vert.texture_coords = tex_coords;
                 vert.normal = normals;
-                vert.mat_id = matToTex[shapes[s].mesh.material_ids[f]];
+                vert.mat_id.x = matToTex[shapes[s].mesh.material_ids[f]];
                 //if(shapes[s].mesh.material_ids[f] == 24) std::cout << shapes[s].mesh.material_ids[f] << endl;
                 /* vertices.push_back(vert);
                 indices.push_back(indices.size());*/
