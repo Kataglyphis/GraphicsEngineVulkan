@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.16)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -8,6 +8,35 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 project(GraphicsEngine VERSION 1.0
                        DESCRIPTION "Epic Graphics"
                        LANGUAGES CXX)
+
+# compile glslc shaders 
+function(add_shader TARGET SHADER)
+  find_program(GLSLC glslc)
+
+  set(current-shader-path ${SHADER}) #${CMAKE_CURRENT_SOURCE_DIR}/
+  get_filename_component(a_dir "${current-shader-path}" PATH)
+  get_filename_component(a_last_dir "${current-shader-path}" NAME)
+
+  set(current-output-path ${a_dir}/spv/${a_last_dir}.spv)
+  # message(STATUS "${current-output-path}")
+
+  get_filename_component(current-output-dir ${current-output-path} DIRECTORY)
+  file(MAKE_DIRECTORY ${current-output-dir})
+
+  add_custom_command(
+        OUTPUT ${current-output-path}
+        COMMAND ${GLSLC} --target-env=vulkan1.3 -o ${current-output-path} ${current-shader-path}
+        DEPENDS ${current-shader-path}
+        IMPLICIT_DEPENDS CXX ${current-shader-path}
+        VERBATIM)
+
+  # Make sure our build depends on this output.
+  set_source_files_properties(${current-output-path} PROPERTIES GENERATED TRUE)
+  target_sources(${TARGET} PRIVATE ${current-output-path})
+endfunction(add_shader)
+
+# we depend on vulkan 
+find_package(Vulkan REQUIRED)
 
 add_subdirectory(ExternalLib)
 
@@ -43,6 +72,7 @@ FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                 
 source_group("gui"                                              FILES ${GUI_FILTER})
 source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
 source_group("app/scene"                                        FILES ${SCENE_FILTER})
+source_group("app/window"                                       FILES ${WINDOW_FILTER})
 source_group("app"                                              FILES ${APP_FILTER})
 
 #set all your sources accordingly
@@ -137,8 +167,18 @@ ${APP_FILTER}
 ${GUI_FILTER}
 )
 
-# we depend on vulkan 
-find_package(Vulkan REQUIRED)
+foreach(Shader ${POST_SHADER_FILTER})
+  add_shader(${PROJECT_NAME} ${Shader})
+endforeach()
+
+foreach(Shader ${RAYTRACING_SHADER_FILTER})
+  add_shader(${PROJECT_NAME} ${Shader})
+endforeach()
+
+foreach(Shader ${RASTER_SHADER_FILTER})
+  add_shader(${PROJECT_NAME} ${Shader})
+endforeach()
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
 
