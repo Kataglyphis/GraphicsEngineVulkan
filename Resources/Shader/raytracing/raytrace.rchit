@@ -8,9 +8,9 @@
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 #extension GL_EXT_buffer_reference2 : require
 
-#include "raycommon.glsl"
-#include "SetsAndBindings.glsl"
-#include "GlobalValues.glsl"
+#include "../common/raycommon.glsl"
+#include "../common/SetsAndBindings.glsl"
+#include "../common/GlobalValues.glsl"
 
 hitAttributeEXT vec2 attribs;
 

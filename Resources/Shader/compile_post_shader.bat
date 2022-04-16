@@ -1,3 +1,3 @@
 @ECHO ON
-C:\VulkanSDK\1.2.176.1\Bin\glslc.exe --target-env=vulkan1.2 ..\Resources\Shader\post.vert -o ..\Resources\Shader\post.vert.spv 
-C:\VulkanSDK\1.2.176.1\Bin\glslc.exe --target-env=vulkan1.2 ..\Resources\Shader\post.frag -o ..\Resources\Shader\post.frag.spv
+C:\VulkanSDK\1.3.204.1\Bin\glslc.exe --target-env=vulkan1.3 ..\Resources\Shader\post\post.vert -o ..\Resources\Shader\post\spv\post.vert.spv 
+C:\VulkanSDK\1.3.204.1\Bin\glslc.exe --target-env=vulkan1.3 ..\Resources\Shader\post\post.frag -o ..\Resources\Shader\post\spv\post.frag.spv

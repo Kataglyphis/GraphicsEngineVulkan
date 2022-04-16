@@ -24,19 +24,25 @@ add_compile_definitions(SHADER_SRC_DIR="${PROJECT_BINARY_DIR}/../Resources/Shade
 add_compile_definitions(SHADER_SPV_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/spv")
 add_compile_definitions(SHADER_LOG_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/log")
 
-# we depend on vulkan 
-find_package(Vulkan REQUIRED)
-
 FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                      "Src/renderer/*.cpp"
                                         "include/renderer/*.hpp")
-FILE(GLOB APP_FILTER                    "include/*.h"                                               "Src/*.cpp"
+
+FILE(GLOB SCENE_FILTER                  "include/scene/*.h"                                           "Src/scene/*.cpp"
+                                        "include/scene/*.hpp")
+
+FILE(GLOB WINDOW_FILTER                 "include/window/*.h"                                         "Src/window/*.cpp"
+                                        "include/window/*.hpp")
+
+FILE(GLOB APP_FILTER                    "include/*.h"                                                 "Src/*.cpp"
                                         "include/*.hpp")
+
 FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                                     "ExternalLib/IMGUI/*.cpp"
                                         "ExternalLib/IMGUI/backends/imgui_impl_glfw.h"              "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
                                         "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp")
 
 source_group("gui"                                              FILES ${GUI_FILTER})
 source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
+source_group("app/scene"                                        FILES ${SCENE_FILTER})
 source_group("app"                                              FILES ${APP_FILTER})
 
 #set all your sources accordingly
@@ -53,9 +59,7 @@ file(GLOB_RECURSE SOURCES
 
 file(GLOB_RECURSE HEADERS  
                   "include/*.h"
-                  "include/*.hpp"
-                  "include/renderer/*.h"
-                  )
+                  "include/*.hpp")
 
 file(GLOB GUI_HEADERS 
             "ExternalLib/IMGUI/*.h"
@@ -63,28 +67,80 @@ file(GLOB GUI_HEADERS
             "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h")
 
 # add filters to the solution explorer for the shaders :))
-# add filters to the solution explorer for the shaders :))
-file(GLOB SHADER_FILTER   
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.vert
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.frag
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.glsl
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.comp
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.geom
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rgen
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rchit
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rahit
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/*.rmiss
+file(GLOB RASTER_SHADER_FILTER   
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.vert
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.frag
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.glsl
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.comp
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.geom
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rgen
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rchit
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rahit
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rmiss
+            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.glsl
       )
 
-source_group("app/shaders" FILES ${SHADER_FILTER})
+file(GLOB RAYTRACING_SHADER_FILTER   
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.vert
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.frag
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.glsl
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.comp
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.geom
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rgen
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rchit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rahit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rmiss
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.glsl
+)
+
+file(GLOB COMMON_SHADER_FILTER   
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.vert
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.frag
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.glsl
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.comp
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.geom
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rgen
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rchit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rahit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rmiss
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.glsl
+)
+
+file(GLOB POST_SHADER_FILTER   
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.vert
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.frag
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.glsl
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.comp
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.geom
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rgen
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rchit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rahit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rmiss
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.glsl
+)
+
+source_group("app/shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
+source_group("app/shaders/raytracing/" FILES ${RAYTRACING_SHADER_FILTER})
+source_group("app/shaders/common/" FILES ${COMMON_SHADER_FILTER})
+source_group("app/shaders/post/" FILES ${POST_SHADER_FILTER})
 
 # add the executable
 add_executable(${PROJECT_NAME}
-${SHADER_FILTER}
+${RASTER_SHADER_FILTER}
+${RAYTRACING_SHADER_FILTER}
+${COMMON_SHADER_FILTER}
+${POST_SHADER_FILTER}
 ${RENDERER_FILTER}
+${SCENE_FILTER}
+${WINDOW_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
 )
+
+# we depend on vulkan 
+find_package(Vulkan REQUIRED)
+target_include_directories(${PROJECT_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
 
 if(UNIX)
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -93,6 +149,9 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
+                                                    ./include/common
+                                                    ./include/scene
+                                                    ./include/window
                                                     ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})

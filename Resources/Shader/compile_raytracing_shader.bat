@@ -1,4 +1,4 @@
 @ECHO ON
-C:/VulkanSDK/1.2.176.1/Bin/glslc.exe --target-env=vulkan1.2 ../Resources/Shader/raytrace.rgen -o ../Resources/Shader/raytrace.rgen.spv
-C:/VulkanSDK/1.2.176.1/Bin/glslc.exe --target-env=vulkan1.2 ../Resources/Shader/raytrace.rchit -o ../Resources/Shader/raytrace.rchit.spv
-C:/VulkanSDK/1.2.176.1/Bin/glslc.exe --target-env=vulkan1.2 ../Resources/Shader/raytrace.rmiss -o ../Resources/Shader/raytrace.rmiss.spv
+C:/VulkanSDK/1.3.204.1/Bin/glslc.exe --target-env=vulkan1.3 ../Resources/Shader/raytracing/raytrace.rgen -o ../Resources/Shader/raytracing\spv\raytrace.rgen.spv
+C:/VulkanSDK/1.3.204.1/Bin/glslc.exe --target-env=vulkan1.3 ../Resources/Shader/raytracing/raytrace.rchit -o ../Resources/Shader/raytracing\spv\raytrace.rchit.spv
+C:/VulkanSDK/1.3.204.1/Bin/glslc.exe --target-env=vulkan1.3 ../Resources/Shader/raytracing/raytrace.rmiss -o ../Resources/Shader/raytracing\spv\raytrace.rmiss.spv
