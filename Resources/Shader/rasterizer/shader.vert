@@ -8,8 +8,8 @@
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 #extension GL_EXT_buffer_reference2 : require
 
-#include "raycommon.glsl"
-#include "SetsAndBindings.glsl"
+#include "../common/raycommon.glsl"
+#include "../common/SetsAndBindings.glsl"
 
 layout (location = 0) in vec3 positions; 
 layout (location = 1) in vec3 normal;

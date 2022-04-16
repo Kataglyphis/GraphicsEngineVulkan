@@ -349,11 +349,11 @@ void VulkanRenderer::create_instance()
 	// most data doesn't affect program; is for developer convenience
 	VkApplicationInfo app_info{};
 	app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	app_info.pApplicationName = "Epic Graphics";								// custom name of app
-	app_info.applicationVersion = VK_MAKE_VERSION(1,0,0);			// custom version of app
+	app_info.pApplicationName = "\__/ Epic Graphics from hell \__/";	// custom name of app
+	app_info.applicationVersion = VK_MAKE_VERSION(1,0,0);				// custom version of app
 	app_info.pEngineName = "Cataglyphis Renderer";						// custom engine name
 	app_info.engineVersion = VK_MAKE_VERSION(1,0,3);					// custom engine version 
-	app_info.apiVersion = VK_API_VERSION_1_2;									// the vulkan version
+	app_info.apiVersion = VK_API_VERSION_1_3;							// the vulkan version
 
 	// creation info for a VkInstance
 	VkInstanceCreateInfo create_info{};
@@ -675,8 +675,8 @@ void VulkanRenderer::create_offscreen_graphics_pipeline()
 
 	compile_shaders(SHADER_COMPILATION_FLAG::RASTERIZATION);
 
-	auto vertex_shader_code = read_file("../Resources/Shader/shader.vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/shader.frag.spv");
+	auto vertex_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.vert.spv");
+	auto fragment_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.frag.spv");
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -1174,8 +1174,8 @@ void VulkanRenderer::create_post_pipeline()
 
 	compile_shaders(SHADER_COMPILATION_FLAG::POST);
 
-	auto vertex_shader_code = read_file("../Resources/Shader/post.vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/post.frag.spv");
+	auto vertex_shader_code = read_file("../Resources/Shader/post/spv/post.vert.spv");
+	auto fragment_shader_code = read_file("../Resources/Shader/post/spv/post.frag.spv");
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -2116,9 +2116,9 @@ void VulkanRenderer::create_raytracing_pipeline() {
 
 	compile_shaders(SHADER_COMPILATION_FLAG::RAYTRACING);
 
-	auto raygen_shader_code = read_file("../Resources/Shader/raytrace.rgen.spv");
-	auto raychit_shader_code = read_file("../Resources/Shader/raytrace.rchit.spv");
-	auto raymiss_shader_code = read_file("../Resources/Shader/raytrace.rmiss.spv");
+	auto raygen_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rgen.spv");
+	auto raychit_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rchit.spv");
+	auto raymiss_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rmiss.spv");
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule raygen_shader_module = create_shader_module(raygen_shader_code);
@@ -2686,8 +2686,8 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 
 	compile_shaders(SHADER_COMPILATION_FLAG::RASTERIZATION);
 
-	auto vertex_shader_code = read_file("../Resources/Shader/shader.vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/shader.frag.spv");
+	auto vertex_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.vert.spv");
+	auto fragment_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.frag.spv");
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
