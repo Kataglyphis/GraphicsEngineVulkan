@@ -11,8 +11,8 @@ using namespace std;
 class Mesh {
 public:
 
-    Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkQueue transfer_queue,
-        VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices);
+    Mesh(   VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
+            VkCommandPool transfer_command_pool, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
     
     Mesh();
 

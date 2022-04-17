@@ -1802,17 +1802,17 @@ void VulkanRenderer::create_BLAS()
 
 	for (unsigned int model_index = 0; model_index < scene->get_model_count(); model_index++) {
 
-		Model mesh_model = scene->get_model_list()[model_index];
+		std::shared_ptr<Model> mesh_model = scene->get_model_list()[model_index];
 		//blas_input.emplace_back();
-		blas_input[model_index].as_geometry.reserve(mesh_model.get_mesh_count());
-		blas_input[model_index].as_build_offset_info.reserve(mesh_model.get_mesh_count());
+		blas_input[model_index].as_geometry.reserve(mesh_model->get_mesh_count());
+		blas_input[model_index].as_build_offset_info.reserve(mesh_model->get_mesh_count());
 
-		for (size_t mesh_index = 0; mesh_index < mesh_model.get_mesh_count(); mesh_index++) {
+		for (size_t mesh_index = 0; mesh_index < mesh_model->get_mesh_count(); mesh_index++) {
 
 			VkAccelerationStructureGeometryKHR acceleration_structure_geometry{};
 			VkAccelerationStructureBuildRangeInfoKHR acceleration_structure_build_range_info{};
 
-			object_to_VkGeometryKHR(mesh_model.get_mesh(mesh_index), acceleration_structure_geometry, acceleration_structure_build_range_info);
+			object_to_VkGeometryKHR(mesh_model->get_mesh(mesh_index), acceleration_structure_geometry, acceleration_structure_build_range_info);
 			// this only specifies the acceleration structure 
 			// we are building it in the end for the whole model with the build command
 
@@ -3565,9 +3565,11 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 
 int VulkanRenderer::create_model(std::string modelFile)
 {
-	Model new_model = Model();
 
-	std::vector<std::string> textureNames = new_model.load_textures(modelFile);
+	ObjLoader obj_loader(	MainDevice.physical_device, MainDevice.logical_device, graphics_queue,
+							graphics_command_pool);
+
+	std::vector<std::string> textureNames = obj_loader.load_textures(modelFile);
 	std::vector<int> matToTex(textureNames.size());
 
 	// Loop over textureNames and create textures for them
@@ -3581,18 +3583,17 @@ int VulkanRenderer::create_model(std::string modelFile)
 			int location = create_texture(textureNames[i]);
 			matToTex[i] = location;
 
-		} else {
+		}
+		else {
 
 			matToTex[i] = 0;
 
 		}
-		
+
 	}
+	std::shared_ptr<Model> new_model = obj_loader.load_model(modelFile, matToTex);
 
 	create_sampler_array_descriptor_set();
-
-	new_model.load_model_in_ram(MainDevice.physical_device, MainDevice.logical_device, graphics_queue, graphics_command_pool, 
-								modelFile, matToTex);
 
 	scene->add_model(new_model);
 
@@ -4708,9 +4709,9 @@ void VulkanRenderer::clean_up()
 
 	for (auto model : scene->get_model_list()) {
 
-		for (int i = 0; i < model.get_mesh_count(); i++) {
+		for (int i = 0; i < model->get_mesh_count(); i++) {
 
-			model.get_mesh(i)->destroy_buffers();
+			model->get_mesh(i)->destroy_buffers();
 
 		}
 

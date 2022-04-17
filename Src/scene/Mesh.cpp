@@ -4,8 +4,8 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkQueue transfer_queue,
-	VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices)
+Mesh::Mesh(VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
+	VkCommandPool transfer_command_pool, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
 {
 
 	VkTransformMatrixKHR transform_matrix{};
@@ -14,13 +14,13 @@ Mesh::Mesh(VkDevice logical_device, VkPhysicalDevice physical_device, VkQueue tr
 	VkTransformMatrixKHR out_matrix;
 	memcpy(&out_matrix, &transpose_transform, sizeof(VkTransformMatrixKHR));
 
-	index_count = static_cast<uint32_t>(indices->size());
-	vertex_count = static_cast<uint32_t>(vertices->size());
+	index_count = static_cast<uint32_t>(indices.size());
+	vertex_count = static_cast<uint32_t>(vertices.size());
 	this->physical_device = physical_device;
 	this->device = logical_device;
 	object_description = ObjectDescription{};
-	create_vertex_buffer(transfer_queue, transfer_command_pool, vertices);
-	create_index_buffer(transfer_queue, transfer_command_pool, indices);
+	create_vertex_buffer(transfer_queue, transfer_command_pool, &vertices);
+	create_index_buffer(transfer_queue, transfer_command_pool, &indices);
 
 	VkBufferDeviceAddressInfo vertex_info{};
 	vertex_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO_KHR;
