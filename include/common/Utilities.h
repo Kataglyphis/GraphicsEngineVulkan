@@ -12,6 +12,14 @@
 #include "SetsAndBindings.h"
 #include "GloabalValues.h"
 
+static std::string get_base_dir(const std::string& filepath) {
+
+	if (filepath.find_last_of("/\\") != std::string::npos)
+		return filepath.substr(0, filepath.find_last_of("/\\"));
+	return "";
+
+}
+
 static std::vector<char> read_file(const std::string& filename) {
 
 	// open stream from given file 

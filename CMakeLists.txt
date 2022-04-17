@@ -62,6 +62,9 @@ FILE(GLOB SCENE_FILTER                  "include/scene/*.h"                     
 FILE(GLOB WINDOW_FILTER                 "include/window/*.h"                                         "Src/window/*.cpp"
                                         "include/window/*.hpp")
 
+FILE(GLOB COMMON_FILTER                 "include/common/*.h"                                          
+                                        "include/common/*.hpp")
+
 FILE(GLOB APP_FILTER                    "include/*.h"                                                 "Src/*.cpp"
                                         "include/*.hpp")
 
@@ -73,6 +76,7 @@ source_group("gui"                                              FILES ${GUI_FILT
 source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
 source_group("app/scene"                                        FILES ${SCENE_FILTER})
 source_group("app/window"                                       FILES ${WINDOW_FILTER})
+source_group("app/common"                                       FILES ${COMMON_FILTER})
 source_group("app"                                              FILES ${APP_FILTER})
 
 #set all your sources accordingly
@@ -163,6 +167,7 @@ ${POST_SHADER_FILTER}
 ${RENDERER_FILTER}
 ${SCENE_FILTER}
 ${WINDOW_FILTER}
+${COMMON_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
 )

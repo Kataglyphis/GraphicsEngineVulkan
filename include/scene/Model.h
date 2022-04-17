@@ -13,7 +13,8 @@ public:
 
     Model();
     Model(std::vector<Mesh> new_mesh_list, uint32_t index);
-
+    void add_new_mesh(  VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
+                        VkCommandPool command_pool, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices);
     size_t get_mesh_count();
     Mesh* get_mesh(size_t index);
     glm::mat4 get_model();

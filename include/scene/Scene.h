@@ -41,10 +41,10 @@ public:
 	uint32_t get_number_of_meshes();
 	std::vector<ObjectDescription> get_object_descriptions();
 
-	void add_model(Model model);
+	void add_model(std::shared_ptr<Model> model);
 	void add_object_description(ObjectDescription object_description);
 
-	std::vector<Model> const & get_model_list();
+	std::vector<std::shared_ptr<Model>> const & get_model_list();
 
 	void update_model_matrix(glm::mat4 model_matrix, int model_id);
 
@@ -55,7 +55,7 @@ public:
 private:
 
 	std::vector<ObjectDescription> object_descriptions;
-	std::vector<Model> model_list;
+	std::vector<std::shared_ptr<Model>> model_list;
 
 };
 

@@ -24,6 +24,7 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Camera.h"
+#include "ObjLoader.h"
 
 // all IMGUI stuff
 #include <imgui.h>
@@ -53,6 +54,11 @@ public:
 
 	void update_raytracing_descriptor_set(uint32_t image_index);
 	void record_commands(uint32_t image_index);
+
+	// texture functions 
+	int create_texture(std::string filename);
+	int create_texture_image(std::string filename);
+	void create_sampler_array_descriptor_set();
 
 	void hot_reload_all_shader();
 
@@ -332,11 +338,6 @@ private:
 	std::vector<VkImageView> texture_image_views;
 	// mipmapping
 	int max_levels;
-
-	// texture functions 
-	int create_texture(std::string filename);
-	int create_texture_image(std::string filename);
-	void create_sampler_array_descriptor_set();
 
 	// ---- HELPER ---- BEGIN
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
