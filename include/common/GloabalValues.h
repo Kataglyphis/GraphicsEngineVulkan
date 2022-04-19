@@ -135,6 +135,7 @@ struct UboDirections {
 
 	glm::vec4 light_dir;
 	glm::vec4 view_dir;
+	glm::vec4 cam_pos;
 
 };
 

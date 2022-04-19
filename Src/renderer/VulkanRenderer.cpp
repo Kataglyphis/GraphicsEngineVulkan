@@ -34,6 +34,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 											1.0f);
 
 	ubo_directions.view_dir = glm::vec4(view_dir,1.0f);
+	ubo_directions.cam_pos = glm::vec4(eye,1.0f);
 
 	// ----- Update scene we are working on 
 	this->scene = scene;
@@ -169,6 +170,11 @@ void VulkanRenderer::update_view_direction(glm::vec3 view_dir)
 {
 	ubo_directions.view_dir = glm::vec4(view_dir,1.0f);
 
+}
+
+void VulkanRenderer::update_cam_pos(glm::vec3 cam_pos)
+{
+	ubo_directions.cam_pos = glm::vec4(cam_pos,1.0f);
 }
 
 void VulkanRenderer::hot_reload_all_shader()
