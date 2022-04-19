@@ -47,7 +47,7 @@ void main() {
 	float light_intensity = 1.f;
 	float cosTheta = dot(L,N);
 	int mode = 0;
-	vec3 color = ambient / PI; //vec3(0.f);//
+	vec3 color = vec3(0.f);//ambient / PI; //
 
 	if(cosTheta>0) {
 		// mode :

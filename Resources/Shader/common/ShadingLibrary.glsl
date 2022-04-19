@@ -113,7 +113,7 @@ vec3 F_EPIC_GAMES(vec3 wi, vec3 wh, vec3 ambient_color, float metallic) {
 
     float cosTheta = clamp(dot(wi, wh), 0.0f, 1.0f);
     vec3 F0 = mix(vec3(0.04), ambient_color, metallic);
-    vec3 F = F0 + (1.0 - F0) * pow(2, -5.55473 * cosTheta - 6.98316 * cosTheta);
+    vec3 F = F0 + (1.0 - F0) * pow(2, (- 5.55473 * cosTheta - 6.98316) * cosTheta);
     return F;
 
 }
@@ -126,7 +126,7 @@ vec3 evaluateCookTorrenceBRDF(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughn
     vec3 wo = normalize(L);
     vec3 wi = normalize(V);
 
-    if (mode == 1) {
+    if (mode == 0) {
         // the pbr book assumes the view vector to point away from the surface
         wi *= -1.f;
     }

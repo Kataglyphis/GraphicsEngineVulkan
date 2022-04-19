@@ -112,7 +112,7 @@ void main() {
 //
 //    }
     
-    payload.hit_value = ambient / PI;//vec3(0.f);//
+    payload.hit_value = vec3(0.f);//ambient / PI;//
 
     float roughness = 0.1;
     vec3 light_color = vec3(1.f);
