@@ -34,6 +34,7 @@ struct UboDirections {
 
 	vec4 light_dir;
 	vec4 view_dir;
+	vec4 cam_pos;
 
 };
 

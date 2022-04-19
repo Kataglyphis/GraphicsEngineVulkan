@@ -51,6 +51,7 @@ public:
 	void update_light_direction(glm::vec3 light_dir);
 	void update_raytracing(bool raytracing_on);
 	void update_view_direction(glm::vec3 view_dir);
+	void update_cam_pos(glm::vec3 cam_pos);
 
 	void update_raytracing_descriptor_set(uint32_t image_index);
 	void record_commands(uint32_t image_index);

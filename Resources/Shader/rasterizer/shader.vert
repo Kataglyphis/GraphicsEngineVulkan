@@ -31,6 +31,7 @@ layout (push_constant) uniform _PushConstantRaster {
 layout (location = 0) out vec2 texture_coordinates;
 layout (location = 1) out vec3 shading_normal;
 layout (location = 2) flat out uint fragMaterialID;
+layout (location = 3) out vec3 worldPosition;
 
 out gl_PerVertex
 {
@@ -43,8 +44,10 @@ void main () {
 	// -- THEREFORE TAKE THE DIFFERENT COORDINATE SYSTEMS INTO ACCOUNT
 	vec4 opengl_position = ubo_view_projection.projection * ubo_view_projection.view * pc_raster.model * vec4(positions, 1.0f);
 	vec4 vulkan_position = vec4(opengl_position.x, -opengl_position.y, opengl_position.z, opengl_position.w);
-
-	shading_normal = vec3(transpose(inverse(pc_raster.model)) * vec4(normal, 1.0f));
+	
+	worldPosition = vec3(pc_raster.model * vec4(positions, 1.0f));
+	worldPosition.y *= -1;
+	shading_normal = vec3(transpose(inverse(pc_raster.model)) * vec4(normal, 0.0f));
 	texture_coordinates = tex_coords;
 
 	fragMaterialID = uint(matID[0]);

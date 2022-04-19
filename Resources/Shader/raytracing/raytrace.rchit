@@ -11,6 +11,7 @@
 #include "../common/raycommon.glsl"
 #include "../common/SetsAndBindings.glsl"
 #include "../common/GlobalValues.glsl"
+#include "../common/ShadingLibrary.glsl"
 
 hitAttributeEXT vec2 attribs;
 
@@ -43,8 +44,7 @@ layout(push_constant) uniform _PushConstantRay {
 
 void main() {
     
-    const vec3 barycentricCoords = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
-    payload.hit_value = barycentricCoords; 
+    const vec3 barycentrics = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
 
     ObjectDescription obj_res = object_description.i[gl_InstanceCustomIndexEXT];
     Indices indices = Indices(obj_res.index_address);
@@ -62,30 +62,26 @@ void main() {
     v1.pos.y *= -1;
     v2.pos.y *= -1;
 
-//
-//    const vec3 barycentrics = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
-//
-//    // compte coordinate of hit position 
-//    const vec3 hit_pos = v0.pos * barycentrics.x + v1.pos * barycentrics.y + v2.pos * barycentrics.z;
-//    const vec3 world_hit_pos = vec3(gl_ObjectToWorldEXT * vec4(hit_pos, 1.0f));
-//
-//    //compute normal at hit position 
-//    const vec3 normal_hit = v0.normal * barycentrics.x + v1.normal * barycentrics.y + v2.normal * barycentrics.z;
-//    const vec3 world_normal_hit = normalize(vec3(normal_hit * gl_WorldToObjectEXT));
-//
-//    vec3 L = vec3(ubo_directions.light_dir);
-//	vec3 N = normalize(world_normal_hit);
-//	vec3 V = normalize(ubo_directions.view_dir.xyz);
-//	vec3 R = reflect(L, N);
-//
-    vec2 texture_coordinates =  v0.texture_coords * barycentricCoords.x +
-                                v1.texture_coords * barycentricCoords.y +
-                                v2.texture_coords * barycentricCoords.z;
+
+    // compte coordinate of hit position 
+    const vec3 hit_pos = v0.pos * barycentrics.x + v1.pos * barycentrics.y + v2.pos * barycentrics.z;
+    const vec3 world_hit_pos = vec3(gl_ObjectToWorldEXT * vec4(hit_pos, 1.0f));
+
+    //compute normal at hit position 
+    const vec3 normal_hit = v0.normal * barycentrics.x + v1.normal * barycentrics.y + v2.normal * barycentrics.z;
+    const vec3 world_normal_hit = normalize(vec3(gl_ObjectToWorldEXT * vec4(normal_hit,1.0f)));
+
+    vec2 texture_coordinates =  v0.texture_coords * barycentrics.x +
+                                v1.texture_coords * barycentrics.y +
+                                v2.texture_coords * barycentrics.z;
 
     //uint texture_id = v0.mat_id;//uint(object_description.i[gl_InstanceCustomIndexEXT].texture_id);
-    vec3 ambient = texture(sampler2D(tex[nonuniformEXT(uint(v1.mat_id[0]))], texture_sampler), texture_coordinates).xyz; //barycentricCoords.xy
-	//vec3 diffuse = max(dot(N,L),0.0f) * texture(texture_sampler[nonuniformEXT(texture_id)], texture_coordinates).xyz;
-    vec3 specular = vec3(0.f);
+    vec3 ambient = texture(sampler2D(tex[nonuniformEXT(uint(v1.mat_id[0]))], texture_sampler), texture_coordinates).xyz;
+
+    vec3 L = normalize(vec3(-ubo_directions.light_dir)); 
+    // no need to normalize
+	vec3 N = normalize(normal_hit);
+	vec3 V = normalize(hit_pos - ubo_directions.cam_pos.xyz);
 
 //    if(dot(world_normal_hit, L) > 0) {
 //    
@@ -115,7 +111,20 @@ void main() {
 //        } 
 //
 //    }
+    
+    payload.hit_value = ambient / PI;//vec3(0.f);//
 
-    payload.hit_value = ambient; //ambient * 0.3f + diffuse 
+    float roughness = 0.1;
+    vec3 light_color = vec3(1.f);
+    float light_intensity = 1.f;
+    float cosTheta = dot(L,N);
+    int mode = 1;
+    if(cosTheta > 0) {
+        // mode :
+        // [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
+        // [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
+	    payload.hit_value += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta;
+    }
+
 
 }

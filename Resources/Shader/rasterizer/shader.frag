@@ -10,7 +10,7 @@
 
 #include "../common/raycommon.glsl"
 #include "../common/SetsAndBindings.glsl"
-#include "../common/ShadingLib.glsl"
+#include "../common/ShadingLibrary.glsl"
 #include "../common/GlobalValues.glsl"
 
 //layout (push_constant) uniform PushConstantRaster {
@@ -22,35 +22,40 @@
 layout (location = 0) in vec2 texture_coordinates;
 layout (location = 1) in vec3 shading_normal;
 layout (location = 2) flat in uint fragMaterialID;
+layout (location = 3) in vec3 worldPosition;
 
 layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
 	UboDirections ubo_directions;
 };
 
-layout (location = 0) out vec4 color;																	//final output color (must have location)
+layout (location = 0) out vec4 out_color;
 
-//layout(set = 1, binding = 0) uniform sampler2D texture_sampler;
+
 layout(set = 1, binding = 0) uniform sampler texture_sampler;
 layout(set = 1, binding = 1) uniform texture2D tex[TEXTURE_COUNT];
 
 void main() {
 	
-	vec3 L = normalize(vec3(ubo_directions.light_dir)); // 
+	vec3 L = normalize(vec3(-ubo_directions.light_dir));
 	vec3 N = normalize(shading_normal);
-	vec3 V = normalize(ubo_directions.view_dir.xyz);
-	vec3 R = reflect(L, N);
-	vec3 H = normalize(V+L);
+	vec3 V = normalize(worldPosition - ubo_directions.cam_pos.xyz);
 
-	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz; //
-	vec3 diffuse = max(dot(N,L),0.0f) * ambient;
-	vec3 specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
+	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
 
-	float roughness = 5;
+	float roughness = 0.1;
 	vec3 light_color = vec3(1.f);
-	float light_ambient_intensity = 1.f;
+	float light_intensity = 1.f;
+	float cosTheta = dot(L,N);
+	int mode = 0;
+	vec3 color = ambient / PI; //vec3(0.f);//
 
-	color = vec4(CookTorrenceBRDF(ambient, N, H, L, V, roughness, 
-				light_color, light_ambient_intensity), 1.0f);//vec4(ambient * 0.3f + diffuse + specular * 0.00001f,1.0f);
-	//color = vec4(1.0f);
+	if(cosTheta>0) {
+		// mode :
+		// [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
+		// [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
+		color += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta;
+	}
+
+	out_color = vec4(color,1.0);
 
 }

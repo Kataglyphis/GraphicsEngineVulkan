@@ -88,6 +88,7 @@ int main() {
 
         vulkan_renderer.update_view(camera.calculate_viewmatrix());
         vulkan_renderer.update_view_direction(camera.get_camera_direction());
+        vulkan_renderer.update_cam_pos(camera.get_camera_position());
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
