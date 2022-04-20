@@ -11,7 +11,9 @@
 #include "../common/raycommon.glsl"
 #include "../common/SetsAndBindings.glsl"
 #include "../common/GlobalValues.glsl"
-#include "../common/ShadingLibrary.glsl"
+#include "../common/unreal4.glsl"
+#include "../common/disney.glsl"
+#include "../common/pbrBook.glsl"
 
 hitAttributeEXT vec2 attribs;
 
@@ -115,28 +117,21 @@ void main() {
     float roughness = 0.9;
     vec3 light_color = vec3(1.f);
     float light_intensity = 1.f;
-    float cosTheta_l = dot(L,N);
-    float cosTheta_v = dot(V,N);
-    int mode = 2;
-    // calculate diffuse term 
-	payload.hit_value = vec3(0);//LambertDiffuse(ambient); //
 
+	payload.hit_value = vec3(0);
+	// mode : switching between PBR models
+	// [0] --> EPIC GAMES 
+	// [1] --> PBR BOOK 
+	// [2] --> DISNEYS PRINCIPLED 
+	int mode = 2;
 	switch (mode) {
-    case 0: payload.hit_value += LambertDiffuse(ambient);
-            break;
-    case 1: payload.hit_value += LambertDiffuse(ambient);
-            break;
-	case 2: payload.hit_value += DisneyDiffuse(ambient*0.4,L,V,N,roughness);
-            break;
-    }
-
-    if(cosTheta_l>0 && cosTheta_v>0) {
-        // mode :
-        // [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
-        // [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
-        // [2] --> DISNEYS PRINCIPLED (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
-	    payload.hit_value += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta_l;
-    }
+	case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		break;
+	case 1: payload.hit_value += evaluatePBRBooksPBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		break;
+	case 2: payload.hit_value += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		break;
+	}
 
 
 }
