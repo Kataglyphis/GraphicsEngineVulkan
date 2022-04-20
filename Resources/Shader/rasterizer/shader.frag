@@ -42,10 +42,11 @@ void main() {
 
 	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
 
-	float roughness = 0.9;
+	float roughness = 0.5;
 	vec3 light_color = vec3(1.f);
 	float light_intensity = 1.f;
-	float cosTheta = dot(L,N);
+	float cosTheta_l = dot(L,N);
+	float cosTheta_v = dot(V,N);
 	int mode = 2;
 
 	// calculate diffuse term 
@@ -61,12 +62,12 @@ void main() {
     }
 
 	// add specular term  
-	if(cosTheta>0) {
+	if(cosTheta_l>0 && cosTheta_v>0) {
 		// mode :
 		// [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 		// [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
 		// [2] --> DISNEYS PRINCIPLED (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
-		color += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta;
+		color += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta_l;
 	}
 
 	out_color = vec4(color,1.0);
