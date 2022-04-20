@@ -38,21 +38,34 @@ void main() {
 	
 	vec3 L = normalize(vec3(-ubo_directions.light_dir));
 	vec3 N = normalize(shading_normal);
-	vec3 V = normalize(worldPosition - ubo_directions.cam_pos.xyz);
+	vec3 V = normalize(ubo_directions.cam_pos.xyz - worldPosition);
 
 	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
 
-	float roughness = 0.1;
+	float roughness = 0.9;
 	vec3 light_color = vec3(1.f);
 	float light_intensity = 1.f;
 	float cosTheta = dot(L,N);
-	int mode = 0;
-	vec3 color = vec3(0.f);//ambient / PI; //
+	int mode = 2;
 
+	// calculate diffuse term 
+	vec3 color = vec3(0);//LambertDiffuse(ambient); //
+
+	switch (mode) {
+    case 0: color += LambertDiffuse(ambient);
+            break;
+    case 1: color += LambertDiffuse(ambient);
+            break;
+	case 2: color += DisneyDiffuse(ambient*0.4,L,V,N,roughness);
+            break;
+    }
+
+	// add specular term  
 	if(cosTheta>0) {
 		// mode :
 		// [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 		// [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
+		// [2] --> DISNEYS PRINCIPLED (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
 		color += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta;
 	}
 
