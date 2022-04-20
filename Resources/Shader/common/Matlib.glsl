@@ -16,7 +16,7 @@ float AbsCosTheta(const vec3 w, vec3 N) {
 }
 
 float Sin2Theta(const vec3 w, vec3 N) {
-    return max(0, 1 - Cos2Theta(w,N));
+    return max(0.f, 1.f - Cos2Theta(w,N));
 }
 
 float SinTheta(const vec3 w, vec3 N) {
@@ -33,11 +33,11 @@ float Tan2Theta(const vec3 w, vec3 N) {
 
 float CosPhi(const vec3 w, vec3 N) {
     float sinTheta = SinTheta(w, N);
-    return (sinTheta == 0) ? 1 : clamp(w.x / sinTheta, -1, 1);
+    return (sinTheta == 0) ? 1 : clamp(w.x / sinTheta, -1.f, 1.f);
 }
 float SinPhi(const vec3 w, vec3 N) {
     float sinTheta = SinTheta(w, N);
-    return (sinTheta == 0) ? 0 : clamp(w.y / sinTheta, -1, 1);
+    return (sinTheta == 0) ? 0 : clamp(w.y / sinTheta, -1.f, 1.f);
 }
 
 float Cos2Phi(const vec3 w, vec3 N) {

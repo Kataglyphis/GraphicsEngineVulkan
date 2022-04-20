@@ -81,7 +81,7 @@ void main() {
     vec3 L = normalize(vec3(-ubo_directions.light_dir)); 
     // no need to normalize
 	vec3 N = normalize(normal_hit);
-	vec3 V = normalize(hit_pos - ubo_directions.cam_pos.xyz);
+	vec3 V = normalize(ubo_directions.cam_pos.xyz - hit_pos);
 
 //    if(dot(world_normal_hit, L) > 0) {
 //    
@@ -111,18 +111,29 @@ void main() {
 //        } 
 //
 //    }
-    
-    payload.hit_value = vec3(0.f);//ambient / PI;//
 
-    float roughness = 0.1;
+    float roughness = 0.9;
     vec3 light_color = vec3(1.f);
     float light_intensity = 1.f;
     float cosTheta = dot(L,N);
-    int mode = 1;
+    int mode = 2;
+    // calculate diffuse term 
+	payload.hit_value = vec3(0);//LambertDiffuse(ambient); //
+
+	switch (mode) {
+    case 0: payload.hit_value += LambertDiffuse(ambient);
+            break;
+    case 1: payload.hit_value += LambertDiffuse(ambient);
+            break;
+	case 2: payload.hit_value += DisneyDiffuse(ambient*0.4,L,V,N,roughness);
+            break;
+    }
+
     if(cosTheta > 0) {
         // mode :
         // [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
         // [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
+        // [2] --> DISNEYS PRINCIPLED (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
 	    payload.hit_value += light_color * light_intensity * evaluateCookTorrenceBRDF(ambient, N, L, V, roughness, mode) * cosTheta;
     }
 

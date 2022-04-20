@@ -1,5 +1,62 @@
 #include "Matlib.glsl"
 
+vec3 LambertDiffuse(vec3 ambient) {
+
+    return ambient / PI;
+
+}
+
+vec3 DisneyDiffuse(vec3 ambient, vec3 L, vec3 V, vec3 N, float roughness) {
+
+    vec3 wo = normalize(L);
+    vec3 wi = normalize(V);
+    vec3 wh = wi + wo;
+    wh = normalize(wh);
+
+    float cosTheta_d = clamp(dot(wi, wh), -1.0f, 1.0f);
+    float F_D90 = 0.5f + 2.f * roughness * cosTheta_d * cosTheta_d;
+
+    vec3 lambertDiffuse = LambertDiffuse(ambient);
+
+    float cosTheta_l = CosTheta(L,N);
+    float cosTheta_v = CosTheta(V,N);
+    float F_light = 1.f + (F_D90 - 1.f) * pow(1.f - cosTheta_l,5);
+    float F_view = 1.f + (F_D90 - 1.f) * pow(1.f - cosTheta_v, 5);
+
+    return lambertDiffuse * F_light * F_view;
+
+}
+
+float D_Disney(vec3 wh, vec3 N, float roughness) {
+
+    float alpha = roughness * roughness;
+    float alpha2 = alpha * alpha;
+    // only simulation primary lobe
+    float gamma = 2;
+    float c = 0.06f;
+    float D_GTR = c / pow(alpha2*Cos2Theta(wh,N) + Sin2Theta(wh,N), gamma);
+
+    return D_GTR;
+}
+
+float G_GGX_Walt_2007(vec3 v, vec3 wh, vec3 N, float roughness) {
+
+    if ((dot(v,wh) / dot(v,N)) <= 0.f) return 0.f;
+    float tan2Theta = Tan2Theta(v,N);
+    float alpha_g = pow(0.5 + 0.5f * roughness,2);
+    return 2.f / (1 + sqrt(1.f + alpha_g*alpha_g*tan2Theta));
+
+}
+
+float G_Disney(vec3 wi, vec3 wo, vec3 N, float roughness)
+{
+    vec3 wh = normalize(wi+wo);
+    float GL = G_GGX_Walt_2007(wo, wh, N, roughness);
+    float GV = G_GGX_Walt_2007(wi, wh, N, roughness);
+    return GL * GV;
+
+}
+
 vec3 fresnel_schlick(float cosTheta, vec3 ambient_color, float metallic) {
 
     vec3 F0 = mix(vec3(0.04), ambient_color, metallic);
@@ -11,11 +68,10 @@ vec3 fresnel_schlick(float cosTheta, vec3 ambient_color, float metallic) {
 vec3 F_PBRT(vec3 wi, vec3 wh) {
 
     //assuming dielectrics
-    float cosThetaI = clamp(dot(wi,wh),0.0f,1.0f);
+    float cosThetaI = clamp(dot(wi,wh),-1.0f,1.0f);
     float etaI = 1.00029; // air at sea level
     float etaT = 1.544; // water 20 Degrees
 
-    cosThetaI = clamp(cosThetaI, -1, 1);
     //<< Potentially swap indices of refraction >>
     bool entering = cosThetaI > 0.f;
     if (!entering) {
@@ -121,24 +177,18 @@ vec3 F_EPIC_GAMES(vec3 wi, vec3 wh, vec3 ambient_color, float metallic) {
 // mode :
 // [0] --> EPIC GAMES (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 // [1] --> PBR BOOK (https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
+// [2] --> DISNEYS PRINCIPLED (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
 vec3 evaluateCookTorrenceBRDF(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, int mode) {
 
     vec3 wo = normalize(L);
     vec3 wi = normalize(V);
 
-    if (mode == 0) {
-        // the pbr book assumes the view vector to point away from the surface
-        wi *= -1.f;
-    }
-
     float cosThetaO = AbsCosTheta(wo, N);
     float cosThetaI = AbsCosTheta(wi, N);
     vec3 wh = wi + wo;
     if (cosThetaI == 0 || cosThetaO == 0) return vec3(0);
-    //if (wh.x == 0 && wh.y == 0 && wh.z == 0) return vec3(0);
+    if (wh.x == 0 && wh.y == 0 && wh.z == 0) return vec3(0);
     wh = normalize(wh);
-    //float F = fresnel_PBRT(dot(wi, wh));
-    //vec3 F = fresnel_schlick(dot(wi, wh), ambient, 0.001);
     float D = 1;
     float G = 1;
     vec3 F = vec3(1);
@@ -151,6 +201,10 @@ vec3 evaluateCookTorrenceBRDF(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughn
             G = G_GGX_PBRT(wi, wo, N, roughness);
             F = F_PBRT(wi, wh);
             break;
+    case 2: D = D_Disney(wh, N, roughness);
+            G = G_Disney(wi, wo, N, roughness);
+            F = fresnel_schlick(CosTheta(wh, wi), ambient, 0.1);
+        break;
     }
 
     return vec3((D * G * F) / (4.f * cosThetaI * cosThetaO));
