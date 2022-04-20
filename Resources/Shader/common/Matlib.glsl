@@ -1,5 +1,6 @@
 // some common math functions :)
-
+#ifndef MATH_LIB
+#define MATH_LIB
 const float PI = 3.14159265358979323846;
 
 float CosTheta(const vec3 w, vec3 N) { 
@@ -46,3 +47,5 @@ float Cos2Phi(const vec3 w, vec3 N) {
 float Sin2Phi(const vec3 w, vec3 N) {
     return SinPhi(w, N) * SinPhi(w,N);
 }
+
+#endif 
