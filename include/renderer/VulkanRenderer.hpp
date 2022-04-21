@@ -77,7 +77,7 @@ private:
 	// GUI variables
 	float direcional_light_ambient_intensity = 10.f;
 	float directional_light_color[3] = { 1.f,1.f,1.f };
-	float directional_light_direction[3] = { 0.f,1.f,1.f };
+	float directional_light_direction[3] = { 0.075f,-1.f,0.118f };
 
 	float near_plane;
 	float far_plane;
