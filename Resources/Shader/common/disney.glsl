@@ -1,84 +1,91 @@
 #include "ShadingLibrary.glsl"
 
-// (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
+// the famous disney principled brdf model
+// based on their paper (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
+// brent burley even released some helpful shader code:
+// https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf
 
 vec3 DisneyDiffuse(vec3 ambient, vec3 L, vec3 V, vec3 N, float roughness) {
 
-    vec3 wo = normalize(L);
-    vec3 wi = normalize(V);
-    vec3 wh = wi + wo;
+    vec3 wh = normalize(L) + normalize(V);
     wh = normalize(wh);
 
-    float cosTheta_d = clamp(dot(wi, wh), -1.0f, 1.0f);
+    float cosTheta_d = clamp(dot(normalize(V), wh), -1.0f, 1.0f);
     float F_D90 = 0.5f + 2.f * roughness * cosTheta_d * cosTheta_d;
 
     vec3 lambertDiffuse = LambertDiffuse(ambient);
 
-    float cosTheta_l = CosTheta(L, N);
-    float cosTheta_v = CosTheta(V, N);
-    float F_light = 1.f + (F_D90 - 1.f) * pow(1.f - cosTheta_l, 5);
-    float F_view = 1.f + (F_D90 - 1.f) * pow(1.f - cosTheta_v, 5);
+    // even if lit by the backside or viewed from backside
+    // we want some ambient light! 
+    // catch it here to avoid brutal brightness because of 
+    // following attentuation terms :))
+    if (CosTheta(L, N) <= 0 || CosTheta(V, N) <= 0) {
+        return 0.3f * lambertDiffuse;
+    }
+
+    float F_light = 1.f + (F_D90 - 1.f) * pow(1.f - CosTheta(L, N), 5);
+    float F_view = 1.f + (F_D90 - 1.f) * pow(1.f - CosTheta(V, N), 5);
 
     return lambertDiffuse * F_light * F_view;
 
 }
 
-float D_Disney(vec3 wh, vec3 N, float roughness) {
+// the D function for their primary layer: GTR2aniso
+float D_Disney(vec3 wh, vec3 N, float roughness, float alphax, float alphay) {
 
-    //GTR2 anisotropic
-    float anisotropic = 0;
-    float aspect = sqrt(1.f - 0.9f * anisotropic);
-    float alphax = (roughness * roughness) / aspect;
-    float alphay = (roughness * roughness) * aspect;
     float alphax2 = alphax * alphax;
     float alphay2 = alphay * alphay;
 
     float cos2Theta_h = Cos2Theta(wh, N);
     float h_dot_y = SinTheta(wh, N) * SinPhi(wh, N);
     float h_dot_x = SinTheta(wh, N) * CosPhi(wh, N);
+    float h_dot_y2 = h_dot_y * h_dot_y;
+    float h_dot_x2 = h_dot_x * h_dot_x;
 
-    float denom3 = ((h_dot_x * h_dot_x) / alphax2) + ((h_dot_y * h_dot_y) / alphay2) + cos2Theta_h;
+    float denom3 = (h_dot_x2 / alphax2) + (h_dot_y2 / alphay2) + cos2Theta_h;
 
     return 1.f / (PI * alphax * alphay * denom3 * denom3);
 }
 
-float G_Disney(vec3 wi, vec3 wo, vec3 N, float roughness)
+float G_Disney(vec3 wi, vec3 wo, vec3 N, float roughness, float alphax, float alphay)
 {
-    vec3 wh = normalize(wi + wo);
-    if (dot(wi, N) <= 0.f || dot(wo, N) <= 0.f) return 0.f;
-    return 1.f / (1.f + Lamda_heitz_2014(wi, N, roughness) + Lamda_heitz_2014(wo, N, roughness));
-
+    return G2_GGX_SMITH(wi, wo, N, roughness, alphax, alphay);
 }
 
 vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, vec3 light_color, float light_intensity) {
 
-    // add lambertian diffuse term
-    vec3 color = DisneyDiffuse(ambient, L, V, N, roughness);
 
-    vec3 wo = normalize(L);
-    vec3 wi = normalize(V);
+    // add diffuse term
+    // add diffuse term before checking negativ cosinus!
+    // we want some diffuse light for the sun even if cosinus negative
+    vec3 diffuse = DisneyDiffuse(ambient, L, V, N, roughness);
 
-    float cosThetaO = AbsCosTheta(wo, N);
-    float cosThetaI = AbsCosTheta(wi, N);
-    vec3 wh = wi + wo;
-    if (cosThetaI == 0 || cosThetaO == 0) return vec3(0);
-    if (wh.x == 0 && wh.y == 0 && wh.z == 0) return vec3(0);
-    wh = normalize(wh);
-    float D = 1;
-    float G = 1;
-    vec3 F = vec3(1);
-
-    D = D_Disney(wh, N, roughness);
-    G = G_Disney(wi, wo, N, roughness);
-    F = fresnel_schlick(CosTheta(wh, wi), ambient, 0.1);
-
-    // add specular term  
-    float cosTheta_l = CosTheta(L, N);
-    float cosTheta_v = CosTheta(V, N);
-    if (cosTheta_l > 0 && cosTheta_v > 0) {
-        color += light_color * light_intensity * evaluateCookTorrenceSpecularBRDF(D, G, F, cosTheta_l, cosTheta_v) * cosTheta_l;
+    // 1.) case: get lit by light from the backside
+    // 2.) case: view it from the back
+    // you also need to take care of the equal zero case; otherwise divide by zero problems
+    if (CosTheta(L,N) <= 0 || CosTheta(V,N) <= 0) {
+        //return diffuse;
+        return diffuse;
     }
 
-    return color;
+    // anisotropic is element of [0,1]; default value 0
+    float anisotropic = 0.9;
+    float metallic = 0.1f;
+    // mapping to anisotropic alpha's; see paper
+    float aspect = sqrt(1.f - 0.9f * anisotropic);
+    float alphax = (roughness * roughness) / aspect;
+    float alphay = (roughness * roughness) * aspect;
 
+    //GTR2aniso
+    vec3 wh = normalize(L+V);
+    float D = D_Disney(wh, N, roughness, alphax, alphay);
+    //smith ggx aniso
+    float G = G_Disney(normalize(V), normalize(L), N, roughness, alphax, alphay);
+    // simple fresnel schlick approx
+    vec3 F = fresnel_schlick(CosTheta(wh, V), ambient, metallic);
+
+    // add specular term  
+    vec3 specular = light_color * light_intensity * evaluateCookTorrenceSpecularBRDF(D, G, F, CosTheta(L, N), CosTheta(V, N)) * CosTheta(L, N);
+
+    return diffuse + specular; 
 }
