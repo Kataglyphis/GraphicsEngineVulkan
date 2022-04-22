@@ -43,16 +43,16 @@ void main() {
 	vec3 V = normalize(ubo_directions.cam_pos.xyz - worldPosition);
 	vec3 ambient = texture(sampler2D(tex[fragMaterialID], texture_sampler), texture_coordinates).xyz;
 
-	float roughness = 0.4;
+	float roughness = 0.01;
 	vec3 light_color = vec3(1.f);
-	float light_intensity = 1.f;
+	float light_intensity = 1.0f;
 
 	vec3 color = vec3(0);
 	// mode : switching between PBR models
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED 
-	int mode = 2;
+	int mode = 1;
 	switch (mode) {
 	case 0: color += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;

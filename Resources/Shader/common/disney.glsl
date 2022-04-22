@@ -97,22 +97,22 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     // subsurface parameter blends between the base diffuse shape and one inspired by the HanrahanKrueger subsurface BR
     // This is useful for giving a subsurface appearance on distant objects
     // and on objects where the average scattering path length is small
-    float subsurface = 0.9f;
-    float specular = 0.5;
+    float subsurface = 0.0f;
+    float specular = .9f;
     // a concession for artistic control that tints incident specular towards the base color.
     // Grazing specular is still achromatic.
-    float specularTint = 0;
+    float specularTint = 0.7;
     // an additional grazing(abschürfen) component, primarily intended for cloth; Glanz
-    float sheen = 0;
+    float sheen = 0.0;
     // amount to tint sheen towards base color.
-    float sheenTint = 0;
+    float sheenTint = 0.4;
     // a second, special-purpose specular lobe
-    float clearcoat = 0;
+    float clearcoat = 0.1f;
     // clearcoatGloss: controls clearcoat glossiness (0 = a “satin” appearance, 1 = a “gloss” appearance)
-    float clearcoatGloss = 0;
+    float clearcoatGloss = 0.5;
 
     // ambient term brought to linear space for calculations
-    vec3 linAmbient = mon2lin(ambient);
+    vec3 linAmbient = mon2lin(1.5f * ambient);
     // based on number of seecells in the eye; the number of blue cells are the highest amount :))
     float luminance = 0.3f*linAmbient[0] + 0.6f*linAmbient[1] + 0.1f*linAmbient[2];
     // normalize lum. to isolate hue+sat
@@ -128,7 +128,7 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     // add diffuse term
     // add diffuse term before checking negativ cosinus!
     // we want some diffuse light for the sun even if cosinus negative
-    vec3 diffuse = DisneyDiffuse(ambient, L, V, N, roughness, subsurface) * (1.f - metallic);
+    vec3 diffuse = DisneyDiffuse(linAmbient, L, V, N, roughness, subsurface)* (1.f - metallic);
 
     // 1.) case: get lit by light from the backside
     // 2.) case: view it from the back
@@ -144,9 +144,12 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     vec3 SheenColor = Fsheen * (1.f - metallic);
 
     vec3 wh = normalize(L+V);
-    //clearcoat
+
+    //clearcoat (ior = 1.5 -> F0 = 0.04)
     float Dr = D_Disney_Secondary(wh, N, mix(0.1,0.001,clearcoatGloss));
     float Fr = mix(.04, 1.0, pow(1.f - abs(CosTheta(L, N)), 5));
+    // 0.25: fixed IOR of 1.5; polyurethane
+    // 
     float Gr = G_Disney_SmithGGXIso(normalize(V), normalize(L), N, 0.25);
 
     vec3 clearCoatColor = vec3(0.25f * clearcoat * Gr * Fr * Dr);
@@ -161,10 +164,9 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     //smith ggx aniso
     float G = G_Disney(normalize(V), normalize(L), N, roughness, alphax, alphay);
     // simple fresnel schlick approx
-    vec3 F = fresnel_schlick(CosTheta(wh, V), ambient, metallic);
+    vec3 F = mix(Cspec0, vec3(1), fresnel_schlick(CosTheta(wh, V), ambient, metallic));
 
     // add specular term  
-    vec3 Fs = mix(Cspec0, vec3(1), pow(1.f - abs(CosTheta(L, wh)), 5));
     vec3 specular_color = light_color * light_intensity * evaluateCookTorrenceSpecularBRDF(D, G, F, CosTheta(L, N), CosTheta(V, N)) * CosTheta(L, N);
 
     return diffuse + specular_color + clearCoatColor + SheenColor;
