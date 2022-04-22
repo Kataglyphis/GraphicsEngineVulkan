@@ -5,18 +5,18 @@
 vec3 F_PBRT(vec3 wi, vec3 wh) {
 
     //assuming dielectrics
-    float cosThetaI = clamp(dot(wi, wh), -1.0f, 1.0f);
-    float etaI = 1.00029; // air at sea level
-    float etaT = 1.544; // water 20 Degrees
+    float cosThetaI = clamp(dot(normalize(wi), normalize(wh)), 0.0f, 1.0f);
+    float etaI = 1.00029;  // air at sea level
+    float etaT = 1.5; // water 20 Degrees
 
     //<< Potentially swap indices of refraction >>
-    bool entering = cosThetaI > 0.f;
+    /*bool entering = cosThetaI > 0.f;
     if (!entering) {
         float aux = etaI;
         etaI = etaT;
         etaT = aux;
         cosThetaI = abs(cosThetaI);
-    }
+    }*/
 
     //<< Compute cosThetaT using Snell’s law >>
     float sinThetaI = sqrt(max(0.f, 1.f - cosThetaI * cosThetaI));
@@ -89,26 +89,21 @@ vec3 evaluatePBRBooksPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, 
 
     vec3 wo = normalize(L);
     vec3 wi = normalize(V);
+    vec3 wh = normalize(wi + wo);
 
-    float cosThetaO = AbsCosTheta(wo, N);
-    float cosThetaI = AbsCosTheta(wi, N);
-    vec3 wh = wi + wo;
-    if (cosThetaI == 0 || cosThetaO == 0) return vec3(0);
-    if (wh.x == 0 && wh.y == 0 && wh.z == 0) return vec3(0);
-    wh = normalize(wh);
-    float D = 1;
-    float G = 1;
-    vec3 F = vec3(1);
+    float cosThetaO = CosTheta(wo, N);
+    float cosThetaI = CosTheta(wi, N);
+    if (cosThetaI <= 0 || cosThetaO <= 0) return color;
+    if (wh.x == 0 && wh.y == 0 && wh.z == 0) return color;
 
-    // add specular term  
-    D = D_GGX_PBRT(wh, N, roughness);
-    G = G_GGX_PBRT(wi, wo, N, roughness);
-    F = F_PBRT(wi, wh);
+    if (CosTheta(L, N) > 0 && CosTheta(V, N) > 0) {
 
-    float cosTheta_l = CosTheta(L, N);
-    float cosTheta_v = CosTheta(V, N);
-    if (cosTheta_l > 0 && cosTheta_v > 0) {
-        color += light_color * light_intensity * evaluateCookTorrenceSpecularBRDF(D,G,F,cosTheta_l,cosTheta_v) * cosTheta_l;
+        // add specular term  
+        float D = D_GGX_PBRT(wh, N, roughness);
+        float G = G_GGX_PBRT(wi, wo, N, roughness);
+        vec3 F = F_PBRT(wi, wh);
+
+        color += light_color * light_intensity * evaluateCookTorrenceSpecularBRDF(D,G,F, CosTheta(L, N), CosTheta(V, N)) * CosTheta(L, N);
     }
 
     return color;

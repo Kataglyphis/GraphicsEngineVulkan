@@ -1,7 +1,7 @@
 #include "ShadingLibrary.glsl"
 
 // (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
-
+// https://github.com/SaschaWillems/Vulkan/blob/master/data/shaders/glsl/pbrbasic/pbr.frag
 float D_GGX_EPIC_GAMES(vec3 wh, vec3 N, float roughness)
 {
     float dotNH = clamp(dot(normalize(wh), normalize(N)), 0.0f, 1.0);
@@ -45,13 +45,10 @@ vec3 evaluteUnreal4PBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, ve
     if (cosThetaI == 0 || cosThetaO == 0) return vec3(0);
     if (wh.x == 0 && wh.y == 0 && wh.z == 0) return vec3(0);
     wh = normalize(wh);
-    float D = 1;
-    float G = 1;
-    vec3 F = vec3(1);
 
-    D = D_GGX_EPIC_GAMES(wh, N, roughness);
-    G = G_GGX_EPIC_GAMES(wi, wo, N, roughness);
-    F = F_EPIC_GAMES(wi, wh, ambient, .9f);
+    float D = D_GGX_EPIC_GAMES(wh, N, roughness);
+    float G = G_GGX_EPIC_GAMES(wi, wo, N, roughness);
+    vec3 F = F_EPIC_GAMES(wi, wh, ambient, .3f);
 
     // add specular term  
     float cosTheta_l = CosTheta(L, N);
