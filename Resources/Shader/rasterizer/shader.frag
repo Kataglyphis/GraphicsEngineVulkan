@@ -14,6 +14,7 @@
 #include "../common/unreal4.glsl"
 #include "../common/disney.glsl"
 #include "../common/pbrBook.glsl"
+#include "../common/phong.glsl"
 
 //layout (push_constant) uniform PushConstantRaster {
 //
@@ -51,14 +52,17 @@ void main() {
 	// mode : switching between PBR models
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 
-	// [2] --> DISNEYS PRINCIPLED 
-	int mode = 1;
+	// [2] --> DISNEYS PRINCIPLED
+	// [3] --> PHONG
+	int mode = 3;
 	switch (mode) {
 	case 0: color += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
 	case 1: color += evaluatePBRBooksPBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
 	case 2: color += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		break;
+	case 3: color += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
 		break;
 	}
 

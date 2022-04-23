@@ -14,6 +14,7 @@
 #include "../common/unreal4.glsl"
 #include "../common/disney.glsl"
 #include "../common/pbrBook.glsl"
+#include "../common/phong.glsl"
 
 hitAttributeEXT vec2 attribs;
 
@@ -123,7 +124,8 @@ void main() {
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED 
-	int mode = 2;
+    // [3] --> PHONG
+	int mode = 3;
 	switch (mode) {
 	case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
@@ -131,6 +133,8 @@ void main() {
 		break;
 	case 2: payload.hit_value += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
+    case 3: payload.hit_value += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
+	    break;
 	}
 
 
