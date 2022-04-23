@@ -79,16 +79,18 @@ to report.
 ### Key Features
 
 
-|          Feature                |   Implement Status | ◾ Other Configs |
-| --------------------------------| :----------------: | :-------------: |
-| Core functionality              |         ✔️         |        ❌      |
+|          Feature                    |   Implement Status | ◾ Other Configs |
+| ------------------------------------| :----------------: | :-------------: |
+| Rasterizer                          |         ✔️         |        ❌      |
+| Raytracing bascis                   |         ✔️         |        ❌      |
+| PBR support (UE4,disney,phong, etc.)|         ✔️         |        ❌      |
 
 ### Built With
 
-* [Vulkan 1.2](https://www.vulkan.org/)
+* [Vulkan 1.3](https://www.vulkan.org/)
 * [GLM](https://github.com/g-truc/glm)
 * [GLFW](https://www.glfw.org/)
-* [ASSIMP](https://github.com/assimp/assimp)
+* [TINYOBJLOADER](https://github.com/tinyobjloader/tinyobjloader)
 * [STB](https://github.com/nothings/stb)
 * [DOXYGEN](https://www.doxygen.nl/index.html)
 * [GTEST](https://github.com/google/googletest)
@@ -124,9 +126,8 @@ For Windows user: run the batch file (double click on the 'compile.bat' in the R
 
 1. Clone the repo
    ```sh
-   git clone --recurse-submodules git@github.com:Kataglyphis/GraphicsEngineVulkan.git
+   git clone git@github.com:Kataglyphis/GraphicsEngineVulkan.git
    ```
-   Important for init the submodules
 
 
 <!-- USAGE EXAMPLES -->
@@ -166,17 +167,20 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
 Jonas Heinle - [@your_twitter](https://twitter.com/Cataglyphis_) - jonasheinle@googlemail.com
 
-Project Link: [https://github.com/Kataglyphis/GraphicsEngineVulkan](https://github.com/Kataglyphis/OpenGLEngine)
+Project Link: [https://github.com/Kataglyphis/GraphicsEngineVulkan](https://github.com/Kataglyphis/GraphicsEngineVulkan)
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
+You will find important links to information in the code.
+But here in general some good sources of information:
+
 Thanks for free 3D Models: 
-* [Dragon 3d Model](https://free3d.com/3d-model/black-dragon-rigged-and-game-ready-92023.html)
-* [Dirty Ground Floor]("Dirty Ground Floor 01" (https://skfb.ly/MsMo) by dee_van_hoven is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/))
-* [GPUOPEN](https://gpuinfo.org/)
+* [Morgan McGuire, Computer Graphics Archive, July 2017 (https://casual-effects.com/data)](http://casual-effects.com/data/)
+* [Viking room](https://sketchfab.com/3d-models/viking-room-a49f1b8e4f5c4ecf9e1fe7d81915ad38)
+
 
 ## Literature 
 
@@ -189,10 +193,15 @@ Vulkan
 * [Vulkan Tutorial; especially chapter about integrating imgui](https://frguthmann.github.io/posts/vulkan_imgui/)
 * [NVidia Raytracing tutorial with Vulkan](https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/)
 * [Blog from Sascha Willems](https://www.saschawillems.de/)
+
 Physically Based Shading
 * [The Bible: PBR book](https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
 * [Real shading in Unreal engine 4](https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 * [Physically Based Shading at Disney](https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
+* [RealTimeRendering](https://www.realtimerendering.com/)
+* [Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs](https://hal.inria.fr/hal-01024289/)
+* [Sampling the GGX Distribution of Visible Normals](https://pdfs.semanticscholar.org/63bc/928467d760605cdbf77a25bb7c3ad957e40e.pdf)
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
