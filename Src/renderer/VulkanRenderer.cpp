@@ -70,6 +70,15 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		create_texture("../Resources/Textures/plain.png");
 
 		std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
+		//std::string modelFile = "../Resources/Model/sibenik/sibenik.obj";
+		//std::string modelFile = "../Resources/Model/sportsCar/sportsCar.obj";
+		//std::string modelFile = "../Resources/Model/StanfordDragon/dragon.obj";
+		//std::string modelFile = "../Resources/Model/CornellBox/CornellBox-Sphere.obj";
+		//std::string modelFile = "../Resources/Model/bunny/bunny.obj";
+		//std::string modelFile = "../Resources/Model/buddha/buddha.obj";
+		//std::string modelFile = "../Resources/Model/bmw/bmw.obj";
+		//std::string modelFile = "../Resources/Model/testScene.obj";
+		//std::string modelFile = "../Resources/Model/San_Miguel/san-miguel-low-poly.obj";
 		create_model(modelFile);
 
 		glm::mat4 dragon_model(1.0f);
