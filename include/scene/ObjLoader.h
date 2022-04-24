@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "Model.h"
+#include "Material.h"
 #include "VulkanRenderer.hpp"
 
 class ObjLoader
@@ -23,6 +24,11 @@ private:
 	VkQueue transfer_queue;
 	VkCommandPool command_pool;
 
+	std::vector<Vertex>			vertices;
+	std::vector<unsigned int>	indices;
+	std::vector<Material>		materials;
+	std::vector<unsigned int>	materialIndex;
+	std::vector<std::string>	textures;
 
 };
 

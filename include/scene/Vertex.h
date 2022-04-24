@@ -8,8 +8,13 @@
 class Vertex
 {
 public:
+
+	Vertex();
+	Vertex(glm::vec3 pos, glm::vec3 normal, glm::vec3 color, glm::vec3 mat_id, glm::vec2 texture_coords);
+
 	glm::vec3 pos;
 	glm::vec3 normal;
+	glm::vec3 color;
 	glm::vec3 mat_id;
 	glm::vec2 texture_coords;
 
