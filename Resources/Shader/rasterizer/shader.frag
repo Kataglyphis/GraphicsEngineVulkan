@@ -58,15 +58,6 @@ void main() {
 	
 	vec3 ambient = vec3(0.f);
 
-	// check if per vertex color is used
-//	if(fragment_color.x >= 0 && fragment_color.y >= 0 && fragment_color.z >= 0) {
-//		ambient += fragment_color;
-//	} else {
-//		// otherwise we are using textures
-//		uint texture_id = 0;//materialIDs.i[gl_PrimitiveID];
-//		ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
-//	}
-
 	// otherwise we are using textures
 	uint texture_id = materialIDs.i[gl_PrimitiveID];
 	ambient += texture(sampler2D(tex[nonuniformEXT(texture_id)], texture_sampler), texture_coordinates).xyz;
