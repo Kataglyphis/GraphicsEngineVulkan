@@ -2,8 +2,8 @@
 
 #extension GL_EXT_ray_tracing : require
 #extension GL_EXT_nonuniform_qualifier : enable
-#extension GL_EXT_scalar_block_layout : enable
 #extension GL_GOOGLE_include_directive : enable
+#extension GL_EXT_scalar_block_layout : enable
 
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 #extension GL_EXT_buffer_reference2 : require
@@ -21,15 +21,15 @@ hitAttributeEXT vec2 attribs;
 layout(location = 0) rayPayloadInEXT HitPayload payload;
 layout(location = 1) rayPayloadEXT bool isShadowed;
 
-layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
     UboDirections ubo_directions;
 };
-
-layout(set = TLAS_SET, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
-layout(set = OBJECT_DESCRIPTION_SET, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
+layout(set = 0, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
     ObjectDescription i[];
 } object_description;
 
+
+layout(set = 1, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
 layout(set = 1, binding = SAMPLER_BINDING_RT) uniform sampler texture_sampler;
 layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[TEXTURE_COUNT];
 
@@ -40,6 +40,10 @@ layout(buffer_reference, scalar) buffer Vertices {
 layout(buffer_reference, scalar) buffer Indices {
     ivec3 i[]; 
 }; // Triangle indices
+
+layout(buffer_reference, scalar) buffer MaterialIDs {
+    int i[]; 
+}; // per triangle material id
 
 layout(push_constant) uniform _PushConstantRay {
     PushConstantRay pc_ray;
@@ -52,6 +56,7 @@ void main() {
     ObjectDescription obj_res = object_description.i[gl_InstanceCustomIndexEXT];
     Indices indices = Indices(obj_res.index_address);
     Vertices vertices = Vertices(obj_res.vertex_address);
+    MaterialIDs materialIDs = MaterialIDs(obj_res.material_index_address);
 
     // indices of triangle 
     ivec3 ind = indices.i[gl_PrimitiveID];
@@ -78,8 +83,17 @@ void main() {
                                 v1.texture_coords * barycentrics.y +
                                 v2.texture_coords * barycentrics.z;
 
-    //uint texture_id = v0.mat_id;//uint(object_description.i[gl_InstanceCustomIndexEXT].texture_id);
-    vec3 ambient = texture(sampler2D(tex[nonuniformEXT(uint(v1.mat_id[0]))], texture_sampler), texture_coordinates).xyz;
+    // material id is stored per primitive
+    vec3 ambient = vec3(0.f);
+    // check only one vertex is enough :)
+//    if(v0.color.x >= 0 && v0.color.y >= 0 && v0.color.z >= 0) {
+//        ambient +=  v0.color * barycentrics.x +
+//                    v1.color * barycentrics.y +
+//                    v2.color * barycentrics.z;
+//    } else {
+    uint texture_id = materialIDs.i[gl_PrimitiveID];
+    ambient += texture(sampler2D(tex[nonuniformEXT(texture_id)], texture_sampler), texture_coordinates).xyz;
+    //}
 
     vec3 L = normalize(vec3(-ubo_directions.light_dir)); 
     // no need to normalize

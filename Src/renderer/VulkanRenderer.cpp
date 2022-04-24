@@ -106,7 +106,6 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 
 void VulkanRenderer::init_rasterizer()
 {
-		
 		create_render_pass();
 		create_descriptor_set_layouts();
 		create_push_constant_range();
@@ -114,18 +113,16 @@ void VulkanRenderer::init_rasterizer()
 		create_depthbuffer_image();
 		
 		create_command_buffers();
-		//allocate_dynamic_buffer_transfer_space();
 		create_texture_sampler();
 		create_descriptor_pool_uniforms();
 		create_descriptor_pool_sampler();
 		create_descriptor_sets();
-
 }
 
 void VulkanRenderer::init_raytracing() {
 
 	create_raytracing_descriptor_pool();
-	create_descriptor_pool_object_description();
+	//create_descriptor_pool_object_description();
 
 	create_object_description_buffer();
 
@@ -499,6 +496,7 @@ void VulkanRenderer::create_logical_device()
 	features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 	features2.features.samplerAnisotropy = VK_TRUE;
 	features2.features.shaderInt64 = VK_TRUE;
+	features2.features.geometryShader = VK_TRUE;
 
 	// -- NEEDED FOR QUERING THE DEVICE ADDRESS WHEN CREATING ACCELERATION STRUCTURES
 	VkPhysicalDeviceBufferDeviceAddressFeaturesEXT buffer_device_address_features{};
@@ -741,7 +739,7 @@ void VulkanRenderer::create_offscreen_graphics_pipeline()
 	attribute_describtions[2].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
 	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[2].offset = offsetof(Vertex, mat_id);
+	attribute_describtions[2].offset = offsetof(Vertex, color);
 
 	// texture coord attribute
 	attribute_describtions[3].binding = 0;																																// which binding the data is at (should be same as above)
@@ -2333,7 +2331,7 @@ void VulkanRenderer::create_shader_binding_table()
 void VulkanRenderer::create_raytracing_descriptor_pool()
 {
 
-	std::array<VkDescriptorPoolSize,5> descriptor_pool_sizes;
+	std::array<VkDescriptorPoolSize,4> descriptor_pool_sizes;
 
 	descriptor_pool_sizes[0].type = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
 	descriptor_pool_sizes[0].descriptorCount = 1;
@@ -2341,14 +2339,11 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 	descriptor_pool_sizes[1].type = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 	descriptor_pool_sizes[1].descriptorCount = 1;
 
-	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-	descriptor_pool_sizes[2].descriptorCount = static_cast<uint32_t>(sizeof(ObjectDescription) * MAX_OBJECTS);
+	descriptor_pool_sizes[2].type = VK_DESCRIPTOR_TYPE_SAMPLER;
+	descriptor_pool_sizes[2].descriptorCount = 2;
 
-	descriptor_pool_sizes[3].type = VK_DESCRIPTOR_TYPE_SAMPLER;
-	descriptor_pool_sizes[3].descriptorCount = 2;
-
-	descriptor_pool_sizes[4].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-	descriptor_pool_sizes[4].descriptorCount = MAX_TEXTURE_COUNT;
+	descriptor_pool_sizes[3].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+	descriptor_pool_sizes[3].descriptorCount = MAX_TEXTURE_COUNT;
 
 	VkDescriptorPoolCreateInfo descriptor_pool_create_info{};
 	descriptor_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -2407,12 +2402,41 @@ void VulkanRenderer::create_object_description_buffer()
 	vkDestroyBuffer(MainDevice.logical_device, staging_buffer, nullptr);
 	vkFreeMemory(MainDevice.logical_device, staging_buffer_memory, nullptr);
 
+	// update the object description set
+	// update all of descriptor set buffer bindings
+	for (size_t i = 0; i < swap_chain_images.size(); i++) {
+
+		VkDescriptorBufferInfo object_descriptions_buffer_info{};
+		// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
+		object_descriptions_buffer_info.buffer = object_description_buffer;
+		object_descriptions_buffer_info.offset = 0;
+		object_descriptions_buffer_info.range = VK_WHOLE_SIZE;
+
+		VkWriteDescriptorSet descriptor_object_descriptions_writer{};
+		descriptor_object_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptor_object_descriptions_writer.pNext = nullptr;
+		descriptor_object_descriptions_writer.dstSet = descriptor_sets[i];
+		descriptor_object_descriptions_writer.dstBinding = OBJECT_DESCRIPTION_BINDING;
+		descriptor_object_descriptions_writer.dstArrayElement = 0;
+		descriptor_object_descriptions_writer.descriptorCount = 1;
+		descriptor_object_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+		descriptor_object_descriptions_writer.pImageInfo = nullptr;
+		descriptor_object_descriptions_writer.pBufferInfo = &object_descriptions_buffer_info;
+		descriptor_object_descriptions_writer.pTexelBufferView = nullptr;																		// information about buffer data to bind
+
+		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { descriptor_object_descriptions_writer };
+
+		// update the descriptor sets with new buffer/binding info
+		vkUpdateDescriptorSets(MainDevice.logical_device, static_cast<uint32_t>(write_descriptor_sets.size()),
+									write_descriptor_sets.data(), 0, nullptr);
+	}
+
 }
 
 void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 
 	{
-		std::array<VkDescriptorSetLayoutBinding, 5> descriptor_set_layout_bindings;
+		std::array<VkDescriptorSetLayoutBinding, 4> descriptor_set_layout_bindings;
 
 		// here comes the top level acceleration structure
 		descriptor_set_layout_bindings[0].binding = TLAS_BINDING;
@@ -2430,28 +2454,20 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[1].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
 														VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
-		
-		// here comes to previous rendered image
-		descriptor_set_layout_bindings[2].binding = OBJECT_DESCRIPTION_BINDING;
-		descriptor_set_layout_bindings[2].descriptorCount = 1;
-		descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+
+		descriptor_set_layout_bindings[2].binding = TEXTURES_BINDING;
+		descriptor_set_layout_bindings[2].descriptorCount = static_cast<uint32_t>(texture_images.size());
+		descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 		descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[2].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
-		descriptor_set_layout_bindings[3].binding = TEXTURES_BINDING;
-		descriptor_set_layout_bindings[3].descriptorCount = static_cast<uint32_t>(texture_images.size());
-		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+		descriptor_set_layout_bindings[3].binding = SAMPLER_BINDING_RT;
+		descriptor_set_layout_bindings[3].descriptorCount = 1;
+		descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
 		descriptor_set_layout_bindings[3].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
 		descriptor_set_layout_bindings[3].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
-
-		descriptor_set_layout_bindings[4].binding = SAMPLER_BINDING_RT;
-		descriptor_set_layout_bindings[4].descriptorCount = 1;
-		descriptor_set_layout_bindings[4].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
-		descriptor_set_layout_bindings[4].pImmutableSamplers = nullptr;
-		// load them into the raygeneration and chlosest hit shader
-		descriptor_set_layout_bindings[4].stageFlags = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
 		VkDescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{};
 		descriptor_set_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -2528,24 +2544,6 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_image_writer.pBufferInfo = nullptr;
 		descriptor_image_writer.pTexelBufferView = nullptr;
 
-		VkDescriptorBufferInfo object_descriptions_buffer_info{};
-		// image_info.sampler = VK_DESCRIPTOR_TYPE_SAMPLER;
-		object_descriptions_buffer_info.buffer = object_description_buffer;
-		object_descriptions_buffer_info.offset = 0;
-		object_descriptions_buffer_info.range = VK_WHOLE_SIZE;
-
-		VkWriteDescriptorSet descriptor_object_descriptions_writer{};
-		descriptor_object_descriptions_writer.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptor_object_descriptions_writer.pNext = nullptr;
-		descriptor_object_descriptions_writer.dstSet = raytracing_descriptor_set[i];
-		descriptor_object_descriptions_writer.dstBinding = OBJECT_DESCRIPTION_BINDING;
-		descriptor_object_descriptions_writer.dstArrayElement = 0;
-		descriptor_object_descriptions_writer.descriptorCount = 1;
-		descriptor_object_descriptions_writer.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-		descriptor_object_descriptions_writer.pImageInfo = nullptr;
-		descriptor_object_descriptions_writer.pBufferInfo = &object_descriptions_buffer_info;
-		descriptor_object_descriptions_writer.pTexelBufferView = nullptr;
-
 		// texture image info
 		std::vector<VkDescriptorImageInfo> image_info_textures;
 		image_info_textures.resize(texture_image_views.size());
@@ -2581,7 +2579,6 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 
 		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { write_descriptor_set_acceleration_structure,
 																	descriptor_image_writer,
-																	descriptor_object_descriptions_writer,
 																	textures_descriptions_writer, 
 																	descriptor_write_sampler };
 
@@ -2597,35 +2594,39 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 void VulkanRenderer::create_descriptor_set_layouts()
 {
 
+	std::array<VkDescriptorSetLayoutBinding, 3> descriptor_set_layout_bindings;
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 	//ubo_view_projection Binding info
-	VkDescriptorSetLayoutBinding ubo_view_projection_layout_binding{};
-	ubo_view_projection_layout_binding.binding = UBO_VIEW_PROJECTION_BINDING;													// binding point in shader (designated by binding number in shader)
-	ubo_view_projection_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor (uniform, dynamic uniform, image sampler, etc)
-	ubo_view_projection_layout_binding.descriptorCount = 1;																							// number of descriptors for binding
-	ubo_view_projection_layout_binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
+	descriptor_set_layout_bindings[0].binding = UBO_VIEW_PROJECTION_BINDING;													// binding point in shader (designated by binding number in shader)
+	descriptor_set_layout_bindings[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor (uniform, dynamic uniform, image sampler, etc)
+	descriptor_set_layout_bindings[0].descriptorCount = 1;																							// number of descriptors for binding
+	descriptor_set_layout_bindings[0].stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
 													VK_SHADER_STAGE_RAYGEN_BIT_KHR;												// we need to say at which shader we bind this uniform to
-	ubo_view_projection_layout_binding.pImmutableSamplers = nullptr;																			// for texture: can make sampler data unchangeable (immutable) by specifying in layout
+	descriptor_set_layout_bindings[0].pImmutableSamplers = nullptr;																			// for texture: can make sampler data unchangeable (immutable) by specifying in layout
 
 	// our model matrix which updates every frame for each object
-	VkDescriptorSetLayoutBinding directions_layout_binding{};
-	directions_layout_binding.binding = UBO_DIRECTIONS_BINDING;
-	directions_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	directions_layout_binding.descriptorCount = 1;
-	directions_layout_binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
+	descriptor_set_layout_bindings[1].binding = UBO_DIRECTIONS_BINDING;
+	descriptor_set_layout_bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	descriptor_set_layout_bindings[1].descriptorCount = 1;
+	descriptor_set_layout_bindings[1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
 										VK_SHADER_STAGE_FRAGMENT_BIT |
 										VK_SHADER_STAGE_RAYGEN_BIT_KHR |
 										VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
-	directions_layout_binding.pImmutableSamplers = nullptr;
+	descriptor_set_layout_bindings[1].pImmutableSamplers = nullptr;
 
-	std::vector<VkDescriptorSetLayoutBinding> layout_bindings = { ubo_view_projection_layout_binding,
-																	directions_layout_binding};
+	descriptor_set_layout_bindings[2].binding = OBJECT_DESCRIPTION_BINDING;
+	descriptor_set_layout_bindings[2].descriptorCount = 1;
+	descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+	descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
+	// load them into the raygeneration and chlosest hit shader
+	descriptor_set_layout_bindings[2].stageFlags =	VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT |
+													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
 	// create descriptor set layout with given bindings
 	VkDescriptorSetLayoutCreateInfo layout_create_info{};
 	layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layout_create_info.bindingCount = static_cast<uint32_t>(layout_bindings.size());														// only have 1 for the ubo_view_projection
-	layout_create_info.pBindings = layout_bindings.data();																										// array of binding infos 
+	layout_create_info.bindingCount = static_cast<uint32_t>(descriptor_set_layout_bindings.size());														// only have 1 for the ubo_view_projection
+	layout_create_info.pBindings = descriptor_set_layout_bindings.data();																										// array of binding infos 
 
 	// create descriptor set layout
 	VkResult result = vkCreateDescriptorSetLayout(MainDevice.logical_device, &layout_create_info, nullptr, &descriptor_set_layout);
@@ -2639,7 +2640,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	// CREATE TEXTURE SAMPLER DESCRIPTOR SET LAYOUT
 	// texture binding info
 	VkDescriptorSetLayoutBinding sampler_layout_binding{};
-	sampler_layout_binding.binding = 0;
+	sampler_layout_binding.binding = SAMPLER_BINDING;
 	sampler_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
 	sampler_layout_binding.descriptorCount = 1;
 	sampler_layout_binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT |
@@ -2647,7 +2648,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	sampler_layout_binding.pImmutableSamplers = nullptr;
 
 	VkDescriptorSetLayoutBinding sampled_image_layout_binding{};
-	sampled_image_layout_binding.binding = 1;
+	sampled_image_layout_binding.binding = TEXTURES_BINDING;
 	sampled_image_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 	sampled_image_layout_binding.descriptorCount = MAX_TEXTURE_COUNT;
 	sampled_image_layout_binding.stageFlags =	VK_SHADER_STAGE_FRAGMENT_BIT |
@@ -2753,7 +2754,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	attribute_describtions[2].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[2].location = 2;																																// location in shader where data will be read from
 	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[2].offset = offsetof(Vertex, mat_id);
+	attribute_describtions[2].offset = offsetof(Vertex, color);
 
 	// texture coord attribute
 	attribute_describtions[3].binding = 0;																																// which binding the data is at (should be same as above)
@@ -2798,17 +2799,6 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	viewport_state_create_info.scissorCount = 1;
 	viewport_state_create_info.pScissors = &scissor;
 
-	//// dynamic states to enable
-	//std::vector<VkDynamicState> dynamic_state_enables;
-	//dynamic_state_enables.push_back(VK_DYNAMIC_STATE_VIEWPORT);																	// dynamic viewport : can resize in command buffer with vkCmdSetViewport (commandbuffer, 0, 1, &viewport)
-	//dynamic_state_enables.push_back(VK_DYNAMIC_STATE_SCISSOR);																		// dynamic scissor :    can resize in command buffer with vkCmdSetScissor (commandbuffer, 0, 1, &scissor)
-	//
-	//// dynamic state creation info
-	//VkPipelineDynamicStateCreateInfo dynamic_state_create_info{};
-	//dynamic_state_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-	//dynamic_state_create_info.dynamicStateCount = static_cast<uint32_t>(dynamic_state_enables.size());
-	//dynamic_state_create_info.pDynamicStates = dynamic_state_enables.data();
-
 	// RASTERIZER
 	VkPipelineRasterizationStateCreateInfo rasterizer_create_info{};
 	rasterizer_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -2830,9 +2820,9 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	// blend attachment state 
 	VkPipelineColorBlendAttachmentState color_state{};
 	color_state.colorWriteMask =   VK_COLOR_COMPONENT_R_BIT | 
-								VK_COLOR_COMPONENT_G_BIT | 
-								VK_COLOR_COMPONENT_B_BIT | 
-								VK_COLOR_COMPONENT_A_BIT;																				// apply to all channels 
+									VK_COLOR_COMPONENT_G_BIT | 
+									VK_COLOR_COMPONENT_B_BIT | 
+									VK_COLOR_COMPONENT_A_BIT;																				// apply to all channels 
 	
 	color_state.blendEnable = VK_TRUE;																																// enable BLENDING
 	// blending uses equation: (srcColorBlendFactor * new_color) color_blend_op (dstColorBlendFactor * old_color)
@@ -3191,8 +3181,12 @@ void VulkanRenderer::create_descriptor_pool_uniforms()
 	directions_pool_size.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	directions_pool_size.descriptorCount = static_cast<uint32_t>(directions_uniform_buffer.size());
 
+	VkDescriptorPoolSize object_descriptions_pool_size{};
+	object_descriptions_pool_size.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+	object_descriptions_pool_size.descriptorCount = static_cast<uint32_t>(sizeof(ObjectDescription) * MAX_OBJECTS);
+
 	// list of pool sizes 
-	std::vector<VkDescriptorPoolSize> descriptor_pool_sizes = { vp_pool_size , directions_pool_size};
+	std::vector<VkDescriptorPoolSize> descriptor_pool_sizes = { vp_pool_size , directions_pool_size, object_descriptions_pool_size };
 
 	VkDescriptorPoolCreateInfo pool_create_info{};
 	pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -3254,7 +3248,7 @@ void VulkanRenderer::create_descriptor_pool_object_description()
 
 	VkDescriptorPoolCreateInfo object_description_pool_create_info{};
 	object_description_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	object_description_pool_create_info.maxSets = MAX_OBJECTS;
+	object_description_pool_create_info.maxSets = 3;//MAX_OBJECTS;
 	object_description_pool_create_info.poolSizeCount = 1;
 	object_description_pool_create_info.pPoolSizes = &object_description_pool_size;
 
@@ -3549,7 +3543,7 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 	VkWriteDescriptorSet descriptor_write{};
 	descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 	descriptor_write.dstSet = sampler_descriptor_set;
-	descriptor_write.dstBinding = 1;
+	descriptor_write.dstBinding = TEXTURES_BINDING;
 	descriptor_write.dstArrayElement = 0;
 	descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 	descriptor_write.descriptorCount = static_cast<uint32_t>(image_info.size());
@@ -3563,7 +3557,7 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 	VkWriteDescriptorSet descriptor_write_sampler{};
 	descriptor_write_sampler.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 	descriptor_write_sampler.dstSet = sampler_descriptor_set;
-	descriptor_write_sampler.dstBinding = 0;
+	descriptor_write_sampler.dstBinding = SAMPLER_BINDING;
 	descriptor_write_sampler.dstArrayElement = 0;
 	descriptor_write_sampler.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
 	descriptor_write_sampler.descriptorCount = 1;
@@ -3804,7 +3798,7 @@ void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
 
 	VkWriteDescriptorSet object_description_buffer_write{};
 	object_description_buffer_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	object_description_buffer_write.dstSet = raytracing_descriptor_set[image_index];
+	object_description_buffer_write.dstSet = descriptor_sets[image_index];
 	object_description_buffer_write.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 	object_description_buffer_write.dstBinding = OBJECT_DESCRIPTION_BINDING;
 	object_description_buffer_write.pBufferInfo = &object_description_buffer_info;

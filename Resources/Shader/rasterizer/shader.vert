@@ -13,7 +13,7 @@
 
 layout (location = 0) in vec3 positions; 
 layout (location = 1) in vec3 normal;
-layout (location = 2) in vec3 matID;
+layout (location = 2) in vec3 color;
 layout (location = 3) in vec2 tex_coords;
 
 layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform _UboViewProjection {
@@ -30,7 +30,7 @@ layout (push_constant) uniform _PushConstantRaster {
 
 layout (location = 0) out vec2 texture_coordinates;
 layout (location = 1) out vec3 shading_normal;
-layout (location = 2) flat out uint fragMaterialID;
+layout (location = 2) out vec3 fragment_color;
 layout (location = 3) out vec3 worldPosition;
 
 out gl_PerVertex
@@ -50,7 +50,7 @@ void main () {
 	shading_normal = vec3(transpose(inverse(pc_raster.model)) * vec4(normal, 0.0f));
 	texture_coordinates = tex_coords;
 
-	fragMaterialID = uint(matID[0]);
+	fragment_color = color;
 
 	gl_Position = vulkan_position;
 }

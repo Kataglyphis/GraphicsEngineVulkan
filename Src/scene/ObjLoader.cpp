@@ -39,9 +39,9 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
         // prepare for enlargement
-        vertices.reserve(shapes[s].mesh.indices.size() + vertices.size());
-        indices.reserve(shapes[s].mesh.indices.size() + indices.size());
-        materialIndex.insert(materialIndex.end(), shapes[s].mesh.material_ids.begin(), shapes[s].mesh.material_ids.end());
+        /*vertices.reserve(shapes[s].mesh.indices.size() + vertices.size());
+        indices.reserve(shapes[s].mesh.indices.size() + indices.size());*/
+        //materialIndex.insert(materialIndex.end(), shapes[s].mesh.material_ids.begin(), shapes[s].mesh.material_ids.end());
 
         // Loop over faces(polygon)
         size_t index_offset = 0;
@@ -70,7 +70,10 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
 
                 glm::vec3 color(-1.f);
                 if (!attrib.colors.empty()) {
-
+                    tinyobj::real_t c0 = attrib.colors[3 * size_t(idx.vertex_index) + 0];
+                    tinyobj::real_t c1 = attrib.colors[3 * size_t(idx.vertex_index) + 1];
+                    tinyobj::real_t c2 = attrib.colors[3 * size_t(idx.vertex_index) + 2];
+                    color = glm::vec3(c0,c1,c2);
                 }
 
                 glm::vec2 tex_coords(0.0f);
@@ -82,15 +85,11 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
                 }
 
 
-                Vertex vert;// (pos, tex_coords, normals);
+                Vertex vert;// (pos, color, normal, tex_coord, mat_id);
                 vert.pos = pos;
                 vert.normal = normals;
                 vert.color = color;
                 vert.texture_coords = tex_coords;
-                vert.mat_id.x = matToTex[shapes[s].mesh.material_ids[f]];
-                //if(shapes[s].mesh.material_ids[f] == 24) std::cout << shapes[s].mesh.material_ids[f] << endl;
-                /* vertices.push_back(vert);
-                indices.push_back(indices.size());*/
 
                 if (vertices_map.count(vert) == 0) {
 
@@ -105,8 +104,8 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
 
             index_offset += fv;
 
-            // per-face material
-            shapes[s].mesh.material_ids[f];
+            // per-face material; face usually is triangle
+            materialIndex.push_back(matToTex[shapes[s].mesh.material_ids[f]]);
         }
     }
 
@@ -128,7 +127,7 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
     }
 
     new_model->add_new_mesh(physical_device, logical_device, transfer_queue,
-                            command_pool, vertices, indices);
+                            command_pool, vertices, indices, materialIndex);
 
 	return new_model;
 }
@@ -150,22 +149,22 @@ std::vector<std::string> ObjLoader::load_textures(std::string modelFile)
     }
 
     auto& tol_materials = reader.GetMaterials();
-    textures.reserve(materials.size());
+    textures.reserve(tol_materials.size());
 
     // we now iterate over all materials to get diffuse textures
-    for (size_t i = 0; i < materials.size(); i++) {
+    for (size_t i = 0; i < tol_materials.size(); i++) {
 
         const tinyobj::material_t* mp = &tol_materials[i];
-        Material material;
-        material.ambient        = glm::vec3(material.ambient[0], material.ambient[1], material.ambient[2]);
-        material.diffuse        = glm::vec3(material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-        material.specular       = glm::vec3(material.specular[0], material.specular[1], material.specular[2]);
-        material.emission       = glm::vec3(material.emission[0], material.emission[1], material.emission[2]);
-        material.transmittance  = glm::vec3(material.transmittance[0], material.transmittance[1], material.transmittance[2]);
-        material.dissolve       = material.dissolve;
-        material.ior            = material.ior;
-        material.shininess      = material.shininess;
-        material.illum          = material.illum;
+        ObjMaterial material;
+        material.ambient        = glm::vec3(mp->ambient[0], mp->ambient[1], mp->ambient[2]);
+        material.diffuse        = glm::vec3(mp->diffuse[0], mp->diffuse[1], mp->diffuse[2]);
+        material.specular       = glm::vec3(mp->specular[0], mp->specular[1], mp->specular[2]);
+        material.emission       = glm::vec3(mp->emission[0], mp->emission[1], mp->emission[2]);
+        material.transmittance  = glm::vec3(mp->transmittance[0], mp->transmittance[1], mp->transmittance[2]);
+        material.dissolve       = mp->dissolve;
+        material.ior            = mp->ior;
+        material.shininess      = mp->shininess;
+        material.illum          = mp->illum;
 
         if (mp->diffuse_texname.length() > 0) {
 
@@ -188,7 +187,7 @@ std::vector<std::string> ObjLoader::load_textures(std::string modelFile)
 
     // for the case no .mtl file is given :)
     if (tol_materials.empty()) {
-        materials.emplace_back(Material());
+        materials.emplace_back(ObjMaterial());
     }
 
 

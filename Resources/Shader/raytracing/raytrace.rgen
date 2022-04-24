@@ -9,16 +9,16 @@
 
 layout(location = 0) rayPayloadEXT HitPayload payload;
 
-layout (set = UBO_VIEW_PROJECTION_SET, binding = UBO_VIEW_PROJECTION_BINDING) uniform _UboViewProjection {
+layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform _UboViewProjection {
     UboViewProjection ubo_view_projection;
 };
 
-layout (set = UBO_DIRECTIONS_SET, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
+layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
     UboDirections ubo_directions;
 };
 
-layout(set = TLAS_SET, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
-layout(set = OUT_IMAGE_SET, binding = OUT_IMAGE_BINDING, rgba8) uniform image2D image; 
+layout(set = 1, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
+layout(set = 1, binding = OUT_IMAGE_BINDING, rgba8) uniform image2D image; 
 
 layout(push_constant) uniform _PushConstantRay {
     PushConstantRay pc_ray;

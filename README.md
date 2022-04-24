@@ -13,15 +13,10 @@ Getting started with Vulkan
   <br>
   <a href="https://jotrocken.blog/"><img src="images/vulkan-logo.png" alt="OpenGLEngine" width="400"></a>
   <a href="https://jotrocken.blog/"><img src="images/Engine_logo.png" alt="OpenGLEngine" width="200"></a>
+  <a href="https://jotrocken.blog/"><img src="images/glm_logo.png" alt="OpenGLEngine" width="200"></a>
 </h1>
 
 <h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrocken.blog/" target="_blank"></a>.</h4>
-
-<!-- <p align="center">
-  <a href="https://paypal.me/JonasHeinle?locale.x=de_DE">
-    <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
-  </a>
-</p> -->
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -84,6 +79,8 @@ to report.
 | Rasterizer                          |         ✔️         |        ❌      |
 | Raytracing bascis                   |         ✔️         |        ❌      |
 | PBR support (UE4,disney,phong, etc.)|         ✔️         |        ❌      |
+| .obj Model loading                  |         ✔️         |        ❌      |
+| Mip Mapping                         |         ✔️         |        ❌      |
 
 ### Built With
 
@@ -94,12 +91,13 @@ to report.
 * [STB](https://github.com/nothings/stb)
 * [DOXYGEN](https://www.doxygen.nl/index.html)
 * [GTEST](https://github.com/google/googletest)
-
+* [CMAKE](https://cmake.org/)
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 You might only clone the repo, run cmake and you are good to go.
+I only guarantee a successful build for windows hence it is frequently tested.
 
 ### Prerequisites
 
@@ -107,12 +105,9 @@ You will need Vulkan. If you want to build documantaries you will need [DOXYGEN]
 
 ### Shaders
 
-You will have to compile the shaders manually. A proper script to automate it is 
-provided.
-
 Update your script/batch file with the proper path/vulkan version. Otherwise 
 it will fail to compile shadres! (The very moment I wrote this readme I used 
-the vulkan version 1.2.176.1 and installed the SDK directly under C:\\)
+the vulkan version 1.3.204.1 and installed the SDK directly under C:\\)
 
 For Linux user: Open Terminal and navigate to "Resources/Shader" directory. Then: 
 ```sh
@@ -159,13 +154,13 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the GPL-3.0 License. See `LICENSE` for more information.
+Distributed under the BSD 3-Clause "New" or "Revised" License. See `LICENSE` for more information.
 
 
 <!-- CONTACT -->
 ## Contact
 
-Jonas Heinle - [@your_twitter](https://twitter.com/Cataglyphis_) - jonasheinle@googlemail.com
+Jonas Heinle - [@Cataglyphis_](https://twitter.com/Cataglyphis_) - jonasheinle@googlemail.com
 
 Project Link: [https://github.com/Kataglyphis/GraphicsEngineVulkan](https://github.com/Kataglyphis/GraphicsEngineVulkan)
 
