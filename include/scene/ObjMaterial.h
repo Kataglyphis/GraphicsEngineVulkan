@@ -1,11 +1,11 @@
 #pragma once
 #include <glm/glm.hpp>
 
-class Material
+class ObjMaterial
 {
 public:
 
-	Material();
+	ObjMaterial();
 
 	glm::vec3 ambient		= glm::vec3(0.1f, 0.1f, 0.1f);
 	glm::vec3 diffuse		= glm::vec3(0.7f, 0.7f, 0.7f);

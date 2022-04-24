@@ -91,35 +91,11 @@ struct SwapChainImage {
 
 };
 
-// vertex data representation (layout)
-struct Vertex {
-
-	glm::vec3 pos;
-	glm::vec3 normal;
-	glm::vec3 mat_id;
-	glm::vec2 texture_coords;
-
-	bool operator==(const Vertex& other) const {
-		return pos == other.pos && normal == other.normal && texture_coords == other.texture_coords;
-	}
-
-};
-
-namespace std {
-	template<> struct hash<Vertex> {
-		size_t operator()(Vertex const& vertex) const {
-			return ((hash<glm::vec3>()(vertex.pos) ^
-				(hash<glm::vec3>()(vertex.normal) << 1)) >> 1) ^
-				(hash<glm::vec2>()(vertex.texture_coords) << 1);
-		}
-	};
-}
-
 struct ObjectDescription {
 	
 	uint64_t vertex_address;
 	uint64_t index_address;
-	uint64_t placeholder1;
+	uint64_t material_index_address;
 	uint64_t placeholder2;
 
 };

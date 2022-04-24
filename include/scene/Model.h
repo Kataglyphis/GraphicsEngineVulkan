@@ -14,7 +14,8 @@ public:
     Model();
     Model(std::vector<Mesh> new_mesh_list, uint32_t index);
     void add_new_mesh(  VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
-                        VkCommandPool command_pool, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices);
+                        VkCommandPool command_pool, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices,
+                        std::vector<unsigned int>&	materialIndex);
     size_t get_mesh_count();
     Mesh* get_mesh(size_t index);
     glm::mat4 get_model();
@@ -22,16 +23,9 @@ public:
     uint32_t get_primitive_count();
     std::vector<std::string> get_texture_list();
 
-    void load_model_in_ram(VkPhysicalDevice new_physical_device, VkDevice new_device, VkQueue transfer_queue,
-                            VkCommandPool command_pool, std::string model_path, std::vector<int> matToTex);
-
     ObjectDescription get_object_description();
 
-    std::vector<std::string> load_textures(std::string modelFile);
-
     void set_model(glm::mat4 model);
-
-    std::string get_base_dir(const std::string& filepath);
 
     void destroy_model();
    

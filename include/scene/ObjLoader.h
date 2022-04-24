@@ -3,7 +3,8 @@
 #include <memory>
 
 #include "Model.h"
-#include "Material.h"
+#include "Vertex.h"
+#include "ObjMaterial.h"
 #include "VulkanRenderer.hpp"
 
 class ObjLoader
@@ -26,7 +27,7 @@ private:
 
 	std::vector<Vertex>			vertices;
 	std::vector<unsigned int>	indices;
-	std::vector<Material>		materials;
+	std::vector<ObjMaterial>	materials;
 	std::vector<unsigned int>	materialIndex;
 	std::vector<std::string>	textures;
 

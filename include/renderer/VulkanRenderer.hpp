@@ -338,7 +338,7 @@ private:
 	std::vector<VkDeviceMemory> texture_images_memory;
 	std::vector<VkImageView> texture_image_views;
 	// mipmapping
-	int max_levels;
+	int max_levels = 10;
 
 	// ---- HELPER ---- BEGIN
 	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);

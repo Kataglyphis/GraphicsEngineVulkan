@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Utilities.h"
-
+#include "Vertex.h"
 
 using namespace std;
 
@@ -12,7 +12,8 @@ class Mesh {
 public:
 
     Mesh(   VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
-            VkCommandPool transfer_command_pool, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
+            VkCommandPool transfer_command_pool, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices,
+            std::vector<unsigned int>& materialIndex);
     
     Mesh();
 
@@ -23,6 +24,7 @@ public:
     int get_vertex_count();
     int get_index_count();
     VkBuffer get_vertex_buffer();
+    VkBuffer get_materialID_buffer();
     VkBuffer get_index_buffer();
 
     void destroy_buffers();
@@ -45,11 +47,15 @@ private:
     VkBuffer object_description_buffer;
     VkDeviceMemory object_description_buffer_memory;
 
+    VkBuffer material_ids_buffer;
+    VkDeviceMemory material_ids_buffer_memory;
+
     VkPhysicalDevice physical_device;
     VkDevice device;
 
     void create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices);
     void create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<uint32_t>* indices);
+    void create_material_id_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<unsigned int>* materialIndex);
 
 };
 

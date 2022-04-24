@@ -9,7 +9,7 @@ struct Vertex {
 
 	vec3 pos;
 	vec3 normal;
-	vec3 mat_id;
+	vec3 color;
 	vec2 texture_coords;
 
 };
@@ -18,7 +18,7 @@ struct ObjectDescription {
 
 	uint64_t vertex_address;
 	uint64_t index_address;
-	uint64_t placeholder1;
+	uint64_t material_index_address;
 	uint64_t placeholder2;
 
 };
