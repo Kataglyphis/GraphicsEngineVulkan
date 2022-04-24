@@ -1,4 +1,4 @@
 # exclude all files from language analysis which do not directly contribute to engine
-ExternalLib/* linguist-vendored
-Documents/* linguist-vendored
-build/* linguist-vendored
+ExternalLib/** linguist-vendored
+Documents/** linguist-vendored
+build/** linguist-vendored
