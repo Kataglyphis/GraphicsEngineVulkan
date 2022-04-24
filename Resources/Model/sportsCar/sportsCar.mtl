@@ -12,7 +12,7 @@ newmtl SmallHeadLights
 	Ks 0.9000 0.9000 0.9000
 	Ke 5 5 5
 
-newmtl  RearLights
+newmtl RearLights
 	Ns 100.0000
 	Ni 1.0000
 	d 1.0000

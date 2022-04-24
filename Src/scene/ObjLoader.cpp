@@ -70,10 +70,10 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
 
                 glm::vec3 color(-1.f);
                 if (!attrib.colors.empty()) {
-                    tinyobj::real_t c0 = attrib.colors[3 * size_t(idx.vertex_index) + 0];
-                    tinyobj::real_t c1 = attrib.colors[3 * size_t(idx.vertex_index) + 1];
-                    tinyobj::real_t c2 = attrib.colors[3 * size_t(idx.vertex_index) + 2];
-                    color = glm::vec3(c0,c1,c2);
+                    tinyobj::real_t red     = attrib.colors[3 * size_t(idx.vertex_index) + 0];
+                    tinyobj::real_t green   = attrib.colors[3 * size_t(idx.vertex_index) + 1];
+                    tinyobj::real_t blue    = attrib.colors[3 * size_t(idx.vertex_index) + 2];
+                    color = glm::vec3(red,green,blue);
                 }
 
                 glm::vec2 tex_coords(0.0f);
@@ -85,12 +85,7 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
                     tex_coords = glm::vec2(tx, ty);
                 }
 
-
-                Vertex vert;// (pos, color, normal, tex_coord, mat_id);
-                vert.pos = pos;
-                vert.normal = normals;
-                vert.color = color;
-                vert.texture_coords = tex_coords;
+                Vertex vert{ pos,normals,color,tex_coords};
 
                 if (vertices_map.count(vert) == 0) {
 

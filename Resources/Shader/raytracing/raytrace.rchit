@@ -85,12 +85,6 @@ void main() {
 
     // material id is stored per primitive
     vec3 ambient = vec3(0.f);
-    // check only one vertex is enough :)
-//    if(v0.color.x >= 0 && v0.color.y >= 0 && v0.color.z >= 0) {
-//        ambient +=  v0.color * barycentrics.x +
-//                    v1.color * barycentrics.y +
-//                    v2.color * barycentrics.z;
-//    } else {
     uint texture_id = materialIDs.i[gl_PrimitiveID];
     ambient += texture(sampler2D(tex[nonuniformEXT(texture_id)], texture_sampler), texture_coordinates).xyz;
     //}
