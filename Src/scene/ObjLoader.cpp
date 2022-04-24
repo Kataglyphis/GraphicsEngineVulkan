@@ -80,7 +80,8 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
                 // Check if `texcoord_index` is zero or positive. negative = no texcoord data
                 if (idx.texcoord_index >= 0 && !attrib.texcoords.empty()) {
                     tinyobj::real_t tx = attrib.texcoords[2 * size_t(idx.texcoord_index) + 0];
-                    tinyobj::real_t ty = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
+                    // flip y coordinate !! 
+                    tinyobj::real_t ty = 1.f - attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
                     tex_coords = glm::vec2(tx, ty);
                 }
 
