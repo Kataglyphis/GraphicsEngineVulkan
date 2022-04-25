@@ -22,9 +22,6 @@ public:
 							 
 	int illum				= 0;
 	int textureID			= -1;
-	/*int placeholder1		= -1;
-	int placeholder2		= -1;
-	int placeholder3		= -1;*/
 
 private:
 };

@@ -64,7 +64,4 @@ struct ObjMaterial
 	float	dissolve;  // 1 == opaque; 0 == fully transparent
 	int		illum;     // illumination model (see http://www.fileformat.info/format/material/)
 	int		textureId;
-	/*int		placeholder1;
-	int		placeholder2;
-	int		placeholder3;*/
 };

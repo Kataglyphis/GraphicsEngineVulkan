@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['statistics_456',['Statistics',['../statistics.html',1,'']]],
-  ['staying_20within_20budget_457',['Staying within budget',['../staying_within_budget.html',1,'']]]
+  ['recommended_20usage_20patterns_0',['Recommended usage patterns',['../usage_patterns.html',1,'index']]],
+  ['resource_20aliasing_20_28overlap_29_1',['Resource aliasing (overlap)',['../resource_aliasing.html',1,'index']]]
 ];
