@@ -96,7 +96,7 @@ struct ObjectDescription {
 	uint64_t vertex_address;
 	uint64_t index_address;
 	uint64_t material_index_address;
-	uint64_t placeholder2;
+	uint64_t material_address;
 
 };
 

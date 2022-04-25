@@ -41,6 +41,10 @@ layout(buffer_reference, scalar) buffer MaterialIDs {
     int i[]; 
 }; // per triangle material id
 
+layout(buffer_reference, scalar) buffer Materials {
+	ObjMaterial m[]; 
+}; // all materials of .obj
+
 layout(set = 1, binding = SAMPLER_BINDING) uniform sampler texture_sampler;
 layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[TEXTURE_COUNT];
 
@@ -48,9 +52,10 @@ layout (location = 0) out vec4 out_color;
 
 void main() {
 	
-	// for now only one object allowed :)
-	ObjectDescription obj_res = object_description.i[0];
-    MaterialIDs materialIDs = MaterialIDs(obj_res.material_index_address);
+	
+	ObjectDescription obj_res	= object_description.i[0];						// for now only one object allowed :)
+    MaterialIDs materialIDs		= MaterialIDs(obj_res.material_index_address);	// material id per triangle (face)
+	Materials materials			= Materials(obj_res.material_address);			// array of all materials
 
 	vec3 L = normalize(vec3(-ubo_directions.light_dir));
 	vec3 N = normalize(shading_normal);
@@ -58,15 +63,14 @@ void main() {
 	
 	vec3 ambient = vec3(0.f);
 
-	// otherwise we are using textures
-	uint texture_id = materialIDs.i[gl_PrimitiveID];
-	ambient += texture(sampler2D(tex[nonuniformEXT(texture_id)], texture_sampler), texture_coordinates).xyz;
+	int texture_id	= materials.m[materialIDs.i[gl_PrimitiveID]].textureId;
+	ambient			+= texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
 
 	float roughness = 0.01;
 	vec3 light_color = vec3(1.f);
 	float light_intensity = 1.0f;
 
-	vec3 color = vec3(0);
+	vec3 color = ambient;//vec3(0);
 	// mode : switching between PBR models
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 
