@@ -2143,11 +2143,13 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	auto raygen_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rgen.spv");
 	auto raychit_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rchit.spv");
 	auto raymiss_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rmiss.spv");
+	auto shadow_shader_code = read_file("../Resources/Shader/raytracing/spv/shadow.rmiss.spv");
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule raygen_shader_module = create_shader_module(raygen_shader_code);
 	VkShaderModule raychit_shader_module = create_shader_module(raychit_shader_code);
 	VkShaderModule raymiss_shader_module = create_shader_module(raymiss_shader_code);
+	VkShaderModule shadow_shader_module = create_shader_module(shadow_shader_code);
 
 	// create all shader stage infos for creating a group
 	VkPipelineShaderStageCreateInfo rgen_shader_stage_info{};
@@ -2162,6 +2164,12 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	rmiss_shader_stage_info.module = raymiss_shader_module;
 	rmiss_shader_stage_info.pName = "main";
 
+	VkPipelineShaderStageCreateInfo shadow_shader_stage_info{};
+	shadow_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	shadow_shader_stage_info.stage = VK_SHADER_STAGE_MISS_BIT_KHR;
+	shadow_shader_stage_info.module = shadow_shader_module;
+	shadow_shader_stage_info.pName = "main";
+
 	VkPipelineShaderStageCreateInfo rchit_shader_stage_info{};
 	rchit_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	rchit_shader_stage_info.stage = VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
@@ -2169,13 +2177,15 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	rchit_shader_stage_info.pName = "main";
 
 	// we have all shader stages together
-	std::array<VkPipelineShaderStageCreateInfo, 3> shader_stages = { rgen_shader_stage_info ,
+	std::array<VkPipelineShaderStageCreateInfo, 4> shader_stages = { rgen_shader_stage_info ,
 																	rmiss_shader_stage_info ,
+																	shadow_shader_stage_info ,
 																	rchit_shader_stage_info };
 
 	enum StageIndices {
 		eRaygen,
 		eMiss,
+		eMiss2,
 		eClosestHit,
 		eShaderGroupCount
 	};
@@ -2207,14 +2217,25 @@ void VulkanRenderer::create_raytracing_pipeline() {
 
 	shader_group_create_infos[2].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
 	shader_group_create_infos[2].pNext = nullptr;
-	shader_group_create_infos[2].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_TRIANGLES_HIT_GROUP_KHR;
-	shader_group_create_infos[2].generalShader = VK_SHADER_UNUSED_KHR;
-	shader_group_create_infos[2].closestHitShader = eClosestHit;
+	shader_group_create_infos[2].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR;
+	shader_group_create_infos[2].generalShader = eMiss2;
+	shader_group_create_infos[2].closestHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[2].anyHitShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[2].intersectionShader = VK_SHADER_UNUSED_KHR;
 	shader_group_create_infos[2].pShaderGroupCaptureReplayHandle = nullptr;
 
 	shader_groups.push_back(shader_group_create_infos[2]);
+
+	shader_group_create_infos[3].sType = VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR;
+	shader_group_create_infos[3].pNext = nullptr;
+	shader_group_create_infos[3].type = VK_RAY_TRACING_SHADER_GROUP_TYPE_TRIANGLES_HIT_GROUP_KHR;
+	shader_group_create_infos[3].generalShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[3].closestHitShader = eClosestHit;
+	shader_group_create_infos[3].anyHitShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[3].intersectionShader = VK_SHADER_UNUSED_KHR;
+	shader_group_create_infos[3].pShaderGroupCaptureReplayHandle = nullptr;
+
+	shader_groups.push_back(shader_group_create_infos[3]);
 
 	std::vector<VkDescriptorSetLayout> layouts;
 	layouts.push_back(descriptor_set_layout);
@@ -2252,7 +2273,7 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	/*raytracing_pipeline_create_info.pLibraryInfo = &pipeline_library_create_info;
 	raytracing_pipeline_create_info.pLibraryInterface = NULL;*/
 	// TODO: HARDCODED FOR NOW;
-	raytracing_pipeline_create_info.maxPipelineRayRecursionDepth = 1;
+	raytracing_pipeline_create_info.maxPipelineRayRecursionDepth = 2;
 	raytracing_pipeline_create_info.layout = raytracing_pipeline_layout;
 
 	result = pvkCreateRayTracingPipelinesKHR(MainDevice.logical_device, VK_NULL_HANDLE, VK_NULL_HANDLE, 1, 
@@ -2267,6 +2288,8 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	vkDestroyShaderModule(MainDevice.logical_device, raygen_shader_module, nullptr);
 	vkDestroyShaderModule(MainDevice.logical_device, raymiss_shader_module, nullptr);
 	vkDestroyShaderModule(MainDevice.logical_device, raychit_shader_module, nullptr);
+	vkDestroyShaderModule(MainDevice.logical_device, shadow_shader_module, nullptr);
+
 }
 
 void VulkanRenderer::create_shader_binding_table()
@@ -2313,7 +2336,7 @@ void VulkanRenderer::create_shader_binding_table()
 														&raygen_shader_binding_table_buffer,
 														&raygen_shader_binding_table_buffer_memory);
 
-	create_buffer(MainDevice.physical_device, MainDevice.logical_device, handle_size,
+	create_buffer(MainDevice.physical_device, MainDevice.logical_device, 2 * handle_size,
 														bufferUsageFlags,
 														memoryUsageFlags,
 														&miss_shader_binding_table_buffer,
@@ -2334,8 +2357,8 @@ void VulkanRenderer::create_shader_binding_table()
 	vkMapMemory(MainDevice.logical_device, hit_shader_binding_table_buffer_memory, 0, VK_WHOLE_SIZE, 0, &mapped_rchit);
 
 	memcpy(mapped_raygen, handles.data(), handle_size);
-	memcpy(mapped_miss, handles.data() + handle_size_aligned, handle_size);
-	memcpy(mapped_rchit, handles.data() + handle_size_aligned * 2, handle_size);
+	memcpy(mapped_miss, handles.data() + handle_size_aligned, handle_size * 2);
+	memcpy(mapped_rchit, handles.data() + handle_size_aligned * 3, handle_size);
 
 }
 
@@ -3830,23 +3853,6 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 												vkGetDeviceProcAddr(MainDevice.logical_device, "vkGetBufferDeviceAddress");
 	PFN_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR = (PFN_vkCmdTraceRaysKHR)
 												vkGetDeviceProcAddr(MainDevice.logical_device, "vkCmdTraceRaysKHR");
-
-	// BOTH: RAYTRACING AND RASTERIZER WRITING TO THE SAME COMMAND BUFFER FOR NOW 
-	// information about how to begin each command buffer
-
-	//vkResetCommandBuffer(command_buffers[image_index], VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
-
-	//VkCommandBufferBeginInfo buffer_begin_info{};
-	//buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	////buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-	//// start recording commands to command buffer
-	//VkResult result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
-
-	//if (result != VK_SUCCESS) {
-
-	//	throw std::runtime_error("Failed to start recording a command buffer!");
-
-	//}
 
 	if (raytracing) {
 		
