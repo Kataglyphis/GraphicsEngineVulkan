@@ -105,17 +105,7 @@ You will need Vulkan. If you want to build documantaries you will need [DOXYGEN]
 
 ### Shaders
 
-Update your script/batch file with the proper path/vulkan version. Otherwise 
-it will fail to compile shadres! (The very moment I wrote this readme I used 
-the vulkan version 1.3.204.1 and installed the SDK directly under C:\\)
-
-For Linux user: Open Terminal and navigate to "Resources/Shader" directory. Then: 
-```sh
-chmod +x compile.sh
-./compile.sh
-```
-
-For Windows user: run the batch file (double click on the 'compile.bat' in the Resources/Shader folder)
+Now automatically compiled for you. No extra work needed :))
 
 ### Installation
 
