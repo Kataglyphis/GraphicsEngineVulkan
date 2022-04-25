@@ -62,6 +62,9 @@ FILE(GLOB SCENE_FILTER                  "include/scene/*.h"                     
 FILE(GLOB WINDOW_FILTER                 "include/window/*.h"                                         "Src/window/*.cpp"
                                         "include/window/*.hpp")
 
+FILE(GLOB MEMORY_FILTER                 "include/memory/*.h"                                         "Src/memory/*.cpp"
+                                        "include/memory/*.hpp")
+
 FILE(GLOB COMMON_FILTER                 "include/common/*.h"                                          
                                         "include/common/*.hpp")
 
@@ -76,6 +79,7 @@ source_group("gui"                                              FILES ${GUI_FILT
 source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
 source_group("app/scene"                                        FILES ${SCENE_FILTER})
 source_group("app/window"                                       FILES ${WINDOW_FILTER})
+source_group("app/memory"                                       FILES ${MEMORY_FILTER})
 source_group("app/common"                                       FILES ${COMMON_FILTER})
 source_group("app"                                              FILES ${APP_FILTER})
 
@@ -167,6 +171,7 @@ ${POST_SHADER_FILTER}
 ${RENDERER_FILTER}
 ${SCENE_FILTER}
 ${WINDOW_FILTER}
+${MEMORY_FILTER}
 ${COMMON_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
@@ -197,6 +202,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
                                                     ./include/common
                                                     ./include/scene
                                                     ./include/window
+                                                    ./include/memory
                                                     ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})

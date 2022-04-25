@@ -98,34 +98,28 @@ void main() {
 	vec3 N = normalize(normal_hit);
 	vec3 V = normalize(ubo_directions.cam_pos.xyz - hit_pos);
 
-//    if(dot(world_normal_hit, L) > 0) {
-//    
-//        float t_min = 0.001;
-//        float t_max = 10000;
-//        vec3 origin = gl_WorldRayOriginEXT + gl_WorldRayDirectionEXT * gl_HitTEXT;
-//        vec3 ray_dir = L;
-//        uint flags = gl_RayFlagsTerminateOnFirstHitEXT | gl_RayFlagsOpaqueEXT | gl_RayFlagsSkipClosestHitShaderEXT;
-//        isShadowed = true;
-//        traceRayEXT(TLAS,  // acceleration structure
-//                                flags,       // rayFlags
-//                                0xFF,        // cullMask
-//                                0,           // sbtRecordOffset
-//                                0,           // sbtRecordStride
-//                                1,           // missIndex
-//                                origin,      // ray origin
-//                                t_min,        // ray min range
-//                                ray_dir,      // ray direction
-//                                t_max,        // ray max range
-//                                1            // payload (location = 1)
-//        );
-//	    
-//        if(!isShadowed) {
-//        
-//            specular = pow(max(dot(R,V), 0.0f), 8.0) * vec3(1.f);
-//
-//        } 
-//
-//    }
+    isShadowed = true;
+    if(dot(world_normal_hit, L) > 0) {
+    
+        float t_min = 0.001;
+        float t_max = 10000;
+        vec3 origin = gl_WorldRayOriginEXT + gl_WorldRayDirectionEXT * gl_HitTEXT;
+        vec3 ray_dir = L;
+        uint flags = gl_RayFlagsTerminateOnFirstHitEXT | gl_RayFlagsOpaqueEXT | gl_RayFlagsSkipClosestHitShaderEXT;
+        traceRayEXT(TLAS,  // acceleration structure
+                    flags,       // rayFlags
+                    0xFF,        // cullMask
+                    0,           // sbtRecordOffset
+                    0,           // sbtRecordStride
+                    1,           // missIndex
+                    origin,      // ray origin
+                    t_min,        // ray min range
+                    ray_dir,      // ray direction
+                    t_max,        // ray max range
+                    1            // payload (location = 1)
+        );
+
+    }
 
     float roughness = 0.9;
     vec3 light_color = vec3(1.f);
@@ -137,17 +131,19 @@ void main() {
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED 
     // [3] --> PHONG
-	int mode = 3;
-	switch (mode) {
-	case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
-		break;
-	case 1: payload.hit_value += evaluatePBRBooksPBR(ambient, N, L, V, roughness, light_color, light_intensity);
-		break;
-	case 2: payload.hit_value += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
-		break;
-    case 3: payload.hit_value += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
-	    break;
-	}
+    if(!isShadowed) {
+	    int mode = 3;
+	    switch (mode) {
+	    case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		    break;
+	    case 1: payload.hit_value += evaluatePBRBooksPBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		    break;
+	    case 2: payload.hit_value += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
+		    break;
+        case 3: payload.hit_value += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
+	        break;
+	    }
+    }
 
 
 }
