@@ -16,6 +16,7 @@
 #include <array>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sstream>
 
 #include "stb_image.h"
 
@@ -134,9 +135,6 @@ private:
 
 	// texture functions
 	int create_texture_descriptor(VkImageView texture_image);
-
-	// allocate functions
-	void allocate_dynamic_buffer_transfer_space();
 
 	// checker functions
 	bool check_instance_extension_support(std::vector<const char*>* check_extensions);

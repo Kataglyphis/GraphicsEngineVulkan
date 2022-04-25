@@ -74,11 +74,11 @@ int main() {
     dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
     vulkan_renderer.update_model(0, dragon_model);
     vulkan_renderer.update_raytracing(raytracing);
-
     // ----- !!!IMPORTANT!!! we initialize raytracin after setting up the scene
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
     while (!main_window->get_should_close()) {
     
+        std::cout << GLSLC_EXE << "\n";
         //poll all events incoming from user
         glfwPollEvents();
 
