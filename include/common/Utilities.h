@@ -515,20 +515,29 @@ static void compile_shader(std::string shader_src_dir, std::string shader_name) 
 	// GLSLC_EXE is set by cmake to the location of the vulkan glslc
 	std::string target = " --target-env=vulkan1.3 ";
 	std::stringstream shader_src_path;
+	std::stringstream shader_log_file;
 	std::stringstream cmdShaderCompile;
+	std::stringstream adminPriviliges;
+	adminPriviliges << "runas /user:<admin-user> \"";
 
 	shader_src_path << shader_src_dir << shader_name;
 	std::string shader_spv_path = get_shader_spv_dir(shader_src_dir, shader_name);
+	shader_log_file << shader_src_dir << shader_name << ".log.txt";
+	std::stringstream log_stdout_and_stderr;
+	log_stdout_and_stderr <<	" > " << shader_log_file.str() <<
+								" 2> " << shader_log_file.str();
 
-	cmdShaderCompile << GLSLC_EXE
+	cmdShaderCompile	//<< adminPriviliges.str()
+		<< GLSLC_EXE
 		<< target
 		<< shader_src_path.str()
 		<< " -o "
 		<< shader_spv_path;
+						//<< log_stdout_and_stderr.str();
 
-	std::cout << cmdShaderCompile.str().c_str();
+	//std::cout << cmdShaderCompile.str().c_str();
 
-	system(cmdShaderCompile.str().c_str());
+	system(cmdShaderCompile.str().c_str() );
 }
 
 //static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
