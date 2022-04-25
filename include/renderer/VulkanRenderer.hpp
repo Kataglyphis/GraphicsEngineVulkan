@@ -19,6 +19,7 @@
 
 #include "stb_image.h"
 
+#include "Allocator.h"
 #include "MyWindow.h"
 #include "Utilities.h"
 #include "Mesh.h"
@@ -110,11 +111,17 @@ private:
 	std::vector<VkCommandBuffer> command_buffers;
 	VkFormat swap_chain_image_format;
 	VkExtent2D swap_chain_extent;
+
+	// new era of memory management for my project
+	// for now on integrate vma 
+	Allocator allocator;
+
 	void recreate_swap_chain();
 
 	// core create functions
 	void create_instance();
 	void create_logical_device();
+	void create_vma_allocator();
 	void create_surface();
 	void create_swap_chain();
 

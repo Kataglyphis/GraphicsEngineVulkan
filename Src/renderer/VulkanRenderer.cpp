@@ -1,5 +1,10 @@
 #include "VulkanRenderer.hpp"
 
+#ifndef VMA_IMPLEMENTATION
+#define VMA_IMPLEMENTATION
+#endif // !VMA_IMPLEMENTATION
+#include "vk_mem_alloc.h"
+
 VulkanRenderer::VulkanRenderer() : max_levels(std::numeric_limits<int>::max()), 
 																	current_frame(0),
 																	framebuffer_resized(false),
@@ -48,6 +53,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		create_surface();
 		get_physical_device();
 		create_logical_device();
+		create_vma_allocator();
 		create_command_pool();
 		create_swap_chain();
 		create_uniform_buffers();
@@ -563,6 +569,11 @@ void VulkanRenderer::create_logical_device()
 	vkGetDeviceQueue(MainDevice.logical_device, indices.presentation_family, 0, &presentation_queue);
 	vkGetDeviceQueue(MainDevice.logical_device, indices.compute_family, 0, &compute_queue);
 
+}
+
+void VulkanRenderer::create_vma_allocator()
+{
+	allocator = Allocator(MainDevice.logical_device, MainDevice.physical_device, instance);
 }
 
 void VulkanRenderer::create_surface()
