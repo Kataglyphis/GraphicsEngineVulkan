@@ -4,6 +4,7 @@
 
 #include "Utilities.h"
 #include "Vertex.h"
+#include "ObjMaterial.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ public:
 
     Mesh(   VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
             VkCommandPool transfer_command_pool, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices,
-            std::vector<unsigned int>& materialIndex);
+            std::vector<unsigned int>& materialIndex, std::vector<ObjMaterial>&	materials);
     
     Mesh();
 
@@ -50,12 +51,16 @@ private:
     VkBuffer material_ids_buffer;
     VkDeviceMemory material_ids_buffer_memory;
 
+    VkBuffer materials_buffer;
+    VkDeviceMemory materials_buffer_memory;
+
     VkPhysicalDevice physical_device;
     VkDevice device;
 
     void create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices);
     void create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<uint32_t>* indices);
     void create_material_id_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<unsigned int>* materialIndex);
+    void create_material_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<ObjMaterial>* materials);
 
 };
 

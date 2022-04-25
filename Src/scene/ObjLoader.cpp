@@ -39,9 +39,8 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
         // prepare for enlargement
-        /*vertices.reserve(shapes[s].mesh.indices.size() + vertices.size());
-        indices.reserve(shapes[s].mesh.indices.size() + indices.size());*/
-        //materialIndex.insert(materialIndex.end(), shapes[s].mesh.material_ids.begin(), shapes[s].mesh.material_ids.end());
+        vertices.reserve(shapes[s].mesh.indices.size() + vertices.size());
+        indices.reserve(shapes[s].mesh.indices.size() + indices.size());
 
         // Loop over faces(polygon)
         size_t index_offset = 0;
@@ -101,7 +100,8 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
             index_offset += fv;
 
             // per-face material; face usually is triangle
-            materialIndex.push_back(matToTex[shapes[s].mesh.material_ids[f]]);
+            // matToTex[shapes[s].mesh.material_ids[f]]
+            materialIndex.push_back(shapes[s].mesh.material_ids[f]);
         }
     }
 
@@ -123,7 +123,7 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
     }
 
     new_model->add_new_mesh(physical_device, logical_device, transfer_queue,
-                            command_pool, vertices, indices, materialIndex);
+                            command_pool, vertices, indices, materialIndex, this->materials);
 
 	return new_model;
 }
@@ -147,6 +147,8 @@ std::vector<std::string> ObjLoader::load_textures(std::string modelFile)
     auto& tol_materials = reader.GetMaterials();
     textures.reserve(tol_materials.size());
 
+    int texture_id = 1;
+
     // we now iterate over all materials to get diffuse textures
     for (size_t i = 0; i < tol_materials.size(); i++) {
 
@@ -168,20 +170,23 @@ std::vector<std::string> ObjLoader::load_textures(std::string modelFile)
             std::string texture_filename = get_base_dir(modelFile) + "/textures/" + relative_texture_filename;
 
             textures.push_back(texture_filename);
-            material.textureID = static_cast<int>(textures.size()) - 1;
+            int offset = 1; // because we have the white texture at position 0
+            material.textureID = texture_id;
+            texture_id++;
 
         }
         else {
 
+            material.textureID = 0;
             textures.push_back("");
 
         }
 
-        materials.emplace_back(material);
+        materials.push_back(material);
 
     }
 
-    // for the case no .mtl file is given :)
+    // for the case no .mtl file is given place some random standard material ...
     if (tol_materials.empty()) {
         materials.emplace_back(ObjMaterial());
     }

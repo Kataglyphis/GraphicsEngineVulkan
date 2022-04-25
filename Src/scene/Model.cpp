@@ -13,10 +13,10 @@ Model::Model(std::vector<Mesh> new_mesh_list, uint32_t index)
 
 void Model::add_new_mesh(   VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
                             VkCommandPool command_pool, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices,
-                            std::vector<unsigned int>&	materialIndex)
+                            std::vector<unsigned int>&	materialIndex, std::vector<ObjMaterial>& materials)
 {
 
-    this->mesh = Mesh(physical_device, logical_device, transfer_queue, command_pool, vertices, indices, materialIndex);
+    this->mesh = Mesh(physical_device, logical_device, transfer_queue, command_pool, vertices, indices, materialIndex, materials);
 
 }
 

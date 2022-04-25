@@ -19,7 +19,7 @@ struct ObjectDescription {
 	uint64_t vertex_address;
 	uint64_t index_address;
 	uint64_t material_index_address;
-	uint64_t placeholder2;
+	uint64_t material_address;
 
 };
 
@@ -50,4 +50,21 @@ struct PushConstantRay {
 
 	vec4 clear_color;
 
+};
+
+struct ObjMaterial  
+{
+	vec3	ambient;
+	vec3	diffuse;
+	vec3	specular;
+	vec3	transmittance;
+	vec3	emission;
+	float	shininess;
+	float	ior;       // index of refraction
+	float	dissolve;  // 1 == opaque; 0 == fully transparent
+	int		illum;     // illumination model (see http://www.fileformat.info/format/material/)
+	int		textureId;
+	/*int		placeholder1;
+	int		placeholder2;
+	int		placeholder3;*/
 };

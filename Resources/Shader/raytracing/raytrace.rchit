@@ -45,23 +45,26 @@ layout(buffer_reference, scalar) buffer MaterialIDs {
     int i[]; 
 }; // per triangle material id
 
+layout(buffer_reference, scalar) buffer Materials {
+	ObjMaterial m[]; 
+}; // all materials of .obj
+
 layout(push_constant) uniform _PushConstantRay {
     PushConstantRay pc_ray;
 };
 
 void main() {
     
-    const vec3 barycentrics = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
-
-    ObjectDescription obj_res = object_description.i[gl_InstanceCustomIndexEXT];
-    Indices indices = Indices(obj_res.index_address);
-    Vertices vertices = Vertices(obj_res.vertex_address);
-    MaterialIDs materialIDs = MaterialIDs(obj_res.material_index_address);
-
-    // indices of triangle 
+    ObjectDescription obj_res   = object_description.i[gl_InstanceCustomIndexEXT];  // array of all object descriptions
+    Indices indices             = Indices(obj_res.index_address);                   // array of all indices
+    Vertices vertices           = Vertices(obj_res.vertex_address);                 // array of all vertices
+    MaterialIDs materialIDs     = MaterialIDs(obj_res.material_index_address);      // array of per face material indices
+    Materials materials		    = Materials(obj_res.material_address);			    // array of all materials
+    
+    // indices of closest-hit triangle 
     ivec3 ind = indices.i[gl_PrimitiveID];
 
-    // vertex of triangle 
+    // vertex of closest-hit triangle 
     Vertex v0 = vertices.v[ind.x];
     Vertex v1 = vertices.v[ind.y];
     Vertex v2 = vertices.v[ind.z];
@@ -70,6 +73,7 @@ void main() {
     v1.pos.y *= -1;
     v2.pos.y *= -1;
 
+    const vec3 barycentrics = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
 
     // compte coordinate of hit position 
     const vec3 hit_pos = v0.pos * barycentrics.x + v1.pos * barycentrics.y + v2.pos * barycentrics.z;
@@ -85,8 +89,8 @@ void main() {
 
     // material id is stored per primitive
     vec3 ambient = vec3(0.f);
-    uint texture_id = materialIDs.i[gl_PrimitiveID];
-    ambient += texture(sampler2D(tex[nonuniformEXT(texture_id)], texture_sampler), texture_coordinates).xyz;
+    int texture_id = materials.m[materialIDs.i[gl_PrimitiveID]].textureId;
+    ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
     //}
 
     vec3 L = normalize(vec3(-ubo_directions.light_dir)); 
