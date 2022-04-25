@@ -2138,7 +2138,15 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	PFN_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =
 								(PFN_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateRayTracingPipelinesKHR");
 
-	compile_shaders(SHADER_COMPILATION_FLAG::RAYTRACING);
+	std::string raytracing_shader_dir = "../Resources/Shader/raytracing/";
+
+	compile_shader(raytracing_shader_dir, "raytrace.rgen");
+	compile_shader(raytracing_shader_dir, "raytrace.rchit");
+	compile_shader(raytracing_shader_dir, "raytrace.rmiss");
+	compile_shader(raytracing_shader_dir, "shadow.rmiss");
+
+	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.vert"));
+	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.frag"));
 
 	auto raygen_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rgen.spv");
 	auto raychit_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rchit.spv");
@@ -2733,11 +2741,13 @@ void VulkanRenderer::create_push_constant_range()
 
 void VulkanRenderer::create_rasterizer_graphics_pipeline()
 {
+	std::string rasterizer_shader_dir	= "../Resources/Shader/rasterizer/";
 
-	compile_shaders(SHADER_COMPILATION_FLAG::RASTERIZATION);
+	compile_shader(rasterizer_shader_dir, "shader.vert");
+	compile_shader(rasterizer_shader_dir, "shader.frag");
 
-	auto vertex_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.frag.spv");
+	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.vert"));
+	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.frag"));
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -4073,22 +4083,6 @@ void VulkanRenderer::get_physical_device()
 	vkGetPhysicalDeviceProperties(MainDevice.physical_device, &device_properties);
 
 	// min_uniform_buffer_offset = device_properties.limits.minUniformBufferOffsetAlignment;
-
-}
-
-void VulkanRenderer::allocate_dynamic_buffer_transfer_space()
-{
-
-	// calculate alignment of model data
-	//model_uniform_alignment = (sizeof(Model) + min_uniform_buffer_offset - 1) & ~(min_uniform_buffer_offset - 1);
-
-	//// create space in memory to hold dynamic buffer that is aligned to our required alignment and holds MAX_OBJECTS
-	//// it was impossible for MSVC to implement std::aligned_alloc; use MSVC specific function instead!
-	//#if defined (_WIN32) 
-	//	model_transfer_space = (Model*)_aligned_malloc(model_uniform_alignment * MAX_OBJECTS, model_uniform_alignment);
-	//#elif defined (__linux__)
-	//	model_transfer_space = (Model*) std::aligned_alloc(model_uniform_alignment, model_uniform_alignment * MAX_OBJECTS);
-	//#endif	
 
 }
 

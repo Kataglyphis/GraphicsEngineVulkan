@@ -500,38 +500,69 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityF
 
 }
 
-static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
+static std::string get_shader_spv_dir(std::string shader_src_dir, std::string shader_name) {
 
-#if defined (_WIN32)
+	std::string shader_spv_dir = "spv/";
 
-	if (flag == RASTERIZATION) {
+	std::stringstream vertShaderSpv;
+	vertShaderSpv << shader_src_dir << shader_spv_dir << shader_name << ".spv";
 
-		system("..\\Resources\\Shader\\compile_rasterizer_shader.bat");
-
-	}
-	else if (flag == RAYTRACING) {
-
-		system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
-
-	}
-	else if (flag == POST) {
-
-		 system("..\\Resources\\Shader\\compile_post_shader.bat");
-
-	}
-
-	
-
-#elif defined (__linux__)
-
-	int result_system = system("chmod +x ../Resources/Shader/compile.sh");
-
-	result_system = system("../Resources/Shader/compile.sh");
-
-
-#endif
-
+	return vertShaderSpv.str();
 }
+
+static void compile_shader(std::string shader_src_dir, std::string shader_name) {
+
+	// GLSLC_EXE is set by cmake to the location of the vulkan glslc
+	std::string target = " --target-env=vulkan1.3 ";
+	std::stringstream shader_src_path;
+	std::stringstream cmdShaderCompile;
+
+	shader_src_path << shader_src_dir << shader_name;
+	std::string shader_spv_path = get_shader_spv_dir(shader_src_dir, shader_name);
+
+	cmdShaderCompile << GLSLC_EXE
+		<< target
+		<< shader_src_path.str()
+		<< " -o "
+		<< shader_spv_path;
+
+	std::cout << cmdShaderCompile.str().c_str();
+
+	system(cmdShaderCompile.str().c_str());
+}
+
+//static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
+//
+//#if defined (_WIN32)
+//
+//	if (flag == RASTERIZATION) {
+//
+//		system("..\\Resources\\Shader\\compile_rasterizer_shader.bat");
+//
+//	}
+//	else if (flag == RAYTRACING) {
+//
+//		system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
+//
+//	}
+//	else if (flag == POST) {
+//
+//		 system("..\\Resources\\Shader\\compile_post_shader.bat");
+//
+//	}
+//
+//	
+//
+//#elif defined (__linux__)
+//
+//	int result_system = system("chmod +x ../Resources/Shader/compile.sh");
+//
+//	result_system = system("../Resources/Shader/compile.sh");
+//
+//
+//#endif
+//
+//}
 
 // aligned piece of memory appropiately and when necessary return bigger piece
 static uint32_t align_up(uint32_t memory, uint32_t alignment) {

@@ -38,6 +38,8 @@ endfunction(add_shader)
 # we depend on vulkan 
 find_package(Vulkan REQUIRED)
 
+add_compile_definitions(GLSLC_EXE="${Vulkan_GLSLC_EXECUTABLE}" )
+
 add_subdirectory(ExternalLib)
 
 # control where the static and shared libraries are built so that on windows
