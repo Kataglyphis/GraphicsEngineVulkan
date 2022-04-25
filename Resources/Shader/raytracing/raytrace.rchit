@@ -131,7 +131,7 @@ void main() {
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED 
     // [3] --> PHONG
-    if(!isShadowed) {
+    //if(!isShadowed) {
 	    int mode = 3;
 	    switch (mode) {
 	    case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
@@ -143,7 +143,7 @@ void main() {
         case 3: payload.hit_value += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
 	        break;
 	    }
-    }
+    //}
 
 
 }

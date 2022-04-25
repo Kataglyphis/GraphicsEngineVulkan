@@ -207,9 +207,9 @@ void VulkanRenderer::hot_reload_all_shader()
 	vkDestroyPipelineLayout(MainDevice.logical_device, post_pipeline_layout, nullptr);
 	create_post_pipeline();
 
-	/*vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
+	vkDestroyPipeline(MainDevice.logical_device, raytracing_pipeline, nullptr);
 	vkDestroyPipelineLayout(MainDevice.logical_device, raytracing_pipeline_layout, nullptr);
-	create_raytracing_pipeline();*/
+	create_raytracing_pipeline();
 
 }
 
@@ -697,10 +697,13 @@ void VulkanRenderer::create_swap_chain()
 void VulkanRenderer::create_offscreen_graphics_pipeline()
 {
 
-	compile_shaders(SHADER_COMPILATION_FLAG::RASTERIZATION);
+	std::string rasterizer_shader_dir = "../Resources/Shader/rasterizer/";
 
-	auto vertex_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/rasterizer/spv/shader.frag.spv");
+	compile_shader(rasterizer_shader_dir, "shader.vert");
+	compile_shader(rasterizer_shader_dir, "shader.frag");
+
+	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.vert"));
+	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.frag"));
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -1196,14 +1199,20 @@ void VulkanRenderer::create_post_renderpass()
 void VulkanRenderer::create_post_pipeline()
 {
 
-	compile_shaders(SHADER_COMPILATION_FLAG::POST);
+	std::string post_shader_dir = "../Resources/Shader/post/";
+	std::string post_vert_shader = "post.vert";
+	std::string post_frag_shader = "post.frag";
 
-	auto vertex_shader_code = read_file("../Resources/Shader/post/spv/post.vert.spv");
-	auto fragment_shader_code = read_file("../Resources/Shader/post/spv/post.frag.spv");
+	auto vertex_shader_code		= read_file(get_shader_spv_dir(post_shader_dir, post_vert_shader));
+	auto fragment_shader_code	= read_file(get_shader_spv_dir(post_shader_dir, post_frag_shader));
+
+	compile_shader(post_shader_dir, post_vert_shader);
+	compile_shader(post_shader_dir, post_frag_shader);
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
 	VkShaderModule fragment_shader_module = create_shader_module(fragment_shader_code);
+
 
 	// shader stage creation information
 	// vertex stage creation information
@@ -2138,26 +2147,27 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	PFN_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =
 								(PFN_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateRayTracingPipelinesKHR");
 
-	std::string raytracing_shader_dir = "../Resources/Shader/raytracing/";
+	std::string raytracing_shader_dir	= "../Resources/Shader/raytracing/";
+	std::string raygen_shader			= "raytrace.rgen";
+	std::string chit_shader				= "raytrace.rchit";
+	std::string miss_shader				= "raytrace.rmiss";
+	std::string shadow_shader			= "shadow.rmiss";
 
-	compile_shader(raytracing_shader_dir, "raytrace.rgen");
-	compile_shader(raytracing_shader_dir, "raytrace.rchit");
-	compile_shader(raytracing_shader_dir, "raytrace.rmiss");
-	compile_shader(raytracing_shader_dir, "shadow.rmiss");
+	compile_shader(raytracing_shader_dir, raygen_shader);
+	compile_shader(raytracing_shader_dir, chit_shader);
+	compile_shader(raytracing_shader_dir, miss_shader);
+	compile_shader(raytracing_shader_dir, shadow_shader);
 
-	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.vert"));
-	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.frag"));
-
-	auto raygen_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rgen.spv");
-	auto raychit_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rchit.spv");
-	auto raymiss_shader_code = read_file("../Resources/Shader/raytracing/spv/raytrace.rmiss.spv");
-	auto shadow_shader_code = read_file("../Resources/Shader/raytracing/spv/shadow.rmiss.spv");
+	auto raygen_shader_code		= read_file(get_shader_spv_dir(raytracing_shader_dir, raygen_shader));
+	auto raychit_shader_code	= read_file(get_shader_spv_dir(raytracing_shader_dir, chit_shader));
+	auto raymiss_shader_code	= read_file(get_shader_spv_dir(raytracing_shader_dir, miss_shader));
+	auto shadow_shader_code		= read_file(get_shader_spv_dir(raytracing_shader_dir, shadow_shader));
 
 	// build shader modules to link to graphics pipeline
-	VkShaderModule raygen_shader_module = create_shader_module(raygen_shader_code);
-	VkShaderModule raychit_shader_module = create_shader_module(raychit_shader_code);
-	VkShaderModule raymiss_shader_module = create_shader_module(raymiss_shader_code);
-	VkShaderModule shadow_shader_module = create_shader_module(shadow_shader_code);
+	VkShaderModule raygen_shader_module		= create_shader_module(raygen_shader_code);
+	VkShaderModule raychit_shader_module	= create_shader_module(raychit_shader_code);
+	VkShaderModule raymiss_shader_module	= create_shader_module(raymiss_shader_code);
+	VkShaderModule shadow_shader_module		= create_shader_module(shadow_shader_code);
 
 	// create all shader stage infos for creating a group
 	VkPipelineShaderStageCreateInfo rgen_shader_stage_info{};

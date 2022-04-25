@@ -78,7 +78,6 @@ int main() {
     // ----- we are building the acceleration structures from the scene and the scene must NOT be EMPTY!!!!
     while (!main_window->get_should_close()) {
     
-        std::cout << GLSLC_EXE << "\n";
         //poll all events incoming from user
         glfwPollEvents();
 
