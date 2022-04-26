@@ -26,9 +26,12 @@ public:
 namespace std {
 	template<> struct hash<Vertex> {
 		size_t operator()(Vertex const& vertex) const {
-			return ((hash<glm::vec3>()(vertex.pos) ^
-				(hash<glm::vec3>()(vertex.normal) << 1)) >> 1) ^
-				(hash<glm::vec2>()(vertex.texture_coords) << 1);
+			size_t h1 = hash<glm::vec3>()(vertex.pos);
+			size_t h2 = hash<glm::vec3>()(vertex.color);
+			size_t h3 = hash<glm::vec2>()(vertex.texture_coords);
+			size_t h4 = hash<glm::vec3>()(vertex.normal);
+
+			return (((((((h2 << 1) ^ h1) >> 1) ^ h3) << 1) ^ h4));
 		}
 	};
 }
