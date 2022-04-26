@@ -159,10 +159,24 @@ file(GLOB POST_SHADER_FILTER
       ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.glsl
 )
 
+file(GLOB BRDF_SHADER_FILTER   
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.vert
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.frag
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.glsl
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.comp
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.geom
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rgen
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rchit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rahit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rmiss
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.glsl
+)
+
 source_group("app/shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
 source_group("app/shaders/raytracing/" FILES ${RAYTRACING_SHADER_FILTER})
 source_group("app/shaders/common/" FILES ${COMMON_SHADER_FILTER})
 source_group("app/shaders/post/" FILES ${POST_SHADER_FILTER})
+source_group("app/shaders/brdf/" FILES ${BRDF_SHADER_FILTER})
 
 # add the executable
 add_executable(${PROJECT_NAME}
@@ -170,6 +184,7 @@ ${RASTER_SHADER_FILTER}
 ${RAYTRACING_SHADER_FILTER}
 ${COMMON_SHADER_FILTER}
 ${POST_SHADER_FILTER}
+${BRDF_SHADER_FILTER}
 ${RENDERER_FILTER}
 ${SCENE_FILTER}
 ${WINDOW_FILTER}

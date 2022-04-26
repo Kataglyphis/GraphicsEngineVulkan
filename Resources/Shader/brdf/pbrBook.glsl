@@ -1,4 +1,4 @@
-#include "ShadingLibrary.glsl"
+#include "../common/ShadingLibrary.glsl"
 
 //(https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
 

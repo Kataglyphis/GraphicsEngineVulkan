@@ -11,10 +11,11 @@
 #include "../common/raycommon.glsl"
 #include "../common/SetsAndBindings.glsl"
 #include "../common/GlobalValues.glsl"
-#include "../common/unreal4.glsl"
-#include "../common/disney.glsl"
-#include "../common/pbrBook.glsl"
-#include "../common/phong.glsl"
+#include "../brdf/unreal4.glsl"
+#include "../brdf/disney.glsl"
+#include "../brdf/pbrBook.glsl"
+#include "../brdf/phong.glsl"
+#include "../brdf/frostbite.glsl"
 
 layout (location = 0) in vec2 texture_coordinates;
 layout (location = 1) in vec3 shading_normal;
@@ -66,17 +67,18 @@ void main() {
 	int texture_id	= materials.m[materialIDs.i[gl_PrimitiveID]].textureId;
 	ambient			+= texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
 
-	float roughness = 0.01;
+	float roughness = 0.9;
 	vec3 light_color = vec3(1.f);
 	float light_intensity = 1.0f;
 
-	vec3 color = ambient;//vec3(0);
+	vec3 color = vec3(0);
 	// mode : switching between PBR models
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED
 	// [3] --> PHONG
-	int mode = 3;
+	// [4] --> FROSTBITE
+	int mode = 4;
 	switch (mode) {
 	case 0: color += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
@@ -85,6 +87,8 @@ void main() {
 	case 2: color += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
 	case 3: color += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
+		break;		
+	case 4: color += evaluateFrostbitePBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
 	}
 
