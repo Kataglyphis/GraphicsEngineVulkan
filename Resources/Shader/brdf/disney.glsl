@@ -1,4 +1,4 @@
-#include "ShadingLibrary.glsl"
+#include "../common/ShadingLibrary.glsl"
 
 // the famous disney principled brdf model
 // based on their paper (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)

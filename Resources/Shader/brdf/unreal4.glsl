@@ -1,4 +1,4 @@
-#include "ShadingLibrary.glsl"
+#include "../common/ShadingLibrary.glsl"
 
 // (https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 // https://github.com/SaschaWillems/Vulkan/blob/master/data/shaders/glsl/pbrbasic/pbr.frag

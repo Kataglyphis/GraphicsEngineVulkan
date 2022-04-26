@@ -11,10 +11,11 @@
 #include "../common/raycommon.glsl"
 #include "../common/SetsAndBindings.glsl"
 #include "../common/GlobalValues.glsl"
-#include "../common/unreal4.glsl"
-#include "../common/disney.glsl"
-#include "../common/pbrBook.glsl"
-#include "../common/phong.glsl"
+#include "../brdf/unreal4.glsl"
+#include "../brdf/disney.glsl"
+#include "../brdf/pbrBook.glsl"
+#include "../brdf/phong.glsl"
+#include "../brdf/frostbite.glsl"
 
 hitAttributeEXT vec2 attribs;
 
@@ -121,7 +122,7 @@ void main() {
 
     }
 
-    float roughness = 0.9;
+    float roughness = 0.4;
     vec3 light_color = vec3(1.f);
     float light_intensity = 1.f;
 
@@ -131,8 +132,9 @@ void main() {
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED 
     // [3] --> PHONG
+    // [4] --> FROSTBITE
     //if(!isShadowed) {
-	    int mode = 3;
+	    int mode = 4;
 	    switch (mode) {
 	    case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		    break;
@@ -141,6 +143,8 @@ void main() {
 	    case 2: payload.hit_value += evaluateDisneysPBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		    break;
         case 3: payload.hit_value += evaluatePhong(ambient, N, L, V, light_color, light_intensity);
+	        break;
+        case 4: payload.hit_value += evaluateFrostbitePBR(ambient, N, L, V, roughness, light_color, light_intensity);
 	        break;
 	    }
     //}
