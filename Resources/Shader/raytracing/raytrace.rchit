@@ -91,8 +91,8 @@ void main() {
     // material id is stored per primitive
     vec3 ambient = vec3(0.f);
     int texture_id = materials.m[materialIDs.i[gl_PrimitiveID]].textureId;
-    ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
-    //}
+    //ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
+    ambient += materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 
     vec3 L = normalize(vec3(-ubo_directions.light_dir)); 
     // no need to normalize
@@ -126,14 +126,14 @@ void main() {
     vec3 light_color = vec3(1.f);
     float light_intensity = 1.f;
 
-	payload.hit_value = vec3(0);
+	payload.hit_value = ambient;//vec3(0);
 	// mode : switching between PBR models
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 
 	// [2] --> DISNEYS PRINCIPLED 
     // [3] --> PHONG
     // [4] --> FROSTBITE
-    //if(!isShadowed) {
+    if(!isShadowed) {
 	    int mode = 4;
 	    switch (mode) {
 	    case 0: payload.hit_value += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
@@ -147,7 +147,7 @@ void main() {
         case 4: payload.hit_value += evaluateFrostbitePBR(ambient, N, L, V, roughness, light_color, light_intensity);
 	        break;
 	    }
-    //}
+    }
 
 
 }
