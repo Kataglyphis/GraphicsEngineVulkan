@@ -76,7 +76,8 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		create_texture("../Resources/Textures/plain.png");
 
 		//std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
-		std::string modelFile = "../Resources/Model/Dinosaurs/dinosaurs.obj";
+		//std::string modelFile = "../Resources/Model/Dinosaurs/dinosaurs.obj";
+		std::string modelFile = "../Resources/Model/Pillum/PilumPainting_export.obj";
 		//std::string modelFile = "../Resources/Model/sibenik/sibenik.obj";
 		//std::string modelFile = "../Resources/Model/sportsCar/sportsCar.obj";
 		//std::string modelFile = "../Resources/Model/StanfordDragon/dragon.obj";
@@ -90,7 +91,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 
 		glm::mat4 dragon_model(1.0f);
 		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
-		//dragon_model = glm::scale(dragon_model, glm::vec3(10.0f, 10.0f, 10.0f));
+		dragon_model = glm::scale(dragon_model, glm::vec3(1000.0f, 1000.0f, 1000.0f));
 		/*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
 		dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
 		update_model(0, dragon_model);

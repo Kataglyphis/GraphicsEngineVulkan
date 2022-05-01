@@ -73,14 +73,14 @@ to report.
 
 ### Key Features
 
-
-|          Feature                    |   Implement Status | ◾ Other Configs |
-| ------------------------------------| :----------------: | :-------------: |
-| Rasterizer                          |         ✔️         |        ❌      |
-| Raytracing bascis                   |         ✔️         |        ❌      |
-| PBR support (UE4,disney,phong, etc.)|         ✔️         |        ❌      |
-| .obj Model loading                  |         ✔️         |        ❌      |
-| Mip Mapping                         |         ✔️         |        ❌      |
+<!-- ❌  -->
+|          Feature                    |   Implement Status |
+| ------------------------------------| :----------------: |
+| Rasterizer                          |         ✔️         |
+| Raytracing bascis                   |         ✔️         |
+| PBR support (UE4,disney,phong, etc.)|         ✔️         |
+| .obj Model loading                  |         ✔️         |
+| Mip Mapping                         |         ✔️         |
 
 ### Built With
 
@@ -92,6 +92,8 @@ to report.
 * [DOXYGEN](https://www.doxygen.nl/index.html)
 * [GTEST](https://github.com/google/googletest)
 * [CMAKE](https://cmake.org/)
+* [VMA](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)
+* [TINYGLTF](https://github.com/syoyo/tinygltf)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -138,7 +140,6 @@ Contributions are what make the open source community such an amazing place to b
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
 
 
 <!-- LICENSE -->
