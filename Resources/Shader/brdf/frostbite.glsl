@@ -55,13 +55,13 @@ vec3 evaluateFrostbitePBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness,
     float NdotL = clamp(dot(N, L),0.0f, 1.0f);
 
     // add lambertian diffuse term vec3(0.f);// 
-    vec3 color = FrostbiteDiffuse(NdotV, NdotL, LdotH, roughness)* (ambient / PI);
+    vec3 color = FrostbiteDiffuse(NdotV, NdotL, LdotH, roughness)* (ambient / PI) * NdotL;
     //
     if (LdotH > 0 && NdotH > 0 && NdotL > 0) {
 
         // Specular BRDF
         // renge [0,1] from non-/to metallic
-        float reflectence = 0.6;
+        float reflectence = 0.0f;
         vec3 f0 = vec3(0.16f * reflectence * reflectence);
         // lets assume that at 90 degrees everything will be reflected
         float f90 = 1.f;

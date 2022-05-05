@@ -79,7 +79,7 @@ void main() {
 	// [2] --> DISNEYS PRINCIPLED
 	// [3] --> PHONG
 	// [4] --> FROSTBITE
-	int mode = 4;
+	int mode = 1;
 	switch (mode) {
 	case 0: color += evaluteUnreal4PBR(ambient, N, L, V, roughness, light_color, light_intensity);
 		break;
