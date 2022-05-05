@@ -75,9 +75,9 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		// this texture is used if the wanted texture could not be loaded :))
 		create_texture("../Resources/Textures/plain.png");
 
-		//std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
+		std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
 		//std::string modelFile = "../Resources/Model/Dinosaurs/dinosaurs.obj";
-		std::string modelFile = "../Resources/Model/Pillum/PilumPainting_export.obj";
+		//std::string modelFile = "../Resources/Model/Pillum/PilumPainting_export.obj";
 		//std::string modelFile = "../Resources/Model/sibenik/sibenik.obj";
 		//std::string modelFile = "../Resources/Model/sportsCar/sportsCar.obj";
 		//std::string modelFile = "../Resources/Model/StanfordDragon/dragon.obj";

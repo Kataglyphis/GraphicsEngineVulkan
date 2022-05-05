@@ -93,7 +93,7 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     // all values in [0,1]
     
     float anisotropic = 0.9;
-    float metallic = 0.1f;
+    float metallic = 0.0f;
     // subsurface parameter blends between the base diffuse shape and one inspired by the HanrahanKrueger subsurface BR
     // This is useful for giving a subsurface appearance on distant objects
     // and on objects where the average scattering path length is small
@@ -128,7 +128,7 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     // add diffuse term
     // add diffuse term before checking negativ cosinus!
     // we want some diffuse light for the sun even if cosinus negative
-    vec3 diffuse = DisneyDiffuse(linAmbient, L, V, N, roughness, subsurface)* (1.f - metallic);
+    vec3 diffuse = DisneyDiffuse(linAmbient, L, V, N, roughness, subsurface)* (1.f - metallic) * CosTheta(L, N);
 
     // 1.) case: get lit by light from the backside
     // 2.) case: view it from the back
