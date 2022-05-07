@@ -72,10 +72,19 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		update_post_descriptor_set();
 		create_post_pipeline();
 		create_framebuffers();
-		// this texture is used if the wanted texture could not be loaded :))
-		create_texture("../Resources/Textures/plain.png");
 
-		std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
+		// this texture is used if the wanted texture could not be loaded :))
+		std::stringstream textures_dir;
+		textures_dir << CMAKELISTS_DIR;
+		textures_dir << "/Resources/Textures/plain.png";
+		create_texture(textures_dir.str());
+
+		std::stringstream modelFile;
+		modelFile << CMAKELISTS_DIR;
+		modelFile << "/Resources/Model/crytek-sponza/";
+		modelFile << "sponza_triag.obj";
+
+		//std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
 		//std::string modelFile = "../Resources/Model/Dinosaurs/dinosaurs.obj";
 		//std::string modelFile = "../Resources/Model/Pillum/PilumPainting_export.obj";
 		//std::string modelFile = "../Resources/Model/sibenik/sibenik.obj";
@@ -87,7 +96,7 @@ int VulkanRenderer::init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene
 		//std::string modelFile = "../Resources/Model/bmw/bmw.obj";
 		//std::string modelFile = "../Resources/Model/testScene.obj";
 		//std::string modelFile = "../Resources/Model/San_Miguel/san-miguel-low-poly.obj";
-		create_model(modelFile);
+		create_model(modelFile.str());
 
 		glm::mat4 dragon_model(1.0f);
 		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
@@ -698,14 +707,15 @@ void VulkanRenderer::create_swap_chain()
 
 void VulkanRenderer::create_offscreen_graphics_pipeline()
 {
+	std::stringstream rasterizer_shader_dir;
+	rasterizer_shader_dir << CMAKELISTS_DIR;
+	rasterizer_shader_dir << "/Resources/Shader/rasterizer/";
 
-	std::string rasterizer_shader_dir = "../Resources/Shader/rasterizer/";
+	compile_shader(rasterizer_shader_dir.str(), "shader.vert");
+	compile_shader(rasterizer_shader_dir.str(), "shader.frag");
 
-	compile_shader(rasterizer_shader_dir, "shader.vert");
-	compile_shader(rasterizer_shader_dir, "shader.frag");
-
-	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.vert"));
-	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.frag"));
+	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.vert"));
+	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.frag"));
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -1201,15 +1211,18 @@ void VulkanRenderer::create_post_renderpass()
 void VulkanRenderer::create_post_pipeline()
 {
 
-	std::string post_shader_dir = "../Resources/Shader/post/";
+	std::stringstream post_shader_dir;
+	post_shader_dir << CMAKELISTS_DIR;
+	post_shader_dir << "/Resources/Shader/post/";
+
 	std::string post_vert_shader = "post.vert";
 	std::string post_frag_shader = "post.frag";
 
-	auto vertex_shader_code		= read_file(get_shader_spv_dir(post_shader_dir, post_vert_shader));
-	auto fragment_shader_code	= read_file(get_shader_spv_dir(post_shader_dir, post_frag_shader));
+	auto vertex_shader_code		= read_file(get_shader_spv_dir(post_shader_dir.str(), post_vert_shader));
+	auto fragment_shader_code	= read_file(get_shader_spv_dir(post_shader_dir.str(), post_frag_shader));
 
-	compile_shader(post_shader_dir, post_vert_shader);
-	compile_shader(post_shader_dir, post_frag_shader);
+	compile_shader(post_shader_dir.str(), post_vert_shader);
+	compile_shader(post_shader_dir.str(), post_frag_shader);
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -2149,21 +2162,24 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	PFN_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =
 								(PFN_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(MainDevice.logical_device, "vkCreateRayTracingPipelinesKHR");
 
-	std::string raytracing_shader_dir	= "../Resources/Shader/raytracing/";
+	std::stringstream raytracing_shader_dir;
+	raytracing_shader_dir << CMAKELISTS_DIR;
+	raytracing_shader_dir << "/Resources/Shader/raytracing/";
+
 	std::string raygen_shader			= "raytrace.rgen";
 	std::string chit_shader				= "raytrace.rchit";
 	std::string miss_shader				= "raytrace.rmiss";
 	std::string shadow_shader			= "shadow.rmiss";
 
-	compile_shader(raytracing_shader_dir, raygen_shader);
-	compile_shader(raytracing_shader_dir, chit_shader);
-	compile_shader(raytracing_shader_dir, miss_shader);
-	compile_shader(raytracing_shader_dir, shadow_shader);
+	compile_shader(raytracing_shader_dir.str(), raygen_shader);
+	compile_shader(raytracing_shader_dir.str(), chit_shader);
+	compile_shader(raytracing_shader_dir.str(), miss_shader);
+	compile_shader(raytracing_shader_dir.str(), shadow_shader);
 
-	auto raygen_shader_code		= read_file(get_shader_spv_dir(raytracing_shader_dir, raygen_shader));
-	auto raychit_shader_code	= read_file(get_shader_spv_dir(raytracing_shader_dir, chit_shader));
-	auto raymiss_shader_code	= read_file(get_shader_spv_dir(raytracing_shader_dir, miss_shader));
-	auto shadow_shader_code		= read_file(get_shader_spv_dir(raytracing_shader_dir, shadow_shader));
+	auto raygen_shader_code		= read_file(get_shader_spv_dir(raytracing_shader_dir.str(), raygen_shader));
+	auto raychit_shader_code	= read_file(get_shader_spv_dir(raytracing_shader_dir.str(), chit_shader));
+	auto raymiss_shader_code	= read_file(get_shader_spv_dir(raytracing_shader_dir.str(), miss_shader));
+	auto shadow_shader_code		= read_file(get_shader_spv_dir(raytracing_shader_dir.str(), shadow_shader));
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule raygen_shader_module		= create_shader_module(raygen_shader_code);
@@ -2753,13 +2769,16 @@ void VulkanRenderer::create_push_constant_range()
 
 void VulkanRenderer::create_rasterizer_graphics_pipeline()
 {
-	std::string rasterizer_shader_dir	= "../Resources/Shader/rasterizer/";
 
-	compile_shader(rasterizer_shader_dir, "shader.vert");
-	compile_shader(rasterizer_shader_dir, "shader.frag");
+	std::stringstream rasterizer_shader_dir;
+	rasterizer_shader_dir << CMAKELISTS_DIR;
+	rasterizer_shader_dir << "/Resources/Shader/rasterizer/";
 
-	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.vert"));
-	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir, "shader.frag"));
+	compile_shader(rasterizer_shader_dir.str(), "shader.vert");
+	compile_shader(rasterizer_shader_dir.str(), "shader.frag");
+
+	auto vertex_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.vert"));
+	auto fragment_shader_code = read_file(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.frag"));
 
 	// build shader modules to link to graphics pipeline
 	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
@@ -3334,12 +3353,30 @@ void VulkanRenderer::create_gui_context()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	float size_pixels = 18;
-	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/Roboto-Medium.ttf", size_pixels);
-	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/Cousine-Regular.ttf", size_pixels);
-	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/DroidSans.ttf", size_pixels);
-	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/Karla-Regular.ttf", size_pixels);
-	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/ProggyClean.ttf", size_pixels);
-	io.Fonts->AddFontFromFileTTF("../ExternalLib/IMGUI/misc/fonts/ProggyTiny.ttf", size_pixels);
+
+	std::stringstream fontDir;
+	fontDir << CMAKELISTS_DIR;
+	fontDir << "/ExternalLib/IMGUI/misc/fonts/";
+
+	std::stringstream robo_font;
+	robo_font << fontDir.str() << "Roboto-Medium.ttf";
+	std::stringstream Cousine_font;
+	Cousine_font << fontDir.str() << "Cousine-Regular.ttf";
+	std::stringstream DroidSans_font;
+	DroidSans_font << fontDir.str() << "DroidSans.ttf";
+	std::stringstream Karla_font;
+	Karla_font << fontDir.str() << "Karla-Regular.ttf";
+	std::stringstream proggy_clean_font;
+	proggy_clean_font << fontDir.str() << "ProggyClean.ttf";
+	std::stringstream proggy_tiny_font;
+	proggy_tiny_font << fontDir.str() << "ProggyTiny.ttf";
+
+	io.Fonts->AddFontFromFileTTF(robo_font.str().c_str(), size_pixels);
+	io.Fonts->AddFontFromFileTTF(Cousine_font.str().c_str(), size_pixels);
+	io.Fonts->AddFontFromFileTTF(DroidSans_font.str().c_str(), size_pixels);
+	io.Fonts->AddFontFromFileTTF(Karla_font.str().c_str(), size_pixels);
+	io.Fonts->AddFontFromFileTTF(proggy_clean_font.str().c_str(), size_pixels);
+	io.Fonts->AddFontFromFileTTF(proggy_tiny_font.str().c_str(), size_pixels);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10);
