@@ -10,3 +10,6 @@
 [submodule "ExternalLib/STB"]
 	path = ExternalLib/STB
 	url = git@github.com:nothings/stb.git
+[submodule "ExternalLib/GLFW"]
+	path = ExternalLib/GLFW
+	url = https://github.com/glfw/glfw
