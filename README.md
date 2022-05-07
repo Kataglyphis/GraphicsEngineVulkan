@@ -113,7 +113,7 @@ Now automatically compiled for you. No extra work needed :))
 
 1. Clone the repo
    ```sh
-   git clone git@github.com:Kataglyphis/GraphicsEngineVulkan.git
+   git clone --recurse-submodules git@github.com:Kataglyphis/GraphicsEngineVulkan.git
    ```
 
 
