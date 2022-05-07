@@ -1,3 +1,6 @@
 [submodule "ExternalLib/TINY_OBJ_LOADER"]
 	path = ExternalLib/TINY_OBJ_LOADER
 	url = https://github.com/tinyobjloader/tinyobjloader
+[submodule "ExternalLib/GLM"]
+	path = ExternalLib/GLM
+	url = git@github.com:g-truc/glm.git
