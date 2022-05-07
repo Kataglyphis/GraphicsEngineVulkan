@@ -1,0 +1,3 @@
+[submodule "ExternalLib/TINY_OBJ_LOADER"]
+	path = ExternalLib/TINY_OBJ_LOADER
+	url = https://github.com/tinyobjloader/tinyobjloader
