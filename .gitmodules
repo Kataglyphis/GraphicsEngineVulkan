@@ -13,3 +13,6 @@
 [submodule "ExternalLib/GLFW"]
 	path = ExternalLib/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "ExternalLib/VULKAN_MEMORY_ALLOCATOR"]
+	path = ExternalLib/VULKAN_MEMORY_ALLOCATOR
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
