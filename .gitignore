@@ -33,3 +33,5 @@
 
 # add build directory
 build/*
+out/*
+.vs/*
