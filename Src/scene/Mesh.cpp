@@ -1,4 +1,6 @@
 #include "Mesh.h"
+#include <memory>
+#include <cstring>
 
 Mesh::Mesh()
 {
@@ -13,7 +15,7 @@ Mesh::Mesh(VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue tr
 	// glm uses column major matrices so transpose it for Vulkan want row major here
 	glm::mat4 transpose_transform = glm::transpose(glm::mat4(1.0f));
 	VkTransformMatrixKHR out_matrix;
-	memcpy(&out_matrix, &transpose_transform, sizeof(VkTransformMatrixKHR));
+	std::memcpy(&out_matrix, &transpose_transform, sizeof(VkTransformMatrixKHR));
 
 	index_count = static_cast<uint32_t>(indices.size());
 	vertex_count = static_cast<uint32_t>(vertices.size());
