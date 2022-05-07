@@ -4,3 +4,6 @@
 [submodule "ExternalLib/GLM"]
 	path = ExternalLib/GLM
 	url = git@github.com:g-truc/glm.git
+[submodule "ExternalLib/IMGUI"]
+	path = ExternalLib/IMGUI
+	url = git@github.com:ocornut/imgui.git
