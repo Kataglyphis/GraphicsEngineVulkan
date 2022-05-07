@@ -48,7 +48,11 @@ endfunction(add_shader)
 # we depend on vulkan 
 find_package(Vulkan REQUIRED)
 
+# so we can compile our shaders on the fly later on 
 add_compile_definitions(GLSLC_EXE="${Vulkan_GLSLC_EXECUTABLE}" )
+
+# remove dirty file directories ... 
+add_compile_definitions(CMAKELISTS_DIR="${CMAKE_CURRENT_SOURCE_DIR}" )
 
 add_subdirectory(ExternalLib)
 
@@ -233,10 +237,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
                                                     ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
-
-# file(COPY Resources/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-# file(COPY Resources/Models DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-# file(COPY Resources/Textures DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # add_custom_command(
 #   TARGET ${PROJECT_NAME} PRE_BUILD
