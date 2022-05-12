@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # set the project name
-project(GraphicsEngine VERSION 1.0
+project(GraphicsEngine VERSION 1.2
                        DESCRIPTION "Epic Graphics"
                        LANGUAGES CXX)
 
