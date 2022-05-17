@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1430710723">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="Allocator"/>
+    <functioncall functionName="VK_API_VERSION_1_3"/>
+    <functioncall functionName="VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT"/>
+    <functioncall functionName="allocatorCreateInfo"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="instance"/>
+    <functioncall functionName="physicalDevice"/>
+    <functioncall functionName="runtime_error"/>
+    <functioncall functionName="vmaAllocator"/>
+    <functioncall functionName="vmaCreateAllocator"/>
+    <functioncall functionName="vmaDestroyAllocator"/>
+  </FileInfo>
+</analyzerinfo>

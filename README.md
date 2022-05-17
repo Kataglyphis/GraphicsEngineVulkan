@@ -18,6 +18,8 @@ Getting started with Vulkan
 
 <h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrocken.blog/" target="_blank"></a>.</h4>
 
+[![CMake](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/cmake.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/cmake.yml)
+
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •

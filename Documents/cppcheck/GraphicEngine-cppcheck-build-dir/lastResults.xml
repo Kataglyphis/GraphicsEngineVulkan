@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.7"/>
+    <errors>
+        <error id="stlFindInsert" severity="performance" msg="Searching before insertion is not necessary. Instead of &amp;#039;vertices_map[vert]=vertices.size()&amp;#039; consider using &amp;#039;vertices_map.try_emplace(vert, vertices.size());&amp;#039;." verbose="Searching before insertion is not necessary. Instead of &amp;#039;vertices_map[vert]=vertices.size()&amp;#039; consider using &amp;#039;vertices_map.try_emplace(vert, vertices.size());&amp;#039;." cwe="398" file0="../../Src/scene/ObjLoader.cpp" sinceDate="17.05.2022">
+            <location file="..\..\Src\scene\ObjLoader.cpp" line="91"/>
+        </error>
+        <error id="memleak" severity="error" msg="Memory leak: layerNames" verbose="Memory leak: layerNames" cwe="401" file0="../../Src/renderer/VulkanRenderer.cpp" sinceDate="17.05.2022">
+            <location file="..\..\Src\renderer\VulkanRenderer.cpp" line="417"/>
+        </error>
+    </errors>
+</results>
