@@ -1,0 +1,1 @@
+main call:[calculate_viewmatrix,clean_up,dragon_model,drawFrame,get_camera_direction,get_camera_position,get_keys,get_should_close,get_x_change,get_y_change,glfwGetTime,glfwPollEvents,init,initialize,key_control,mouse_control,update_cam_pos,update_model,update_raytracing,update_view,update_view_direction,vec3] noreturn:[drawFrame]
