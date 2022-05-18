@@ -27,9 +27,8 @@ jobs:
           Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
-          $Env:VULKAN_SDK = "C:/VulkanSDK/$ver"
-          $Env:Vulkan_LIBRARY = "C:/VulkanSDK/$ver/Lib"
-          $Env:Vulkan_INCLUDE_DIR = "C:/VulkanSDK/$ver/Include"
+          $Env:Vulkan_LIBRARY = "C:/VulkanSDK/Lib"
+          $Env:Vulkan_INCLUDE_DIR = "C:/VulkanSDK/Include"
           $Env:Path += "C:/VulkanSDK/$ver/Bin"
           
     - name: Configure CMake
