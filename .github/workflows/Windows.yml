@@ -20,6 +20,8 @@ jobs:
       VULKAN_SDK: C:\VulkanSDK\
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
     - name: Setup Vulkan
       run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
