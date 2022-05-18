@@ -27,6 +27,11 @@ jobs:
           Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+    - name: Set Vulkan Env parameters 
+      run: |
+          $Env:Vulkan_LIBRARY = "C:/VulkanSDK/Lib"
+          $Env:Vulkan_INCLUDE_DIR = "C:/VulkanSDK/Include"
+          $Env:Path += "C:/VulkanSDK/Bin"
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
