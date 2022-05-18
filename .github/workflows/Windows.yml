@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-latest
     env:
       VULKAN_SDK: C:\VulkanSDK\
-      GLSLC: C:\VulkanSDK\Bin\
+      Vulkan_GLSLC_EXECUTABLE: C:\VulkanSDK\Bin\
     steps:
     - uses: actions/checkout@v3
       with:
