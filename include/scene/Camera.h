@@ -12,28 +12,25 @@ public:
 
 	Camera();
 
-	Camera(glm::vec3 start_position, glm::vec3 start_up, float start_yaw, float start_pitch, 
-					float start_move_speed, float start_turn_speed, 
-					float near_plane, float far_plane, float fov);
-
 	void key_control(bool* keys, GLfloat delta_time);
 	void mouse_control(GLfloat x_change, GLfloat y_change);
 
-	glm::vec3 get_camera_position();
-	glm::vec3 get_camera_direction();
-	glm::vec3 get_up_axis();
-	glm::vec3 get_right_axis();
-	GLfloat get_near_plane();
-	GLfloat get_far_plane();
-	GLfloat get_fov();
-	GLfloat get_yaw();
-	void set_near_plane(GLfloat near_plane);
-	void set_far_plane(GLfloat far_plane);
-	void set_fov(GLfloat fov);
+	glm::vec3	get_camera_position() const { return position; };
+	glm::vec3	get_camera_direction() const { return glm::normalize(front); };
+	glm::vec3	get_up_axis() const { return up; };
+	glm::vec3	get_right_axis() const { return right; };
+	GLfloat		get_near_plane() const { return near_plane; };
+	GLfloat		get_far_plane() const { return far_plane; };
+	GLfloat		get_fov() const { return fov; };
+	GLfloat		get_yaw() const { return yaw; };
 
-	void set_camera_position(glm::vec3 new_camera_position);
+	glm::mat4	calculate_viewmatrix();
 
-	glm::mat4 calculate_viewmatrix();
+	void		set_near_plane(GLfloat near_plane);
+	void		set_far_plane(GLfloat far_plane);
+	void		set_fov(GLfloat fov);
+	void		set_camera_position(glm::vec3 new_camera_position);
+
 
 	~Camera();
 
@@ -41,9 +38,9 @@ private:
 
 	glm::vec3 position;
 	glm::vec3 front;
-	glm::vec3 up;
-	glm::vec3 right;
 	glm::vec3 world_up;
+	glm::vec3 right;
+	glm::vec3 up;
 
 	GLfloat yaw;
 	GLfloat pitch;
@@ -54,6 +51,6 @@ private:
 	GLfloat near_plane, far_plane, fov;
 
 	void update();
-	float to_radians(float angle_in_degrees);
+
 };
 

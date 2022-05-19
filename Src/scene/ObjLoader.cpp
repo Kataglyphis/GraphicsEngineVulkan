@@ -1,6 +1,7 @@
 #include "ObjLoader.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
+#include <File.h>
 
 ObjLoader::ObjLoader(VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue, VkCommandPool command_pool)
 {
@@ -167,7 +168,8 @@ std::vector<std::string> ObjLoader::load_textures(std::string modelFile)
         if (mp->diffuse_texname.length() > 0) {
 
             std::string relative_texture_filename = mp->diffuse_texname;
-            std::string texture_filename = get_base_dir(modelFile) + "/textures/" + relative_texture_filename;
+            File model_file(modelFile);
+            std::string texture_filename = model_file.getBaseDir() + "/textures/" + relative_texture_filename;
 
             textures.push_back(texture_filename);
             int offset = 1; // because we have the white texture at position 0
