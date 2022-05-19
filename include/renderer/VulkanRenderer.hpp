@@ -113,8 +113,8 @@ private:
 
 	// -- support functions 
 	// helper create functions
-	VkImage create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
-												VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
+	//VkImage create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
+	//											VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
 	//VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
 
 	VkShaderModule create_shader_module(const std::vector<char>& code);

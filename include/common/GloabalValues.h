@@ -50,9 +50,9 @@ const std::vector<const char*> device_extensions_for_raytracing = {
 
 struct SwapChainDetails {
 
-	VkSurfaceCapabilitiesKHR surface_capabilities;				// surface properties, e.g. image size/extent
-	std::vector<VkSurfaceFormatKHR> formats;					// surface image formats, e.g. RGBA and size of each color
-	std::vector<VkPresentModeKHR> presentation_mode;  // how images should be presented to screen
+	VkSurfaceCapabilitiesKHR surface_capabilities;		// surface properties, e.g. image size/extent
+	std::vector<VkSurfaceFormatKHR> formats;			// surface image formats, e.g. RGBA and size of each color
+	std::vector<VkPresentModeKHR> presentation_mode;	// how images should be presented to screen
 
 };
 

@@ -58,7 +58,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 		create_vma_allocator();
 		create_command_pool();
-		vulkanSwapChain = VulkanSwapChain(	device.get(),
+		vulkanSwapChain.initVulkanContext(	device.get(),
 											window,
 											surface);
 		//create_swap_chain();
@@ -817,7 +817,9 @@ void VulkanRenderer::create_offscreen_textures()
 		const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
 		const VkFormat& swap_chain_image_format = vulkanSwapChain.getSwapChainFormat();
 
-		image.image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1,
+		image.image = create_image(	device->getLogicalDevice(),
+									device->getPhysicalDevice(),
+									swap_chain_extent.width, swap_chain_extent.height, 1,
 									swap_chain_image_format,
 									VK_IMAGE_TILING_OPTIMAL,
 									VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
@@ -847,7 +849,10 @@ void VulkanRenderer::create_offscreen_textures()
 	// create depth buffer image
 	// MIP LEVELS: for depth texture we only want 1 level :)
 	const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
-	offscreen_depth_buffer_image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1, depth_format, VK_IMAGE_TILING_OPTIMAL,
+	offscreen_depth_buffer_image = create_image(device->getLogicalDevice(),
+												device->getPhysicalDevice(), 
+												swap_chain_extent.width, swap_chain_extent.height, 1, 
+												depth_format, VK_IMAGE_TILING_OPTIMAL,
 										VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
 										VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &offscreen_depth_buffer_image_memory);
 
@@ -2810,9 +2815,12 @@ void VulkanRenderer::create_depthbuffer_image()
 	// create depth buffer image
 	// MIP LEVELS: for depth texture we only want 1 level :)
 	const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
-	depth_buffer_image = create_image(swap_chain_extent.width, swap_chain_extent.height, 1, depth_format, VK_IMAGE_TILING_OPTIMAL,
-																	VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, 
-																	VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &depth_buffer_image_memory);
+	depth_buffer_image = create_image(	device->getLogicalDevice(),
+										device->getPhysicalDevice(), 
+										swap_chain_extent.width, swap_chain_extent.height,
+								1, depth_format, VK_IMAGE_TILING_OPTIMAL,
+									VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, 
+									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &depth_buffer_image_memory);
 
 	// depth buffer image view 
 	// MIP LEVELS: for depth texture we only want 1 level :)
@@ -3284,13 +3292,16 @@ int VulkanRenderer::create_texture_image(std::string filename)
 	// create image to hold final texture
 	VkImage texture_image;
 	VkDeviceMemory texture_image_memory;
-	texture_image = create_image(width, height, mip_levels, VK_FORMAT_R8G8B8A8_UNORM,
-		VK_IMAGE_TILING_OPTIMAL,
-		VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-		VK_IMAGE_USAGE_TRANSFER_DST_BIT |
-		VK_IMAGE_USAGE_SAMPLED_BIT,
-		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-		&texture_image_memory);
+	texture_image = create_image(	device->getLogicalDevice(),
+									device->getPhysicalDevice(),
+								width, height, mip_levels, 
+									VK_FORMAT_R8G8B8A8_UNORM,
+									VK_IMAGE_TILING_OPTIMAL,
+									VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+									VK_IMAGE_USAGE_TRANSFER_DST_BIT |
+									VK_IMAGE_USAGE_SAMPLED_BIT,
+									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+									&texture_image_memory);
 
 	// copy data to image
 	// transition image to be DST for copy operation
@@ -3543,7 +3554,8 @@ void VulkanRenderer::recreate_swap_chain()
 
 	clean_up_swapchain();
 
-	vulkanSwapChain = VulkanSwapChain(	device.get(),
+	vulkanSwapChain = VulkanSwapChain();
+	vulkanSwapChain.initVulkanContext(	device.get(),
 										window,
 										surface);
 
@@ -3882,91 +3894,6 @@ bool VulkanRenderer::check_validation_layer_support()
 
 	return true;
 }
-
-VkImage VulkanRenderer::create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, 
-																		VkImageUsageFlags use_flags, VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory)
-{
-
-	// CREATE image
-	// image creation info
-	VkImageCreateInfo image_create_info{};
-	image_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-	image_create_info.imageType = VK_IMAGE_TYPE_2D;													// type of image (1D, 2D, 3D)
-	image_create_info.extent.width = width;																		// width if image extent
-	image_create_info.extent.height = height;																	// height if image extent
-	image_create_info.extent.depth = 1;																				// height if image extent
-	image_create_info.mipLevels = mip_levels;																	// number of mipmap levels 
-	image_create_info.arrayLayers = 1;																				// number of levels in image array
-	image_create_info.format = format;																				// format type of image 
-	image_create_info.tiling = tiling;																					// tiling of image ("arranged" for optimal reading)
-	image_create_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;							// layout of image data on creation 
-	image_create_info.usage = use_flags;																			// bit flags defining what image will be used for
-	image_create_info.samples = VK_SAMPLE_COUNT_1_BIT;											// number of samples for multisampling 
-	image_create_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;							// whether image can be shared between queues
-
-	VkImage image;
-	VkResult result = vkCreateImage(device->getLogicalDevice(), &image_create_info, nullptr, &image);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create an image!");
-
-	}
-
-	// CREATE memory for image
-	// get memory requirements for a type of image
-	VkMemoryRequirements memory_requirements;
-	vkGetImageMemoryRequirements(device->getLogicalDevice(), image, &memory_requirements);
-
-	// allocate memory using image requirements and user defined properties
-	VkMemoryAllocateInfo memory_alloc_info{};
-	memory_alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-	memory_alloc_info.allocationSize = memory_requirements.size;
-	memory_alloc_info.memoryTypeIndex = find_memory_type_index(device->getPhysicalDevice(), memory_requirements.memoryTypeBits, 
-																		prop_flags);
-	
-	result = vkAllocateMemory(device->getLogicalDevice(), &memory_alloc_info, nullptr, image_memory);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to allocate memory!");
-
-	}
-
-	// connect memory to image
-	vkBindImageMemory(device->getLogicalDevice(), image, *image_memory, 0);
-
-	return image;
-
-}
-
-//VkImageView VulkanRenderer::create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels)
-//{
-//
-//	VkImageViewCreateInfo view_create_info{};
-//	view_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-//	view_create_info.image = image;																	// image to create view for 
-//	view_create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;												// typ of image
-//	view_create_info.format = format;
-//	view_create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;									// allows remapping of rgba components to other rgba values 
-//	view_create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-//	view_create_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-//	view_create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-//
-//	// subresources allow the view to view only a part of an image 
-//	view_create_info.subresourceRange.aspectMask = aspect_flags;									// which aspect of an image to view (e.g. color bit for viewing color)
-//	view_create_info.subresourceRange.baseMipLevel = 0;												// start mipmap level to view from
-//	view_create_info.subresourceRange.levelCount = mip_levels;										// number of mipmap levels to view 
-//	view_create_info.subresourceRange.baseArrayLayer = 0;											// start array level to view from 
-//	view_create_info.subresourceRange.layerCount = 1;												// number of array levels to view 
-//
-//	// create image view 
-//	VkImageView image_view;
-//	VkResult result = vkCreateImageView(device->getLogicalDevice(), &view_create_info, nullptr, &image_view);
-//	ASSERT_VULKAN(result, "Failed to create an image view!")
-//
-//	return image_view;
-//}
 
 VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& code)
 {

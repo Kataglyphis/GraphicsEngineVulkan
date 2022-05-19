@@ -5,9 +5,9 @@ VulkanSwapChain::VulkanSwapChain()
 {
 }
 
-VulkanSwapChain::VulkanSwapChain(	VulkanDevice*	device,
-									Window*			window,
-									const VkSurfaceKHR& surface)
+void VulkanSwapChain::initVulkanContext(VulkanDevice* device, 
+										Window* window, 
+										const VkSurfaceKHR& surface)
 {
 
 	this->device = device;
@@ -99,22 +99,21 @@ VulkanSwapChain::VulkanSwapChain(	VulkanDevice*	device,
 		// store image handle
 		SwapChainImage swap_chain_image{};
 		swap_chain_image.image = image;
-		swap_chain_image.image_view = create_image_view(device->getLogicalDevice(), 
-														image, 
-														swap_chain_image_format, 
-														VK_IMAGE_ASPECT_COLOR_BIT, 1);
+		swap_chain_image.image_view = create_image_view(device->getLogicalDevice(),
+			image,
+			swap_chain_image_format,
+			VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
 		// add to swapchain image list 
 		swap_chain_images.push_back(swap_chain_image);
 
 	}
-
 }
 
 VulkanSwapChain::~VulkanSwapChain()
 {
 
-	/*vkDeviceWaitIdle(device->getLogicalDevice());
+	vkDeviceWaitIdle(device->getLogicalDevice());
 
 	for (auto image : swap_chain_images) {
 
@@ -122,7 +121,7 @@ VulkanSwapChain::~VulkanSwapChain()
 
 	}
 
-	vkDestroySwapchainKHR(device->getLogicalDevice(), swapchain, nullptr);*/
+	vkDestroySwapchainKHR(device->getLogicalDevice(), swapchain, nullptr);
 
 }
 
