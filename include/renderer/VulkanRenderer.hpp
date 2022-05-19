@@ -21,29 +21,29 @@
 #include "stb_image.h"
 
 #include "Allocator.h"
-#include "MyWindow.h"
+#include "Window.h"
 #include "Utilities.h"
 #include "Mesh.h"
 #include "Model.h"
 #include "Camera.h"
 #include "ObjLoader.h"
-
-// all IMGUI stuff
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_vulkan.h>
+#include "VulkanDevice.h"
+#include "QueueFamilyIndices.h"
 
 #include "tiny_obj_loader.h"
 
 #include "Scene.h"
+#include <GUI.h>
 
 class VulkanRenderer
 {
 public:
 
-	VulkanRenderer();
-
-	int init(std::shared_ptr<MyWindow> window, std::shared_ptr<Scene> scene, glm::vec3 eye, float near_plane, float far_plane, float fov,
+	VulkanRenderer(	Window* window, 
+					Scene*	scene,
+					GUI*	gui,
+					glm::vec3 eye, float near_plane, 
+					float far_plane, float fov,
 					glm::vec3 view_dir, bool raytracing);
 
 	int create_model(std::string modelFile);
@@ -56,7 +56,7 @@ public:
 	void update_cam_pos(glm::vec3 cam_pos);
 
 	void update_raytracing_descriptor_set(uint32_t image_index);
-	void record_commands(uint32_t image_index);
+	void record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
 
 	// texture functions 
 	int create_texture(std::string filename);
@@ -65,9 +65,8 @@ public:
 
 	void hot_reload_all_shader();
 
-	void drawFrame();
+	void drawFrame(ImDrawData* gui_draw_data);
 
-	void clean_up_gui();
 	void clean_up_swapchain();
 	void clean_up_raytracing();
 	void clean_up();
@@ -76,34 +75,15 @@ public:
 
 private:
 
-	// GUI variables
-	float direcional_light_ambient_intensity = 10.f;
-	float directional_light_color[3] = { 1.f,1.f,1.f };
-	float directional_light_direction[3] = { 0.075f,-1.f,0.118f };
-
 	float near_plane;
 	float far_plane;
 	float fov;
 
-	// ----- VULKAN CORE COMPONENTS ----- BEGIN
-	VkInstance instance;
-
-	struct {
-
-		VkPhysicalDevice physical_device;
-		VkDevice logical_device;
-
-	} MainDevice;
-
-	// available queues
-	VkQueue graphics_queue;
-	VkQueue presentation_queue;
-	VkQueue compute_queue;
-
+	// Vulkan instance, stores all per-application states
+	VkInstance						instance;
 	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
-	VkSurfaceKHR surface;
-
-	VkPhysicalDeviceProperties device_properties;
+	VkSurfaceKHR					surface;
+	std::unique_ptr<VulkanDevice>	device;
 
 	// all regarding swapchain
 	VkSwapchainKHR swapchain;
@@ -115,13 +95,12 @@ private:
 
 	// new era of memory management for my project
 	// for now on integrate vma 
-	Allocator allocator;
+	// Allocator allocator;
 
 	void recreate_swap_chain();
 
 	// core create functions
 	void create_instance();
-	void create_logical_device();
 	void create_vma_allocator();
 	void create_surface();
 	void create_swap_chain();
@@ -138,13 +117,6 @@ private:
 
 	// checker functions
 	bool check_instance_extension_support(std::vector<const char*>* check_extensions);
-	bool check_device_extension_support(VkPhysicalDevice device);
-	bool check_device_suitable(VkPhysicalDevice device);
-
-	// getter functions
-	void get_physical_device();
-	QueueFamilyIndices get_queue_families(VkPhysicalDevice device);
-	SwapChainDetails get_swapchain_details(VkPhysicalDevice device);
 
 	// choose functions
 	VkSurfaceFormatKHR choose_best_surface_format(const std::vector<VkSurfaceFormatKHR>& formats);
@@ -351,18 +323,11 @@ private:
 
 	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
 	void update_uniform_buffers(uint32_t image_index);
-	
-	// ----- GUI STUFF ----- BEGIN
-	VkDescriptorPool gui_descriptor_pool;
-	void create_gui();
-	void create_gui_context();
-	void create_fonts_and_upload();
-	void render_gui();
 
 	// ----- GUI STUFF ----- END
 
 	// ----- VARS ----- BEGIN
-	std::shared_ptr<MyWindow> window;
+	std::shared_ptr<Window> window;
 	void check_changed_framebuffer_size();
 	bool framebuffer_resized;
 	// indices index into current frame

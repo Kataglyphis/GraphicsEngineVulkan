@@ -1,15 +1,9 @@
 #pragma once
 
-#include <fstream>
-
-//#define GLFW_INCLUDE_VULKAN
-//#include <GLFW/glfw3.h>
-
 #include <glm/glm.hpp>
 #include <vector>
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/hash.hpp>
+#include <vulkan/vulkan.h>
 
 const int MAX_FRAME_DRAWS = 3;
 const int MAX_OBJECTS = 40;
@@ -33,12 +27,6 @@ enum SHADER_COMPILATION_FLAG {
 	POST
 };
 
-const std::vector<const char*> device_extensions = {
-
-	VK_KHR_SWAPCHAIN_EXTENSION_NAME
-
-};
-
 // DEVICE EXTENSIONS FOR RAYTRACING
 const std::vector<const char*> device_extensions_for_raytracing = {
 
@@ -57,22 +45,6 @@ const std::vector<const char*> device_extensions_for_raytracing = {
 	VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME, 
 
 
-
-};
-
-// Indices (locations) of Queue families (if they exist at all)
-struct QueueFamilyIndices {
-
-	int graphics_family = -1;																// location of graphics family
-	int presentation_family = -1;														// location of presentation queue family
-	int compute_family = -1;																// location of compute queue family
-
-	//check if queue families are valid 
-	bool is_valid() {
-
-		return graphics_family >= 0 && presentation_family >= 0 && compute_family >= 0;
-
-	}
 
 };
 

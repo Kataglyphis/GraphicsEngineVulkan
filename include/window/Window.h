@@ -3,21 +3,21 @@
 
 #include <GLFW/glfw3.h>
 
-class MyWindow
+class Window
 {
 
 public:
 
-	MyWindow();
-	MyWindow(GLint window_width, GLint window_height);
+	Window();
+	Window(GLint window_width, GLint window_height);
 
 	// init glfw and its context ...
 	int initialize();
 
 	// GETTER functions
 	bool get_should_close() { return glfwWindowShouldClose(main_window); }
-	GLfloat get_buffer_width() { return (GLfloat)window_buffer_width; }
-	GLfloat get_buffer_height() { return (GLfloat)window_buffer_height; }
+	GLfloat get_buffer_width() const { return (GLfloat)window_buffer_width; }
+	GLfloat get_buffer_height() const { return (GLfloat)window_buffer_height; }
 	GLfloat get_x_change();
 	GLfloat get_y_change();
 	GLFWwindow* get_window() {return main_window;}
@@ -33,7 +33,7 @@ public:
 	void update_viewport();
 	void set_buffer_size(GLfloat window_buffer_width, GLfloat window_buffer_height);
 
-	~MyWindow();
+	~Window();
 
 private:
 
