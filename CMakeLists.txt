@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # set the project name
-project(GraphicsEngine VERSION 1.2
+project(GraphicsEngine VERSION 1.3
                        DESCRIPTION "Epic Graphics"
                        LANGUAGES CXX)
 
@@ -69,22 +69,25 @@ add_compile_definitions(SHADER_SRC_DIR="${PROJECT_BINARY_DIR}/../Resources/Shade
 add_compile_definitions(SHADER_SPV_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/spv")
 add_compile_definitions(SHADER_LOG_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/log")
 
-FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                      "Src/renderer/*.cpp"
+FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                       "Src/renderer/*.cpp"
                                         "include/renderer/*.hpp")
 
-FILE(GLOB SCENE_FILTER                  "include/scene/*.h"                                           "Src/scene/*.cpp"
+FILE(GLOB SCENE_FILTER                  "include/scene/*.h"                                          "Src/scene/*.cpp"
                                         "include/scene/*.hpp")
 
-FILE(GLOB WINDOW_FILTER                 "include/window/*.h"                                         "Src/window/*.cpp"
+FILE(GLOB WINDOW_FILTER                 "include/window/*.h"                                        "Src/window/*.cpp"
                                         "include/window/*.hpp")
 
-FILE(GLOB MEMORY_FILTER                 "include/memory/*.h"                                         "Src/memory/*.cpp"
+FILE(GLOB MEMORY_FILTER                 "include/memory/*.h"                                        "Src/memory/*.cpp"
                                         "include/memory/*.hpp")
+
+FILE(GLOB UTIL_FILTER                   "include/util/*.h"                                          "Src/util/*.cpp"
+                                        "include/util/*.hpp")
 
 FILE(GLOB COMMON_FILTER                 "include/common/*.h"                                          
                                         "include/common/*.hpp")
 
-FILE(GLOB APP_FILTER                    "include/*.h"                                                 "Src/*.cpp"
+FILE(GLOB APP_FILTER                    "include/*.h"                                               "Src/*.cpp"
                                         "include/*.hpp")
 
 FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                                     "ExternalLib/IMGUI/*.cpp"
@@ -92,13 +95,14 @@ FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                 
                                         "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp"
                                         "include/gui/*.h"                                           "Src/gui/*.cpp")
 
-source_group("gui"                                              FILES ${GUI_FILTER})
-source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
-source_group("app/scene"                                        FILES ${SCENE_FILTER})
-source_group("app/window"                                       FILES ${WINDOW_FILTER})
-source_group("app/memory"                                       FILES ${MEMORY_FILTER})
-source_group("app/common"                                       FILES ${COMMON_FILTER})
-source_group("app"                                              FILES ${APP_FILTER})
+source_group("gui"                                          FILES ${GUI_FILTER})
+source_group("renderer"                                     FILES ${RENDERER_FILTER})
+source_group("scene"                                        FILES ${SCENE_FILTER})
+source_group("window"                                       FILES ${WINDOW_FILTER})
+source_group("memory"                                       FILES ${MEMORY_FILTER})
+source_group("common"                                       FILES ${COMMON_FILTER})
+source_group("app"                                          FILES ${APP_FILTER})
+source_group("util"                                          FILES ${UTIL_FILTER})
 
 #set all your sources accordingly
 file(GLOB_RECURSE SOURCES 
@@ -187,11 +191,11 @@ file(GLOB BRDF_SHADER_FILTER
       ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.glsl
 )
 
-source_group("app/shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
-source_group("app/shaders/raytracing/" FILES ${RAYTRACING_SHADER_FILTER})
-source_group("app/shaders/common/" FILES ${COMMON_SHADER_FILTER})
-source_group("app/shaders/post/" FILES ${POST_SHADER_FILTER})
-source_group("app/shaders/brdf/" FILES ${BRDF_SHADER_FILTER})
+source_group("shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
+source_group("shaders/raytracing/" FILES ${RAYTRACING_SHADER_FILTER})
+source_group("shaders/common/" FILES ${COMMON_SHADER_FILTER})
+source_group("shaders/post/" FILES ${POST_SHADER_FILTER})
+source_group("shaders/brdf/" FILES ${BRDF_SHADER_FILTER})
 
 # add the executable
 add_executable(${PROJECT_NAME}
@@ -207,6 +211,7 @@ ${MEMORY_FILTER}
 ${COMMON_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
+${UTIL_FILTER}
 )
 
 foreach(Shader ${POST_SHADER_FILTER})
@@ -236,6 +241,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
                                                     ./include/scene
                                                     ./include/window
                                                     ./include/memory
+                                                    ./include/util
                                                     ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})

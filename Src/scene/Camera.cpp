@@ -1,28 +1,22 @@
 #include "Camera.h"
 
-Camera::Camera()
+Camera::Camera() :
+
+			position(glm::vec3(0.0f, 100.0f, -80.0f)),
+			front(glm::vec3(0.0f,0.0f,-1.f)),
+			world_up(glm::vec3(0.0f, 1.0f, 0.0f)),
+			right(glm::normalize(glm::cross(front, world_up))),
+			up(glm::normalize(glm::cross(right, front))),
+			yaw(80.f),
+			pitch(-40.0f),
+			movement_speed(200.f),
+			turn_speed(0.25f),
+			near_plane(0.1f),
+			far_plane(4000.f),
+			fov(45.f)
+
 {
-}
 
-Camera::Camera(glm::vec3 start_position, glm::vec3 start_up, float start_yaw, float start_pitch,
-								float start_move_speed, float start_turn_speed,
-								float near_plane, float far_plane, float fov)
-{
-
-	position = start_position;
-	world_up = start_up;
-	yaw = start_yaw;
-	pitch = start_pitch;
-	//here we want the normal coord. axis z is showing to us !!
-	front = glm::vec3(0.0f, 0.0f, -1.0f);
-
-	//choose it clever; is ordnial scale; so some trial and error in finding some good starting value
-	movement_speed = start_move_speed;
-	turn_speed = start_turn_speed;
-
-	this->near_plane = near_plane;
-	this->far_plane = far_plane;
-	this->fov = fov;
 }
 
 void Camera::key_control(bool* keys, GLfloat delta_time)
@@ -91,46 +85,6 @@ void Camera::mouse_control(GLfloat x_change, GLfloat y_change)
 
 }
 
-glm::vec3 Camera::get_camera_position()
-{
-	return position;
-}
-
-glm::vec3 Camera::get_camera_direction()
-{
-	return glm::normalize(front);
-}
-
-glm::vec3 Camera::get_up_axis()
-{
-	return up;
-}
-
-glm::vec3 Camera::get_right_axis()
-{
-	return right;
-}
-
-GLfloat Camera::get_near_plane()
-{
-	return near_plane;
-}
-
-GLfloat Camera::get_far_plane()
-{
-	return far_plane;
-}
-
-GLfloat Camera::get_fov()
-{
-	return fov;
-}
-
-GLfloat Camera::get_yaw()
-{
-	return yaw;
-}
-
 void Camera::set_near_plane(GLfloat near_plane)
 {
 	this->near_plane = near_plane;
@@ -178,9 +132,4 @@ void Camera::update()
 
 	// but this means the up vector must again be calculated with right vector calculated!!!
 	up = glm::normalize(glm::cross(right, front));
-}
-
-float Camera::to_radians(float angle_in_degrees)
-{
-	return angle_in_degrees *(3.14159265f / 180.f);
 }

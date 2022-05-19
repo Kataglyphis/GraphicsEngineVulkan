@@ -11,6 +11,7 @@
 
 #include "SetsAndBindings.h"
 #include "GloabalValues.h"
+#include "VulkanDevice.h"
 
 // Error checking on vulkan function calls
 #define ASSERT_VULKAN(val,error_string)\
@@ -20,40 +21,65 @@
 
 #define NOT_YET_IMPLEMENTED throw std::runtime_error("Not yet implemented!");
 
-static std::string get_base_dir(const std::string& filepath) {
+static VkFormat choose_supported_format(VkPhysicalDevice physical_device,
+										const std::vector<VkFormat>&formats, 
+										VkImageTiling tiling, 
+										VkFormatFeatureFlags feature_flags)
+{
 
-	if (filepath.find_last_of("/\\") != std::string::npos)
-		return filepath.substr(0, filepath.find_last_of("/\\"));
-	return "";
+	// loop through options and find compatible one
+	for (VkFormat format : formats) {
 
-}
+		// get properties for give format on this device
+		VkFormatProperties properties;
+		vkGetPhysicalDeviceFormatProperties(physical_device, format, &properties);
 
-static std::vector<char> read_file(const std::string& filename) {
+		// depending on tiling choice, need to check for different bit flag
+		if (tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & feature_flags) == feature_flags) {
 
-	// open stream from given file 
-	// std::ios::binary tells stream to read file as binary
-	// std::ios:ate tells stream to start reading from end of file
-	std::ifstream file(filename, std::ios::binary | std::ios::ate);
+			return format;
 
-	// check if file stream sucessfully opened
-	if (!file.is_open()) {
+		}
+		else if (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & feature_flags) == feature_flags) {
 
-		throw std::runtime_error("Failed to open a file!");
+			return format;
+
+		}
 
 	}
 
-	size_t file_size = (size_t) file.tellg();
-	std::vector<char> file_buffer(file_size);
+	throw std::runtime_error("Failed to find supported format!");
 
-	// move read position to start of file 
-	file.seekg(0);
+}
 
-	// read the file data into the buffer (stream "file_size" in total)
-	file.read(file_buffer.data(), file_size);
+static VkImageView create_image_view(	const VkDevice& device, VkImage image,
+										VkFormat format, VkImageAspectFlags aspect_flags, 
+										uint32_t mip_levels) {
 
-	file.close();
+	VkImageViewCreateInfo view_create_info{};
+	view_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	view_create_info.image = image;																	// image to create view for 
+	view_create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;												// typ of image
+	view_create_info.format = format;
+	view_create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;									// allows remapping of rgba components to other rgba values 
+	view_create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+	view_create_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+	view_create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
 
-	return file_buffer;
+	// subresources allow the view to view only a part of an image 
+	view_create_info.subresourceRange.aspectMask = aspect_flags;									// which aspect of an image to view (e.g. color bit for viewing color)
+	view_create_info.subresourceRange.baseMipLevel = 0;												// start mipmap level to view from
+	view_create_info.subresourceRange.levelCount = mip_levels;										// number of mipmap levels to view 
+	view_create_info.subresourceRange.baseArrayLayer = 0;											// start array level to view from 
+	view_create_info.subresourceRange.layerCount = 1;												// number of array levels to view 
+
+	// create image view 
+	VkImageView image_view;
+	VkResult result = vkCreateImageView(device, &view_create_info, nullptr, &image_view);
+	ASSERT_VULKAN(result, "Failed to create an image view!")
+
+		return image_view;
+
 }
 
 static uint32_t find_memory_type_index(VkPhysicalDevice physical_device, uint32_t allowed_types, VkMemoryPropertyFlags properties)
@@ -66,7 +92,7 @@ static uint32_t find_memory_type_index(VkPhysicalDevice physical_device, uint32_
 	for (uint32_t i = 0; i < memory_properties.memoryTypeCount; i++) {
 
 		if ((allowed_types & (1 << i))																																// index of memory type must match corresponding bit in allowedTypes
-			&& (memory_properties.memoryTypes[i].propertyFlags & properties) == properties) {					// desired property bit flags are part of memory type's property flags																			
+			&& (memory_properties.memoryTypes[i].propertyFlags & properties) == properties) {	// desired property bit flags are part of memory type's property flags																			
 
 			// this memory type is valid, so return its index
 			return i;

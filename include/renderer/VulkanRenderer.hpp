@@ -29,7 +29,7 @@
 #include "ObjLoader.h"
 #include "VulkanDevice.h"
 #include "QueueFamilyIndices.h"
-
+#include "VulkanSwapChain.h"
 #include "tiny_obj_loader.h"
 
 #include "Scene.h"
@@ -42,9 +42,8 @@ public:
 	VulkanRenderer(	Window* window, 
 					Scene*	scene,
 					GUI*	gui,
-					glm::vec3 eye, float near_plane, 
-					float far_plane, float fov,
-					glm::vec3 view_dir, bool raytracing);
+					Camera* camera,
+					bool raytracing);
 
 	int create_model(std::string modelFile);
 
@@ -75,23 +74,31 @@ public:
 
 private:
 
-	float near_plane;
-	float far_plane;
-	float fov;
-
 	// Vulkan instance, stores all per-application states
 	VkInstance						instance;
 	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
 	VkSurfaceKHR					surface;
 	std::unique_ptr<VulkanDevice>	device;
 
+	VulkanSwapChain					vulkanSwapChain;
+
+	Window*							window;
+	Scene*							scene;
+
+	// -- pools
+	VkCommandPool					graphics_command_pool;
+	VkCommandPool					compute_command_pool;
+
+	std::vector<VkCommandBuffer>	command_buffers;
+	std::vector<VkFramebuffer>		framebuffers;
+
 	// all regarding swapchain
-	VkSwapchainKHR swapchain;
+	/*VkSwapchainKHR swapchain;
 	std::vector<SwapChainImage> swap_chain_images;
 	std::vector<VkFramebuffer> swap_chain_framebuffers;
 	std::vector<VkCommandBuffer> command_buffers;
 	VkFormat swap_chain_image_format;
-	VkExtent2D swap_chain_extent;
+	VkExtent2D swap_chain_extent;*/
 
 	// new era of memory management for my project
 	// for now on integrate vma 
@@ -103,13 +110,13 @@ private:
 	void create_instance();
 	void create_vma_allocator();
 	void create_surface();
-	void create_swap_chain();
 
 	// -- support functions 
 	// helper create functions
 	VkImage create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
 												VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
-	VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
+	//VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
+
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
 	// texture functions
@@ -118,19 +125,9 @@ private:
 	// checker functions
 	bool check_instance_extension_support(std::vector<const char*>* check_extensions);
 
-	// choose functions
-	VkSurfaceFormatKHR choose_best_surface_format(const std::vector<VkSurfaceFormatKHR>& formats);
-	VkPresentModeKHR choose_best_presentation_mode(const std::vector<VkPresentModeKHR>& presentation_modes);
-	VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR& surface_capabilities);
-	VkFormat choose_supported_format(const std::vector<VkFormat>& formats, VkImageTiling tiling, VkFormatFeatureFlags feature_flags);
-
 	// -- debugging
 	VkDebugUtilsMessengerEXT debug_messenger;
 	bool check_validation_layer_support();
-
-	// -- pools
-	VkCommandPool graphics_command_pool;
-	VkCommandPool compute_command_pool;
 
 	// -- synchronization
 	std::vector<VkSemaphore> image_available;
@@ -324,18 +321,13 @@ private:
 	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
 	void update_uniform_buffers(uint32_t image_index);
 
-	// ----- GUI STUFF ----- END
-
 	// ----- VARS ----- BEGIN
-	std::shared_ptr<Window> window;
+	
 	void check_changed_framebuffer_size();
 	bool framebuffer_resized;
 	// indices index into current frame
 	int current_frame;
 	// ----- VARS ----- END
-
-	// ----- SCENE
-	std::shared_ptr<Scene> scene;
 
 };
 

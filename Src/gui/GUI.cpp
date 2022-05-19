@@ -28,6 +28,8 @@ ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	//ImGui::ShowDemoWindow();
+
 	// render your GUI
 	ImGui::Begin("GUI v1.4");
 
@@ -47,7 +49,7 @@ ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
 
 	ImGui::Separator();
 
-	//ImGui::ShowDemoWindow();
+	
 
 	if (ImGui::CollapsingHeader("Graphic Settings")) {
 
@@ -110,7 +112,6 @@ void GUI::create_gui_context(	Window* window,
 								const VkRenderPass& post_render_pass)
 {
 
-	// UI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;

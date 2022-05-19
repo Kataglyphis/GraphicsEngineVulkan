@@ -2,7 +2,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#define GLFW_INCLUDE_VULKAN
+#include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 
 #define GLM_FORCE_RADIANS
@@ -30,21 +30,9 @@ int App::run()
     int window_width = 1200;
     int window_height = 768;
 
-
-    glm::vec3 start_position = glm::vec3(0.0f, 100.0f, -80.0f);
-    float near_plane = 0.1f;
-    float far_plane = 4000.f;
-
     float angle = 0.0f;
     float delta_time = 0.0f;
     float last_time = 0.0f;
-    float fov = 60.f;
-
-    glm::vec3 start_up = glm::vec3(0.0f, 1.0f, 0.0f);
-    float start_yaw = 80.f;
-    float start_pitch = -40.0f;
-    float start_move_speed = 200.f;
-    float start_turn_speed = 0.25f;
 
     // -- RAY TRACING ON
     bool raytracing = false;
@@ -52,18 +40,12 @@ int App::run()
     std::unique_ptr<Window> main_window     = std::make_unique<Window>(window_width, window_height);
     std::unique_ptr<Scene>  initial_scene   = std::make_unique<Scene>();
     std::unique_ptr<GUI>    gui             = std::make_unique<GUI>(main_window.get());
-
-    Camera camera{ start_position, start_up, start_yaw, start_pitch,
-                    start_move_speed, start_turn_speed,
-                    near_plane, far_plane, fov };
-
+    std::unique_ptr<Camera> camera          = std::make_unique<Camera>();
 
     VulkanRenderer vulkan_renderer{ main_window.get(),
                                     initial_scene.get(),
                                     gui.get(),
-                                    start_position,
-                                    near_plane,far_plane,
-                                    fov, camera.get_camera_direction(),
+                                    camera.get(),
                                     raytracing };
 
     glm::mat4 dragon_model(1.0f);
@@ -81,12 +63,12 @@ int App::run()
         glfwPollEvents();
 
         // handle events for the camera
-        camera.key_control(main_window->get_keys(), delta_time);
-        camera.mouse_control(main_window->get_x_change(), main_window->get_y_change());
+        camera->key_control(main_window->get_keys(), delta_time);
+        camera->mouse_control(main_window->get_x_change(), main_window->get_y_change());
 
-        vulkan_renderer.update_view(camera.calculate_viewmatrix());
-        vulkan_renderer.update_view_direction(camera.get_camera_direction());
-        vulkan_renderer.update_cam_pos(camera.get_camera_position());
+        vulkan_renderer.update_view(camera->calculate_viewmatrix());
+        vulkan_renderer.update_view_direction(camera->get_camera_direction());
+        vulkan_renderer.update_cam_pos(camera->get_camera_position());
 
         float now = static_cast<float>(glfwGetTime());
         delta_time = now - last_time;
