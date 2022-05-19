@@ -7,9 +7,10 @@ class VulkanSwapChain
 public:
 
 	VulkanSwapChain();
-	VulkanSwapChain(VulkanDevice*	device,
-					Window*			window,
-					const VkSurfaceKHR& surface);
+
+	void					initVulkanContext(	VulkanDevice* device,
+												Window* window,
+												const VkSurfaceKHR& surface);
 
 	const VkSwapchainKHR&	getSwapChain() const { return swapchain; };
 	uint32_t				getNumberSwapChainImages() const { return static_cast<uint32_t>(swap_chain_images.size()); };
