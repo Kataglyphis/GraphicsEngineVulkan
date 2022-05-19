@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "MyWindow.h"
+#include "Window.h"
 #include "Utilities.h"
 #include "Mesh.h"
 #include "Model.h"

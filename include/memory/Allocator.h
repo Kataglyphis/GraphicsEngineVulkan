@@ -10,7 +10,9 @@ class Allocator
 public:
 
 	Allocator();
-	Allocator(VkDevice device, VkPhysicalDevice physicalDevice, VkInstance instance);
+	Allocator(	const VkDevice& device, 
+				const VkPhysicalDevice& physicalDevice, 
+				const VkInstance& instance);
 
 	~Allocator();
 

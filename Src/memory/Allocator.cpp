@@ -1,10 +1,13 @@
 #include "Allocator.h"
+#include "Utilities.h"
 
 Allocator::Allocator()
 {
 }
 
-Allocator::Allocator(VkDevice device, VkPhysicalDevice physicalDevice, VkInstance instance)
+Allocator::Allocator(	const VkDevice& device, 
+						const VkPhysicalDevice& physicalDevice, 
+						const VkInstance& instance)
 {
 
 	// see here: https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/quick_start.html
@@ -15,11 +18,8 @@ Allocator::Allocator(VkDevice device, VkPhysicalDevice physicalDevice, VkInstanc
 	allocatorCreateInfo.device = device;
 	allocatorCreateInfo.instance = instance;
 
-	if (vmaCreateAllocator(&allocatorCreateInfo, &vmaAllocator) != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create vma allocator!");
-
-	};
+	ASSERT_VULKAN(	vmaCreateAllocator(&allocatorCreateInfo, &vmaAllocator), 
+					"Failed to create vma allocator!")
 
 }
 

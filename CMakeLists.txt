@@ -89,7 +89,8 @@ FILE(GLOB APP_FILTER                    "include/*.h"                           
 
 FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                                     "ExternalLib/IMGUI/*.cpp"
                                         "ExternalLib/IMGUI/backends/imgui_impl_glfw.h"              "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
-                                        "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp")
+                                        "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp"
+                                        "include/gui/*.h"                                           "Src/gui/*.cpp")
 
 source_group("gui"                                              FILES ${GUI_FILTER})
 source_group("app/renderer"                                     FILES ${RENDERER_FILTER})
@@ -230,6 +231,7 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
+                                                    ./include/gui
                                                     ./include/common
                                                     ./include/scene
                                                     ./include/window
@@ -268,7 +270,13 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
 set_target_properties( ${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                        ${PROJECT_BINARY_DIR})
 
-target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan imgui stb glm tinyobjloader vma ktx)
+target_link_libraries(${PROJECT_NAME}   Vulkan::Vulkan 
+                                        imgui 
+                                        stb
+                                        glm
+                                        tinyobjloader
+                                        vma
+                                        ktx)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

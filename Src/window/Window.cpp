@@ -1,32 +1,45 @@
-#include "MyWindow.h"
+#include "Window.h"
 
-MyWindow::MyWindow() : framebuffer_resized(false) {
-    //at least sth useful
-    window_width = 800;
-    window_height = 600;
+Window::Window() :  
+                    
+                    window_width(800.f),
+                    window_height(600.f),
+                    x_change(0.0f),
+                    y_change(0.0f), 
+                    framebuffer_resized(false)
+
+{
 
     // all keys non-pressed in the beginning
     for (size_t i = 0; i < 1024; i++) {
         keys[i] = 0;
     }
-    x_change = 0.0f;
-    y_change = 0.0f;
+
+    initialize();
+
 }
 
 //please use this constructor; never the standard
-MyWindow::MyWindow(GLint window_width, GLint window_height) : framebuffer_resized(false), 
-                                                             window_width(window_width),  
-                                                             window_height(window_height) {
+Window::Window(GLint window_width, GLint window_height) : 
+                        
+                        framebuffer_resized(false), 
+                        window_width(window_width),  
+                        window_height(window_height),
+                        x_change(0.0f),
+                        y_change(0.0f)
+
+{
 
     // all keys non-pressed in the beginning
     for (size_t i = 0; i < 1024; i++) {
         keys[i] = 0;
     }
-    x_change = 0.0f;
-    y_change = 0.0f;
+
+    initialize();
+
 }
 
-int MyWindow::initialize() {
+int Window::initialize() {
     
     if (!glfwInit()) {
 
@@ -42,7 +55,7 @@ int MyWindow::initialize() {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
     //lets work with nothing older than version 3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     
     //allow it to resize
@@ -83,7 +96,7 @@ int MyWindow::initialize() {
     return 0;
 }
 
-void MyWindow::update_viewport() {
+void Window::update_viewport() {
 
     glfwGetFramebufferSize(main_window, &window_buffer_width, &window_buffer_height);
     // setup viewport size
@@ -91,42 +104,42 @@ void MyWindow::update_viewport() {
 
 }
 
-void MyWindow::set_buffer_size(GLfloat window_buffer_width, GLfloat window_buffer_height) {
+void Window::set_buffer_size(GLfloat window_buffer_width, GLfloat window_buffer_height) {
     this->window_buffer_width = window_buffer_width;
     this->window_buffer_height = window_buffer_height;
 }
 
-GLfloat MyWindow::get_x_change()
+GLfloat Window::get_x_change()
 {
     GLfloat the_change = x_change;
     x_change = 0.0f;
     return the_change;
 }
 
-GLfloat MyWindow::get_y_change()
+GLfloat Window::get_y_change()
 {
     GLfloat the_change = y_change;
     y_change = 0.0f;
     return the_change;
 }
 
-GLfloat MyWindow::get_height()
+GLfloat Window::get_height()
 {
     return GLfloat(window_height);
 }
 
-GLfloat MyWindow::get_width()
+GLfloat Window::get_width()
 {
     return GLfloat(window_width);
 }
 
-bool MyWindow::framebuffer_size_has_changed()
+bool Window::framebuffer_size_has_changed()
 {
     return framebuffer_resized;
 }
 
 
-void MyWindow::init_callbacks()
+void Window::init_callbacks()
 {
     //TODO: remember this section for our later game logic 
     //for the space ship to fly around
@@ -136,25 +149,25 @@ void MyWindow::init_callbacks()
 
 }
 
-void MyWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 
-    auto app = reinterpret_cast<MyWindow*>(glfwGetWindowUserPointer(window));
+    auto app = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
     app->framebuffer_resized = true;
     app->window_width = width;
     app->window_height = height;
 
 }
 
-void MyWindow::reset_framebuffer_has_changed()
+void Window::reset_framebuffer_has_changed()
 {
     this->framebuffer_resized = false;
 
 }
 
-void MyWindow::key_callback(GLFWwindow* window, int key, int code, int action, int mode)
+void Window::key_callback(GLFWwindow* window, int key, int code, int action, int mode)
 {
-    MyWindow* the_window = static_cast<MyWindow*>(glfwGetWindowUserPointer(window));
+    Window* the_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
@@ -172,9 +185,9 @@ void MyWindow::key_callback(GLFWwindow* window, int key, int code, int action, i
     }
 }
 
-void MyWindow::mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
+void Window::mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
 {
-    MyWindow* the_window = static_cast<MyWindow*>(glfwGetWindowUserPointer(window));
+    Window* the_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     // need to handle first occurance of a mouse moving event
     if (the_window->mouse_first_moved) {
@@ -192,9 +205,9 @@ void MyWindow::mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
     the_window->last_y = (float)y_pos;
 }
 
-void MyWindow::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    MyWindow* the_window = static_cast<MyWindow*>(glfwGetWindowUserPointer(window));
+    Window* the_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     if ((action == GLFW_PRESS) && (button == GLFW_MOUSE_BUTTON_RIGHT)) {
         glfwSetCursorPosCallback(window, mouse_callback);
@@ -205,7 +218,7 @@ void MyWindow::mouse_button_callback(GLFWwindow* window, int button, int action,
     }
 }
 
-MyWindow::~MyWindow()
+Window::~Window()
 {
     glfwDestroyWindow(main_window);
     glfwTerminate();
