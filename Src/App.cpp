@@ -15,8 +15,8 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
-#include "Window.h"
 
+#include "Window.h"
 #include "VulkanRenderer.hpp"
 #include "GUI.h"
 

@@ -31,6 +31,8 @@
 #include "VulkanInstance.h"
 #include "GUISceneSharedVars.h"
 #include "VulkanDebug.h"
+#include "GlobalUBO.h"
+#include "SceneUBO.h"
 
 #include "tiny_obj_loader.h"
 
@@ -90,8 +92,21 @@ private:
 	Scene*							scene;
 
 	// -- pools
+	void							create_command_pool();
 	VkCommandPool					graphics_command_pool;
 	VkCommandPool					compute_command_pool;
+
+	// uniforms
+	GlobalUBO						globalUBO;
+	SceneUBO						sceneUBO;
+
+	PushConstantRaster				pc_raster;
+
+	// uniform buffer
+	std::vector<VkBuffer>		vp_uniform_buffer;
+	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
+	std::vector<VkBuffer>		directions_uniform_buffer;
+	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
 
 	std::vector<VkCommandBuffer>	command_buffers;
 	std::vector<VkFramebuffer>		framebuffers;
@@ -99,11 +114,6 @@ private:
 	// new era of memory management for my project
 	// for now on integrate vma 
 	Allocator						allocator;
-	void							create_vma_allocator();
-
-	// -- support functions 
-	// helper create functions
-	VkShaderModule create_shader_module(const std::vector<char>& code);
 
 	// texture functions
 	int create_texture_descriptor(VkImageView texture_image);
@@ -172,7 +182,7 @@ private:
 	void create_rasterizer_graphics_pipeline();
 	void create_depthbuffer_image();
 	void create_framebuffers();
-	void create_command_pool();
+
 	void create_command_buffers();
 	void create_texture_sampler();
 
@@ -181,16 +191,7 @@ private:
 	void create_descriptor_pool_sampler();
 	void create_descriptor_sets();
 
-	// uniforms
-	UboViewProjection ubo_view_projection{};
-	UboDirections ubo_directions{};
-	PushConstantRaster pc_raster;
-
-	// uniform buffer
-	std::vector<VkBuffer>		vp_uniform_buffer;
-	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
-	std::vector<VkBuffer>		directions_uniform_buffer;
-	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
+	
 
 	// ----- ALL RASTERIZER SPECIFICS ----- END 
 

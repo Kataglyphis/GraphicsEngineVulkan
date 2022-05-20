@@ -12,6 +12,7 @@
 #define VMA_IMPLEMENTATION
 #endif // !VMA_IMPLEMENTATION
 #include "vk_mem_alloc.h"
+#include <ShaderHelper.h>
 
 VulkanRenderer::VulkanRenderer(	Window* window, 
 								Scene*	scene,
@@ -21,7 +22,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 									max_levels(std::numeric_limits<int>::max()),
 									current_frame(0),
 									framebuffer_resized(false),
-									raytracing(raytracing),
 									window(window),
 									scene(scene)
 
@@ -31,18 +31,23 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 	try {
 
-		instance = VulkanInstance();
+		instance		= VulkanInstance();
+
 		create_surface();
 
-		device = std::make_unique<VulkanDevice>(&instance,
+		device			= std::make_unique<VulkanDevice>(&instance,
 												&surface);
 
-		create_vma_allocator();
+		allocator		= Allocator(device->getLogicalDevice(), 
+									device->getPhysicalDevice(), 
+									instance.getVulkanInstance());
+
 		create_command_pool();
+
 		vulkanSwapChain.initVulkanContext(	device.get(),
 											window,
 											surface);
-		//create_swap_chain();
+
 		create_uniform_buffers();
 
 		init_rasterizer();
@@ -151,20 +156,20 @@ void VulkanRenderer::update_uniforms(	Scene* scene,
 	const GUISceneSharedVars guiSceneSharedVars = scene->getGuiSceneSharedVars();
 
 
-	ubo_view_projection.view					= camera->calculate_viewmatrix();
-	ubo_view_projection.projection				= glm::perspective(glm::radians(camera->get_fov()),
+	globalUBO.view					= camera->calculate_viewmatrix();
+	globalUBO.projection				= glm::perspective(glm::radians(camera->get_fov()),
 													(float)window->get_width() / (float)window->get_height(),
 													camera->get_near_plane(),
 													camera->get_far_plane());
 
-	ubo_directions.view_dir						= glm::vec4(camera->get_camera_direction(),1.0f);
+	sceneUBO.view_dir						= glm::vec4(camera->get_camera_direction(),1.0f);
 
-	ubo_directions.light_dir					= glm::vec4(guiSceneSharedVars.directional_light_direction[0],
+	sceneUBO.light_dir					= glm::vec4(guiSceneSharedVars.directional_light_direction[0],
 															guiSceneSharedVars.directional_light_direction[1],
 															guiSceneSharedVars.directional_light_direction[2], 
 															1.0f);
 
-	ubo_directions.cam_pos						= glm::vec4(camera->get_camera_position(),1.0f);
+	sceneUBO.cam_pos						= glm::vec4(camera->get_camera_position(),1.0f);
 
 }
 
@@ -345,19 +350,6 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 
 }
 
-//void VulkanRenderer::create_instance()
-//{
-//
-//	
-//
-//
-//}
-
-void VulkanRenderer::create_vma_allocator()
-{
-	//allocator = Allocator(device->getLogicalDevice(), device->getPhysicalDevice(), *instance);
-}
-
 void VulkanRenderer::create_surface()
 {
 	// create surface (creates a surface create info struct, runs the create surface function, returns result)
@@ -365,121 +357,24 @@ void VulkanRenderer::create_surface()
 
 }
 
-//void VulkanRenderer::create_swap_chain()
-//{
-//
-//	// get swap chain details so we can pick the best settings
-//	SwapChainDetails swap_chain_details = device->getSwapchainDetails();
-//
-//	// 1. choose best surface format
-//	// 2. choose best presentation mode 
-//	// 3. choose swap chain image resolution
-//
-//	VkSurfaceFormatKHR surface_format = choose_best_surface_format(swap_chain_details.formats);
-//	VkPresentModeKHR present_mode = choose_best_presentation_mode(swap_chain_details.presentation_mode);
-//	VkExtent2D extent = choose_swap_extent(swap_chain_details.surface_capabilities);
-//
-//	// how many images are in the swap chain; get 1 more than the minimum to allow tiple buffering
-//	uint32_t image_count = swap_chain_details.surface_capabilities.minImageCount + 1;
-//
-//	// if maxImageCount == 0, then limitless
-//	if (swap_chain_details.surface_capabilities.maxImageCount > 0 && 
-//		swap_chain_details.surface_capabilities.maxImageCount < image_count) {
-//
-//		image_count = swap_chain_details.surface_capabilities.maxImageCount;
-//
-//	}
-//
-//	VkSwapchainCreateInfoKHR swap_chain_create_info{};
-//	swap_chain_create_info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-//	swap_chain_create_info.surface = surface;												// swapchain surface
-//	swap_chain_create_info.imageFormat = surface_format.format;								// swapchain format
-//	swap_chain_create_info.imageColorSpace = surface_format.colorSpace;						// swapchain color space
-//	swap_chain_create_info.presentMode = present_mode;										// swapchain presentation mode 
-//	swap_chain_create_info.imageExtent = extent;											// swapchain image extents
-//	swap_chain_create_info.minImageCount = image_count;										// minimum images in swapchain
-//	swap_chain_create_info.imageArrayLayers = 1;											// number of layers for each image in chain
-//	swap_chain_create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
-//										| VK_IMAGE_USAGE_TRANSFER_DST_BIT;					// what attachment images will be used as 
-//	swap_chain_create_info.preTransform = swap_chain_details.surface_capabilities.currentTransform;// transform to perform on swap chain images
-//	swap_chain_create_info.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;				// dont do blending; everything opaque
-//	swap_chain_create_info.clipped = VK_TRUE;												// of course activate clipping ! :) 
-//	
-//	// get queue family indices
-//	QueueFamilyIndices indices = device->getQueueFamilies();
-//	
-//	// if graphics and presentation families are different then swapchain must let images be shared between families
-//	if (indices.graphics_family != indices.presentation_family) {
-//
-//		uint32_t queue_family_indices[] = {
-//						(uint32_t)indices.graphics_family,
-//						(uint32_t)indices.presentation_family
-//		};
-//
-//		swap_chain_create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;									// image share handling
-//		swap_chain_create_info.queueFamilyIndexCount = 2;														// number of queues to share images between
-//		swap_chain_create_info.pQueueFamilyIndices = queue_family_indices;										// array of queues to share between 
-//
-//	}
-//	else {
-//
-//		swap_chain_create_info.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-//		swap_chain_create_info.queueFamilyIndexCount = 0;
-//		swap_chain_create_info.pQueueFamilyIndices = nullptr;
-//
-//	}
-//
-//	// if old swap chain been destroyed and this one replaces it then link old one to quickly hand over responsibilities
-//	swap_chain_create_info.oldSwapchain = VK_NULL_HANDLE;
-//
-//	// create swap chain 
-//	VkResult result = vkCreateSwapchainKHR(device->getLogicalDevice(), &swap_chain_create_info, nullptr, &swapchain);
-//	ASSERT_VULKAN(result, "Failed create swapchain!");
-//
-//	// store for later reference
-//	swap_chain_image_format = surface_format.format;
-//	swap_chain_extent = extent;
-//
-//	// get swapchain images (first count, then values)
-//	uint32_t swapchain_image_count;
-//	vkGetSwapchainImagesKHR(device->getLogicalDevice(), swapchain, &swapchain_image_count, nullptr);
-//	std::vector<VkImage> images(swapchain_image_count);
-//	vkGetSwapchainImagesKHR(device->getLogicalDevice(), swapchain, &swapchain_image_count, images.data());
-//
-//	swap_chain_images.clear();
-//
-//	for (size_t i = 0; i < images.size(); i++) {
-//
-//		VkImage image = images[static_cast<uint32_t>(i)];
-//		// store image handle
-//		SwapChainImage swap_chain_image{};
-//		swap_chain_image.image = image;
-//		swap_chain_image.image_view = create_image_view(image, swap_chain_image_format, VK_IMAGE_ASPECT_COLOR_BIT, 1);
-//		
-//		// add to swapchain image list 
-//		swap_chain_images.push_back(swap_chain_image);
-//		
-//	}
-//
-//}
-
 void VulkanRenderer::create_offscreen_graphics_pipeline()
 {
 	std::stringstream rasterizer_shader_dir;
 	rasterizer_shader_dir << CMAKELISTS_DIR;
 	rasterizer_shader_dir << "/Resources/Shader/rasterizer/";
 
-	compile_shader(rasterizer_shader_dir.str(), "shader.vert");
-	compile_shader(rasterizer_shader_dir.str(), "shader.frag");
+	ShaderHelper shaderHelper;
+	shaderHelper.compileShader(rasterizer_shader_dir.str(), "shader.vert");
+	shaderHelper.compileShader(rasterizer_shader_dir.str(), "shader.frag");
 
-	File vertexShaderFile(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.vert"));
+	File vertexShaderFile(shaderHelper.getShaderSpvDir(rasterizer_shader_dir.str(), "shader.vert"));
 	std::vector<char> vertex_shader_code = vertexShaderFile.readCharSequence();
-	File fragmentShaderFile(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.frag"));
+	File fragmentShaderFile(shaderHelper.getShaderSpvDir(rasterizer_shader_dir.str(), "shader.frag"));
 	std::vector<char> fragment_shader_code = fragmentShaderFile.readCharSequence();
 
 	// build shader modules to link to graphics pipeline
-	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
-	VkShaderModule fragment_shader_module = create_shader_module(fragment_shader_code);
+	VkShaderModule vertex_shader_module = shaderHelper.createShaderModule(device.get(), vertex_shader_code);
+	VkShaderModule fragment_shader_module = shaderHelper.createShaderModule(device.get(), fragment_shader_code);
 
 	// shader stage creation information
 	// vertex stage creation information
@@ -992,17 +887,18 @@ void VulkanRenderer::create_post_pipeline()
 	std::string post_vert_shader = "post.vert";
 	std::string post_frag_shader = "post.frag";
 
-	File vertexShaderFile(get_shader_spv_dir(post_shader_dir.str(), post_vert_shader));
+	ShaderHelper shaderHelper;
+	File vertexShaderFile(shaderHelper.getShaderSpvDir(post_shader_dir.str(), post_vert_shader));
 	std::vector<char> vertex_shader_code = vertexShaderFile.readCharSequence();
-	File fragmentShaderFile(get_shader_spv_dir(post_shader_dir.str(), post_frag_shader));
+	File fragmentShaderFile(shaderHelper.getShaderSpvDir(post_shader_dir.str(), post_frag_shader));
 	std::vector<char> fragment_shader_code = fragmentShaderFile.readCharSequence();
 
-	compile_shader(post_shader_dir.str(), post_vert_shader);
-	compile_shader(post_shader_dir.str(), post_frag_shader);
+	shaderHelper.compileShader(post_shader_dir.str(), post_vert_shader);
+	shaderHelper.compileShader(post_shader_dir.str(), post_frag_shader);
 
 	// build shader modules to link to graphics pipeline
-	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
-	VkShaderModule fragment_shader_module = create_shader_module(fragment_shader_code);
+	VkShaderModule vertex_shader_module = shaderHelper.createShaderModule(device.get(), vertex_shader_code);
+	VkShaderModule fragment_shader_module = shaderHelper.createShaderModule(device.get(),fragment_shader_code);
 
 
 	// shader stage creation information
@@ -1199,7 +1095,7 @@ void VulkanRenderer::create_post_descriptor()
 {
 
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
-	//ubo_view_projection Binding info
+	//globalUBO Binding info
 	VkDescriptorSetLayoutBinding post_sampler_layout_binding{};
 	post_sampler_layout_binding.binding = 0;													// binding point in shader (designated by binding number in shader)
 	post_sampler_layout_binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;							// type of descriptor (uniform, dynamic uniform, image sampler, etc)
@@ -1212,7 +1108,7 @@ void VulkanRenderer::create_post_descriptor()
 	// create descriptor set layout with given bindings
 	VkDescriptorSetLayoutCreateInfo layout_create_info{};
 	layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layout_create_info.bindingCount = static_cast<uint32_t>(layout_bindings.size());														// only have 1 for the ubo_view_projection
+	layout_create_info.bindingCount = static_cast<uint32_t>(layout_bindings.size());														// only have 1 for the globalUBO
 	layout_create_info.pBindings = layout_bindings.data();																										// array of binding infos 
 
 	// create descriptor set layout
@@ -1861,15 +1757,16 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	std::string miss_shader				= "raytrace.rmiss";
 	std::string shadow_shader			= "shadow.rmiss";
 
-	compile_shader(raytracing_shader_dir.str(), raygen_shader);
-	compile_shader(raytracing_shader_dir.str(), chit_shader);
-	compile_shader(raytracing_shader_dir.str(), miss_shader);
-	compile_shader(raytracing_shader_dir.str(), shadow_shader);
+	ShaderHelper shaderHelper;
+	shaderHelper.compileShader(raytracing_shader_dir.str(), raygen_shader);
+	shaderHelper.compileShader(raytracing_shader_dir.str(), chit_shader);
+	shaderHelper.compileShader(raytracing_shader_dir.str(), miss_shader);
+	shaderHelper.compileShader(raytracing_shader_dir.str(), shadow_shader);
 
-	File raygenFile(get_shader_spv_dir(raytracing_shader_dir.str(), raygen_shader));
-	File raychitFile(get_shader_spv_dir(raytracing_shader_dir.str(), chit_shader));
-	File raymissFile(get_shader_spv_dir(raytracing_shader_dir.str(), miss_shader));
-	File shadowFile(get_shader_spv_dir(raytracing_shader_dir.str(), shadow_shader));
+	File raygenFile(shaderHelper.getShaderSpvDir(raytracing_shader_dir.str(), raygen_shader));
+	File raychitFile(shaderHelper.getShaderSpvDir(raytracing_shader_dir.str(), chit_shader));
+	File raymissFile(shaderHelper.getShaderSpvDir(raytracing_shader_dir.str(), miss_shader));
+	File shadowFile(shaderHelper.getShaderSpvDir(raytracing_shader_dir.str(), shadow_shader));
 
 	std::vector<char> raygen_shader_code	= raygenFile.readCharSequence();
 	std::vector<char> raychit_shader_code	= raychitFile.readCharSequence();
@@ -1877,10 +1774,10 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	std::vector<char> shadow_shader_code	= shadowFile.readCharSequence();
 
 	// build shader modules to link to graphics pipeline
-	VkShaderModule raygen_shader_module		= create_shader_module(raygen_shader_code);
-	VkShaderModule raychit_shader_module	= create_shader_module(raychit_shader_code);
-	VkShaderModule raymiss_shader_module	= create_shader_module(raymiss_shader_code);
-	VkShaderModule shadow_shader_module		= create_shader_module(shadow_shader_code);
+	VkShaderModule raygen_shader_module		= shaderHelper.createShaderModule(device.get(), raygen_shader_code);
+	VkShaderModule raychit_shader_module	= shaderHelper.createShaderModule(device.get(), raychit_shader_code);
+	VkShaderModule raymiss_shader_module	= shaderHelper.createShaderModule(device.get(), raymiss_shader_code);
+	VkShaderModule shadow_shader_module		= shaderHelper.createShaderModule(device.get(), shadow_shader_code);
 
 	// create all shader stage infos for creating a group
 	VkPipelineShaderStageCreateInfo rgen_shader_stage_info{};
@@ -2361,8 +2258,8 @@ void VulkanRenderer::create_descriptor_set_layouts()
 
 	std::array<VkDescriptorSetLayoutBinding, 3> descriptor_set_layout_bindings;
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
-	//ubo_view_projection Binding info
-	descriptor_set_layout_bindings[0].binding = UBO_VIEW_PROJECTION_BINDING;													// binding point in shader (designated by binding number in shader)
+	//globalUBO Binding info
+	descriptor_set_layout_bindings[0].binding = globalUBO_BINDING;													// binding point in shader (designated by binding number in shader)
 	descriptor_set_layout_bindings[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor (uniform, dynamic uniform, image sampler, etc)
 	descriptor_set_layout_bindings[0].descriptorCount = 1;																							// number of descriptors for binding
 	descriptor_set_layout_bindings[0].stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
@@ -2370,7 +2267,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	descriptor_set_layout_bindings[0].pImmutableSamplers = nullptr;																			// for texture: can make sampler data unchangeable (immutable) by specifying in layout
 
 	// our model matrix which updates every frame for each object
-	descriptor_set_layout_bindings[1].binding = UBO_DIRECTIONS_BINDING;
+	descriptor_set_layout_bindings[1].binding = sceneUBO_BINDING;
 	descriptor_set_layout_bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	descriptor_set_layout_bindings[1].descriptorCount = 1;
 	descriptor_set_layout_bindings[1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
@@ -2390,7 +2287,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 	// create descriptor set layout with given bindings
 	VkDescriptorSetLayoutCreateInfo layout_create_info{};
 	layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layout_create_info.bindingCount = static_cast<uint32_t>(descriptor_set_layout_bindings.size());														// only have 1 for the ubo_view_projection
+	layout_create_info.bindingCount = static_cast<uint32_t>(descriptor_set_layout_bindings.size());														// only have 1 for the globalUBO
 	layout_create_info.pBindings = descriptor_set_layout_bindings.data();																										// array of binding infos 
 
 	// create descriptor set layout
@@ -2469,17 +2366,18 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	rasterizer_shader_dir << CMAKELISTS_DIR;
 	rasterizer_shader_dir << "/Resources/Shader/rasterizer/";
 
-	compile_shader(rasterizer_shader_dir.str(), "shader.vert");
-	compile_shader(rasterizer_shader_dir.str(), "shader.frag");
+	ShaderHelper shaderHelper;
+	shaderHelper.compileShader(rasterizer_shader_dir.str(), "shader.vert");
+	shaderHelper.compileShader(rasterizer_shader_dir.str(), "shader.frag");
 
-	File vertexFile(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.vert"));
-	File fragmentFile(get_shader_spv_dir(rasterizer_shader_dir.str(), "shader.frag"));
+	File vertexFile(shaderHelper.getShaderSpvDir(rasterizer_shader_dir.str(), "shader.vert"));
+	File fragmentFile(shaderHelper.getShaderSpvDir(rasterizer_shader_dir.str(), "shader.frag"));
 	std::vector<char> vertex_shader_code = vertexFile.readCharSequence();
 	std::vector<char> fragment_shader_code = fragmentFile.readCharSequence();
 
 	// build shader modules to link to graphics pipeline
-	VkShaderModule vertex_shader_module = create_shader_module(vertex_shader_code);
-	VkShaderModule fragment_shader_module = create_shader_module(fragment_shader_code);
+	VkShaderModule vertex_shader_module = shaderHelper.createShaderModule(device.get(), vertex_shader_code);
+	VkShaderModule fragment_shader_module = shaderHelper.createShaderModule(device.get(), fragment_shader_code);
 
 	// shader stage creation information
 	// vertex stage creation information
@@ -2494,7 +2392,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	fragment_shader_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	fragment_shader_create_info.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
 	fragment_shader_create_info.module = fragment_shader_module;
-	fragment_shader_create_info.pName = "main";																											// entry point into shader
+	fragment_shader_create_info.pName = "main";													// entry point into shader
 
 	VkPipelineShaderStageCreateInfo shader_stages[] = {vertex_shader_create_info, 
 														fragment_shader_create_info};
@@ -2504,7 +2402,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	VkVertexInputBindingDescription binding_description{};
 	binding_description.binding = 0;																																				// can bind multiple streams of data, this defines which one 
 	binding_description.stride = sizeof(Vertex);																															// size of a single vertex object
-	binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;																					// how to move between data after each vertex.
+	binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;								// how to move between data after each vertex.
 																																																	// VK_VERTEX_INPUT_RATE_VERTEX : Move on to the next vertex
 																																																	// VK_VERTEX_INPUT_RATE_INSTANCE : Move on to the next instance
 	// how the data for an attribute is defined within a vertex
@@ -2513,14 +2411,14 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 	// Position attribute
 	attribute_describtions[0].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[0].location = 0;																																// location in shader where data will be read from
-	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;																			// format data will take (also helps define size of data)
+	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;								// format data will take (also helps define size of data)
 	attribute_describtions[0].offset = offsetof(Vertex, pos);																									// where this attribute is defined in the data for a single vertex
 
 	// normal coord attribute
 	attribute_describtions[1].binding = 0;																																// which binding the data is at (should be same as above)
 	attribute_describtions[1].location = 1;																																// location in shader where data will be read from
-	attribute_describtions[1].format = VK_FORMAT_R32G32B32_SFLOAT;																					// format data will take (also helps define size of data)
-	attribute_describtions[1].offset = offsetof(Vertex, normal);																				// where this attribute is defined in the data for a single vertex
+	attribute_describtions[1].format = VK_FORMAT_R32G32B32_SFLOAT;								// format data will take (also helps define size of data)
+	attribute_describtions[1].offset = offsetof(Vertex, normal);								// where this attribute is defined in the data for a single vertex
 
 	// normal coord attribute
 	attribute_describtions[2].binding = 0;																																// which binding the data is at (should be same as above)
@@ -2759,7 +2657,7 @@ void VulkanRenderer::create_command_pool()
 		VkCommandPoolCreateInfo pool_info{};
 		pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 		pool_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;	// we are ready now to re-record our command buffers
-		pool_info.queueFamilyIndex = queue_family_indices.compute_family;														// queue family type that buffers from this command pool will use 
+		pool_info.queueFamilyIndex = queue_family_indices.compute_family;	// queue family type that buffers from this command pool will use 
 
 		// create a graphics queue family command pool
 		VkResult result = vkCreateCommandPool(device->getLogicalDevice(), &pool_info, nullptr, &compute_command_pool);
@@ -2848,9 +2746,9 @@ void VulkanRenderer::create_uniform_buffers()
 {
 
 	// buffer size will be size of all two variables (will offset to access) 
-	VkDeviceSize vp_buffer_size = sizeof(ubo_view_projection);
+	VkDeviceSize vp_buffer_size = sizeof(globalUBO);
 	// buffer size will be size of model buffer (will offset to access)
-	VkDeviceSize directions_buffer_size = sizeof(ubo_directions);
+	VkDeviceSize directions_buffer_size = sizeof(sceneUBO);
 
 	// one uniform buffer for each image (and by extension, command buffer)
 	vp_uniform_buffer.resize(vulkanSwapChain.getNumberSwapChainImages());
@@ -2876,7 +2774,7 @@ void VulkanRenderer::create_uniform_buffers()
 		// Map memory to vertex buffer
 		void* data;																																			// 1.) create pointer to a point in normal memory
 		vkMapMemory(device->getLogicalDevice(), staging_buffer_memory, 0, vp_buffer_size, 0, &data);							// 2.) map the vertex buffer memory to that point
-		memcpy(data, &ubo_view_projection, (size_t)vp_buffer_size);																// 3.) copy memory from vertices vector to the point
+		memcpy(data, &globalUBO, (size_t)vp_buffer_size);																// 3.) copy memory from vertices vector to the point
 		vkUnmapMemory(device->getLogicalDevice(), staging_buffer_memory);																	// 4.) unmap the vertex buffer memory
 
 		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
@@ -2902,7 +2800,7 @@ void VulkanRenderer::create_uniform_buffers()
 
 		// Map memory to vertex buffer																																	// 1.) create pointer to a point in normal memory
 		vkMapMemory(device->getLogicalDevice(), staging_buffer_memory, 0, directions_buffer_size, 0, &data);							// 2.) map the vertex buffer memory to that point
-		memcpy(data, &ubo_directions, (size_t)directions_buffer_size);																// 3.) copy memory from vertices vector to the point
+		memcpy(data, &sceneUBO, (size_t)directions_buffer_size);																// 3.) copy memory from vertices vector to the point
 		vkUnmapMemory(device->getLogicalDevice(), staging_buffer_memory);																	// 4.) unmap the vertex buffer memory
 
 		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
@@ -3036,40 +2934,40 @@ void VulkanRenderer::create_descriptor_sets()
 
 		// VIEW PROJECTION DESCRIPTOR
 		// buffer info and data offset info
-		VkDescriptorBufferInfo ubo_view_projection_buffer_info{};
-		ubo_view_projection_buffer_info.buffer = vp_uniform_buffer[i];																					// buffer to get data from 
-		ubo_view_projection_buffer_info.offset = 0;																													// position of start of data
-		ubo_view_projection_buffer_info.range = sizeof(ubo_view_projection);																	// size of data
+		VkDescriptorBufferInfo globalUBO_buffer_info{};
+		globalUBO_buffer_info.buffer = vp_uniform_buffer[i];																					// buffer to get data from 
+		globalUBO_buffer_info.offset = 0;																													// position of start of data
+		globalUBO_buffer_info.range = sizeof(globalUBO);																	// size of data
 
 		// data about connection between binding and buffer
-		VkWriteDescriptorSet ubo_view_projection_set_write{};
-		ubo_view_projection_set_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		ubo_view_projection_set_write.dstSet = descriptor_sets[i];																						// descriptor set to update 
-		ubo_view_projection_set_write.dstBinding = 0;																												// binding to update (matches with binding on layout/shader)
-		ubo_view_projection_set_write.dstArrayElement = 0;																									// index in array to update
-		ubo_view_projection_set_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor
-		ubo_view_projection_set_write.descriptorCount = 1;																									// amount to update
-		ubo_view_projection_set_write.pBufferInfo = &ubo_view_projection_buffer_info;													// information about buffer data to bind
+		VkWriteDescriptorSet globalUBO_set_write{};
+		globalUBO_set_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		globalUBO_set_write.dstSet = descriptor_sets[i];																						// descriptor set to update 
+		globalUBO_set_write.dstBinding = 0;																												// binding to update (matches with binding on layout/shader)
+		globalUBO_set_write.dstArrayElement = 0;																									// index in array to update
+		globalUBO_set_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;							// type of descriptor
+		globalUBO_set_write.descriptorCount = 1;																									// amount to update
+		globalUBO_set_write.pBufferInfo = &globalUBO_buffer_info;													// information about buffer data to bind
 
 		// VIEW PROJECTION DESCRIPTOR
 		// buffer info and data offset info
-		VkDescriptorBufferInfo ubo_directions_buffer_info{};
-		ubo_directions_buffer_info.buffer = directions_uniform_buffer[i];																							// buffer to get data from 
-		ubo_directions_buffer_info.offset = 0;																																// position of start of data
-		ubo_directions_buffer_info.range = sizeof(ubo_directions);																						// size of data
+		VkDescriptorBufferInfo sceneUBO_buffer_info{};
+		sceneUBO_buffer_info.buffer = directions_uniform_buffer[i];																							// buffer to get data from 
+		sceneUBO_buffer_info.offset = 0;																																// position of start of data
+		sceneUBO_buffer_info.range = sizeof(sceneUBO);																						// size of data
 
 		// data about connection between binding and buffer
-		VkWriteDescriptorSet ubo_directions_set_write{};
-		ubo_directions_set_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		ubo_directions_set_write.dstSet = descriptor_sets[i];																									// descriptor set to update 
-		ubo_directions_set_write.dstBinding = 1;																														// binding to update (matches with binding on layout/shader)
-		ubo_directions_set_write.dstArrayElement = 0;																											// index in array to update
-		ubo_directions_set_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;										// type of descriptor
-		ubo_directions_set_write.descriptorCount = 1;																												// amount to update
-		ubo_directions_set_write.pBufferInfo = &ubo_directions_buffer_info;																		// information about buffer data to bind
+		VkWriteDescriptorSet sceneUBO_set_write{};
+		sceneUBO_set_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		sceneUBO_set_write.dstSet = descriptor_sets[i];																									// descriptor set to update 
+		sceneUBO_set_write.dstBinding = 1;																														// binding to update (matches with binding on layout/shader)
+		sceneUBO_set_write.dstArrayElement = 0;																											// index in array to update
+		sceneUBO_set_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;										// type of descriptor
+		sceneUBO_set_write.descriptorCount = 1;																												// amount to update
+		sceneUBO_set_write.pBufferInfo = &sceneUBO_buffer_info;																		// information about buffer data to bind
 
-		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { ubo_view_projection_set_write,
-																	ubo_directions_set_write };
+		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { globalUBO_set_write,
+																	sceneUBO_set_write };
 
 		// update the descriptor sets with new buffer/binding info
 		vkUpdateDescriptorSets(device->getLogicalDevice(), static_cast<uint32_t>(write_descriptor_sets.size()),
@@ -3288,7 +3186,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	before_barrier_uvp.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 	before_barrier_uvp.buffer = vp_uniform_buffer[image_index];
 	before_barrier_uvp.offset = 0;
-	before_barrier_uvp.size = sizeof(ubo_view_projection);
+	before_barrier_uvp.size = sizeof(globalUBO);
 	before_barrier_uvp.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	before_barrier_uvp.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
@@ -3299,7 +3197,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	before_barrier_directions.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 	before_barrier_directions.buffer = vp_uniform_buffer[image_index];
 	before_barrier_directions.offset = 0;
-	before_barrier_directions.size = sizeof(ubo_directions);
+	before_barrier_directions.size = sizeof(sceneUBO);
 	before_barrier_directions.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	before_barrier_directions.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
@@ -3308,8 +3206,8 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	vkCmdPipelineBarrier(command_buffers[image_index], usage_stage_flags,
 		VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 1, &before_barrier_directions, 0, nullptr);
 
-	vkCmdUpdateBuffer(command_buffers[image_index], vp_uniform_buffer[image_index], 0, sizeof(UboViewProjection), &ubo_view_projection);
-	vkCmdUpdateBuffer(command_buffers[image_index], directions_uniform_buffer[image_index], 0, sizeof(UboDirections), &ubo_directions);
+	vkCmdUpdateBuffer(command_buffers[image_index], vp_uniform_buffer[image_index], 0, sizeof(GlobalUBO), &globalUBO);
+	vkCmdUpdateBuffer(command_buffers[image_index], directions_uniform_buffer[image_index], 0, sizeof(SceneUBO), &sceneUBO);
 
 	VkBufferMemoryBarrier after_barrier_uvp;
 	after_barrier_uvp.pNext = nullptr;
@@ -3318,7 +3216,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	after_barrier_uvp.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
 	after_barrier_uvp.buffer = vp_uniform_buffer[image_index];
 	after_barrier_uvp.offset = 0;
-	after_barrier_uvp.size = sizeof(UboViewProjection);
+	after_barrier_uvp.size = sizeof(GlobalUBO);
 	after_barrier_uvp.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	after_barrier_uvp.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
@@ -3329,7 +3227,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	after_barrier_directions.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
 	after_barrier_directions.buffer = vp_uniform_buffer[image_index];
 	after_barrier_directions.offset = 0;
-	after_barrier_directions.size = sizeof(UboDirections);
+	after_barrier_directions.size = sizeof(SceneUBO);
 	after_barrier_directions.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	after_barrier_directions.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
@@ -3628,24 +3526,6 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	
 }
 
-VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& code)
-{
-
-	// shader module create info
-	VkShaderModuleCreateInfo shader_module_create_info{};
-	shader_module_create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-	shader_module_create_info.codeSize = code.size();									// size of code
-	shader_module_create_info.pCode = reinterpret_cast<const uint32_t*>(code.data());	// pointer to code 
-
-	VkShaderModule shader_module;
-	VkResult result = vkCreateShaderModule(device->getLogicalDevice(), &shader_module_create_info, nullptr, &shader_module);
-	
-	ASSERT_VULKAN(result, "Failed to create a shader module!")
-
-	return shader_module;
-
-}
-
 int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 {
 
@@ -3697,7 +3577,7 @@ void VulkanRenderer::check_changed_framebuffer_size()
 		int width, height;
 		glfwGetFramebufferSize(window->get_window(), &width, &height);
 
-		ubo_view_projection.projection = glm::perspective(glm::radians(40.0f), (float)width / (float)height,
+		globalUBO.projection = glm::perspective(glm::radians(40.0f), (float)width / (float)height,
 															0.1f, 1000.f);
 
 		window->reset_framebuffer_has_changed();

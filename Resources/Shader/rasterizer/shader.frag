@@ -22,8 +22,8 @@ layout (location = 1) in vec3 shading_normal;
 layout (location = 2) in vec3 fragment_color;
 layout (location = 3) in vec3 worldPosition;
 
-layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
-	UboDirections ubo_directions;
+layout (set = 0, binding = sceneUBO_BINDING) uniform _SceneUBO {
+	SceneUBO sceneUBO;
 };
 
 layout(set = 0, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
@@ -58,9 +58,9 @@ void main() {
     MaterialIDs materialIDs		= MaterialIDs(obj_res.material_index_address);	// material id per triangle (face)
 	Materials materials			= Materials(obj_res.material_address);			// array of all materials
 
-	vec3 L = normalize(vec3(-ubo_directions.light_dir));
+	vec3 L = normalize(vec3(-sceneUBO.light_dir));
 	vec3 N = normalize(shading_normal);
-	vec3 V = normalize(ubo_directions.cam_pos.xyz - worldPosition);
+	vec3 V = normalize(sceneUBO.cam_pos.xyz - worldPosition);
 	
 	vec3 ambient = vec3(0.f);
 

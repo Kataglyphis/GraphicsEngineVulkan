@@ -22,8 +22,8 @@ hitAttributeEXT vec2 attribs;
 layout(location = 0) rayPayloadInEXT HitPayload payload;
 layout(location = 1) rayPayloadEXT bool isShadowed;
 
-layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
-    UboDirections ubo_directions;
+layout (set = 0, binding = sceneUBO_BINDING) uniform _SceneUBO {
+    SceneUBO sceneUBO;
 };
 layout(set = 0, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescription_ {
     ObjectDescription i[];
@@ -94,10 +94,10 @@ void main() {
     ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
     ambient += materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 
-    vec3 L = normalize(vec3(-ubo_directions.light_dir)); 
+    vec3 L = normalize(vec3(-sceneUBO.light_dir)); 
     // no need to normalize
 	vec3 N = normalize(normal_hit);
-	vec3 V = normalize(ubo_directions.cam_pos.xyz - hit_pos);
+	vec3 V = normalize(sceneUBO.cam_pos.xyz - hit_pos);
 
     isShadowed = true;
     if(dot(world_normal_hit, L) > 0) {
