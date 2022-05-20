@@ -52,5 +52,26 @@ private:
 								VK_KHR_SWAPCHAIN_EXTENSION_NAME
 
 	};
+
+	// DEVICE EXTENSIONS FOR RAYTRACING
+	const std::vector<const char*> device_extensions_for_raytracing = {
+
+		// raytracing related extensions 
+		VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
+		VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
+		// required from VK_KHR_acceleration_structure
+		VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
+		VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
+		VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME,
+		// required for pipeline
+		VK_KHR_SPIRV_1_4_EXTENSION_NAME,
+		// required by VK_KHR_spirv_1_4
+		VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME,
+		//required for pipeline library
+		VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
+
+
+
+	};
 };
 
