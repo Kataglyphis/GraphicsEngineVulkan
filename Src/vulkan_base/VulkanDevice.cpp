@@ -2,7 +2,7 @@
 #include "Utilities.h"
 #include <set>
 
-VulkanDevice::VulkanDevice(VkInstance* instance, VkSurfaceKHR* surface)
+VulkanDevice::VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface)
 {
 	this->instance = instance;
 	this->surface = surface;
@@ -77,7 +77,7 @@ void VulkanDevice::get_physical_device()
 
 	// Enumerate physical devices the vkInstance can access
 	uint32_t device_count = 0;
-	vkEnumeratePhysicalDevices(*instance, &device_count, nullptr);
+	vkEnumeratePhysicalDevices(instance->getVulkanInstance(), &device_count, nullptr);
 
 	// if no devices available, then none support of Vulkan
 	if (device_count == 0) {
@@ -86,7 +86,7 @@ void VulkanDevice::get_physical_device()
 
 	//Get list of physical devices 
 	std::vector<VkPhysicalDevice> device_list(device_count);
-	vkEnumeratePhysicalDevices(*instance, &device_count, device_list.data());
+	vkEnumeratePhysicalDevices(instance->getVulkanInstance(), &device_count, device_list.data());
 
 	for (const auto& device : device_list) {
 

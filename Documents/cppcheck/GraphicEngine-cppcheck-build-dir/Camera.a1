@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="3872682871">
+<analyzerinfo checksum="3319410869">
   <FileInfo check="CheckUnusedFunctions">
-    <functioncall functionName="Camera"/>
     <functioncall functionName="GLFW_KEY_A"/>
     <functioncall functionName="GLFW_KEY_D"/>
     <functioncall functionName="GLFW_KEY_E"/>
@@ -15,6 +14,7 @@
     <functioncall functionName="front"/>
     <functioncall functionName="if"/>
     <functioncall functionName="lookAt"/>
+    <functioncall functionName="movement_speed"/>
     <functioncall functionName="near_plane"/>
     <functioncall functionName="new_camera_position"/>
     <functioncall functionName="normalize"/>
@@ -23,12 +23,7 @@
     <functioncall functionName="radians"/>
     <functioncall functionName="right"/>
     <functioncall functionName="sin"/>
-    <functioncall functionName="start_move_speed"/>
-    <functioncall functionName="start_pitch"/>
-    <functioncall functionName="start_position"/>
-    <functioncall functionName="start_turn_speed"/>
-    <functioncall functionName="start_up"/>
-    <functioncall functionName="start_yaw"/>
+    <functioncall functionName="turn_speed"/>
     <functioncall functionName="up"/>
     <functioncall functionName="update"/>
     <functioncall functionName="vec3"/>

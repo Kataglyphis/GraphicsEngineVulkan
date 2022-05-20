@@ -18,8 +18,6 @@
 #include <stdio.h>
 #include <sstream>
 
-#include "stb_image.h"
-
 #include "Allocator.h"
 #include "Window.h"
 #include "Utilities.h"
@@ -30,6 +28,10 @@
 #include "VulkanDevice.h"
 #include "QueueFamilyIndices.h"
 #include "VulkanSwapChain.h"
+#include "VulkanInstance.h"
+#include "GUISceneSharedVars.h"
+#include "VulkanDebug.h"
+
 #include "tiny_obj_loader.h"
 
 #include "Scene.h"
@@ -47,12 +49,13 @@ public:
 
 	int create_model(std::string modelFile);
 
-	void update_model(int model_id, glm::mat4 new_model);
-	void update_view(glm::mat4 view);
-	void update_light_direction(glm::vec3 light_dir);
+	void update_model(	int model_id, 
+						glm::mat4 new_model);
+
+	void update_uniforms(	Scene* scene,
+							Camera* camera);
+
 	void update_raytracing(bool raytracing_on);
-	void update_view_direction(glm::vec3 view_dir);
-	void update_cam_pos(glm::vec3 cam_pos);
 
 	void update_raytracing_descriptor_set(uint32_t image_index);
 	void record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
@@ -75,12 +78,16 @@ public:
 private:
 
 	// Vulkan instance, stores all per-application states
-	VkInstance						instance;
+	VulkanInstance					instance;
+
 	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
 	VkSurfaceKHR					surface;
+	void							create_surface();
+
 	std::unique_ptr<VulkanDevice>	device;
 
 	VulkanSwapChain					vulkanSwapChain;
+	void							recreate_swap_chain();
 
 	Window*							window;
 	Scene*							scene;
@@ -92,42 +99,17 @@ private:
 	std::vector<VkCommandBuffer>	command_buffers;
 	std::vector<VkFramebuffer>		framebuffers;
 
-	// all regarding swapchain
-	/*VkSwapchainKHR swapchain;
-	std::vector<SwapChainImage> swap_chain_images;
-	std::vector<VkFramebuffer> swap_chain_framebuffers;
-	std::vector<VkCommandBuffer> command_buffers;
-	VkFormat swap_chain_image_format;
-	VkExtent2D swap_chain_extent;*/
-
 	// new era of memory management for my project
 	// for now on integrate vma 
-	// Allocator allocator;
-
-	void recreate_swap_chain();
-
-	// core create functions
-	void create_instance();
-	void create_vma_allocator();
-	void create_surface();
+	Allocator						allocator;
+	void							create_vma_allocator();
 
 	// -- support functions 
 	// helper create functions
-	//VkImage create_image(uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
-	//											VkMemoryPropertyFlags prop_flags, VkDeviceMemory* image_memory);
-	//VkImageView create_image_view(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
-
 	VkShaderModule create_shader_module(const std::vector<char>& code);
 
 	// texture functions
 	int create_texture_descriptor(VkImageView texture_image);
-
-	// checker functions
-	bool check_instance_extension_support(std::vector<const char*>* check_extensions);
-
-	// -- debugging
-	VkDebugUtilsMessengerEXT debug_messenger;
-	bool check_validation_layer_support();
 
 	// -- synchronization
 	std::vector<VkSemaphore> image_available;
@@ -208,22 +190,22 @@ private:
 	PushConstantRaster pc_raster;
 
 	// uniform buffer
-	std::vector<VkBuffer> vp_uniform_buffer;
+	std::vector<VkBuffer>		vp_uniform_buffer;
 	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
-	std::vector<VkBuffer> directions_uniform_buffer;
+	std::vector<VkBuffer>		directions_uniform_buffer;
 	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
 
 	// ----- ALL RASTERIZER SPECIFICS ----- END 
 
 	// - descriptors
-	VkDescriptorSetLayout descriptor_set_layout;								// for normal uniform values
-	VkDescriptorSetLayout sampler_set_layout;									// descriptor set layout for our samplers
+	VkDescriptorSetLayout descriptor_set_layout;	// for normal uniform values
+	VkDescriptorSetLayout sampler_set_layout;		// descriptor set layout for our samplers
 	VkPushConstantRange push_constant_range;
 	VkDescriptorPool descriptor_pool;
 	VkDescriptorPool sampler_descriptor_pool;
 	VkDescriptorPool object_description_pool;
 	std::vector<VkDescriptorSet> descriptor_sets;
-	VkDescriptorSet sampler_descriptor_set;				// these are no swap chain dependend descriptors, doesn't change over frames
+	VkDescriptorSet sampler_descriptor_set;			// these are no swap chain dependend descriptors, doesn't change over frames
 
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
@@ -314,15 +296,10 @@ private:
 	// mipmapping
 	int max_levels = 10;
 
-	// ---- HELPER ---- BEGIN
-	stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size);
-	// ---- HELPER ---- END
-
 	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
 	void update_uniform_buffers(uint32_t image_index);
 
 	// ----- VARS ----- BEGIN
-	
 	void check_changed_framebuffer_size();
 	bool framebuffer_resized;
 	// indices index into current frame

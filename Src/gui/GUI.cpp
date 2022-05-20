@@ -55,12 +55,12 @@ ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
 
 		if (ImGui::TreeNode("Directional Light")) {
 			ImGui::Separator();
-			ImGui::SliderFloat("Ambient intensity", &direcional_light_ambient_intensity, 0.0f, 50.0f);
+			ImGui::SliderFloat("Ambient intensity", &guiSceneSharedVars.direcional_light_radiance, 0.0f, 50.0f);
 			ImGui::Separator();
 			// Edit a color (stored as ~4 floats)
-			ImGui::ColorEdit3("Directional Light Color", directional_light_color);
+			ImGui::ColorEdit3("Directional Light Color", guiSceneSharedVars.directional_light_color);
 			ImGui::Separator();
-			ImGui::SliderFloat3("Light Direction", directional_light_direction, -1.f, 1.0f);
+			ImGui::SliderFloat3("Light Direction", guiSceneSharedVars.directional_light_direction, -1.f, 1.0f);
 
 			ImGui::TreePop();
 		}
@@ -101,10 +101,6 @@ ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
 
 	return gui_draw_data;
 
-}
-
-void GUI::update_user_input(std::shared_ptr<Scene> scene)
-{
 }
 
 void GUI::create_gui_context(	Window* window, 

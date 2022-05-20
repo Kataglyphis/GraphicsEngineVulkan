@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="606974248">
+<analyzerinfo checksum="3904180337">
         <error id="stlFindInsert" severity="performance" msg="Searching before insertion is not necessary. Instead of &apos;vertices_map[vert]=vertices.size()&apos; consider using &apos;vertices_map.try_emplace(vert, vertices.size());&apos;." verbose="Searching before insertion is not necessary. Instead of &apos;vertices_map[vert]=vertices.size()&apos; consider using &apos;vertices_map.try_emplace(vert, vertices.size());&apos;." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/ObjLoader.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\Src\scene\ObjLoader.cpp" line="91" column="55"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\Src\scene\ObjLoader.cpp" line="92" column="55"/>
         </error>
   <FileInfo check="CheckUnusedFunctions">
     <functioncall functionName="EXIT_FAILURE"/>
@@ -27,7 +27,7 @@
     <functioncall functionName="exit"/>
     <functioncall functionName="f"/>
     <functioncall functionName="for"/>
-    <functioncall functionName="get_base_dir"/>
+    <functioncall functionName="getBaseDir"/>
     <functioncall functionName="green"/>
     <functioncall functionName="i"/>
     <functioncall functionName="if"/>
@@ -43,6 +43,7 @@
     <functioncall functionName="materialIndex"/>
     <functioncall functionName="materials"/>
     <functioncall functionName="modelFile"/>
+    <functioncall functionName="model_file"/>
     <functioncall functionName="n"/>
     <functioncall functionName="normal_index"/>
     <functioncall functionName="normalize"/>

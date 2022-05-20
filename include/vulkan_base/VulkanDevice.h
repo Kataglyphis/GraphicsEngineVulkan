@@ -4,13 +4,14 @@
 
 #include "Utilities.h"
 #include "QueueFamilyIndices.h"
+#include "VulkanInstance.h"
 
 class VulkanDevice
 {
 
 public:
 
-	VulkanDevice(VkInstance* instance, VkSurfaceKHR* surface);
+	VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface);
 
 	VkPhysicalDevice	getPhysicalDevice() const { return physical_device; };
 	VkDevice			getLogicalDevice() const { return logical_device; };
@@ -29,7 +30,7 @@ private:
 
 	VkDevice					logical_device;
 
-	VkInstance*					instance;
+	VulkanInstance*				instance;
 	VkSurfaceKHR*				surface;
 
 	// available queues

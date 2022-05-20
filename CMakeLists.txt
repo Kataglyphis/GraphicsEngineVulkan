@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # set the project name
 project(GraphicsEngine VERSION 1.3
                        DESCRIPTION "Epic Graphics"
-                       LANGUAGES CXX)
+                       LANGUAGES  CXX
+                                  C)
 
 # include google test to project
 include(FetchContent)
@@ -20,6 +21,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # compile glslc shaders 
+# source: https://www.reddit.com/r/vulkan/comments/kbaxlz/what_is_your_workflow_when_compiling_shader_files/
 function(add_shader TARGET SHADER)
   find_program(GLSLC glslc)
 
@@ -64,13 +66,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
-
-add_compile_definitions(SHADER_SRC_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader")
-add_compile_definitions(SHADER_SPV_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/spv")
-add_compile_definitions(SHADER_LOG_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/log")
+# we are using this dir strings for removing hard coded file locations
+# at c++ side
+# add_compile_definitions(SHADER_SRC_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader")
+# add_compile_definitions(SHADER_SPV_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/spv")
+# add_compile_definitions(SHADER_LOG_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/log")
 
 FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                       "Src/renderer/*.cpp"
                                         "include/renderer/*.hpp")
+
+FILE(GLOB VULKAN_BASE_FILTER            "include/vulkan_base/*.h"                                    "Src/vulkan_base/*.cpp"
+                                        "include/vulkan_base/*.hpp")
 
 FILE(GLOB SCENE_FILTER                  "include/scene/*.h"                                          "Src/scene/*.cpp"
                                         "include/scene/*.hpp")
@@ -95,6 +101,7 @@ FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                 
                                         "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp"
                                         "include/gui/*.h"                                           "Src/gui/*.cpp")
 
+source_group("vulkan_base"                                  FILES ${VULKAN_BASE_FILTER})
 source_group("gui"                                          FILES ${GUI_FILTER})
 source_group("renderer"                                     FILES ${RENDERER_FILTER})
 source_group("scene"                                        FILES ${SCENE_FILTER})
@@ -102,7 +109,7 @@ source_group("window"                                       FILES ${WINDOW_FILTE
 source_group("memory"                                       FILES ${MEMORY_FILTER})
 source_group("common"                                       FILES ${COMMON_FILTER})
 source_group("app"                                          FILES ${APP_FILTER})
-source_group("util"                                          FILES ${UTIL_FILTER})
+source_group("util"                                         FILES ${UTIL_FILTER})
 
 #set all your sources accordingly
 file(GLOB_RECURSE SOURCES 
@@ -212,6 +219,7 @@ ${COMMON_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
 ${UTIL_FILTER}
+${VULKAN_BASE_FILTER}
 )
 
 foreach(Shader ${POST_SHADER_FILTER})
@@ -226,9 +234,6 @@ foreach(Shader ${RASTER_SHADER_FILTER})
   add_shader(${PROJECT_NAME} ${Shader})
 endforeach()
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
-
 if(UNIX)
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 else()
@@ -236,6 +241,7 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
+                                                    ./include/vulkan_base
                                                     ./include/gui
                                                     ./include/common
                                                     ./include/scene
@@ -245,12 +251,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
                                                     ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
-
-# add_custom_command(
-#   TARGET ${PROJECT_NAME} PRE_BUILD
-#   COMMAND ${CMAKE_COMMAND} -E copy
-#           ${CMAKE_SOURCE_DIR}/Resources/Shaders/*
-#           ${CMAKE_CURRENT_BINARY_DIR}/Shaders/)
 
 
 # set all glfw dependencies

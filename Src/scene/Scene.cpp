@@ -4,6 +4,11 @@ Scene::Scene() {
 
 }
 
+void Scene::update_user_input(GUI* gui)
+{
+	guiSceneSharedVars = gui->getGuiSceneSharedVars();
+}
+
 uint32_t Scene::get_model_count()
 {
 	return static_cast<uint32_t>(model_list.size());
