@@ -33,9 +33,6 @@ int App::run()
     float delta_time = 0.0f;
     float last_time = 0.0f;
 
-    // -- RAY TRACING ON
-    bool raytracing = false;
-
     std::unique_ptr<Window> window          = std::make_unique<Window>(window_width, window_height);
     std::unique_ptr<Scene>  scene           = std::make_unique<Scene>();
     std::unique_ptr<GUI>    gui             = std::make_unique<GUI>(window.get());
@@ -44,16 +41,14 @@ int App::run()
     VulkanRenderer vulkan_renderer{ window.get(),
                                     scene.get(),
                                     gui.get(),
-                                    camera.get(),
-                                    raytracing };
+                                    camera.get()};
 
     glm::mat4 dragon_model(1.0f);
     //dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
     //dragon_model = glm::scale(dragon_model, glm::vec3(10.0f, 10.0f, 10.0f));
     //dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-    vulkan_renderer.update_model(0, dragon_model);
-    vulkan_renderer.update_raytracing(raytracing);
+    scene->update_model_matrix(dragon_model, 0);
 
     while (!window->get_should_close()) {
 
@@ -72,13 +67,13 @@ int App::run()
 
         scene->update_user_input(gui.get());
 
+        vulkan_renderer.updateStateDueToUserInput(gui.get());
         vulkan_renderer.update_uniforms(scene.get(),
-                                        camera.get());
+                                        camera.get(),
+                                        window.get());
 
         // retrieve updates from the UI
-        bool shader_hot_reload_triggered = false;
-        ImDrawData* gui_draw_data = gui->render(shader_hot_reload_triggered, raytracing);
-        if (shader_hot_reload_triggered) vulkan_renderer.hot_reload_all_shader();
+        ImDrawData* gui_draw_data = gui->render();
 
         vulkan_renderer.drawFrame(gui_draw_data);
 

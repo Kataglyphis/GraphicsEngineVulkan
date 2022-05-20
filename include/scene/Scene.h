@@ -49,12 +49,12 @@ public:
 	std::vector<std::shared_ptr<Model>> const & get_model_list();
 	std::vector<ObjectDescription>				get_object_descriptions();
 
-	void		add_model(std::shared_ptr<Model> model);
-	void		add_object_description(ObjectDescription object_description);
+	void						add_model(std::shared_ptr<Model> model);
+	void						add_object_description(ObjectDescription object_description);
 
-	void update_model_matrix(glm::mat4 model_matrix, int model_id);
+	void						update_model_matrix(glm::mat4 model_matrix, int model_id);
 
-	void clean_up();
+	void						clean_up();
 
 	~Scene();
 

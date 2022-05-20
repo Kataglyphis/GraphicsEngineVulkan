@@ -4,7 +4,7 @@ VulkanDebug::VulkanDebug()
 {
 }
 
-VulkanDebug::VulkanDebug(VkInstance* vulkanInstance)
+void VulkanDebug::init(VkInstance* vulkanInstance)
 {
 
 	this->vulkanInstance = vulkanInstance;
@@ -35,6 +35,7 @@ VulkanDebug::VulkanDebug(VkInstance* vulkanInstance)
 														"Failed to create debug messenger.\n");
 
 	}
+
 }
 
 VulkanDebug::~VulkanDebug()

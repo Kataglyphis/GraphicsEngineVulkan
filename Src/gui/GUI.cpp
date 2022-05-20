@@ -19,8 +19,7 @@ void GUI::initializeVulkanContext(	VulkanDevice* device,
 
 }
 
-ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
-							bool& raytracing)
+ImDrawData* GUI::render()
 {
 
 	// Start the Dear ImGui frame
@@ -37,7 +36,7 @@ ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
 
 		if (ImGui::Button("All shader!")) {
 
-			shader_hot_reload_triggered = true;
+			guiRendererSharedVars.shader_hot_reload_triggered = true;
 
 		}
 
@@ -45,7 +44,7 @@ ImDrawData* GUI::render(	bool& shader_hot_reload_triggered,
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("Ray tracing", &raytracing);
+	ImGui::Checkbox("Ray tracing", &guiRendererSharedVars.raytracing);
 
 	ImGui::Separator();
 
@@ -185,7 +184,7 @@ void GUI::create_gui_context(	Window* window,
 	init_info.QueueFamily = indices.graphics_family;
 	init_info.Queue = device->getGraphicsQueue();
 	init_info.DescriptorPool = gui_descriptor_pool;
-	init_info.PipelineCache = VK_NULL_HANDLE;																					// we do not need those 
+	init_info.PipelineCache = VK_NULL_HANDLE;																					
 	init_info.MinImageCount = MAX_FRAME_DRAWS;
 	init_info.ImageCount = MAX_FRAME_DRAWS;
 	init_info.Allocator = VK_NULL_HANDLE;

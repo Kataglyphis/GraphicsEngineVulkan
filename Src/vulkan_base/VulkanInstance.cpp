@@ -80,7 +80,7 @@ VulkanInstance::VulkanInstance()
 	if (ENABLE_VALIDATION_LAYERS) {
 
 		// init per app custom debug messanger
-		vulkanDebug = VulkanDebug(&instance);
+		vulkanDebug.init(&instance);
 
 	}
 }

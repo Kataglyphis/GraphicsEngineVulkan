@@ -35,6 +35,12 @@ std::vector<std::shared_ptr<Model>> const & Scene::get_model_list()
 void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id)
 {
 
+	if (model_id >= static_cast<int32_t>(get_model_count()) || model_id < 0) {
+
+		throw std::runtime_error("Wrong model id value!");
+
+	}
+
 	model_list[model_id]->set_model(model_matrix);
 
 }

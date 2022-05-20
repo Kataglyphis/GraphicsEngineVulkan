@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "VulkanDevice.h"
 #include "GUISceneSharedVars.h"
+#include "GUIRendererSharedVars.h"
 
 class GUI
 {
@@ -21,10 +22,10 @@ public:
 									const VkRenderPass& post_render_pass,
 									const VkCommandPool& graphics_command_pool);
 
-	const GUISceneSharedVars&	getGuiSceneSharedVars() { return guiSceneSharedVars; };
+	const GUISceneSharedVars&		getGuiSceneSharedVars() { return guiSceneSharedVars; };
+	GUIRendererSharedVars&			getGuiRendererSharedVars() { return guiRendererSharedVars; };
 
-	ImDrawData*					render(	bool& shader_hot_reload_triggered,
-										bool& raytracing);
+	ImDrawData*						render();
 
 
 
@@ -38,11 +39,11 @@ private:
 
 	void create_fonts_and_upload(const VkCommandPool& graphics_command_pool);
 
-	VulkanDevice*		device;
-	Window*				window;
-	VkDescriptorPool	gui_descriptor_pool;
+	VulkanDevice*			device;
+	Window*					window;
+	VkDescriptorPool		gui_descriptor_pool;
 
-	GUISceneSharedVars	guiSceneSharedVars;
-	
+	GUISceneSharedVars		guiSceneSharedVars;
+	GUIRendererSharedVars	guiRendererSharedVars;
 };
 

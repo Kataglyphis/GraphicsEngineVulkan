@@ -42,7 +42,8 @@ class VulkanDebug
 public:
 
 	VulkanDebug();
-	VulkanDebug(VkInstance* vulkanInstance);
+
+	void						init(VkInstance* vulkanInstance);
 
 	~VulkanDebug();
 

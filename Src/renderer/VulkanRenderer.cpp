@@ -16,8 +16,7 @@
 VulkanRenderer::VulkanRenderer(	Window* window, 
 								Scene*	scene,
 								GUI*	gui,
-								Camera* camera, 
-								bool raytracing) :
+								Camera* camera) :
 
 									max_levels(std::numeric_limits<int>::max()),
 									current_frame(0),
@@ -28,21 +27,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 {
 
-	ubo_view_projection.projection = glm::perspective(	glm::radians(camera->get_fov()), 
-														(float)window->get_width() / (float)window->get_height(),
-														camera->get_near_plane(), 
-														camera->get_far_plane());
-
-	ubo_view_projection.view = glm::lookAt(camera->get_camera_position(), glm::vec3(0.0f, 0.0f, 0.0f),
-												glm::vec3(0.0f, 1.0f, 0.0f));
-
-	ubo_directions.light_dir = glm::vec4(0.075f,
-										-1.f,
-										0.118f,
-										1.0f);
-
-	ubo_directions.view_dir = glm::vec4(camera->get_camera_direction(), 1.0f);
-	ubo_directions.cam_pos = glm::vec4(camera->get_camera_position(), 1.0f);
+	update_uniforms(scene, camera, window);
 
 	try {
 
@@ -105,10 +90,9 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		dragon_model = glm::scale(dragon_model, glm::vec3(1000.0f, 1000.0f, 1000.0f));
 		/*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
 		dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
-		update_model(0, dragon_model);
+		scene->update_model_matrix(dragon_model, 0);
 
 		init_raytracing();
-
 
 		create_synchronization();
 
@@ -159,25 +143,19 @@ void VulkanRenderer::init_raytracing() {
 
 }
 
-void VulkanRenderer::update_model(int model_id, glm::mat4 new_model)
-{
-
-	if (model_id >= static_cast<int32_t>(this->scene->get_model_count()) || model_id < 0) {
-
-		throw std::runtime_error("Wrong model id value!");
-
-	}
-
-	scene->update_model_matrix(new_model, model_id);
-
-}
-
-void VulkanRenderer::update_uniforms(Scene* scene, Camera* camera)
+void VulkanRenderer::update_uniforms(	Scene* scene, 
+										Camera* camera,
+										Window* window)
 {
 
 	const GUISceneSharedVars guiSceneSharedVars = scene->getGuiSceneSharedVars();
 
+
 	ubo_view_projection.view					= camera->calculate_viewmatrix();
+	ubo_view_projection.projection				= glm::perspective(glm::radians(camera->get_fov()),
+													(float)window->get_width() / (float)window->get_height(),
+													camera->get_near_plane(),
+													camera->get_far_plane());
 
 	ubo_directions.view_dir						= glm::vec4(camera->get_camera_direction(),1.0f);
 
@@ -190,10 +168,14 @@ void VulkanRenderer::update_uniforms(Scene* scene, Camera* camera)
 
 }
 
-void VulkanRenderer::update_raytracing(bool raytracing_on)
+void VulkanRenderer::updateStateDueToUserInput(GUI* gui)
 {
+	GUIRendererSharedVars& guiRendererSharedVars	= gui->getGuiRendererSharedVars();
+	this->raytracing								= guiRendererSharedVars.raytracing;
 
-	this->raytracing = raytracing_on;
+	if (guiRendererSharedVars.shader_hot_reload_triggered) {
+		hot_reload_all_shader();
+	}
 
 }
 
