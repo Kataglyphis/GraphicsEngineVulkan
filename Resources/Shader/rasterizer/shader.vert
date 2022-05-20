@@ -9,7 +9,13 @@
 #extension GL_EXT_buffer_reference2 : require
 
 #include "../common/raycommon.glsl"
-#include "../common/SetsAndBindings.glsl"
+
+#include "../../../include/common/host_device_shared_vars.h"
+
+#include "../../../include/renderer/GlobalUBO.h"
+#include "../../../include/renderer/SceneUBO.h"
+
+#include "../../../include/renderer/PushConstantRasterizer.h"
 
 layout (location = 0) in vec3 positions; 
 layout (location = 1) in vec3 normal;
@@ -24,8 +30,8 @@ layout (set = 0, binding = sceneUBO_BINDING) uniform _SceneUBO {
 	SceneUBO sceneUBO;
 };
 
-layout (push_constant) uniform _PushConstantRaster {
-	PushConstantRaster pc_raster;
+layout (push_constant) uniform _PushConstantRasterizer {
+	PushConstantRasterizer pc_raster;
 };
 
 layout (location = 0) out vec2 texture_coordinates;
@@ -53,4 +59,5 @@ void main () {
 	fragment_color = color;
 
 	gl_Position = vulkan_position;
+
 }

@@ -14,10 +14,9 @@ using mat4 = glm::mat4;
 using uint = unsigned int;
 #endif
 
-struct SceneUBO {
-
-	vec4 light_dir;
-	vec4 view_dir;
-	vec4 cam_pos;
+// Push constant structure for the raster
+struct PushConstantRasterizer
+{
+	mat4 model;  // matrix of the instance
 
 };

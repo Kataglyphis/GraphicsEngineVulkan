@@ -11,8 +11,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "SetsAndBindings.h"
-#include "GloabalValues.h"
+#include "host_device_shared_vars.h"
+#include "GlobalValues.h"
 
 // Error checking on vulkan function calls
 #define ASSERT_VULKAN(val,error_string)\

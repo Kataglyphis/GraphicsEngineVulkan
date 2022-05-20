@@ -14,10 +14,6 @@ using mat4 = glm::mat4;
 using uint = unsigned int;
 #endif
 
-struct SceneUBO {
-
-	vec4 light_dir;
-	vec4 view_dir;
-	vec4 cam_pos;
-
+struct PushConstantRaytracing {
+	vec4 clear_color;
 };

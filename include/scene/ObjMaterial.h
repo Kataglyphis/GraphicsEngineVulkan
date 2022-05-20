@@ -1,28 +1,35 @@
+// this little "hack" is needed for using it on the
+// CPU side as well for the GPU side :)
+// inspired by the NVDIDIA tutorial:
+// https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/
+
+#ifdef __cplusplus
 #pragma once
 #include <glm/glm.hpp>
+// GLSL Type
+using vec2 = glm::vec2;
+using vec3 = glm::vec3;
+using vec4 = glm::vec4;
+using mat4 = glm::mat4;
+using uint = unsigned int;
+#endif
+
 // illumination model (see http://www.fileformat.info/format/material/)
 
-class ObjMaterial
+struct ObjMaterial
 {
-public:
 
-	ObjMaterial();
-	ObjMaterial(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 transmittance,
-				glm::vec3 emission, float shininess, float ior, float dissolve,
-				int illum, int textureID);
-
-	alignas(16) glm::vec3 ambient		= glm::vec3(0.1f, 0.1f, 0.1f);
-	glm::vec3 diffuse		= glm::vec3(0.7f, 0.7f, 0.7f);
-	glm::vec3 specular		= glm::vec3(1.0f, 1.0f, 1.0f);
-	glm::vec3 transmittance = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 emission		= glm::vec3(0.0f, 0.0f, 0.10);
-	float         shininess = 0.f;
-	float         ior		= 1.0f;  // index of refraction
-	float         dissolve	= 1.f;   // 1 == opaque; 0 == fully transparent
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	vec3 transmittance;
+	vec3 emission;
+	float   shininess;
+	float   ior;		// index of refraction
+	float   dissolve;   // 1 == opaque; 0 == fully transparent
 							 
-	int illum				= 0;
-	int textureID			= -1;
+	int illum;
+	int textureID;
 
-private:
 };
 

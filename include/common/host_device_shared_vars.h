@@ -1,3 +1,11 @@
+#ifndef HOST_DEVICE_SHARED_VARS
+#define HOST_DEVICE_SHARED_VARS
+
+const int MAX_FRAME_DRAWS = 3;
+const int MAX_OBJECTS = 40;
+const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
+const int MAX_TEXTURE_COUNT = 24;
+
 // ----- RASTERIZER ----- START
 #define globalUBO_BINDING 0
 #define sceneUBO_BINDING 1
@@ -6,11 +14,11 @@
 // ----- RASTERIZER ----- END
 
 // ---- RAYTRACING BINDING ---- START
+
 #define TLAS_BINDING 0
 #define OUT_IMAGE_BINDING 1
 #define TEXTURES_BINDING 2
 #define SAMPLER_BINDING_RT 3
-// --- TEXTURES
 // ---- RAYTRACING BINDING ---- END
 
-
+#endif
