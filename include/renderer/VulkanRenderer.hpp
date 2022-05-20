@@ -98,17 +98,15 @@ private:
 	VkCommandPool					graphics_command_pool;
 	VkCommandPool					compute_command_pool;
 
-	// uniforms
+	// uniform buffers
 	GlobalUBO						globalUBO;
+	std::vector<VkBuffer>			globalUBOBuffer;
+	std::vector<VkDeviceMemory>		globalUBOBufferMemory;
 	SceneUBO						sceneUBO;
-
-	PushConstantRasterizer			pc_raster;
-
-	// uniform buffer
-	std::vector<VkBuffer>		vp_uniform_buffer;
-	std::vector<VkDeviceMemory> vp_uniform_buffer_memory;
-	std::vector<VkBuffer>		directions_uniform_buffer;
-	std::vector<VkDeviceMemory> directions_uniform_buffer_memory;
+	std::vector<VkBuffer>			sceneUBOBuffer;
+	std::vector<VkDeviceMemory>		sceneUBOBufferMemory;
+	void							create_uniform_buffers();
+	void							update_uniform_buffers(uint32_t image_index);
 
 	std::vector<VkCommandBuffer>	command_buffers;
 	std::vector<VkFramebuffer>		framebuffers;
@@ -132,6 +130,7 @@ private:
 
 	// ----- ALL RASTERIZER SPECIFICS ----- BEGIN 
 	// -- pipeline
+	PushConstantRasterizer			pc_raster;
 	VkPipeline graphics_pipeline;
 	VkPipelineLayout pipeline_layout;
 	VkRenderPass render_pass;
@@ -188,13 +187,9 @@ private:
 	void create_command_buffers();
 	void create_texture_sampler();
 
-	void create_uniform_buffers();
 	void create_descriptor_pool_uniforms();
 	void create_descriptor_pool_sampler();
 	void create_descriptor_sets();
-
-	
-
 	// ----- ALL RASTERIZER SPECIFICS ----- END 
 
 	// - descriptors
@@ -214,19 +209,24 @@ private:
 	// -- create funcs
 	// -- bottom level acceleration structure
 	void create_BLAS();
-	void object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
-								VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
+	void object_to_VkGeometryKHR(	Mesh* mesh, 
+									VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
+									VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
 
-	void create_acceleration_structure_infos_BLAS(BuildAccelerationStructure& build_as_structure, BlasInput& blas_input,
-													VkDeviceSize& current_scretch_size, VkDeviceSize& current_size);
+	void create_acceleration_structure_infos_BLAS(	BuildAccelerationStructure& build_as_structure, 
+													BlasInput& blas_input,
+													VkDeviceSize& current_scretch_size, 
+													VkDeviceSize& current_size);
 
-	void create_single_blas(VkCommandBuffer command_buffer, BuildAccelerationStructure& build_as_structure, 
-								VkDeviceAddress scratch_device_or_host_address);
+	void create_single_blas(VkCommandBuffer command_buffer, 
+							BuildAccelerationStructure& build_as_structure,
+							VkDeviceAddress scratch_device_or_host_address);
 
 	// -- top level acceleration structure
 	void create_TLAS();
-	void create_geometry_instance_buffer(VkBuffer& geometry_instance_buffer, VkDeviceMemory& geometry_instance_buffer_memory,
-										std::vector<VkAccelerationStructureInstanceKHR> tlas_instances);
+	void create_geometry_instance_buffer(	VkBuffer& geometry_instance_buffer, 
+											VkDeviceMemory& geometry_instance_buffer_memory,
+											std::vector<VkAccelerationStructureInstanceKHR> tlas_instances);
 
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();
@@ -295,9 +295,6 @@ private:
 	std::vector<VkImageView> texture_image_views;
 	// mipmapping
 	int max_levels = 10;
-
-	// -- UPDATE FUNCTIONS FOR THE DRAW COMMAND
-	void update_uniform_buffers(uint32_t image_index);
 
 	// ----- VARS ----- BEGIN
 	void check_changed_framebuffer_size();

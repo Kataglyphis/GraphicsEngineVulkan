@@ -81,20 +81,20 @@ static VkImageView create_image_view(	const VkDevice& device, VkImage image,
 
 	VkImageViewCreateInfo view_create_info{};
 	view_create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	view_create_info.image = image;																	// image to create view for 
-	view_create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;												// typ of image
+	view_create_info.image = image;												// image to create view for 
+	view_create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;							// typ of image
 	view_create_info.format = format;
-	view_create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;									// allows remapping of rgba components to other rgba values 
+	view_create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;				// allows remapping of rgba components to other rgba values 
 	view_create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
 	view_create_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
 	view_create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
 
 	// subresources allow the view to view only a part of an image 
-	view_create_info.subresourceRange.aspectMask = aspect_flags;									// which aspect of an image to view (e.g. color bit for viewing color)
-	view_create_info.subresourceRange.baseMipLevel = 0;												// start mipmap level to view from
-	view_create_info.subresourceRange.levelCount = mip_levels;										// number of mipmap levels to view 
-	view_create_info.subresourceRange.baseArrayLayer = 0;											// start array level to view from 
-	view_create_info.subresourceRange.layerCount = 1;												// number of array levels to view 
+	view_create_info.subresourceRange.aspectMask = aspect_flags;				// which aspect of an image to view (e.g. color bit for viewing color)
+	view_create_info.subresourceRange.baseMipLevel = 0;							// start mipmap level to view from
+	view_create_info.subresourceRange.levelCount = mip_levels;					// number of mipmap levels to view 
+	view_create_info.subresourceRange.baseArrayLayer = 0;						// start array level to view from 
+	view_create_info.subresourceRange.layerCount = 1;							// number of array levels to view 
 
 	// create image view 
 	VkImageView image_view;
@@ -105,7 +105,8 @@ static VkImageView create_image_view(	const VkDevice& device, VkImage image,
 
 }
 
-static uint32_t find_memory_type_index(VkPhysicalDevice physical_device, uint32_t allowed_types, VkMemoryPropertyFlags properties)
+static uint32_t find_memory_type_index(	VkPhysicalDevice physical_device, uint32_t allowed_types, 
+										VkMemoryPropertyFlags properties)
 {
 
 	// get properties of physical device memory
@@ -114,8 +115,10 @@ static uint32_t find_memory_type_index(VkPhysicalDevice physical_device, uint32_
 
 	for (uint32_t i = 0; i < memory_properties.memoryTypeCount; i++) {
 
-		if ((allowed_types & (1 << i))																																// index of memory type must match corresponding bit in allowedTypes
-			&& (memory_properties.memoryTypes[i].propertyFlags & properties) == properties) {	// desired property bit flags are part of memory type's property flags																			
+		if ((allowed_types & (1 << i))	
+			// index of memory type must match corresponding bit in allowedTypes
+			// desired property bit flags are part of memory type's property flags
+			&& (memory_properties.memoryTypes[i].propertyFlags & properties) == properties) {																			
 
 			// this memory type is valid, so return its index
 			return i;
@@ -180,15 +183,17 @@ static VkImage create_image(VkDevice device, VkPhysicalDevice physicalDevice,
 }
 
 
-static void create_buffer(VkPhysicalDevice physical_device, VkDevice device, VkDeviceSize buffer_size, VkBufferUsageFlags buffer_usage_flags, 
-											VkMemoryPropertyFlags buffer_propertiy_flags, VkBuffer* buffer, VkDeviceMemory* buffer_memory) {
+static void create_buffer(	VkPhysicalDevice physical_device, VkDevice device, 
+							VkDeviceSize buffer_size, VkBufferUsageFlags buffer_usage_flags, 
+							VkMemoryPropertyFlags buffer_propertiy_flags, VkBuffer* buffer, 
+							VkDeviceMemory* buffer_memory) {
 
 	// create vertex buffer
 	// information to create a buffer (doesn't include assigning memory)
 	VkBufferCreateInfo buffer_info{};
 	buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-	buffer_info.size = buffer_size;																			// size of buffer (size of 1 vertex * #vertices)
-	buffer_info.usage = buffer_usage_flags;															// multiple types of buffer possible, e.g. vertex buffer		
+	buffer_info.size = buffer_size;												// size of buffer (size of 1 vertex * #vertices)
+	buffer_info.usage = buffer_usage_flags;										// multiple types of buffer possible, e.g. vertex buffer		
 	buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;						// similar to swap chain images, can share vertex buffers
 
 	VkResult result = vkCreateBuffer(device, &buffer_info, nullptr, buffer);
@@ -209,9 +214,9 @@ static void create_buffer(VkPhysicalDevice physical_device, VkDevice device, VkD
 	memory_alloc_info.allocationSize = memory_requirements.size;
 
 	uint32_t memory_type_index = find_memory_type_index(physical_device, memory_requirements.memoryTypeBits,
-																											buffer_propertiy_flags);
-																											//VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |		/* memory is visible to CPU side */
-																											//VK_MEMORY_PROPERTY_HOST_COHERENT_BIT	/* data is placed straight into buffer */);
+														buffer_propertiy_flags);
+								//VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |		/* memory is visible to CPU side */
+								//VK_MEMORY_PROPERTY_HOST_COHERENT_BIT	/* data is placed straight into buffer */);
 	if (memory_type_index < 0) {
 
 		throw std::runtime_error("Failed to find auitable memory type!");
@@ -252,7 +257,8 @@ static VkCommandBuffer begin_command_buffer(VkDevice device, VkCommandPool comma
 	// infromation to begin the command buffer record
 	VkCommandBufferBeginInfo begin_info{};
 	begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;											// we are only using the command buffer once, so set up for one time submit
+	// we are only using the command buffer once, so set up for one time submit
+	begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 	
 	// begin recording transfer commands
 	vkBeginCommandBuffer(command_buffer, &begin_info);
@@ -261,7 +267,8 @@ static VkCommandBuffer begin_command_buffer(VkDevice device, VkCommandPool comma
 
 }
 
-static void end_and_submit_command_buffer(VkDevice device, VkCommandPool command_pool, VkQueue queue, VkCommandBuffer& command_buffer) {
+static void end_and_submit_command_buffer(	VkDevice device, VkCommandPool command_pool, 
+											VkQueue queue, VkCommandBuffer& command_buffer) {
 
 	// end commands
 	VkResult result = vkEndCommandBuffer(command_buffer);
@@ -301,8 +308,10 @@ static void end_and_submit_command_buffer(VkDevice device, VkCommandPool command
 
 }
 
-static void copy_buffer(VkDevice device, VkQueue transfer_queue, VkCommandPool transfer_command_pool,
-											VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize buffer_size) {
+static void copy_buffer(VkDevice device, VkQueue transfer_queue, 
+						VkCommandPool transfer_command_pool,
+						VkBuffer src_buffer, VkBuffer dst_buffer, 
+						VkDeviceSize buffer_size) {
 
 	// create buffer
 	VkCommandBuffer command_buffer = begin_command_buffer(device, transfer_command_pool);
@@ -320,21 +329,21 @@ static void copy_buffer(VkDevice device, VkQueue transfer_queue, VkCommandPool t
 
 }
 
-static void copy_image_buffer(VkDevice device, VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
-													VkBuffer src_buffer, VkImage image, uint32_t width, uint32_t height) {
+static void copy_image_buffer(	VkDevice device, VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+								VkBuffer src_buffer, VkImage image, uint32_t width, uint32_t height) {
 
 	// create buffer
 	VkCommandBuffer transfer_command_buffer = begin_command_buffer(device, transfer_command_pool);
 
 	VkBufferImageCopy image_region{};
 	image_region.bufferOffset = 0;																						// offset into data
-	image_region.bufferRowLength = 0;																				// row length of data to calculate data spacing
-	image_region.bufferImageHeight = 0;																			// image height to calculate data spacing
+	image_region.bufferRowLength = 0;											// row length of data to calculate data spacing
+	image_region.bufferImageHeight = 0;											// image height to calculate data spacing
 	image_region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;		// which aspect of image to copy
 	image_region.imageSubresource.mipLevel = 0;
 	image_region.imageSubresource.baseArrayLayer = 0;
 	image_region.imageSubresource.layerCount = 1;
-	image_region.imageOffset = {0, 0, 0};																			// offset into image 
+	image_region.imageOffset = {0, 0, 0};										// offset into image 
 	image_region.imageExtent = {width, height, 1};
 
 	// copy buffer to given image
@@ -391,8 +400,9 @@ static VkPipelineStageFlags pipeline_stage_for_layout(VkImageLayout oldImageLayo
 
 }
 
-static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPool command_pool, VkImage image, VkImageLayout old_layout,
-	VkImageLayout new_layout, uint32_t mip_levels) {
+static void transition_image_layout(VkDevice device, VkQueue queue, 
+									VkCommandPool command_pool, VkImage image, VkImageLayout old_layout,
+									VkImageLayout new_layout, uint32_t mip_levels) {
 
 	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
 
@@ -431,8 +441,10 @@ static void transition_image_layout(VkDevice device, VkQueue queue, VkCommandPoo
 
 }
 
-static void transition_image_layout_for_command_buffer(VkCommandBuffer command_buffer, VkImage image, VkImageLayout old_layout,
-											VkImageLayout new_layout, uint32_t mip_levels, VkImageAspectFlags aspectMask) {
+static void transition_image_layout_for_command_buffer(	VkCommandBuffer command_buffer, VkImage image, 
+														VkImageLayout old_layout,
+														VkImageLayout new_layout, uint32_t mip_levels, 
+														VkImageAspectFlags aspectMask) {
 
 	VkImageMemoryBarrier memory_barrier{};
 	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -470,9 +482,9 @@ static void transition_image_layout_for_command_buffer(VkCommandBuffer command_b
 }
 
 // we have to create mipmap levels in staging buffers by our own
-static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, VkCommandPool command_pool,
-														VkQueue queue, VkImage image, VkFormat image_format,
-														int32_t width, int32_t height, uint32_t mip_levels) {
+static void generate_mipmaps(	VkPhysicalDevice physical_device, VkDevice device, VkCommandPool command_pool,
+								VkQueue queue, VkImage image, VkFormat image_format,
+								int32_t width, int32_t height, uint32_t mip_levels) {
 
 	// Check if image format supports linear blitting
 	VkFormatProperties formatProperties;
