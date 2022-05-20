@@ -157,20 +157,20 @@ void VulkanRenderer::update_uniforms(	Scene* scene,
 	const GUISceneSharedVars guiSceneSharedVars = scene->getGuiSceneSharedVars();
 
 
-	globalUBO.view					= camera->calculate_viewmatrix();
-	globalUBO.projection				= glm::perspective(glm::radians(camera->get_fov()),
-													(float)window->get_width() / (float)window->get_height(),
-													camera->get_near_plane(),
-													camera->get_far_plane());
+	globalUBO.view						= camera->calculate_viewmatrix();
+	globalUBO.projection				= glm::perspective(	glm::radians(camera->get_fov()),
+															(float)window->get_width() / (float)window->get_height(),
+															camera->get_near_plane(),
+															camera->get_far_plane());
 
-	sceneUBO.view_dir						= glm::vec4(camera->get_camera_direction(),1.0f);
+	sceneUBO.view_dir					= glm::vec4(camera->get_camera_direction(),1.0f);
 
 	sceneUBO.light_dir					= glm::vec4(guiSceneSharedVars.directional_light_direction[0],
 															guiSceneSharedVars.directional_light_direction[1],
 															guiSceneSharedVars.directional_light_direction[2], 
 															1.0f);
 
-	sceneUBO.cam_pos						= glm::vec4(camera->get_camera_position(),1.0f);
+	sceneUBO.cam_pos					= glm::vec4(camera->get_camera_position(),1.0f);
 
 }
 
@@ -2748,9 +2748,7 @@ void VulkanRenderer::create_texture_sampler()
 void VulkanRenderer::create_uniform_buffers()
 {
 
-	// buffer size will be size of all two variables (will offset to access) 
-	VkDeviceSize vp_buffer_size = sizeof(globalUBO);
-	// buffer size will be size of model buffer (will offset to access)
+	VkDeviceSize vp_buffer_size			= sizeof(globalUBO);
 	VkDeviceSize directions_buffer_size = sizeof(sceneUBO);
 
 	// one uniform buffer for each image (and by extension, command buffer)
@@ -2775,10 +2773,10 @@ void VulkanRenderer::create_uniform_buffers()
 			&staging_buffer, &staging_buffer_memory);
 
 		// Map memory to vertex buffer
-		void* data;																									// 1.) create pointer to a point in normal memory
-		vkMapMemory(device->getLogicalDevice(), staging_buffer_memory, 0, vp_buffer_size, 0, &data);				// 2.) map the vertex buffer memory to that point
-		memcpy(data, &globalUBO, (size_t)vp_buffer_size);															// 3.) copy memory from vertices vector to the point
-		vkUnmapMemory(device->getLogicalDevice(), staging_buffer_memory);											// 4.) unmap the vertex buffer memory
+		void* data;																						// 1.) create pointer to a point in normal memory
+		vkMapMemory(device->getLogicalDevice(), staging_buffer_memory, 0, vp_buffer_size, 0, &data);	// 2.) map the vertex buffer memory to that point
+		memcpy(data, &globalUBO, (size_t)vp_buffer_size);												// 3.) copy memory from vertices vector to the point
+		vkUnmapMemory(device->getLogicalDevice(), staging_buffer_memory);								// 4.) unmap the vertex buffer memory
 
 		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
 		// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
@@ -2801,10 +2799,10 @@ void VulkanRenderer::create_uniform_buffers()
 								VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 								&staging_buffer, &staging_buffer_memory);
 
-		// Map memory to vertex buffer																							// 1.) create pointer to a point in normal memory
-		vkMapMemory(device->getLogicalDevice(), staging_buffer_memory, 0, directions_buffer_size, 0, &data);					// 2.) map the vertex buffer memory to that point
-		memcpy(data, &sceneUBO, (size_t)directions_buffer_size);																// 3.) copy memory from vertices vector to the point
-		vkUnmapMemory(device->getLogicalDevice(), staging_buffer_memory);														// 4.) unmap the vertex buffer memory
+		// Map memory to vertex buffer																			// 1.) create pointer to a point in normal memory
+		vkMapMemory(device->getLogicalDevice(), staging_buffer_memory, 0, directions_buffer_size, 0, &data);	// 2.) map the vertex buffer memory to that point
+		memcpy(data, &sceneUBO, (size_t)directions_buffer_size);												// 3.) copy memory from vertices vector to the point
+		vkUnmapMemory(device->getLogicalDevice(), staging_buffer_memory);										// 4.) unmap the vertex buffer memory
 
 		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
 		// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
