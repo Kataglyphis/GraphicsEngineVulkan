@@ -16,12 +16,12 @@ layout (location = 1) in vec3 normal;
 layout (location = 2) in vec3 color;
 layout (location = 3) in vec2 tex_coords;
 
-layout (set = 0, binding = UBO_VIEW_PROJECTION_BINDING) uniform _UboViewProjection {
-	UboViewProjection ubo_view_projection;
+layout (set = 0, binding = globalUBO_BINDING) uniform _GlobalUBO {
+	GlobalUBO globalUBO;
 };
 
-layout (set = 0, binding = UBO_DIRECTIONS_BINDING) uniform _UboDirections {
-	UboDirections ubo_directions;
+layout (set = 0, binding = sceneUBO_BINDING) uniform _SceneUBO {
+	SceneUBO sceneUBO;
 };
 
 layout (push_constant) uniform _PushConstantRaster {
@@ -42,7 +42,7 @@ void main () {
 	
 	// -- WE ARE CALCULATION THE MVP WITH THE GLM LIBRARY WHO IS DESIGNED FOR OPENGL
 	// -- THEREFORE TAKE THE DIFFERENT COORDINATE SYSTEMS INTO ACCOUNT
-	vec4 opengl_position = ubo_view_projection.projection * ubo_view_projection.view * pc_raster.model * vec4(positions, 1.0f);
+	vec4 opengl_position = globalUBO.projection * globalUBO.view * pc_raster.model * vec4(positions, 1.0f);
 	vec4 vulkan_position = vec4(opengl_position.x, -opengl_position.y, opengl_position.z, opengl_position.w);
 	
 	worldPosition = vec3(pc_raster.model * vec4(positions, 1.0f));

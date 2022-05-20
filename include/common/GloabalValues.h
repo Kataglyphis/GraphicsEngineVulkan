@@ -10,22 +10,11 @@ const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
 const int MAX_TEXTURE_COUNT = 24;
 
-// use the standard validation layers from the SDK for error checking
-const std::vector<const char*> validationLayers = {
-					"VK_LAYER_KHRONOS_validation"
-};
-
 #ifdef NDEBUG
 const bool ENABLE_VALIDATION_LAYERS = false;
 #else
 const bool ENABLE_VALIDATION_LAYERS = true;
 #endif
-
-enum SHADER_COMPILATION_FLAG {
-	RASTERIZATION,
-	RAYTRACING,
-	POST
-};
 
 struct SwapChainDetails {
 
@@ -48,21 +37,6 @@ struct ObjectDescription {
 	uint64_t index_address;
 	uint64_t material_index_address;
 	uint64_t material_address;
-
-};
-
-struct UboViewProjection {
-
-	glm::mat4 projection;
-	glm::mat4 view;
-
-};
-
-struct UboDirections {
-
-	glm::vec4 light_dir;
-	glm::vec4 view_dir;
-	glm::vec4 cam_pos;
 
 };
 

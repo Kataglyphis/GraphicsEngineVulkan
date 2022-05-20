@@ -574,46 +574,6 @@ static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, 
 
 }
 
-static std::string get_shader_spv_dir(std::string shader_src_dir, std::string shader_name) {
-
-	std::string shader_spv_dir = "spv/";
-
-	std::stringstream vertShaderSpv;
-	vertShaderSpv << shader_src_dir << shader_spv_dir << shader_name << ".spv";
-
-	return vertShaderSpv.str();
-}
-
-static void compile_shader(std::string shader_src_dir, std::string shader_name) {
-
-	// GLSLC_EXE is set by cmake to the location of the vulkan glslc
-	std::string target = " --target-env=vulkan1.3 ";
-	std::stringstream shader_src_path;
-	std::stringstream shader_log_file;
-	std::stringstream cmdShaderCompile;
-	std::stringstream adminPriviliges;
-	adminPriviliges << "runas /user:<admin-user> \"";
-
-	shader_src_path << shader_src_dir << shader_name;
-	std::string shader_spv_path = get_shader_spv_dir(shader_src_dir, shader_name);
-	shader_log_file << shader_src_dir << shader_name << ".log.txt";
-	std::stringstream log_stdout_and_stderr;
-	log_stdout_and_stderr <<	" > " << shader_log_file.str() <<
-								" 2> " << shader_log_file.str();
-
-	cmdShaderCompile	//<< adminPriviliges.str()
-		<< GLSLC_EXE
-		<< target
-		<< shader_src_path.str()
-		<< " -o "
-		<< shader_spv_path;
-						//<< log_stdout_and_stderr.str();
-
-	//std::cout << cmdShaderCompile.str().c_str();
-
-	system(cmdShaderCompile.str().c_str() );
-}
-
 // aligned piece of memory appropiately and when necessary return bigger piece
 static uint32_t align_up(uint32_t memory, uint32_t alignment) {
 	return (memory + alignment - 1) & ~(alignment - 1);

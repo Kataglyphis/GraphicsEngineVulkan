@@ -23,14 +23,14 @@ struct ObjectDescription {
 
 };
 
-struct UboViewProjection {
+struct GlobalUBO {
 
 	mat4 projection;
 	mat4 view;
 
 };
 
-struct UboDirections {
+struct SceneUBO {
 
 	vec4 light_dir;
 	vec4 view_dir;
