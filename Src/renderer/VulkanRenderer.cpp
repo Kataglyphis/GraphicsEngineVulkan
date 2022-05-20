@@ -2758,8 +2758,8 @@ void VulkanRenderer::create_uniform_buffers()
 	sceneUBOBufferMemory.resize(vulkanSwapChain.getNumberSwapChainImages());
 
 	// temporary buffer to "stage" vertex data before transfering to GPU
-	VkBuffer staging_buffer;
-	VkDeviceMemory staging_buffer_memory;
+	VkBuffer		staging_buffer;
+	VkDeviceMemory	staging_buffer_memory;
 
 	// create uniform buffers 
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
