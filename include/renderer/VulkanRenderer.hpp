@@ -44,18 +44,16 @@ public:
 	VulkanRenderer(	Window* window, 
 					Scene*	scene,
 					GUI*	gui,
-					Camera* camera,
-					bool raytracing);
+					Camera* camera);
 
-	int create_model(std::string modelFile);
+	void	hot_reload_all_shader();
+	int		create_model(std::string modelFile);
 
-	void update_model(	int model_id, 
-						glm::mat4 new_model);
+	void	update_uniforms(Scene* scene,
+							Camera* camera,
+							Window* window);
 
-	void update_uniforms(	Scene* scene,
-							Camera* camera);
-
-	void update_raytracing(bool raytracing_on);
+	void	updateStateDueToUserInput(GUI* gui);
 
 	void update_raytracing_descriptor_set(uint32_t image_index);
 	void record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
@@ -65,7 +63,6 @@ public:
 	int create_texture_image(std::string filename);
 	void create_sampler_array_descriptor_set();
 
-	void hot_reload_all_shader();
 
 	void drawFrame(ImDrawData* gui_draw_data);
 
@@ -209,7 +206,7 @@ private:
 
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
-	bool raytracing;
+	bool raytracing = false;
 	void init_raytracing();
 	// -- create funcs
 	// -- bottom level acceleration structure
