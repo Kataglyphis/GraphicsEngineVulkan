@@ -28,10 +28,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 {
 
-	ubo_view_projection = UboViewProjection{};
-	ubo_directions = UboDirections{};
-	pc_raster = PushConstantRaster{};
-
 	ubo_view_projection.projection = glm::perspective(	glm::radians(camera->get_fov()), 
 														(float)window->get_width() / (float)window->get_height(),
 														camera->get_near_plane(), 
@@ -50,7 +46,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 	try {
 
-		create_instance();
+		instance = VulkanInstance();
 		create_surface();
 
 		device = std::make_unique<VulkanDevice>(&instance,
@@ -124,7 +120,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 	}
 
 	gui->initializeVulkanContext(	device.get(),
-									instance,
+									instance.getVulkanInstance(),
 									post_render_pass,
 									graphics_command_pool);
 
@@ -176,18 +172,21 @@ void VulkanRenderer::update_model(int model_id, glm::mat4 new_model)
 
 }
 
-void VulkanRenderer::update_view(glm::mat4 view)
+void VulkanRenderer::update_uniforms(Scene* scene, Camera* camera)
 {
 
-	ubo_view_projection.view = view;
+	const GUISceneSharedVars guiSceneSharedVars = scene->getGuiSceneSharedVars();
 
-}
+	ubo_view_projection.view					= camera->calculate_viewmatrix();
 
-void VulkanRenderer::update_light_direction(glm::vec3 light_dir)
-{
+	ubo_directions.view_dir						= glm::vec4(camera->get_camera_direction(),1.0f);
 
-	ubo_directions.light_dir = glm::vec4(light_dir, 1.0f);
+	ubo_directions.light_dir					= glm::vec4(guiSceneSharedVars.directional_light_direction[0],
+															guiSceneSharedVars.directional_light_direction[1],
+															guiSceneSharedVars.directional_light_direction[2], 
+															1.0f);
 
+	ubo_directions.cam_pos						= glm::vec4(camera->get_camera_position(),1.0f);
 
 }
 
@@ -196,17 +195,6 @@ void VulkanRenderer::update_raytracing(bool raytracing_on)
 
 	this->raytracing = raytracing_on;
 
-}
-
-void VulkanRenderer::update_view_direction(glm::vec3 view_dir)
-{
-	ubo_directions.view_dir = glm::vec4(view_dir,1.0f);
-
-}
-
-void VulkanRenderer::update_cam_pos(glm::vec3 cam_pos)
-{
-	ubo_directions.cam_pos = glm::vec4(cam_pos,1.0f);
 }
 
 void VulkanRenderer::hot_reload_all_shader()
@@ -375,109 +363,13 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 
 }
 
-void VulkanRenderer::create_instance()
-{
-
-	if (ENABLE_VALIDATION_LAYERS && !check_validation_layer_support()) {
-		throw std::runtime_error("Validation layers requested, but not available!");
-	}
-
-	// info about app
-	// most data doesn't affect program; is for developer convenience
-	VkApplicationInfo app_info{};
-	app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	app_info.pApplicationName = "\__/ Epic Graphics from hell \__/";	// custom name of app
-	app_info.applicationVersion = VK_MAKE_VERSION(1,3,1);				// custom version of app
-	app_info.pEngineName = "Cataglyphis Renderer";						// custom engine name
-	app_info.engineVersion = VK_MAKE_VERSION(1,3,3);					// custom engine version 
-	app_info.apiVersion = VK_API_VERSION_1_3;							// the vulkan version
-
-	// creation info for a VkInstance
-	VkInstanceCreateInfo create_info{};
-	create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	create_info.pApplicationInfo = &app_info;
-
-	VkDebugUtilsMessengerCreateInfoEXT messengerCreateInfo = {};
-	//add validation layers IF enabled to the creeate info struct
-	if (ENABLE_VALIDATION_LAYERS) {
-
-		uint32_t layerCount = 1;
-		const char** layerNames = (const char**)malloc(sizeof(const char*) * layerCount);
-		//layerNames[0] = "VK_LAYER_KHRONOS_validation";
-
-		messengerCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-
-		messengerCreateInfo.messageSeverity =	VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | 
-												VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | 
-												VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-
-		messengerCreateInfo.messageType =	VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |	
-											VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | 
-											VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-
-		messengerCreateInfo.pfnUserCallback = debugCallback;
-
-		//create_info.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&messengerCreateInfo;
-
-		create_info.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-		create_info.ppEnabledLayerNames = validationLayers.data();
-
-	}
-	else {
-
-		create_info.enabledLayerCount = 0;
-		create_info.pNext = nullptr;
-
-	}
-
-	// create list to hold instance extensions
-	std::vector<const char*> instance_extensions = std::vector<const char*>();
-
-	//Setup extensions the instance will use 
-	uint32_t glfw_extensions_count = 0;		// GLFW may require multiple extensions
-	const char** glfw_extensions;			// Extensions passed as array of cstrings, so need pointer(array) to pointer
-
-	//set GLFW extensions
-	glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extensions_count);
-
-	// Add GLFW extensions to list of extensions
-	for (size_t i = 0; i < glfw_extensions_count; i++) {
-
-		instance_extensions.push_back(glfw_extensions[i]);
-
-	}
-
-	if (ENABLE_VALIDATION_LAYERS) {
-
-		instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-
-	}
-
-	// check instance extensions supported
-	if (!check_instance_extension_support(&instance_extensions)) {
-
-		throw std::runtime_error("VkInstance does not support required extensions!");
-
-	}
-
-	create_info.enabledExtensionCount = static_cast<uint32_t>(instance_extensions.size());
-	create_info.ppEnabledExtensionNames = instance_extensions.data();
-
-	// create instance 
-	VkResult result = vkCreateInstance(&create_info, nullptr, &instance);
-	ASSERT_VULKAN(result, "Failed to create a Vulkan instance!");
-
-	if (ENABLE_VALIDATION_LAYERS) {
-
-		PFN_vkCreateDebugUtilsMessengerEXT pvkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)
-																			vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
-
-		ASSERT_VULKAN(pvkCreateDebugUtilsMessengerEXT(instance, &messengerCreateInfo, NULL, &debug_messenger), "Failed to create debug messenger.\n");
-
-	}
-
-
-}
+//void VulkanRenderer::create_instance()
+//{
+//
+//	
+//
+//
+//}
 
 void VulkanRenderer::create_vma_allocator()
 {
@@ -487,7 +379,7 @@ void VulkanRenderer::create_vma_allocator()
 void VulkanRenderer::create_surface()
 {
 	// create surface (creates a surface create info struct, runs the create surface function, returns result)
-	ASSERT_VULKAN(glfwCreateWindowSurface(instance, window->get_window(), nullptr, &surface), "Failed to create a surface!");
+	ASSERT_VULKAN(glfwCreateWindowSurface(instance.getVulkanInstance(), window->get_window(), nullptr, &surface), "Failed to create a surface!");
 
 }
 
@@ -2876,12 +2768,7 @@ void VulkanRenderer::create_command_pool()
 
 		// create a graphics queue family command pool
 		VkResult result = vkCreateCommandPool(device->getLogicalDevice(), &pool_info, nullptr, &graphics_command_pool);
-
-		if(result != VK_SUCCESS) {
-
-			throw std::runtime_error("Failed to create command pool!");
-
-		}
+		ASSERT_VULKAN(result, "Failed to create command pool!")
 
 	}
 
@@ -2889,17 +2776,12 @@ void VulkanRenderer::create_command_pool()
 	
 		VkCommandPoolCreateInfo pool_info{};
 		pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-		pool_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;									// we are ready now to re-record our command buffers
+		pool_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;	// we are ready now to re-record our command buffers
 		pool_info.queueFamilyIndex = queue_family_indices.compute_family;														// queue family type that buffers from this command pool will use 
 
 		// create a graphics queue family command pool
 		VkResult result = vkCreateCommandPool(device->getLogicalDevice(), &pool_info, nullptr, &compute_command_pool);
-
-		if (result != VK_SUCCESS) {
-
-			throw std::runtime_error("Failed to create command pool!");
-
-		}
+		ASSERT_VULKAN(result, "Failed to create command pool!")
 
 	}
 }
@@ -2913,20 +2795,13 @@ void VulkanRenderer::create_command_buffers()
 	VkCommandBufferAllocateInfo command_buffer_alloc_info{};
 	command_buffer_alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	command_buffer_alloc_info.commandPool = graphics_command_pool;
-	command_buffer_alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;											// VK_COMMAND_BUFFER_LEVEL_PRIMARY       : Buffer you submit directly to queue. Cant be called by  other buffers.
+	command_buffer_alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;						// VK_COMMAND_BUFFER_LEVEL_PRIMARY       : Buffer you submit directly to queue. Cant be called by  other buffers.
 																																														// VK_COMMAND_BUFFER_LEVEL_SECONDARY : Buffer can't be called directly. Can be called from other buffers via 
 																																														// "vkCmdExecuteCommands" when recording commands in primary buffer
 	command_buffer_alloc_info.commandBufferCount = static_cast<uint32_t>(command_buffers.size());
 
 	VkResult result = vkAllocateCommandBuffers(device->getLogicalDevice(), &command_buffer_alloc_info, command_buffers.data());
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to allocate command buffers!");
-
-	}
-
-
+	ASSERT_VULKAN(result, "Failed to allocate command buffers!")
 
 }
 
@@ -2983,12 +2858,7 @@ void VulkanRenderer::create_texture_sampler()
 	sampler_create_info.maxAnisotropy = 16;																							// max anisotropy sample level
 
 	VkResult result = vkCreateSampler(device->getLogicalDevice(), &sampler_create_info, nullptr, &texture_sampler);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create a texture sampler!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create a texture sampler!")
 
 }
 
@@ -3015,7 +2885,8 @@ void VulkanRenderer::create_uniform_buffers()
 
 		// -- VIEW PROJECTION UBO
 		// create buffer and allocate memory to it
-		create_buffer(device->getPhysicalDevice(), device->getLogicalDevice(), vp_buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+		create_buffer(device->getPhysicalDevice(), device->getLogicalDevice(), 
+							vp_buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
 			VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 			&staging_buffer, &staging_buffer_memory);
@@ -3090,7 +2961,9 @@ void VulkanRenderer::create_descriptor_pool_uniforms()
 	object_descriptions_pool_size.descriptorCount = static_cast<uint32_t>(sizeof(ObjectDescription) * MAX_OBJECTS);
 
 	// list of pool sizes 
-	std::vector<VkDescriptorPoolSize> descriptor_pool_sizes = { vp_pool_size , directions_pool_size, object_descriptions_pool_size };
+	std::vector<VkDescriptorPoolSize> descriptor_pool_sizes = { vp_pool_size , 
+																directions_pool_size, 
+																object_descriptions_pool_size };
 
 	VkDescriptorPoolCreateInfo pool_create_info{};
 	pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -3100,12 +2973,7 @@ void VulkanRenderer::create_descriptor_pool_uniforms()
 
 	// create descriptor pool
 	VkResult result = vkCreateDescriptorPool(device->getLogicalDevice(), &pool_create_info, nullptr, &descriptor_pool);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create a descriptor pool!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create a descriptor pool!")
 
 }
 
@@ -3132,12 +3000,7 @@ void VulkanRenderer::create_descriptor_pool_sampler()
 
 	// create descriptor pool
 	VkResult result = vkCreateDescriptorPool(device->getLogicalDevice(), &sampler_pool_create_info, nullptr, &sampler_descriptor_pool);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create a sampler descriptor pool!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create a sampler descriptor pool!")
 
 }
 
@@ -3158,12 +3021,7 @@ void VulkanRenderer::create_descriptor_pool_object_description()
 
 	// create descriptor pool
 	VkResult result = vkCreateDescriptorPool(device->getLogicalDevice(), &object_description_pool_create_info, nullptr, &object_description_pool);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create a object description descriptor pool!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create a object description descriptor pool!")
 
 }
 
@@ -3350,12 +3208,7 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 
 	// allocte descriptor sets
 	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &alloc_info, &sampler_descriptor_set);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to allocate texture descriptor sets!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to allocate texture descriptor sets!")
 
 	// texture image info
 	std::vector<VkDescriptorImageInfo> image_info;
@@ -3437,28 +3290,6 @@ int VulkanRenderer::create_model(std::string modelFile)
 
 }
 
-stbi_uc* VulkanRenderer::load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize* image_size)
-{
-
-	// number of channels image uses
-	int channels;
-	// load pixel data for image
-	//std::string file_loc = "../Resources/Textures/" + file_name;
-	stbi_uc* image = stbi_load(file_name.c_str(), width, height, &channels, STBI_rgb_alpha);
-
-	if (!image) {
-
-		throw std::runtime_error("Failed to load a texture file! (" + file_name + ")");
-
-	}
-
-	// calculate image size using given and known data
-	*image_size = *width * *height * 4;
-
-	return image;
-
-}
-
 void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 {
  
@@ -3524,17 +3355,6 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 		usage_stage_flags, 0, 0, nullptr, 1, &after_barrier_uvp, 0, nullptr);
 	vkCmdPipelineBarrier(command_buffers[image_index], VK_PIPELINE_STAGE_TRANSFER_BIT,
 			usage_stage_flags, 0, 0, nullptr, 1, &after_barrier_directions, 0, nullptr);
-
-	//// stop recording to command buffer
-	//result = vkEndCommandBuffer(command_buffers[image_index]);
-
-	//if (result != VK_SUCCESS) {
-
-	//	throw std::runtime_error("Failed to stop recording a command buffer!");
-
-	//}
-
-	//end_and_submit_command_buffer(device->getLogicalDevice(), graphics_command_pool, graphics_queue, cmdBuffer);
 
 }
 
@@ -3826,75 +3646,6 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	
 }
 
-bool VulkanRenderer::check_instance_extension_support(std::vector<const char*>* check_extensions)
-{
-
-	//Need to get number of extensions to create array of correct size to hold extensions
-	uint32_t extension_count = 0;
-	vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, nullptr);
-
-	// create a list of VkExtensionProperties using count
-	std::vector<VkExtensionProperties> extensions(extension_count);
-	vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, extensions.data());
-
-	/*std::cout << "available extensions:\n";
-
-	for (const auto& extension : extensions) {
-		std::cout << '\t' << extension.extensionName << '\n';
-	}*/
-
-	// check if given extensions are in list of available extensions 
-	for (const auto& check_extension  : *check_extensions) {
-
-		bool has_extension = false;
-		
-		for (const auto& extension : extensions) {
-
-			if (strcmp(check_extension, extension.extensionName)) {
-				has_extension = true;
-				break;
-			}
-
-		}
-
-		if (!has_extension) {
-
-			return false;
-
-		}
-
-	}
-
-	return true;
-
-}
-
-bool VulkanRenderer::check_validation_layer_support()
-{
-	uint32_t layerCount;
-	vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-
-	std::vector<VkLayerProperties> availableLayers(layerCount);
-	vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-
-	for (const char* layerName : validationLayers) {
-		bool layerFound = false;
-
-		for (const auto& layerProperties : availableLayers) {
-			if (strcmp(layerName, layerProperties.layerName) == 0) {
-				layerFound = true;
-				break;
-			}
-		}
-
-		if (!layerFound) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
 VkShaderModule VulkanRenderer::create_shader_module(const std::vector<char>& code)
 {
 
@@ -3927,12 +3678,7 @@ int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 
 	// allocte descriptor sets
 	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &alloc_info, &descriptor_set);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to allocate texture descriptor sets!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to allocate texture descriptor sets!") 
 
 	// texture image info
 	VkDescriptorImageInfo image_info{};
@@ -4086,9 +3832,7 @@ void VulkanRenderer::clean_up_raytracing()
 void VulkanRenderer::clean_up()
 {
 
-	PFN_vkDestroyDebugUtilsMessengerEXT pvkDestroyDebugUtilsMessengerEXT =
-										(PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
-
+	
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(device->getLogicalDevice());
 
@@ -4153,13 +3897,9 @@ void VulkanRenderer::clean_up()
 
 	vkDestroyCommandPool(device->getLogicalDevice(), graphics_command_pool, nullptr);
 
-	if (ENABLE_VALIDATION_LAYERS) {
-		pvkDestroyDebugUtilsMessengerEXT(instance, debug_messenger, NULL);
-	}
-
-	vkDestroySurfaceKHR(instance, surface, nullptr);
+	vkDestroySurfaceKHR(instance.getVulkanInstance(), surface, nullptr);
 	vkDestroyDevice(device->getLogicalDevice(), nullptr);
-	vkDestroyInstance(instance, nullptr);
+	vkDestroyInstance(instance.getVulkanInstance(), nullptr);
 
 }
 

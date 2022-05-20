@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="4113565491">
+<analyzerinfo checksum="880116283">
   <FileInfo check="CheckUnusedFunctions">
     <functioncall functionName="GLFW_CLIENT_API"/>
     <functioncall functionName="GLFW_CONTEXT_VERSION_MAJOR"/>
@@ -11,8 +11,8 @@
     <functioncall functionName="GLFW_TRUE"/>
     <functioncall functionName="GL_TRUE"/>
     <functioncall functionName="GLfloat"/>
-    <functioncall functionName="MyWindow"/>
     <functioncall functionName="NULL"/>
+    <functioncall functionName="Window"/>
     <functioncall functionName="false"/>
     <functioncall functionName="float"/>
     <functioncall functionName="for"/>
@@ -37,6 +37,7 @@
     <functioncall functionName="i"/>
     <functioncall functionName="if"/>
     <functioncall functionName="init_callbacks"/>
+    <functioncall functionName="initialize"/>
     <functioncall functionName="key"/>
     <functioncall functionName="key_callback"/>
     <functioncall functionName="last_x"/>

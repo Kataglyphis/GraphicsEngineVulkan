@@ -5,13 +5,14 @@
 #include <iostream>     // std::cout
 #include <sstream>      // std::stringstream
 
+#include <stb_image.h>
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "SetsAndBindings.h"
 #include "GloabalValues.h"
-#include "VulkanDevice.h"
 
 // Error checking on vulkan function calls
 #define ASSERT_VULKAN(val,error_string)\
@@ -20,6 +21,28 @@
             }
 
 #define NOT_YET_IMPLEMENTED throw std::runtime_error("Not yet implemented!");
+
+static stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize * image_size)
+{
+
+	// number of channels image uses
+	int channels;
+	// load pixel data for image
+	//std::string file_loc = "../Resources/Textures/" + file_name;
+	stbi_uc* image = stbi_load(file_name.c_str(), width, height, &channels, STBI_rgb_alpha);
+
+	if (!image) {
+
+		throw std::runtime_error("Failed to load a texture file! (" + file_name + ")");
+
+	}
+
+	// calculate image size using given and known data
+	*image_size = *width * *height * 4;
+
+	return image;
+
+}
 
 static VkFormat choose_supported_format(VkPhysicalDevice physical_device,
 										const std::vector<VkFormat>&formats, 
@@ -551,41 +574,6 @@ static void generate_mipmaps(VkPhysicalDevice physical_device, VkDevice device, 
 
 }
 
-static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, 
-													VkDebugUtilsMessageTypeFlagsEXT messageType, 
-													const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, 
-													void* pUserData) {
-
-	std::string prefix("");
-
-	if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
-		prefix = "VERBOSE: ";
-	}
-	else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
-		prefix = "INFO: ";
-	}
-	else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
-		prefix = "WARNING: ";
-	}
-	else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
-		prefix = "ERROR: ";
-	}
-
-
-	// Display message to default output (console/logcat)
-	std::stringstream debugMessage;
-	debugMessage << prefix << "[" << pCallbackData->messageIdNumber << "][" << pCallbackData->pMessageIdName << "] : " << pCallbackData->pMessage;
-	if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
-		std::cerr << debugMessage.str() << "\n";
-	}
-	else {
-		std::cout << debugMessage.str() << "\n";
-	}
-	fflush(stdout);
-	return VK_FALSE;
-
-}
-
 static std::string get_shader_spv_dir(std::string shader_src_dir, std::string shader_name) {
 
 	std::string shader_spv_dir = "spv/";
@@ -625,39 +613,6 @@ static void compile_shader(std::string shader_src_dir, std::string shader_name) 
 
 	system(cmdShaderCompile.str().c_str() );
 }
-
-//static void compile_shaders(SHADER_COMPILATION_FLAG flag) {
-//
-//#if defined (_WIN32)
-//
-//	if (flag == RASTERIZATION) {
-//
-//		system("..\\Resources\\Shader\\compile_rasterizer_shader.bat");
-//
-//	}
-//	else if (flag == RAYTRACING) {
-//
-//		system("..\\Resources\\Shader\\compile_raytracing_shader.bat");
-//
-//	}
-//	else if (flag == POST) {
-//
-//		 system("..\\Resources\\Shader\\compile_post_shader.bat");
-//
-//	}
-//
-//	
-//
-//#elif defined (__linux__)
-//
-//	int result_system = system("chmod +x ../Resources/Shader/compile.sh");
-//
-//	result_system = system("../Resources/Shader/compile.sh");
-//
-//
-//#endif
-//
-//}
 
 // aligned piece of memory appropiately and when necessary return bigger piece
 static uint32_t align_up(uint32_t memory, uint32_t alignment) {

@@ -7,8 +7,8 @@
 #include <imgui_impl_vulkan.h>
 
 #include "Window.h"
-#include "Scene.h"
 #include "VulkanDevice.h"
+#include "GUISceneSharedVars.h"
 
 class GUI
 {
@@ -21,10 +21,12 @@ public:
 									const VkRenderPass& post_render_pass,
 									const VkCommandPool& graphics_command_pool);
 
-	ImDrawData* render(bool& shader_hot_reload_triggered,
-				bool& raytracing);
+	const GUISceneSharedVars&	getGuiSceneSharedVars() { return guiSceneSharedVars; };
 
-	void update_user_input(std::shared_ptr<Scene> scene);
+	ImDrawData*					render(	bool& shader_hot_reload_triggered,
+										bool& raytracing);
+
+
 
 	~GUI();
 
@@ -40,11 +42,7 @@ private:
 	Window*				window;
 	VkDescriptorPool	gui_descriptor_pool;
 
-	bool no_context_created = false;
-
-	float direcional_light_ambient_intensity	= 10.f;
-	float directional_light_color[3]			= { 1.f,1.f,1.f };
-	float directional_light_direction[3]		= { 0.075f,-1.f,0.118f };
-
+	GUISceneSharedVars	guiSceneSharedVars;
+	
 };
 
