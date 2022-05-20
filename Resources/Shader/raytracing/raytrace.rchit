@@ -9,13 +9,20 @@
 #extension GL_EXT_buffer_reference2 : require
 
 #include "../common/raycommon.glsl"
-#include "../common/SetsAndBindings.glsl"
-#include "../common/GlobalValues.glsl"
+
+#include "../../../include/common/host_device_shared_vars.h"
+
 #include "../brdf/unreal4.glsl"
 #include "../brdf/disney.glsl"
 #include "../brdf/pbrBook.glsl"
 #include "../brdf/phong.glsl"
 #include "../brdf/frostbite.glsl"
+
+#include "../../../include/renderer/SceneUBO.h"
+#include "../../../include/renderer/PushConstantRayTracing.h"
+#include "../../../include/scene/ObjMaterial.h"
+#include "../../../include/scene/Vertex.h"
+#include "../../../include/scene/ObjectDescription.h"
 
 hitAttributeEXT vec2 attribs;
 
@@ -32,7 +39,7 @@ layout(set = 0, binding = OBJECT_DESCRIPTION_BINDING, scalar) buffer ObjectDescr
 
 layout(set = 1, binding = TLAS_BINDING) uniform accelerationStructureEXT TLAS;
 layout(set = 1, binding = SAMPLER_BINDING_RT) uniform sampler texture_sampler;
-layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[TEXTURE_COUNT];
+layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[MAX_TEXTURE_COUNT];
 
 layout(buffer_reference, scalar) buffer Vertices {
     Vertex v[]; 
@@ -51,7 +58,7 @@ layout(buffer_reference, scalar) buffer Materials {
 }; // all materials of .obj
 
 layout(push_constant) uniform _PushConstantRay {
-    PushConstantRay pc_ray;
+    PushConstantRaytracing pc_ray;
 };
 
 void main() {
@@ -90,7 +97,7 @@ void main() {
 
     // material id is stored per primitive
     vec3 ambient = vec3(0.f);
-    int texture_id = materials.m[materialIDs.i[gl_PrimitiveID]].textureId;
+    int texture_id = materials.m[materialIDs.i[gl_PrimitiveID]].textureID;
     ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
     ambient += materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 

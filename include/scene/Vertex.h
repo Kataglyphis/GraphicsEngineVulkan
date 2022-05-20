@@ -1,9 +1,13 @@
+// this little "hack" is needed for using it on the
+// CPU side as well for the GPU side :)
+// inspired by the NVDIDIA tutorial:
+// https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/
+#ifdef __cplusplus
 #pragma once
-#include <glm/glm.hpp>
-#include <vector>
-
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
+#include <vector>
 
 class Vertex
 {
@@ -35,3 +39,14 @@ namespace std {
 		}
 	};
 }
+#else
+struct Vertex {
+	
+	vec3 pos;
+	vec3 normal;
+	vec3 color;
+	vec2 texture_coords;
+
+};
+
+#endif

@@ -5,6 +5,7 @@
 #include "Utilities.h"
 #include "Vertex.h"
 #include "ObjMaterial.h"
+#include "ObjectDescription.h"
 
 using namespace std;
 

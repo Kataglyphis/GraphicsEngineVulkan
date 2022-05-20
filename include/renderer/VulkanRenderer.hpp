@@ -33,6 +33,8 @@
 #include "VulkanDebug.h"
 #include "GlobalUBO.h"
 #include "SceneUBO.h"
+#include <PushConstantRasterizer.h>
+#include <PushConstantRayTracing.h>
 
 #include "tiny_obj_loader.h"
 
@@ -100,7 +102,7 @@ private:
 	GlobalUBO						globalUBO;
 	SceneUBO						sceneUBO;
 
-	PushConstantRaster				pc_raster;
+	PushConstantRasterizer			pc_raster;
 
 	// uniform buffer
 	std::vector<VkBuffer>		vp_uniform_buffer;

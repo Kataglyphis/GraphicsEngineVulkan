@@ -13,6 +13,7 @@
 #endif // !VMA_IMPLEMENTATION
 #include "vk_mem_alloc.h"
 #include <ShaderHelper.h>
+#include <PushConstantPost.h>
 
 VulkanRenderer::VulkanRenderer(	Window* window, 
 								Scene*	scene,
@@ -2343,7 +2344,7 @@ void VulkanRenderer::create_push_constant_range()
 	// define push constant values (no 'create' needed)
 	push_constant_range.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;														// shader stage push constant will go to 
 	push_constant_range.offset = 0;																															// offset into given data to pass tp push constant
-	push_constant_range.size = sizeof(PushConstantRaster);	
+	push_constant_range.size = sizeof(PushConstantRasterizer);	
 	
 	// define push constant values (no 'create' needed)
 	pc_ray_ranges.stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
@@ -3427,7 +3428,7 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 				offscreen_pipeline_layout,
 				VK_SHADER_STAGE_VERTEX_BIT,								// stage to push constants to 
 				0,														// offset to push constants to update
-				sizeof(PushConstantRaster),								// size of data being pushed 
+				sizeof(PushConstantRasterizer),								// size of data being pushed 
 				&pc_raster);											// using model of current mesh (can be array)
 
 			for (unsigned int k = 0; k < scene->get_mesh_count(m); k++) {

@@ -1,14 +1,7 @@
 #pragma once
-
 #include <glm/glm.hpp>
 #include <vector>
-
 #include <vulkan/vulkan.h>
-
-const int MAX_FRAME_DRAWS = 3;
-const int MAX_OBJECTS = 40;
-const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
-const int MAX_TEXTURE_COUNT = 24;
 
 #ifdef NDEBUG
 const bool ENABLE_VALIDATION_LAYERS = false;
@@ -28,35 +21,6 @@ struct SwapChainImage {
 
 	VkImage image;
 	VkImageView image_view;
-
-};
-
-struct ObjectDescription {
-	
-	uint64_t vertex_address;
-	uint64_t index_address;
-	uint64_t material_index_address;
-	uint64_t material_address;
-
-};
-
-// Push constant structure for the raster
-struct PushConstantRaster
-{
-
-	glm::mat4 model;  // matrix of the instance
-
-};
-
-struct PushConstantRaytracing {
-
-	glm::vec4 clear_color;
-
-};
-
-struct PushConstantPost {
-
-	float aspect_ratio;
 
 };
 

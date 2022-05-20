@@ -9,13 +9,19 @@
 #extension GL_EXT_buffer_reference2 : require
 
 #include "../common/raycommon.glsl"
-#include "../common/SetsAndBindings.glsl"
-#include "../common/GlobalValues.glsl"
+
+#include "../../../include/common/host_device_shared_vars.h"
+
 #include "../brdf/unreal4.glsl"
 #include "../brdf/disney.glsl"
 #include "../brdf/pbrBook.glsl"
 #include "../brdf/phong.glsl"
 #include "../brdf/frostbite.glsl"
+
+#include "../../../include/renderer/SceneUBO.h"
+#include "../../../include/scene/ObjMaterial.h"
+#include "../../../include/scene/Vertex.h"
+#include "../../../include/scene/ObjectDescription.h"
 
 layout (location = 0) in vec2 texture_coordinates;
 layout (location = 1) in vec3 shading_normal;
@@ -47,7 +53,7 @@ layout(buffer_reference, scalar) buffer Materials {
 }; // all materials of .obj
 
 layout(set = 1, binding = SAMPLER_BINDING) uniform sampler texture_sampler;
-layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[TEXTURE_COUNT];
+layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[MAX_TEXTURE_COUNT];
 
 layout (location = 0) out vec4 out_color;
 
@@ -64,7 +70,7 @@ void main() {
 	
 	vec3 ambient = vec3(0.f);
 
-	int texture_id	= materials.m[materialIDs.i[gl_PrimitiveID]].textureId;
+	int texture_id	= materials.m[materialIDs.i[gl_PrimitiveID]].textureID;
 	ambient			+= texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
 	//ambient			+= materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 

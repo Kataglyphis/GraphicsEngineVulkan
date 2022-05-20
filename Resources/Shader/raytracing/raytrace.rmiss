@@ -5,11 +5,12 @@
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 
 #include "../common/raycommon.glsl"
+#include "../../../include/renderer/PushConstantRayTracing.h"
 
 layout(location = 0) rayPayloadInEXT HitPayload payload;
 
 layout(push_constant) uniform _PushConstantRay{
-	PushConstantRay pc_ray;
+	PushConstantRaytracing pc_ray;
 };
 
 void main() {
