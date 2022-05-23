@@ -6,6 +6,7 @@
 #include "Vertex.h"
 #include "ObjMaterial.h"
 #include "ObjectDescription.h"
+#include <VulkanBufferManager.h>
 
 // this a simple Mesh without mesh generation
 class Mesh {
@@ -20,19 +21,21 @@ public:
     
     Mesh();
 
-    ObjectDescription&  get_object_description() { return object_description; };
-    glm::mat4           get_model() { return model; };
-    uint32_t            get_vertex_count() { return vertex_count; };
-    uint32_t            get_index_count() { return index_count; };
-    VkBuffer&           get_vertex_buffer() { return vertexBuffer.getBuffer(); };
-    VkBuffer&           get_materialID_buffer() { return materialIdsBuffer.getBuffer(); };
-    VkBuffer&           get_index_buffer() { return indexBuffer.getBuffer(); };
+    ObjectDescription&  getObjectDescription() { return object_description; };
+    glm::mat4           getModel() { return model; };
+    uint32_t            getVertexCount() { return vertex_count; };
+    uint32_t            getIndexCount() { return index_count; };
+    VkBuffer&           getVertexBuffer() { return vertexBuffer.getBuffer(); };
+    VkBuffer&           getMaterialIDBuffer() { return materialIdsBuffer.getBuffer(); };
+    VkBuffer&           getIndexBuffer() { return indexBuffer.getBuffer(); };
 
-    void                set_model(glm::mat4 new_model);
+    void                setModel(glm::mat4 new_model);
 
      ~Mesh();
 
 private:
+
+    VulkanBufferManager vulkanBufferManager;
 
     ObjectDescription   object_description;
 
@@ -50,17 +53,17 @@ private:
 
     VulkanDevice*       device;
 
-    void create_vertex_buffer(  VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
-                                std::vector<Vertex>* vertices);
+    void createVertexBuffer(  VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+                                std::vector<Vertex>& vertices);
 
-    void create_index_buffer(   VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
-                                std::vector<uint32_t>* indices);
+    void createIndexBuffer(   VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+                                std::vector<uint32_t>& indices);
 
-    void create_material_id_buffer( VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
-                                    std::vector<unsigned int>* materialIndex);
+    void createMaterialIDBuffer( VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+                                    std::vector<unsigned int>& materialIndex);
 
-    void create_material_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
-                                std::vector<ObjMaterial>* materials);
+    void createMaterialBuffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+                                std::vector<ObjMaterial>& materials);
 
 };
 

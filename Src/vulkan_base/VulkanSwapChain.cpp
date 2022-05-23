@@ -110,11 +110,8 @@ void VulkanSwapChain::initVulkanContext(VulkanDevice* device,
 	}
 }
 
-VulkanSwapChain::~VulkanSwapChain()
+void VulkanSwapChain::cleanUp()
 {
-
-	vkDeviceWaitIdle(device->getLogicalDevice());
-
 	for (auto image : swap_chain_images) {
 
 		vkDestroyImageView(device->getLogicalDevice(), image.image_view, nullptr);
@@ -122,6 +119,10 @@ VulkanSwapChain::~VulkanSwapChain()
 	}
 
 	vkDestroySwapchainKHR(device->getLogicalDevice(), swapchain, nullptr);
+}
+
+VulkanSwapChain::~VulkanSwapChain()
+{
 
 }
 

@@ -143,6 +143,11 @@ bool VulkanInstance::check_instance_extension_support(std::vector<const char*>* 
 	return true;
 }
 
+void VulkanInstance::cleanUp()
+{
+	vkDestroyInstance(instance, nullptr);
+}
+
 VulkanInstance::~VulkanInstance()
 {
 }

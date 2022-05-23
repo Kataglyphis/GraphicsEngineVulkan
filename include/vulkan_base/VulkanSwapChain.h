@@ -21,6 +21,8 @@ public:
 	const VkFormat&			getSwapChainFormat() const { return swap_chain_image_format; };
 	SwapChainImage&			getSwapChainImage(uint32_t index) { return swap_chain_images[index]; };
 
+	void					cleanUp();
+
 	~VulkanSwapChain();
 
 private:

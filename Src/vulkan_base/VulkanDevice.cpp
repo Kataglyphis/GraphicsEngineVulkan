@@ -15,6 +15,11 @@ SwapChainDetails VulkanDevice::getSwapchainDetails()
 	return getSwapchainDetails(physical_device);
 }
 
+void VulkanDevice::cleanUp()
+{
+	vkDestroyDevice(logical_device, nullptr);
+}
+
 VulkanDevice::~VulkanDevice()
 {
 }

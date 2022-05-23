@@ -21,6 +21,8 @@ public:
 	VkQueue				getPresentationQueue() const { return presentation_queue; };
 	SwapChainDetails	getSwapchainDetails();
 
+	void				cleanUp();
+
 	~VulkanDevice();
 
 private:
