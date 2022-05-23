@@ -14,6 +14,8 @@ public:
 
 	VkInstance&			getVulkanInstance() { return instance; };
 
+	void				cleanUp();
+
 	~VulkanInstance();
 
 private:

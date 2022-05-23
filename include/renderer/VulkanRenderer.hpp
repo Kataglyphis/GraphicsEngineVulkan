@@ -36,6 +36,7 @@
 #include <PushConstantRasterizer.h>
 #include <PushConstantRayTracing.h>
 #include "VulkanBuffer.h"
+#include "VulkanBufferManager.h"
 
 #include "tiny_obj_loader.h"
 
@@ -79,6 +80,9 @@ public:
 
 private:
 
+	// helper class for managing our buffers
+	VulkanBufferManager				vulkanBufferManager;
+
 	// Vulkan instance, stores all per-application states
 	VulkanInstance					instance;
 
@@ -96,6 +100,7 @@ private:
 
 	// -- pools
 	void							create_command_pool();
+	void							cleanUpCommandPools();
 	VkCommandPool					graphics_command_pool;
 	VkCommandPool					compute_command_pool;
 
@@ -224,8 +229,6 @@ private:
 
 	// -- top level acceleration structure
 	void create_TLAS();
-	void create_geometry_instance_buffer(	VulkanBuffer& geometryInstanceBuffer,
-											std::vector<VkAccelerationStructureInstanceKHR> tlas_instances);
 
 	void create_raytracing_pipeline();
 	void create_shader_binding_table();

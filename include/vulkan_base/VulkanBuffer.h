@@ -9,12 +9,12 @@ public:
 
 	VulkanBuffer();
 
-	void create(VulkanDevice* vulkanDevice,
-				VkDeviceSize buffer_size, 
-				VkBufferUsageFlags buffer_usage_flags,
-				VkMemoryPropertyFlags buffer_propertiy_flags);
+	void			create(	VulkanDevice* vulkanDevice,
+							VkDeviceSize buffer_size, 
+							VkBufferUsageFlags buffer_usage_flags,
+							VkMemoryPropertyFlags buffer_propertiy_flags);
 
-	void cleanUp();
+	void			cleanUp();
 
 	VkBuffer&		getBuffer() { return buffer; };
 	VkDeviceMemory& getBufferMemory() { return bufferMemory; };

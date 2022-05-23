@@ -26,7 +26,7 @@ void Model::add_new_mesh(   VulkanDevice* device,
 
 ObjectDescription Model::get_object_description()
 {
-    return mesh.get_object_description();
+    return mesh.getObjectDescription();
 }
 
 size_t Model::get_mesh_count()
@@ -72,7 +72,7 @@ uint32_t Model::get_primitive_count()
     }*/
 
     //return number_of_indices / 3;
-    return mesh.get_index_count() / 3;
+    return mesh.getIndexCount() / 3;
 }
 
 std::vector<std::string> Model::get_texture_list()

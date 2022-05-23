@@ -61,17 +61,17 @@ uint32_t Scene::get_mesh_count(int model_index)
 
 VkBuffer Scene::get_vertex_buffer(int model_index, int mesh_index)
 {
-	return model_list[model_index]->get_mesh(mesh_index)->get_vertex_buffer();
+	return model_list[model_index]->get_mesh(mesh_index)->getVertexBuffer();
 }
 
 VkBuffer Scene::get_index_buffer(int model_index, int mesh_index)
 {
-	return model_list[model_index]->get_mesh(mesh_index)->get_index_buffer();
+	return model_list[model_index]->get_mesh(mesh_index)->getIndexBuffer();
 }
 
 uint32_t Scene::get_index_count(int model_index, int mesh_index)
 {
-	return model_list[model_index]->get_mesh(mesh_index)->get_index_count();
+	return model_list[model_index]->get_mesh(mesh_index)->getIndexCount();
 }
 
 uint32_t Scene::get_number_of_object_descriptions()

@@ -24,10 +24,10 @@ Mesh::Mesh(	VulkanDevice* device, VkQueue transfer_queue,
 	vertex_count = static_cast<uint32_t>(vertices.size());
 	this->device = device;
 	object_description = ObjectDescription{};
-	create_vertex_buffer(transfer_queue, transfer_command_pool, &vertices);
-	create_index_buffer(transfer_queue, transfer_command_pool, &indices);
-	create_material_id_buffer(transfer_queue, transfer_command_pool, &materialIndex);
- 	create_material_buffer(transfer_queue, transfer_command_pool, &materials);
+	createVertexBuffer(transfer_queue, transfer_command_pool, vertices);
+	createIndexBuffer(transfer_queue, transfer_command_pool, indices);
+	createMaterialIDBuffer(transfer_queue, transfer_command_pool, materialIndex);
+ 	createMaterialBuffer(transfer_queue, transfer_command_pool, materials);
 
 	VkBufferDeviceAddressInfo vertex_info{};
 	vertex_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO_KHR;
@@ -54,7 +54,7 @@ Mesh::Mesh(	VulkanDevice* device, VkQueue transfer_queue,
 
 }
 
-void Mesh::set_model(glm::mat4 new_model)
+void Mesh::setModel(glm::mat4 new_model)
 {
 	model = new_model;
 }
@@ -63,159 +63,78 @@ Mesh::~Mesh()
 {
 }
 
-void Mesh::create_vertex_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<Vertex>* vertices)
+void Mesh::createVertexBuffer(	VkQueue transfer_queue, 
+								VkCommandPool transfer_command_pool, 
+								std::vector<Vertex>& vertices)
 {
 
-	VkDeviceSize buffer_size = sizeof(Vertex) * vertices->size();
-
-	// temporary buffer to "stage" vertex data before transfering to GPU
-	VulkanBuffer staging_buffer;
-
-	// create buffer and allocate memory to it
-	staging_buffer.create(	 device, buffer_size, 
-							VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// Map memory to vertex buffer
-	void* data;																				
-	vkMapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory(), 0, buffer_size, 0, &data);
-	memcpy(data, vertices->data(), (size_t)buffer_size);						
-	vkUnmapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory());
-
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	vertexBuffer.create(device, buffer_size, 
-						VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-						VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
-						VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-						VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
-						VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-						VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
-						VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), 
-				transfer_queue, transfer_command_pool, 
-				staging_buffer.getBuffer(), 
-				vertexBuffer.getBuffer(), buffer_size);
+	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device,
+															transfer_command_pool,
+															vertexBuffer,
+															VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+															VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
+															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+															VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+															VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
+															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+															VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+															vertices);
 
 }
 
-void Mesh::create_index_buffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, std::vector<uint32_t>* indices)
+void Mesh::createIndexBuffer(	VkQueue transfer_queue, 
+								VkCommandPool transfer_command_pool, 
+								std::vector<uint32_t>& indices)
 {
-	// get size of buffer need
-	VkDeviceSize buffer_size = sizeof(uint32_t) * indices->size();
 
-	// temporary buffer to "stage" vertex data before transfering to GPU
-	VulkanBuffer staging_buffer;
-
-	// create buffer and allocate memory to it
-	staging_buffer.create(device, buffer_size,
-				VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// Map memory to index buffer
-	void* data;																																			
-	vkMapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory(), 0, buffer_size, 0, &data);
-	memcpy(data, indices->data(), (size_t)buffer_size);																	
-	vkUnmapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory());
-
-	// create buffer for index data on GPU access only area
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	indexBuffer.create( device, buffer_size,
-			VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-							VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
-							VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-							VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
-							VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-							VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
-							VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), 
-				transfer_queue, transfer_command_pool, 
-				staging_buffer.getBuffer(),
-				indexBuffer.getBuffer(), buffer_size);
+	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device,
+															transfer_command_pool,
+															indexBuffer,
+															VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+															VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
+															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+															VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+															VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
+															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+															VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+															indices);
+	
 
 }
 
-void Mesh::create_material_id_buffer(	VkQueue transfer_queue, 
+void Mesh::createMaterialIDBuffer(		VkQueue transfer_queue, 
 										VkCommandPool transfer_command_pool, 
-										std::vector<unsigned int>* materialIndex)
+										std::vector<unsigned int>& materialIndex)
 {
-
-	// get size of buffer need
-	VkDeviceSize buffer_size = sizeof(uint32_t) * materialIndex->size();
-
-	VulkanBuffer staging_buffer;
-
-	staging_buffer.create(	device, buffer_size,
-							VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// Map memory to index buffer
-	void* data;
-	vkMapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory(), 0, buffer_size, 0, &data);
-	memcpy(data, materialIndex->data(), (size_t)buffer_size);
-	vkUnmapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory());
-
-	// create buffer for index data on GPU access only area
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	materialIdsBuffer.create( device, buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-								VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
-								VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-								VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
-								VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-								VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
-								VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), 
-				transfer_queue, transfer_command_pool, 
-				staging_buffer.getBuffer(), 
-				materialIdsBuffer.getBuffer(), buffer_size);
+	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device,
+															transfer_command_pool,
+															materialIdsBuffer,
+															VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+															VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
+															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+															VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+															VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
+															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+															VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+															materialIndex);
 
 }
 
-void Mesh::create_material_buffer(	VkQueue transfer_queue, 
+void Mesh::createMaterialBuffer(	VkQueue transfer_queue, 
 									VkCommandPool transfer_command_pool, 
-									std::vector<ObjMaterial>* materials)
+									std::vector<ObjMaterial>& materials)
 {
 
-	// get size of buffer need
-	VkDeviceSize buffer_size = sizeof(ObjMaterial) * materials->size();
-
-	VulkanBuffer staging_buffer;
-
-	staging_buffer.create(device, buffer_size,
-		VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-		VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// Map memory to index buffer
-	void* data;
-	vkMapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory(), 0, buffer_size, 0, &data);
-	memcpy(data, materials->data(), (size_t)buffer_size);
-	vkUnmapMemory(device->getLogicalDevice(), staging_buffer.getBufferMemory());							
-
-	// create buffer for index data on GPU access only area
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	materialsBuffer.create(device, buffer_size, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-							VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
-							VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-							VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
-							VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-							VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
-							VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), transfer_queue, transfer_command_pool, 
-				staging_buffer.getBuffer(), materialsBuffer.getBuffer(), buffer_size);
+	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device,
+															transfer_command_pool,
+															materialsBuffer,
+															VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+															VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
+															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+															VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+															VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
+															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+															VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+															materials);
 
 }

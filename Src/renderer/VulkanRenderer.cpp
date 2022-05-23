@@ -5,6 +5,7 @@
 #include <imgui_impl_vulkan.h>
 
 #include <iostream>
+#include <vector>
 
 #include "File.h"
 
@@ -1246,12 +1247,12 @@ void VulkanRenderer::object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructure
 	// in buffers earlier when loading the meshes/models
 	VkBufferDeviceAddressInfo vertex_buffer_device_address_info{};
 	vertex_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
-	vertex_buffer_device_address_info.buffer = mesh->get_vertex_buffer();
+	vertex_buffer_device_address_info.buffer = mesh->getVertexBuffer();
 	vertex_buffer_device_address_info.pNext = nullptr;
 
 	VkBufferDeviceAddressInfo index_buffer_device_address_info{};
 	index_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
-	index_buffer_device_address_info.buffer = mesh->get_index_buffer();
+	index_buffer_device_address_info.buffer = mesh->getIndexBuffer();
 	index_buffer_device_address_info.pNext = nullptr;
 
 	// receiving address to move on 
@@ -1273,7 +1274,7 @@ void VulkanRenderer::object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructure
 	acceleration_structure_triangles_data.vertexFormat = VK_FORMAT_R32G32B32_SFLOAT;
 	acceleration_structure_triangles_data.vertexData = vertex_device_or_host_address_const;
 	acceleration_structure_triangles_data.vertexStride = sizeof(Vertex);
-	acceleration_structure_triangles_data.maxVertex = mesh->get_vertex_count();
+	acceleration_structure_triangles_data.maxVertex = mesh->getVertexCount();
 	acceleration_structure_triangles_data.indexType = VK_INDEX_TYPE_UINT32;
 	acceleration_structure_triangles_data.indexData = index_device_or_host_address_const;
 
@@ -1292,7 +1293,7 @@ void VulkanRenderer::object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructure
 	// for our simple case a no brainer
 	// take entire data to build BLAS
 	// number of indices is truly the stick point here
-	acceleration_structure_build_range_info.primitiveCount = mesh->get_index_count() / 3;
+	acceleration_structure_build_range_info.primitiveCount = mesh->getIndexCount() / 3;
 	acceleration_structure_build_range_info.primitiveOffset = 0;
 	acceleration_structure_build_range_info.firstVertex = 0;
 	acceleration_structure_build_range_info.transformOffset = 0;
@@ -1484,19 +1485,19 @@ void VulkanRenderer::create_TLAS()
 	// we need a reference to the device location of our geometry laying on the graphics card
 	// we already uploaded objects and created vertex and index buffers respectively
 	PFN_vkGetAccelerationStructureBuildSizesKHR pvkGetAccelerationStructureBuildSizesKHR = (PFN_vkGetAccelerationStructureBuildSizesKHR)
-																	vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetAccelerationStructureBuildSizesKHR");
+										vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetAccelerationStructureBuildSizesKHR");
 
 	PFN_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR = (PFN_vkCreateAccelerationStructureKHR)
-																	vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCreateAccelerationStructureKHR");
+										vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCreateAccelerationStructureKHR");
 
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
-																	vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
+										vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
 
 	PFN_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR = (PFN_vkCmdBuildAccelerationStructuresKHR)
-																	vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCmdBuildAccelerationStructuresKHR");
+										vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCmdBuildAccelerationStructuresKHR");
 
 	PFN_vkGetAccelerationStructureDeviceAddressKHR pvkGetAccelerationStructureDeviceAddressKHR = (PFN_vkGetAccelerationStructureDeviceAddressKHR)
-																	vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetAccelerationStructureDeviceAddressKHR");
+										vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetAccelerationStructureDeviceAddressKHR");
 
 
 	std::vector<VkAccelerationStructureInstanceKHR> tlas_instances;
@@ -1522,7 +1523,7 @@ void VulkanRenderer::create_TLAS()
 		geometry_instance.instanceShaderBindingTableRecordOffset = 0;
 		geometry_instance.flags = VK_GEOMETRY_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT_KHR;
 		geometry_instance.accelerationStructureReference = acceleration_structure_device_address;
-		geometry_instance.instanceShaderBindingTableRecordOffset = 0;										// same hit group for all objects
+		geometry_instance.instanceShaderBindingTableRecordOffset = 0;							// same hit group for all objects
 
 		tlas_instances.emplace_back(geometry_instance);
 	}
@@ -1531,7 +1532,15 @@ void VulkanRenderer::create_TLAS()
 
 	VulkanBuffer geometryInstanceBuffer;
 
-	create_geometry_instance_buffer(geometryInstanceBuffer, tlas_instances);
+	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
+															compute_command_pool,
+															geometryInstanceBuffer,
+															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+															VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
+															VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+															VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT |
+															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+															tlas_instances);
 
 	VkBufferDeviceAddressInfo geometry_instance_buffer_device_address_info{};
 	geometry_instance_buffer_device_address_info.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
@@ -1641,49 +1650,6 @@ void VulkanRenderer::create_TLAS()
 															&acceleration_structure_build_range_infos);
 
 	end_and_submit_command_buffer(device->getLogicalDevice(), compute_command_pool, device->getComputeQueue(), command_buffer);
-
-}
-
-void VulkanRenderer::create_geometry_instance_buffer(	VulkanBuffer& geometryInstanceBuffer,
-														std::vector<VkAccelerationStructureInstanceKHR> tlas_instances)
-{
-
-	VkDeviceSize geometry_instance_buffer_size = sizeof(VkAccelerationStructureInstanceKHR) * tlas_instances.size();
-
-	// temporary buffer to "stage" vertex data before transfering to GPU
-	VulkanBuffer stagingBuffer;
-
-	// create buffer and allocate memory to it
-	stagingBuffer.create(	device.get(), geometry_instance_buffer_size,
-							VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// Map memory to vertex buffer
-	// 1.) create pointer to a point in normal memory
-	void* data;
-	// 2.) map the vertex buffer memory to that point
-	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, geometry_instance_buffer_size, 0, &data);
-	// 3.) copy memory from vertices vector to the point
-	memcpy(data, tlas_instances.data(), (size_t)geometry_instance_buffer_size);
-	// 4.) unmap the vertex buffer memory
-	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
-
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	geometryInstanceBuffer.create(	device.get(),
-									geometry_instance_buffer_size, 
-									VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT
-									| VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
-									VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-									VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | 
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), device->getComputeQueue(), compute_command_pool,
-				stagingBuffer.getBuffer(), geometryInstanceBuffer.getBuffer(), geometry_instance_buffer_size);
-
-	stagingBuffer.cleanUp();
 
 }
 
@@ -2604,6 +2570,12 @@ void VulkanRenderer::create_command_pool()
 	}
 }
 
+void VulkanRenderer::cleanUpCommandPools()
+{
+	vkDestroyCommandPool(device->getLogicalDevice(), graphics_command_pool, nullptr);
+	vkDestroyCommandPool(device->getLogicalDevice(), compute_command_pool, nullptr);
+}
+
 void VulkanRenderer::create_command_buffers()
 {
 
@@ -2683,77 +2655,38 @@ void VulkanRenderer::create_texture_sampler()
 void VulkanRenderer::create_uniform_buffers()
 {
 
-	VkDeviceSize vp_buffer_size			= sizeof(globalUBO);
-	VkDeviceSize directions_buffer_size = sizeof(sceneUBO);
-
 	// one uniform buffer for each image (and by extension, command buffer)
 	globalUBOBuffer.resize(vulkanSwapChain.getNumberSwapChainImages());
 	sceneUBOBuffer.resize(vulkanSwapChain.getNumberSwapChainImages());
 
-	// temporary buffer to "stage" vertex data before transfering to GPU
-	VulkanBuffer	stagingBuffer;
+	//// temporary buffer to "stage" vertex data before transfering to GPU
+	//VulkanBuffer	stagingBuffer;
+	std::vector<GlobalUBO> globalUBOdata;
+	globalUBOdata.push_back(globalUBO);
+
+	std::vector<SceneUBO> sceneUBOdata;
+	sceneUBOdata.push_back(sceneUBO);
 
 	// create uniform buffers 
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
 
-		// -- VIEW PROJECTION UBO
-		// create buffer and allocate memory to it
-		stagingBuffer.create(	device.get(),
-								vp_buffer_size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-								VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-								VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+		vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
+																compute_command_pool,
+																globalUBOBuffer[i],
+																VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | 
+																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+																globalUBOdata);
 
-		// Map memory to vertex buffer
-		// 1.) create pointer to a point in normal memory
-		void* data;										
-		// 2.) map the vertex buffer memory to that point
-		vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, vp_buffer_size, 0, &data);
-		// 3.) copy memory from vertices vector to the point
-		memcpy(data, &globalUBO, (size_t)vp_buffer_size);
-		// 4.) unmap the vertex buffer memory
-		vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
-
-		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-		// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-		globalUBOBuffer[i].create(	device.get(),
-									vp_buffer_size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT |
-									VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-
-		// copy staging buffer to vertex buffer on GPU
-		copy_buffer(device->getLogicalDevice(), device->getGraphicsQueue(), 
-					graphics_command_pool, stagingBuffer.getBuffer(),
-					globalUBOBuffer[i].getBuffer(), vp_buffer_size);
-
-		// -- DIRECTIONS UBO
-		// create buffer and allocate memory to it
-		stagingBuffer.create(	device.get(), 
-								directions_buffer_size,
-								VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-								VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-		// Map memory to vertex buffer	
-		// 2.) map the vertex buffer memory to that point
-		vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, directions_buffer_size, 0, &data);
-		// 3.) copy memory from vertices vector to the point
-		memcpy(data, &sceneUBO, (size_t)directions_buffer_size);
-		// 4.) unmap the vertex buffer memory
-		vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
-
-		// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-		// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-		sceneUBOBuffer[i].create(	device.get(),
-									directions_buffer_size, 
-									VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-
-		// copy staging buffer to vertex buffer on GPU
-		copy_buffer(device->getLogicalDevice(), device->getGraphicsQueue(), 
-					graphics_command_pool, stagingBuffer.getBuffer(), sceneUBOBuffer[i].getBuffer(), directions_buffer_size);
-
+		vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
+																compute_command_pool,
+																sceneUBOBuffer[i],
+																VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT |
+																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+																VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+																sceneUBOdata);
+		
 	}
-
-	stagingBuffer.cleanUp();
 
 }
 
@@ -3607,7 +3540,6 @@ void VulkanRenderer::clean_up_raytracing()
 void VulkanRenderer::clean_up()
 {
 
-	
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(device->getLogicalDevice());
 
@@ -3620,9 +3552,6 @@ void VulkanRenderer::clean_up()
 	}
 	// -- SUBSUMMARIZE ALL SWAPCHAIN DEPENDEND THINGS
 	clean_up_swapchain();
-
-	// --- COMPUTE STUFF
-	vkDestroyCommandPool(device->getLogicalDevice(), compute_command_pool, nullptr);
 
 	// -- CLEAN UP RAYTRACING STUFF
 	 clean_up_raytracing();
@@ -3655,11 +3584,12 @@ void VulkanRenderer::clean_up()
 
 	}
 
-	vkDestroyCommandPool(device->getLogicalDevice(), graphics_command_pool, nullptr);
+	cleanUpCommandPools();
 
+	vulkanSwapChain.cleanUp();
 	vkDestroySurfaceKHR(instance.getVulkanInstance(), surface, nullptr);
-	vkDestroyDevice(device->getLogicalDevice(), nullptr);
-	vkDestroyInstance(instance.getVulkanInstance(), nullptr);
+	device->cleanUp();
+	instance.cleanUp();
 
 }
 
