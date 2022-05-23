@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3389729401">
+        <error id="constParameter" severity="style" msg="Parameter &apos;window&apos; can be declared with const" verbose="Parameter &apos;window&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\null_window.c" line="464" column="41" info="Parameter &apos;window&apos; can be declared with const"/>
+            <symbol>window</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:84:6" call-funcname="_glfwGetVideoModeNull" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="56" col="26" call-argexpr="&amp;mode" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:84:6" call-funcname="_glfwGetVideoModeNull" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="56" col="26" call-argexpr="mode" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:934:6" call-funcname="_glfwInputMonitorWindow" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="74" col="28" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:34:13" call-funcname="applySizeLimits" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="265" col="20" call-argexpr="&amp;width" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:34:13" call-funcname="applySizeLimits" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="265" col="20" call-argexpr="&amp;height" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:34:13" call-funcname="applySizeLimits" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="273" col="20" call-argexpr="&amp;width" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:34:13" call-funcname="applySizeLimits" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="273" col="20" call-argexpr="&amp;height" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:907:6" call-funcname="_glfwInputWindowFocus" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="326" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:913:6" call-funcname="_glfwInputWindowIconify" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="344" col="32" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:914:6" call-funcname="_glfwInputWindowMaximize" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="352" col="33" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:907:6" call-funcname="_glfwInputWindowFocus" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="435" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:907:6" call-funcname="_glfwInputWindowFocus" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="456" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" call-funcname="createNativeWindow" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="111" col="10" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:88:5" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" call-funcname="createNativeWindow" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="111" col="10" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:88:5" my-argnr="2"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" call-funcname="createNativeWindow" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="111" col="10" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:88:5" my-argnr="4"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:1001:7" call-funcname="_glfw_strdup" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="535" col="18" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:135:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:34:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="36" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:53:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="56" col="27" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:64:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="66" col="29" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:69:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="71" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="81" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" my-argnr="2" my-argname="wndconfig" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="91" col="28" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" my-argnr="3" my-argname="fbconfig" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="95" col="32" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:89:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="163" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:92:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="187" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:94:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="226" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:96:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="247" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:97:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="263" col="17" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:98:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="271" col="17" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:100:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="289" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:103:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="341" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:104:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="358" col="10" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:105:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="367" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:106:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="372" col="34" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:107:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="380" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:108:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="385" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:109:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="390" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:110:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="395" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:112:7" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="404" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:113:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="409" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:116:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="423" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:122:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="471" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:123:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="476" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:129:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="505" col="26" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:34:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="36" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:69:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="71" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="81" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" my-argnr="2" my-argname="wndconfig" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="91" col="28" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c:77:12" my-argnr="3" my-argname="fbconfig" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="95" col="32" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:89:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="163" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:92:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="187" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:94:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="226" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:96:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="247" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:97:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="263" col="17" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:98:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="271" col="17" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:100:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="289" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:103:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="341" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:104:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="358" col="10" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:105:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="367" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:106:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="372" col="34" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:107:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="380" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:112:7" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="404" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:122:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="471" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:123:5" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="476" col="12" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:129:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_window.c" line="505" col="26" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="applySizeLimits" lineNumber="34"/>
+    <functiondecl functionName="fitToMonitor" lineNumber="53"/>
+    <functiondecl functionName="acquireMonitor" lineNumber="64"/>
+    <functiondecl functionName="releaseMonitor" lineNumber="69"/>
+    <functiondecl functionName="createNativeWindow" lineNumber="77"/>
+    <functiondecl functionName="_glfwCreateWindowNull" lineNumber="106"/>
+    <functiondecl functionName="_glfwDestroyWindowNull" lineNumber="161"/>
+    <functiondecl functionName="_glfwSetWindowTitleNull" lineNumber="173"/>
+    <functiondecl functionName="_glfwSetWindowIconNull" lineNumber="177"/>
+    <functiondecl functionName="_glfwSetWindowMonitorNull" lineNumber="181"/>
+    <functiondecl functionName="_glfwGetWindowPosNull" lineNumber="216"/>
+    <functiondecl functionName="_glfwSetWindowPosNull" lineNumber="224"/>
+    <functiondecl functionName="_glfwGetWindowSizeNull" lineNumber="237"/>
+    <functiondecl functionName="_glfwSetWindowSizeNull" lineNumber="245"/>
+    <functiondecl functionName="_glfwSetWindowSizeLimitsNull" lineNumber="259"/>
+    <functiondecl functionName="_glfwSetWindowAspectRatioNull" lineNumber="269"/>
+    <functiondecl functionName="_glfwGetFramebufferSizeNull" lineNumber="277"/>
+    <functiondecl functionName="_glfwGetWindowFrameSizeNull" lineNumber="285"/>
+    <functiondecl functionName="_glfwGetWindowContentScaleNull" lineNumber="313"/>
+    <functiondecl functionName="_glfwIconifyWindowNull" lineNumber="321"/>
+    <functiondecl functionName="_glfwRestoreWindowNull" lineNumber="339"/>
+    <functiondecl functionName="_glfwMaximizeWindowNull" lineNumber="356"/>
+    <functiondecl functionName="_glfwWindowMaximizedNull" lineNumber="365"/>
+    <functiondecl functionName="_glfwWindowHoveredNull" lineNumber="370"/>
+    <functiondecl functionName="_glfwFramebufferTransparentNull" lineNumber="378"/>
+    <functiondecl functionName="_glfwSetWindowResizableNull" lineNumber="383"/>
+    <functiondecl functionName="_glfwSetWindowDecoratedNull" lineNumber="388"/>
+    <functiondecl functionName="_glfwSetWindowFloatingNull" lineNumber="393"/>
+    <functiondecl functionName="_glfwSetWindowMousePassthroughNull" lineNumber="398"/>
+    <functiondecl functionName="_glfwGetWindowOpacityNull" lineNumber="402"/>
+    <functiondecl functionName="_glfwSetWindowOpacityNull" lineNumber="407"/>
+    <functiondecl functionName="_glfwSetRawMouseMotionNull" lineNumber="412"/>
+    <functiondecl functionName="_glfwRawMouseMotionSupportedNull" lineNumber="416"/>
+    <functiondecl functionName="_glfwShowWindowNull" lineNumber="421"/>
+    <functiondecl functionName="_glfwRequestWindowAttentionNull" lineNumber="426"/>
+    <functiondecl functionName="_glfwHideWindowNull" lineNumber="430"/>
+    <functiondecl functionName="_glfwFocusWindowNull" lineNumber="441"/>
+    <functiondecl functionName="_glfwWindowFocusedNull" lineNumber="464"/>
+    <functiondecl functionName="_glfwWindowIconifiedNull" lineNumber="469"/>
+    <functiondecl functionName="_glfwWindowVisibleNull" lineNumber="474"/>
+    <functiondecl functionName="_glfwPollEventsNull" lineNumber="479"/>
+    <functiondecl functionName="_glfwWaitEventsNull" lineNumber="483"/>
+    <functiondecl functionName="_glfwWaitEventsTimeoutNull" lineNumber="487"/>
+    <functiondecl functionName="_glfwPostEmptyEventNull" lineNumber="491"/>
+    <functiondecl functionName="_glfwGetCursorPosNull" lineNumber="495"/>
+    <functiondecl functionName="_glfwSetCursorPosNull" lineNumber="503"/>
+    <functiondecl functionName="_glfwSetCursorModeNull" lineNumber="509"/>
+    <functiondecl functionName="_glfwCreateCursorNull" lineNumber="513"/>
+    <functiondecl functionName="_glfwCreateStandardCursorNull" lineNumber="520"/>
+    <functiondecl functionName="_glfwDestroyCursorNull" lineNumber="525"/>
+    <functiondecl functionName="_glfwSetCursorNull" lineNumber="529"/>
+    <functiondecl functionName="_glfwSetClipboardStringNull" lineNumber="533"/>
+    <functiondecl functionName="_glfwGetClipboardStringNull" lineNumber="540"/>
+    <functiondecl functionName="_glfwGetEGLPlatformNull" lineNumber="545"/>
+    <functiondecl functionName="_glfwGetEGLNativeDisplayNull" lineNumber="550"/>
+    <functiondecl functionName="_glfwGetEGLNativeWindowNull" lineNumber="555"/>
+    <functiondecl functionName="_glfwGetScancodeNameNull" lineNumber="560"/>
+    <functiondecl functionName="_glfwGetKeyScancodeNull" lineNumber="687"/>
+    <functiondecl functionName="_glfwGetRequiredInstanceExtensionsNull" lineNumber="692"/>
+    <functiondecl functionName="_glfwGetPhysicalDevicePresentationSupportNull" lineNumber="696"/>
+    <functiondecl functionName="_glfwCreateWindowSurfaceNull" lineNumber="703"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfwCenterCursorInContentArea"/>
+    <functioncall functionName="_glfwCreateContextEGL"/>
+    <functioncall functionName="_glfwCreateContextOSMesa"/>
+    <functioncall functionName="_glfwFocusWindowNull"/>
+    <functioncall functionName="_glfwGetMonitorPosNull"/>
+    <functioncall functionName="_glfwGetVideoModeNull"/>
+    <functioncall functionName="_glfwIconifyWindowNull"/>
+    <functioncall functionName="_glfwInitEGL"/>
+    <functioncall functionName="_glfwInitOSMesa"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwInputFramebufferSize"/>
+    <functioncall functionName="_glfwInputMonitorWindow"/>
+    <functioncall functionName="_glfwInputWindowFocus"/>
+    <functioncall functionName="_glfwInputWindowIconify"/>
+    <functioncall functionName="_glfwInputWindowMaximize"/>
+    <functioncall functionName="_glfwInputWindowMonitor"/>
+    <functioncall functionName="_glfwInputWindowPos"/>
+    <functioncall functionName="_glfwInputWindowSize"/>
+    <functioncall functionName="_glfwRefreshContextAttribs"/>
+    <functioncall functionName="_glfwSetWindowMousePassthroughNull"/>
+    <functioncall functionName="_glfwSetWindowPosNull"/>
+    <functioncall functionName="_glfwSetWindowSizeNull"/>
+    <functioncall functionName="_glfwShowWindowNull"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="_glfw_max"/>
+    <functioncall functionName="_glfw_min"/>
+    <functioncall functionName="_glfw_strdup"/>
+    <functioncall functionName="acquireMonitor"/>
+    <functioncall functionName="applySizeLimits"/>
+    <functioncall functionName="autoIconify"/>
+    <functioncall functionName="bottom"/>
+    <functioncall functionName="centerCursor"/>
+    <functioncall functionName="clipboardString"/>
+    <functioncall functionName="copy"/>
+    <functioncall functionName="createNativeWindow"/>
+    <functioncall functionName="ctxconfig"/>
+    <functioncall functionName="decorated"/>
+    <functioncall functionName="denom"/>
+    <functioncall functionName="destroy"/>
+    <functioncall functionName="enabled"/>
+    <functioncall functionName="fbconfig"/>
+    <functioncall functionName="fitToMonitor"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="floating"/>
+    <functioncall functionName="focused"/>
+    <functioncall functionName="focusedWindow"/>
+    <functioncall functionName="height"/>
+    <functioncall functionName="iconified"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="left"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="maxheight"/>
+    <functioncall functionName="maximized"/>
+    <functioncall functionName="maxwidth"/>
+    <functioncall functionName="minheight"/>
+    <functioncall functionName="minwidth"/>
+    <functioncall functionName="mode"/>
+    <functioncall functionName="monitor"/>
+    <functioncall functionName="mousePassthrough"/>
+    <functioncall functionName="opacity"/>
+    <functioncall functionName="previous"/>
+    <functioncall functionName="ratio"/>
+    <functioncall functionName="releaseMonitor"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="right"/>
+    <functioncall functionName="scancode"/>
+    <functioncall functionName="string"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="top"/>
+    <functioncall functionName="transparent"/>
+    <functioncall functionName="visible"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="width"/>
+    <functioncall functionName="window"/>
+    <functioncall functionName="wndconfig"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="xpos"/>
+    <functioncall functionName="xscale"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="ypos"/>
+    <functioncall functionName="yscale"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,22 @@
+get_should_close call:[glfwWindowShouldClose] noreturn:[glfwWindowShouldClose]
+get_buffer_width call:[return]
+get_buffer_height call:[return]
+get_window
+get_keys
+Window call:[initialize] noreturn:[initialize]
+Window call:[initialize] noreturn:[initialize]
+initialize call:[glfwCreateWindow,glfwGetFramebufferSize,glfwInit,glfwMakeContextCurrent,glfwSetFramebufferSizeCallback,glfwSetInputMode,glfwSetWindowUserPointer,glfwTerminate,glfwWindowHint,init_callbacks,printf]
+update_viewport call:[glfwGetFramebufferSize] noreturn:[glfwGetFramebufferSize]
+set_buffer_size
+get_x_change
+get_y_change
+get_height call:[GLfloat] noreturn:[GLfloat]
+get_width call:[GLfloat] noreturn:[GLfloat]
+framebuffer_size_has_changed
+init_callbacks call:[glfwSetFramebufferSizeCallback,glfwSetKeyCallback,glfwSetMouseButtonCallback] noreturn:[glfwSetFramebufferSizeCallback]
+framebuffer_size_callback call:[glfwGetWindowUserPointer]
+reset_framebuffer_has_changed
+key_callback call:[glfwGetWindowUserPointer,glfwSetWindowShouldClose] noreturn:[glfwSetWindowShouldClose]
+mouse_callback call:[glfwGetWindowUserPointer]
+mouse_button_callback call:[glfwGetWindowUserPointer,glfwSetCursorPosCallback] noreturn:[glfwSetCursorPosCallback]
+Window call:[glfwDestroyWindow,glfwTerminate] noreturn:[glfwTerminate]

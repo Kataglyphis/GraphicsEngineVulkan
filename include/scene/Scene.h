@@ -54,8 +54,6 @@ public:
 
 	void						update_model_matrix(glm::mat4 model_matrix, int model_id);
 
-	void						clean_up();
-
 	~Scene();
 
 private:

@@ -45,17 +45,6 @@ void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id)
 
 }
 
-void Scene::clean_up()
-{
-
-	for (size_t i = 0; i < model_list.size(); i++) {
-
-		model_list[i]->destroy_model();
-
-	}
-
-}
-
 glm::mat4 Scene::get_model_matrix(int model_index)
 {
 

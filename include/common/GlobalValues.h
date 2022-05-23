@@ -3,32 +3,12 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#ifdef NDEBUG
-const bool ENABLE_VALIDATION_LAYERS = false;
-#else
-const bool ENABLE_VALIDATION_LAYERS = true;
-#endif
-
-struct SwapChainDetails {
-
-	VkSurfaceCapabilitiesKHR surface_capabilities;		// surface properties, e.g. image size/extent
-	std::vector<VkSurfaceFormatKHR> formats;			// surface image formats, e.g. RGBA and size of each color
-	std::vector<VkPresentModeKHR> presentation_mode;	// how images should be presented to screen
-
-};
-
-struct SwapChainImage {
-
-	VkImage image;
-	VkImageView image_view;
-
-};
+#include "VulkanBuffer.h"
 
 struct BLAS {
 
-	VkAccelerationStructureKHR accel;
-	VkBuffer buffer;
-	VkDeviceMemory memory;
+	VkAccelerationStructureKHR	accel;
+	VulkanBuffer				vulkanBuffer;
 
 };
 
@@ -51,8 +31,7 @@ struct BlasInput {
 struct TLAS {
 
 	VkAccelerationStructureKHR top_level_acceleration_structure;
-	VkBuffer top_level_acceleration_structure_buffer;
-	VkDeviceMemory top_level_acceleration_structure_buffer_memory;
+	VulkanBuffer vulkanBuffer;
 
 };
 

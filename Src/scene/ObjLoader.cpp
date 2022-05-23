@@ -3,12 +3,11 @@
 #include "tiny_obj_loader.h"
 #include <File.h>
 
-ObjLoader::ObjLoader(VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue, VkCommandPool command_pool)
+ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer_queue, VkCommandPool command_pool)
 {
-	this->physical_device = physical_device;
-	this->logical_device = logical_device;
-	this->transfer_queue = transfer_queue;
-	this->command_pool = command_pool;
+	this->device            = device;
+	this->transfer_queue    = transfer_queue;
+	this->command_pool      = command_pool;
 }
 
 std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<int> matToTex)
@@ -123,8 +122,12 @@ std::shared_ptr<Model> ObjLoader::load_model(std::string modelFile, std::vector<
 
     }
 
-    new_model->add_new_mesh(physical_device, logical_device, transfer_queue,
-                            command_pool, vertices, indices, materialIndex, this->materials);
+    new_model->add_new_mesh(device, 
+                            transfer_queue,command_pool,
+                            vertices,
+                            indices,
+                            materialIndex,
+                            this->materials);
 
 	return new_model;
 }

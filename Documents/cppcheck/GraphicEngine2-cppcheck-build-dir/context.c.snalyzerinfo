@@ -1,0 +1,10 @@
+_glfwIsValidContextConfig call:[_glfwInputError]
+_glfwChooseFBConfig
+_glfwRefreshContextAttribs global:[_glfw] call:[GetIntegerv,GetString,_glfwInputError,_glfwPlatformGetTls,getProcAddress,glClear,glfwExtensionSupported,glfwMakeContextCurrent,sscanf,strlen,strncmp,swapBuffers,void] noreturn:[_glfwInputError,swapBuffers]
+_glfwStringInExtensionString call:[strlen,strstr]
+glfwMakeContextCurrent global:[_glfw] call:[_glfwInputError,_glfwPlatformGetTls,makeCurrent] noreturn:[makeCurrent]
+glfwGetCurrentContext global:[_glfw] call:[_glfwInputError,_glfwPlatformGetTls] noreturn:[_glfwPlatformGetTls]
+glfwSwapBuffers global:[_glfw] call:[_glfwInputError,assert,swapBuffers] noreturn:[swapBuffers]
+glfwSwapInterval global:[_glfw] call:[_glfwInputError,_glfwPlatformGetTls,swapInterval] noreturn:[swapInterval]
+glfwExtensionSupported global:[_glfw] call:[GetIntegerv,GetString,GetStringi,_glfwInputError,_glfwPlatformGetTls,_glfwStringInExtensionString,assert,extensionSupported,strcmp] noreturn:[extensionSupported]
+glfwGetProcAddress global:[_glfw] call:[_glfwInputError,_glfwPlatformGetTls,assert,getProcAddress] noreturn:[getProcAddress]

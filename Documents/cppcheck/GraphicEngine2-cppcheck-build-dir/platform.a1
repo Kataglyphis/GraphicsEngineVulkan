@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1667124888">
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfwSelectPlatform&apos; argument 1 names different: declaration &apos;platformID&apos; definition &apos;desiredID&apos;." verbose="Function &apos;_glfwSelectPlatform&apos; argument 1 names different: declaration &apos;platformID&apos; definition &apos;desiredID&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/platform.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\platform.c" line="56" column="34"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="948" column="34"/>
+            <symbol>_glfwSelectPlatform</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwPlatformSupported&apos; argument 1 names different: declaration &apos;platform&apos; definition &apos;platformID&apos;." verbose="Function &apos;glfwPlatformSupported&apos; argument 1 names different: declaration &apos;platform&apos; definition &apos;platformID&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/platform.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\platform.c" line="120" column="39"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2455" column="39"/>
+            <symbol>glfwPlatformSupported</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/platform.c" line="116" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/null_platform.h:75:10" call-funcname="_glfwConnectNull" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/platform.c" line="74" col="16" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:948:10" my-argnr="2"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="_glfwSelectPlatform" lineNumber="56"/>
+    <functiondecl functionName="glfwGetPlatform" lineNumber="114"/>
+    <functiondecl functionName="glfwPlatformSupported" lineNumber="120"/>
+    <functiondecl functionName="glfwGetVersionString" lineNumber="147"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="ID"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfwConnectNull"/>
+    <functioncall functionName="_glfwConnectWin32"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="connect"/>
+    <functioncall functionName="desiredID"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="platform"/>
+    <functioncall functionName="platformID"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="supportedPlatforms"/>
+    <functioncall functionName="void"/>
+  </FileInfo>
+</analyzerinfo>

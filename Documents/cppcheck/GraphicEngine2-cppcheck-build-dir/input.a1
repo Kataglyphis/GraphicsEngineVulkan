@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="876934287">
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfwInputDrop&apos; argument 3 names different: declaration &apos;names&apos; definition &apos;paths&apos;." verbose="Function &apos;_glfwInputDrop&apos; argument 3 names different: declaration &apos;names&apos; definition &apos;paths&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="368" column="66"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="927" column="66"/>
+            <symbol>_glfwInputDrop</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetInputMode&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetInputMode&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="493" column="42"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4542" column="42"/>
+            <symbol>glfwGetInputMode</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetInputMode&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetInputMode&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="518" column="43"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4605" column="43"/>
+            <symbol>glfwSetInputMode</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetKey&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetKey&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="661" column="36"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4766" column="36"/>
+            <symbol>glfwGetKey</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMouseButton&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMouseButton&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="684" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4795" column="44"/>
+            <symbol>glfwGetMouseButton</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetCursorPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetCursorPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="707" column="43"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4833" column="43"/>
+            <symbol>glfwGetCursorPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursorPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetCursorPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="730" column="43"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4873" column="43"/>
+            <symbol>glfwSetCursorPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwDestroyCursor&apos; argument 1 names different: declaration &apos;cursor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwDestroyCursor&apos; argument 1 names different: declaration &apos;cursor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="824" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4986" column="44"/>
+            <symbol>glfwDestroyCursor</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursor&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;windowHandle&apos;." verbose="Function &apos;glfwSetCursor&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;windowHandle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="859" column="40"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5013" column="40"/>
+            <symbol>glfwSetCursor</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursor&apos; argument 2 names different: declaration &apos;cursor&apos; definition &apos;cursorHandle&apos;." verbose="Function &apos;glfwSetCursor&apos; argument 2 names different: declaration &apos;cursor&apos; definition &apos;cursorHandle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="859" column="66"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5013" column="60"/>
+            <symbol>glfwSetCursor</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetKeyCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetKeyCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="872" column="51"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5063" column="51"/>
+            <symbol>glfwSetKeyCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetKeyCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetKeyCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="872" column="70"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5063" column="70"/>
+            <symbol>glfwSetKeyCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCharCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetCharCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="882" column="53"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5106" column="53"/>
+            <symbol>glfwSetCharCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCharCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetCharCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="882" column="73"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5106" column="73"/>
+            <symbol>glfwSetCharCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCharModsCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetCharModsCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="892" column="61"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5148" column="61"/>
+            <symbol>glfwSetCharModsCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCharModsCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetCharModsCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="892" column="85"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5148" column="85"/>
+            <symbol>glfwSetCharModsCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetMouseButtonCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetMouseButtonCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="902" column="67"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5185" column="67"/>
+            <symbol>glfwSetMouseButtonCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetMouseButtonCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetMouseButtonCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="903" column="74"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5185" column="94"/>
+            <symbol>glfwSetMouseButtonCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursorPosCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetCursorPosCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="913" column="63"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5217" column="63"/>
+            <symbol>glfwSetCursorPosCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursorPosCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetCursorPosCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="914" column="68"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5217" column="88"/>
+            <symbol>glfwSetCursorPosCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursorEnterCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetCursorEnterCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="924" column="67"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5248" column="67"/>
+            <symbol>glfwSetCursorEnterCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetCursorEnterCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetCursorEnterCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="925" column="74"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5248" column="94"/>
+            <symbol>glfwSetCursorEnterCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetScrollCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetScrollCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="935" column="57"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5282" column="57"/>
+            <symbol>glfwSetScrollCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetScrollCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetScrollCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="936" column="59"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5282" column="79"/>
+            <symbol>glfwSetScrollCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetDropCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetDropCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="946" column="53"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5319" column="53"/>
+            <symbol>glfwSetDropCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetDropCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetDropCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="946" column="73"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5319" column="73"/>
+            <symbol>glfwSetDropCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetJoystickCallback&apos; argument 1 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetJoystickCallback&apos; argument 1 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="1169" column="65"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5660" column="65"/>
+            <symbol>glfwSetJoystickCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetClipboardString&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetClipboardString&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="1385" column="49"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5789" column="49"/>
+            <symbol>glfwSetClipboardString</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetClipboardString&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetClipboardString&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="1393" column="56"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="5819" column="56"/>
+            <symbol>glfwGetClipboardString</symbol>
+        </error>
+        <error id="constParameter" severity="style" msg="Parameter &apos;js&apos; can be declared with const" verbose="Parameter &apos;js&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\input.c" line="376" column="40" info="Parameter &apos;js&apos; can be declared with const"/>
+            <symbol>js</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="157" col="24" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="167" col="24" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="498" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="523" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="625" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="631" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="650" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="666" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="689" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="717" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="735" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="769" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="794" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="828" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h:5013:14" call-funcname="glfwSetCursor" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="840" col="30" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="865" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="877" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="887" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="897" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="908" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="919" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="930" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="941" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="951" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="963" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="991" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1023" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1059" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1088" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1116" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1144" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1160" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1171" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1187" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:120:17" call-funcname="parseMapping" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1205" col="33" call-argexpr="&amp;mapping" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:120:17" call-funcname="parseMapping" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1205" col="33" call-argexpr="line" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1247" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1275" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1310" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1389" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1395" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1401" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1408" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1422" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="1428" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/>  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:80:17" my-argnr="1" my-argname="e" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="83" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:95:22" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="97" col="41" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:120:17" my-argnr="1" my-argname="mapping" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="131" col="28" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:923:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="320" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:925:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="348" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:926:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="362" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:927:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="370" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:929:6" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="388" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:930:6" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="395" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:931:6" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="402" col="22" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:973:6" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="472" col="16" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:80:17" my-argnr="1" my-argname="e" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="83" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c:120:17" my-argnr="1" my-argname="mapping" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="131" col="28" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:923:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="320" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:925:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="348" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:926:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="362" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:927:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="370" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:931:6" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/input.c" line="402" col="22" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="initJoysticks" lineNumber="49"/>
+    <functiondecl functionName="findMapping" lineNumber="65"/>
+    <functiondecl functionName="isValidElementForJoystick" lineNumber="80"/>
+    <functiondecl functionName="findValidMapping" lineNumber="95"/>
+    <functiondecl functionName="parseMapping" lineNumber="120"/>
+    <functiondecl functionName="_glfwInputKey" lineNumber="267"/>
+    <functiondecl functionName="_glfwInputChar" lineNumber="298"/>
+    <functiondecl functionName="_glfwInputScroll" lineNumber="318"/>
+    <functiondecl functionName="_glfwInputMouseClick" lineNumber="326"/>
+    <functiondecl functionName="_glfwInputCursorPos" lineNumber="346"/>
+    <functiondecl functionName="_glfwInputCursorEnter" lineNumber="360"/>
+    <functiondecl functionName="_glfwInputDrop" lineNumber="368"/>
+    <functiondecl functionName="_glfwInputJoystick" lineNumber="376"/>
+    <functiondecl functionName="_glfwInputJoystickAxis" lineNumber="386"/>
+    <functiondecl functionName="_glfwInputJoystickButton" lineNumber="393"/>
+    <functiondecl functionName="_glfwInputJoystickHat" lineNumber="400"/>
+    <functiondecl functionName="_glfwInitGamepadMappings" lineNumber="419"/>
+    <functiondecl functionName="_glfwAllocJoystick" lineNumber="434"/>
+    <functiondecl functionName="_glfwFreeJoystick" lineNumber="470"/>
+    <functiondecl functionName="_glfwCenterCursorInContentArea" lineNumber="480"/>
+    <functiondecl functionName="glfwGetInputMode" lineNumber="493"/>
+    <functiondecl functionName="glfwSetInputMode" lineNumber="518"/>
+    <functiondecl functionName="glfwRawMouseMotionSupported" lineNumber="623"/>
+    <functiondecl functionName="glfwGetKeyName" lineNumber="629"/>
+    <functiondecl functionName="glfwGetKeyScancode" lineNumber="648"/>
+    <functiondecl functionName="glfwGetKey" lineNumber="661"/>
+    <functiondecl functionName="glfwGetMouseButton" lineNumber="684"/>
+    <functiondecl functionName="glfwGetCursorPos" lineNumber="707"/>
+    <functiondecl functionName="glfwSetCursorPos" lineNumber="730"/>
+    <functiondecl functionName="glfwCreateCursor" lineNumber="762"/>
+    <functiondecl functionName="glfwCreateStandardCursor" lineNumber="790"/>
+    <functiondecl functionName="glfwDestroyCursor" lineNumber="824"/>
+    <functiondecl functionName="glfwSetCursor" lineNumber="859"/>
+    <functiondecl functionName="glfwSetKeyCallback" lineNumber="872"/>
+    <functiondecl functionName="glfwSetCharCallback" lineNumber="882"/>
+    <functiondecl functionName="glfwSetCharModsCallback" lineNumber="892"/>
+    <functiondecl functionName="glfwSetMouseButtonCallback" lineNumber="902"/>
+    <functiondecl functionName="glfwSetCursorPosCallback" lineNumber="913"/>
+    <functiondecl functionName="glfwSetCursorEnterCallback" lineNumber="924"/>
+    <functiondecl functionName="glfwSetScrollCallback" lineNumber="935"/>
+    <functiondecl functionName="glfwSetDropCallback" lineNumber="946"/>
+    <functiondecl functionName="glfwJoystickPresent" lineNumber="956"/>
+    <functiondecl functionName="glfwGetJoystickAxes" lineNumber="981"/>
+    <functiondecl functionName="glfwGetJoystickButtons" lineNumber="1013"/>
+    <functiondecl functionName="glfwGetJoystickHats" lineNumber="1049"/>
+    <functiondecl functionName="glfwGetJoystickName" lineNumber="1081"/>
+    <functiondecl functionName="glfwGetJoystickGUID" lineNumber="1109"/>
+    <functiondecl functionName="glfwSetJoystickUserPointer" lineNumber="1137"/>
+    <functiondecl functionName="glfwGetJoystickUserPointer" lineNumber="1153"/>
+    <functiondecl functionName="glfwSetJoystickCallback" lineNumber="1169"/>
+    <functiondecl functionName="glfwUpdateGamepadMappings" lineNumber="1180"/>
+    <functiondecl functionName="glfwJoystickIsGamepad" lineNumber="1240"/>
+    <functiondecl functionName="glfwGetGamepadName" lineNumber="1268"/>
+    <functiondecl functionName="glfwGetGamepadState" lineNumber="1299"/>
+    <functiondecl functionName="glfwSetClipboardString" lineNumber="1385"/>
+    <functiondecl functionName="glfwGetClipboardString" lineNumber="1393"/>
+    <functiondecl functionName="glfwGetTime" lineNumber="1399"/>
+    <functiondecl functionName="glfwSetTime" lineNumber="1406"/>
+    <functiondecl functionName="glfwGetTimerValue" lineNumber="1420"/>
+    <functiondecl functionName="glfwGetTimerFrequency" lineNumber="1426"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfwDefaultMappings"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwPlatformGetTimerFrequency"/>
+    <functioncall functionName="_glfwPlatformGetTimerValue"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_fmaxf"/>
+    <functioncall functionName="_glfw_fminf"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="_glfw_realloc"/>
+    <functioncall functionName="action"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="axes"/>
+    <functioncall functionName="axis"/>
+    <functioncall functionName="axisCount"/>
+    <functioncall functionName="axisOffset"/>
+    <functioncall functionName="axisScale"/>
+    <functioncall functionName="bit"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="button"/>
+    <functioncall functionName="buttonCount"/>
+    <functioncall functionName="buttons"/>
+    <functioncall functionName="c"/>
+    <functioncall functionName="cbfun"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="character"/>
+    <functioncall functionName="charmods"/>
+    <functioncall functionName="codepoint"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="createCursor"/>
+    <functioncall functionName="createStandardCursor"/>
+    <functioncall functionName="cursor"/>
+    <functioncall functionName="cursorEnter"/>
+    <functioncall functionName="cursorHandle"/>
+    <functioncall functionName="cursorListHead"/>
+    <functioncall functionName="cursorMode"/>
+    <functioncall functionName="cursorPos"/>
+    <functioncall functionName="destroyCursor"/>
+    <functioncall functionName="double"/>
+    <functioncall functionName="drop"/>
+    <functioncall functionName="element"/>
+    <functioncall functionName="entered"/>
+    <functioncall functionName="event"/>
+    <functioncall functionName="fields"/>
+    <functioncall functionName="findMapping"/>
+    <functioncall functionName="findValidMapping"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="getClipboardString"/>
+    <functioncall functionName="getCursorPos"/>
+    <functioncall functionName="getKeyScancode"/>
+    <functioncall functionName="getMappingName"/>
+    <functioncall functionName="getScancodeName"/>
+    <functioncall functionName="getWindowSize"/>
+    <functioncall functionName="glfwDestroyCursor"/>
+    <functioncall functionName="glfwSetCursor"/>
+    <functioncall functionName="guid"/>
+    <functioncall functionName="handle"/>
+    <functioncall functionName="hat"/>
+    <functioncall functionName="hatButtons"/>
+    <functioncall functionName="hatCount"/>
+    <functioncall functionName="hats"/>
+    <functioncall functionName="height"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="image"/>
+    <functioncall functionName="index"/>
+    <functioncall functionName="initJoysticks"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="isValidElementForJoystick"/>
+    <functioncall functionName="jid"/>
+    <functioncall functionName="joystick"/>
+    <functioncall functionName="joysticks"/>
+    <functioncall functionName="joysticksInitialized"/>
+    <functioncall functionName="js"/>
+    <functioncall functionName="key"/>
+    <functioncall functionName="length"/>
+    <functioncall functionName="line"/>
+    <functioncall functionName="lockKeyMods"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="mapping"/>
+    <functioncall functionName="mappingCount"/>
+    <functioncall functionName="mappings"/>
+    <functioncall functionName="memcpy"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="minimum"/>
+    <functioncall functionName="mode"/>
+    <functioncall functionName="mods"/>
+    <functioncall functionName="mouseButton"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="next"/>
+    <functioncall functionName="offset"/>
+    <functioncall functionName="parseMapping"/>
+    <functioncall functionName="paths"/>
+    <functioncall functionName="plain"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="pollJoystick"/>
+    <functioncall functionName="present"/>
+    <functioncall functionName="previous"/>
+    <functioncall functionName="rawMouseMotion"/>
+    <functioncall functionName="rawMouseMotionSupported"/>
+    <functioncall functionName="repeated"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="scancode"/>
+    <functioncall functionName="scroll"/>
+    <functioncall functionName="setClipboardString"/>
+    <functioncall functionName="setCursor"/>
+    <functioncall functionName="setCursorMode"/>
+    <functioncall functionName="setCursorPos"/>
+    <functioncall functionName="setRawMouseMotion"/>
+    <functioncall functionName="shape"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="state"/>
+    <functioncall functionName="stickyKeys"/>
+    <functioncall functionName="stickyMouseButtons"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="strcspn"/>
+    <functioncall functionName="string"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="strncmp"/>
+    <functioncall functionName="strncpy"/>
+    <functioncall functionName="strspn"/>
+    <functioncall functionName="strtoul"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="t"/>
+    <functioncall functionName="terminateJoysticks"/>
+    <functioncall functionName="time"/>
+    <functioncall functionName="uint64_t"/>
+    <functioncall functionName="uint8_t"/>
+    <functioncall functionName="updateGamepadGUID"/>
+    <functioncall functionName="userPointer"/>
+    <functioncall functionName="value"/>
+    <functioncall functionName="virtualCursorPosX"/>
+    <functioncall functionName="virtualCursorPosY"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="width"/>
+    <functioncall functionName="window"/>
+    <functioncall functionName="windowFocused"/>
+    <functioncall functionName="windowHandle"/>
+    <functioncall functionName="windowListHead"/>
+    <functioncall functionName="xhot"/>
+    <functioncall functionName="xoffset"/>
+    <functioncall functionName="xpos"/>
+    <functioncall functionName="yhot"/>
+    <functioncall functionName="yoffset"/>
+    <functioncall functionName="ypos"/>
+  </FileInfo>
+</analyzerinfo>

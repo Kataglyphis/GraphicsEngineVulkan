@@ -1,0 +1,1085 @@
+countof
+identity call:[genType] noreturn:[genType]
+identity call:[genType] noreturn:[genType]
+length
+call
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+operator=
+operator+=
+operator+=
+operator+=
+operator-=
+operator-=
+operator-=
+operator*=
+operator*=
+operator*=
+operator/=
+operator/=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator%=
+operator%=
+operator%=
+operator&=
+operator&=
+operator&=
+operator|=
+operator|=
+operator|=
+operator^=
+operator^=
+operator^=
+operator<<=
+operator<<=
+operator<<=
+operator>>=
+operator>>=
+operator>>=
+operator+
+operator-
+operator+
+operator+
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator-
+operator-
+operator*
+operator*
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/
+operator/
+operator/
+operator%
+operator%
+operator%
+operator%
+operator%
+operator&
+operator&
+operator&
+operator&
+operator&
+operator|
+operator|
+operator|
+operator|
+operator|
+operator^
+operator^
+operator^
+operator^
+operator^
+operator<<
+operator<<
+operator<<
+operator<<
+operator<<
+operator>>
+operator>>
+operator>>
+operator>>
+operator>>
+operator~
+operator== call:[call] noreturn:[call]
+operator!=
+operator&&
+operator||
+length
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+operator=
+operator+=
+operator+=
+operator+=
+operator-=
+operator-=
+operator-=
+operator*=
+operator*=
+operator*=
+operator/=
+operator/=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator%=
+operator%=
+operator%=
+operator&=
+operator&=
+operator&=
+operator|=
+operator|=
+operator|=
+operator^=
+operator^=
+operator^=
+operator<<=
+operator<<=
+operator<<=
+operator>>=
+operator>>=
+operator>>=
+operator+
+operator-
+operator+
+operator+
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator-
+operator-
+operator*
+operator*
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/
+operator/
+operator/
+operator%
+operator%
+operator%
+operator%
+operator%
+operator&
+operator&
+operator&
+operator&
+operator&
+operator|
+operator|
+operator|
+operator|
+operator|
+operator^
+operator^
+operator^
+operator^
+operator^
+operator<<
+operator<<
+operator<<
+operator<<
+operator<<
+operator>>
+operator>>
+operator>>
+operator>>
+operator>>
+operator~
+operator== call:[call] noreturn:[call]
+operator!=
+operator&&
+operator||
+length
+call
+call
+call
+call
+call
+call
+call
+call
+call
+call
+call call:[call] noreturn:[call]
+call call:[call,sizeof] noreturn:[call]
+call
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+vec
+operator=
+operator+= call:[call,return] noreturn:[return]
+operator+= call:[call,return] noreturn:[return]
+operator+= call:[call,return] noreturn:[return]
+operator-= call:[call,return] noreturn:[return]
+operator-= call:[call,return] noreturn:[return]
+operator-= call:[call,return] noreturn:[return]
+operator*= call:[call,return] noreturn:[return]
+operator*= call:[call,return] noreturn:[return]
+operator*= call:[call,return] noreturn:[return]
+operator/= call:[call,return] noreturn:[return]
+operator/= call:[call,return] noreturn:[return]
+operator/= call:[call,return] noreturn:[return]
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator%= call:[call,return] noreturn:[return]
+operator%= call:[call,return] noreturn:[return]
+operator%= call:[call,return] noreturn:[return]
+operator&= call:[call,return,sizeof] noreturn:[return]
+operator&= call:[call,return,sizeof] noreturn:[return]
+operator&= call:[call,return,sizeof] noreturn:[return]
+operator|= call:[call,return,sizeof] noreturn:[return]
+operator|= call:[call,return,sizeof] noreturn:[return]
+operator|= call:[call,return,sizeof] noreturn:[return]
+operator^= call:[call,return,sizeof] noreturn:[return]
+operator^= call:[call,return,sizeof] noreturn:[return]
+operator^= call:[call,return,sizeof] noreturn:[return]
+operator<<= call:[call,return,sizeof] noreturn:[return]
+operator<<= call:[call,return,sizeof] noreturn:[return]
+operator<<= call:[call,return,sizeof] noreturn:[return]
+operator>>= call:[call,return,sizeof] noreturn:[return]
+operator>>= call:[call,return,sizeof] noreturn:[return]
+operator>>= call:[call,return,sizeof] noreturn:[return]
+operator+
+operator-
+operator+
+operator+
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator-
+operator-
+operator*
+operator*
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/
+operator/
+operator/
+operator%
+operator%
+operator%
+operator%
+operator%
+operator&
+operator&
+operator&
+operator&
+operator&
+operator|
+operator|
+operator|
+operator|
+operator|
+operator^
+operator^
+operator^
+operator^
+operator^
+operator<<
+operator<<
+operator<<
+operator<<
+operator<<
+operator>>
+operator>>
+operator>>
+operator>>
+operator>>
+operator~ call:[call,sizeof] noreturn:[call]
+operator== call:[call,sizeof] noreturn:[call]
+operator!= call:[call,sizeof] noreturn:[call]
+operator&&
+operator||
+length
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator*= call:[return] noreturn:[return]
+operator/=
+operator/= call:[inverse] noreturn:[inverse]
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/ call:[inverse]
+operator/ call:[inverse] noreturn:[inverse]
+operator/ call:[m1_copy]
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator-
+operator-
+operator*
+operator*
+operator* call:[col_type] noreturn:[col_type]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator== call:[return]
+operator!= call:[return]
+length
+mat
+mat
+mat
+mat
+mat call:[static_assert] noreturn:[static_assert]
+mat call:[static_assert] noreturn:[static_assert]
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator*= call:[return] noreturn:[return]
+operator/=
+operator/= call:[inverse] noreturn:[inverse]
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator*
+operator*
+operator* call:[Mov0,Mov1,Mov2,Mov3]
+operator* call:[row_type] noreturn:[row_type]
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/ call:[inverse]
+operator/ call:[inverse] noreturn:[inverse]
+operator/ call:[m1_copy]
+operator== call:[return]
+operator!= call:[return]
+length
+vec
+vec
+vec
+vec
+vec
+vec
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator*=
+operator/=
+operator/=
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator%=
+operator%=
+operator&=
+operator&=
+operator|=
+operator|=
+operator^=
+operator^=
+operator<<=
+operator<<=
+operator>>=
+operator>>=
+operator+
+operator-
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/
+operator%
+operator%
+operator%
+operator&
+operator&
+operator&
+operator|
+operator|
+operator|
+operator^
+operator^
+operator^
+operator<<
+operator<<
+operator<<
+operator>>
+operator>>
+operator>>
+operator~
+operator== call:[call] noreturn:[call]
+operator!=
+operator&&
+operator||
+lessThan call:[Result]
+lessThanEqual call:[Result]
+greaterThan call:[Result]
+greaterThanEqual call:[Result]
+equal call:[Result]
+notEqual call:[Result]
+any
+all
+not_ call:[Result]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[Func]
+call call:[call,static_assert] noreturn:[call]
+call call:[call] noreturn:[call]
+call call:[sqrt] noreturn:[sqrt]
+call call:[tmp,xhalf]
+pow call:[call] noreturn:[call]
+exp call:[call] noreturn:[call]
+log call:[call] noreturn:[call]
+exp2 call:[call] noreturn:[call]
+log2 call:[log2]
+log2 call:[call] noreturn:[call]
+sqrt call:[call,static_assert] noreturn:[call]
+inversesqrt call:[sqrt] noreturn:[sqrt]
+inversesqrt call:[call,static_assert] noreturn:[call]
+call call:[genFIType,static_assert]
+call call:[static_assert]
+min call:[return,static_assert]
+max call:[return,static_assert]
+abs call:[return,sizeof]
+call call:[call] noreturn:[call]
+call call:[static_assert]
+call call:[length]
+call call:[static_assert]
+call
+call call:[static_assert]
+call
+call call:[lessThan]
+call call:[call] noreturn:[call]
+call call:[call] noreturn:[call]
+call call:[floor] noreturn:[floor]
+call call:[call] noreturn:[call]
+call call:[call] noreturn:[call]
+call call:[floor,static_assert] noreturn:[floor]
+call call:[call] noreturn:[call]
+call call:[call] noreturn:[call]
+call call:[max,min] noreturn:[min]
+call call:[lessThan,mix] noreturn:[mix]
+call call:[clamp,static_assert,tmp]
+abs call:[call] noreturn:[call]
+abs call:[call] noreturn:[call]
+sign call:[call,static_assert]
+sign call:[call,static_assert] noreturn:[call]
+floor call:[call,static_assert] noreturn:[call]
+trunc call:[call,static_assert] noreturn:[call]
+round call:[call,static_assert] noreturn:[call]
+roundEven call:[fract,round,static_assert] noreturn:[round]
+roundEven call:[call,static_assert] noreturn:[call]
+ceil call:[call,static_assert] noreturn:[call]
+fract call:[fract]
+fract call:[call,static_assert] noreturn:[call]
+mod call:[mod]
+mod call:[call] noreturn:[call]
+mod call:[call] noreturn:[call]
+modf call:[modf,static_assert] noreturn:[modf]
+modf call:[modf]
+modf call:[modf]
+modf call:[modf]
+modf call:[modf]
+min call:[call,static_assert] noreturn:[call]
+min call:[call] noreturn:[call]
+max call:[call,static_assert] noreturn:[call]
+max call:[call] noreturn:[call]
+clamp call:[max,min,static_assert] noreturn:[min]
+clamp call:[call,static_assert] noreturn:[call]
+clamp call:[call,static_assert] noreturn:[call]
+mix call:[call] noreturn:[call]
+mix call:[call] noreturn:[call]
+mix call:[call] noreturn:[call]
+step call:[mix] noreturn:[mix]
+step call:[call] noreturn:[call]
+step call:[call] noreturn:[call]
+smoothstep call:[clamp,genType,static_assert,tmp]
+smoothstep call:[call] noreturn:[call]
+smoothstep call:[call] noreturn:[call]
+isnan call:[isnan,length,static_assert] noreturn:[isnan]
+isinf call:[isinf,length,static_assert] noreturn:[isinf]
+floatBitsToInt
+floatBitsToInt
+floatBitsToUint
+floatBitsToUint
+intBitsToFloat
+intBitsToFloat
+uintBitsToFloat
+uintBitsToFloat
+frexp call:[frexp,static_assert] noreturn:[frexp]
+frexp call:[frexp,length,static_assert] noreturn:[frexp]
+ldexp call:[ldexp,static_assert] noreturn:[ldexp]
+ldexp call:[ldexp,length,static_assert] noreturn:[ldexp]
+call call:[dot,sqrt] noreturn:[sqrt]
+call call:[length] noreturn:[length]
+call
+call call:[tmp]
+call call:[tmp]
+call call:[return,tmp]
+call call:[static_assert]
+call call:[dot,inversesqrt,static_assert] noreturn:[inversesqrt]
+call call:[dot,static_assert]
+call call:[dot]
+call call:[dot,dotValue,k,sqrt]
+length call:[abs,static_assert] noreturn:[abs]
+length call:[call,static_assert] noreturn:[call]
+distance call:[length,static_assert] noreturn:[length]
+distance call:[call] noreturn:[call]
+dot call:[static_assert]
+dot call:[call,static_assert] noreturn:[call]
+cross call:[call] noreturn:[call]
+normalize call:[call,static_assert] noreturn:[call]
+faceforward call:[dot]
+faceforward call:[call] noreturn:[call]
+reflect call:[dot,genType] noreturn:[genType]
+reflect call:[call] noreturn:[call]
+refract call:[dot,dotValue,k,return,sqrt,static_assert]
+refract call:[call,static_assert] noreturn:[call]
+call call:[length]
+call call:[call,static_assert] noreturn:[call]
+call call:[length]
+call call:[call,static_assert] noreturn:[call]
+call
+call
+call
+call
+call
+call
+call
+call
+call
+call call:[call,static_assert] noreturn:[call]
+call
+call
+call call:[DetCof]
+call call:[call,static_assert] noreturn:[call]
+call call:[Inverse]
+call
+call call:[Dot0,Fac0,Fac1,Fac2,Fac3,Fac4,Fac5,Inv0,Inv1,Inv2,Inv3,Inverse,Row0,SignA,SignB,Vec0,Vec1,Vec2,Vec3]
+matrixCompMult call:[call] noreturn:[call]
+outerProduct call:[call] noreturn:[call]
+transpose call:[call] noreturn:[call]
+determinant call:[call] noreturn:[call]
+inverse call:[call,static_assert] noreturn:[call]
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+mat
+operator=
+operator+=
+operator+=
+operator-=
+operator-=
+operator*=
+operator*= call:[return] noreturn:[return]
+operator/=
+operator/= call:[inverse] noreturn:[inverse]
+operator++
+operator--
+operator++ call:[Result]
+operator-- call:[Result]
+operator+
+operator-
+operator+
+operator+
+operator+
+operator-
+operator-
+operator-
+operator*
+operator*
+operator*
+operator*
+operator*
+operator*
+operator*
+operator/
+operator/
+operator/ call:[inverse]
+operator/ call:[inverse] noreturn:[inverse]
+operator/ call:[m1_copy]
+operator== call:[return]
+operator!= call:[return]
+radians call:[static_assert]
+radians call:[call] noreturn:[call]
+degrees call:[static_assert]
+degrees call:[call] noreturn:[call]
+sin call:[call] noreturn:[call]
+cos call:[call] noreturn:[call]
+tan call:[call] noreturn:[call]
+asin call:[call] noreturn:[call]
+acos call:[call] noreturn:[call]
+atan call:[atan2,static_assert] noreturn:[atan2]
+atan call:[call] noreturn:[call]
+atan call:[call] noreturn:[call]
+sinh call:[call] noreturn:[call]
+cosh call:[call] noreturn:[call]
+tanh call:[call] noreturn:[call]
+asinh call:[call] noreturn:[call]
+acosh call:[call] noreturn:[call]
+atanh call:[call] noreturn:[call]
+overflow
+uif32
+uif32
+uif32
+toFloat32
+toFloat16 call:[overflow,short] noreturn:[short]
+packUnorm2x16 call:[clamp,result,round]
+unpackUnorm2x16
+packSnorm2x16 call:[clamp,result,round]
+unpackSnorm2x16 call:[clamp] noreturn:[clamp]
+packUnorm4x8 call:[clamp,result,round]
+unpackUnorm4x8
+packSnorm4x8 call:[clamp,result,round]
+unpackSnorm4x8 call:[clamp] noreturn:[clamp]
+packDouble2x32
+unpackDouble2x32
+packHalf2x16 call:[toFloat16]
+unpackHalf2x16 call:[toFloat32]
+mask call:[sizeof]
+call
+call call:[return]
+call
+call call:[return]
+call call:[bitCount] noreturn:[bitCount]
+call
+call
+call call:[bitCount,call,sizeof,x] noreturn:[bitCount]
+uaddCarry call:[Max32,Value64]
+uaddCarry call:[Max32,Value64,greaterThan,mix]
+usubBorrow
+usubBorrow call:[XgeY,YgeX,greaterThanEqual,mix] noreturn:[mix]
+umulExtended
+umulExtended call:[Value64]
+imulExtended
+imulExtended call:[Value64]
+bitfieldExtract call:[bitfieldExtract]
+bitfieldExtract call:[mask,return,static_assert]
+bitfieldInsert call:[bitfieldInsert,static_assert]
+bitfieldInsert call:[mask,return,static_assert]
+bitfieldReverse call:[bitfieldReverse,static_assert]
+bitfieldReverse call:[call,sizeof,static_assert,x]
+bitCount call:[bitCount,static_assert]
+bitCount call:[call,sizeof,static_assert,type,x]
+findLSB call:[call,sizeof,static_assert] noreturn:[call]
+findLSB call:[call,static_assert] noreturn:[call]
+findMSB call:[findMSB,static_assert]
+findMSB call:[call,sizeof,static_assert] noreturn:[call]
+load_texture_file call:[c_str,runtime_error,stbi_load] noreturn:[runtime_error]
+choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
+create_image_view call:[runtime_error,vkCreateImageView] noreturn:[runtime_error]
+find_memory_type_index call:[vkGetPhysicalDeviceMemoryProperties]
+create_image call:[find_memory_type_index,runtime_error,vkAllocateMemory,vkBindImageMemory,vkCreateImage,vkGetImageMemoryRequirements] noreturn:[runtime_error]
+create_buffer call:[find_memory_type_index,runtime_error,vkAllocateMemory,vkBindBufferMemory,vkCreateBuffer,vkGetBufferMemoryRequirements] noreturn:[runtime_error,vkBindBufferMemory]
+begin_command_buffer call:[vkAllocateCommandBuffers,vkBeginCommandBuffer]
+end_and_submit_command_buffer call:[printf,runtime_error,vkEndCommandBuffer,vkFreeCommandBuffers,vkQueueSubmit,vkQueueWaitIdle] noreturn:[runtime_error,vkFreeCommandBuffers]
+copy_buffer call:[begin_command_buffer,end_and_submit_command_buffer,vkCmdCopyBuffer] noreturn:[end_and_submit_command_buffer]
+copy_image_buffer call:[begin_command_buffer,end_and_submit_command_buffer,vkCmdCopyBufferToImage] noreturn:[end_and_submit_command_buffer]
+access_flags_for_image_layout call:[VkAccessFlags] noreturn:[VkAccessFlags]
+pipeline_stage_for_layout
+transition_image_layout call:[access_flags_for_image_layout,begin_command_buffer,end_and_submit_command_buffer,pipeline_stage_for_layout,vkCmdPipelineBarrier] noreturn:[end_and_submit_command_buffer]
+transition_image_layout_for_command_buffer call:[access_flags_for_image_layout,pipeline_stage_for_layout,vkCmdPipelineBarrier] noreturn:[vkCmdPipelineBarrier]
+generate_mipmaps call:[begin_command_buffer,end_and_submit_command_buffer,runtime_error,vkCmdBlitImage,vkCmdPipelineBarrier,vkGetPhysicalDeviceFormatProperties] noreturn:[end_and_submit_command_buffer,runtime_error]
+align_up call:[return]
+debugCallback call:[fflush,prefix,str]
+getVulkanInstance
+VulkanInstance global:[ENABLE_VALIDATION_LAYERS] call:[check_instance_extension_support,check_validation_layer_support,data,glfwGetRequiredInstanceExtensions,init,push_back,runtime_error,size,vkCreateInstance] noreturn:[data,init,push_back,runtime_error]
+check_validation_layer_support call:[availableLayers,data,strcmp,vkEnumerateInstanceLayerProperties]
+check_instance_extension_support call:[data,extensions,strcmp,vkEnumerateInstanceExtensionProperties]
+VulkanInstance

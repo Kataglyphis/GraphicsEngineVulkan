@@ -14,14 +14,6 @@
 #include "host_device_shared_vars.h"
 #include "GlobalValues.h"
 
-// Error checking on vulkan function calls
-#define ASSERT_VULKAN(val,error_string)\
-            if(val!=VK_SUCCESS) {\
-               throw std::runtime_error(error_string); \
-            }
-
-#define NOT_YET_IMPLEMENTED throw std::runtime_error("Not yet implemented!");
-
 static stbi_uc* load_texture_file(std::string file_name, int* width, int* height, VkDeviceSize * image_size)
 {
 
@@ -179,63 +171,6 @@ static VkImage create_image(VkDevice device, VkPhysicalDevice physicalDevice,
 	vkBindImageMemory(device, image, *image_memory, 0);
 
 	return image;
-
-}
-
-
-static void create_buffer(	VkPhysicalDevice physical_device, VkDevice device, 
-							VkDeviceSize buffer_size, VkBufferUsageFlags buffer_usage_flags, 
-							VkMemoryPropertyFlags buffer_propertiy_flags, VkBuffer* buffer, 
-							VkDeviceMemory* buffer_memory) {
-
-	// create vertex buffer
-	// information to create a buffer (doesn't include assigning memory)
-	VkBufferCreateInfo buffer_info{};
-	buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-	buffer_info.size = buffer_size;												// size of buffer (size of 1 vertex * #vertices)
-	buffer_info.usage = buffer_usage_flags;										// multiple types of buffer possible, e.g. vertex buffer		
-	buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;						// similar to swap chain images, can share vertex buffers
-
-	VkResult result = vkCreateBuffer(device, &buffer_info, nullptr, buffer);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create a buffer!");
-
-	}
-
-	// get buffer memory requirements
-	VkMemoryRequirements memory_requirements{};
-	vkGetBufferMemoryRequirements(device, *buffer, &memory_requirements);
-
-	// allocate memory to buffer
-	VkMemoryAllocateInfo memory_alloc_info{};
-	memory_alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-	memory_alloc_info.allocationSize = memory_requirements.size;
-
-	uint32_t memory_type_index = find_memory_type_index(physical_device, memory_requirements.memoryTypeBits,
-														buffer_propertiy_flags);
-								//VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |		/* memory is visible to CPU side */
-								//VK_MEMORY_PROPERTY_HOST_COHERENT_BIT	/* data is placed straight into buffer */);
-	if (memory_type_index < 0) {
-
-		throw std::runtime_error("Failed to find auitable memory type!");
-
-	}
-
-	memory_alloc_info.memoryTypeIndex = memory_type_index;
-
-	// allocate memory to VkDeviceMemory
-	result = vkAllocateMemory(device, &memory_alloc_info, nullptr, buffer_memory);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to allocate memory for buffer!");
-
-	}
-
-	// allocate memory to given buffer
-	vkBindBufferMemory(device, *buffer, *buffer_memory, 0);
 
 }
 

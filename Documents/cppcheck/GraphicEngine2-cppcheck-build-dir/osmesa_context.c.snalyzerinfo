@@ -1,0 +1,12 @@
+makeContextCurrentOSMesa global:[_glfw] call:[MakeCurrent,_glfwInputError,_glfwPlatformSetTls,_glfw_calloc,_glfw_free,getFramebufferSize] noreturn:[_glfwPlatformSetTls]
+getProcAddressOSMesa global:[_glfw] call:[GetProcAddress,return] noreturn:[GetProcAddress]
+destroyContextOSMesa global:[_glfw] call:[DestroyContext,_glfw_free]
+swapBuffersOSMesa
+swapIntervalOSMesa
+extensionSupportedOSMesa
+_glfwInitOSMesa global:[_glfw] call:[_glfwInputError,_glfwPlatformGetModuleSymbol,_glfwPlatformLoadModule,_glfwTerminateOSMesa,void]
+_glfwTerminateOSMesa global:[_glfw] call:[_glfwPlatformFreeModule]
+_glfwCreateContextOSMesa global:[_glfw] call:[CreateContextAttribs,CreateContextExt,_glfwInputError,assert,sizeof] noreturn:[CreateContextAttribs,CreateContextExt]
+glfwGetOSMesaColorBuffer global:[_glfw] call:[GetColorBuffer,_glfwInputError,assert]
+glfwGetOSMesaDepthBuffer global:[_glfw] call:[GetDepthBuffer,_glfwInputError,assert]
+glfwGetOSMesaContext global:[_glfw] call:[_glfwInputError]

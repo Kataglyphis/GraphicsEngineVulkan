@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1737236229">
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:898:7" my-argnr="1" my-argname="path" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_module.c" line="37" col="25" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:898:7" my-argnr="1" my-argname="path" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_module.c" line="37" col="25" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="_glfwPlatformLoadModule" lineNumber="35"/>
+    <functiondecl functionName="_glfwPlatformFreeModule" lineNumber="40"/>
+    <functiondecl functionName="_glfwPlatformGetModuleSymbol" lineNumber="45"/>
+    <functioncall functionName="FreeLibrary"/>
+    <functioncall functionName="GetProcAddress"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="LoadLibraryA"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="module"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="path"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="void"/>
+  </FileInfo>
+</analyzerinfo>

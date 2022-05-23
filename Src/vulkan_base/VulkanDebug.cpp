@@ -1,4 +1,5 @@
 #include "VulkanDebug.h"
+#include "Utilities.h"
 
 VulkanDebug::VulkanDebug()
 {

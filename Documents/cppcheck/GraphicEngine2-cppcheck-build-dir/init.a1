@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="314676265">
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfw_realloc&apos; argument 1 names different: declaration &apos;pointer&apos; definition &apos;block&apos;." verbose="Function &apos;_glfw_realloc&apos; argument 1 names different: declaration &apos;pointer&apos; definition &apos;block&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\init.c" line="294" column="27"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="1008" column="27"/>
+            <symbol>_glfw_realloc</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfw_free&apos; argument 1 names different: declaration &apos;pointer&apos; definition &apos;block&apos;." verbose="Function &apos;_glfw_free&apos; argument 1 names different: declaration &apos;pointer&apos; definition &apos;block&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\init.c" line="316" column="23"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="1009" column="23"/>
+            <symbol>_glfw_free</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetErrorCallback&apos; argument 1 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetErrorCallback&apos; argument 1 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\init.c" line="540" column="56"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2410" column="56"/>
+            <symbol>glfwSetErrorCallback</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c" line="286" col="28" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c" line="303" col="28" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:891:6" call-funcname="_glfwPlatformSetTls" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c" line="439" col="24" call-argexpr="&amp;_glfwMainThreadError" call-argvaluetype="7" call-argvalue="0"/>  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:999:8" my-argnr="2" my-argname="count" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c" line="183" col="6" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:1001:7" my-argnr="1" my-argname="source" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c" line="229" col="34" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:1001:7" my-argnr="1" my-argname="source" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/init.c" line="229" col="34" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="defaultAllocate" lineNumber="69"/>
+    <functiondecl functionName="defaultDeallocate" lineNumber="76"/>
+    <functiondecl functionName="defaultReallocate" lineNumber="83"/>
+    <functiondecl functionName="terminate" lineNumber="90"/>
+    <functiondecl functionName="_glfwEncodeUTF8" lineNumber="146"/>
+    <functiondecl functionName="_glfwParseUriList" lineNumber="177"/>
+    <functiondecl functionName="_glfw_strdup" lineNumber="227"/>
+    <functiondecl functionName="_glfw_min" lineNumber="235"/>
+    <functiondecl functionName="_glfw_max" lineNumber="240"/>
+    <functiondecl functionName="_glfw_fminf" lineNumber="245"/>
+    <functiondecl functionName="_glfw_fmaxf" lineNumber="257"/>
+    <functiondecl functionName="_glfw_calloc" lineNumber="269"/>
+    <functiondecl functionName="_glfw_realloc" lineNumber="294"/>
+    <functiondecl functionName="_glfw_free" lineNumber="316"/>
+    <functiondecl functionName="_glfwInputError" lineNumber="329"/>
+    <functiondecl functionName="glfwInit" lineNumber="406"/>
+    <functiondecl functionName="glfwTerminate" lineNumber="452"/>
+    <functiondecl functionName="glfwInitHint" lineNumber="460"/>
+    <functiondecl functionName="glfwInitAllocator" lineNumber="488"/>
+    <functiondecl functionName="glfwInitVulkanLoader" lineNumber="501"/>
+    <functiondecl functionName="glfwGetVersion" lineNumber="506"/>
+    <functiondecl functionName="glfwGetError" lineNumber="516"/>
+    <functiondecl functionName="glfwSetErrorCallback" lineNumber="540"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfw"/>
+    <functioncall functionName="_glfwErrorCallback"/>
+    <functioncall functionName="_glfwFreeMonitor"/>
+    <functioncall functionName="_glfwInitAllocator"/>
+    <functioncall functionName="_glfwInitGamepadMappings"/>
+    <functioncall functionName="_glfwInitHints"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwMainThreadError"/>
+    <functioncall functionName="_glfwPlatformCreateMutex"/>
+    <functioncall functionName="_glfwPlatformCreateTls"/>
+    <functioncall functionName="_glfwPlatformDestroyMutex"/>
+    <functioncall functionName="_glfwPlatformDestroyTls"/>
+    <functioncall functionName="_glfwPlatformGetTimerValue"/>
+    <functioncall functionName="_glfwPlatformGetTls"/>
+    <functioncall functionName="_glfwPlatformInitTimer"/>
+    <functioncall functionName="_glfwPlatformLockMutex"/>
+    <functioncall functionName="_glfwPlatformSetTls"/>
+    <functioncall functionName="_glfwPlatformUnlockMutex"/>
+    <functioncall functionName="_glfwSelectPlatform"/>
+    <functioncall functionName="_glfwTerminateVulkan"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="_glfw_realloc"/>
+    <functioncall functionName="a"/>
+    <functioncall functionName="allocate"/>
+    <functioncall functionName="allocator"/>
+    <functioncall functionName="b"/>
+    <functioncall functionName="block"/>
+    <functioncall functionName="callbacks"/>
+    <functioncall functionName="cbfun"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="code"/>
+    <functioncall functionName="codepoint"/>
+    <functioncall functionName="contextSlot"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="cursorListHead"/>
+    <functioncall functionName="deallocate"/>
+    <functioncall functionName="defaultAllocate"/>
+    <functioncall functionName="defaultDeallocate"/>
+    <functioncall functionName="defaultReallocate"/>
+    <functioncall functionName="description"/>
+    <functioncall functionName="digits"/>
+    <functioncall functionName="error"/>
+    <functioncall functionName="errorListHead"/>
+    <functioncall functionName="errorLock"/>
+    <functioncall functionName="errorSlot"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="format"/>
+    <functioncall functionName="free"/>
+    <functioncall functionName="glfwDefaultWindowHints"/>
+    <functioncall functionName="glfwDestroyCursor"/>
+    <functioncall functionName="glfwDestroyWindow"/>
+    <functioncall functionName="hint"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="init"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="line"/>
+    <functioncall functionName="loader"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="malloc"/>
+    <functioncall functionName="mappings"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="monitor"/>
+    <functioncall functionName="monitorCount"/>
+    <functioncall functionName="monitors"/>
+    <functioncall functionName="next"/>
+    <functioncall functionName="originalRamp"/>
+    <functioncall functionName="path"/>
+    <functioncall functionName="paths"/>
+    <functioncall functionName="platform"/>
+    <functioncall functionName="platformID"/>
+    <functioncall functionName="prefix"/>
+    <functioncall functionName="realloc"/>
+    <functioncall functionName="reallocate"/>
+    <functioncall functionName="resized"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="setGammaRamp"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="source"/>
+    <functioncall functionName="strcpy"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="strncmp"/>
+    <functioncall functionName="strtok"/>
+    <functioncall functionName="strtol"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="t"/>
+    <functioncall functionName="terminate"/>
+    <functioncall functionName="terminateJoysticks"/>
+    <functioncall functionName="text"/>
+    <functioncall functionName="user"/>
+    <functioncall functionName="va_end"/>
+    <functioncall functionName="va_start"/>
+    <functioncall functionName="value"/>
+    <functioncall functionName="vl"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="vsnprintf"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="windowListHead"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,61 @@
+applySizeLimits call:[_glfw_max,_glfw_min] noreturn:[_glfw_max,_glfw_min]
+fitToMonitor call:[_glfwGetMonitorPosNull,_glfwGetVideoModeNull]
+acquireMonitor call:[_glfwInputMonitorWindow] noreturn:[_glfwInputMonitorWindow]
+releaseMonitor call:[_glfwInputMonitorWindow] noreturn:[_glfwInputMonitorWindow]
+createNativeWindow call:[fitToMonitor] noreturn:[fitToMonitor]
+_glfwCreateWindowNull call:[_glfwCenterCursorInContentArea,_glfwCreateContextEGL,_glfwCreateContextOSMesa,_glfwFocusWindowNull,_glfwInitEGL,_glfwInitOSMesa,_glfwRefreshContextAttribs,_glfwSetWindowMousePassthroughNull,_glfwShowWindowNull,acquireMonitor,createNativeWindow] noreturn:[_glfwCenterCursorInContentArea,_glfwFocusWindowNull,_glfwSetWindowMousePassthroughNull]
+_glfwDestroyWindowNull global:[_glfw] call:[destroy,releaseMonitor] noreturn:[destroy,releaseMonitor]
+_glfwSetWindowTitleNull
+_glfwSetWindowIconNull
+_glfwSetWindowMonitorNull call:[_glfwInputWindowMonitor,_glfwSetWindowPosNull,_glfwSetWindowSizeNull,acquireMonitor,fitToMonitor,releaseMonitor] noreturn:[_glfwSetWindowSizeNull,fitToMonitor,releaseMonitor]
+_glfwGetWindowPosNull
+_glfwSetWindowPosNull call:[_glfwInputWindowPos] noreturn:[_glfwInputWindowPos]
+_glfwGetWindowSizeNull
+_glfwSetWindowSizeNull call:[_glfwInputFramebufferSize,_glfwInputWindowSize] noreturn:[_glfwInputFramebufferSize]
+_glfwSetWindowSizeLimitsNull call:[_glfwSetWindowSizeNull,applySizeLimits] noreturn:[_glfwSetWindowSizeNull]
+_glfwSetWindowAspectRatioNull call:[_glfwSetWindowSizeNull,applySizeLimits] noreturn:[_glfwSetWindowSizeNull]
+_glfwGetFramebufferSizeNull
+_glfwGetWindowFrameSizeNull
+_glfwGetWindowContentScaleNull
+_glfwIconifyWindowNull global:[_glfw] call:[_glfwInputWindowFocus,_glfwInputWindowIconify,releaseMonitor] noreturn:[_glfwInputWindowFocus,releaseMonitor]
+_glfwRestoreWindowNull call:[_glfwInputWindowIconify,_glfwInputWindowMaximize,acquireMonitor] noreturn:[_glfwInputWindowMaximize,acquireMonitor]
+_glfwMaximizeWindowNull call:[_glfwInputWindowMaximize] noreturn:[_glfwInputWindowMaximize]
+_glfwWindowMaximizedNull
+_glfwWindowHoveredNull global:[_glfw]
+_glfwFramebufferTransparentNull
+_glfwSetWindowResizableNull
+_glfwSetWindowDecoratedNull
+_glfwSetWindowFloatingNull
+_glfwSetWindowMousePassthroughNull
+_glfwGetWindowOpacityNull
+_glfwSetWindowOpacityNull
+_glfwSetRawMouseMotionNull
+_glfwRawMouseMotionSupportedNull
+_glfwShowWindowNull
+_glfwRequestWindowAttentionNull
+_glfwHideWindowNull global:[_glfw] call:[_glfwInputWindowFocus] noreturn:[_glfwInputWindowFocus]
+_glfwFocusWindowNull global:[_glfw] call:[_glfwIconifyWindowNull,_glfwInputWindowFocus] noreturn:[_glfwIconifyWindowNull,_glfwInputWindowFocus]
+_glfwWindowFocusedNull global:[_glfw]
+_glfwWindowIconifiedNull
+_glfwWindowVisibleNull
+_glfwPollEventsNull
+_glfwWaitEventsNull
+_glfwWaitEventsTimeoutNull
+_glfwPostEmptyEventNull
+_glfwGetCursorPosNull global:[_glfw]
+_glfwSetCursorPosNull global:[_glfw]
+_glfwSetCursorModeNull
+_glfwCreateCursorNull
+_glfwCreateStandardCursorNull
+_glfwDestroyCursorNull
+_glfwSetCursorNull
+_glfwSetClipboardStringNull global:[_glfw] call:[_glfw_free,_glfw_strdup]
+_glfwGetClipboardStringNull global:[_glfw]
+_glfwGetEGLPlatformNull
+_glfwGetEGLNativeDisplayNull
+_glfwGetEGLNativeWindowNull
+_glfwGetScancodeNameNull call:[_glfwInputError]
+_glfwGetKeyScancodeNull
+_glfwGetRequiredInstanceExtensionsNull
+_glfwGetPhysicalDevicePresentationSupportNull
+_glfwCreateWindowSurfaceNull

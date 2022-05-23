@@ -1,64 +1,500 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="880116283">
+<analyzerinfo checksum="4224910245">
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfwInputWindowPos&apos; argument 2 names different: declaration &apos;xpos&apos; definition &apos;x&apos;." verbose="Function &apos;_glfwInputWindowPos&apos; argument 2 names different: declaration &apos;xpos&apos; definition &apos;x&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="74" column="51"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="908" column="51"/>
+            <symbol>_glfwInputWindowPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfwInputWindowPos&apos; argument 3 names different: declaration &apos;ypos&apos; definition &apos;y&apos;." verbose="Function &apos;_glfwInputWindowPos&apos; argument 3 names different: declaration &apos;ypos&apos; definition &apos;y&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="74" column="58"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="908" column="61"/>
+            <symbol>_glfwInputWindowPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwDestroyWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwDestroyWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="425" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3169" column="44"/>
+            <symbol>glfwDestroyWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwWindowShouldClose&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwWindowShouldClose&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="458" column="47"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3189" column="47"/>
+            <symbol>glfwWindowShouldClose</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowShouldClose&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowShouldClose&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="467" column="51"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3211" column="51"/>
+            <symbol>glfwSetWindowShouldClose</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowTitle&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowTitle&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="476" column="45"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3236" column="45"/>
+            <symbol>glfwSetWindowTitle</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowIcon&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowIcon&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="486" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3284" column="44"/>
+            <symbol>glfwSetWindowIcon</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="519" column="43"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3316" column="43"/>
+            <symbol>glfwGetWindowPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowPos&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="533" column="43"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3351" column="43"/>
+            <symbol>glfwSetWindowPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="546" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3381" column="44"/>
+            <symbol>glfwGetWindowSize</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="560" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3508" column="44"/>
+            <symbol>glfwSetWindowSize</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowSizeLimits&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowSizeLimits&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="575" column="50"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3424" column="50"/>
+            <symbol>glfwSetWindowSizeLimits</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowAspectRatio&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowAspectRatio&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="620" column="51"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3467" column="51"/>
+            <symbol>glfwSetWindowAspectRatio</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetFramebufferSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetFramebufferSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="649" column="49"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3537" column="49"/>
+            <symbol>glfwGetFramebufferSize</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowFrameSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowFrameSize&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="663" column="49"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3574" column="49"/>
+            <symbol>glfwGetWindowFrameSize</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowContentScale&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowContentScale&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="683" column="52"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3607" column="52"/>
+            <symbol>glfwGetWindowContentScale</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowOpacity&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowOpacity&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="698" column="48"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3634" column="48"/>
+            <symbol>glfwGetWindowOpacity</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowOpacity&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowOpacity&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="707" column="47"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3666" column="47"/>
+            <symbol>glfwSetWindowOpacity</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwIconifyWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwIconifyWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="726" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3697" column="44"/>
+            <symbol>glfwIconifyWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwRestoreWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwRestoreWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="735" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3724" column="44"/>
+            <symbol>glfwRestoreWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwMaximizeWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwMaximizeWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="744" column="45"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3749" column="45"/>
+            <symbol>glfwMaximizeWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwShowWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwShowWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="757" column="41"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3781" column="41"/>
+            <symbol>glfwShowWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwRequestWindowAttention&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwRequestWindowAttention&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="773" column="53"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3869" column="53"/>
+            <symbol>glfwRequestWindowAttention</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwHideWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwHideWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="783" column="41"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3803" column="41"/>
+            <symbol>glfwHideWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwFocusWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwFocusWindow&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="796" column="42"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3842" column="42"/>
+            <symbol>glfwFocusWindow</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowAttrib&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowAttrib&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="806" column="45"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3984" column="45"/>
+            <symbol>glfwGetWindowAttrib</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowAttrib&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowAttrib&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="869" column="46"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4022" column="46"/>
+            <symbol>glfwSetWindowAttrib</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowMonitor&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowMonitor&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="915" column="55"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3891" column="55"/>
+            <symbol>glfwGetWindowMonitor</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowMonitor&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;wh&apos;." verbose="Function &apos;glfwSetWindowMonitor&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;wh&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="924" column="47"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3950" column="47"/>
+            <symbol>glfwSetWindowMonitor</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowMonitor&apos; argument 2 names different: declaration &apos;monitor&apos; definition &apos;mh&apos;." verbose="Function &apos;glfwSetWindowMonitor&apos; argument 2 names different: declaration &apos;monitor&apos; definition &apos;mh&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="925" column="48"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="3950" column="68"/>
+            <symbol>glfwSetWindowMonitor</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowUserPointer&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowUserPointer&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="963" column="51"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4045" column="51"/>
+            <symbol>glfwSetWindowUserPointer</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetWindowUserPointer&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetWindowUserPointer&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="972" column="52"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4066" column="52"/>
+            <symbol>glfwGetWindowUserPointer</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowPosCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowPosCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="981" column="63"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4101" column="63"/>
+            <symbol>glfwSetWindowPosCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowPosCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowPosCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="982" column="68"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4101" column="88"/>
+            <symbol>glfwSetWindowPosCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowSizeCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowSizeCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="992" column="65"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4133" column="65"/>
+            <symbol>glfwSetWindowSizeCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowSizeCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowSizeCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="993" column="71"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4133" column="91"/>
+            <symbol>glfwSetWindowSizeCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowCloseCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowCloseCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1003" column="67"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4173" column="67"/>
+            <symbol>glfwSetWindowCloseCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowCloseCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowCloseCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1004" column="74"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4173" column="94"/>
+            <symbol>glfwSetWindowCloseCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowRefreshCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowRefreshCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1014" column="71"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4209" column="71"/>
+            <symbol>glfwSetWindowRefreshCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowRefreshCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowRefreshCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1015" column="80"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4209" column="100"/>
+            <symbol>glfwSetWindowRefreshCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowFocusCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowFocusCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1025" column="67"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4244" column="67"/>
+            <symbol>glfwSetWindowFocusCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowFocusCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowFocusCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1026" column="74"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4244" column="94"/>
+            <symbol>glfwSetWindowFocusCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowIconifyCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowIconifyCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1036" column="71"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4274" column="71"/>
+            <symbol>glfwSetWindowIconifyCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowIconifyCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowIconifyCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1037" column="80"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4274" column="100"/>
+            <symbol>glfwSetWindowIconifyCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowMaximizeCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowMaximizeCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1047" column="73"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4304" column="73"/>
+            <symbol>glfwSetWindowMaximizeCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowMaximizeCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowMaximizeCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1048" column="83"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4304" column="103"/>
+            <symbol>glfwSetWindowMaximizeCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetFramebufferSizeCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetFramebufferSizeCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1058" column="75"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4334" column="75"/>
+            <symbol>glfwSetFramebufferSizeCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetFramebufferSizeCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetFramebufferSizeCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1059" column="86"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4334" column="106"/>
+            <symbol>glfwSetFramebufferSizeCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowContentScaleCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetWindowContentScaleCallback&apos; argument 1 names different: declaration &apos;window&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1069" column="81"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4365" column="81"/>
+            <symbol>glfwSetWindowContentScaleCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetWindowContentScaleCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetWindowContentScaleCallback&apos; argument 2 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="1070" column="95"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="4365" column="115"/>
+            <symbol>glfwSetWindowContentScaleCallback</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:919:6" call-funcname="_glfwInputKey" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="59" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:919:6" call-funcname="_glfwInputKey" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="59" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:924:6" call-funcname="_glfwInputMouseClick" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="66" col="37" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:924:6" call-funcname="_glfwInputMouseClick" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="66" col="37" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="166" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="170" col="24" call-argexpr="width" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="168" col="15" info="Assuming that condition &apos;width&lt;=0&apos; is not redundant"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="170" col="24" call-argexpr="height" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="168" col="30" info="Assuming that condition &apos;height&lt;=0&apos; is not redundant"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:956:10" call-funcname="_glfwIsValidContextConfig" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="186" col="35" call-argexpr="&amp;ctxconfig" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="229" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="268" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="404" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="429" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h:5959:14" call-funcname="glfwMakeContextCurrent" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="441" col="31" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="463" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="472" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="482" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="496" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="529" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="538" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="556" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="567" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="582" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="627" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="633" col="28" call-argexpr="numer" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="631" col="19" info="Assuming that condition &apos;numer&lt;=0&apos; is not redundant"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="633" col="28" call-argexpr="denom" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="631" col="33" info="Assuming that condition &apos;denom&lt;=0&apos; is not redundant"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="659" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="679" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="694" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="703" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="715" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="731" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="740" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="749" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="762" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="778" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="788" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="801" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="811" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="874" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="920" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="936" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="940" col="24" call-argexpr="width" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="938" col="15" info="Assuming that condition &apos;width&lt;=0&apos; is not redundant"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="940" col="24" call-argexpr="height" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\window.c" line="938" col="30" info="Assuming that condition &apos;height&lt;=0&apos; is not redundant"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="968" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="977" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="987" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="998" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1009" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1020" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1031" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1042" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1053" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1064" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1075" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1082" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1088" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1094" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="1110" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/>  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:907:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="47" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:908:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="76" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:909:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="85" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:913:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="93" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:914:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="101" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:910:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="110" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:911:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="119" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:915:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="127" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:916:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="135" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:917:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="145" col="5" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:907:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="47" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:908:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="76" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:909:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="85" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:913:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="93" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:914:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="101" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:910:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="110" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:911:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="119" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:915:6" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/window.c" line="127" col="9" value="0"/>
+  </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
-    <functioncall functionName="GLFW_CLIENT_API"/>
-    <functioncall functionName="GLFW_CONTEXT_VERSION_MAJOR"/>
-    <functioncall functionName="GLFW_CONTEXT_VERSION_MINOR"/>
-    <functioncall functionName="GLFW_CURSOR"/>
-    <functioncall functionName="GLFW_CURSOR_NORMAL"/>
-    <functioncall functionName="GLFW_NO_API"/>
-    <functioncall functionName="GLFW_RESIZABLE"/>
-    <functioncall functionName="GLFW_TRUE"/>
-    <functioncall functionName="GL_TRUE"/>
-    <functioncall functionName="GLfloat"/>
+    <functiondecl functionName="_glfwInputWindowFocus" lineNumber="45"/>
+    <functiondecl functionName="_glfwInputWindowPos" lineNumber="74"/>
+    <functiondecl functionName="_glfwInputWindowSize" lineNumber="83"/>
+    <functiondecl functionName="_glfwInputWindowIconify" lineNumber="91"/>
+    <functiondecl functionName="_glfwInputWindowMaximize" lineNumber="99"/>
+    <functiondecl functionName="_glfwInputFramebufferSize" lineNumber="108"/>
+    <functiondecl functionName="_glfwInputWindowContentScale" lineNumber="117"/>
+    <functiondecl functionName="_glfwInputWindowDamage" lineNumber="125"/>
+    <functiondecl functionName="_glfwInputWindowCloseRequest" lineNumber="133"/>
+    <functiondecl functionName="_glfwInputWindowMonitor" lineNumber="143"/>
+    <functiondecl functionName="glfwCreateWindow" lineNumber="152"/>
+    <functiondecl functionName="glfwDefaultWindowHints" lineNumber="227"/>
+    <functiondecl functionName="glfwWindowHint" lineNumber="266"/>
+    <functiondecl functionName="glfwWindowHintString" lineNumber="400"/>
+    <functiondecl functionName="glfwDestroyWindow" lineNumber="425"/>
+    <functiondecl functionName="glfwWindowShouldClose" lineNumber="458"/>
+    <functiondecl functionName="glfwSetWindowShouldClose" lineNumber="467"/>
+    <functiondecl functionName="glfwSetWindowTitle" lineNumber="476"/>
+    <functiondecl functionName="glfwSetWindowIcon" lineNumber="486"/>
+    <functiondecl functionName="glfwGetWindowPos" lineNumber="519"/>
+    <functiondecl functionName="glfwSetWindowPos" lineNumber="533"/>
+    <functiondecl functionName="glfwGetWindowSize" lineNumber="546"/>
+    <functiondecl functionName="glfwSetWindowSize" lineNumber="560"/>
+    <functiondecl functionName="glfwSetWindowSizeLimits" lineNumber="575"/>
+    <functiondecl functionName="glfwSetWindowAspectRatio" lineNumber="620"/>
+    <functiondecl functionName="glfwGetFramebufferSize" lineNumber="649"/>
+    <functiondecl functionName="glfwGetWindowFrameSize" lineNumber="663"/>
+    <functiondecl functionName="glfwGetWindowContentScale" lineNumber="683"/>
+    <functiondecl functionName="glfwGetWindowOpacity" lineNumber="698"/>
+    <functiondecl functionName="glfwSetWindowOpacity" lineNumber="707"/>
+    <functiondecl functionName="glfwIconifyWindow" lineNumber="726"/>
+    <functiondecl functionName="glfwRestoreWindow" lineNumber="735"/>
+    <functiondecl functionName="glfwMaximizeWindow" lineNumber="744"/>
+    <functiondecl functionName="glfwShowWindow" lineNumber="757"/>
+    <functiondecl functionName="glfwRequestWindowAttention" lineNumber="773"/>
+    <functiondecl functionName="glfwHideWindow" lineNumber="783"/>
+    <functiondecl functionName="glfwFocusWindow" lineNumber="796"/>
+    <functiondecl functionName="glfwGetWindowAttrib" lineNumber="806"/>
+    <functiondecl functionName="glfwSetWindowAttrib" lineNumber="869"/>
+    <functiondecl functionName="glfwGetWindowMonitor" lineNumber="915"/>
+    <functiondecl functionName="glfwSetWindowMonitor" lineNumber="924"/>
+    <functiondecl functionName="glfwSetWindowUserPointer" lineNumber="963"/>
+    <functiondecl functionName="glfwGetWindowUserPointer" lineNumber="972"/>
+    <functiondecl functionName="glfwSetWindowPosCallback" lineNumber="981"/>
+    <functiondecl functionName="glfwSetWindowSizeCallback" lineNumber="992"/>
+    <functiondecl functionName="glfwSetWindowCloseCallback" lineNumber="1003"/>
+    <functiondecl functionName="glfwSetWindowRefreshCallback" lineNumber="1014"/>
+    <functiondecl functionName="glfwSetWindowFocusCallback" lineNumber="1025"/>
+    <functiondecl functionName="glfwSetWindowIconifyCallback" lineNumber="1036"/>
+    <functiondecl functionName="glfwSetWindowMaximizeCallback" lineNumber="1047"/>
+    <functiondecl functionName="glfwSetFramebufferSizeCallback" lineNumber="1058"/>
+    <functiondecl functionName="glfwSetWindowContentScaleCallback" lineNumber="1069"/>
+    <functiondecl functionName="glfwPollEvents" lineNumber="1080"/>
+    <functiondecl functionName="glfwWaitEvents" lineNumber="1086"/>
+    <functiondecl functionName="glfwWaitEventsTimeout" lineNumber="1092"/>
+    <functiondecl functionName="glfwPostEmptyEvent" lineNumber="1108"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
     <functioncall functionName="NULL"/>
-    <functioncall functionName="Window"/>
-    <functioncall functionName="false"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwInputKey"/>
+    <functioncall functionName="_glfwInputMouseClick"/>
+    <functioncall functionName="_glfwIsValidContextConfig"/>
+    <functioncall functionName="_glfwPlatformGetTls"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="attrib"/>
+    <functioncall functionName="autoIconify"/>
+    <functioncall functionName="blueBits"/>
+    <functioncall functionName="bottom"/>
+    <functioncall functionName="button"/>
+    <functioncall functionName="callbacks"/>
+    <functioncall functionName="cbfun"/>
+    <functioncall functionName="className"/>
+    <functioncall functionName="client"/>
+    <functioncall functionName="close"/>
+    <functioncall functionName="context"/>
+    <functioncall functionName="contextSlot"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="createWindow"/>
+    <functioncall functionName="ctxconfig"/>
+    <functioncall functionName="debug"/>
+    <functioncall functionName="decorated"/>
+    <functioncall functionName="denom"/>
+    <functioncall functionName="destroyWindow"/>
+    <functioncall functionName="doublebuffer"/>
+    <functioncall functionName="fbconfig"/>
+    <functioncall functionName="fbsize"/>
     <functioncall functionName="float"/>
+    <functioncall functionName="floating"/>
+    <functioncall functionName="focus"/>
+    <functioncall functionName="focusOnShow"/>
+    <functioncall functionName="focusWindow"/>
+    <functioncall functionName="focused"/>
     <functioncall functionName="for"/>
-    <functioncall functionName="framebuffer_resized"/>
-    <functioncall functionName="framebuffer_size_callback"/>
-    <functioncall functionName="glfwCreateWindow"/>
+    <functioncall functionName="forward"/>
+    <functioncall functionName="frameName"/>
+    <functioncall functionName="framebuffer"/>
+    <functioncall functionName="framebufferTransparent"/>
+    <functioncall functionName="getFramebufferSize"/>
+    <functioncall functionName="getKeyScancode"/>
+    <functioncall functionName="getWindowContentScale"/>
+    <functioncall functionName="getWindowFrameSize"/>
+    <functioncall functionName="getWindowOpacity"/>
+    <functioncall functionName="getWindowPos"/>
+    <functioncall functionName="getWindowSize"/>
     <functioncall functionName="glfwDestroyWindow"/>
-    <functioncall functionName="glfwGetFramebufferSize"/>
-    <functioncall functionName="glfwGetWindowUserPointer"/>
-    <functioncall functionName="glfwInit"/>
     <functioncall functionName="glfwMakeContextCurrent"/>
-    <functioncall functionName="glfwSetCursorPosCallback"/>
-    <functioncall functionName="glfwSetFramebufferSizeCallback"/>
-    <functioncall functionName="glfwSetInputMode"/>
-    <functioncall functionName="glfwSetKeyCallback"/>
-    <functioncall functionName="glfwSetMouseButtonCallback"/>
-    <functioncall functionName="glfwSetWindowShouldClose"/>
-    <functioncall functionName="glfwSetWindowUserPointer"/>
-    <functioncall functionName="glfwTerminate"/>
-    <functioncall functionName="glfwWindowHint"/>
+    <functioncall functionName="greenBits"/>
+    <functioncall functionName="handle"/>
     <functioncall functionName="height"/>
+    <functioncall functionName="hideWindow"/>
+    <functioncall functionName="hint"/>
     <functioncall functionName="i"/>
+    <functioncall functionName="iconified"/>
+    <functioncall functionName="iconify"/>
+    <functioncall functionName="iconifyWindow"/>
     <functioncall functionName="if"/>
-    <functioncall functionName="init_callbacks"/>
-    <functioncall functionName="initialize"/>
+    <functioncall functionName="images"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="instanceName"/>
+    <functioncall functionName="int"/>
     <functioncall functionName="key"/>
-    <functioncall functionName="key_callback"/>
-    <functioncall functionName="last_x"/>
-    <functioncall functionName="main_window"/>
-    <functioncall functionName="mouse_button_callback"/>
-    <functioncall functionName="mouse_callback"/>
-    <functioncall functionName="mouse_first_moved"/>
-    <functioncall functionName="printf"/>
-    <functioncall functionName="reinterpret_cast"/>
-    <functioncall functionName="static_cast"/>
-    <functioncall functionName="this"/>
-    <functioncall functionName="true"/>
+    <functioncall functionName="left"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="major"/>
+    <functioncall functionName="maxheight"/>
+    <functioncall functionName="maximize"/>
+    <functioncall functionName="maximizeWindow"/>
+    <functioncall functionName="maximized"/>
+    <functioncall functionName="maxwidth"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="mh"/>
+    <functioncall functionName="minheight"/>
+    <functioncall functionName="minor"/>
+    <functioncall functionName="minwidth"/>
+    <functioncall functionName="monitor"/>
+    <functioncall functionName="mousePassthrough"/>
+    <functioncall functionName="next"/>
+    <functioncall functionName="noerror"/>
+    <functioncall functionName="numer"/>
+    <functioncall functionName="opacity"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="pollEvents"/>
+    <functioncall functionName="pos"/>
+    <functioncall functionName="postEmptyEvent"/>
+    <functioncall functionName="profile"/>
+    <functioncall functionName="redBits"/>
+    <functioncall functionName="refresh"/>
+    <functioncall functionName="refreshRate"/>
+    <functioncall functionName="release"/>
+    <functioncall functionName="requestWindowAttention"/>
+    <functioncall functionName="resizable"/>
+    <functioncall functionName="restoreWindow"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="revision"/>
+    <functioncall functionName="right"/>
+    <functioncall functionName="robustness"/>
+    <functioncall functionName="scale"/>
+    <functioncall functionName="scancode"/>
+    <functioncall functionName="setWindowAspectRatio"/>
+    <functioncall functionName="setWindowDecorated"/>
+    <functioncall functionName="setWindowFloating"/>
+    <functioncall functionName="setWindowIcon"/>
+    <functioncall functionName="setWindowMonitor"/>
+    <functioncall functionName="setWindowMousePassthrough"/>
+    <functioncall functionName="setWindowOpacity"/>
+    <functioncall functionName="setWindowPos"/>
+    <functioncall functionName="setWindowResizable"/>
+    <functioncall functionName="setWindowSize"/>
+    <functioncall functionName="setWindowSizeLimits"/>
+    <functioncall functionName="setWindowTitle"/>
+    <functioncall functionName="share"/>
+    <functioncall functionName="shouldClose"/>
+    <functioncall functionName="showWindow"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="source"/>
+    <functioncall functionName="strncpy"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="t"/>
+    <functioncall functionName="timeout"/>
+    <functioncall functionName="title"/>
+    <functioncall functionName="top"/>
+    <functioncall functionName="userPointer"/>
+    <functioncall functionName="value"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="waitEvents"/>
+    <functioncall functionName="waitEventsTimeout"/>
+    <functioncall functionName="wh"/>
+    <functioncall functionName="while"/>
     <functioncall functionName="width"/>
     <functioncall functionName="window"/>
-    <functioncall functionName="window_buffer_height"/>
-    <functioncall functionName="window_buffer_width"/>
-    <functioncall functionName="window_height"/>
-    <functioncall functionName="window_width"/>
-    <functioncall functionName="x_change"/>
-    <functioncall functionName="x_pos"/>
-    <functioncall functionName="y_change"/>
-    <functioncall functionName="y_pos"/>
+    <functioncall functionName="windowFocused"/>
+    <functioncall functionName="windowHovered"/>
+    <functioncall functionName="windowIconified"/>
+    <functioncall functionName="windowListHead"/>
+    <functioncall functionName="windowMaximized"/>
+    <functioncall functionName="windowVisible"/>
+    <functioncall functionName="wndconfig"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="xpos"/>
+    <functioncall functionName="xscale"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="ypos"/>
+    <functioncall functionName="yscale"/>
   </FileInfo>
 </analyzerinfo>

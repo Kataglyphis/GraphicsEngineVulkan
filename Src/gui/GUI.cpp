@@ -1,6 +1,9 @@
 #include "GUI.h"
 #include "VulkanDevice.h"
 
+#include "QueueFamilyIndices.h"
+#include "Utilities.h"
+
 GUI::GUI(Window* window)
 {
 	this->window = window;
