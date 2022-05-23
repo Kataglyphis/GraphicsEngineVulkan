@@ -1,6 +1,9 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include "Utilities.h"
+
+#include <string>
+#include <sstream>
+#include <iostream>
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 	VkDebugUtilsMessageTypeFlagsEXT messageType,
@@ -36,6 +39,20 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityF
 	return VK_FALSE;
 
 }
+
+// Error checking on vulkan function calls
+#define ASSERT_VULKAN(val,error_string)\
+            if(val!=VK_SUCCESS) {\
+               throw std::runtime_error(error_string); \
+            }
+
+#define NOT_YET_IMPLEMENTED throw std::runtime_error("Not yet implemented!");
+
+#ifdef NDEBUG
+const bool ENABLE_VALIDATION_LAYERS = false;
+#else
+const bool ENABLE_VALIDATION_LAYERS = true;
+#endif
 
 class VulkanDebug
 {

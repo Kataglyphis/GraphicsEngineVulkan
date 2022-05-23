@@ -35,6 +35,7 @@
 #include "SceneUBO.h"
 #include <PushConstantRasterizer.h>
 #include <PushConstantRayTracing.h>
+#include "VulkanBuffer.h"
 
 #include "tiny_obj_loader.h"
 
@@ -100,13 +101,12 @@ private:
 
 	// uniform buffers
 	GlobalUBO						globalUBO;
-	std::vector<VkBuffer>			globalUBOBuffer;
-	std::vector<VkDeviceMemory>		globalUBOBufferMemory;
+	std::vector<VulkanBuffer>		globalUBOBuffer;
 	SceneUBO						sceneUBO;
-	std::vector<VkBuffer>			sceneUBOBuffer;
-	std::vector<VkDeviceMemory>		sceneUBOBufferMemory;
+	std::vector<VulkanBuffer>		sceneUBOBuffer;
 	void							create_uniform_buffers();
 	void							update_uniform_buffers(uint32_t image_index);
+	void							cleanUpUBOs();
 
 	std::vector<VkCommandBuffer>	command_buffers;
 	std::vector<VkFramebuffer>		framebuffers;
@@ -224,8 +224,7 @@ private:
 
 	// -- top level acceleration structure
 	void create_TLAS();
-	void create_geometry_instance_buffer(	VkBuffer& geometry_instance_buffer, 
-											VkDeviceMemory& geometry_instance_buffer_memory,
+	void create_geometry_instance_buffer(	VulkanBuffer& geometryInstanceBuffer,
 											std::vector<VkAccelerationStructureInstanceKHR> tlas_instances);
 
 	void create_raytracing_pipeline();
@@ -258,17 +257,10 @@ private:
 
 	// -- shader bindings
 	std::vector<VkRayTracingShaderGroupCreateInfoKHR> shader_groups;
-	VkBuffer shader_binding_table_buffer;
-	VkDeviceMemory shader_binding_table_buffer_memory;
-
-	VkBuffer raygen_shader_binding_table_buffer;
-	VkDeviceMemory raygen_shader_binding_table_buffer_memory;
-
-	VkBuffer miss_shader_binding_table_buffer;
-	VkDeviceMemory miss_shader_binding_table_buffer_memory;
-
-	VkBuffer hit_shader_binding_table_buffer;
-	VkDeviceMemory hit_shader_binding_table_buffer_memory;
+	VulkanBuffer shaderBindingTableBuffer;
+	VulkanBuffer raygenShaderBindingTableBuffer;
+	VulkanBuffer missShaderBindingTableBuffer;
+	VulkanBuffer hitShaderBindingTableBuffer;
 
 	VkStridedDeviceAddressRegionKHR rgen_region{};
 	VkStridedDeviceAddressRegionKHR miss_region{};
@@ -287,8 +279,7 @@ private:
 	VkSampler texture_sampler;
 	std::vector<uint32_t> texture_mip_levels;
 
-	VkBuffer object_description_buffer;
-	VkDeviceMemory object_description_buffer_memory;
+	VulkanBuffer objectDescriptionBuffer;
 
 	std::vector<VkImage> texture_images;
 	std::vector<VkDeviceMemory> texture_images_memory;

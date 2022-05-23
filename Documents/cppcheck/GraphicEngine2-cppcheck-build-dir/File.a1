@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="1754438251">
+<analyzerinfo checksum="4175777623">
+  <FileInfo check="Class">
+<class name="File" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/util/File.h" line="5" col="1" hash="16120776958881047861"/>
+  </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="read" lineNumber="10"/>
+    <functiondecl functionName="readCharSequence" lineNumber="30"/>
+    <functiondecl functionName="getBaseDir" lineNumber="58"/>
+    <functioncall functionName="File"/>
     <functioncall functionName="append"/>
     <functioncall functionName="ate"/>
     <functioncall functionName="c_str"/>

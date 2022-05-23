@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3187536156">
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/vulkan.c" line="226" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/vulkan.c" line="236" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/vulkan.c" line="254" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/vulkan.c" line="280" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/vulkan.c" line="309" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/>  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="_glfwInitVulkan" lineNumber="44"/>
+    <functiondecl functionName="_glfwTerminateVulkan" lineNumber="158"/>
+    <functiondecl functionName="_glfwGetVulkanResultString" lineNumber="164"/>
+    <functiondecl functionName="glfwVulkanSupported" lineNumber="224"/>
+    <functiondecl functionName="glfwGetRequiredInstanceExtensions" lineNumber="230"/>
+    <functiondecl functionName="glfwGetInstanceProcAddress" lineNumber="248"/>
+    <functiondecl functionName="glfwGetPhysicalDevicePresentationSupport" lineNumber="273"/>
+    <functiondecl functionName="glfwCreateWindowSurface" lineNumber="297"/>
+    <functioncall functionName="GetInstanceProcAddr"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfwGetVulkanResultString"/>
+    <functioncall functionName="_glfwInitVulkan"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwPlatformFreeModule"/>
+    <functioncall functionName="_glfwPlatformGetModuleSymbol"/>
+    <functioncall functionName="_glfwPlatformLoadModule"/>
+    <functioncall functionName="_glfwTerminateVulkan"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="allocator"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="available"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="createWindowSurface"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="ep"/>
+    <functioncall functionName="err"/>
+    <functioncall functionName="extensionName"/>
+    <functioncall functionName="extensions"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="getPhysicalDevicePresentationSupport"/>
+    <functioncall functionName="getRequiredInstanceExtensions"/>
+    <functioncall functionName="handle"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="instance"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="proc"/>
+    <functioncall functionName="procname"/>
+    <functioncall functionName="queuefamily"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="surface"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="vkEnumerateInstanceExtensionProperties"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="vulkanLoader"/>
+    <functioncall functionName="window"/>
+  </FileInfo>
+</analyzerinfo>

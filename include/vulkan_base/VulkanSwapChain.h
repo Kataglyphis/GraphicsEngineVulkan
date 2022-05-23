@@ -2,6 +2,9 @@
 #include "VulkanDevice.h"
 #include "Window.h"
 
+#include "VulkanDebug.h"
+#include "SwapChainImage.h"
+
 class VulkanSwapChain
 {
 public:

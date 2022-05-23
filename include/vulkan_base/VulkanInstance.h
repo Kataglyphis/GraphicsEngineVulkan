@@ -2,8 +2,8 @@
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 
-#include "Utilities.h"
 #include "VulkanDebug.h"
+#include <vector>
 
 class VulkanInstance
 {

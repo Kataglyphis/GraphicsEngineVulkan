@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3102609255">
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_init.c" line="463" col="20" call-argexpr="message" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_init.c" line="645" col="14" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_init.c" line="647" col="14" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_init.c" line="463" col="5" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:537:6" my-argnr="2"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:526:10" my-argnr="2" my-argname="platform" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_init.c" line="631" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="DllMain" lineNumber="63"/>
+    <functiondecl functionName="loadLibraries" lineNumber="72"/>
+    <functiondecl functionName="freeLibraries" lineNumber="175"/>
+    <functiondecl functionName="createKeyTables" lineNumber="198"/>
+    <functiondecl functionName="createHelperWindow" lineNumber="336"/>
+    <functiondecl functionName="_glfwCreateWideStringFromUTF8Win32" lineNumber="391"/>
+    <functiondecl functionName="_glfwCreateUTF8FromWideStringWin32" lineNumber="419"/>
+    <functiondecl functionName="_glfwInputErrorWin32" lineNumber="447"/>
+    <functiondecl functionName="_glfwUpdateKeyNamesWin32" lineNumber="468"/>
+    <functiondecl functionName="_glfwIsWindowsVersionOrGreaterWin32" lineNumber="525"/>
+    <functiondecl functionName="_glfwIsWindows10BuildOrGreaterWin32" lineNumber="540"/>
+    <functiondecl functionName="_glfwConnectWin32" lineNumber="553"/>
+    <functiondecl functionName="_glfwInitWin32" lineNumber="635"/>
+    <functiondecl functionName="_glfwTerminateWin32" lineNumber="660"/>
+    <functioncall functionName="CP_UTF8"/>
+    <functioncall functionName="CreateWindowExW"/>
+    <functioncall functionName="DBT_DEVTYP_DEVICEINTERFACE"/>
+    <functioncall functionName="DEVICE_NOTIFY_WINDOW_HANDLE"/>
+    <functioncall functionName="DestroyWindow"/>
+    <functioncall functionName="DispatchMessageW"/>
+    <functioncall functionName="FormatMessageW"/>
+    <functioncall functionName="GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT"/>
+    <functioncall functionName="GetLastError"/>
+    <functioncall functionName="GetModuleHandleExW"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MAPVK_VSC_TO_VK"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="MapVirtualKeyW"/>
+    <functioncall functionName="MultiByteToWideChar"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PM_REMOVE"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="PROCESS_PER_MONITOR_DPI_AWARE"/>
+    <functioncall functionName="PeekMessageW"/>
+    <functioncall functionName="RegisterDeviceNotificationW"/>
+    <functioncall functionName="RtlVerifyVersionInfo_"/>
+    <functioncall functionName="SetProcessDPIAware_"/>
+    <functioncall functionName="SetProcessDpiAwarenessContext_"/>
+    <functioncall functionName="SetProcessDpiAwareness_"/>
+    <functioncall functionName="ShowWindow"/>
+    <functioncall functionName="ToUnicode"/>
+    <functioncall functionName="TranslateMessage"/>
+    <functioncall functionName="UnregisterDeviceNotification"/>
+    <functioncall functionName="VER_BUILDNUMBER"/>
+    <functioncall functionName="VER_GREATER_EQUAL"/>
+    <functioncall functionName="VER_MAJORVERSION"/>
+    <functioncall functionName="VER_MINORVERSION"/>
+    <functioncall functionName="VER_SERVICEPACKMAJOR"/>
+    <functioncall functionName="VerSetConditionMask"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="WS_CLIPCHILDREN"/>
+    <functioncall functionName="WS_EX_OVERLAPPEDWINDOW"/>
+    <functioncall functionName="WideCharToMultiByte"/>
+    <functioncall functionName="_WIN32_WINNT_VISTA"/>
+    <functioncall functionName="_glfw"/>
+    <functioncall functionName="_glfwCreateCursorWin32"/>
+    <functioncall functionName="_glfwCreateStandardCursorWin32"/>
+    <functioncall functionName="_glfwCreateWindowSurfaceWin32"/>
+    <functioncall functionName="_glfwCreateWindowWin32"/>
+    <functioncall functionName="_glfwDestroyCursorWin32"/>
+    <functioncall functionName="_glfwDestroyWindowWin32"/>
+    <functioncall functionName="_glfwFocusWindowWin32"/>
+    <functioncall functionName="_glfwFramebufferTransparentWin32"/>
+    <functioncall functionName="_glfwFreeMonitorWin32"/>
+    <functioncall functionName="_glfwGetClipboardStringWin32"/>
+    <functioncall functionName="_glfwGetCursorPosWin32"/>
+    <functioncall functionName="_glfwGetEGLNativeDisplayWin32"/>
+    <functioncall functionName="_glfwGetEGLNativeWindowWin32"/>
+    <functioncall functionName="_glfwGetEGLPlatformWin32"/>
+    <functioncall functionName="_glfwGetFramebufferSizeWin32"/>
+    <functioncall functionName="_glfwGetGammaRampWin32"/>
+    <functioncall functionName="_glfwGetKeyScancodeWin32"/>
+    <functioncall functionName="_glfwGetMappingNameWin32"/>
+    <functioncall functionName="_glfwGetMonitorContentScaleWin32"/>
+    <functioncall functionName="_glfwGetMonitorPosWin32"/>
+    <functioncall functionName="_glfwGetMonitorWorkareaWin32"/>
+    <functioncall functionName="_glfwGetPhysicalDevicePresentationSupportWin32"/>
+    <functioncall functionName="_glfwGetRequiredInstanceExtensionsWin32"/>
+    <functioncall functionName="_glfwGetScancodeNameWin32"/>
+    <functioncall functionName="_glfwGetVideoModeWin32"/>
+    <functioncall functionName="_glfwGetVideoModesWin32"/>
+    <functioncall functionName="_glfwGetWindowContentScaleWin32"/>
+    <functioncall functionName="_glfwGetWindowFrameSizeWin32"/>
+    <functioncall functionName="_glfwGetWindowOpacityWin32"/>
+    <functioncall functionName="_glfwGetWindowPosWin32"/>
+    <functioncall functionName="_glfwGetWindowSizeWin32"/>
+    <functioncall functionName="_glfwHideWindowWin32"/>
+    <functioncall functionName="_glfwIconifyWindowWin32"/>
+    <functioncall functionName="_glfwInitJoysticksWin32"/>
+    <functioncall functionName="_glfwInitWin32"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwInputErrorWin32"/>
+    <functioncall functionName="_glfwIsWindows10BuildOrGreaterWin32"/>
+    <functioncall functionName="_glfwIsWindowsVersionOrGreaterWin32"/>
+    <functioncall functionName="_glfwMaximizeWindowWin32"/>
+    <functioncall functionName="_glfwPlatformFreeModule"/>
+    <functioncall functionName="_glfwPlatformGetModuleSymbol"/>
+    <functioncall functionName="_glfwPlatformLoadModule"/>
+    <functioncall functionName="_glfwPollEventsWin32"/>
+    <functioncall functionName="_glfwPollJoystickWin32"/>
+    <functioncall functionName="_glfwPollMonitorsWin32"/>
+    <functioncall functionName="_glfwPostEmptyEventWin32"/>
+    <functioncall functionName="_glfwRawMouseMotionSupportedWin32"/>
+    <functioncall functionName="_glfwRegisterWindowClassWin32"/>
+    <functioncall functionName="_glfwRequestWindowAttentionWin32"/>
+    <functioncall functionName="_glfwRestoreWindowWin32"/>
+    <functioncall functionName="_glfwSetClipboardStringWin32"/>
+    <functioncall functionName="_glfwSetCursorModeWin32"/>
+    <functioncall functionName="_glfwSetCursorPosWin32"/>
+    <functioncall functionName="_glfwSetCursorWin32"/>
+    <functioncall functionName="_glfwSetGammaRampWin32"/>
+    <functioncall functionName="_glfwSetRawMouseMotionWin32"/>
+    <functioncall functionName="_glfwSetWindowAspectRatioWin32"/>
+    <functioncall functionName="_glfwSetWindowDecoratedWin32"/>
+    <functioncall functionName="_glfwSetWindowFloatingWin32"/>
+    <functioncall functionName="_glfwSetWindowIconWin32"/>
+    <functioncall functionName="_glfwSetWindowMonitorWin32"/>
+    <functioncall functionName="_glfwSetWindowMousePassthroughWin32"/>
+    <functioncall functionName="_glfwSetWindowOpacityWin32"/>
+    <functioncall functionName="_glfwSetWindowPosWin32"/>
+    <functioncall functionName="_glfwSetWindowResizableWin32"/>
+    <functioncall functionName="_glfwSetWindowSizeLimitsWin32"/>
+    <functioncall functionName="_glfwSetWindowSizeWin32"/>
+    <functioncall functionName="_glfwSetWindowTitleWin32"/>
+    <functioncall functionName="_glfwShowWindowWin32"/>
+    <functioncall functionName="_glfwTerminateEGL"/>
+    <functioncall functionName="_glfwTerminateJoysticksWin32"/>
+    <functioncall functionName="_glfwTerminateOSMesa"/>
+    <functioncall functionName="_glfwTerminateWGL"/>
+    <functioncall functionName="_glfwTerminateWin32"/>
+    <functioncall functionName="_glfwUnregisterWindowClassWin32"/>
+    <functioncall functionName="_glfwUpdateGamepadGUIDWin32"/>
+    <functioncall functionName="_glfwUpdateKeyNamesWin32"/>
+    <functioncall functionName="_glfwWaitEventsTimeoutWin32"/>
+    <functioncall functionName="_glfwWaitEventsWin32"/>
+    <functioncall functionName="_glfwWindowFocusedWin32"/>
+    <functioncall functionName="_glfwWindowHoveredWin32"/>
+    <functioncall functionName="_glfwWindowIconifiedWin32"/>
+    <functioncall functionName="_glfwWindowMaximizedWin32"/>
+    <functioncall functionName="_glfwWindowVisibleWin32"/>
+    <functioncall functionName="_glfw_GUID_DEVINTERFACE_HID"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="buffer"/>
+    <functioncall functionName="build"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="chars"/>
+    <functioncall functionName="clipboardString"/>
+    <functioncall functionName="cond"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="createHelperWindow"/>
+    <functioncall functionName="createKeyTables"/>
+    <functioncall functionName="dbi"/>
+    <functioncall functionName="description"/>
+    <functioncall functionName="deviceNotificationHandle"/>
+    <functioncall functionName="error"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="freeLibraries"/>
+    <functioncall functionName="helperWindowHandle"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="instance"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="key"/>
+    <functioncall functionName="keycodes"/>
+    <functioncall functionName="keynames"/>
+    <functioncall functionName="loadLibraries"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="major"/>
+    <functioncall functionName="mask"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="message"/>
+    <functioncall functionName="minor"/>
+    <functioncall functionName="msg"/>
+    <functioncall functionName="osvi"/>
+    <functioncall functionName="rawInput"/>
+    <functioncall functionName="scancode"/>
+    <functioncall functionName="scancodes"/>
+    <functioncall functionName="short"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="source"/>
+    <functioncall functionName="sp"/>
+    <functioncall functionName="state"/>
+    <functioncall functionName="target"/>
+    <functioncall functionName="vk"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="wchar_t"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="win32"/>
+  </FileInfo>
+</analyzerinfo>

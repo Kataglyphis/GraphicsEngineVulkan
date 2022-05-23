@@ -1,0 +1,1075 @@
+ImVec2
+ImVec2
+operator[] call:[assert,return]
+operator[] call:[assert,return]
+ImVec4
+ImVec4
+operatornew
+operatordelete
+IM_DELETE call:[MemFree,T] noreturn:[MemFree]
+SelectAll
+ClearSelection
+HasSelection
+ImGuiPayload call:[Clear] noreturn:[Clear]
+Clear call:[memset,sizeof]
+IsDataType call:[strcmp]
+IsPreview
+IsDelivery
+ImGuiTableColumnSortSpecs call:[memset,sizeof] noreturn:[memset]
+ImGuiTableSortSpecs call:[memset,sizeof] noreturn:[memset]
+ImGuiOnceUponAFrame
+operatorbool call:[GetFrameCount]
+Clear call:[Build] noreturn:[Build]
+IsActive call:[empty] noreturn:[empty]
+ImGuiTextRange
+ImGuiTextRange
+empty
+ImGuiTextBuffer
+operator[] call:[assert]
+begin call:[front]
+end call:[back]
+size
+empty
+clear call:[clear] noreturn:[clear]
+reserve call:[reserve] noreturn:[reserve]
+c_str
+ImGuiStoragePair
+ImGuiStoragePair
+ImGuiStoragePair
+Clear call:[clear] noreturn:[clear]
+ImGuiListClipper call:[Begin,memset,sizeof] noreturn:[Begin]
+ImColor
+ImColor
+ImColor
+ImColor
+ImColor
+operatorint call:[ColorConvertFloat4ToU32] noreturn:[ColorConvertFloat4ToU32]
+operatorImVec4
+SetHSV call:[ColorConvertHSVtoRGB]
+HSV call:[ColorConvertHSVtoRGB,ImColor] noreturn:[ImColor]
+ImDrawCmd call:[memset,sizeof] noreturn:[memset]
+GetTexID
+ImDrawListSplitter call:[memset,sizeof] noreturn:[memset]
+ImDrawListSplitter call:[ClearFreeMemory] noreturn:[ClearFreeMemory]
+Clear
+ImDrawList call:[memset,sizeof]
+ImDrawList call:[_ClearFreeMemory] noreturn:[_ClearFreeMemory]
+GetClipRectMin call:[ImVec2,back] noreturn:[ImVec2]
+GetClipRectMax call:[ImVec2,back] noreturn:[ImVec2]
+PathClear
+PathLineTo call:[push_back] noreturn:[push_back]
+PathLineToMergeDuplicate call:[memcmp,push_back] noreturn:[push_back]
+PathFillConvex call:[AddConvexPolyFilled]
+PathStroke call:[AddPolyline]
+ChannelsSplit call:[Split] noreturn:[Split]
+ChannelsMerge call:[Merge] noreturn:[Merge]
+ChannelsSetCurrent call:[SetCurrentChannel] noreturn:[SetCurrentChannel]
+PrimWriteVtx
+PrimWriteIdx
+PrimVtx call:[PrimWriteIdx,PrimWriteVtx] noreturn:[PrimWriteVtx]
+AddBezierCurve call:[AddBezierCubic] noreturn:[AddBezierCubic]
+PathBezierCurveTo call:[PathBezierCubicCurveTo] noreturn:[PathBezierCubicCurveTo]
+ImDrawData call:[Clear] noreturn:[Clear]
+Clear call:[memset,sizeof] noreturn:[memset]
+ImFontGlyphRangesBuilder call:[Clear] noreturn:[Clear]
+Clear call:[memset,resize,sizeof] noreturn:[memset]
+GetBit call:[return]
+SetBit
+AddChar call:[SetBit] noreturn:[SetBit]
+ImFontAtlasCustomRect call:[ImVec2]
+IsPacked
+IsBuilt
+SetTexID
+GetCustomRectByIndex call:[assert]
+GetCharAdvance call:[return]
+IsLoaded
+GetDebugName
+ImGuiViewport call:[memset,sizeof] noreturn:[memset]
+GetCenter call:[ImVec2] noreturn:[ImVec2]
+GetWorkCenter call:[ImVec2] noreturn:[ImVec2]
+ImGuiPlatformImeData call:[memset,sizeof] noreturn:[memset]
+GetWindowContentRegionWidth call:[GetWindowContentRegionMax,GetWindowContentRegionMin]
+ListBoxHeader call:[BeginListBox] noreturn:[BeginListBox]
+ListBoxFooter call:[EndListBox] noreturn:[EndListBox]
+OpenPopupContextItem call:[OpenPopupOnItemClick] noreturn:[OpenPopupOnItemClick]
+DragFloat call:[DragScalar] noreturn:[DragScalar]
+DragFloat2 call:[DragScalarN] noreturn:[DragScalarN]
+DragFloat3 call:[DragScalarN] noreturn:[DragScalarN]
+DragFloat4 call:[DragScalarN] noreturn:[DragScalarN]
+SliderFloat call:[SliderScalar] noreturn:[SliderScalar]
+SliderFloat2 call:[SliderScalarN] noreturn:[SliderScalarN]
+SliderFloat3 call:[SliderScalarN] noreturn:[SliderScalarN]
+SliderFloat4 call:[SliderScalarN] noreturn:[SliderScalarN]
+BeginPopupContextWindow call:[BeginPopupContextWindow] noreturn:[BeginPopupContextWindow]
+HelpMarker call:[BeginTooltip,EndTooltip,GetFontSize,IsItemHovered,PopTextWrapPos,PushTextWrapPos,TextDisabled,TextUnformatted] noreturn:[EndTooltip]
+ShowUserGuide call:[BulletText,GetIO,Indent,Unindent] noreturn:[BulletText,Unindent]
+ShowDemoWindow global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginMenu,BeginMenuBar,BeginTable,BulletText,Button,Checkbox,CheckboxFlags,CollapsingHeader,End,EndMenu,EndMenuBar,EndTable,GImGuiDemoMarkerCallback,GetCurrentContext,GetFontSize,GetIO,GetMainViewport,GetTime,HelpMarker,ImVec2,IsKeyPressed,LogButtons,LogFinish,LogText,LogToClipboard,MenuItem,PopItemWidth,PushItemWidth,SameLine,Separator,SetNextWindowPos,SetNextWindowSize,ShowAboutWindow,ShowDemoWindowLayout,ShowDemoWindowMisc,ShowDemoWindowPopups,ShowDemoWindowTables,ShowDemoWindowWidgets,ShowExampleAppAutoResize,ShowExampleAppConsole,ShowExampleAppConstrainedResize,ShowExampleAppCustomRendering,ShowExampleAppDocuments,ShowExampleAppFullscreen,ShowExampleAppLayout,ShowExampleAppLog,ShowExampleAppLongText,ShowExampleAppMainMenuBar,ShowExampleAppPropertyEditor,ShowExampleAppSimpleOverlay,ShowExampleAppWindowTitles,ShowExampleMenuFile,ShowMetricsWindow,ShowStackToolWindow,ShowStyleEditor,ShowUserGuide,Spacing,TableNextColumn,Text,TreeNode,TreePop,assert,fmodf,while] noreturn:[End,EndMenu,EndMenuBar,EndTable,GImGuiDemoMarkerCallback,LogFinish,Separator,ShowAboutWindow,ShowExampleAppAutoResize,ShowExampleAppConsole,ShowExampleAppConstrainedResize,ShowExampleAppCustomRendering,ShowExampleAppDocuments,ShowExampleAppFullscreen,ShowExampleAppLayout,ShowExampleAppLog,ShowExampleAppLongText,ShowExampleAppMainMenuBar,ShowExampleAppPropertyEditor,ShowExampleAppSimpleOverlay,ShowExampleAppWindowTitles,ShowMetricsWindow,ShowStackToolWindow,ShowUserGuide,Text,TreePop]
+ShowDemoWindowWidgets global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AcceptDragDropPayload,AddRect,AddRectFilled,AlignTextToFramePadding,ArrowButton,Begin,BeginChild,BeginCombo,BeginDisabled,BeginDragDropSource,BeginDragDropTarget,BeginGroup,BeginListBox,BeginPopup,BeginPopupContextItem,BeginTabBar,BeginTabItem,BeginTable,BeginTooltip,Bullet,BulletText,Button,Checkbox,CheckboxFlags,CollapsingHeader,ColorButton,ColorConvertHSVtoRGB,ColorEdit3,ColorEdit4,ColorPicker3,ColorPicker4,Combo,DeleteChars,DragFloat,DragFloat2,DragFloat3,DragFloat4,DragFloatRange2,DragInt,DragInt2,DragInt3,DragInt4,DragIntRange2,DragScalar,End,EndChild,EndCombo,EndDisabled,EndDragDropSource,EndDragDropTarget,EndGroup,EndListBox,EndPopup,EndTabBar,EndTabItem,EndTable,EndTooltip,GImGuiDemoMarkerCallback,GetContentRegionAvail,GetCursorPos,GetCursorScreenPos,GetFontSize,GetIO,GetItemRectMax,GetItemRectMin,GetItemRectSize,GetMouseDragDelta,GetStyle,GetTextLineHeight,GetTextLineHeightWithSpacing,GetTime,GetTreeNodeToLabelSpacing,GetWindowDrawList,HSV,HelpMarker,ImVec2,ImVec4,Image,ImageButton,Indent,InputDouble,InputFloat,InputFloat2,InputFloat3,InputFloat4,InputInt,InputInt2,InputInt3,InputInt4,InputScalar,InputText,InputTextMultiline,InputTextWithHint,InsertChars,IsItemActivated,IsItemActive,IsItemClicked,IsItemDeactivated,IsItemDeactivatedAfterEdit,IsItemEdited,IsItemFocused,IsItemHovered,IsItemToggledOpen,IsItemVisible,IsMouseDoubleClicked,IsWindowFocused,IsWindowHovered,LabelText,ListBox,MenuItem,MyInputTextMultiline,NewLine,OpenPopup,PlotHistogram,PlotLines,PopButtonRepeat,PopID,PopStyleColor,PopStyleVar,PopTextWrapPos,ProgressBar,PushButtonRepeat,PushID,PushStyleColor,PushStyleVar,PushTextWrapPos,RadioButton,ResetMouseDragDelta,SameLine,SelectAll,Selectable,Separator,SetColorEditOptions,SetDragDropPayload,SetItemDefaultFocus,SetNextItemOpen,SetNextItemWidth,SetTooltip,SliderAngle,SliderFloat,SliderFloat2,SliderFloat3,SliderFloat4,SliderInt,SliderInt2,SliderInt3,SliderInt4,SliderScalar,SmallButton,Spacing,TabItemButton,TableNextColumn,TableNextRow,Text,TextColored,TextDisabled,TextWrapped,TreeNode,TreeNodeEx,TreePop,Unindent,VSliderFloat,VSliderInt,_snprintf,assert,begin,capacity,color_hsv,cosf,empty,erase,float,memchr,memcpy,memset,push_back,ref_color_v,resize,return,sinf,size,sizeof,small_slider_size,sprintf,strchr,while] noreturn:[BeginChild,BeginDisabled,Button,Checkbox,ColorEdit4,Combo,DragFloat,End,EndChild,EndCombo,EndDisabled,EndDragDropSource,EndDragDropTarget,EndGroup,EndListBox,EndPopup,EndTabBar,EndTabItem,EndTable,EndTooltip,GImGuiDemoMarkerCallback,GetTime,HelpMarker,ImVec4,Indent,InputFloat,InputFloat3,InputText,InputTextMultiline,InsertChars,ListBox,MenuItem,OpenPopup,PlotLines,PopButtonRepeat,PopID,PopStyleVar,PopTextWrapPos,PushStyleVar,ResetMouseDragDelta,SameLine,SelectAll,Selectable,SetColorEditOptions,SetItemDefaultFocus,SetNextItemOpen,SetTooltip,SliderFloat,Text,TreeNodeEx,TreePop,Unindent,begin,erase,memcpy,memset,push_back,sinf]
+ItemGetter
+FilterImGuiLetters call:[strchr]
+MyCallback call:[DeleteChars,InsertChars,SelectAll] noreturn:[InsertChars,SelectAll]
+MyResizeCallback call:[assert,begin,resize] noreturn:[begin]
+MyInputTextMultiline call:[InputTextMultiline,assert,begin,size] noreturn:[InputTextMultiline]
+Sin call:[sinf] noreturn:[sinf]
+Saw call:[return]
+ShowDemoWindowLayout global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddRectFilled,AddText,AlignTextToFramePadding,Begin,BeginChild,BeginGroup,BeginListBox,BeginMenu,BeginMenuBar,BeginTabBar,BeginTabItem,BeginTable,BulletText,Button,Checkbox,CollapsingHeader,Columns,Combo,DragFloat,DragFloat2,DragInt,Dummy,End,EndChild,EndGroup,EndListBox,EndMenu,EndMenuBar,EndTabBar,EndTabItem,EndTable,GImGuiDemoMarkerCallback,GetColumnWidth,GetContentRegionAvail,GetCursorPosX,GetCursorScreenPos,GetCursorStartPos,GetFont,GetFontSize,GetFrameHeightWithSpacing,GetID,GetIO,GetItemRectMax,GetItemRectMin,GetItemRectSize,GetScrollMaxX,GetScrollMaxY,GetScrollX,GetScrollY,GetStyle,GetTextLineHeight,GetWindowContentRegionMax,GetWindowDrawList,GetWindowPos,HSV,HelpMarker,ImVec2,ImVec4,Indent,InvisibleButton,IsItemActive,IsItemHovered,IsMouseDragging,ListBox,NextColumn,PlotHistogram,PopClipRect,PopID,PopItemWidth,PopStyleColor,PopStyleVar,PushClipRect,PushID,PushItemWidth,PushStyleColor,PushStyleVar,SameLine,Selectable,Separator,SetCursorPosX,SetNextItemWidth,SetNextWindowContentSize,SetScrollFromPosX,SetScrollFromPosY,SetScrollHereX,SetScrollHereY,SetScrollX,SetScrollY,SetTooltip,ShowExampleMenuFile,SliderFloat,SliderInt,SmallButton,Spacing,TableNextColumn,Text,TextColored,TextUnformatted,TextWrapped,TreeNode,TreePop,Unindent,button_sz,clip_rect,offset,sinf,size,sizeof,sprintf,while] noreturn:[BulletText,Button,CollapsingHeader,Columns,Dummy,End,EndChild,EndGroup,EndListBox,EndMenu,EndMenuBar,EndTabBar,EndTabItem,EndTable,GImGuiDemoMarkerCallback,NextColumn,PopID,PopStyleVar,SameLine,SetNextWindowContentSize,SetScrollFromPosX,SetScrollFromPosY,SetScrollHereX,SetScrollHereY,SetScrollX,SetScrollY,SetTooltip,Spacing,Text,TextWrapped,TreePop,Unindent]
+ShowDemoWindowPopups global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[BeginMenu,BeginMenuBar,BeginPopup,BeginPopupContextItem,BeginPopupModal,Button,Checkbox,CloseCurrentPopup,CollapsingHeader,ColorEdit4,Combo,DragFloat,EndMenu,EndMenuBar,EndPopup,GImGuiDemoMarkerCallback,GetCenter,GetMainViewport,HelpMarker,ImVec2,InputText,IsItemHovered,MenuItem,OpenPopup,OpenPopupOnItemClick,PopID,PopStyleVar,PushID,PushStyleVar,SameLine,Selectable,Separator,SetItemDefaultFocus,SetNextItemWidth,SetNextWindowPos,SetTooltip,ShowExampleMenuFile,Text,TextUnformatted,TextWrapped,TreeNode,TreePop,sizeof,sprintf,while] noreturn:[CloseCurrentPopup,EndMenu,EndMenuBar,EndPopup,GImGuiDemoMarkerCallback,MenuItem,OpenPopup,SetTooltip,Text,TreePop]
+CompareWithSortSpecs call:[assert,return,strcmp] noreturn:[return]
+PushStyleCompact call:[GetStyle,ImVec2,PushStyleVar] noreturn:[PushStyleVar]
+PopStyleCompact call:[PopStyleVar] noreturn:[PopStyleVar]
+EditTableSizingFlags call:[BeginCombo,BeginTooltip,EndCombo,EndTooltip,GetCursorPosX,GetFontSize,GetStyle,IsItemHovered,PopTextWrapPos,PushTextWrapPos,SameLine,Selectable,Separator,SetCursorPosX,Text,TextDisabled,TextUnformatted,sizeof,strlen] noreturn:[EndCombo,EndTooltip,TextUnformatted]
+EditTableColumnsFlags call:[CheckboxFlags,HelpMarker,SameLine] noreturn:[HelpMarker]
+ShowTableColumnsStatusFlags call:[CheckboxFlags] noreturn:[CheckboxFlags]
+ShowDemoWindowTables global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AlignTextToFramePadding,Begin,BeginDisabled,BeginPopup,BeginPopupContextItem,BeginTable,Button,CalcTextSize,Checkbox,CheckboxFlags,CloseCurrentPopup,CollapsingHeader,Combo,DisplayNode,DragFloat,DragFloat2,DragInt,EditTableColumnsFlags,EditTableSizingFlags,EndDisabled,EndPopup,EndTable,GImGuiDemoMarkerCallback,GetColorU32,GetContentRegionAvail,GetFrameHeight,GetIO,GetScrollMaxX,GetScrollMaxY,GetScrollX,GetScrollY,GetStyle,GetTextLineHeightWithSpacing,GetWindowDrawList,HelpMarker,ImVec2,ImVec4,Indent,InputText,IsAnyItemHovered,IsItemDeactivated,IsMouseReleased,MyItem,OpenPopup,PopButtonRepeat,PopID,PopItemWidth,PopStyleColor,PopStyleCompact,PopStyleVar,PushButtonRepeat,PushID,PushItemWidth,PushStyleColor,PushStyleCompact,PushStyleVar,RadioButton,SameLine,Selectable,Separator,SetNextItemOpen,SetNextItemWidth,ShowDemoWindowColumns,ShowTableColumnsStatusFlags,SliderFloat,SliderFloat2,SmallButton,Spacing,Step,TableGetColumnFlags,TableGetColumnIndex,TableGetColumnName,TableGetRowIndex,TableGetSortSpecs,TableHeader,TableHeadersRow,TableNextColumn,TableNextRow,TableSetBgColor,TableSetColumnIndex,TableSetupColumn,TableSetupScrollFreeze,Text,TextDisabled,TextUnformatted,TextWrapped,TreeNode,TreeNodeEx,TreePop,Unindent,assert,cell_padding,clear,contains,find_erase_unsorted,push_back,qsort,resize,sizeof,sprintf,strcpy,while] noreturn:[Button,CloseCurrentPopup,DisplayNode,EndPopup,EndTable,GImGuiDemoMarkerCallback,HelpMarker,OpenPopup,PopID,PopStyleColor,PopStyleVar,PushItemWidth,PushStyleColor,PushStyleVar,Selectable,SetNextItemOpen,SmallButton,TableGetColumnFlags,TableHeadersRow,TableSetBgColor,TableSetupColumn,Text,TextUnformatted,TextWrapped,TreePop,find_erase_unsorted,push_back,qsort,strcpy]
+DisplayNode call:[DisplayNode,TableNextColumn,TableNextRow,Text,TextDisabled,TextUnformatted,TreeNodeEx,TreePop] noreturn:[DisplayNode,TextUnformatted,TreePop]
+ShowDemoWindowColumns global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginChild,Button,Checkbox,CollapsingHeader,Columns,DragInt,EndChild,GImGuiDemoMarkerCallback,GetColumnIndex,GetColumnOffset,GetColumnWidth,GetContentRegionAvail,GetFontSize,HelpMarker,ImVec2,InputFloat,IsItemHovered,NextColumn,SameLine,Selectable,Separator,SetNextItemWidth,SetNextWindowContentSize,Step,Text,TextWrapped,TreeNode,TreePop,sprintf,while] noreturn:[GImGuiDemoMarkerCallback,NextColumn,Separator,Text,TreePop]
+ShowDemoWindowMisc global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddLine,AddRect,AddRectFilled,AddText,Bullet,BulletText,Button,CaptureKeyboardFromApp,CollapsingHeader,Draw,Dummy,GImGuiDemoMarkerCallback,GetColorU32,GetCursorScreenPos,GetForegroundDrawList,GetIO,GetKeyData,GetKeyName,GetMouseClickedCount,GetMouseCursor,GetMouseDragDelta,GetWindowDrawList,HelpMarker,ImVec2,InputText,IsItemActive,IsItemHovered,IsKeyDown,IsKeyPressed,IsKeyReleased,IsLegacyNativeDupe,IsMouseClicked,IsMouseDown,IsMouseDragging,IsMousePosValid,IsMouseReleased,PassFilter,PopAllowKeyboardFocus,PopClipRect,PushAllowKeyboardFocus,PushClipRect,SameLine,Selectable,SetKeyboardFocusHere,SetMouseCursor,SetNextItemOpen,SliderFloat3,Text,TextWrapped,TreeNode,TreePop,assert,sizeof,sprintf,while] noreturn:[AddLine,AddRectFilled,BulletText,CaptureKeyboardFromApp,Dummy,GImGuiDemoMarkerCallback,SetKeyboardFocusHere,SetMouseCursor,Text,TreePop]
+IsLegacyNativeDupe call:[GetIO]
+ShowAboutWindow global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginChildFrame,Button,Checkbox,End,EndChildFrame,GImGuiDemoMarkerCallback,GetID,GetIO,GetStyle,GetTextLineHeightWithSpacing,GetVersion,ImVec2,LogFinish,LogText,LogToClipboard,Separator,Text,sizeof,while] noreturn:[End,EndChildFrame,GImGuiDemoMarkerCallback,LogFinish,LogText,Text]
+ShowFontSelector call:[BeginCombo,EndCombo,GetDebugName,GetFont,GetIO,HelpMarker,PopID,PushID,SameLine,Selectable] noreturn:[EndCombo,HelpMarker,PopID]
+ShowStyleSelector call:[Combo,StyleColorsClassic,StyleColorsDark,StyleColorsLight]
+ShowStyleEditor global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddCircle,BeginChild,BeginGroup,BeginTabBar,BeginTabItem,BeginTooltip,Button,CalcTextSize,Checkbox,ColorEdit4,Combo,DragFloat,Draw,Dummy,EndChild,EndGroup,EndTabBar,EndTabItem,EndTooltip,GImGuiDemoMarkerCallback,GetColorU32,GetCursorScreenPos,GetFontSize,GetIO,GetStyle,GetStyleColorName,GetWindowDrawList,GetWindowWidth,HelpMarker,ImVec2,IsItemActive,LogFinish,LogText,LogToClipboard,LogToTTY,PassFilter,PopID,PopItemWidth,PushID,PushItemWidth,RadioButton,SameLine,Separator,SetNextItemWidth,SetNextWindowPos,SetWindowFontScale,ShowFontAtlas,ShowFontSelector,ShowStyleSelector,SliderFloat,SliderFloat2,Spacing,Text,TextUnformatted,_CalcCircleAutoSegmentCount,floorf,memcmp,sizeof,strlen,while] noreturn:[EndTabBar,EndTabItem,EndTooltip,GImGuiDemoMarkerCallback,LogFinish,LogText,LogToClipboard,LogToTTY,PopID,PopItemWidth,SameLine,SetWindowFontScale]
+ShowExampleAppMainMenuBar call:[BeginMainMenuBar,BeginMenu,EndMainMenuBar,EndMenu,MenuItem,Separator,ShowExampleMenuFile] noreturn:[EndMainMenuBar,EndMenu]
+ShowExampleMenuFile global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddRectFilled,BeginChild,BeginMenu,Checkbox,Combo,Dummy,EndChild,EndMenu,GImGuiDemoMarkerCallback,GetColorU32,GetCursorScreenPos,GetStyleColorName,GetTextLineHeight,GetWindowDrawList,ImVec2,InputFloat,MenuItem,SameLine,Separator,ShowExampleMenuFile,SliderFloat,Text,assert,while] noreturn:[EndMenu,GImGuiDemoMarkerCallback,MenuItem,Text,assert]
+ExampleAppConsole global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddLog,ClearLog,GImGuiDemoMarkerCallback,memset,push_back,sizeof,while] noreturn:[AddLog,GImGuiDemoMarkerCallback]
+ExampleAppConsole call:[ClearLog,free] noreturn:[free]
+Stricmp call:[toupper]
+Strnicmp call:[toupper]
+Strdup call:[assert,malloc,memcpy,return,strlen] noreturn:[memcpy]
+Strtrim call:[strlen]
+ClearLog call:[clear,free] noreturn:[clear,free]
+AddLog call:[Strdup,_vsnprintf,push_back,sizeof,va_end,va_start] noreturn:[push_back]
+Draw call:[AddLog,Begin,BeginChild,BeginPopup,BeginPopupContextItem,BeginPopupContextWindow,Button,Checkbox,ClearLog,Draw,End,EndChild,EndPopup,ExecCommand,GetFrameHeightWithSpacing,GetScrollMaxY,GetScrollY,GetStyle,ImVec2,ImVec4,InputText,LogFinish,LogToClipboard,MenuItem,OpenPopup,PassFilter,PopStyleColor,PopStyleVar,PushStyleColor,PushStyleVar,SameLine,Selectable,Separator,SetItemDefaultFocus,SetKeyboardFocusHere,SetNextWindowSize,SetScrollHereY,SmallButton,Strtrim,TextUnformatted,TextWrapped,sizeof,strcpy,strncmp,strstr] noreturn:[AddLog,ClearLog,End,EndPopup,ExecCommand,LogFinish,LogToClipboard,OpenPopup,PopStyleColor,PushStyleColor,SetKeyboardFocusHere,SetScrollHereY]
+ExecCommand call:[AddLog,ClearLog,Strdup,Stricmp,begin,erase,free,push_back] noreturn:[AddLog,ClearLog]
+TextEditCallbackStub call:[TextEditCallback] noreturn:[TextEditCallback]
+TextEditCallback call:[AddLog,DeleteChars,InsertChars,Strnicmp,push_back,toupper] noreturn:[AddLog,InsertChars,push_back,toupper]
+ShowExampleAppConsole call:[Draw] noreturn:[Draw]
+ExampleAppLog call:[Clear] noreturn:[Clear]
+Clear call:[clear,push_back] noreturn:[push_back]
+AddLog call:[appendfv,push_back,size,va_end,va_start] noreturn:[push_back]
+Draw call:[Begin,BeginChild,BeginPopup,Button,Checkbox,Clear,Draw,End,EndChild,EndPopup,GetScrollMaxY,GetScrollY,ImVec2,IsActive,LogToClipboard,OpenPopup,PassFilter,PopStyleVar,PushStyleVar,SameLine,Separator,SetScrollHereY,Step,TextUnformatted,begin,end] noreturn:[Clear,End,EndPopup,LogToClipboard,OpenPopup,SetScrollHereY,TextUnformatted]
+ShowExampleAppLog global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddLog,Begin,Draw,End,GImGuiDemoMarkerCallback,GetFrameCount,GetTime,ImVec2,SetNextWindowSize,SmallButton,sizeof,while] noreturn:[Draw,GImGuiDemoMarkerCallback]
+ShowExampleAppLayout global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginChild,BeginGroup,BeginMenu,BeginMenuBar,BeginTabBar,BeginTabItem,Button,End,EndChild,EndGroup,EndMenu,EndMenuBar,EndTabBar,EndTabItem,GImGuiDemoMarkerCallback,GetFrameHeightWithSpacing,ImVec2,MenuItem,SameLine,Selectable,Separator,SetNextWindowSize,Text,TextWrapped,sprintf,while] noreturn:[End,EndChild,EndGroup,EndMenu,EndMenuBar,EndTabBar,EndTabItem,GImGuiDemoMarkerCallback]
+ShowPlaceholderObject call:[AlignTextToFramePadding,DragFloat,InputFloat,NextColumn,PopID,PushID,SetNextItemWidth,ShowPlaceholderObject,TableNextRow,TableSetColumnIndex,Text,TreeNode,TreeNodeEx,TreePop] noreturn:[DragFloat,InputFloat,NextColumn,PopID,ShowPlaceholderObject,TreePop]
+ShowExampleAppPropertyEditor global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginTable,End,EndTable,GImGuiDemoMarkerCallback,HelpMarker,ImVec2,PopStyleVar,PushStyleVar,SetNextWindowSize,ShowPlaceholderObject,while] noreturn:[End,EndTable,GImGuiDemoMarkerCallback,ShowPlaceholderObject]
+ShowExampleAppLongText global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginChild,Button,Combo,End,EndChild,GImGuiDemoMarkerCallback,ImVec2,PopStyleVar,PushStyleVar,SameLine,SetNextWindowSize,Step,Text,TextUnformatted,appendf,begin,clear,end,size,while] noreturn:[End,GImGuiDemoMarkerCallback,Text,appendf]
+ShowExampleAppAutoResize global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,End,GImGuiDemoMarkerCallback,SliderInt,Text,TextUnformatted,while] noreturn:[End,GImGuiDemoMarkerCallback,Text]
+ShowExampleAppConstrainedResize global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,Button,Checkbox,Combo,DragInt,End,GImGuiDemoMarkerCallback,ImVec2,SameLine,SetNextItemWidth,SetNextWindowSizeConstraints,SetWindowSize,Text,sizeof,while] noreturn:[End,GImGuiDemoMarkerCallback,ImVec2,SetNextWindowSizeConstraints,SetWindowSize,Text]
+Square
+Step call:[ImVec2] noreturn:[ImVec2]
+ShowExampleAppSimpleOverlay global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,BeginPopupContextWindow,End,EndPopup,GImGuiDemoMarkerCallback,GetIO,GetMainViewport,IsMousePosValid,MenuItem,Separator,SetNextWindowBgAlpha,SetNextWindowPos,Text,while] noreturn:[End,EndPopup,GImGuiDemoMarkerCallback,Text]
+ShowExampleAppFullscreen call:[Begin,Button,Checkbox,CheckboxFlags,End,GetMainViewport,HelpMarker,Indent,SameLine,SetNextWindowPos,SetNextWindowSize,Unindent] noreturn:[End]
+ShowExampleAppWindowTitles global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[Begin,End,GImGuiDemoMarkerCallback,GetFrameCount,GetMainViewport,GetTime,ImVec2,SetNextWindowPos,Text,sprintf,while] noreturn:[End,GImGuiDemoMarkerCallback]
+ShowExampleAppCustomRendering global:[GImGuiDemoMarkerCallback,GImGuiDemoMarkerCallbackUserData] call:[AddBezierCubic,AddBezierQuadratic,AddCircle,AddCircleFilled,AddLine,AddNgon,AddNgonFilled,AddRect,AddRectFilled,AddRectFilledMultiColor,AddTriangle,AddTriangleFilled,Begin,BeginPopup,BeginTabBar,BeginTabItem,CalcItemWidth,Checkbox,ColorEdit4,DragFloat,Dummy,End,EndPopup,EndTabBar,EndTabItem,GImGuiDemoMarkerCallback,GetBackgroundDrawList,GetColorU32,GetContentRegionAvail,GetCursorScreenPos,GetFontSize,GetForegroundDrawList,GetFrameHeight,GetIO,GetMouseDragDelta,GetStyle,GetWindowDrawList,GetWindowPos,GetWindowSize,HelpMarker,ImColor,ImVec2,ImVec4,InvisibleButton,IsItemActive,IsItemHovered,IsMouseClicked,IsMouseDown,IsMouseDragging,MenuItem,OpenPopupOnItemClick,PopClipRect,PopItemWidth,PushClipRect,PushItemWidth,SameLine,SliderInt,Text,back,clear,fmodf,mouse_pos_in_canvas,origin,push_back,resize,scrolling,size,while] noreturn:[AddCircle,AddLine,End,EndPopup,EndTabBar,EndTabItem,GImGuiDemoMarkerCallback,InvisibleButton,OpenPopupOnItemClick,clear,resize]
+MyDocument
+DoOpen
+DoQueueClose
+DoForceClose
+DoSave
+DisplayContents call:[Button,ColorEdit3,DoSave,ImVec2,PopID,PopStyleColor,PushID,PushStyleColor,SameLine,Text,TextWrapped] noreturn:[DoSave,PopID]
+DisplayContextMenu call:[BeginPopupContextItem,DoQueueClose,DoSave,EndPopup,MenuItem,sprintf] noreturn:[DoQueueClose,DoSave,EndPopup]
+ExampleAppDocuments call:[ImVec4,MyDocument,push_back] noreturn:[push_back]
+NotifyOfDocumentsClosedElsewhere call:[SetTabItemClosed] noreturn:[SetTabItemClosed]
+ShowExampleAppDocuments call:[Begin,BeginChildFrame,BeginMenu,BeginMenuBar,BeginPopupModal,BeginTabBar,BeginTabItem,Button,Checkbox,CloseCurrentPopup,DisplayContents,DisplayContextMenu,DoForceClose,DoOpen,DoQueueClose,DoSave,End,EndChildFrame,EndMenu,EndMenuBar,EndPopup,EndTabBar,EndTabItem,GetFontSize,GetID,GetTextLineHeightWithSpacing,ImVec2,IsPopupOpen,MenuItem,NotifyOfDocumentsClosedElsewhere,OpenPopup,PopID,PushID,SameLine,Separator,Text,button_size,clear,empty,push_back] noreturn:[CloseCurrentPopup,DoForceClose,DoOpen,DoQueueClose,DoSave,End,EndChildFrame,EndMenu,EndMenuBar,EndPopup,EndTabBar,EndTabItem,NotifyOfDocumentsClosedElsewhere,OpenPopup,PopID,SameLine,Text,clear,push_back]
+ImVector < unsigned short >
+ImVector < unsigned short > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < unsigned short > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,short] noreturn:[clear,short]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImGuiTextRange >
+ImVector < ImGuiTextRange > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImGuiTextRange > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImGuiTextRange,clear] noreturn:[ImGuiTextRange,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < char >
+ImVector < char > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < char > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[char,clear] noreturn:[char,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImGuiStoragePair >
+ImVector < ImGuiStoragePair > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImGuiStoragePair > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImGuiStoragePair,clear] noreturn:[ImGuiStoragePair,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImDrawCmd >
+ImVector < ImDrawCmd > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImDrawCmd > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImDrawCmd,clear] noreturn:[ImDrawCmd,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImDrawChannel >
+ImVector < ImDrawChannel > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImDrawChannel > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImDrawChannel,clear] noreturn:[ImDrawChannel,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImDrawVert >
+ImVector < ImDrawVert > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImDrawVert > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImDrawVert,clear] noreturn:[ImDrawVert,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImVec4 >
+ImVector < ImVec4 > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImVec4 > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImVec4,clear] noreturn:[ImVec4,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < void * >
+ImVector < void * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < void * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImVec2 >
+ImVector < ImVec2 > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImVec2 > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImVec2,clear] noreturn:[ImVec2,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < unsigned int >
+ImVector < unsigned int > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < unsigned int > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,int] noreturn:[clear,int]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFont * >
+ImVector < ImFont * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFont * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFontAtlasCustomRect >
+ImVector < ImFontAtlasCustomRect > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFontAtlasCustomRect > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImFontAtlasCustomRect,clear] noreturn:[ImFontAtlasCustomRect,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFontConfig >
+ImVector < ImFontConfig > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFontConfig > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImFontConfig,clear] noreturn:[ImFontConfig,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < float >
+ImVector < float > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < float > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,float] noreturn:[clear,float]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFontGlyph >
+ImVector < ImFontGlyph > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFontGlyph > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImFontGlyph,clear] noreturn:[ImFontGlyph,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < int >
+ImVector < int > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < int > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,int] noreturn:[clear,int]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < MyItem >
+ImVector < MyItem > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < MyItem > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[MyItem,clear] noreturn:[MyItem,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < char * >
+ImVector < char * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < char * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < const char * >
+ImVector < const char * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < const char * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < MyDocument >
+ImVector < MyDocument > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < MyDocument > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[MyDocument,clear] noreturn:[MyDocument,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < MyDocument * >
+ImVector < MyDocument * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < MyDocument * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]

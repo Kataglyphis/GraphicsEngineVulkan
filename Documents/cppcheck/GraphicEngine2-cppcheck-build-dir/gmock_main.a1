@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3219842639">
+        <error id="preprocessorErrorDirective" severity="error" msg="failed to evaluate #if condition" verbose="failed to evaluate #if condition">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\build\_deps\googletest-src\googletest\include\gtest\internal\gtest-port.h" line="2292" column="0"/>
+        </error>
+</analyzerinfo>

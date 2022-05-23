@@ -11,12 +11,16 @@ Model::Model(std::vector<Mesh> new_mesh_list, uint32_t index)
     mesh_model_index = index;
 }
 
-void Model::add_new_mesh(   VkPhysicalDevice physical_device, VkDevice logical_device, VkQueue transfer_queue,
-                            VkCommandPool command_pool, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices,
-                            std::vector<unsigned int>&	materialIndex, std::vector<ObjMaterial>& materials)
+void Model::add_new_mesh(   VulkanDevice* device, 
+                            VkQueue transfer_queue, VkCommandPool command_pool, 
+                            std::vector<Vertex>& vertices, 
+                            std::vector<unsigned int>& indices,
+                            std::vector<unsigned int>&	materialIndex, 
+                            std::vector<ObjMaterial>& materials)
 {
 
-    this->mesh = Mesh(physical_device, logical_device, transfer_queue, command_pool, vertices, indices, materialIndex, materials);
+    this->mesh = Mesh(  device, transfer_queue, command_pool, 
+                        vertices, indices, materialIndex, materials);
 
 }
 
@@ -74,15 +78,6 @@ uint32_t Model::get_primitive_count()
 std::vector<std::string> Model::get_texture_list()
 {
     return texture_list;
-}
-
-void Model::destroy_model()
-{
-    //for (auto& mesh : meshes) {
-
-        mesh.destroy_buffers();
-
-    //}
 }
 
 Model::~Model()

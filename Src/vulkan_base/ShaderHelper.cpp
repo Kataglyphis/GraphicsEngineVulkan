@@ -1,5 +1,6 @@
 #include "ShaderHelper.h"
 
+#include "Utilities.h"
 #include <sstream>
 
 ShaderHelper::ShaderHelper()

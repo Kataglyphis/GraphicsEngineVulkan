@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3932370265">
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="84" col="9" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c:61:22" call-funcname="createMonitor" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="226" col="36" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:933:6" call-funcname="_glfwInputMonitor" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="240" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:612:6" call-funcname="_glfwGetVideoModeWin32" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="256" col="27" call-argexpr="&amp;current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:612:6" call-funcname="_glfwGetVideoModeWin32" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="256" col="27" call-argexpr="current" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:960:5" call-funcname="_glfwCompareVideoModes" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="257" col="31" call-argexpr="&amp;current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="325" col="9" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:960:5" call-funcname="_glfwCompareVideoModes" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="431" col="39" call-argexpr="&amp;mode" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="537" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="544" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:958:20" call-funcname="_glfwChooseVideoMode" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="255" col="12" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:541:6" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:958:20" call-funcname="_glfwChooseVideoMode" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="255" col="12" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:541:6" my-argnr="2"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:543:6" call-funcname="_glfwGetHMONITORContentScaleWin32" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="376" col="5" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:609:6" my-argnr="2"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:543:6" call-funcname="_glfwGetHMONITORContentScaleWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="376" col="5" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:609:6" my-argnr="3"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:963:6" call-funcname="_glfwAllocGammaArrays" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="499" col="5" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:613:10" my-argnr="2"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:542:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="308" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:608:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="362" col="28" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:609:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="376" col="39" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:610:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="384" col="21" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:611:14" my-argnr="2" my-argname="count" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="401" col="6" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:612:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="479" col="26" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:612:6" my-argnr="2" my-argname="mode" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="481" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:613:10" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="495" col="32" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:614:6" my-argnr="2" my-argname="ramp" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="513" col="9" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:542:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="308" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:614:6" my-argnr="2" my-argname="ramp" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_monitor.c" line="513" col="9" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="monitorCallback" lineNumber="40"/>
+    <functiondecl functionName="createMonitor" lineNumber="61"/>
+    <functiondecl functionName="_glfwPollMonitorsWin32" lineNumber="136"/>
+    <functiondecl functionName="_glfwSetVideoModeWin32" lineNumber="248"/>
+    <functiondecl functionName="_glfwRestoreVideoModeWin32" lineNumber="306"/>
+    <functiondecl functionName="_glfwGetHMONITORContentScaleWin32" lineNumber="316"/>
+    <functiondecl functionName="_glfwFreeMonitorWin32" lineNumber="352"/>
+    <functiondecl functionName="_glfwGetMonitorPosWin32" lineNumber="356"/>
+    <functiondecl functionName="_glfwGetMonitorContentScaleWin32" lineNumber="373"/>
+    <functiondecl functionName="_glfwGetMonitorWorkareaWin32" lineNumber="379"/>
+    <functiondecl functionName="_glfwGetVideoModesWin32" lineNumber="396"/>
+    <functiondecl functionName="_glfwGetVideoModeWin32" lineNumber="473"/>
+    <functiondecl functionName="_glfwGetGammaRampWin32" lineNumber="490"/>
+    <functiondecl functionName="_glfwSetGammaRampWin32" lineNumber="508"/>
+    <functiondecl functionName="glfwGetWin32Adapter" lineNumber="534"/>
+    <functiondecl functionName="glfwGetWin32Monitor" lineNumber="541"/>
+    <functioncall functionName="CDS_FULLSCREEN"/>
+    <functioncall functionName="CDS_TEST"/>
+    <functioncall functionName="CP_UTF8"/>
+    <functioncall functionName="ChangeDisplaySettingsExW"/>
+    <functioncall functionName="CreateDCW"/>
+    <functioncall functionName="DeleteDC"/>
+    <functioncall functionName="DeviceName"/>
+    <functioncall functionName="DeviceString"/>
+    <functioncall functionName="ENUM_CURRENT_SETTINGS"/>
+    <functioncall functionName="EnumDisplayDevicesW"/>
+    <functioncall functionName="EnumDisplayMonitors"/>
+    <functioncall functionName="EnumDisplaySettingsExW"/>
+    <functioncall functionName="EnumDisplaySettingsW"/>
+    <functioncall functionName="GetDC"/>
+    <functioncall functionName="GetDeviceCaps"/>
+    <functioncall functionName="GetDeviceGammaRamp"/>
+    <functioncall functionName="GetDpiForMonitor_"/>
+    <functioncall functionName="GetMonitorInfoW"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="ReleaseDC"/>
+    <functioncall functionName="SetDeviceGammaRamp"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="WideCharToMultiByte"/>
+    <functioncall functionName="_glfwAllocGammaArrays"/>
+    <functioncall functionName="_glfwAllocMonitor"/>
+    <functioncall functionName="_glfwChooseVideoMode"/>
+    <functioncall functionName="_glfwCompareVideoModes"/>
+    <functioncall functionName="_glfwCreateUTF8FromWideStringWin32"/>
+    <functioncall functionName="_glfwGetHMONITORContentScaleWin32"/>
+    <functioncall functionName="_glfwGetVideoModeWin32"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwInputMonitor"/>
+    <functioncall functionName="_glfwIsWindowsVersionOrGreaterWin32"/>
+    <functioncall functionName="_glfwSplitBPP"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="_glfw_realloc"/>
+    <functioncall functionName="adapter"/>
+    <functioncall functionName="adapterIndex"/>
+    <functioncall functionName="adapterName"/>
+    <functioncall functionName="best"/>
+    <functioncall functionName="blue"/>
+    <functioncall functionName="blueBits"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="createMonitor"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="data"/>
+    <functioncall functionName="dc"/>
+    <functioncall functionName="description"/>
+    <functioncall functionName="desired"/>
+    <functioncall functionName="disconnected"/>
+    <functioncall functionName="disconnectedCount"/>
+    <functioncall functionName="display"/>
+    <functioncall functionName="displayIndex"/>
+    <functioncall functionName="displayName"/>
+    <functioncall functionName="dm"/>
+    <functioncall functionName="dmBitsPerPel"/>
+    <functioncall functionName="dmDisplayFrequency"/>
+    <functioncall functionName="dmPelsHeight"/>
+    <functioncall functionName="dmPelsWidth"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="green"/>
+    <functioncall functionName="greenBits"/>
+    <functioncall functionName="handle"/>
+    <functioncall functionName="height"/>
+    <functioncall functionName="heightMM"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="left"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="memcpy"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="mi"/>
+    <functioncall functionName="mode"/>
+    <functioncall functionName="modeChanged"/>
+    <functioncall functionName="modeIndex"/>
+    <functioncall functionName="modesPruned"/>
+    <functioncall functionName="monitor"/>
+    <functioncall functionName="monitorCallback"/>
+    <functioncall functionName="monitorCount"/>
+    <functioncall functionName="monitors"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="publicAdapterName"/>
+    <functioncall functionName="publicDisplayName"/>
+    <functioncall functionName="ramp"/>
+    <functioncall functionName="rect"/>
+    <functioncall functionName="red"/>
+    <functioncall functionName="redBits"/>
+    <functioncall functionName="refreshRate"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="szDevice"/>
+    <functioncall functionName="top"/>
+    <functioncall functionName="type"/>
+    <functioncall functionName="values"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="wcscmp"/>
+    <functioncall functionName="wcscpy"/>
+    <functioncall functionName="width"/>
+    <functioncall functionName="widthMM"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="xdpi"/>
+    <functioncall functionName="xpos"/>
+    <functioncall functionName="xscale"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="ydpi"/>
+    <functioncall functionName="ypos"/>
+    <functioncall functionName="yscale"/>
+  </FileInfo>
+</analyzerinfo>

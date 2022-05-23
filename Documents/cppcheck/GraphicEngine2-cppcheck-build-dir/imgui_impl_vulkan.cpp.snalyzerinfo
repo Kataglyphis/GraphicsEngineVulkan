@@ -1,0 +1,875 @@
+ImVec2
+ImVec2
+operator[] call:[assert,return]
+operator[] call:[assert,return]
+ImVec4
+ImVec4
+operatornew
+operatordelete
+IM_DELETE call:[MemFree,T] noreturn:[MemFree]
+SelectAll
+ClearSelection
+HasSelection
+ImGuiPayload call:[Clear] noreturn:[Clear]
+Clear call:[memset,sizeof]
+IsDataType call:[strcmp]
+IsPreview
+IsDelivery
+ImGuiTableColumnSortSpecs call:[memset,sizeof] noreturn:[memset]
+ImGuiTableSortSpecs call:[memset,sizeof] noreturn:[memset]
+ImGuiOnceUponAFrame
+operatorbool call:[GetFrameCount]
+Clear call:[Build] noreturn:[Build]
+IsActive call:[empty] noreturn:[empty]
+ImGuiTextRange
+ImGuiTextRange
+empty
+ImGuiTextBuffer
+operator[] call:[assert]
+begin call:[front]
+end call:[back]
+size
+empty
+clear call:[clear] noreturn:[clear]
+reserve call:[reserve] noreturn:[reserve]
+c_str
+ImGuiStoragePair
+ImGuiStoragePair
+ImGuiStoragePair
+Clear call:[clear] noreturn:[clear]
+ImGuiListClipper call:[Begin,memset,sizeof] noreturn:[Begin]
+ImColor
+ImColor
+ImColor
+ImColor
+ImColor
+operatorint call:[ColorConvertFloat4ToU32] noreturn:[ColorConvertFloat4ToU32]
+operatorImVec4
+SetHSV call:[ColorConvertHSVtoRGB]
+HSV call:[ColorConvertHSVtoRGB,ImColor] noreturn:[ImColor]
+ImDrawCmd call:[memset,sizeof] noreturn:[memset]
+GetTexID
+ImDrawListSplitter call:[memset,sizeof] noreturn:[memset]
+ImDrawListSplitter call:[ClearFreeMemory] noreturn:[ClearFreeMemory]
+Clear
+ImDrawList call:[memset,sizeof]
+ImDrawList call:[_ClearFreeMemory] noreturn:[_ClearFreeMemory]
+GetClipRectMin call:[ImVec2,back] noreturn:[ImVec2]
+GetClipRectMax call:[ImVec2,back] noreturn:[ImVec2]
+PathClear
+PathLineTo call:[push_back] noreturn:[push_back]
+PathLineToMergeDuplicate call:[memcmp,push_back] noreturn:[push_back]
+PathFillConvex call:[AddConvexPolyFilled]
+PathStroke call:[AddPolyline]
+ChannelsSplit call:[Split] noreturn:[Split]
+ChannelsMerge call:[Merge] noreturn:[Merge]
+ChannelsSetCurrent call:[SetCurrentChannel] noreturn:[SetCurrentChannel]
+PrimWriteVtx
+PrimWriteIdx
+PrimVtx call:[PrimWriteIdx,PrimWriteVtx] noreturn:[PrimWriteVtx]
+AddBezierCurve call:[AddBezierCubic] noreturn:[AddBezierCubic]
+PathBezierCurveTo call:[PathBezierCubicCurveTo] noreturn:[PathBezierCubicCurveTo]
+ImDrawData call:[Clear] noreturn:[Clear]
+Clear call:[memset,sizeof] noreturn:[memset]
+ImFontGlyphRangesBuilder call:[Clear] noreturn:[Clear]
+Clear call:[memset,resize,sizeof] noreturn:[memset]
+GetBit call:[return]
+SetBit
+AddChar call:[SetBit] noreturn:[SetBit]
+ImFontAtlasCustomRect call:[ImVec2]
+IsPacked
+IsBuilt
+SetTexID
+GetCustomRectByIndex call:[assert]
+GetCharAdvance call:[return]
+IsLoaded
+GetDebugName
+ImGuiViewport call:[memset,sizeof] noreturn:[memset]
+GetCenter call:[ImVec2] noreturn:[ImVec2]
+GetWorkCenter call:[ImVec2] noreturn:[ImVec2]
+ImGuiPlatformImeData call:[memset,sizeof] noreturn:[memset]
+GetWindowContentRegionWidth call:[GetWindowContentRegionMax,GetWindowContentRegionMin]
+ListBoxHeader call:[BeginListBox] noreturn:[BeginListBox]
+ListBoxFooter call:[EndListBox] noreturn:[EndListBox]
+OpenPopupContextItem call:[OpenPopupOnItemClick] noreturn:[OpenPopupOnItemClick]
+DragFloat call:[DragScalar] noreturn:[DragScalar]
+DragFloat2 call:[DragScalarN] noreturn:[DragScalarN]
+DragFloat3 call:[DragScalarN] noreturn:[DragScalarN]
+DragFloat4 call:[DragScalarN] noreturn:[DragScalarN]
+SliderFloat call:[SliderScalar] noreturn:[SliderScalar]
+SliderFloat2 call:[SliderScalarN] noreturn:[SliderScalarN]
+SliderFloat3 call:[SliderScalarN] noreturn:[SliderScalarN]
+SliderFloat4 call:[SliderScalarN] noreturn:[SliderScalarN]
+BeginPopupContextWindow call:[BeginPopupContextWindow] noreturn:[BeginPopupContextWindow]
+ImGui_ImplVulkanH_Window call:[memset,sizeof]
+ImGui_ImplVulkan_Data call:[memset,sizeof]
+ImGui_ImplVulkan_GetBackendData call:[GetCurrentContext,GetIO]
+ImGui_ImplVulkan_MemoryType call:[ImGui_ImplVulkan_GetBackendData,vkGetPhysicalDeviceMemoryProperties]
+check_vk_result call:[CheckVkResultFn,ImGui_ImplVulkan_GetBackendData] noreturn:[CheckVkResultFn]
+CreateOrResizeBuffer call:[ImGui_ImplVulkan_GetBackendData,ImGui_ImplVulkan_MemoryType,check_vk_result,vkAllocateMemory,vkBindBufferMemory,vkCreateBuffer,vkDestroyBuffer,vkFreeMemory,vkGetBufferMemoryRequirements] noreturn:[vkDestroyBuffer,vkFreeMemory]
+ImGui_ImplVulkan_SetupRenderState call:[ImGui_ImplVulkan_GetBackendData,sizeof,vkCmdBindIndexBuffer,vkCmdBindPipeline,vkCmdBindVertexBuffers,vkCmdPushConstants,vkCmdSetViewport] noreturn:[vkCmdBindIndexBuffer,vkCmdBindPipeline,vkCmdPushConstants,vkCmdSetViewport]
+ImGui_ImplVulkan_RenderDrawData call:[CreateOrResizeBuffer,ImGui_ImplVulkan_GetBackendData,ImGui_ImplVulkan_SetupRenderState,MemAlloc,UserCallback,assert,check_vk_result,clip_max,clip_min,memcpy,memset,sizeof,vkCmdBindDescriptorSets,vkCmdDrawIndexed,vkCmdSetScissor,vkFlushMappedMemoryRanges,vkMapMemory,vkUnmapMemory] noreturn:[CreateOrResizeBuffer,ImGui_ImplVulkan_SetupRenderState,UserCallback,memset,vkCmdDrawIndexed,vkCmdSetScissor,vkUnmapMemory]
+ImGui_ImplVulkan_CreateFontsTexture call:[GetIO,GetTexDataAsRGBA32,ImGui_ImplVulkan_AddTexture,ImGui_ImplVulkan_GetBackendData,ImGui_ImplVulkan_MemoryType,SetTexID,check_vk_result,memcpy,sizeof,vkAllocateMemory,vkBindBufferMemory,vkBindImageMemory,vkCmdCopyBufferToImage,vkCmdPipelineBarrier,vkCreateBuffer,vkCreateImage,vkCreateImageView,vkFlushMappedMemoryRanges,vkGetBufferMemoryRequirements,vkGetImageMemoryRequirements,vkMapMemory,vkUnmapMemory] noreturn:[check_vk_result,vkCmdPipelineBarrier,vkUnmapMemory]
+ImGui_ImplVulkan_CreateShaderModules global:[__glsl_shader_frag_spv,__glsl_shader_vert_spv] call:[ImGui_ImplVulkan_GetBackendData,check_vk_result,sizeof,vkCreateShaderModule] noreturn:[check_vk_result]
+ImGui_ImplVulkan_CreateFontSampler call:[ImGui_ImplVulkan_GetBackendData,check_vk_result,vkCreateSampler] noreturn:[check_vk_result]
+ImGui_ImplVulkan_CreateDescriptorSetLayout call:[ImGui_ImplVulkan_CreateFontSampler,ImGui_ImplVulkan_GetBackendData,check_vk_result,vkCreateDescriptorSetLayout] noreturn:[check_vk_result]
+ImGui_ImplVulkan_CreatePipelineLayout call:[ImGui_ImplVulkan_CreateDescriptorSetLayout,ImGui_ImplVulkan_GetBackendData,check_vk_result,sizeof,vkCreatePipelineLayout] noreturn:[check_vk_result]
+ImGui_ImplVulkan_CreatePipeline call:[ImGui_ImplVulkan_CreatePipelineLayout,ImGui_ImplVulkan_CreateShaderModules,ImGui_ImplVulkan_GetBackendData,check_vk_result,offsetof,sizeof,vkCreateGraphicsPipelines] noreturn:[check_vk_result]
+ImGui_ImplVulkan_CreateDeviceObjects call:[ImGui_ImplVulkan_CreatePipeline,ImGui_ImplVulkan_GetBackendData,check_vk_result,sizeof,vkCreateDescriptorSetLayout,vkCreatePipelineLayout,vkCreateSampler] noreturn:[check_vk_result]
+ImGui_ImplVulkan_DestroyFontUploadObjects call:[ImGui_ImplVulkan_GetBackendData,vkDestroyBuffer,vkFreeMemory]
+ImGui_ImplVulkan_DestroyDeviceObjects call:[ImGui_ImplVulkanH_DestroyWindowRenderBuffers,ImGui_ImplVulkan_DestroyFontUploadObjects,ImGui_ImplVulkan_GetBackendData,vkDestroyDescriptorSetLayout,vkDestroyImage,vkDestroyImageView,vkDestroyPipeline,vkDestroyPipelineLayout,vkDestroySampler,vkDestroyShaderModule,vkFreeMemory]
+ImGui_ImplVulkan_LoadFunctions global:[g_FunctionsLoaded]
+ImGui_ImplVulkan_Init global:[g_FunctionsLoaded] call:[GetIO,ImGui_ImplVulkan_CreateDeviceObjects,ImGui_ImplVulkan_Data,ImNewWrapper,MemAlloc,assert,new,sizeof]
+ImGui_ImplVulkan_Shutdown call:[GetIO,IM_DELETE,ImGui_ImplVulkan_DestroyDeviceObjects,ImGui_ImplVulkan_GetBackendData,assert] noreturn:[IM_DELETE]
+ImGui_ImplVulkan_NewFrame call:[ImGui_ImplVulkan_GetBackendData,assert]
+ImGui_ImplVulkan_SetMinImageCount call:[ImGui_ImplVulkanH_DestroyWindowRenderBuffers,ImGui_ImplVulkan_GetBackendData,assert,check_vk_result,vkDeviceWaitIdle]
+ImGui_ImplVulkan_AddTexture call:[ImGui_ImplVulkan_GetBackendData,check_vk_result,vkAllocateDescriptorSets,vkUpdateDescriptorSets] noreturn:[check_vk_result,vkUpdateDescriptorSets]
+ImGui_ImplVulkanH_SelectSurfaceFormat global:[g_FunctionsLoaded] call:[assert,resize,vkGetPhysicalDeviceSurfaceFormatsKHR]
+ImGui_ImplVulkanH_SelectPresentMode global:[g_FunctionsLoaded] call:[assert,resize,vkGetPhysicalDeviceSurfacePresentModesKHR]
+ImGui_ImplVulkanH_CreateWindowCommandBuffers call:[assert,check_vk_result,vkAllocateCommandBuffers,vkCreateCommandPool,vkCreateFence,vkCreateSemaphore] noreturn:[check_vk_result]
+ImGui_ImplVulkanH_GetMinImageCountFromPresentMode call:[assert]
+ImGui_ImplVulkanH_CreateWindowSwapChain call:[ImGui_ImplVulkanH_DestroyFrame,ImGui_ImplVulkanH_DestroyFrameSemaphores,ImGui_ImplVulkanH_GetMinImageCountFromPresentMode,MemAlloc,MemFree,assert,check_vk_result,memset,sizeof,vkCreateFramebuffer,vkCreateImageView,vkCreateRenderPass,vkCreateSwapchainKHR,vkDestroyPipeline,vkDestroyRenderPass,vkDestroySwapchainKHR,vkDeviceWaitIdle,vkGetPhysicalDeviceSurfaceCapabilitiesKHR,vkGetSwapchainImagesKHR] noreturn:[ImGui_ImplVulkanH_DestroyFrameSemaphores,ImGui_ImplVulkanH_GetMinImageCountFromPresentMode,check_vk_result,vkDestroyPipeline,vkDestroyRenderPass,vkDestroySwapchainKHR]
+ImGui_ImplVulkanH_CreateOrResizeWindow global:[g_FunctionsLoaded] call:[ImGui_ImplVulkanH_CreateWindowCommandBuffers,ImGui_ImplVulkanH_CreateWindowSwapChain,assert] noreturn:[ImGui_ImplVulkanH_CreateWindowCommandBuffers]
+ImGui_ImplVulkanH_DestroyWindow call:[ImGui_ImplVulkanH_DestroyFrame,ImGui_ImplVulkanH_DestroyFrameSemaphores,ImGui_ImplVulkanH_Window,MemFree,vkDestroyPipeline,vkDestroyRenderPass,vkDestroySurfaceKHR,vkDestroySwapchainKHR,vkDeviceWaitIdle] noreturn:[ImGui_ImplVulkanH_DestroyFrameSemaphores,ImGui_ImplVulkanH_Window]
+ImGui_ImplVulkanH_DestroyFrame call:[vkDestroyCommandPool,vkDestroyFence,vkDestroyFramebuffer,vkDestroyImageView,vkFreeCommandBuffers] noreturn:[vkDestroyFramebuffer]
+ImGui_ImplVulkanH_DestroyFrameSemaphores call:[vkDestroySemaphore]
+ImGui_ImplVulkanH_DestroyFrameRenderBuffers call:[vkDestroyBuffer,vkFreeMemory]
+ImGui_ImplVulkanH_DestroyWindowRenderBuffers call:[ImGui_ImplVulkanH_DestroyFrameRenderBuffers,MemFree] noreturn:[ImGui_ImplVulkanH_DestroyFrameRenderBuffers]
+ImVector < unsigned short >
+ImVector < unsigned short > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < unsigned short > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,short] noreturn:[clear,short]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImGuiTextRange >
+ImVector < ImGuiTextRange > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImGuiTextRange > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImGuiTextRange,clear] noreturn:[ImGuiTextRange,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < char >
+ImVector < char > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < char > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[char,clear] noreturn:[char,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImGuiStoragePair >
+ImVector < ImGuiStoragePair > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImGuiStoragePair > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImGuiStoragePair,clear] noreturn:[ImGuiStoragePair,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImDrawCmd >
+ImVector < ImDrawCmd > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImDrawCmd > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImDrawCmd,clear] noreturn:[ImDrawCmd,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImDrawChannel >
+ImVector < ImDrawChannel > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImDrawChannel > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImDrawChannel,clear] noreturn:[ImDrawChannel,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImDrawVert >
+ImVector < ImDrawVert > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImDrawVert > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImDrawVert,clear] noreturn:[ImDrawVert,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImVec4 >
+ImVector < ImVec4 > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImVec4 > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImVec4,clear] noreturn:[ImVec4,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < void * >
+ImVector < void * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < void * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImVec2 >
+ImVector < ImVec2 > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImVec2 > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImVec2,clear] noreturn:[ImVec2,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < unsigned int >
+ImVector < unsigned int > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < unsigned int > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,int] noreturn:[clear,int]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFont * >
+ImVector < ImFont * > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFont * > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear] noreturn:[clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFontAtlasCustomRect >
+ImVector < ImFontAtlasCustomRect > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFontAtlasCustomRect > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImFontAtlasCustomRect,clear] noreturn:[ImFontAtlasCustomRect,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFontConfig >
+ImVector < ImFontConfig > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFontConfig > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImFontConfig,clear] noreturn:[ImFontConfig,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < float >
+ImVector < float > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < float > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[clear,float] noreturn:[clear,float]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < ImFontGlyph >
+ImVector < ImFontGlyph > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < ImFontGlyph > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[ImFontGlyph,clear] noreturn:[ImFontGlyph,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < VkSurfaceFormatKHR >
+ImVector < VkSurfaceFormatKHR > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < VkSurfaceFormatKHR > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[VkSurfaceFormatKHR,clear] noreturn:[VkSurfaceFormatKHR,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]
+ImVector < VkPresentModeKHR >
+ImVector < VkPresentModeKHR > call:[operator=] noreturn:[operator=]
+operator= call:[clear,memcpy,resize,sizeof]
+ImVector < VkPresentModeKHR > call:[MemFree] noreturn:[MemFree]
+clear call:[MemFree]
+clear_delete call:[IM_DELETE,clear] noreturn:[IM_DELETE,clear]
+clear_destruct call:[VkPresentModeKHR,clear] noreturn:[VkPresentModeKHR,clear]
+empty
+size
+size_in_bytes call:[sizeof] noreturn:[sizeof]
+max_size call:[sizeof] noreturn:[sizeof]
+capacity
+operator[] call:[assert]
+operator[] call:[assert]
+begin
+begin
+end
+end
+front call:[assert]
+front call:[assert]
+back call:[assert]
+back call:[assert]
+swap
+_grow_capacity
+resize call:[_grow_capacity,reserve] noreturn:[reserve]
+resize call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[memcpy,reserve]
+shrink call:[assert]
+reserve call:[MemAlloc,MemFree,memcpy,sizeof] noreturn:[MemFree]
+push_back call:[_grow_capacity,memcpy,reserve,sizeof] noreturn:[reserve]
+pop_back call:[assert]
+push_front call:[insert,push_back] noreturn:[insert,push_back]
+erase call:[assert,memmove,sizeof]
+erase call:[assert,memmove,sizeof]
+erase_unsorted call:[assert,memcpy,sizeof] noreturn:[memcpy]
+insert call:[_grow_capacity,assert,memcpy,memmove,reserve,sizeof] noreturn:[memmove,reserve]
+contains
+find
+find
+find_erase call:[erase,find]
+find_erase_unsorted call:[erase_unsorted,find]
+index_from_ptr call:[assert,return]

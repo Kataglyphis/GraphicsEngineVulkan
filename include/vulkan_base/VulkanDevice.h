@@ -2,9 +2,9 @@
 #include <vulkan/vulkan.h>
 #include <vector>
 
-#include "Utilities.h"
 #include "QueueFamilyIndices.h"
 #include "VulkanInstance.h"
+#include "SwapChainDetails.h"
 
 class VulkanDevice
 {

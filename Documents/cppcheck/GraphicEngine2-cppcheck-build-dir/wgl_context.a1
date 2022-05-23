@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1116087169">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;attribs&apos; can be reduced." verbose="The scope of the variable &apos;attribs&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\wgl_context.c" line="539" column="9"/>
+            <symbol>attribs</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="155" col="18" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="155" col="18" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="156" col="18" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="156" col="18" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="161" col="17" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="161" col="17" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="164" col="17" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="164" col="17" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="167" col="17" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="167" col="17" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="170" col="26" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="170" col="26" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="171" col="28" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="171" col="28" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="172" col="27" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="172" col="27" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="173" col="28" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="173" col="28" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="175" col="28" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="175" col="28" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="176" col="30" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="176" col="30" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="178" col="31" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="178" col="31" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="179" col="33" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="179" col="33" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="180" col="32" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="180" col="32" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="181" col="33" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="181" col="33" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="183" col="29" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="183" col="29" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="185" col="17" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="185" col="17" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="189" col="30" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="189" col="30" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="196" col="25" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="196" col="25" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="204" col="25" call-argexpr="attribs" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:37:12" call-funcname="findPixelFormatAttribValueWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="204" col="25" call-argexpr="values" call-argvaluetype="7" call-argvalue="160"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:891:6" call-funcname="_glfwPlatformSetTls" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="306" col="32" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:891:6" call-funcname="_glfwPlatformSetTls" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="317" col="28" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="326" col="14" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="326" col="39" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="352" col="14" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:535:6" call-funcname="_glfwIsWindowsVersionOrGreaterWin32" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="352" col="39" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="773" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="784" col="24" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:950:10" call-funcname="_glfwStringInExtensionString" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="377" col="12" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:365:12" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:65:12" call-funcname="choosePixelFormatWGL" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="555" col="19" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:624:10" my-argnr="3"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:321:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="323" col="10" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:389:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="391" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:624:10" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="547" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:624:10" my-argnr="2" my-argname="ctxconfig" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="544" col="9" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:321:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="323" col="10" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c:389:13" my-argnr="1" my-argname="window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="391" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:624:10" my-argnr="2" my-argname="ctxconfig" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/wgl_context.c" line="544" col="9" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="findPixelFormatAttribValueWGL" lineNumber="37"/>
+    <functiondecl functionName="choosePixelFormatWGL" lineNumber="65"/>
+    <functiondecl functionName="makeContextCurrentWGL" lineNumber="296"/>
+    <functiondecl functionName="swapBuffersWGL" lineNumber="321"/>
+    <functiondecl functionName="swapIntervalWGL" lineNumber="342"/>
+    <functiondecl functionName="extensionSupportedWGL" lineNumber="365"/>
+    <functiondecl functionName="getProcAddressWGL" lineNumber="380"/>
+    <functiondecl functionName="destroyContextWGL" lineNumber="389"/>
+    <functiondecl functionName="_glfwInitWGL" lineNumber="400"/>
+    <functiondecl functionName="_glfwTerminateWGL" lineNumber="520"/>
+    <functiondecl functionName="_glfwCreateContextWGL" lineNumber="535"/>
+    <functiondecl functionName="glfwGetWGLContext" lineNumber="770"/>
+    <functioncall functionName="ARB_context_flush_control"/>
+    <functioncall functionName="ARB_create_context"/>
+    <functioncall functionName="ARB_create_context_no_error"/>
+    <functioncall functionName="ARB_create_context_profile"/>
+    <functioncall functionName="ARB_create_context_robustness"/>
+    <functioncall functionName="ARB_multisample"/>
+    <functioncall functionName="ARB_pixel_format"/>
+    <functioncall functionName="ChoosePixelFormat"/>
+    <functioncall functionName="CreateContext"/>
+    <functioncall functionName="CreateContextAttribsARB"/>
+    <functioncall functionName="DeleteContext"/>
+    <functioncall functionName="DescribePixelFormat"/>
+    <functioncall functionName="EXT_colorspace"/>
+    <functioncall functionName="EXT_create_context_es2_profile"/>
+    <functioncall functionName="EXT_framebuffer_sRGB"/>
+    <functioncall functionName="EXT_swap_control"/>
+    <functioncall functionName="FALSE"/>
+    <functioncall functionName="Flush"/>
+    <functioncall functionName="GetCurrentContext"/>
+    <functioncall functionName="GetCurrentDC"/>
+    <functioncall functionName="GetDC"/>
+    <functioncall functionName="GetExtensionsStringARB"/>
+    <functioncall functionName="GetExtensionsStringEXT"/>
+    <functioncall functionName="GetLastError"/>
+    <functioncall functionName="GetPixelFormatAttribivARB"/>
+    <functioncall functionName="GetProcAddress"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="IsCompositionEnabled"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="MakeCurrent"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PIXELFORMATDESCRIPTOR"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="SetPixelFormat"/>
+    <functioncall functionName="ShareLists"/>
+    <functioncall functionName="SwapBuffers"/>
+    <functioncall functionName="SwapIntervalEXT"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_WIN32_WINNT_VISTA"/>
+    <functioncall functionName="_glfwChooseFBConfig"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwInputErrorWin32"/>
+    <functioncall functionName="_glfwIsWindowsVersionOrGreaterWin32"/>
+    <functioncall functionName="_glfwPlatformFreeModule"/>
+    <functioncall functionName="_glfwPlatformGetModuleSymbol"/>
+    <functioncall functionName="_glfwPlatformGetTls"/>
+    <functioncall functionName="_glfwPlatformLoadModule"/>
+    <functioncall functionName="_glfwPlatformSetTls"/>
+    <functioncall functionName="_glfwStringInExtensionString"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="abs"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="attrib"/>
+    <functioncall functionName="attribCount"/>
+    <functioncall functionName="attribs"/>
+    <functioncall functionName="cAccumAlphaBits"/>
+    <functioncall functionName="cAccumBlueBits"/>
+    <functioncall functionName="cAccumGreenBits"/>
+    <functioncall functionName="cAccumRedBits"/>
+    <functioncall functionName="cAlphaBits"/>
+    <functioncall functionName="cAuxBuffers"/>
+    <functioncall functionName="cBlueBits"/>
+    <functioncall functionName="cDepthBits"/>
+    <functioncall functionName="cGreenBits"/>
+    <functioncall functionName="cRedBits"/>
+    <functioncall functionName="cStencilBits"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="choosePixelFormatWGL"/>
+    <functioncall functionName="closest"/>
+    <functioncall functionName="contextSlot"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="ctxconfig"/>
+    <functioncall functionName="dc"/>
+    <functioncall functionName="debug"/>
+    <functioncall functionName="destroyContextWGL"/>
+    <functioncall functionName="doublebuffer"/>
+    <functioncall functionName="enabled"/>
+    <functioncall functionName="extension"/>
+    <functioncall functionName="extensionSupportedWGL"/>
+    <functioncall functionName="extensions"/>
+    <functioncall functionName="fbconfig"/>
+    <functioncall functionName="findPixelFormatAttribValueWGL"/>
+    <functioncall functionName="flags"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="forward"/>
+    <functioncall functionName="getProcAddressWGL"/>
+    <functioncall functionName="handle"/>
+    <functioncall functionName="helperWindowHandle"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="instance"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="interval"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="major"/>
+    <functioncall functionName="makeContextCurrentWGL"/>
+    <functioncall functionName="mask"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="minor"/>
+    <functioncall functionName="monitor"/>
+    <functioncall functionName="nativeCount"/>
+    <functioncall functionName="noerror"/>
+    <functioncall functionName="pdc"/>
+    <functioncall functionName="pfd"/>
+    <functioncall functionName="pixelFormat"/>
+    <functioncall functionName="prc"/>
+    <functioncall functionName="proc"/>
+    <functioncall functionName="procname"/>
+    <functioncall functionName="profile"/>
+    <functioncall functionName="rc"/>
+    <functioncall functionName="release"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="robustness"/>
+    <functioncall functionName="share"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="swapBuffersWGL"/>
+    <functioncall functionName="swapIntervalWGL"/>
+    <functioncall functionName="usableConfigs"/>
+    <functioncall functionName="usableCount"/>
+    <functioncall functionName="values"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="window"/>
+  </FileInfo>
+</analyzerinfo>

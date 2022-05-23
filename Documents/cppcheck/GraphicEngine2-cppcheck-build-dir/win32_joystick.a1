@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3609235325">
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:968:16" call-funcname="_glfwAllocJoystick" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="469" col="28" call-argexpr="name" call-argvaluetype="7" call-argvalue="256"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:968:16" call-funcname="_glfwAllocJoystick" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="469" col="28" call-argexpr="guid" call-argvaluetype="7" call-argvalue="33"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:968:16" call-funcname="_glfwAllocJoystick" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="529" col="36" call-argexpr="guid" call-argvaluetype="7" call-argvalue="33"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:618:5" call-funcname="_glfwPollJoystickWin32" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="564" col="35" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:930:6" call-funcname="_glfwInputJoystickButton" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="652" col="45" call-argexpr="value" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\win32_joystick.c" line="651" col="65" info="Assignment &apos;value=(*((unsigned char*)data)&amp;0x80)!=0&apos;, assigned value is 0"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:929:6" call-funcname="_glfwInputJoystickAxis" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="715" col="31" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:930:6" call-funcname="_glfwInputJoystickButton" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="725" col="37" call-argexpr="i" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:931:6" call-funcname="_glfwInputJoystickHat" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="737" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/>  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <pointer-arith>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:620:6" my-argnr="1" my-argname="guid" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="750" col="16" value="20"/>
+    </pointer-arith>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c:149:20" my-argnr="1" my-argname="xic" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="151" col="13" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c:257:13" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="259" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c:274:22" my-argnr="1" my-argname="doi" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="280" col="23" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:618:5" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="606" col="9" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c:149:20" my-argnr="1" my-argname="xic" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="151" col="13" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c:257:13" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="259" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:618:5" my-argnr="1" my-argname="js" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="606" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_platform.h:620:6" my-argnr="1" my-argname="guid" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/win32_joystick.c" line="750" col="16" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="getDeviceDescription" lineNumber="149"/>
+    <functiondecl functionName="compareJoystickObjects" lineNumber="179"/>
+    <functiondecl functionName="supportsXInput" lineNumber="193"/>
+    <functiondecl functionName="closeJoystick" lineNumber="257"/>
+    <functiondecl functionName="deviceObjectCallback" lineNumber="274"/>
+    <functiondecl functionName="deviceCallback" lineNumber="346"/>
+    <functiondecl functionName="_glfwDetectJoystickConnectionWin32" lineNumber="496"/>
+    <functiondecl functionName="_glfwDetectJoystickDisconnectionWin32" lineNumber="556"/>
+    <functiondecl functionName="_glfwInitJoysticksWin32" lineNumber="573"/>
+    <functiondecl functionName="_glfwTerminateJoysticksWin32" lineNumber="593"/>
+    <functiondecl functionName="_glfwPollJoystickWin32" lineNumber="604"/>
+    <functiondecl functionName="_glfwGetMappingNameWin32" lineNumber="743"/>
+    <functiondecl functionName="_glfwUpdateGamepadGUIDWin32" lineNumber="748"/>
+    <functioncall functionName="CP_UTF8"/>
+    <functioncall functionName="Create"/>
+    <functioncall functionName="DI8DEVCLASS_GAMECTRL"/>
+    <functioncall functionName="DIDATAFORMAT"/>
+    <functioncall functionName="DIDFT_ABSAXIS"/>
+    <functioncall functionName="DIDFT_ANYINSTANCE"/>
+    <functioncall functionName="DIDFT_AXIS"/>
+    <functioncall functionName="DIDFT_BUTTON"/>
+    <functioncall functionName="DIDFT_GETTYPE"/>
+    <functioncall functionName="DIDFT_POV"/>
+    <functioncall functionName="DIDOI_ASPECTPOSITION"/>
+    <functioncall functionName="DIEDFL_ALLDEVICES"/>
+    <functioncall functionName="DIJOFS_BUTTON"/>
+    <functioncall functionName="DIJOFS_POV"/>
+    <functioncall functionName="DIJOFS_RX"/>
+    <functioncall functionName="DIJOFS_RY"/>
+    <functioncall functionName="DIJOFS_RZ"/>
+    <functioncall functionName="DIJOFS_SLIDER"/>
+    <functioncall functionName="DIJOFS_X"/>
+    <functioncall functionName="DIJOFS_Y"/>
+    <functioncall functionName="DIJOFS_Z"/>
+    <functioncall functionName="DIJOYSTATE"/>
+    <functioncall functionName="DIOBJECTDATAFORMAT"/>
+    <functioncall functionName="DIPH_BYID"/>
+    <functioncall functionName="DIPH_DEVICE"/>
+    <functioncall functionName="DIPROPAXISMODE_ABS"/>
+    <functioncall functionName="DIPROP_AXISMODE"/>
+    <functioncall functionName="DIPROP_RANGE"/>
+    <functioncall functionName="Data1"/>
+    <functioncall functionName="GUID"/>
+    <functioncall functionName="GetCapabilities"/>
+    <functioncall functionName="GetRawInputDeviceInfoA"/>
+    <functioncall functionName="GetRawInputDeviceList"/>
+    <functioncall functionName="GetState"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="IDirectInput8_CreateDevice"/>
+    <functioncall functionName="IDirectInput8_EnumDevices"/>
+    <functioncall functionName="IDirectInput8_Release"/>
+    <functioncall functionName="IDirectInputDevice8_Acquire"/>
+    <functioncall functionName="IDirectInputDevice8_EnumObjects"/>
+    <functioncall functionName="IDirectInputDevice8_GetCapabilities"/>
+    <functioncall functionName="IDirectInputDevice8_GetDeviceState"/>
+    <functioncall functionName="IDirectInputDevice8_Poll"/>
+    <functioncall functionName="IDirectInputDevice8_Release"/>
+    <functioncall functionName="IDirectInputDevice8_SetDataFormat"/>
+    <functioncall functionName="IDirectInputDevice8_SetProperty"/>
+    <functioncall functionName="IDirectInputDevice8_Unacquire"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="RAWINPUTDEVICELIST"/>
+    <functioncall functionName="RIDI_DEVICEINFO"/>
+    <functioncall functionName="RIDI_DEVICENAME"/>
+    <functioncall functionName="SubType"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="WideCharToMultiByte"/>
+    <functioncall functionName="XINPUT_GAMEPAD_A"/>
+    <functioncall functionName="XINPUT_GAMEPAD_B"/>
+    <functioncall functionName="XINPUT_GAMEPAD_BACK"/>
+    <functioncall functionName="XINPUT_GAMEPAD_LEFT_SHOULDER"/>
+    <functioncall functionName="XINPUT_GAMEPAD_LEFT_THUMB"/>
+    <functioncall functionName="XINPUT_GAMEPAD_RIGHT_SHOULDER"/>
+    <functioncall functionName="XINPUT_GAMEPAD_RIGHT_THUMB"/>
+    <functioncall functionName="XINPUT_GAMEPAD_START"/>
+    <functioncall functionName="XINPUT_GAMEPAD_X"/>
+    <functioncall functionName="XINPUT_GAMEPAD_Y"/>
+    <functioncall functionName="_glfwAllocJoystick"/>
+    <functioncall functionName="_glfwDataFormat"/>
+    <functioncall functionName="_glfwDetectJoystickConnectionWin32"/>
+    <functioncall functionName="_glfwFreeJoystick"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfwInputJoystick"/>
+    <functioncall functionName="_glfwInputJoystickAxis"/>
+    <functioncall functionName="_glfwInputJoystickButton"/>
+    <functioncall functionName="_glfwInputJoystickHat"/>
+    <functioncall functionName="_glfwObjectDataFormats"/>
+    <functioncall functionName="_glfwPollJoystickWin32"/>
+    <functioncall functionName="_glfw_GUID_POV"/>
+    <functioncall functionName="_glfw_GUID_RxAxis"/>
+    <functioncall functionName="_glfw_GUID_RyAxis"/>
+    <functioncall functionName="_glfw_GUID_RzAxis"/>
+    <functioncall functionName="_glfw_GUID_Slider"/>
+    <functioncall functionName="_glfw_GUID_XAxis"/>
+    <functioncall functionName="_glfw_GUID_YAxis"/>
+    <functioncall functionName="_glfw_GUID_ZAxis"/>
+    <functioncall functionName="_glfw_IID_IDirectInput8W"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="ai"/>
+    <functioncall functionName="api"/>
+    <functioncall functionName="bi"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="buttonCount"/>
+    <functioncall functionName="closeJoystick"/>
+    <functioncall functionName="compareJoystickObjects"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="data"/>
+    <functioncall functionName="dc"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="deviceCallback"/>
+    <functioncall functionName="deviceObjectCallback"/>
+    <functioncall functionName="dipd"/>
+    <functioncall functionName="diph"/>
+    <functioncall functionName="dipr"/>
+    <functioncall functionName="dpad"/>
+    <functioncall functionName="dwPOVs"/>
+    <functioncall functionName="dwProductId"/>
+    <functioncall functionName="dwType"/>
+    <functioncall functionName="dwVendorId"/>
+    <functioncall functionName="first"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="getDeviceDescription"/>
+    <functioncall functionName="guid"/>
+    <functioncall functionName="guidInstance"/>
+    <functioncall functionName="guidProduct"/>
+    <functioncall functionName="guidType"/>
+    <functioncall functionName="hDevice"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="index"/>
+    <functioncall functionName="instance"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="jid"/>
+    <functioncall functionName="js"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="memcmp"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="objectCount"/>
+    <functioncall functionName="objects"/>
+    <functioncall functionName="offset"/>
+    <functioncall functionName="original"/>
+    <functioncall functionName="pi"/>
+    <functioncall functionName="povCount"/>
+    <functioncall functionName="present"/>
+    <functioncall functionName="qsort"/>
+    <functioncall functionName="rdi"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="ridl"/>
+    <functioncall functionName="second"/>
+    <functioncall functionName="short"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="sliderCount"/>
+    <functioncall functionName="sprintf"/>
+    <functioncall functionName="state"/>
+    <functioncall functionName="stateIndex"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="strncpy"/>
+    <functioncall functionName="strstr"/>
+    <functioncall functionName="supportsXInput"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="tszInstanceName"/>
+    <functioncall functionName="type"/>
+    <functioncall functionName="uint8_t"/>
+    <functioncall functionName="user"/>
+    <functioncall functionName="value"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="xic"/>
+    <functioncall functionName="xis"/>
+  </FileInfo>
+</analyzerinfo>

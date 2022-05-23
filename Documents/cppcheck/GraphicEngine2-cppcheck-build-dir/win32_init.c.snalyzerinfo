@@ -1,0 +1,14 @@
+DllMain
+loadLibraries global:[_glfw] call:[GetModuleHandleExW,_glfwInputErrorWin32,_glfwPlatformGetModuleSymbol,_glfwPlatformLoadModule] noreturn:[_glfwPlatformGetModuleSymbol]
+freeLibraries global:[_glfw] call:[_glfwPlatformFreeModule] noreturn:[_glfwPlatformFreeModule]
+createKeyTables global:[_glfw] call:[memset,sizeof]
+createHelperWindow global:[_glfw,_glfw_GUID_DEVINTERFACE_HID] call:[CreateWindowExW,DispatchMessageW,PeekMessageW,RegisterDeviceNotificationW,ShowWindow,TranslateMessage,_glfwInputErrorWin32,memset,sizeof] noreturn:[DispatchMessageW,RegisterDeviceNotificationW]
+_glfwCreateWideStringFromUTF8Win32 call:[MultiByteToWideChar,_glfwInputErrorWin32,_glfw_calloc,_glfw_free,sizeof]
+_glfwCreateUTF8FromWideStringWin32 call:[WideCharToMultiByte,_glfwInputErrorWin32,_glfw_calloc,_glfw_free]
+_glfwInputErrorWin32 call:[FormatMessageW,GetLastError,WideCharToMultiByte,_glfwInputError,sizeof] noreturn:[_glfwInputError]
+_glfwUpdateKeyNamesWin32 global:[_glfw] call:[MapVirtualKeyW,ToUnicode,WideCharToMultiByte,memset,sizeof] noreturn:[MapVirtualKeyW,ToUnicode,WideCharToMultiByte]
+_glfwIsWindowsVersionOrGreaterWin32 global:[_glfw] call:[RtlVerifyVersionInfo_,VerSetConditionMask,sizeof]
+_glfwIsWindows10BuildOrGreaterWin32 global:[_glfw] call:[RtlVerifyVersionInfo_,VerSetConditionMask,sizeof]
+_glfwConnectWin32
+_glfwInitWin32 global:[_glfw] call:[SetProcessDPIAware_,SetProcessDpiAwarenessContext_,SetProcessDpiAwareness_,_glfwIsWindows10BuildOrGreaterWin32,_glfwIsWindowsVersionOrGreaterWin32,_glfwPollMonitorsWin32,_glfwRegisterWindowClassWin32,_glfwUpdateKeyNamesWin32,createHelperWindow,createKeyTables,loadLibraries] noreturn:[SetProcessDPIAware_,SetProcessDpiAwarenessContext_,SetProcessDpiAwareness_]
+_glfwTerminateWin32 global:[_glfw] call:[DestroyWindow,UnregisterDeviceNotification,_glfwTerminateEGL,_glfwTerminateOSMesa,_glfwTerminateWGL,_glfwUnregisterWindowClassWin32,_glfw_free,freeLibraries] noreturn:[DestroyWindow,UnregisterDeviceNotification,freeLibraries]

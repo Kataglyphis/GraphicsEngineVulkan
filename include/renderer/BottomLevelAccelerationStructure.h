@@ -1,14 +1,15 @@
 #pragma once
 #include <vulkan/vulkan.h>
 
+#include "VulkanBuffer.h"
+
 class BottomLevelAccelerationStructure
 {
 
 public:
 
-	VkAccelerationStructureKHR accel;
-	VkBuffer buffer;
-	VkDeviceMemory memory;
+	VkAccelerationStructureKHR	accel;
+	VulkanBuffer				vulkanBuffer;
 
 private:
 

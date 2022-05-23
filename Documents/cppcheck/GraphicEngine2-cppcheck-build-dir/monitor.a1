@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="4260927501">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;sizeDiff&apos; can be reduced." verbose="The scope of the variable &apos;sizeDiff&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="222" column="18"/>
+            <symbol>sizeDiff</symbol>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;colorDiff&apos; can be reduced." verbose="The scope of the variable &apos;colorDiff&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="224" column="18"/>
+            <symbol>colorDiff</symbol>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned expression &apos;ramp-&gt;size&apos; is less than zero." verbose="The unsigned expression &apos;ramp-&gt;size&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="527" column="20" info="Unsigned less than zero"/>
+            <symbol>ramp-&gt;size</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfwCompareVideoModes&apos; argument 1 names different: declaration &apos;first&apos; definition &apos;fm&apos;." verbose="Function &apos;_glfwCompareVideoModes&apos; argument 1 names different: declaration &apos;first&apos; definition &apos;fm&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="270" column="47"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="960" column="47"/>
+            <symbol>_glfwCompareVideoModes</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;_glfwCompareVideoModes&apos; argument 2 names different: declaration &apos;second&apos; definition &apos;sm&apos;." verbose="Function &apos;_glfwCompareVideoModes&apos; argument 2 names different: declaration &apos;second&apos; definition &apos;sm&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="270" column="70"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\internal.h" line="960" column="73"/>
+            <symbol>_glfwCompareVideoModes</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMonitorPos&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMonitorPos&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="323" column="45"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2533" column="45"/>
+            <symbol>glfwGetMonitorPos</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMonitorWorkarea&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMonitorWorkarea&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="338" column="50"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2564" column="50"/>
+            <symbol>glfwGetMonitorWorkarea</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMonitorPhysicalSize&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMonitorPhysicalSize&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="359" column="54"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2598" column="54"/>
+            <symbol>glfwGetMonitorPhysicalSize</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMonitorContentScale&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMonitorContentScale&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="377" column="54"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2630" column="54"/>
+            <symbol>glfwGetMonitorContentScale</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMonitorName&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMonitorName&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="392" column="53"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2656" column="53"/>
+            <symbol>glfwGetMonitorName</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetMonitorUserPointer&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetMonitorUserPointer&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="401" column="53"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2682" column="53"/>
+            <symbol>glfwSetMonitorUserPointer</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetMonitorUserPointer&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetMonitorUserPointer&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="410" column="54"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2706" column="54"/>
+            <symbol>glfwGetMonitorUserPointer</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetMonitorCallback&apos; argument 1 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." verbose="Function &apos;glfwSetMonitorCallback&apos; argument 1 names different: declaration &apos;callback&apos; definition &apos;cbfun&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="419" column="62"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2736" column="62"/>
+            <symbol>glfwSetMonitorCallback</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetVideoModes&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetVideoModes&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="426" column="59"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2770" column="59"/>
+            <symbol>glfwGetVideoModes</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetVideoMode&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetVideoMode&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="443" column="58"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2798" column="58"/>
+            <symbol>glfwGetVideoMode</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetGamma&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetGamma&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="454" column="40"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2831" column="40"/>
+            <symbol>glfwSetGamma</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwGetGammaRamp&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwGetGammaRamp&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="501" column="60"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2861" column="60"/>
+            <symbol>glfwGetGammaRamp</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;glfwSetGammaRamp&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." verbose="Function &apos;glfwSetGammaRamp&apos; argument 1 names different: declaration &apos;monitor&apos; definition &apos;handle&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\src\monitor.c" line="515" column="44"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLFW\include\GLFW\glfw3.h" line="2902" column="44"/>
+            <symbol>glfwSetGammaRamp</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="307" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="315" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="333" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="354" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="369" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="388" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="397" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="406" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="415" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="421" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="434" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="448" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="464" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h:2902:14" call-funcname="glfwSetGammaRamp" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="497" col="21" call-argexpr="&amp;ramp" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="506" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:940:6" call-funcname="_glfwInputError" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="525" col="5" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c:69:17" call-funcname="refreshVideoModes" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="228" col="10" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:958:20" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c:42:12" call-funcname="compareVideoModes" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="272" col="12" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:960:5" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c:42:12" call-funcname="compareVideoModes" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="272" col="12" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:960:5" my-argnr="2"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c:69:17" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="74" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:934:6" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="158" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:961:15" my-argnr="1" my-argname="name" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="174" col="28" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:963:6" my-argnr="1" my-argname="ramp" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="199" col="5" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:964:6" my-argnr="1" my-argname="ramp" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="209" col="16" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:965:6" my-argnr="2" my-argname="red" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="287" col="6" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:965:6" my-argnr="3" my-argname="green" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="287" col="13" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:965:6" my-argnr="4" my-argname="blue" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="287" col="22" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c:69:17" my-argnr="1" my-argname="monitor" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="74" col="9" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/internal.h:961:15" my-argnr="1" my-argname="name" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/src/monitor.c" line="174" col="28" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="compareVideoModes" lineNumber="42"/>
+    <functiondecl functionName="refreshVideoModes" lineNumber="69"/>
+    <functiondecl functionName="_glfwInputMonitor" lineNumber="97"/>
+    <functiondecl functionName="_glfwInputMonitorWindow" lineNumber="156"/>
+    <functiondecl functionName="_glfwAllocMonitor" lineNumber="168"/>
+    <functiondecl functionName="_glfwFreeMonitor" lineNumber="181"/>
+    <functiondecl functionName="_glfwAllocGammaArrays" lineNumber="197"/>
+    <functiondecl functionName="_glfwFreeGammaArrays" lineNumber="207"/>
+    <functiondecl functionName="_glfwChooseVideoMode" lineNumber="218"/>
+    <functiondecl functionName="_glfwCompareVideoModes" lineNumber="270"/>
+    <functiondecl functionName="_glfwSplitBPP" lineNumber="277"/>
+    <functiondecl functionName="glfwGetMonitors" lineNumber="301"/>
+    <functiondecl functionName="glfwGetPrimaryMonitor" lineNumber="313"/>
+    <functiondecl functionName="glfwGetMonitorPos" lineNumber="323"/>
+    <functiondecl functionName="glfwGetMonitorWorkarea" lineNumber="338"/>
+    <functiondecl functionName="glfwGetMonitorPhysicalSize" lineNumber="359"/>
+    <functiondecl functionName="glfwGetMonitorContentScale" lineNumber="377"/>
+    <functiondecl functionName="glfwGetMonitorName" lineNumber="392"/>
+    <functiondecl functionName="glfwSetMonitorUserPointer" lineNumber="401"/>
+    <functiondecl functionName="glfwGetMonitorUserPointer" lineNumber="410"/>
+    <functiondecl functionName="glfwSetMonitorCallback" lineNumber="419"/>
+    <functiondecl functionName="glfwGetVideoModes" lineNumber="426"/>
+    <functiondecl functionName="glfwGetVideoMode" lineNumber="443"/>
+    <functiondecl functionName="glfwSetGamma" lineNumber="454"/>
+    <functiondecl functionName="glfwGetGammaRamp" lineNumber="501"/>
+    <functiondecl functionName="glfwSetGammaRamp" lineNumber="515"/>
+    <functioncall functionName="HGLRC"/>
+    <functioncall functionName="MDT_EFFECTIVE_DPI"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PROC"/>
+    <functioncall functionName="UINT_MAX"/>
+    <functioncall functionName="VkResult"/>
+    <functioncall functionName="_glfwFreeGammaArrays"/>
+    <functioncall functionName="_glfwFreeMonitor"/>
+    <functioncall functionName="_glfwInputError"/>
+    <functioncall functionName="_glfw_calloc"/>
+    <functioncall functionName="_glfw_fminf"/>
+    <functioncall functionName="_glfw_free"/>
+    <functioncall functionName="_glfw_realloc"/>
+    <functioncall functionName="abs"/>
+    <functioncall functionName="action"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="blue"/>
+    <functioncall functionName="blueBits"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="cbfun"/>
+    <functioncall functionName="colorDiff"/>
+    <functioncall functionName="compareVideoModes"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="currentMode"/>
+    <functioncall functionName="currentRamp"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="fm"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="fp"/>
+    <functioncall functionName="freeMonitor"/>
+    <functioncall functionName="gamma"/>
+    <functioncall functionName="getGammaRamp"/>
+    <functioncall functionName="getMonitorContentScale"/>
+    <functioncall functionName="getMonitorPos"/>
+    <functioncall functionName="getMonitorWorkarea"/>
+    <functioncall functionName="getVideoMode"/>
+    <functioncall functionName="getVideoModes"/>
+    <functioncall functionName="getWindowFrameSize"/>
+    <functioncall functionName="getWindowSize"/>
+    <functioncall functionName="glfwGetGammaRamp"/>
+    <functioncall functionName="glfwSetGammaRamp"/>
+    <functioncall functionName="green"/>
+    <functioncall functionName="greenBits"/>
+    <functioncall functionName="handle"/>
+    <functioncall functionName="height"/>
+    <functioncall functionName="heightMM"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="memmove"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="modeCount"/>
+    <functioncall functionName="modes"/>
+    <functioncall functionName="monitor"/>
+    <functioncall functionName="monitorCount"/>
+    <functioncall functionName="monitors"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="next"/>
+    <functioncall functionName="original"/>
+    <functioncall functionName="originalRamp"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="powf"/>
+    <functioncall functionName="qsort"/>
+    <functioncall functionName="ramp"/>
+    <functioncall functionName="rateDiff"/>
+    <functioncall functionName="red"/>
+    <functioncall functionName="redBits"/>
+    <functioncall functionName="refreshRate"/>
+    <functioncall functionName="refreshVideoModes"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="sarea"/>
+    <functioncall functionName="sbpp"/>
+    <functioncall functionName="setGammaRamp"/>
+    <functioncall functionName="setWindowMonitor"/>
+    <functioncall functionName="setWindowPos"/>
+    <functioncall functionName="short"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeDiff"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="sm"/>
+    <functioncall functionName="sp"/>
+    <functioncall functionName="strncpy"/>
+    <functioncall functionName="t"/>
+    <functioncall functionName="userPointer"/>
+    <functioncall functionName="value"/>
+    <functioncall functionName="values"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="width"/>
+    <functioncall functionName="widthMM"/>
+    <functioncall functionName="window"/>
+    <functioncall functionName="windowListHead"/>
+    <functioncall functionName="xoff"/>
+    <functioncall functionName="xpos"/>
+    <functioncall functionName="xscale"/>
+    <functioncall functionName="yoff"/>
+    <functioncall functionName="ypos"/>
+    <functioncall functionName="yscale"/>
+  </FileInfo>
+</analyzerinfo>

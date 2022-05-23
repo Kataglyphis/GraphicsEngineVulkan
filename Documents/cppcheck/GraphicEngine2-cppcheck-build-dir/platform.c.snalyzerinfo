@@ -1,0 +1,4 @@
+_glfwSelectPlatform global:[supportedPlatforms] call:[_glfwConnectNull,_glfwInputError,connect,sizeof] noreturn:[_glfwConnectNull,_glfwInputError,connect]
+glfwGetPlatform global:[_glfw] call:[_glfwInputError]
+glfwPlatformSupported global:[supportedPlatforms] call:[_glfwInputError,sizeof]
+glfwGetVersionString

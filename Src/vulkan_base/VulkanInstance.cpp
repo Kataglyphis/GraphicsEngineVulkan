@@ -26,9 +26,6 @@ VulkanInstance::VulkanInstance()
 	//add validation layers IF enabled to the creeate info struct
 	if (ENABLE_VALIDATION_LAYERS) {
 
-		uint32_t layerCount = 1;
-		const char** layerNames = (const char**)malloc(sizeof(const char*) * layerCount);
-
 		create_info.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 		create_info.ppEnabledLayerNames = validationLayers.data();
 

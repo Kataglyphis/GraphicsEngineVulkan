@@ -1,0 +1,3 @@
+_glfwPlatformLoadModule call:[LoadLibraryA] noreturn:[LoadLibraryA]
+_glfwPlatformFreeModule call:[FreeLibrary] noreturn:[FreeLibrary]
+_glfwPlatformGetModuleSymbol call:[GetProcAddress,return] noreturn:[GetProcAddress]
