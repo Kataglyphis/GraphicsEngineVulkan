@@ -37,6 +37,7 @@
 #include <PushConstantRayTracing.h>
 #include "VulkanBuffer.h"
 #include "VulkanBufferManager.h"
+#include "Texture.h"
 
 #include "tiny_obj_loader.h"
 
@@ -65,8 +66,8 @@ public:
 	void record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
 
 	// texture functions 
-	int create_texture(std::string filename);
-	int create_texture_image(std::string filename);
+	//int create_texture(std::string filename);
+	//int create_texture_image(std::string filename);
 	void create_sampler_array_descriptor_set();
 
 
@@ -146,12 +147,9 @@ private:
 	VkRenderPass offscreen_render_pass;
 	VkFormat offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
 	std::vector<VkFramebuffer> offscreen_framebuffer;
-	std::vector<OffscreenTexture> offscreen_images;
+	std::vector<Texture> offscreen_images;
 
-	VkImage offscreen_depth_buffer_image;
-	VkDeviceMemory offscreen_depth_buffer_image_memory;
-	VkImageView offscreen_depth_buffer_image_view;
-	//VkFormat offscreen_depth_format;
+	Texture offscreenDepthBuffer;
 
 	void create_offscreen_graphics_pipeline();
 	void create_offscreen_textures();
@@ -175,9 +173,7 @@ private:
 	// -- Post - End
 
 	// depth
-	VkImage depth_buffer_image;
-	VkDeviceMemory depth_buffer_image_memory;
-	VkImageView depth_buffer_image_view;
+	Texture depthBufferImage;
 	VkFormat depth_format;
 	
 	void init_rasterizer();
@@ -279,14 +275,12 @@ private:
 	// ----- ALL RAYTRACING SPECIFICS ----- END
 
 	// -- TEXTURE --
+	Texture plainTexture;
 	VkSampler texture_sampler;
 	std::vector<uint32_t> texture_mip_levels;
 
 	VulkanBuffer objectDescriptionBuffer;
 
-	std::vector<VkImage> texture_images;
-	std::vector<VkDeviceMemory> texture_images_memory;
-	std::vector<VkImageView> texture_image_views;
 	// mipmapping
 	int max_levels = 10;
 

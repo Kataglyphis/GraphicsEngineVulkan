@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Mesh.h"
+#include "Texture.h"
 
 #include <memory>
 
@@ -21,13 +22,15 @@ public:
                         std::vector<unsigned int>&	materialIndex, 
                         std::vector<ObjMaterial>&	materials);
 
-    size_t                      get_mesh_count();
-    Mesh*                       get_mesh(size_t index);
-    glm::mat4                   get_model();
-    uint32_t                    get_custom_instance_index();
-    uint32_t                    get_primitive_count();
-    std::vector<std::string>    get_texture_list();
-    ObjectDescription           get_object_description();
+    uint32_t                    getTextureCount() { return static_cast<uint32_t>(modelTextures.size()); };
+    std::vector<Texture>&       getTextures() { return modelTextures; }
+    std::vector<std::string>    getTextureList() { return texture_list; };
+    uint32_t                    getMeshCount() { return 1; };
+    Mesh*                       getMesh(size_t index) { return &mesh; };
+    glm::mat4                   getModel() { return model; };
+    uint32_t                    getCustomInstanceIndex() { return mesh_model_index; };
+    uint32_t                    getPrimitiveCount();
+    ObjectDescription           getObjectDescription() { return mesh.getObjectDescription(); };
 
     void                        set_model(glm::mat4 model);
    
@@ -40,4 +43,5 @@ private:
     glm::mat4                   model;
 
     std::vector<std::string>    texture_list;
+    std::vector<Texture>        modelTextures;
 };

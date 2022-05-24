@@ -35,27 +35,3 @@ struct TLAS {
 
 };
 
-struct RayTracingImage {
-
-	VkImageView raytracing_image_view;
-	VkImage raytracing_image;
-	VkDeviceMemory ray_tracing_image_memory;
-
-};
-
-struct OffScreenRenderImage {
-
-	VkImageView image_view;
-	VkImage image;
-	VkDeviceMemory image_memory;
-
-};
-
-struct OffscreenTexture {
-
-	VkImageView image_view;
-	VkImage image;
-	VkDeviceMemory image_memory;
-
-};
-

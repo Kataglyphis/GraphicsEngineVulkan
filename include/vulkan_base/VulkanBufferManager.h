@@ -1,6 +1,7 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include <vector>
+#include <cstring>
 
 #include "Utilities.h"
 #include "VulkanBuffer.h"
@@ -10,6 +11,11 @@ class VulkanBufferManager
 public:
 
 	VulkanBufferManager();
+
+	void copyBuffer(VkDevice device, VkQueue transfer_queue,
+					VkCommandPool transfer_command_pool,
+					VulkanBuffer src_buffer, VulkanBuffer dst_buffer,
+					VkDeviceSize buffer_size);
 
 	template<typename T>
 	void createBufferAndUploadVectorOnDevice(	VulkanDevice* device, 
@@ -51,7 +57,7 @@ inline void VulkanBufferManager::createBufferAndUploadVectorOnDevice(
 	// 2.) map the vertex buffer memory to that point
 	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, bufferSize, 0, &data);
 	// 3.) copy memory from vertices vector to the point
-	memcpy(data, bufferData.data(), (size_t)bufferSize);
+	std::memcpy(data, bufferData.data(), (size_t)bufferSize);
 	// 4.) unmap the vertex buffer memory
 	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
 
@@ -63,8 +69,8 @@ inline void VulkanBufferManager::createBufferAndUploadVectorOnDevice(
 						dstBufferMemoryPropertyFlags);
 
 	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), device->getComputeQueue(), commandPool,
-				stagingBuffer.getBuffer(), vulkanBuffer.getBuffer(), bufferSize);
+	copyBuffer(device->getLogicalDevice(), device->getComputeQueue(), commandPool,
+				stagingBuffer, vulkanBuffer, bufferSize);
 
 	stagingBuffer.cleanUp();
 
