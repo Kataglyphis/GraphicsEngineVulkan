@@ -38,6 +38,7 @@
 #include "VulkanBuffer.h"
 #include "VulkanBufferManager.h"
 #include "Texture.h"
+#include "ASManager.h"
 
 #include "Scene.h"
 #include <GUI.h>
@@ -229,25 +230,10 @@ private:
 	
 
 	// ----- ALL ACCELERATION STRUCTURES ----- BEGIN
+	ASManager asManager;
 	std::vector<BottomLevelAccelerationStructure>	blas;
 	TopLevelAccelerationStructure					tlas;
 	VulkanBuffer									objectDescriptionBuffer;
-
-	void create_BLAS();
-	void object_to_VkGeometryKHR(	Mesh* mesh, 
-									VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
-									VkAccelerationStructureBuildRangeInfoKHR& acceleration_structure_build_range_info);
-
-	void create_acceleration_structure_infos_BLAS(	BuildAccelerationStructure& build_as_structure, 
-													BlasInput& blas_input,
-													VkDeviceSize& current_scretch_size, 
-													VkDeviceSize& current_size);
-
-	void create_single_blas(VkCommandBuffer command_buffer, 
-							BuildAccelerationStructure& build_as_structure,
-							VkDeviceAddress scratch_device_or_host_address);
-
-	void create_TLAS();
 
 	void create_descriptor_pool_object_description();
 	void create_object_description_buffer();
