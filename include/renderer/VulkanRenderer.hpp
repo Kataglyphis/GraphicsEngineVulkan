@@ -42,6 +42,9 @@
 #include "Scene.h"
 #include <GUI.h>
 
+#include "BottomLevelAccelerationStructure.h"
+#include "TopLevelAccelerationStructure.h"
+
 class VulkanRenderer
 {
 public:
@@ -115,94 +118,121 @@ private:
 	// for now on integrate vma 
 	Allocator						allocator;
 
-	// texture functions
-	int create_texture_descriptor(VkImageView texture_image);
-
 	// -- synchronization
-	std::vector<VkSemaphore> image_available;
-	std::vector<VkSemaphore> render_finished;
-	std::vector<VkFence> in_flight_fences;
-	std::vector<VkFence> images_in_flight_fences;
-	//VkFence building_BLAS;
-	void create_synchronization();
+	uint32_t					current_frame{ 0 };
+	std::vector<VkSemaphore>	image_available;
+	std::vector<VkSemaphore>	render_finished;
+	std::vector<VkFence>		in_flight_fences;
+	std::vector<VkFence>		images_in_flight_fences;
+	void						create_synchronization();
 
 	// ----- VULKAN CORE COMPONENTS ----- END
 
-	// ----- ALL RASTERIZER SPECIFICS ----- BEGIN 
-	// -- pipeline
-	PushConstantRasterizer			pc_raster;
-	VkPipeline graphics_pipeline;
-	VkPipelineLayout pipeline_layout;
-	VkRenderPass render_pass;
-
 	// -- Offscreen render pass
-	VkPipeline offscreen_graphics_pipeline;
-	VkPipelineLayout offscreen_pipeline_layout;
-	VkRenderPass offscreen_render_pass;
-	VkFormat offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
-	std::vector<VkFramebuffer> offscreen_framebuffer;
-	std::vector<Texture> offscreen_images;
-
-	Texture offscreenDepthBuffer;
-
-	void create_offscreen_graphics_pipeline();
-	void create_offscreen_textures();
-	void create_offscreen_render_pass();
-	void create_offscreen_framebuffers();
+	VkPipeline					offscreen_graphics_pipeline;
+	VkPipelineLayout			offscreen_pipeline_layout;
+	VkRenderPass				offscreen_render_pass;
+	VkFormat					offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
+	std::vector<VkFramebuffer>	offscreen_framebuffer;
+	std::vector<Texture>		offscreen_images;
+	Texture						offscreenDepthBuffer;
+	void						init_offscreen();
+	void						create_offscreen_graphics_pipeline();
+	void						create_offscreen_textures();
+	void						create_offscreen_render_pass();
+	void						create_offscreen_framebuffers();
 	// -- Offscreen End 
 
 	// -- Post 
-	void create_post_renderpass();
-	void create_post_pipeline();
-	void create_post_descriptor();
-	void update_post_descriptor_set();
-
-	VkPushConstantRange post_push_constant_range;
-	VkDescriptorPool post_descriptor_pool{};
-	VkDescriptorSetLayout post_descriptor_set_layout;
-	std::vector<VkDescriptorSet> post_descriptor_set;
-	VkRenderPass post_render_pass;
-	VkPipeline post_graphics_pipeline;
-	VkPipelineLayout post_pipeline_layout;
+	VkPushConstantRange				post_push_constant_range;
+	VkDescriptorPool				post_descriptor_pool{};
+	VkDescriptorSetLayout			post_descriptor_set_layout;
+	std::vector<VkDescriptorSet>	post_descriptor_set;
+	VkRenderPass					post_render_pass;
+	VkPipeline						post_graphics_pipeline;
+	VkPipelineLayout				post_pipeline_layout;
+	// texture sampler for everything ---- change that ! 
+	VkSampler						texture_sampler;
+	void							init_post();
+	void							create_post_renderpass();
+	void							create_post_pipeline();
+	void							create_post_descriptor();
+	void							update_post_descriptor_set();
 	// -- Post - End
 
-	// depth
-	Texture depthBufferImage;
-	VkFormat depth_format;
+	// ----- ALL RASTERIZER SPECIFICS ----- BEGIN 
+	PushConstantRasterizer	pc_raster;
+	VkPipeline				graphics_pipeline;
+	VkPipelineLayout		pipeline_layout;
+	VkRenderPass			render_pass;
+	Texture					depthBufferImage;
+	VkFormat				depth_format;
 	
-	void init_rasterizer();
-	// all create functions
-	void create_render_pass();
-	void create_descriptor_set_layouts();
-	void create_push_constant_range();
-	void create_rasterizer_graphics_pipeline();
-	void create_depthbuffer_image();
-	void create_framebuffers();
+	void					init_rasterizer();
+	void					create_render_pass();
+	void					create_descriptor_set_layouts();
+	void					create_push_constant_range();
+	void					create_rasterizer_graphics_pipeline();
+	void					create_depthbuffer_image();
+	void					create_framebuffers();
 
-	void create_command_buffers();
-	void create_texture_sampler();
+	void					create_command_buffers();
+	void					create_texture_sampler();
 
-	void create_descriptor_pool_uniforms();
-	void create_descriptor_pool_sampler();
-	void create_descriptor_sets();
+	void					create_descriptor_pool_uniforms();
+	void					create_descriptor_pool_sampler();
+	void					create_descriptor_sets();
 	// ----- ALL RASTERIZER SPECIFICS ----- END 
 
 	// - descriptors
-	VkDescriptorSetLayout descriptor_set_layout;	// for normal uniform values
-	VkDescriptorSetLayout sampler_set_layout;		// descriptor set layout for our samplers
-	VkPushConstantRange push_constant_range;
-	VkDescriptorPool descriptor_pool;
-	VkDescriptorPool sampler_descriptor_pool;
-	VkDescriptorPool object_description_pool;
-	std::vector<VkDescriptorSet> descriptor_sets;
-	VkDescriptorSet sampler_descriptor_set;			// these are no swap chain dependend descriptors, doesn't change over frames
+	VkDescriptorSetLayout			descriptor_set_layout;			// for normal uniform values
+	VkDescriptorSetLayout			sampler_set_layout;				// descriptor set layout for our samplers
+	VkPushConstantRange				push_constant_range;
+	VkDescriptorPool				descriptor_pool;
+	VkDescriptorPool				sampler_descriptor_pool;
+	VkDescriptorPool				object_description_pool;
+	std::vector<VkDescriptorSet>	descriptor_sets;
+	VkDescriptorSet					sampler_descriptor_set;			// these are no swap chain dependend descriptors, doesn't change over frames
 
 	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
 	// -- en/-disable raytracing
-	bool raytracing = false;
-	void init_raytracing();
-	// -- create funcs
-	// -- bottom level acceleration structure
+	bool							raytracing{ false };
+	VkDescriptorPool				raytracing_descriptor_pool;
+	std::vector<VkDescriptorSet>	raytracing_descriptor_set;
+	VkDescriptorSetLayout			raytracing_descriptor_set_layout;
+	VkPipeline						raytracing_pipeline;
+	VkPipelineLayout				raytracing_pipeline_layout;
+	PushConstantRaytracing			pc_ray;
+	VkPushConstantRange				pc_ray_ranges;
+	void							init_raytracing();
+	void							create_raytracing_descriptor_set_layouts();
+	void							create_raytracing_descriptor_sets();
+	void							create_raytracing_pipeline();
+	void							create_shader_binding_table();
+	void							create_raytracing_descriptor_pool();
+
+	// -- shader bindings
+	std::vector<VkRayTracingShaderGroupCreateInfoKHR> shader_groups;
+	VulkanBuffer					shaderBindingTableBuffer;
+	VulkanBuffer					raygenShaderBindingTableBuffer;
+	VulkanBuffer					missShaderBindingTableBuffer;
+	VulkanBuffer					hitShaderBindingTableBuffer;
+
+	VkStridedDeviceAddressRegionKHR rgen_region{};
+	VkStridedDeviceAddressRegionKHR miss_region{};
+	VkStridedDeviceAddressRegionKHR hit_region{};
+	VkStridedDeviceAddressRegionKHR call_region{};
+
+
+	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
+	// ----- ALL RAYTRACING SPECIFICS ----- END
+	
+
+	// ----- ALL ACCELERATION STRUCTURES ----- BEGIN
+	std::vector<BottomLevelAccelerationStructure>	blas;
+	TopLevelAccelerationStructure					tlas;
+	VulkanBuffer									objectDescriptionBuffer;
+
 	void create_BLAS();
 	void object_to_VkGeometryKHR(	Mesh* mesh, 
 									VkAccelerationStructureGeometryKHR& acceleration_structure_geometry, 
@@ -217,72 +247,13 @@ private:
 							BuildAccelerationStructure& build_as_structure,
 							VkDeviceAddress scratch_device_or_host_address);
 
-	// -- top level acceleration structure
 	void create_TLAS();
-
-	void create_raytracing_pipeline();
-	void create_shader_binding_table();
-
-	void create_raytracing_descriptor_pool();
 
 	void create_descriptor_pool_object_description();
 	void create_object_description_buffer();
-	void create_raytracing_descriptor_set_layouts();
-	void create_raytracing_descriptor_sets();
 
-	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
-
-	// -- acceleration structure
-	// -- bottom level
-	std::vector<BLAS> blas;
-
-	// -- top level
-	TLAS tlas;
-
-	// -- descriptors
-	VkDescriptorPool raytracing_descriptor_pool;
-	std::vector<VkDescriptorSet> raytracing_descriptor_set;
-	VkDescriptorSetLayout raytracing_descriptor_set_layout;
-
-	// -- pipeline
-	VkPipeline raytracing_pipeline;
-	VkPipelineLayout raytracing_pipeline_layout;
-
-	// -- shader bindings
-	std::vector<VkRayTracingShaderGroupCreateInfoKHR> shader_groups;
-	VulkanBuffer shaderBindingTableBuffer;
-	VulkanBuffer raygenShaderBindingTableBuffer;
-	VulkanBuffer missShaderBindingTableBuffer;
-	VulkanBuffer hitShaderBindingTableBuffer;
-
-	VkStridedDeviceAddressRegionKHR rgen_region{};
-	VkStridedDeviceAddressRegionKHR miss_region{};
-	VkStridedDeviceAddressRegionKHR hit_region{};
-	VkStridedDeviceAddressRegionKHR call_region{};
-
-	// -- properties
-	// VkPhysicalDeviceRayTracingPipelinePropertiesKHR ray_tracing_pipeline_properties;
-
-	PushConstantRaytracing pc_ray;
-	VkPushConstantRange pc_ray_ranges;
-
-	// ----- ALL RAYTRACING SPECIFICS ----- END
-
-	// -- TEXTURE --
-	VkSampler texture_sampler;
-	std::vector<uint32_t> texture_mip_levels;
-
-	VulkanBuffer objectDescriptionBuffer;
-
-	// mipmapping
-	int max_levels = 10;
-
-	// ----- VARS ----- BEGIN
 	void check_changed_framebuffer_size();
-	bool framebuffer_resized;
-	// indices index into current frame
-	int current_frame;
-	// ----- VARS ----- END
+	bool framebuffer_resized{false};
 
 };
 

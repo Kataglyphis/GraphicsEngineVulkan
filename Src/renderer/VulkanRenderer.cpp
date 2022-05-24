@@ -22,8 +22,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 								GUI*	gui,
 								Camera* camera) :
 
-									max_levels(std::numeric_limits<int>::max()),
-									current_frame(0),
 									framebuffer_resized(false),
 									window(window),
 									scene(scene)
@@ -54,19 +52,8 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		create_uniform_buffers();
 
 		init_rasterizer();
-
-		// init the offscreen render pass 
-		create_offscreen_textures();
-		create_offscreen_render_pass();
-		create_offscreen_framebuffers();
-		create_offscreen_graphics_pipeline();
-
-		// all post
-		create_post_renderpass();
-		create_post_descriptor();
-		update_post_descriptor_set();
-		create_post_pipeline();
-		create_framebuffers();
+		init_offscreen();
+		init_post();
 
 		std::stringstream modelFile;
 		modelFile << CMAKELISTS_DIR;
@@ -215,10 +202,7 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 	 /*1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
 	 wait for given fence to signal (open) from last draw before continuing*/
 	VkResult result = vkWaitForFences(device->getLogicalDevice(), 1, &in_flight_fences[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max());
-
-	if (result != VK_SUCCESS) {
-		throw std::runtime_error("Failed to wait for fences!");
-	}
+	ASSERT_VULKAN(result, "Failed to wait for fences!")
 
 	// -- GET NEXT IMAGE --
 	uint32_t image_index;
@@ -251,12 +235,7 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 	buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 	// start recording commands to command buffer
 	result = vkBeginCommandBuffer(command_buffers[image_index], &buffer_begin_info);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to start recording a command buffer!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to start recording a command buffer!")
 
 	update_uniform_buffers(image_index);
 
@@ -266,12 +245,8 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 
 	// stop recording to command buffer
 	result = vkEndCommandBuffer(command_buffers[image_index]);
+	ASSERT_VULKAN(result, "Failed to stop recording a command buffer!")
 
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to stop recording a command buffer!");
-
-	}
 	// 2. Submit command buffer to queue for execution, making sure it waits for the image to be signalled as available before drawing
 	// and signals when it has finished rendering 
 	// -- SUBMIT COMMAND BUFFER TO RENDER --
@@ -296,18 +271,11 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 	submit_info.pSignalSemaphores = &render_finished[current_frame];					// semaphores to signal when command buffer finishes 
 
 	result = vkResetFences(device->getLogicalDevice(), 1, &in_flight_fences[current_frame]);
-	if (result != VK_SUCCESS) {
-		throw std::runtime_error("Failed to reset fences!");
-	}
+	ASSERT_VULKAN(result, "Failed to reset fences!")
 
 	// submit command buffer to queue
 	result = vkQueueSubmit(device->getGraphicsQueue(), 1, &submit_info, in_flight_fences[current_frame]);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to submit command buffer to queue!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to submit command buffer to queue!")
 
 	// 3. Present image to screen when it has signalled finished rendering 
 	// -- PRESENT RENDERED IMAGE TO SCREEN --
@@ -340,13 +308,7 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 
 	}
 
-	//vkFreeCommandBuffers(device->getLogicalDevice(), graphics_command_pool, 1, &command_buffers[image_index]);
-
 	current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
-	 
-	/*vkQueueWaitIdle(presentation_queue);
-	vkQueueWaitIdle(graphics_queue);
-	vkDeviceWaitIdle(device->getLogicalDevice());*/
 
 }
 
@@ -628,6 +590,15 @@ void VulkanRenderer::create_offscreen_textures()
 
 }
 
+void VulkanRenderer::init_offscreen()
+{
+	// init the offscreen render pass 
+	create_offscreen_textures();
+	create_offscreen_render_pass();
+	create_offscreen_framebuffers();
+	create_offscreen_graphics_pipeline();
+}
+
 void VulkanRenderer::create_offscreen_render_pass()
 {
 
@@ -757,6 +728,16 @@ void VulkanRenderer::create_offscreen_framebuffers()
 		ASSERT_VULKAN(result, "Failed to create framebuffer!");
 
 	}
+
+}
+	
+void VulkanRenderer::init_post() {
+
+	create_post_renderpass();
+	create_post_descriptor();
+	update_post_descriptor_set();
+	create_post_pipeline();
+	create_framebuffers();
 
 }
 
@@ -1345,20 +1326,21 @@ void VulkanRenderer::create_single_blas(VkCommandBuffer command_buffer, BuildAcc
 	acceleration_structure_create_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_KHR;
 	acceleration_structure_create_info.type = VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_KHR;
 	acceleration_structure_create_info.size = build_as_structure.size_info.accelerationStructureSize;
-	build_as_structure.single_blas.vulkanBuffer.create(	device.get(), 
-														build_as_structure.size_info.accelerationStructureSize,
-														VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
-														VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-														VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-														VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+	VulkanBuffer& blasVulkanBuffer = build_as_structure.single_blas.getVulkanBuffer();
+	blasVulkanBuffer.create(	device.get(),
+										build_as_structure.size_info.accelerationStructureSize,
+										VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
+										VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+										VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+										VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-	acceleration_structure_create_info.buffer = build_as_structure.single_blas.vulkanBuffer.getBuffer();
+	acceleration_structure_create_info.buffer = blasVulkanBuffer.getBuffer();
+	VkAccelerationStructureKHR& blas_as = build_as_structure.single_blas.getAS();
 	pvkCreateAccelerationStructureKHR(	device->getLogicalDevice(), 
 										&acceleration_structure_create_info, nullptr, 
-										&build_as_structure.single_blas.accel);
+										&blas_as);
 
-
-	build_as_structure.build_info.dstAccelerationStructure = build_as_structure.single_blas.accel;
+	build_as_structure.build_info.dstAccelerationStructure = blas_as;
 	build_as_structure.build_info.scratchData.deviceAddress = scratch_device_or_host_address;
 
 
@@ -1407,7 +1389,6 @@ void VulkanRenderer::create_BLAS()
 
 		}
 	}
-
 
 	std::vector<BuildAccelerationStructure> build_as_structures;
 	build_as_structures.resize(scene->getModelCount());
@@ -1507,7 +1488,7 @@ void VulkanRenderer::create_TLAS()
 
 		VkAccelerationStructureDeviceAddressInfoKHR acceleration_structure_device_address_info{};
 		acceleration_structure_device_address_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_DEVICE_ADDRESS_INFO_KHR;
-		acceleration_structure_device_address_info.accelerationStructure = blas[model_index].accel;
+		acceleration_structure_device_address_info.accelerationStructure = blas[model_index].getAS();
 
 		VkDeviceAddress acceleration_structure_device_address = pvkGetAccelerationStructureDeviceAddressKHR(device->getLogicalDevice(), &acceleration_structure_device_address_info);
 
@@ -1589,7 +1570,8 @@ void VulkanRenderer::create_TLAS()
 																						&acceleration_structure_build_sizes_info);
 
 	// now we got the sizes 
-	tlas.vulkanBuffer.create(	device.get(),
+	VulkanBuffer& tlasVulkanBuffer = tlas.getVulkanBuffer();
+	tlasVulkanBuffer.create(	device.get(),
 								acceleration_structure_build_sizes_info.accelerationStructureSize, 
 								VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
 								VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | 
@@ -1601,13 +1583,14 @@ void VulkanRenderer::create_TLAS()
 	acceleration_structure_create_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_KHR;
 	acceleration_structure_create_info.pNext = nullptr;
 	acceleration_structure_create_info.createFlags = 0;
-	acceleration_structure_create_info.buffer = tlas.vulkanBuffer.getBuffer();
+	acceleration_structure_create_info.buffer = tlasVulkanBuffer.getBuffer();
 	acceleration_structure_create_info.offset = 0;
 	acceleration_structure_create_info.size = acceleration_structure_build_sizes_info.accelerationStructureSize;
 	acceleration_structure_create_info.type = VK_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL_KHR;
 	acceleration_structure_create_info.deviceAddress = 0;
 
-	pvkCreateAccelerationStructureKHR(device->getLogicalDevice(), &acceleration_structure_create_info, nullptr, &tlas.top_level_acceleration_structure);
+	VkAccelerationStructureKHR& tlAS = tlas.getAS();
+	pvkCreateAccelerationStructureKHR(device->getLogicalDevice(), &acceleration_structure_create_info, nullptr, &tlAS);
 
 	VulkanBuffer scratchBuffer;
 
@@ -1629,7 +1612,7 @@ void VulkanRenderer::create_TLAS()
 	// update build info
 	acceleration_structure_build_geometry_info.scratchData.deviceAddress = scratch_buffer_address;
 	acceleration_structure_build_geometry_info.srcAccelerationStructure = VK_NULL_HANDLE;
-	acceleration_structure_build_geometry_info.dstAccelerationStructure = tlas.top_level_acceleration_structure;
+	acceleration_structure_build_geometry_info.dstAccelerationStructure = tlAS;
 
 
 	VkAccelerationStructureBuildRangeInfoKHR acceleration_structure_build_range_info{};
@@ -2023,7 +2006,8 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
 		descriptor_set_acceleration_structure.pNext = nullptr;
 		descriptor_set_acceleration_structure.accelerationStructureCount = 1;
-		descriptor_set_acceleration_structure.pAccelerationStructures = &tlas.top_level_acceleration_structure;
+		VkAccelerationStructureKHR& vulkanTLAS = tlas.getAS();
+		descriptor_set_acceleration_structure.pAccelerationStructures = &vulkanTLAS;
 
 		VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
 		write_descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -2567,7 +2551,7 @@ void VulkanRenderer::create_texture_sampler()
 	sampler_create_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
 	sampler_create_info.mipLodBias = 0.0f;
 	sampler_create_info.minLod = 0.0f;
-	sampler_create_info.maxLod = (float) max_levels;
+	sampler_create_info.maxLod = 0.0f;
 	sampler_create_info.anisotropyEnable = VK_TRUE;
 	sampler_create_info.maxAnisotropy = 16;									// max anisotropy sample level
 
@@ -2950,7 +2934,8 @@ void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
 	descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
 	descriptor_set_acceleration_structure.pNext = nullptr;
 	descriptor_set_acceleration_structure.accelerationStructureCount = 1;
-	descriptor_set_acceleration_structure.pAccelerationStructures = &(tlas.top_level_acceleration_structure);
+	VkAccelerationStructureKHR& tlasAS = tlas.getAS();
+	descriptor_set_acceleration_structure.pAccelerationStructures = &tlasAS;
 
 	VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
 	write_descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -3067,11 +3052,8 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 		render_pass_begin_info.pClearValues = clear_values.data();
 		render_pass_begin_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
 		render_pass_begin_info.framebuffer = offscreen_framebuffer[image_index];//swap_chain_framebuffers[current_image];	
-
-		/*transition_image_layout_for_command_buffer(command_buffers[current_image], offscreen_images[current_image].image,
-														VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-														1 , VK_IMAGE_ASPECT_COLOR_BIT);*/
-														// begin render pass
+	
+		// begin render pass
 		vkCmdBeginRenderPass(command_buffers[image_index], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
 
 		// bind pipeline to be used in render pass
@@ -3145,9 +3127,6 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 													VK_IMAGE_LAYOUT_GENERAL,
 													VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
 
-	/*transition_image_layout_for_command_buffer(command_buffers[image_index], swap_chain_images[image_index].image,
-		VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 1, VK_IMAGE_ASPECT_COLOR_BIT);*/
-
 	// begin render pass
 	vkCmdBeginRenderPass(command_buffers[image_index], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
 	auto aspectRatio = static_cast<float>(swap_chain_extent.width) / static_cast<float>(swap_chain_extent.height);
@@ -3166,62 +3145,10 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	// end render pass 
 	vkCmdEndRenderPass(command_buffers[image_index]);
 
-	/*transition_image_layout_for_command_buffer(command_buffers[image_index], swap_chain_images[image_index].image,
-		 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, VK_IMAGE_LAYOUT_UNDEFINED, 1, VK_IMAGE_ASPECT_COLOR_BIT);*/
-
 	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].getImage(),
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
-
-
-	// stop recording to command buffer
-	// result = vkEndCommandBuffer(command_buffers[image_index]);
-
-	//if (result != VK_SUCCESS) {
-
-	//	throw std::runtime_error("Failed to stop recording a command buffer!");
-
-	//}
 	
 	
-}
-
-int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
-{
-
-	VkDescriptorSet descriptor_set;
-
-	// descriptor set allocation info 
-	VkDescriptorSetAllocateInfo alloc_info{};
-	alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	alloc_info.descriptorPool = sampler_descriptor_pool;
-	alloc_info.descriptorSetCount = 1;
-	alloc_info.pSetLayouts = &sampler_set_layout;
-
-	// allocte descriptor sets
-	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &alloc_info, &descriptor_set);
-	ASSERT_VULKAN(result, "Failed to allocate texture descriptor sets!") 
-
-	// texture image info
-	VkDescriptorImageInfo image_info{};
-	image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-	image_info.imageView = texture_image;
-	image_info.sampler = texture_sampler;
-
-	// descriptor write info
-	VkWriteDescriptorSet descriptor_write{};
-	descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	descriptor_write.dstSet = descriptor_set;
-	descriptor_write.dstBinding = 0;
-	descriptor_write.dstArrayElement = 0;
-	descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	descriptor_write.descriptorCount = 1;
-	descriptor_write.pImageInfo = &image_info;
-
-	// update new descriptor set
-	vkUpdateDescriptorSets(device->getLogicalDevice(), 1, &descriptor_write, 0, nullptr);
-
-	return 0;
-
 }
 
 void VulkanRenderer::check_changed_framebuffer_size()
@@ -3290,9 +3217,7 @@ void VulkanRenderer::clean_up_swapchain()
 void VulkanRenderer::clean_up_raytracing()
 {
 	// -- EXPLICITLY LOAD FUNCTIONS
-	PFN_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =
-										(PFN_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(device->getLogicalDevice(), "vkDestroyAccelerationStructureKHR");
-
+	
 
 	vkDestroyPipeline(device->getLogicalDevice(), raytracing_pipeline, nullptr);
 	vkDestroyPipelineLayout(device->getLogicalDevice(), raytracing_pipeline_layout, nullptr);
@@ -3302,11 +3227,11 @@ void VulkanRenderer::clean_up_raytracing()
 	vkDestroyDescriptorPool(device->getLogicalDevice(), object_description_pool, nullptr);
 	vkDestroyDescriptorPool(device->getLogicalDevice(), raytracing_descriptor_pool, nullptr);
 
-	pvkDestroyAccelerationStructureKHR(device->getLogicalDevice(), tlas.top_level_acceleration_structure, nullptr);
+	tlas.cleanUp();
 	
 	for (size_t index = 0; index < blas.size(); index++) {
 
-		pvkDestroyAccelerationStructureKHR(device->getLogicalDevice(), blas[index].accel, nullptr);
+		blas[index].cleanUp();
 
 	}
 
