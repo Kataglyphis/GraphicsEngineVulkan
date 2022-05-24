@@ -83,8 +83,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
 		scene->update_model_matrix(dragon_model, 0);
 
-		asManager.createBLAS(device.get(), compute_command_pool, scene, blas);
-		asManager.createTLAS(device.get(), compute_command_pool, scene, tlas, blas);
+		asManager.createASForScene(device.get(), compute_command_pool, scene, tlas, blas);
 
 		init_raytracing();
 
@@ -2791,8 +2790,6 @@ void VulkanRenderer::clean_up_swapchain()
 
 void VulkanRenderer::clean_up_raytracing()
 {
-	// -- EXPLICITLY LOAD FUNCTIONS
-	
 
 	vkDestroyPipeline(device->getLogicalDevice(), raytracing_pipeline, nullptr);
 	vkDestroyPipelineLayout(device->getLogicalDevice(), raytracing_pipeline_layout, nullptr);

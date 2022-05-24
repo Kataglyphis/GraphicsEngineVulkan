@@ -4,6 +4,16 @@ ASManager::ASManager()
 {
 }
 
+void ASManager::createASForScene(	VulkanDevice* device, 
+									VkCommandPool commandPool, 
+									Scene* scene, 
+									TopLevelAccelerationStructure& tlas, 
+									std::vector<BottomLevelAccelerationStructure>& blas)
+{
+	createBLAS(device, commandPool, scene, blas);
+	createTLAS(device, commandPool, scene, tlas, blas);
+}
+
 void ASManager::createBLAS(	VulkanDevice* device,
 							VkCommandPool commandPool,
 							Scene* scene, 
