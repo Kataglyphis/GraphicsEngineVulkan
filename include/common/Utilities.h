@@ -6,8 +6,6 @@
 #include <sstream>      // std::stringstream
 
 #define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 
 #include "host_device_shared_vars.h"
 #include "GlobalValues.h"

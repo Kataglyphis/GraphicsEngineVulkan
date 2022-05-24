@@ -8,11 +8,18 @@ class BottomLevelAccelerationStructure
 
 public:
 
-	VkAccelerationStructureKHR	accel;
-	VulkanBuffer				vulkanBuffer;
+	BottomLevelAccelerationStructure();
+
+	VkAccelerationStructureKHR& getAS() { return vulkanAS; };
+	VulkanBuffer&				getVulkanBuffer() { return vulkanBuffer; };
+	void						cleanUp();
+
+	~BottomLevelAccelerationStructure();
 
 private:
 
+	VkAccelerationStructureKHR	vulkanAS;
+	VulkanBuffer				vulkanBuffer;
 
 };
 
