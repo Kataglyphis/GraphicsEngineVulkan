@@ -24,44 +24,12 @@ void Model::add_new_mesh(   VulkanDevice* device,
 
 }
 
-ObjectDescription Model::get_object_description()
-{
-    return mesh.getObjectDescription();
-}
-
-size_t Model::get_mesh_count()
-{
-    return 1;// meshes.size();
-}
-
-Mesh* Model::get_mesh(size_t index)
-{
-
-    /*if (index >= meshes.size()) {
-
-        throw std::runtime_error("Attempted to access invalid mesh index!");
-
-    }*/
-
-    return &mesh;//&meshes[index];
-}
-
-glm::mat4 Model::get_model()
-{
-    return model;
-}
-
 void Model::set_model(glm::mat4 model)
 {
     this->model = model;
 }
 
-uint32_t Model::get_custom_instance_index()
-{
-    return mesh_model_index;
-}
-
-uint32_t Model::get_primitive_count()
+uint32_t Model::getPrimitiveCount()
 {
     uint32_t number_of_indices = 0;
 
@@ -73,11 +41,6 @@ uint32_t Model::get_primitive_count()
 
     //return number_of_indices / 3;
     return mesh.getIndexCount() / 3;
-}
-
-std::vector<std::string> Model::get_texture_list()
-{
-    return texture_list;
 }
 
 Model::~Model()

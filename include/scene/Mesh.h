@@ -59,10 +59,10 @@ private:
     void createIndexBuffer(   VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
                                 std::vector<uint32_t>& indices);
 
-    void createMaterialIDBuffer( VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+    void createMaterialIDBuffer(    VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
                                     std::vector<unsigned int>& materialIndex);
 
-    void createMaterialBuffer(VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
+    void createMaterialBuffer(  VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
                                 std::vector<ObjMaterial>& materials);
 
 };

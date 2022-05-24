@@ -71,7 +71,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		std::stringstream textures_dir;
 		textures_dir << CMAKELISTS_DIR;
 		textures_dir << "/Resources/Textures/plain.png";
-		create_texture(textures_dir.str());
+		plainTexture.createFromFile(device.get(), graphics_command_pool, textures_dir.str());
 
 		std::stringstream modelFile;
 		modelFile << CMAKELISTS_DIR;
@@ -574,26 +574,23 @@ void VulkanRenderer::create_offscreen_textures()
 
 	for (int index = 0; index < vulkanSwapChain.getNumberSwapChainImages(); index++) {
 
-		OffscreenTexture image{};
+		Texture image{};
 		const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
 		const VkFormat& swap_chain_image_format = vulkanSwapChain.getSwapChainFormat();
 
-		image.image = create_image(	device->getLogicalDevice(),
-									device->getPhysicalDevice(),
-									swap_chain_extent.width, swap_chain_extent.height, 1,
-									swap_chain_image_format,
-									VK_IMAGE_TILING_OPTIMAL,
-									VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
-									| VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT,
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-									&image.image_memory);
+		image.createImage(	device.get(),
+							swap_chain_extent.width, swap_chain_extent.height, 1,
+							swap_chain_image_format,
+							VK_IMAGE_TILING_OPTIMAL,
+							VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
+							| VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT,
+							VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-		image.image_view = create_image_view(	device->getLogicalDevice(), 
-												image.image, swap_chain_image_format,
-										VK_IMAGE_ASPECT_COLOR_BIT, 1);
+		image.createImageView(	device.get(), swap_chain_image_format,
+								VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
 		// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
-		transition_image_layout_for_command_buffer(cmdBuffer, image.image,
+		transition_image_layout_for_command_buffer(cmdBuffer, image.getImage(),
 			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
 
 		offscreen_images[index] = image;
@@ -610,23 +607,21 @@ void VulkanRenderer::create_offscreen_textures()
 	// create depth buffer image
 	// MIP LEVELS: for depth texture we only want 1 level :)
 	const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
-	offscreen_depth_buffer_image = create_image(device->getLogicalDevice(),
-												device->getPhysicalDevice(), 
-												swap_chain_extent.width, swap_chain_extent.height, 1, 
-												depth_format, VK_IMAGE_TILING_OPTIMAL,
+	offscreenDepthBuffer.createImage(	device.get(),
+										swap_chain_extent.width, swap_chain_extent.height, 1, 
+										depth_format, VK_IMAGE_TILING_OPTIMAL,
 										VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-										VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &offscreen_depth_buffer_image_memory);
+										VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 	// depth buffer image view 
 	// MIP LEVELS: for depth texture we only want 1 level :)
-	offscreen_depth_buffer_image_view = create_image_view(	device->getLogicalDevice(),
-															offscreen_depth_buffer_image,
-														depth_format, VK_IMAGE_ASPECT_DEPTH_BIT |
-															VK_IMAGE_ASPECT_STENCIL_BIT, 1);
+	offscreenDepthBuffer.createImageView(	device.get(),
+											depth_format, VK_IMAGE_ASPECT_DEPTH_BIT |
+											VK_IMAGE_ASPECT_STENCIL_BIT, 1);
 
 	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
 	VkCommandBuffer cmdBuffer2 = begin_command_buffer(device->getLogicalDevice(), graphics_command_pool);
-	transition_image_layout_for_command_buffer(cmdBuffer2, offscreen_depth_buffer_image,
+	transition_image_layout_for_command_buffer(cmdBuffer2, offscreenDepthBuffer.getImage(),
 		VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1, VK_IMAGE_ASPECT_DEPTH_BIT |
 																						VK_IMAGE_ASPECT_STENCIL_BIT);
 	end_and_submit_command_buffer(device->getLogicalDevice(), graphics_command_pool, device->getGraphicsQueue(), cmdBuffer2);
@@ -746,8 +741,8 @@ void VulkanRenderer::create_offscreen_framebuffers()
 	for (size_t i = 0; i < offscreen_framebuffer.size(); i++) {
 
 		std::array<VkImageView, 2> attachments = {
-							offscreen_images[i].image_view,
-							depth_buffer_image_view
+							offscreen_images[i].getImageView(),
+							depthBufferImage.getImageView()
 		};
 
 		VkFramebufferCreateInfo frame_buffer_create_info{};
@@ -1131,7 +1126,7 @@ void VulkanRenderer::update_post_descriptor_set()
 		// texture image info
 		VkDescriptorImageInfo image_info{};
 		image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		image_info.imageView = offscreen_images[i].image_view;
+		image_info.imageView = offscreen_images[i].getImageView();
 		image_info.sampler = texture_sampler;
 
 		// descriptor write info
@@ -1301,8 +1296,10 @@ void VulkanRenderer::object_to_VkGeometryKHR(Mesh* mesh, VkAccelerationStructure
 }
 
 
-void VulkanRenderer::create_acceleration_structure_infos_BLAS(BuildAccelerationStructure& build_as_structure, BlasInput& blas_input,
-															VkDeviceSize& current_scretch_size, VkDeviceSize& current_size)
+void VulkanRenderer::create_acceleration_structure_infos_BLAS(	BuildAccelerationStructure& build_as_structure, 
+																BlasInput& blas_input,
+																VkDeviceSize& current_scretch_size, 
+																VkDeviceSize& current_size)
 {
 
 	PFN_vkGetAccelerationStructureBuildSizesKHR pvkGetAccelerationStructureBuildSizesKHR = (PFN_vkGetAccelerationStructureBuildSizesKHR)
@@ -1389,21 +1386,21 @@ void VulkanRenderer::create_BLAS()
 	PFN_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR = (PFN_vkCreateAccelerationStructureKHR)
 		vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCreateAccelerationStructureKHR");
 
-	std::vector<BlasInput> blas_input(scene->get_model_count());
+	std::vector<BlasInput> blas_input(scene->getModelCount());
 
-	for (unsigned int model_index = 0; model_index < scene->get_model_count(); model_index++) {
+	for (unsigned int model_index = 0; model_index < scene->getModelCount(); model_index++) {
 
 		std::shared_ptr<Model> mesh_model = scene->get_model_list()[model_index];
 		//blas_input.emplace_back();
-		blas_input[model_index].as_geometry.reserve(mesh_model->get_mesh_count());
-		blas_input[model_index].as_build_offset_info.reserve(mesh_model->get_mesh_count());
+		blas_input[model_index].as_geometry.reserve(mesh_model->getMeshCount());
+		blas_input[model_index].as_build_offset_info.reserve(mesh_model->getMeshCount());
 
-		for (size_t mesh_index = 0; mesh_index < mesh_model->get_mesh_count(); mesh_index++) {
+		for (size_t mesh_index = 0; mesh_index < mesh_model->getMeshCount(); mesh_index++) {
 
 			VkAccelerationStructureGeometryKHR acceleration_structure_geometry{};
 			VkAccelerationStructureBuildRangeInfoKHR acceleration_structure_build_range_info{};
 
-			object_to_VkGeometryKHR(mesh_model->get_mesh(mesh_index), acceleration_structure_geometry, acceleration_structure_build_range_info);
+			object_to_VkGeometryKHR(mesh_model->getMesh(mesh_index), acceleration_structure_geometry, acceleration_structure_build_range_info);
 			// this only specifies the acceleration structure 
 			// we are building it in the end for the whole model with the build command
 
@@ -1415,12 +1412,12 @@ void VulkanRenderer::create_BLAS()
 
 
 	std::vector<BuildAccelerationStructure> build_as_structures;
-	build_as_structures.resize(scene->get_model_count());
+	build_as_structures.resize(scene->getModelCount());
 		
 	VkDeviceSize max_scratch_size = 0;
 	VkDeviceSize total_size_all_BLAS = 0;
 
-	for (unsigned int i = 0; i < scene->get_model_count(); i++) {
+	for (unsigned int i = 0; i < scene->getModelCount(); i++) {
 
 		VkDeviceSize current_scretch_size = 0;
 		VkDeviceSize current_size = 0;
@@ -1454,7 +1451,7 @@ void VulkanRenderer::create_BLAS()
 
 	VkCommandBuffer command_buffer = begin_command_buffer(device->getLogicalDevice(), compute_command_pool);
 
-	for (size_t i = 0; i < scene->get_model_count(); i++) {
+	for (size_t i = 0; i < scene->getModelCount(); i++) {
 		
 		create_single_blas(command_buffer, build_as_structures[i], scratch_buffer_address);
 
@@ -1501,12 +1498,12 @@ void VulkanRenderer::create_TLAS()
 
 
 	std::vector<VkAccelerationStructureInstanceKHR> tlas_instances;
-	tlas_instances.reserve(scene->get_model_count());
+	tlas_instances.reserve(scene->getModelCount());
 
-	for (size_t model_index = 0; model_index < scene->get_model_count(); model_index++) {
+	for (size_t model_index = 0; model_index < scene->getModelCount(); model_index++) {
 
 		// glm uses column major matrices so transpose it for Vulkan want row major here
-		glm::mat4 transpose_transform = glm::transpose(scene->get_model_matrix(static_cast<int>(model_index)));
+		glm::mat4 transpose_transform = glm::transpose(scene->getModelMatrix(static_cast<int>(model_index)));
 		VkTransformMatrixKHR out_matrix;
 		memcpy(&out_matrix, &transpose_transform, sizeof(VkTransformMatrixKHR));
 
@@ -1638,7 +1635,7 @@ void VulkanRenderer::create_TLAS()
 
 
 	VkAccelerationStructureBuildRangeInfoKHR acceleration_structure_build_range_info{};
-	acceleration_structure_build_range_info.primitiveCount = scene->get_model_count();
+	acceleration_structure_build_range_info.primitiveCount = scene->getModelCount();
 	acceleration_structure_build_range_info.primitiveOffset = 0;
 	acceleration_structure_build_range_info.firstVertex = 0;
 	acceleration_structure_build_range_info.transformOffset = 0;
@@ -1788,12 +1785,7 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	pipeline_layout_create_info.pPushConstantRanges = &pc_ray_ranges;
 
 	VkResult result = vkCreatePipelineLayout(device->getLogicalDevice(), &pipeline_layout_create_info, nullptr, &raytracing_pipeline_layout);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create raytracing pipeline layout!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create raytracing pipeline layout!")
 
 	VkPipelineLibraryCreateInfoKHR pipeline_library_create_info{};
 	pipeline_library_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LIBRARY_CREATE_INFO_KHR;
@@ -1818,11 +1810,7 @@ void VulkanRenderer::create_raytracing_pipeline() {
 	result = pvkCreateRayTracingPipelinesKHR(device->getLogicalDevice(), VK_NULL_HANDLE, VK_NULL_HANDLE, 1, 
 										&raytracing_pipeline_create_info, nullptr, &raytracing_pipeline);
 
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create raytracing pipeline!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create raytracing pipeline!")
 
 	vkDestroyShaderModule(device->getLogicalDevice(), raygen_shader_module, nullptr);
 	vkDestroyShaderModule(device->getLogicalDevice(), raymiss_shader_module, nullptr);
@@ -1859,12 +1847,7 @@ void VulkanRenderer::create_shader_binding_table()
 	VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(device->getLogicalDevice(),
 										raytracing_pipeline, 0, group_count, sbt_size, 
 										handles.data());
-
-	if(result != VK_SUCCESS) {
-		
-		throw std::runtime_error("Failed to get ray tracing shader group handles!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to get ray tracing shader group handles!")
 
 	const VkBufferUsageFlags bufferUsageFlags = VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR | 
 												VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT;
@@ -1921,49 +1904,23 @@ void VulkanRenderer::create_raytracing_descriptor_pool()
 	descriptor_pool_create_info.maxSets = vulkanSwapChain.getNumberSwapChainImages();
 
 	VkResult result = vkCreateDescriptorPool(device->getLogicalDevice(), &descriptor_pool_create_info, nullptr, &raytracing_descriptor_pool);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create command pool!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create command pool!")
 
 }
 
 void VulkanRenderer::create_object_description_buffer()
 {
+	std::vector<ObjectDescription> objectDescriptions = scene->getObjectDescriptions();
 
-	VkDeviceSize buffer_size = sizeof(ObjectDescription) * scene->get_number_of_object_descriptions();
-
-	// temporary buffer to "stage" index data before transfering to GPU
-	VulkanBuffer stagingBuffer;
-
-	// create buffer and allocate memory to it
-	stagingBuffer.create(	device.get(), buffer_size,
-							VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// Map memory to index buffer
-	void* data;																							
-	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, buffer_size, 0, &data);
-	memcpy(data, scene->get_object_descriptions().data(), (size_t)buffer_size);							
-	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
-
-	// create buffer for index data on GPU access only area
-	// create buffer with TRANSFER_DST_BIT to mark as recipient of transfer data (also VERTEX_BUFFER)
-	// buffer memory is to be DEVICE_LOCAL_BIT meaning memory is on the GPU and only accessible by it and not CPU (host)
-	objectDescriptionBuffer.create(	device.get(),
-									buffer_size,
-									VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-									VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
-									VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | 
-									VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT);
-
-	// copy staging buffer to vertex buffer on GPU
-	copy_buffer(device->getLogicalDevice(), device->getComputeQueue(), compute_command_pool, 
-				stagingBuffer.getBuffer(), objectDescriptionBuffer.getBuffer(), buffer_size);
+	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
+															compute_command_pool,
+															objectDescriptionBuffer,
+															VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
+															VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
+															VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT |
+															VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+															objectDescriptions);
 
 	// update the object description set
 	// update all of descriptor set buffer bindings
@@ -1994,8 +1951,6 @@ void VulkanRenderer::create_object_description_buffer()
 									write_descriptor_sets.data(), 0, nullptr);
 	}
 
-	stagingBuffer.cleanUp();
-
 }
 
 void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
@@ -2021,7 +1976,7 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 														VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
 
 		descriptor_set_layout_bindings[2].binding = TEXTURES_BINDING;
-		descriptor_set_layout_bindings[2].descriptorCount = static_cast<uint32_t>(texture_images.size());
+		descriptor_set_layout_bindings[2].descriptorCount = scene->getTextureCount(0);
 		descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 		descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
@@ -2040,12 +1995,8 @@ void VulkanRenderer::create_raytracing_descriptor_set_layouts() {
 		descriptor_set_layout_create_info.pBindings = descriptor_set_layout_bindings.data();
 
 		VkResult result = vkCreateDescriptorSetLayout(device->getLogicalDevice(), &descriptor_set_layout_create_info, nullptr, &raytracing_descriptor_set_layout);
+		ASSERT_VULKAN(result, "Failed to create raytracing descriptor set layout!")
 
-		if (result != VK_SUCCESS) {
-
-			throw std::runtime_error("Failed to create raytracing descriptor set layout!");
-
-		}
 	}
 	
 
@@ -2066,12 +2017,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 	descriptor_set_allocate_info.pSetLayouts = set_layouts.data();
 
 	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &descriptor_set_allocate_info, raytracing_descriptor_set.data());
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to allocate raytracing descriptor set!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to allocate raytracing descriptor set!")
 		
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
 
@@ -2094,7 +2040,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
 
 		VkDescriptorImageInfo image_info{};
-		image_info.imageView = offscreen_images[i].image_view;
+		image_info.imageView = offscreen_images[i].getImageView();
 		image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
 
 		VkWriteDescriptorSet descriptor_image_writer{};
@@ -2110,11 +2056,12 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_image_writer.pTexelBufferView = nullptr;
 
 		// texture image info
+		std::vector<Texture>& textures = scene->getTextures(0);
 		std::vector<VkDescriptorImageInfo> image_info_textures;
-		image_info_textures.resize(texture_image_views.size());
-		for (int i = 0; i < texture_image_views.size(); i++) {
+		image_info_textures.resize(scene->getTextureCount(0));
+		for (Texture& texture : textures) {
 			image_info_textures[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			image_info_textures[i].imageView = texture_image_views[i];
+			image_info_textures[i].imageView = texture.getImageView();
 			image_info_textures[i].sampler = nullptr;
 		}
 
@@ -2195,12 +2142,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 
 	// create descriptor set layout
 	VkResult result = vkCreateDescriptorSetLayout(device->getLogicalDevice(), &layout_create_info, nullptr, &descriptor_set_layout);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create descriptor set layout!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create descriptor set layout!")
 
 	// CREATE TEXTURE SAMPLER DESCRIPTOR SET LAYOUT
 	// texture binding info
@@ -2231,12 +2173,7 @@ void VulkanRenderer::create_descriptor_set_layouts()
 
 	// create descriptor set layout
 	result = vkCreateDescriptorSetLayout(device->getLogicalDevice(), &texture_layout_create_info, nullptr, &sampler_set_layout);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create sampler set layout!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create sampler set layout!")
 
 }
 
@@ -2427,12 +2364,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 
 	// create pipeline layout
 	VkResult result = vkCreatePipelineLayout(device->getLogicalDevice(), &pipeline_layout_create_info, nullptr, &pipeline_layout);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create pipeline layout!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create pipeline layout!")
 
 	// -- DEPTH STENCIL TESTING --
 	VkPipelineDepthStencilStateCreateInfo depth_stencil_create_info{};
@@ -2466,12 +2398,7 @@ void VulkanRenderer::create_rasterizer_graphics_pipeline()
 
 	// create graphics pipeline 
 	result = vkCreateGraphicsPipelines(device->getLogicalDevice(), VK_NULL_HANDLE, 1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create a graphics pipeline!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create a graphics pipeline!")
 
 	// Destroy shader modules, no longer needed after pipeline created
 	vkDestroyShaderModule(device->getLogicalDevice(), vertex_shader_module, nullptr);
@@ -2491,17 +2418,16 @@ void VulkanRenderer::create_depthbuffer_image()
 	// create depth buffer image
 	// MIP LEVELS: for depth texture we only want 1 level :)
 	const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
-	depth_buffer_image = create_image(	device->getLogicalDevice(),
-										device->getPhysicalDevice(), 
-										swap_chain_extent.width, swap_chain_extent.height,
-								1, depth_format, VK_IMAGE_TILING_OPTIMAL,
+	depthBufferImage.createImage(	device.get(),
+									swap_chain_extent.width, swap_chain_extent.height,
+									1, depth_format, VK_IMAGE_TILING_OPTIMAL,
 									VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, 
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &depth_buffer_image_memory);
+									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 	// depth buffer image view 
 	// MIP LEVELS: for depth texture we only want 1 level :)
-	depth_buffer_image_view = create_image_view(device->getLogicalDevice(), 
-												depth_buffer_image, depth_format,
+	depthBufferImage.createImageView(	device.get(),
+										depth_format,
 										VK_IMAGE_ASPECT_DEPTH_BIT, 1);
 
 }
@@ -2518,7 +2444,7 @@ void VulkanRenderer::create_framebuffers()
 
 		std::array<VkImageView, 2> attachments = {
 								swap_chain_image.image_view,
-								depth_buffer_image_view
+								depthBufferImage.getImageView()
 		};
 
 		VkFramebufferCreateInfo frame_buffer_create_info{};
@@ -2791,12 +2717,7 @@ void VulkanRenderer::create_descriptor_sets()
 	
 	// allocate descriptor sets (multiple)
 	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &set_alloc_info, descriptor_sets.data());
-
-	if (result != VK_SUCCESS) {
-
-		throw std::runtime_error("Failed to create descriptor sets!");
-
-	}
+	ASSERT_VULKAN(result, "Failed to create descriptor sets!")
 
 	// update all of descriptor set buffer bindings
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
@@ -2845,101 +2766,105 @@ void VulkanRenderer::create_descriptor_sets()
 
 }
 
-int VulkanRenderer::create_texture(std::string filename)
-{
+//int VulkanRenderer::create_texture(std::string filename)
+//{
+//
+//	// create texture image and get its location in array
+//	int texture_image_location = create_texture_image(filename);
+//
+//	// create image view and add to list
+//	VkImageView image_view = create_image_view(	device->getLogicalDevice(),
+//												texture_images[texture_image_location], 
+//												VK_FORMAT_R8G8B8A8_UNORM,
+//												VK_IMAGE_ASPECT_COLOR_BIT, 
+//												texture_mip_levels[texture_image_location]);
+//	texture_image_views.push_back(image_view);
+//
+//	// create texture descriptor set here
+//	// int descriptor_location = create_texture_descriptor(image_view);
+//
+//	return texture_image_location;
+//
+//}
 
-	// create texture image and get its location in array
-	int texture_image_location = create_texture_image(filename);
-
-	// create image view and add to list
-	VkImageView image_view = create_image_view(	device->getLogicalDevice(),
-												texture_images[texture_image_location], 
-												VK_FORMAT_R8G8B8A8_UNORM,
-												VK_IMAGE_ASPECT_COLOR_BIT, 
-												texture_mip_levels[texture_image_location]);
-	texture_image_views.push_back(image_view);
-
-	// create texture descriptor set here
-	// int descriptor_location = create_texture_descriptor(image_view);
-
-	return texture_image_location;
-
-}
-
-int VulkanRenderer::create_texture_image(std::string filename)
-{
-	
-	int width, height;
-	VkDeviceSize image_size;
-	stbi_uc* image_data = load_texture_file(filename, &width, &height, &image_size);
-
-	// find the number of mip level we want to create 
-	int mip_levels = static_cast<uint32_t>(std::floor(std::log2(std::max(width, height)))) + 1;
-
-	// update the max level amount; we will need it later for creating the sampler
-	max_levels = std::min(max_levels, mip_levels);
-
-	// create staging buffer to hold loaded data, ready to copy to device
-	VulkanBuffer stagingBuffer;
-	stagingBuffer.create(	device.get(), image_size,
-							VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-	// copy image data to staging buffer 
-	void* data;
-	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, image_size, 0, &data);
-	memcpy(data, image_data, static_cast<size_t>(image_size));
-	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
-
-	// free original image data
-	stbi_image_free(image_data);
-
-	// create image to hold final texture
-	VkImage texture_image;
-	VkDeviceMemory texture_image_memory;
-	texture_image = create_image(	device->getLogicalDevice(),
-									device->getPhysicalDevice(),
-									width, height, mip_levels, 
-									VK_FORMAT_R8G8B8A8_UNORM,
-									VK_IMAGE_TILING_OPTIMAL,
-									VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-									VK_IMAGE_USAGE_TRANSFER_DST_BIT |
-									VK_IMAGE_USAGE_SAMPLED_BIT,
-									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-									&texture_image_memory);
-
-	// copy data to image
-	// transition image to be DST for copy operation
-	transition_image_layout(device->getLogicalDevice(), device->getGraphicsQueue(), graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mip_levels);
-
-	// copy data to image
-	copy_image_buffer(	device->getLogicalDevice(), device->getGraphicsQueue(), graphics_command_pool, stagingBuffer.getBuffer(),
-						texture_image, width, height);
-
-	// transition image to be shader readable for shader stage
-
-	//transition_image_layout(device->getLogicalDevice(), graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-	//											VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, mip_levels);
-
-
-	// add texture data to vector for reference
-	texture_images.push_back(texture_image);
-	texture_images_memory.push_back(texture_image_memory);
-
-	// update mip level
-	texture_mip_levels.push_back(mip_levels);
-
-	// generate mipmaps
-	generate_mipmaps(device->getPhysicalDevice(), device->getLogicalDevice(), graphics_command_pool, device->getGraphicsQueue(),
-		texture_image, VK_FORMAT_R8G8B8A8_SRGB, width, height, mip_levels);
-
-	stagingBuffer.cleanUp();
-
-	// return index to element in vector
-	return static_cast<uint32_t>(texture_images.size() - 1);
-
-}
+//int VulkanRenderer::create_texture_image(std::string filename)
+//{
+//	
+//	int width, height;
+//	VkDeviceSize image_size;
+//	stbi_uc* image_data = load_texture_file(filename, &width, &height, &image_size);
+//
+//	// find the number of mip level we want to create 
+//	int mip_levels = static_cast<uint32_t>(std::floor(std::log2(std::max(width, height)))) + 1;
+//
+//	// update the max level amount; we will need it later for creating the sampler
+//	max_levels = std::min(max_levels, mip_levels);
+//
+//	// create staging buffer to hold loaded data, ready to copy to device
+//	VulkanBuffer stagingBuffer;
+//	stagingBuffer.create(	device.get(), image_size,
+//							VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
+//							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+//							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+//
+//	// copy image data to staging buffer 
+//	void* data;
+//	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, image_size, 0, &data);
+//	memcpy(data, image_data, static_cast<size_t>(image_size));
+//	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
+//
+//	// free original image data
+//	stbi_image_free(image_data);
+//
+//	// create image to hold final texture
+//	VkImage texture_image;
+//	VkDeviceMemory texture_image_memory;
+//	texture_image = create_image(	device->getLogicalDevice(),
+//									device->getPhysicalDevice(),
+//									width, height, mip_levels, 
+//									VK_FORMAT_R8G8B8A8_UNORM,
+//									VK_IMAGE_TILING_OPTIMAL,
+//									VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+//									VK_IMAGE_USAGE_TRANSFER_DST_BIT |
+//									VK_IMAGE_USAGE_SAMPLED_BIT,
+//									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+//									&texture_image_memory);
+//
+//	// copy data to image
+//	// transition image to be DST for copy operation
+//	transition_image_layout(device->getLogicalDevice(), device->getGraphicsQueue(), 
+//							graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_UNDEFINED,
+//							VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mip_levels);
+//
+//	// copy data to image
+//	copy_image_buffer(	device->getLogicalDevice(), device->getGraphicsQueue(), graphics_command_pool, stagingBuffer.getBuffer(),
+//						texture_image, width, height);
+//
+//	// transition image to be shader readable for shader stage
+//
+//	//transition_image_layout(device->getLogicalDevice(), graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+//	//											VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, mip_levels);
+//
+//
+//	// add texture data to vector for reference
+//	texture_images.push_back(texture_image);
+//	texture_images_memory.push_back(texture_image_memory);
+//
+//	// update mip level
+//	texture_mip_levels.push_back(mip_levels);
+//
+//	// generate mipmaps
+//	generate_mipmaps(	device->getPhysicalDevice(), device->getLogicalDevice(), 
+//						graphics_command_pool, device->getGraphicsQueue(),
+//						texture_image, VK_FORMAT_R8G8B8A8_SRGB, 
+//						width, height, mip_levels);
+//
+//	stagingBuffer.cleanUp();
+//
+//	// return index to element in vector
+//	return static_cast<uint32_t>(texture_images.size() - 1);
+//
+//}
 
 void VulkanRenderer::create_sampler_array_descriptor_set()
 {
@@ -3031,7 +2956,7 @@ int VulkanRenderer::create_model(std::string modelFile)
 
 	scene->add_model(new_model);
 
-	return scene->get_model_count() - 1;
+	return scene->getModelCount() - 1;
 
 }
 
@@ -3291,10 +3216,10 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 		// bind pipeline to be used in render pass
 		vkCmdBindPipeline(command_buffers[image_index], VK_PIPELINE_BIND_POINT_GRAPHICS, offscreen_graphics_pipeline);
 
-		for (unsigned int m = 0; m < scene->get_model_count(); m++) {
+		for (unsigned int m = 0; m < scene->getModelCount(); m++) {
 
 			// for GCC doen't allow references on rvalues go like that ... 
-			pc_raster.model = scene->get_model_matrix(m);
+			pc_raster.model = scene->getModelMatrix(m);
 			// just "Push" constants to given shader stage directly (no buffer)
 			vkCmdPushConstants(command_buffers[image_index],
 				offscreen_pipeline_layout,
@@ -3303,15 +3228,15 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 				sizeof(PushConstantRasterizer),								// size of data being pushed 
 				&pc_raster);											// using model of current mesh (can be array)
 
-			for (unsigned int k = 0; k < scene->get_mesh_count(m); k++) {
+			for (unsigned int k = 0; k < scene->getMeshCount(m); k++) {
 
 				// list of vertex buffers we want to draw 
-				VkBuffer vertex_buffers[] = { scene->get_vertex_buffer(m,k) };					// buffers to bind 
+				VkBuffer vertex_buffers[] = { scene->getVertexBuffer(m,k) };					// buffers to bind 
 				VkDeviceSize offsets[] = { 0 };																					
 				vkCmdBindVertexBuffers(command_buffers[image_index], 0, 1, vertex_buffers, offsets);	// command to bind vertex buffer before drawing with them
 
 				// bind mesh index buffer with 0 offset and using the uint32 type
-				vkCmdBindIndexBuffer(command_buffers[image_index], scene->get_index_buffer(m, k), 0, VK_INDEX_TYPE_UINT32);			
+				vkCmdBindIndexBuffer(command_buffers[image_index], scene->getIndexBuffer(m, k), 0, VK_INDEX_TYPE_UINT32);			
 
 				// danamic offset amount
 				// uint32_t dynamic_offset = static_cast<uint32_t>(model_uniform_alignment) * static_cast<uint32_t>(m);
@@ -3326,7 +3251,7 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 															descriptor_set_group.data(), 0, nullptr);
 
 				// execute pipeline
-				vkCmdDrawIndexed(command_buffers[image_index], static_cast<uint32_t>(scene->get_index_count(m, k)), 1, 0, 0, 0);
+				vkCmdDrawIndexed(command_buffers[image_index], static_cast<uint32_t>(scene->getIndexCount(m, k)), 1, 0, 0, 0);
 
 			}
 
@@ -3355,7 +3280,7 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	
 	render_pass_begin_info.framebuffer = framebuffers[image_index];// used framebuffer depends on the swap chain and therefore is changing for each command buffer
 
-	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].image,
+	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].getImage(),
 													VK_IMAGE_LAYOUT_GENERAL,
 													VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
 
@@ -3383,7 +3308,7 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	/*transition_image_layout_for_command_buffer(command_buffers[image_index], swap_chain_images[image_index].image,
 		 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, VK_IMAGE_LAYOUT_UNDEFINED, 1, VK_IMAGE_ASPECT_COLOR_BIT);*/
 
-	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].image,
+	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].getImage(),
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
 
 
@@ -3469,11 +3394,8 @@ void VulkanRenderer::clean_up_swapchain()
 	vkDestroyPipelineLayout(device->getLogicalDevice(), pipeline_layout, nullptr);
 	vkDestroyRenderPass(device->getLogicalDevice(), render_pass, nullptr);
 
-	// -- CLEAN DEPTH BUFFER
-	// only destroy the view; keep image and memory
-	vkDestroyImageView(device->getLogicalDevice(), depth_buffer_image_view, nullptr);
-	vkDestroyImage(device->getLogicalDevice(), depth_buffer_image, nullptr);
-	vkFreeMemory(device->getLogicalDevice(), depth_buffer_image_memory, nullptr);
+	depthBufferImage.cleanUp();
+	
 
 	// -- POST 
 	vkDestroyRenderPass(device->getLogicalDevice(), post_render_pass, nullptr);
@@ -3495,16 +3417,12 @@ void VulkanRenderer::clean_up_swapchain()
 
 	for (auto image : offscreen_images) {
 
-		vkDestroyImageView(device->getLogicalDevice(), image.image_view, nullptr);
-		vkDestroyImage(device->getLogicalDevice(), image.image, nullptr);
-		vkFreeMemory(device->getLogicalDevice(), image.image_memory, nullptr);
+		image.cleanUp();
 
 	}
 
 	// depth buffer
-	vkDestroyImageView(device->getLogicalDevice(), offscreen_depth_buffer_image_view, nullptr);
-	vkDestroyImage(device->getLogicalDevice(), offscreen_depth_buffer_image, nullptr);
-	vkFreeMemory(device->getLogicalDevice(), offscreen_depth_buffer_image_memory, nullptr);
+	offscreenDepthBuffer.cleanUp();
 
 	// -- UNIFORM VALUES CLEAN UP
 	// desriptor pool size depends on number of images in swapchain, therefore clean it up here
@@ -3567,14 +3485,6 @@ void VulkanRenderer::clean_up()
 	// -- TEXTURE REALTED
 	vkDestroyDescriptorPool(device->getLogicalDevice(), sampler_descriptor_pool, nullptr);
 	vkDestroySampler(device->getLogicalDevice(), texture_sampler, nullptr);
-
-	for (size_t i = 0; i < texture_images.size(); i++) {
-
-		vkDestroyImageView(device->getLogicalDevice(), texture_image_views[i], nullptr);
-		vkDestroyImage(device->getLogicalDevice(), texture_images[i], nullptr);
-		vkFreeMemory(device->getLogicalDevice(), texture_images_memory[i], nullptr);
-
-	}
 
 	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
 
