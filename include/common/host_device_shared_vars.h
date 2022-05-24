@@ -4,7 +4,7 @@
 const int MAX_FRAME_DRAWS = 3;
 const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
-const int MAX_TEXTURE_COUNT = 24;
+const int MAX_TEXTURE_COUNT = 23;
 
 // ----- RASTERIZER ----- START
 #define globalUBO_BINDING 0

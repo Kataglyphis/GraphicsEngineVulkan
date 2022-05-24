@@ -29,6 +29,11 @@ void Model::set_model(glm::mat4 model)
     this->model = model;
 }
 
+void Model::addTexture(Texture newTexture)
+{
+    modelTextures.push_back(newTexture);
+}
+
 uint32_t Model::getPrimitiveCount()
 {
     uint32_t number_of_indices = 0;

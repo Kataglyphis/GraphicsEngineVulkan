@@ -19,8 +19,11 @@ public:
 										VkCommandPool commandPool, 
 										std::string fileName);
 
-	VkImage				getImage() { return vulkanImage.getImage(); };
-	VkImageView			getImageView() { return vulkanImageView.getImageView(); };
+	void				setImage(VkImage image);
+	void				setImageView(VkImageView imageView);
+
+	VkImage&			getImage() { return vulkanImage.getImage(); };
+	VkImageView&		getImageView() { return vulkanImageView.getImageView(); };
 
 	void				createImage(	VulkanDevice* device,
 										uint32_t width, uint32_t height,

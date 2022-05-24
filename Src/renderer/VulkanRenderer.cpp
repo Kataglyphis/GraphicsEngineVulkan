@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include "File.h"
 
@@ -67,12 +68,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		create_post_pipeline();
 		create_framebuffers();
 
-		// this texture is used if the wanted texture could not be loaded :))
-		std::stringstream textures_dir;
-		textures_dir << CMAKELISTS_DIR;
-		textures_dir << "/Resources/Textures/plain.png";
-		plainTexture.createFromFile(device.get(), graphics_command_pool, textures_dir.str());
-
 		std::stringstream modelFile;
 		modelFile << CMAKELISTS_DIR;
 		modelFile << "/Resources/Model/crytek-sponza/";
@@ -90,7 +85,9 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		//std::string modelFile = "../Resources/Model/bmw/bmw.obj";
 		//std::string modelFile = "../Resources/Model/testScene.obj";
 		//std::string modelFile = "../Resources/Model/San_Miguel/san-miguel-low-poly.obj";
-		create_model(modelFile.str());
+		scene->loadModel(device.get(), compute_command_pool, modelFile.str());
+
+		create_sampler_array_descriptor_set();
 
 		glm::mat4 dragon_model(1.0f);
 		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
@@ -103,6 +100,11 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 		create_synchronization();
 
+		gui->initializeVulkanContext(	device.get(),
+										instance.getVulkanInstance(),
+										post_render_pass,
+										graphics_command_pool);
+
 	}
 	catch (const std::runtime_error& e) {
 
@@ -110,10 +112,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 	}
 
-	gui->initializeVulkanContext(	device.get(),
-									instance.getVulkanInstance(),
-									post_render_pass,
-									graphics_command_pool);
 
 }
 
@@ -2056,12 +2054,12 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_image_writer.pTexelBufferView = nullptr;
 
 		// texture image info
-		std::vector<Texture>& textures = scene->getTextures(0);
+		std::vector<Texture>& modelTextures = scene->getTextures(0);
 		std::vector<VkDescriptorImageInfo> image_info_textures;
 		image_info_textures.resize(scene->getTextureCount(0));
-		for (Texture& texture : textures) {
+		for (int i = 0; i < scene->getTextureCount(0); i++) {
 			image_info_textures[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			image_info_textures[i].imageView = texture.getImageView();
+			image_info_textures[i].imageView = modelTextures[i].getImageView();
 			image_info_textures[i].sampler = nullptr;
 		}
 
@@ -2440,10 +2438,10 @@ void VulkanRenderer::create_framebuffers()
 
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
 
-		SwapChainImage& swap_chain_image = vulkanSwapChain.getSwapChainImage(i);
+		Texture& swap_chain_image = vulkanSwapChain.getSwapChainImage(i);
 
 		std::array<VkImageView, 2> attachments = {
-								swap_chain_image.image_view,
+								swap_chain_image.getImageView(),
 								depthBufferImage.getImageView()
 		};
 
@@ -2766,106 +2764,6 @@ void VulkanRenderer::create_descriptor_sets()
 
 }
 
-//int VulkanRenderer::create_texture(std::string filename)
-//{
-//
-//	// create texture image and get its location in array
-//	int texture_image_location = create_texture_image(filename);
-//
-//	// create image view and add to list
-//	VkImageView image_view = create_image_view(	device->getLogicalDevice(),
-//												texture_images[texture_image_location], 
-//												VK_FORMAT_R8G8B8A8_UNORM,
-//												VK_IMAGE_ASPECT_COLOR_BIT, 
-//												texture_mip_levels[texture_image_location]);
-//	texture_image_views.push_back(image_view);
-//
-//	// create texture descriptor set here
-//	// int descriptor_location = create_texture_descriptor(image_view);
-//
-//	return texture_image_location;
-//
-//}
-
-//int VulkanRenderer::create_texture_image(std::string filename)
-//{
-//	
-//	int width, height;
-//	VkDeviceSize image_size;
-//	stbi_uc* image_data = load_texture_file(filename, &width, &height, &image_size);
-//
-//	// find the number of mip level we want to create 
-//	int mip_levels = static_cast<uint32_t>(std::floor(std::log2(std::max(width, height)))) + 1;
-//
-//	// update the max level amount; we will need it later for creating the sampler
-//	max_levels = std::min(max_levels, mip_levels);
-//
-//	// create staging buffer to hold loaded data, ready to copy to device
-//	VulkanBuffer stagingBuffer;
-//	stagingBuffer.create(	device.get(), image_size,
-//							VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
-//							VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-//							VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-//
-//	// copy image data to staging buffer 
-//	void* data;
-//	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, image_size, 0, &data);
-//	memcpy(data, image_data, static_cast<size_t>(image_size));
-//	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
-//
-//	// free original image data
-//	stbi_image_free(image_data);
-//
-//	// create image to hold final texture
-//	VkImage texture_image;
-//	VkDeviceMemory texture_image_memory;
-//	texture_image = create_image(	device->getLogicalDevice(),
-//									device->getPhysicalDevice(),
-//									width, height, mip_levels, 
-//									VK_FORMAT_R8G8B8A8_UNORM,
-//									VK_IMAGE_TILING_OPTIMAL,
-//									VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-//									VK_IMAGE_USAGE_TRANSFER_DST_BIT |
-//									VK_IMAGE_USAGE_SAMPLED_BIT,
-//									VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-//									&texture_image_memory);
-//
-//	// copy data to image
-//	// transition image to be DST for copy operation
-//	transition_image_layout(device->getLogicalDevice(), device->getGraphicsQueue(), 
-//							graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_UNDEFINED,
-//							VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mip_levels);
-//
-//	// copy data to image
-//	copy_image_buffer(	device->getLogicalDevice(), device->getGraphicsQueue(), graphics_command_pool, stagingBuffer.getBuffer(),
-//						texture_image, width, height);
-//
-//	// transition image to be shader readable for shader stage
-//
-//	//transition_image_layout(device->getLogicalDevice(), graphics_queue, graphics_command_pool, texture_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-//	//											VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, mip_levels);
-//
-//
-//	// add texture data to vector for reference
-//	texture_images.push_back(texture_image);
-//	texture_images_memory.push_back(texture_image_memory);
-//
-//	// update mip level
-//	texture_mip_levels.push_back(mip_levels);
-//
-//	// generate mipmaps
-//	generate_mipmaps(	device->getPhysicalDevice(), device->getLogicalDevice(), 
-//						graphics_command_pool, device->getGraphicsQueue(),
-//						texture_image, VK_FORMAT_R8G8B8A8_SRGB, 
-//						width, height, mip_levels);
-//
-//	stagingBuffer.cleanUp();
-//
-//	// return index to element in vector
-//	return static_cast<uint32_t>(texture_images.size() - 1);
-//
-//}
-
 void VulkanRenderer::create_sampler_array_descriptor_set()
 {
 
@@ -2880,13 +2778,14 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &alloc_info, &sampler_descriptor_set);
 	ASSERT_VULKAN(result, "Failed to allocate texture descriptor sets!")
 
-	// texture image info
-	std::vector<VkDescriptorImageInfo> image_info;
-	image_info.resize(texture_image_views.size());
-	for (int i = 0; i < texture_image_views.size(); i++) {
-		image_info[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		image_info[i].imageView = texture_image_views[i];
-		image_info[i].sampler = nullptr;
+
+	std::vector<Texture>& modelTextures = scene->getTextures(0);
+	std::vector<VkDescriptorImageInfo> image_info_textures;
+	image_info_textures.resize(scene->getTextureCount(0));
+	for (uint32_t i = 0; i < scene->getTextureCount(0); i++) {
+		image_info_textures[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		image_info_textures[i].imageView = modelTextures[i].getImageView();
+		image_info_textures[i].sampler = nullptr;
 	}
 
 	// descriptor write info
@@ -2896,8 +2795,8 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 	descriptor_write.dstBinding = TEXTURES_BINDING;
 	descriptor_write.dstArrayElement = 0;
 	descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-	descriptor_write.descriptorCount = static_cast<uint32_t>(image_info.size());
-	descriptor_write.pImageInfo = image_info.data();
+	descriptor_write.descriptorCount = static_cast<uint32_t>(image_info_textures.size());
+	descriptor_write.pImageInfo = image_info_textures.data();
 
 	VkDescriptorImageInfo sampler_info;
 	sampler_info.imageView = nullptr;
@@ -2914,49 +2813,11 @@ void VulkanRenderer::create_sampler_array_descriptor_set()
 	descriptor_write_sampler.pImageInfo = &sampler_info;
 
 	std::vector<VkWriteDescriptorSet> write_descriptor_sets = { descriptor_write,
-																 descriptor_write_sampler };
+																descriptor_write_sampler };
 
 	// update new descriptor set
 	vkUpdateDescriptorSets(device->getLogicalDevice(), static_cast<uint32_t>(write_descriptor_sets.size()),
 							write_descriptor_sets.data(), 0, nullptr);
-
-}
-
-int VulkanRenderer::create_model(std::string modelFile)
-{
-
-	ObjLoader obj_loader(	device.get(), device->getGraphicsQueue(),
-							graphics_command_pool);
-
-	std::vector<std::string> textureNames = obj_loader.load_textures(modelFile);
-	std::vector<int> matToTex(textureNames.size());
-
-	// Loop over textureNames and create textures for them
-	for (size_t i = 0; i < textureNames.size(); i++)
-	{
-		// If material had no texture, set '0' to indicate no texture, texture 0 will be reserved for a default texture
-		if (!textureNames[i].empty())
-		{
-			int offset = 1; // because place 0 has plain texture
-			// Otherwise, create texture and set value to index of new texture
-			int location = create_texture(textureNames[i]);
-			matToTex[i] = location;
-
-		}
-		else {
-
-			matToTex[i] = 0;
-
-		}
-
-	}
-	std::shared_ptr<Model> new_model = obj_loader.load_model(modelFile, matToTex);
-
-	create_sampler_array_descriptor_set();
-
-	scene->add_model(new_model);
-
-	return scene->getModelCount() - 1;
 
 }
 
@@ -3359,11 +3220,7 @@ int VulkanRenderer::create_texture_descriptor(VkImageView texture_image)
 	// update new descriptor set
 	vkUpdateDescriptorSets(device->getLogicalDevice(), 1, &descriptor_write, 0, nullptr);
 
-	// add descriptor set to list
-	//sampler_descriptor_sets.push_back(descriptor_set);
-
-	// return descriptor set location
-	return 0;// static_cast<uint32_t>(sampler_descriptor_sets.size()) - 1;
+	return 0;
 
 }
 

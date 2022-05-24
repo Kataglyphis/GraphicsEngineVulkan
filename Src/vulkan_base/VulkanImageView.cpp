@@ -4,6 +4,11 @@ VulkanImageView::VulkanImageView()
 {
 }
 
+void VulkanImageView::setImageView(VkImageView imageView)
+{
+	this->imageView = imageView;
+}
+
 void VulkanImageView::create(	VulkanDevice* device, 
 								VkImage image, VkFormat format, 
 								VkImageAspectFlags aspect_flags, 

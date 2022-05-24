@@ -97,12 +97,11 @@ void VulkanSwapChain::initVulkanContext(VulkanDevice* device,
 
 		VkImage image = images[static_cast<uint32_t>(i)];
 		// store image handle
-		SwapChainImage swap_chain_image{};
-		swap_chain_image.image = image;
-		swap_chain_image.image_view = create_image_view(device->getLogicalDevice(),
-			image,
-			swap_chain_image_format,
-			VK_IMAGE_ASPECT_COLOR_BIT, 1);
+		Texture swap_chain_image{};
+		swap_chain_image.setImage(image);
+		swap_chain_image.createImageView(device,
+									swap_chain_image_format,
+									VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
 		// add to swapchain image list 
 		swap_chain_images.push_back(swap_chain_image);
@@ -112,9 +111,10 @@ void VulkanSwapChain::initVulkanContext(VulkanDevice* device,
 
 void VulkanSwapChain::cleanUp()
 {
+	
 	for (auto image : swap_chain_images) {
 
-		vkDestroyImageView(device->getLogicalDevice(), image.image_view, nullptr);
+		vkDestroyImageView(device->getLogicalDevice(), image.getImageView(), nullptr);
 
 	}
 

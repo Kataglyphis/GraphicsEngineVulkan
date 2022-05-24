@@ -23,6 +23,7 @@
 #include "Camera.h"
 #include "GUI.h"
 #include "GUISceneSharedVars.h"
+#include "ObjLoader.h"
 
 #include <string>
 
@@ -50,6 +51,10 @@ public:
 	uint32_t		getNumberMeshes();
 	std::vector<ObjectDescription>				getObjectDescriptions() { return object_descriptions; };
 	std::vector<std::shared_ptr<Model>> const&	get_model_list() { return model_list; };
+
+	void						loadModel(	VulkanDevice* device,
+											VkCommandPool commandPool, 
+											std::string modelFileName);
 
 	void						add_model(std::shared_ptr<Model> model);
 	void						add_object_description(ObjectDescription object_description);
