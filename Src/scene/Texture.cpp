@@ -58,6 +58,21 @@ void Texture::createFromFile(VulkanDevice* device, VkCommandPool commandPool, st
 
 	stagingBuffer.cleanUp();
 
+	createImageView(device,
+					VK_FORMAT_R8G8B8A8_UNORM,
+					VK_IMAGE_ASPECT_COLOR_BIT, 
+					mip_levels);
+
+}
+
+void Texture::setImage(VkImage image)
+{
+	vulkanImage.setImage(image);
+}
+
+void Texture::setImageView(VkImageView imageView)
+{
+	vulkanImageView.setImageView(imageView);
 }
 
 void Texture::createImage(	VulkanDevice* device,

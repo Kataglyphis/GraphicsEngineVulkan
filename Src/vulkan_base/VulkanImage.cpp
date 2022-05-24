@@ -11,6 +11,7 @@ void VulkanImage::create(	VulkanDevice* device,
 							VkFormat format, VkImageTiling tiling, 
 							VkImageUsageFlags use_flags, VkMemoryPropertyFlags prop_flags)
 {
+	this->device = device;
 	// CREATE image
 	// image creation info
 	VkImageCreateInfo image_create_info{};
@@ -52,10 +53,15 @@ void VulkanImage::create(	VulkanDevice* device,
 
 }
 
+void VulkanImage::setImage(VkImage image)
+{
+	this->image = image;
+}
+
 void VulkanImage::cleanUp()
 {
-	vkDestroyImage(device->getLogicalDevice(), depth_buffer_image, nullptr);
-	vkFreeMemory(device->getLogicalDevice(), depth_buffer_image_memory, nullptr);
+	vkDestroyImage(device->getLogicalDevice(), image, nullptr);
+	vkFreeMemory(device->getLogicalDevice(), imageMemory, nullptr);
 }
 
 VulkanImage::~VulkanImage()

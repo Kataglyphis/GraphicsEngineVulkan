@@ -39,8 +39,6 @@
 #include "VulkanBufferManager.h"
 #include "Texture.h"
 
-#include "tiny_obj_loader.h"
-
 #include "Scene.h"
 #include <GUI.h>
 
@@ -54,7 +52,7 @@ public:
 					Camera* camera);
 
 	void	hot_reload_all_shader();
-	int		create_model(std::string modelFile);
+	void	drawFrame(ImDrawData* gui_draw_data);
 
 	void	update_uniforms(Scene* scene,
 							Camera* camera,
@@ -62,20 +60,16 @@ public:
 
 	void	updateStateDueToUserInput(GUI* gui);
 
-	void update_raytracing_descriptor_set(uint32_t image_index);
-	void record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
+	void	update_raytracing_descriptor_set(uint32_t image_index);
+	void	record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
 
 	// texture functions 
-	//int create_texture(std::string filename);
-	//int create_texture_image(std::string filename);
-	void create_sampler_array_descriptor_set();
+	void	create_sampler_array_descriptor_set();
 
 
-	void drawFrame(ImDrawData* gui_draw_data);
-
-	void clean_up_swapchain();
-	void clean_up_raytracing();
-	void clean_up();
+	void	clean_up_swapchain();
+	void	clean_up_raytracing();
+	void	clean_up();
 
 	~VulkanRenderer();
 
@@ -275,7 +269,6 @@ private:
 	// ----- ALL RAYTRACING SPECIFICS ----- END
 
 	// -- TEXTURE --
-	Texture plainTexture;
 	VkSampler texture_sampler;
 	std::vector<uint32_t> texture_mip_levels;
 

@@ -33,7 +33,8 @@ public:
     ObjectDescription           getObjectDescription() { return mesh.getObjectDescription(); };
 
     void                        set_model(glm::mat4 model);
-   
+    void                        addTexture(Texture newTexture);
+
     ~Model();
 
 private:

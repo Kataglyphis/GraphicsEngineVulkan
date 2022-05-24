@@ -16,13 +16,16 @@ public:
 				VkImageUsageFlags use_flags,
 				VkMemoryPropertyFlags prop_flags);
 
-	VkImage		getImage() { return image; };
+	void		setImage(VkImage image);
+	VkImage&	getImage() { return image; };
 
 	void		cleanUp();
 
 	~VulkanImage();
 
 private:
+
+	VulkanDevice*	device;
 
 	VkImage			image;
 	VkDeviceMemory	imageMemory;

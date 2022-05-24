@@ -9,10 +9,22 @@ void Scene::update_user_input(GUI* gui)
 	guiSceneSharedVars = gui->getGuiSceneSharedVars();
 }
 
+void Scene::loadModel(	VulkanDevice* device, 
+						VkCommandPool commandPool,
+						std::string modelFileName)
+{
+	ObjLoader obj_loader(	device, device->getGraphicsQueue(),
+							commandPool);
+
+	std::shared_ptr<Model> new_model = obj_loader.loadModel(modelFileName);
+
+	add_model(new_model);
+}
+
 void Scene::add_model(std::shared_ptr<Model> model)
 {
 	model_list.push_back(model);
-	object_descriptions.push_back(model->get_object_description());
+	object_descriptions.push_back(model->getObjectDescription());
 }
 
 void Scene::add_object_description(ObjectDescription object_description)
@@ -40,7 +52,7 @@ uint32_t Scene::getNumberMeshes()
 	uint32_t number_of_meshes = 0;
 	
 	for (std::shared_ptr<Model> mesh_model : model_list) {
-		number_of_meshes += static_cast<uint32_t>(mesh_model->get_mesh_count());
+		number_of_meshes += static_cast<uint32_t>(mesh_model->getMeshCount());
 	}
 
 	return number_of_meshes;

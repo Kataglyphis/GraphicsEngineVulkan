@@ -8,13 +8,15 @@ public:
 
 	VulkanImageView();
 
-	VkImageView getImageView() { return imageView; };
+	void			setImageView(VkImageView imageView);
 
-	void		create(	VulkanDevice* device, VkImage image,
-						VkFormat format, VkImageAspectFlags aspect_flags,
-						uint32_t mip_levels);
+	VkImageView&	getImageView() { return imageView; };
 
-	void		cleanUp();
+	void			create(	VulkanDevice* device, VkImage image,
+							VkFormat format, VkImageAspectFlags aspect_flags,
+							uint32_t mip_levels);
+
+	void			cleanUp();
 
 	~VulkanImageView();
 

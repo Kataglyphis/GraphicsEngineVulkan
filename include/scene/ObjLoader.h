@@ -5,16 +5,16 @@
 #include "Model.h"
 #include "Vertex.h"
 #include "ObjMaterial.h"
-#include "VulkanRenderer.hpp"
 
 class ObjLoader
 {
 public:
 
-	ObjLoader(	VulkanDevice* device, VkQueue transfer_queue, VkCommandPool command_pool);
+	ObjLoader(	VulkanDevice* device, 
+				VkQueue transfer_queue, 
+				VkCommandPool command_pool);
 
-	std::shared_ptr<Model>		load_model(std::string modelFile, std::vector<int> matToTex);
-	std::vector<std::string>	load_textures(std::string modelFile);
+	std::shared_ptr<Model>		loadModel(std::string modelFile);
 
 
 private:
@@ -29,5 +29,7 @@ private:
 	std::vector<unsigned int>	materialIndex;
 	std::vector<std::string>	textures;
 
+	std::vector<std::string>	loadTexturesAndMaterials(std::string modelFile);
+	void						loadVertices(std::string fileName);
 };
 
