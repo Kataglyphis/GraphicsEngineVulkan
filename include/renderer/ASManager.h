@@ -12,6 +12,12 @@ public:
 
 	ASManager();
 
+	void createASForScene(	VulkanDevice* device,
+							VkCommandPool commandPool,
+							Scene* scene,
+							TopLevelAccelerationStructure& tlas,
+							std::vector<BottomLevelAccelerationStructure>& blas);
+
 	void createBLAS(VulkanDevice* device, 
 					VkCommandPool commandPool, 
 					Scene* scene, 
