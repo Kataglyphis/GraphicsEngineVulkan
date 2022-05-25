@@ -1,5 +1,8 @@
 #include "VulkanInstance.h"
 
+#include <string>
+#include <string.h>
+
 VulkanInstance::VulkanInstance()
 {
 
