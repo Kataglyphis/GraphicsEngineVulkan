@@ -42,5 +42,7 @@ private:
 	VkImage			image;
 	VkDeviceMemory	imageMemory;
 
+	VkAccessFlags			accessFlagsForImageLayout(VkImageLayout layout);
+	VkPipelineStageFlags	pipelineStageForLayout(VkImageLayout oldImageLayout);
 };
 

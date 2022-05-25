@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "Utilities.h"
+#include "MemoryHelper.h"
 
 VulkanBuffer::VulkanBuffer()
 {
