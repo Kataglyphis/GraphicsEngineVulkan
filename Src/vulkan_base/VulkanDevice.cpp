@@ -1,5 +1,7 @@
 #include "VulkanDevice.h"
 
+#include <string>
+#include <string.h>
 #include <set>
 
 VulkanDevice::VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface)
