@@ -201,9 +201,13 @@ void GUI::create_gui_context(	Window* window,
 void GUI::create_fonts_and_upload(const VkCommandPool& graphics_command_pool)
 {
 
-	VkCommandBuffer command_buffer = begin_command_buffer(device->getLogicalDevice(), graphics_command_pool);
+	VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(	device->getLogicalDevice(), 
+																				graphics_command_pool);
 	ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
-	end_and_submit_command_buffer(device->getLogicalDevice(), graphics_command_pool, device->getGraphicsQueue(), command_buffer);
+	commandBufferManager.endAndSubmitCommandBuffer(	device->getLogicalDevice(), 
+													graphics_command_pool, 
+													device->getGraphicsQueue(), 
+													command_buffer);
 
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(device->getLogicalDevice());

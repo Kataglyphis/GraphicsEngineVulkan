@@ -2,6 +2,7 @@
 #include <vulkan/vulkan.h>
 
 #include "VulkanDevice.h"
+#include "CommandBufferManager.h"
 
 class VulkanImage
 {
@@ -37,7 +38,8 @@ public:
 
 private:
 
-	VulkanDevice*	device;
+	VulkanDevice*			device;
+	CommandBufferManager	commandBufferManager;
 
 	VkImage			image;
 	VkDeviceMemory	imageMemory;

@@ -40,7 +40,7 @@
 #include "Texture.h"
 #include "ASManager.h"
 #include "MemoryHelper.h"
-
+#include "CommandBufferManager.h"
 #include "Scene.h"
 #include <GUI.h>
 
@@ -114,6 +114,9 @@ private:
 	void							cleanUpUBOs();
 
 	std::vector<VkCommandBuffer>	command_buffers;
+	CommandBufferManager			commandBufferManager;
+	void							create_command_buffers();
+
 	std::vector<VkFramebuffer>		framebuffers;
 
 	// new era of memory management for my project
@@ -121,28 +124,28 @@ private:
 	Allocator						allocator;
 
 	// -- synchronization
-	uint32_t					current_frame{ 0 };
-	std::vector<VkSemaphore>	image_available;
-	std::vector<VkSemaphore>	render_finished;
-	std::vector<VkFence>		in_flight_fences;
-	std::vector<VkFence>		images_in_flight_fences;
-	void						create_synchronization();
+	uint32_t						current_frame{ 0 };
+	std::vector<VkSemaphore>		image_available;
+	std::vector<VkSemaphore>		render_finished;
+	std::vector<VkFence>			in_flight_fences;
+	std::vector<VkFence>			images_in_flight_fences;
+	void							create_synchronization();
 
 	// ----- VULKAN CORE COMPONENTS ----- END
 
 	// -- Offscreen render pass
-	VkPipeline					offscreen_graphics_pipeline;
-	VkPipelineLayout			offscreen_pipeline_layout;
-	VkRenderPass				offscreen_render_pass;
-	VkFormat					offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
-	std::vector<VkFramebuffer>	offscreen_framebuffer;
-	std::vector<Texture>		offscreen_images;
-	Texture						offscreenDepthBuffer;
-	void						init_offscreen();
-	void						create_offscreen_graphics_pipeline();
-	void						create_offscreen_textures();
-	void						create_offscreen_render_pass();
-	void						create_offscreen_framebuffers();
+	VkPipeline						offscreen_graphics_pipeline;
+	VkPipelineLayout				offscreen_pipeline_layout;
+	VkRenderPass					offscreen_render_pass;
+	VkFormat						offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
+	std::vector<VkFramebuffer>		offscreen_framebuffer;
+	std::vector<Texture>			offscreen_images;
+	Texture							offscreenDepthBuffer;
+	void							init_offscreen();
+	void							create_offscreen_graphics_pipeline();
+	void							create_offscreen_textures();
+	void							create_offscreen_render_pass();
+	void							create_offscreen_framebuffers();
 	// -- Offscreen End 
 
 	// -- Post 
@@ -163,30 +166,28 @@ private:
 	// -- Post - End
 
 	// ----- ALL RASTERIZER SPECIFICS ----- BEGIN 
-	PushConstantRasterizer	pc_raster;
-	VkPipeline				graphics_pipeline;
-	VkPipelineLayout		pipeline_layout;
-	VkRenderPass			render_pass;
-	Texture					depthBufferImage;
-	VkFormat				depth_format;
+	PushConstantRasterizer			pc_raster;
+	VkPipeline						graphics_pipeline;
+	VkPipelineLayout				pipeline_layout;
+	VkRenderPass					render_pass;
+	Texture							depthBufferImage;
+	VkFormat						depth_format;
 	
-	void					init_rasterizer();
-	void					create_render_pass();
-	void					create_descriptor_set_layouts();
-	void					create_push_constant_range();
-	void					create_rasterizer_graphics_pipeline();
-	void					create_depthbuffer_image();
-	void					create_framebuffers();
+	void							init_rasterizer();
+	void							create_render_pass();
+	void							create_descriptor_set_layouts();
+	void							create_push_constant_range();
+	void							create_rasterizer_graphics_pipeline();
+	void							create_depthbuffer_image();
+	void							create_framebuffers();
 
-	void					create_command_buffers();
-	void					create_texture_sampler();
+	void							create_texture_sampler();
 
-	void					create_descriptor_pool_uniforms();
-	void					create_descriptor_pool_sampler();
-	void					create_descriptor_sets();
+	void							create_descriptor_pool_uniforms();
+	void							create_descriptor_pool_sampler();
+	void							create_descriptor_sets();
 	// ----- ALL RASTERIZER SPECIFICS ----- END 
 
-	// - descriptors
 	VkDescriptorSetLayout			descriptor_set_layout;			// for normal uniform values
 	VkDescriptorSetLayout			sampler_set_layout;				// descriptor set layout for our samplers
 	VkPushConstantRange				push_constant_range;

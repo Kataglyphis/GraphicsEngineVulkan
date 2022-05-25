@@ -56,7 +56,8 @@ private:
 											VkQueue queue, VkImage image, VkFormat image_format,
 											int32_t width, int32_t height, uint32_t mip_levels);
 
-	VulkanBufferManager vulkanBufferManager;
+	CommandBufferManager	commandBufferManager;
+	VulkanBufferManager		vulkanBufferManager;
 
 	VulkanImage			vulkanImage;
 	VulkanImageView		vulkanImageView;

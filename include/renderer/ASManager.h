@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "TopLevelAccelerationStructure.h"
 #include "BottomLevelAccelerationStructure.h"
+#include "CommandBufferManager.h"
 
 struct BuildAccelerationStructure {
 
@@ -49,7 +50,8 @@ public:
 
 private:
 
-	VulkanBufferManager vulkanBufferManager;
+	CommandBufferManager	commandBufferManager;
+	VulkanBufferManager		vulkanBufferManager;
 
 	void createSingleBlas(	VulkanDevice* device, 
 							VkCommandBuffer command_buffer,
