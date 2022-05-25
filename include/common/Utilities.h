@@ -1,6 +1,5 @@
 #pragma once
 
-#include <fstream>
 #include <string>       // std::string
 #include <iostream>     // std::cout
 #include <sstream>      // std::stringstream
@@ -37,32 +36,6 @@ static VkFormat choose_supported_format(VkPhysicalDevice physical_device,
 	}
 
 	throw std::runtime_error("Failed to find supported format!");
-
-}
-
-static uint32_t find_memory_type_index(	VkPhysicalDevice physical_device, uint32_t allowed_types, 
-										VkMemoryPropertyFlags properties)
-{
-
-	// get properties of physical device memory
-	VkPhysicalDeviceMemoryProperties memory_properties{};
-	vkGetPhysicalDeviceMemoryProperties(physical_device, &memory_properties);
-
-	for (uint32_t i = 0; i < memory_properties.memoryTypeCount; i++) {
-
-		if ((allowed_types & (1 << i))	
-			// index of memory type must match corresponding bit in allowedTypes
-			// desired property bit flags are part of memory type's property flags
-			&& (memory_properties.memoryTypes[i].propertyFlags & properties) == properties) {																			
-
-			// this memory type is valid, so return its index
-			return i;
-
-		}
-
-	}
-
-	return -1;
 
 }
 
@@ -133,56 +106,4 @@ static void end_and_submit_command_buffer(	VkDevice device, VkCommandPool comman
 	// free temporary command buffer back to pool
 	vkFreeCommandBuffers(device, command_pool, 1, &command_buffer);
 
-}
-
-static VkAccessFlags access_flags_for_image_layout(VkImageLayout layout) {
-
-	switch (layout)
-	{
-	case VK_IMAGE_LAYOUT_PREINITIALIZED:
-		return VK_ACCESS_HOST_WRITE_BIT;
-	case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-		return VK_ACCESS_TRANSFER_WRITE_BIT;
-	case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-		return VK_ACCESS_TRANSFER_READ_BIT;
-	case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-		return VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-	case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-		return VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-	case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-		return VK_ACCESS_SHADER_READ_BIT;
-	default:
-		return VkAccessFlags();
-	}
-
-}
-
-static VkPipelineStageFlags pipeline_stage_for_layout(VkImageLayout oldImageLayout) {
-
-	switch (oldImageLayout)
-	{
-	case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-	case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-		return VK_PIPELINE_STAGE_TRANSFER_BIT;
-	case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-		return VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-	case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-		return VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;  // We do this to allow queue other than graphic
-													// return VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-	case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-		return VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;  // We do this to allow queue other than graphic
-													// return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-	case VK_IMAGE_LAYOUT_PREINITIALIZED:
-		return VK_PIPELINE_STAGE_HOST_BIT;
-	case VK_IMAGE_LAYOUT_UNDEFINED:
-		return VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-	default:
-		return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-	}
-
-}
-
-// aligned piece of memory appropiately and when necessary return bigger piece
-static uint32_t align_up(uint32_t memory, uint32_t alignment) {
-	return (memory + alignment - 1) & ~(alignment - 1);
 }
