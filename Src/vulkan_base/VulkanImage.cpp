@@ -53,6 +53,91 @@ void VulkanImage::create(	VulkanDevice* device,
 
 }
 
+void VulkanImage::transitionImageLayout(VkDevice device, 
+										VkQueue queue, 
+										VkCommandPool command_pool, 
+										VkImageLayout old_layout, VkImageLayout new_layout,
+										VkImageAspectFlags aspectMask,
+										uint32_t mip_levels)
+{
+
+	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
+
+	// VK_IMAGE_ASPECT_COLOR_BIT
+	VkImageMemoryBarrier memory_barrier{};
+	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	memory_barrier.oldLayout = old_layout;
+	memory_barrier.newLayout = new_layout;
+	memory_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;				// Queue family to transition from 
+	memory_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;				// Queue family to transition to
+	memory_barrier.image = image;												// image being accessed and modified as part of barrier
+	memory_barrier.subresourceRange.aspectMask = aspectMask;					// aspect of image being altered
+	memory_barrier.subresourceRange.baseMipLevel = 0;							// first mip level to start alterations on
+	memory_barrier.subresourceRange.levelCount = mip_levels;					// number of mip levels to alter starting from baseMipLevel
+	memory_barrier.subresourceRange.baseArrayLayer = 0;							// first layer to start alterations on
+	memory_barrier.subresourceRange.layerCount = 1;								// number of layers to alter starting from baseArrayLayer
+
+	// if transitioning from new image to image ready to receive data
+	memory_barrier.srcAccessMask = access_flags_for_image_layout(old_layout);
+	memory_barrier.dstAccessMask = access_flags_for_image_layout(new_layout);
+
+	VkPipelineStageFlags src_stage = pipeline_stage_for_layout(old_layout);
+	VkPipelineStageFlags dst_stage = pipeline_stage_for_layout(new_layout);
+
+	vkCmdPipelineBarrier(
+
+		command_buffer,
+		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
+		0,									// no dependency flags
+		0, nullptr,							// memory barrier count + data
+		0, nullptr,							// buffer memory barrier count + data
+		1, &memory_barrier					// image memory barrier count + data
+
+	);
+
+	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
+
+}
+
+void VulkanImage::transitionImageLayout(VkCommandBuffer command_buffer,
+										VkImageLayout old_layout, VkImageLayout new_layout, 
+										uint32_t mip_levels, 
+										VkImageAspectFlags aspectMask)
+{
+	VkImageMemoryBarrier memory_barrier{};
+	memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	memory_barrier.oldLayout = old_layout;
+	memory_barrier.newLayout = new_layout;
+	memory_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;		// Queue family to transition from 
+	memory_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;		// Queue family to transition to
+	memory_barrier.image = image;										// image being accessed and modified as part of barrier
+	memory_barrier.subresourceRange.aspectMask = aspectMask;			// aspect of image being altered
+	memory_barrier.subresourceRange.baseMipLevel = 0;					// first mip level to start alterations on
+	memory_barrier.subresourceRange.levelCount = mip_levels;			// number of mip levels to alter starting from baseMipLevel
+	memory_barrier.subresourceRange.baseArrayLayer = 0;					// first layer to start alterations on
+	memory_barrier.subresourceRange.layerCount = 1;						// number of layers to alter starting from baseArrayLayer
+
+	memory_barrier.srcAccessMask = access_flags_for_image_layout(old_layout);
+	memory_barrier.dstAccessMask = access_flags_for_image_layout(new_layout);
+
+	VkPipelineStageFlags src_stage = pipeline_stage_for_layout(old_layout);
+	VkPipelineStageFlags dst_stage = pipeline_stage_for_layout(new_layout);
+
+	// if transitioning from new image to image ready to receive data
+
+
+	vkCmdPipelineBarrier(
+
+		command_buffer,
+		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
+		0,									// no dependency flags
+		0, nullptr,							// memory barrier count + data
+		0, nullptr,							// buffer memory barrier count + data
+		1, &memory_barrier					// image memory barrier count + data
+
+	);
+}
+
 void VulkanImage::setImage(VkImage image)
 {
 	this->image = image;

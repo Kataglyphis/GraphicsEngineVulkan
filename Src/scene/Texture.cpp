@@ -40,19 +40,21 @@ void Texture::createFromFile(VulkanDevice* device, VkCommandPool commandPool, st
 
 	// copy data to image
 	// transition image to be DST for copy operation
-	transition_image_layout(device->getLogicalDevice(), device->getGraphicsQueue(),
-					commandPool, vulkanImage.getImage(),
-							VK_IMAGE_LAYOUT_UNDEFINED,
-							VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mip_levels);
+	vulkanImage.transitionImageLayout(	device->getLogicalDevice(), device->getGraphicsQueue(),
+										commandPool,
+										VK_IMAGE_LAYOUT_UNDEFINED,
+										VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+										VK_IMAGE_ASPECT_COLOR_BIT,
+										mip_levels);
 
 	// copy data to image
-	copy_image_buffer(	device->getLogicalDevice(), device->getGraphicsQueue(), 
-		commandPool, stagingBuffer.getBuffer(),
-						vulkanImage.getImage(), width, height);
+	vulkanBufferManager.copyImageBuffer(device->getLogicalDevice(), device->getGraphicsQueue(), 
+										commandPool, stagingBuffer.getBuffer(),
+										vulkanImage.getImage(), width, height);
 
 	// generate mipmaps
-	generate_mipmaps(	device->getPhysicalDevice(), device->getLogicalDevice(),
-				commandPool, device->getGraphicsQueue(),
+	generateMipMaps(	device->getPhysicalDevice(), device->getLogicalDevice(),
+						commandPool, device->getGraphicsQueue(),
 						vulkanImage.getImage(), VK_FORMAT_R8G8B8A8_SRGB,
 						width, height, mip_levels);
 
@@ -132,4 +134,108 @@ stbi_uc* Texture::loadTextureData(	std::string file_name,
 	*image_size = *width * *height * 4;
 
 	return image;
+}
+
+void Texture::generateMipMaps(	VkPhysicalDevice physical_device, VkDevice device, 
+								VkCommandPool command_pool, VkQueue queue, 
+								VkImage image, VkFormat image_format, 
+								int32_t width, int32_t height, uint32_t mip_levels)
+{
+	// Check if image format supports linear blitting
+	VkFormatProperties formatProperties;
+	vkGetPhysicalDeviceFormatProperties(physical_device, image_format, &formatProperties);
+
+	if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
+		throw std::runtime_error("Texture image format does not support linear blitting!");
+	}
+
+	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
+
+	VkImageMemoryBarrier barrier{};
+	barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	barrier.image = image;
+	barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	barrier.subresourceRange.baseArrayLayer = 0;
+	barrier.subresourceRange.layerCount = 1;
+	barrier.subresourceRange.levelCount = 1;
+
+	// TEMP VARS needed for decreasing step by step for factor 2
+	int32_t tmp_width = width;
+	int32_t tmp_height = height;
+
+	// -- WE START AT 1 ! 
+	for (uint32_t i = 1; i < mip_levels; i++) {
+
+		// WAIT for previous mip map level for being ready
+		barrier.subresourceRange.baseMipLevel = i - 1;
+		// HERE we TRANSITION for having a SRC format now 
+		barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+		barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+
+		vkCmdPipelineBarrier(command_buffer,
+			VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0,
+			0, nullptr,
+			0, nullptr,
+			1, &barrier);
+
+		// when barrier over we can now blit :)
+		VkImageBlit blit{};
+
+		// -- OFFSETS describing the 3D-dimesnion of the region 
+		blit.srcOffsets[0] = { 0, 0, 0 };
+		blit.srcOffsets[1] = { tmp_width, tmp_height, 1 };
+		blit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		// copy from previous level
+		blit.srcSubresource.mipLevel = i - 1;
+		blit.srcSubresource.baseArrayLayer = 0;
+		blit.srcSubresource.layerCount = 1;
+		// -- OFFSETS describing the 3D-dimesnion of the region 
+		blit.dstOffsets[0] = { 0, 0, 0 };
+		blit.dstOffsets[1] = { tmp_width > 1 ? tmp_width / 2 : 1, tmp_height > 1 ? tmp_height / 2 : 1, 1 };
+		blit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		// -- COPY to next mipmap level
+		blit.dstSubresource.mipLevel = i;
+		blit.dstSubresource.baseArrayLayer = 0;
+		blit.dstSubresource.layerCount = 1;
+
+		vkCmdBlitImage(command_buffer,
+			image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+			image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+			1, &blit,
+			VK_FILTER_LINEAR);
+
+		// REARRANGE image formats for having the correct image formats again
+		barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+		barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+		barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+		vkCmdPipelineBarrier(command_buffer,
+			VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0,
+			0, nullptr,
+			0, nullptr,
+			1, &barrier);
+
+		if (tmp_width > 1) tmp_width /= 2;
+		if (tmp_height > 1) tmp_height /= 2;
+
+	}
+
+	barrier.subresourceRange.baseMipLevel = mip_levels - 1;
+	barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+	barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+	vkCmdPipelineBarrier(command_buffer,
+		VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0,
+		0, nullptr,
+		0, nullptr,
+		1, &barrier);
+
+	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
 }

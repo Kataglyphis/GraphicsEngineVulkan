@@ -532,26 +532,29 @@ void VulkanRenderer::create_offscreen_textures()
 
 	for (int index = 0; index < vulkanSwapChain.getNumberSwapChainImages(); index++) {
 
-		Texture image{};
+		Texture texture{};
 		const VkExtent2D swap_chain_extent = vulkanSwapChain.getSwapChainExtent();
 		const VkFormat& swap_chain_image_format = vulkanSwapChain.getSwapChainFormat();
 
-		image.createImage(	device.get(),
-							swap_chain_extent.width, swap_chain_extent.height, 1,
-							swap_chain_image_format,
-							VK_IMAGE_TILING_OPTIMAL,
-							VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
-							| VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT,
-							VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+		texture.createImage(	device.get(),
+								swap_chain_extent.width, swap_chain_extent.height, 1,
+								swap_chain_image_format,
+								VK_IMAGE_TILING_OPTIMAL,
+								VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
+								| VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT,
+								VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-		image.createImageView(	device.get(), swap_chain_image_format,
-								VK_IMAGE_ASPECT_COLOR_BIT, 1);
+		texture.createImageView(	device.get(), swap_chain_image_format,
+									VK_IMAGE_ASPECT_COLOR_BIT, 1);
 
 		// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
-		transition_image_layout_for_command_buffer(cmdBuffer, image.getImage(),
-			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
+		VulkanImage& image = texture.getVulkanImage();
+		image.transitionImageLayout(cmdBuffer,
+									VK_IMAGE_LAYOUT_UNDEFINED, 
+									VK_IMAGE_LAYOUT_GENERAL, 1, 
+									VK_IMAGE_ASPECT_COLOR_BIT);
 
-		offscreen_images[index] = image;
+		offscreen_images[index] = texture;
 
 	}
 
@@ -577,14 +580,16 @@ void VulkanRenderer::create_offscreen_textures()
 											depth_format, VK_IMAGE_ASPECT_DEPTH_BIT |
 											VK_IMAGE_ASPECT_STENCIL_BIT, 1);
 
-	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE 
-	VkCommandBuffer cmdBuffer2 = begin_command_buffer(device->getLogicalDevice(), graphics_command_pool);
-	transition_image_layout_for_command_buffer(cmdBuffer2, offscreenDepthBuffer.getImage(),
-		VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1, VK_IMAGE_ASPECT_DEPTH_BIT |
-																						VK_IMAGE_ASPECT_STENCIL_BIT);
-	end_and_submit_command_buffer(device->getLogicalDevice(), graphics_command_pool, device->getGraphicsQueue(), cmdBuffer2);
-	
-
+	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE
+	VulkanImage& vulkanImage = offscreenDepthBuffer.getVulkanImage();
+	vulkanImage.transitionImageLayout(	device->getLogicalDevice(), 
+										device->getComputeQueue(),
+										compute_command_pool,
+										VK_IMAGE_LAYOUT_UNDEFINED, 
+										VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+										VK_IMAGE_ASPECT_DEPTH_BIT |
+										VK_IMAGE_ASPECT_STENCIL_BIT,
+										1);
 
 }
 
@@ -2696,10 +2701,11 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	render_pass_begin_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
 	
 	render_pass_begin_info.framebuffer = framebuffers[image_index];// used framebuffer depends on the swap chain and therefore is changing for each command buffer
-
-	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].getImage(),
-													VK_IMAGE_LAYOUT_GENERAL,
-													VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
+	VulkanImage& vulkanImage = offscreen_images[image_index].getVulkanImage();
+	vulkanImage.transitionImageLayout(	command_buffers[image_index],
+										VK_IMAGE_LAYOUT_GENERAL,
+										VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1,
+										VK_IMAGE_ASPECT_COLOR_BIT);
 
 	// begin render pass
 	vkCmdBeginRenderPass(command_buffers[image_index], &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
@@ -2719,9 +2725,10 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	// end render pass 
 	vkCmdEndRenderPass(command_buffers[image_index]);
 
-	transition_image_layout_for_command_buffer(command_buffers[image_index], offscreen_images[image_index].getImage(),
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL, 1, VK_IMAGE_ASPECT_COLOR_BIT);
-	
+	vulkanImage.transitionImageLayout(	command_buffers[image_index],
+										VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+										VK_IMAGE_LAYOUT_GENERAL, 1,
+										VK_IMAGE_ASPECT_COLOR_BIT);
 	
 }
 
