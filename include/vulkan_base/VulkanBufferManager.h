@@ -17,6 +17,13 @@ public:
 					VulkanBuffer src_buffer, VulkanBuffer dst_buffer,
 					VkDeviceSize buffer_size);
 
+	void copyImageBuffer(	VkDevice device,
+							VkQueue transfer_queue, 
+							VkCommandPool transfer_command_pool,
+							VkBuffer src_buffer,
+							VkImage image, 
+							uint32_t width, uint32_t height);
+
 	template<typename T>
 	void createBufferAndUploadVectorOnDevice(	VulkanDevice* device, 
 												VkCommandPool commandPool,

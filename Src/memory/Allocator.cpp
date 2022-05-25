@@ -1,5 +1,6 @@
 #include "Allocator.h"
 #include "Utilities.h"
+#include "VulkanDebug.h"
 
 Allocator::Allocator()
 {
