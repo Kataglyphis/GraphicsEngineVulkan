@@ -22,7 +22,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 								GUI*	gui,
 								Camera* camera) :
 
-									framebuffer_resized(false),
 									window(window),
 									scene(scene)
 
@@ -50,7 +49,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 											surface);
 
 		create_uniform_buffers();
-
+		create_command_buffers();
 		init_rasterizer();
 		init_offscreen();
 		init_post();
@@ -112,7 +111,6 @@ void VulkanRenderer::init_rasterizer()
 		create_rasterizer_graphics_pipeline();
 		create_depthbuffer_image();
 		
-		create_command_buffers();
 		create_texture_sampler();
 		create_descriptor_pool_uniforms();
 		create_descriptor_pool_sampler();
@@ -528,7 +526,8 @@ void VulkanRenderer::create_offscreen_textures()
 	
 	offscreen_images.resize(vulkanSwapChain.getNumberSwapChainImages());
 
-	VkCommandBuffer cmdBuffer = begin_command_buffer(device->getLogicalDevice(), graphics_command_pool);
+	VkCommandBuffer cmdBuffer = commandBufferManager.beginCommandBuffer(device->getLogicalDevice(), 
+																		graphics_command_pool);
 
 	for (int index = 0; index < vulkanSwapChain.getNumberSwapChainImages(); index++) {
 
@@ -558,7 +557,9 @@ void VulkanRenderer::create_offscreen_textures()
 
 	}
 
-	end_and_submit_command_buffer(device->getLogicalDevice(), graphics_command_pool, device->getGraphicsQueue(), cmdBuffer);
+	commandBufferManager.endAndSubmitCommandBuffer(	device->getLogicalDevice(), 
+													graphics_command_pool, 
+													device->getGraphicsQueue(), cmdBuffer);
 
 	VkFormat depth_format = choose_supported_format(device->getPhysicalDevice(), 
 													{ VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D32_SFLOAT, VK_FORMAT_D24_UNORM_S8_UINT },

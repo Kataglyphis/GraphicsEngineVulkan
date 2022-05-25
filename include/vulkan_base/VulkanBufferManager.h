@@ -5,6 +5,7 @@
 
 #include "Utilities.h"
 #include "VulkanBuffer.h"
+#include "CommandBufferManager.h"
 
 class VulkanBufferManager
 {
@@ -35,6 +36,8 @@ public:
 	~VulkanBufferManager();
 
 private:
+
+	CommandBufferManager commandBufferManager;
 
 };
 

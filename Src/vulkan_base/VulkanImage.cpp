@@ -62,7 +62,7 @@ void VulkanImage::transitionImageLayout(VkDevice device,
 										uint32_t mip_levels)
 {
 
-	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
+	VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(device, command_pool);
 
 	// VK_IMAGE_ASPECT_COLOR_BIT
 	VkImageMemoryBarrier memory_barrier{};
@@ -96,7 +96,7 @@ void VulkanImage::transitionImageLayout(VkDevice device,
 
 	);
 
-	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
+	commandBufferManager.endAndSubmitCommandBuffer(device, command_pool, queue, command_buffer);
 
 }
 

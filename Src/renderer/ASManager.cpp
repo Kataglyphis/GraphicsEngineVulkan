@@ -95,7 +95,7 @@ void ASManager::createBLAS(	VulkanDevice* device,
 	scratch_device_or_host_address.deviceAddress = scratch_buffer_address;
 
 
-	VkCommandBuffer command_buffer = begin_command_buffer(device->getLogicalDevice(), commandPool);
+	VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(device->getLogicalDevice(), commandPool);
 
 	for (size_t i = 0; i < scene->getModelCount(); i++) {
 
@@ -112,7 +112,9 @@ void ASManager::createBLAS(	VulkanDevice* device,
 
 	}
 
-	end_and_submit_command_buffer(device->getLogicalDevice(), commandPool, device->getComputeQueue(), command_buffer);
+	commandBufferManager.endAndSubmitCommandBuffer(	device->getLogicalDevice(), 
+													commandPool, 
+													device->getComputeQueue(), command_buffer);
 
 	for (auto& b : build_as_structures) {
 		blas.emplace_back(b.single_blas);
@@ -174,7 +176,7 @@ void ASManager::createTLAS(	VulkanDevice* device,
 		tlas_instances.emplace_back(geometry_instance);
 	}
 
-	VkCommandBuffer command_buffer = begin_command_buffer(device->getLogicalDevice(), commandPool);
+	VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(device->getLogicalDevice(), commandPool);
 
 	VulkanBuffer geometryInstanceBuffer;
 
@@ -297,8 +299,10 @@ void ASManager::createTLAS(	VulkanDevice* device,
 	pvkCmdBuildAccelerationStructuresKHR(command_buffer, 1, &acceleration_structure_build_geometry_info,
 		&acceleration_structure_build_range_infos);
 
-	end_and_submit_command_buffer(device->getLogicalDevice(), commandPool, device->getComputeQueue(), command_buffer);
-
+	commandBufferManager.endAndSubmitCommandBuffer(	device->getLogicalDevice(), 
+													commandPool, 
+													device->getComputeQueue(), 
+													command_buffer);
 
 }
 

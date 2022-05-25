@@ -10,7 +10,7 @@ void VulkanBufferManager::copyBuffer(	VkDevice device,
 										VkDeviceSize buffer_size)
 {
 	// create buffer
-	VkCommandBuffer command_buffer = begin_command_buffer(device, transfer_command_pool);
+	VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(device, transfer_command_pool);
 
 	// region of data to copy from and to
 	VkBufferCopy buffer_copy_region{};
@@ -21,7 +21,7 @@ void VulkanBufferManager::copyBuffer(	VkDevice device,
 	// command to copy src buffer to dst buffer
 	vkCmdCopyBuffer(command_buffer, src_buffer.getBuffer(), dst_buffer.getBuffer(), 1, &buffer_copy_region);
 
-	end_and_submit_command_buffer(device, transfer_command_pool, transfer_queue, command_buffer);
+	commandBufferManager.endAndSubmitCommandBuffer(device, transfer_command_pool, transfer_queue, command_buffer);
 }
 
 void VulkanBufferManager::copyImageBuffer(	VkDevice device, 
@@ -31,7 +31,7 @@ void VulkanBufferManager::copyImageBuffer(	VkDevice device,
 											VkImage image, uint32_t width, uint32_t height)
 {
 	// create buffer
-	VkCommandBuffer transfer_command_buffer = begin_command_buffer(device, transfer_command_pool);
+	VkCommandBuffer transfer_command_buffer = commandBufferManager.beginCommandBuffer(device, transfer_command_pool);
 
 	VkBufferImageCopy image_region{};
 	image_region.bufferOffset = 0;												// offset into data
@@ -47,7 +47,7 @@ void VulkanBufferManager::copyImageBuffer(	VkDevice device,
 	// copy buffer to given image
 	vkCmdCopyBufferToImage(transfer_command_buffer, src_buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &image_region);
 
-	end_and_submit_command_buffer(device, transfer_command_pool, transfer_queue, transfer_command_buffer);
+	commandBufferManager.endAndSubmitCommandBuffer(device, transfer_command_pool, transfer_queue, transfer_command_buffer);
 }
 
 VulkanBufferManager::~VulkanBufferManager()

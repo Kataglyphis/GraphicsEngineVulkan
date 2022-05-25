@@ -149,7 +149,7 @@ void Texture::generateMipMaps(	VkPhysicalDevice physical_device, VkDevice device
 		throw std::runtime_error("Texture image format does not support linear blitting!");
 	}
 
-	VkCommandBuffer command_buffer = begin_command_buffer(device, command_pool);
+	VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(device, command_pool);
 
 	VkImageMemoryBarrier barrier{};
 	barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -237,5 +237,5 @@ void Texture::generateMipMaps(	VkPhysicalDevice physical_device, VkDevice device
 		0, nullptr,
 		1, &barrier);
 
-	end_and_submit_command_buffer(device, command_pool, queue, command_buffer);
+	commandBufferManager.endAndSubmitCommandBuffer(device, command_pool, queue, command_buffer);
 }

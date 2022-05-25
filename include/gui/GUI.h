@@ -10,6 +10,7 @@
 #include "VulkanDevice.h"
 #include "GUISceneSharedVars.h"
 #include "GUIRendererSharedVars.h"
+#include "CommandBufferManager.h"
 
 class GUI
 {
@@ -42,6 +43,7 @@ private:
 	VulkanDevice*			device;
 	Window*					window;
 	VkDescriptorPool		gui_descriptor_pool;
+	CommandBufferManager	commandBufferManager;
 
 	GUISceneSharedVars		guiSceneSharedVars;
 	GUIRendererSharedVars	guiRendererSharedVars;
