@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include <stdexcept>
+#include <cmath>
 
 Texture::Texture()
 {
