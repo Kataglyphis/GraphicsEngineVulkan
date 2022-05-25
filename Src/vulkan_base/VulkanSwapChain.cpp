@@ -1,5 +1,6 @@
 #include "VulkanSwapChain.h"
 #include "Utilities.h"
+#include <limits>
 
 VulkanSwapChain::VulkanSwapChain()
 {
