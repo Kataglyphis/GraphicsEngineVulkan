@@ -45,8 +45,8 @@ void VulkanSwapChain::initVulkanContext(VulkanDevice* device,
 	swap_chain_create_info.imageExtent = extent;											// swapchain image extents
 	swap_chain_create_info.minImageCount = image_count;										// minimum images in swapchain
 	swap_chain_create_info.imageArrayLayers = 1;											// number of layers for each image in chain
-	swap_chain_create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
-		| VK_IMAGE_USAGE_TRANSFER_DST_BIT;					// what attachment images will be used as 
+	swap_chain_create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT
+										| VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;					// what attachment images will be used as 
 	swap_chain_create_info.preTransform = swap_chain_details.surface_capabilities.currentTransform;// transform to perform on swap chain images
 	swap_chain_create_info.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;				// dont do blending; everything opaque
 	swap_chain_create_info.clipped = VK_TRUE;												// of course activate clipping ! :) 

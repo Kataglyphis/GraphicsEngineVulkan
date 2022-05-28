@@ -27,17 +27,17 @@ public:
 
 private:
 
-	VulkanDevice*	device;
-	Window*			window;
+	VulkanDevice*				device;
+	Window*						window;
 
-	VkSwapchainKHR					swapchain;
-	std::vector<Texture>			swap_chain_images;
-	VkFormat						swap_chain_image_format;
-	VkExtent2D						swap_chain_extent;
+	VkSwapchainKHR				swapchain;
+	std::vector<Texture>		swap_chain_images;
+	VkFormat					swap_chain_image_format;
+	VkExtent2D					swap_chain_extent;
 
-	VkSurfaceFormatKHR	choose_best_surface_format(const std::vector<VkSurfaceFormatKHR>& formats);
-	VkPresentModeKHR	choose_best_presentation_mode(const std::vector<VkPresentModeKHR>& presentation_modes);
-	VkExtent2D			choose_swap_extent(const VkSurfaceCapabilitiesKHR& surface_capabilities);
+	VkSurfaceFormatKHR			choose_best_surface_format(const std::vector<VkSurfaceFormatKHR>& formats);
+	VkPresentModeKHR			choose_best_presentation_mode(const std::vector<VkPresentModeKHR>& presentation_modes);
+	VkExtent2D					choose_swap_extent(const VkSurfaceCapabilitiesKHR& surface_capabilities);
 
 };
 
