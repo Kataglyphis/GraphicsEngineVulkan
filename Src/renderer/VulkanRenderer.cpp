@@ -141,8 +141,8 @@ void VulkanRenderer::update_uniforms(	Scene* scene,
 
 void VulkanRenderer::updateStateDueToUserInput(GUI* gui)
 {
-	GUIRendererSharedVars& guiRendererSharedVars	= gui->getGuiRendererSharedVars();
-	this->raytracing								= guiRendererSharedVars.raytracing;
+
+	this->guiRendererSharedVars	= gui->getGuiRendererSharedVars();
 
 	if (guiRendererSharedVars.shader_hot_reload_triggered) {
 		hot_reload_all_shader();
@@ -216,7 +216,7 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 
 	update_uniform_buffers(image_index);
 
-	if(raytracing) update_raytracing_descriptor_set(image_index);
+	if(guiRendererSharedVars.raytracing) update_raytracing_descriptor_set(image_index);
 
 	record_commands(image_index, gui_draw_data);
 
@@ -546,7 +546,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		write_descriptor_set_acceleration_structure.pTexelBufferView = nullptr;
 
 		VkDescriptorImageInfo image_info{};
-		Texture& renderResult = vulkanSwapChain.getSwapChainImage(i);
+		Texture& renderResult = rasterizer.getOffscreenTexture(i);
 		image_info.imageView = renderResult.getImageView();
 		image_info.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
 
@@ -1214,7 +1214,7 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
 												vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
 
-	if (raytracing) {
+	if (guiRendererSharedVars.raytracing) {
 		
 		std::vector<VkDescriptorSet> sets = {	descriptor_sets[image_index],
 												raytracing_descriptor_set[image_index] };
