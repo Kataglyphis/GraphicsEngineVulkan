@@ -22,9 +22,10 @@ void GUI::initializeVulkanContext(	VulkanDevice* device,
 
 }
 
-ImDrawData* GUI::render()
+void GUI::render()
 {
 
+	ImGui_ImplVulkan_SetMinImageCount(MAX_FRAME_DRAWS);
 	// Start the Dear ImGui frame
 	ImGui_ImplVulkan_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -33,7 +34,7 @@ ImDrawData* GUI::render()
 	//ImGui::ShowDemoWindow();
 
 	// render your GUI
-	ImGui::Begin("GUI v1.4");
+	ImGui::Begin("GUI v1.4.4");
 
 	if (ImGui::CollapsingHeader("Hot shader reload")) {
 
@@ -97,12 +98,15 @@ ImDrawData* GUI::render()
 
 	ImGui::End();
 
-	ImGui::Render();
+}
 
-	ImDrawData* gui_draw_data = ImGui::GetDrawData();
-
-	return gui_draw_data;
-
+void GUI::cleanUp()
+{
+	// clean up of GUI stuff
+	ImGui_ImplVulkan_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+	vkDestroyDescriptorPool(device->getLogicalDevice(), gui_descriptor_pool, nullptr);
 }
 
 void GUI::create_gui_context(	Window* window, 
@@ -150,28 +154,28 @@ void GUI::create_gui_context(	Window* window,
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
 
-	ImGui_ImplGlfw_InitForVulkan(window->get_window(), true);
+	ImGui_ImplGlfw_InitForVulkan(window->get_window(), false);
 
 	// Create Descriptor Pool
 	VkDescriptorPoolSize gui_pool_sizes[] =
 	{
-		{ VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
-		{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
-		{ VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
-		{ VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
-		{ VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
-		{ VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
-		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
-		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
-		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
-		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
-		{ VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+		{ VK_DESCRIPTOR_TYPE_SAMPLER, 10 },
+		{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 10 },
+		{ VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 10 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 10 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 10 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 10 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 10 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 10 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 10 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 10 },
+		{ VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 100 }
 	};
 
 	VkDescriptorPoolCreateInfo gui_pool_info = {};
 	gui_pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	gui_pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-	gui_pool_info.maxSets = 1000 * IM_ARRAYSIZE(gui_pool_sizes);
+	gui_pool_info.maxSets = 10 * IM_ARRAYSIZE(gui_pool_sizes);
 	gui_pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(gui_pool_sizes);
 	gui_pool_info.pPoolSizes = gui_pool_sizes;
 
@@ -192,6 +196,7 @@ void GUI::create_gui_context(	Window* window,
 	init_info.ImageCount = MAX_FRAME_DRAWS;
 	init_info.Allocator = VK_NULL_HANDLE;
 	init_info.CheckVkResultFn = VK_NULL_HANDLE;
+	init_info.Subpass = 0;
 	init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
 
 	ImGui_ImplVulkan_Init(&init_info, post_render_pass);
@@ -218,11 +223,5 @@ void GUI::create_fonts_and_upload(const VkCommandPool& graphics_command_pool)
 
 GUI::~GUI()
 {
-		
-	// clean up of GUI stuff
-	ImGui_ImplVulkan_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-	vkDestroyDescriptorPool(device->getLogicalDevice(), gui_descriptor_pool, nullptr);
 
 }

@@ -21,7 +21,7 @@ public:
 
 	VkRenderPass& getRenderPass() { return render_pass; };
 
-	void recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_index, ImDrawData* gui_draw_data,
+	void recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_index,
 						const std::vector<VkDescriptorSet>& descriptorSets);
 	void cleanUp();
 

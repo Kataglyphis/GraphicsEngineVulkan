@@ -99,8 +99,6 @@ int Window::initialize() {
 void Window::update_viewport() {
 
     glfwGetFramebufferSize(main_window, &window_buffer_width, &window_buffer_height);
-    // setup viewport size
-    //glViewport(0, 0, window_buffer_width, window_buffer_height);
 
 }
 
