@@ -103,6 +103,13 @@ void Rasterizer::recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_i
 
 void Rasterizer::cleanUp()
 {
+
+	for (auto framebuffer : framebuffer) {
+
+		vkDestroyFramebuffer(device->getLogicalDevice(), framebuffer, nullptr);
+
+	}
+
 	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(device->getLogicalDevice(), pipeline_layout, nullptr);
 	vkDestroyRenderPass(device->getLogicalDevice(), render_pass, nullptr);

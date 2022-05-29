@@ -44,6 +44,7 @@
 #include "Scene.h"
 #include <GUI.h>
 #include "Rasterizer.h"
+#include <PostStage.h>
 
 #include "BottomLevelAccelerationStructure.h"
 #include "TopLevelAccelerationStructure.h"
@@ -117,14 +118,10 @@ private:
 	CommandBufferManager			commandBufferManager;
 	void							create_command_buffers();
 
-	std::vector<VkFramebuffer>		framebuffers;
-	void							createFramebuffers();
 	void create_push_constant_range();
 	Rasterizer						rasterizer;
+	PostStage						postStage;
 
-	Texture							depthBufferImage;
-	VkFormat						depth_format;
-	void							createDepthbufferImage();
 	// new era of memory management for my project
 	// for now on integrate vma 
 	Allocator						allocator;
@@ -139,39 +136,17 @@ private:
 
 	// ----- VULKAN CORE COMPONENTS ----- END
 
-	// -- Offscreen render pass
-	//VkPipeline						offscreen_graphics_pipeline;
-	//VkPipelineLayout				offscreen_pipeline_layout;
-	//VkRenderPass					offscreen_render_pass;
-	//VkFormat						offscreen_format{ VK_FORMAT_R32G32B32A32_SFLOAT };
-	//std::vector<VkFramebuffer>		offscreen_framebuffer;
-	//std::vector<Texture>			offscreen_images;
-	//Texture							offscreenDepthBuffer;
-	//void							init_offscreen();
-	//void							create_offscreen_graphics_pipeline();
-	//void							create_offscreen_textures();
-	//void							create_offscreen_render_pass();
-	//void							create_offscreen_framebuffers();
-	// -- Offscreen End 
-
-	// -- Post 
-	VkPushConstantRange				post_push_constant_range;
+	// -- Post
 	VkDescriptorPool				post_descriptor_pool{};
 	VkDescriptorSetLayout			post_descriptor_set_layout;
 	std::vector<VkDescriptorSet>	post_descriptor_set;
-	VkRenderPass					post_render_pass;
-	VkPipeline						post_graphics_pipeline;
-	VkPipelineLayout				post_pipeline_layout;
 	// texture sampler for everything ---- change that ! 
-	VkSampler						texture_sampler;
-	void							init_post();
-	void							create_post_renderpass();
-	void							create_post_pipeline();
 	void							create_post_descriptor();
 	void							update_post_descriptor_set();
 	// -- Post - End
 
 
+	VkSampler						texture_sampler;
 	void							createDescriptors();
 	void							create_texture_sampler();
 	void							create_descriptor_pool_uniforms();
