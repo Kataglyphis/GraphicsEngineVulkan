@@ -19,7 +19,8 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 								Camera* camera) :
 
 									window(window),
-									scene(scene)
+									scene(scene),
+									gui(gui)
 
 {
 
@@ -172,7 +173,7 @@ void VulkanRenderer::hot_reload_all_shader()
 
 }
 
-void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
+void VulkanRenderer::drawFrame()
 {
 	check_changed_framebuffer_size();
 
@@ -218,7 +219,7 @@ void VulkanRenderer::drawFrame(ImDrawData* gui_draw_data)
 
 	if(guiRendererSharedVars.raytracing) update_raytracing_descriptor_set(image_index);
 
-	record_commands(image_index, gui_draw_data);
+	record_commands(image_index);
 
 	// stop recording to command buffer
 	result = vkEndCommandBuffer(command_buffers[image_index]);
@@ -1208,7 +1209,7 @@ void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
 
 }
 
-void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_data)
+void VulkanRenderer::record_commands(uint32_t image_index)
 {
 
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
@@ -1238,7 +1239,7 @@ void VulkanRenderer::record_commands(uint32_t image_index, ImDrawData* gui_draw_
 										VK_IMAGE_ASPECT_COLOR_BIT);
 
 	std::vector<VkDescriptorSet> descriptorSets = { post_descriptor_set[image_index] };
-	postStage.recordCommands(command_buffers[image_index], image_index, gui_draw_data, descriptorSets);
+	postStage.recordCommands(command_buffers[image_index], image_index, descriptorSets);
 
 	vulkanImage.transitionImageLayout(	command_buffers[image_index],
 										VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,

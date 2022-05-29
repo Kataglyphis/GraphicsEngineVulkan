@@ -67,15 +67,15 @@ int App::run()
 
         scene->update_user_input(gui.get());
 
-        vulkan_renderer.updateStateDueToUserInput(gui.get());
+        //vulkan_renderer.updateStateDueToUserInput(gui.get());
         vulkan_renderer.update_uniforms(scene.get(),
                                         camera.get(),
                                         window.get());
 
-        // retrieve updates from the UI
-        ImDrawData* gui_draw_data = gui->render();
+        //// retrieve updates from the UI
+        gui->render();
 
-        vulkan_renderer.drawFrame(gui_draw_data);
+        vulkan_renderer.drawFrame();
 
     }
 

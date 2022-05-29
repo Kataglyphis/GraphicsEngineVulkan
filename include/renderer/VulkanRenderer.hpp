@@ -60,7 +60,7 @@ public:
 					Camera* camera);
 
 	void	hot_reload_all_shader();
-	void	drawFrame(ImDrawData* gui_draw_data);
+	void	drawFrame();
 
 	void	update_uniforms(Scene* scene,
 							Camera* camera,
@@ -69,7 +69,7 @@ public:
 	void	updateStateDueToUserInput(GUI* gui);
 
 	void	update_raytracing_descriptor_set(uint32_t image_index);
-	void	record_commands(uint32_t image_index, ImDrawData* gui_draw_data);
+	void	record_commands(uint32_t image_index);
 
 	// texture functions 
 	void	create_sampler_array_descriptor_set();
@@ -101,6 +101,7 @@ private:
 
 	Window*							window;
 	Scene*							scene;
+	GUI*							gui;
 
 	// -- pools
 	void							create_command_pool();

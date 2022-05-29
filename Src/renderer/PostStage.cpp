@@ -25,7 +25,7 @@ void PostStage::init(	VulkanDevice* device,
 
 }
 
-void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_index, ImDrawData* gui_draw_data,
+void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_index,
 								const std::vector<VkDescriptorSet>& descriptorSets)
 {
 	// information about how to begin a render pass (only needed for graphical applications)
@@ -49,6 +49,7 @@ void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_i
 
 	// begin render pass
 	vkCmdBeginRenderPass(commandBuffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
+	// Rendering gui
 	auto aspectRatio = static_cast<float>(swap_chain_extent.width) / static_cast<float>(swap_chain_extent.height);
 	PushConstantPost pc_post{};
 	pc_post.aspect_ratio = aspectRatio;
@@ -57,11 +58,11 @@ void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_i
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
 							pipeline_layout, 0, static_cast<uint32_t>(descriptorSets.size()),
-				descriptorSets.data(), 0, nullptr);
+							descriptorSets.data(), 0, nullptr);
 	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
 
-	// Rendering gui
-	ImGui_ImplVulkan_RenderDrawData(gui_draw_data, commandBuffer);
+	ImGui::Render();
+	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
 
 	// end render pass 
 	vkCmdEndRenderPass(commandBuffer);
@@ -169,7 +170,7 @@ void PostStage::createRenderpass()
 	subpass.pDepthStencilAttachment = &depth_attachment_reference;
 
 	// need to determine when layout transitions occur using subpass dependencies
-	std::array<VkSubpassDependency, 2> subpass_dependencies;
+	std::array<VkSubpassDependency, 1> subpass_dependencies;
 
 	// conversion from VK_IMAGE_LAYOUT_UNDEFINED to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
 	// transition must happen after ....
@@ -181,17 +182,7 @@ void PostStage::createRenderpass()
 	subpass_dependencies[0].dstSubpass = 0;
 	subpass_dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 	subpass_dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-	subpass_dependencies[0].dependencyFlags = 0;
-
-	subpass_dependencies[1].srcSubpass = 0;													// subpass index (VK_SUBPASS_EXTERNAL = Special value meaning outside of renderpass)
-	subpass_dependencies[1].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// pipeline stage 
-	subpass_dependencies[1].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;	// stage access mask (memory access)
-
-	// but must happen before ...
-	subpass_dependencies[1].dstSubpass = VK_SUBPASS_EXTERNAL;
-	subpass_dependencies[1].dstStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-	subpass_dependencies[1].dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
-	subpass_dependencies[1].dependencyFlags = 0;
+	subpass_dependencies[0].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
 
 	std::array<VkAttachmentDescription, 2> render_pass_attachments = { color_attachment, depth_attachment };
 
@@ -259,25 +250,32 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 
 
 	// how the data for an attribute is defined within a vertex
-	std::array<VkVertexInputAttributeDescription, 3> attribute_describtions;
+	std::array<VkVertexInputAttributeDescription, 4> attribute_describtions;
 
 	// Position attribute
 	attribute_describtions[0].binding = 0;
 	attribute_describtions[0].location = 0;
-	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
+	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;			// format data will take (also helps define size of data)
 	attribute_describtions[0].offset = offsetof(Vertex, pos);
 
-	// texture coord attribute
+	// normal coord attribute
 	attribute_describtions[1].binding = 0;
 	attribute_describtions[1].location = 1;
-	attribute_describtions[1].format = VK_FORMAT_R32G32_SFLOAT;
-	attribute_describtions[1].offset = offsetof(Vertex, texture_coords);
+	attribute_describtions[1].format = VK_FORMAT_R32G32B32_SFLOAT;			// format data will take (also helps define size of data)
+	attribute_describtions[1].offset = offsetof(Vertex, normal);			// where this attribute is defined in the data for a single vertex
 
 	// normal coord attribute
 	attribute_describtions[2].binding = 0;
 	attribute_describtions[2].location = 2;
-	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;
-	attribute_describtions[2].offset = offsetof(Vertex, normal);
+	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;			// format data will take (also helps define size of data)
+	attribute_describtions[2].offset = offsetof(Vertex, color);
+
+	attribute_describtions[3].binding = 0;
+	// texture coord attribute
+	attribute_describtions[3].location = 3;
+	attribute_describtions[3].format = VK_FORMAT_R32G32_SFLOAT;				// format data will take (also helps define size of data)
+	attribute_describtions[3].offset = offsetof(Vertex, texture_coords);	// where this attribute is defined in the data for a single vertex
+
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 
@@ -404,8 +402,8 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	result = vkCreateGraphicsPipelines(device->getLogicalDevice(), VK_NULL_HANDLE, 1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
 	ASSERT_VULKAN(result, "Failed to create a graphics pipeline!")
 
-		// Destroy shader modules, no longer needed after pipeline created
-		vkDestroyShaderModule(device->getLogicalDevice(), vertex_shader_module, nullptr);
+	// Destroy shader modules, no longer needed after pipeline created
+	vkDestroyShaderModule(device->getLogicalDevice(), vertex_shader_module, nullptr);
 	vkDestroyShaderModule(device->getLogicalDevice(), fragment_shader_module, nullptr);
 }
 

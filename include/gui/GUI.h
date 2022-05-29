@@ -23,12 +23,12 @@ public:
 									const VkRenderPass& post_render_pass,
 									const VkCommandPool& graphics_command_pool);
 
-	const GUISceneSharedVars&		getGuiSceneSharedVars() { return guiSceneSharedVars; };
-	GUIRendererSharedVars&			getGuiRendererSharedVars() { return guiRendererSharedVars; };
+	GUISceneSharedVars				getGuiSceneSharedVars() { return guiSceneSharedVars; };
+	GUIRendererSharedVars			getGuiRendererSharedVars() { return guiRendererSharedVars; };
 
-	ImDrawData*						render();
+	void							render();
 
-
+	void							cleanUp();
 
 	~GUI();
 

@@ -1,6 +1,6 @@
 struct GUIRendererSharedVars {
 
-	bool raytracing						= true;
+	bool raytracing						= false;
 	bool shader_hot_reload_triggered	= false;
 
 };
