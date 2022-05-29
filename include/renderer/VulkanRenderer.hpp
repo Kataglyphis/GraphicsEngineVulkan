@@ -45,6 +45,7 @@
 #include <GUI.h>
 #include "Rasterizer.h"
 #include <PostStage.h>
+#include <Raytracing.h>
 
 #include "BottomLevelAccelerationStructure.h"
 #include "TopLevelAccelerationStructure.h"
@@ -118,7 +119,9 @@ private:
 	CommandBufferManager			commandBufferManager;
 	void							create_command_buffers();
 
-	void create_push_constant_range();
+	bool							raytracing{ false };
+
+	Raytracing						raytracingStage;
 	Rasterizer						rasterizer;
 	PostStage						postStage;
 
@@ -134,79 +137,46 @@ private:
 	std::vector<VkFence>			images_in_flight_fences;
 	void							create_synchronization();
 
-	// ----- VULKAN CORE COMPONENTS ----- END
+	ASManager asManager;
+	std::vector<BottomLevelAccelerationStructure>	blas;
+	TopLevelAccelerationStructure					tlas;
+	VulkanBuffer									objectDescriptionBuffer;
 
-	// -- Post
+	void							create_descriptor_pool_object_description();
+	void							create_object_description_buffer();
+
+	VkSampler						texture_sampler;
 	VkDescriptorPool				post_descriptor_pool{};
 	VkDescriptorSetLayout			post_descriptor_set_layout;
 	std::vector<VkDescriptorSet>	post_descriptor_set;
-	// texture sampler for everything ---- change that ! 
 	void							create_post_descriptor();
 	void							update_post_descriptor_set();
-	// -- Post - End
 
-
-	VkSampler						texture_sampler;
 	void							createDescriptors();
 	void							create_texture_sampler();
 	void							create_descriptor_pool_uniforms();
 	void							create_descriptor_pool_sampler();
 	void							create_descriptor_sets();
 	void							create_descriptor_set_layouts();
-	VkDescriptorSetLayout			descriptor_set_layout;			// for normal uniform values
-	VkDescriptorSetLayout			sampler_set_layout;				// descriptor set layout for our samplers
+	VkDescriptorSetLayout			descriptor_set_layout;			
+	VkDescriptorSetLayout			sampler_set_layout;				
 
 	VkDescriptorPool				descriptor_pool;
 	VkDescriptorPool				sampler_descriptor_pool;
 	VkDescriptorPool				object_description_pool;
 	std::vector<VkDescriptorSet>	descriptor_sets;
-	VkDescriptorSet					sampler_descriptor_set;			// these are no swap chain dependend descriptors, doesn't change over frames
+	VkDescriptorSet					sampler_descriptor_set;			
 
-	// ----- ALL RAYTRACING SPECIFICS ----- BEGIN
-	// -- en/-disable raytracing
-	bool							raytracing{ false };
 	VkDescriptorPool				raytracing_descriptor_pool;
 	std::vector<VkDescriptorSet>	raytracing_descriptor_set;
 	VkDescriptorSetLayout			raytracing_descriptor_set_layout;
-	VkPipeline						raytracing_pipeline;
-	VkPipelineLayout				raytracing_pipeline_layout;
-	PushConstantRaytracing			pc_ray;
-	VkPushConstantRange				pc_ray_ranges;
-	void							init_raytracing();
+
 	void							create_raytracing_descriptor_set_layouts();
 	void							create_raytracing_descriptor_sets();
-	void							create_raytracing_pipeline();
-	void							create_shader_binding_table();
 	void							create_raytracing_descriptor_pool();
-
-	// -- shader bindings
-	std::vector<VkRayTracingShaderGroupCreateInfoKHR> shader_groups;
-	VulkanBuffer					shaderBindingTableBuffer;
-	VulkanBuffer					raygenShaderBindingTableBuffer;
-	VulkanBuffer					missShaderBindingTableBuffer;
-	VulkanBuffer					hitShaderBindingTableBuffer;
-
-	VkStridedDeviceAddressRegionKHR rgen_region{};
-	VkStridedDeviceAddressRegionKHR miss_region{};
-	VkStridedDeviceAddressRegionKHR hit_region{};
-	VkStridedDeviceAddressRegionKHR call_region{};
-
-
-	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
-	// ----- ALL RAYTRACING SPECIFICS ----- END
 	
-
-	// ----- ALL ACCELERATION STRUCTURES ----- BEGIN
-	ASManager asManager;
-	std::vector<BottomLevelAccelerationStructure>	blas;
-	TopLevelAccelerationStructure					tlas;
-	VulkanBuffer									objectDescriptionBuffer;
-
-	void create_descriptor_pool_object_description();
-	void create_object_description_buffer();
-
-	void check_changed_framebuffer_size();
-	bool framebuffer_resized{false};
+	void							check_changed_framebuffer_size();
+	bool							framebuffer_resized{false};
 
 };
 
