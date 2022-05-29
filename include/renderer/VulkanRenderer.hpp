@@ -82,6 +82,8 @@ public:
 
 private:
 
+	GUIRendererSharedVars			guiRendererSharedVars;
+
 	// helper class for managing our buffers
 	VulkanBufferManager				vulkanBufferManager;
 
@@ -118,8 +120,6 @@ private:
 	std::vector<VkCommandBuffer>	command_buffers;
 	CommandBufferManager			commandBufferManager;
 	void							create_command_buffers();
-
-	bool							raytracing{ false };
 
 	Raytracing						raytracingStage;
 	Rasterizer						rasterizer;
