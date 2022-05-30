@@ -147,6 +147,7 @@ void VulkanDevice::create_logical_device()
 	features2.features.samplerAnisotropy = VK_TRUE;
 	features2.features.shaderInt64 = VK_TRUE;
 	features2.features.geometryShader = VK_TRUE;
+	features2.features.logicOp = VK_TRUE;
 
 	// -- NEEDED FOR QUERING THE DEVICE ADDRESS WHEN CREATING ACCELERATION STRUCTURES
 	VkPhysicalDeviceBufferDeviceAddressFeaturesEXT buffer_device_address_features{};

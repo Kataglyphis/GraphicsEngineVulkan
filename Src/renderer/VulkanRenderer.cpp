@@ -51,7 +51,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		create_descriptor_set_layouts();
 		std::vector<VkDescriptorSetLayout> descriptor_set_layouts_rasterizer = { descriptor_set_layout, sampler_set_layout };
 		rasterizer.init(device.get(), &vulkanSwapChain, descriptor_set_layouts_rasterizer, graphics_command_pool);
-		create_post_descriptor();
+		create_post_descriptor_layout();
 		std::vector<VkDescriptorSetLayout> descriptor_set_layouts_post = { post_descriptor_set_layout };
 		postStage.init(device.get(), &vulkanSwapChain, descriptor_set_layouts_post);
 		createDescriptors();
@@ -293,7 +293,7 @@ void VulkanRenderer::create_surface()
 
 }
 
-void VulkanRenderer::create_post_descriptor()
+void VulkanRenderer::create_post_descriptor_layout()
 {
 
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
@@ -1155,7 +1155,7 @@ void VulkanRenderer::recreate_swap_chain()
 	// all post
 	std::vector<VkDescriptorSetLayout> descriptorSets = { post_descriptor_set_layout };
 	postStage.init(device.get(), &vulkanSwapChain, descriptorSets);
-	create_post_descriptor();
+	create_post_descriptor_layout();
 	update_post_descriptor_set();
 
 	images_in_flight_fences.resize(vulkanSwapChain.getNumberSwapChainImages(), VK_NULL_HANDLE);

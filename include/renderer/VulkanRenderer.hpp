@@ -1,4 +1,5 @@
 #pragma once
+#define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
 
 #include <GLFW/glfw3.h>
@@ -150,7 +151,7 @@ private:
 	VkDescriptorPool				post_descriptor_pool{};
 	VkDescriptorSetLayout			post_descriptor_set_layout;
 	std::vector<VkDescriptorSet>	post_descriptor_set;
-	void							create_post_descriptor();
+	void							create_post_descriptor_layout();
 	void							update_post_descriptor_set();
 
 	void							createDescriptors();

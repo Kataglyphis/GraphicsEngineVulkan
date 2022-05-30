@@ -1,6 +1,9 @@
 #pragma once
 #include <stdio.h>
 
+#define GLFW_INCLUDE_NONE
+#define GLFW_INCLUDE_VULKAN
+
 #include <GLFW/glfw3.h>
 
 class Window
@@ -9,7 +12,7 @@ class Window
 public:
 
 	Window();
-	Window(GLint window_width, GLint window_height);
+	Window(uint32_t window_width, uint32_t window_height);
 
 	// init glfw and its context ...
 	int initialize();
@@ -17,14 +20,14 @@ public:
 
 	// GETTER functions
 	bool get_should_close() { return glfwWindowShouldClose(main_window); }
-	GLfloat get_buffer_width() const { return (GLfloat)window_buffer_width; }
-	GLfloat get_buffer_height() const { return (GLfloat)window_buffer_height; }
-	GLfloat get_x_change();
-	GLfloat get_y_change();
+	float get_buffer_width() const { return (float)window_buffer_width; }
+	float get_buffer_height() const { return (float)window_buffer_height; }
+	float get_x_change();
+	float get_y_change();
 	GLFWwindow* get_window() {return main_window;}
 
-	GLfloat get_height();
-	GLfloat get_width();
+	float get_height();
+	float get_width();
 
 	bool* get_keys() { return keys; }
 	bool framebuffer_size_has_changed();
@@ -32,25 +35,25 @@ public:
 
 	// SETTER functions
 	void update_viewport();
-	void set_buffer_size(GLfloat window_buffer_width, GLfloat window_buffer_height);
+	void set_buffer_size(float window_buffer_width, float window_buffer_height);
 
 	~Window();
 
 private:
 
 	GLFWwindow* main_window;
-	GLint window_width, window_height;
+	uint32_t window_width, window_height;
 	// what key(-s) was/were pressed
 	bool keys[1024];
-	GLfloat last_x;
-	GLfloat last_y;
-	GLfloat x_change;
-	GLfloat y_change;
+	float last_x;
+	float last_y;
+	float x_change;
+	float y_change;
 	bool mouse_first_moved;
 	bool framebuffer_resized;
 
 	//buffers to store our window data to
-	GLint window_buffer_width, window_buffer_height;
+	int window_buffer_width, window_buffer_height;
 
 	//we need to start our window callbacks for interaction
 	void init_callbacks();

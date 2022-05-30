@@ -5,10 +5,6 @@
 #include <VulkanSwapChain.h>
 #include <PushConstantPost.h>
 
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_vulkan.h>
-
 class PostStage
 {
 public:

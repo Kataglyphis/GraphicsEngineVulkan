@@ -3,6 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <vulkan/vulkan.h>
+#define GLFW_INCLUDE_NONE
+#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 #define GLM_FORCE_RADIANS
@@ -57,10 +59,9 @@ int App::run()
         delta_time = now - last_time;
         last_time = now;
 
-
         scene->update_user_input(gui.get());
 
-        //vulkan_renderer.updateStateDueToUserInput(gui.get());
+        vulkan_renderer.updateStateDueToUserInput(gui.get());
         vulkan_renderer.update_uniforms(scene.get(),
                                         camera.get(),
                                         window.get());

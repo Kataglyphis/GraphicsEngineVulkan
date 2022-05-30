@@ -25,7 +25,6 @@ void GUI::initializeVulkanContext(	VulkanDevice* device,
 void GUI::render()
 {
 
-	ImGui_ImplVulkan_SetMinImageCount(MAX_FRAME_DRAWS);
 	// Start the Dear ImGui frame
 	ImGui_ImplVulkan_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -147,7 +146,9 @@ void GUI::create_gui_context(	Window* window,
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1);
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
+	io.WantCaptureMouse = true;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Dear ImGui style
@@ -192,7 +193,7 @@ void GUI::create_gui_context(	Window* window,
 	init_info.Queue = device->getGraphicsQueue();
 	init_info.DescriptorPool = gui_descriptor_pool;
 	init_info.PipelineCache = VK_NULL_HANDLE;																					
-	init_info.MinImageCount = MAX_FRAME_DRAWS;
+	init_info.MinImageCount = 2;
 	init_info.ImageCount = MAX_FRAME_DRAWS;
 	init_info.Allocator = VK_NULL_HANDLE;
 	init_info.CheckVkResultFn = VK_NULL_HANDLE;
