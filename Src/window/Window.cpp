@@ -1,5 +1,17 @@
 #include "Window.h"
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
+
+#include <stdexcept>
+
+// GLFW Callback functions
+static void onErrorCallback(int error, const char* description)
+{
+    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+}
+
 Window::Window() :  
                     
                     window_width(800.f),
@@ -20,7 +32,7 @@ Window::Window() :
 }
 
 //please use this constructor; never the standard
-Window::Window(GLint window_width, GLint window_height) : 
+Window::Window(uint32_t window_width, uint32_t window_height) :
                         
                         framebuffer_resized(false), 
                         window_width(window_width),  
@@ -41,6 +53,7 @@ Window::Window(GLint window_width, GLint window_height) :
 
 int Window::initialize() {
     
+    glfwSetErrorCallback(onErrorCallback);
     if (!glfwInit()) {
 
         printf("GLFW Init failed!");
@@ -49,19 +62,16 @@ int Window::initialize() {
 
     }
 
-    // setup glfw window properties
-    
-    //should work with vulkan
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-    //lets work with nothing older than version 3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    if (!glfwVulkanSupported())
+    {
+        throw std::runtime_error("No Vulkan Supported!");
+    }
     
     //allow it to resize
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    //glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     //retrieve new window
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     main_window = glfwCreateWindow(window_width, window_height, "\\__/ Epic graphics from hell \\__/ ", NULL, NULL);
 
     if (!main_window) {
@@ -75,23 +85,7 @@ int Window::initialize() {
     // get buffer size information
     glfwGetFramebufferSize(main_window, &window_buffer_width, &window_buffer_height);
 
-    // set context for GLEW to use
-    glfwMakeContextCurrent(main_window);
-
-    //Handle key + mouse Input
-    //TODO: here we need to further go on and implement game logic
     init_callbacks();
-    glfwSetInputMode(main_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-    // glEnable(GL_DEPTH_TEST);
-
-    // setup viewport size
-    // glViewport(0, 0, window_buffer_width, window_buffer_height);
-
-    glfwSetWindowUserPointer(main_window, this);
-
-    //you need to register function for handling changing window sizes
-    glfwSetFramebufferSizeCallback(main_window, framebuffer_size_callback);
 
     return 0;
 }
@@ -108,33 +102,33 @@ void Window::update_viewport() {
 
 }
 
-void Window::set_buffer_size(GLfloat window_buffer_width, GLfloat window_buffer_height) {
+void Window::set_buffer_size(float window_buffer_width, float window_buffer_height) {
     this->window_buffer_width = window_buffer_width;
     this->window_buffer_height = window_buffer_height;
 }
 
-GLfloat Window::get_x_change()
+float Window::get_x_change()
 {
-    GLfloat the_change = x_change;
+    float the_change = x_change;
     x_change = 0.0f;
     return the_change;
 }
 
-GLfloat Window::get_y_change()
+float Window::get_y_change()
 {
-    GLfloat the_change = y_change;
+    float the_change = y_change;
     y_change = 0.0f;
     return the_change;
 }
 
-GLfloat Window::get_height()
+float Window::get_height()
 {
-    return GLfloat(window_height);
+    return float(window_height);
 }
 
-GLfloat Window::get_width()
+float Window::get_width()
 {
-    return GLfloat(window_width);
+    return float(window_width);
 }
 
 bool Window::framebuffer_size_has_changed()
@@ -147,9 +141,10 @@ void Window::init_callbacks()
 {
     //TODO: remember this section for our later game logic 
     //for the space ship to fly around
-    glfwSetKeyCallback(main_window, key_callback);
-    glfwSetMouseButtonCallback(main_window, mouse_button_callback);
-    glfwSetFramebufferSizeCallback(main_window, framebuffer_size_callback);
+    glfwSetWindowUserPointer(main_window, this);
+    glfwSetKeyCallback(main_window, &key_callback);
+    glfwSetMouseButtonCallback(main_window, &mouse_button_callback);
+    glfwSetFramebufferSizeCallback(main_window, &framebuffer_size_callback);
 
 }
 
@@ -174,7 +169,7 @@ void Window::key_callback(GLFWwindow* window, int key, int code, int action, int
     Window* the_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
+        glfwSetWindowShouldClose(window, VK_TRUE);
     }
 
     if (key >= 0 && key < 1024) {
@@ -191,6 +186,7 @@ void Window::key_callback(GLFWwindow* window, int key, int code, int action, int
 
 void Window::mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
 {
+
     Window* the_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     // need to handle first occurance of a mouse moving event
@@ -211,9 +207,18 @@ void Window::mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
+
+    if (ImGui::GetCurrentContext() != nullptr && ImGui::GetIO().WantCaptureMouse)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.AddMouseButtonEvent(button, action);
+        return;
+    }
+
     Window* the_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     if ((action == GLFW_PRESS) && (button == GLFW_MOUSE_BUTTON_RIGHT)) {
+
         glfwSetCursorPosCallback(window, mouse_callback);
     }
     else {

@@ -5,6 +5,7 @@
 #include <Vertex.h>
 #include <ShaderHelper.h>
 #include <File.h>
+#include <GUI.h>
 
 PostStage::PostStage()
 {
@@ -49,7 +50,6 @@ void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_i
 
 	// begin render pass
 	vkCmdBeginRenderPass(commandBuffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
-	// Rendering gui
 	auto aspectRatio = static_cast<float>(swap_chain_extent.width) / static_cast<float>(swap_chain_extent.height);
 	PushConstantPost pc_post{};
 	pc_post.aspect_ratio = aspectRatio;
@@ -61,6 +61,7 @@ void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_i
 							descriptorSets.data(), 0, nullptr);
 	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
 
+	// Rendering gui
 	ImGui::Render();
 	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
 
@@ -177,8 +178,6 @@ void PostStage::createRenderpass()
 	subpass_dependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL;						// subpass index (VK_SUBPASS_EXTERNAL = Special value meaning outside of renderpass)
 	subpass_dependencies[0].srcStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;	// pipeline stage 
 	subpass_dependencies[0].srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;				// stage access mask (memory access)
-
-	// but must happen before ...
 	subpass_dependencies[0].dstSubpass = 0;
 	subpass_dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 	subpass_dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
@@ -238,16 +237,14 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	fragment_shader_create_info.module = fragment_shader_module;
 	fragment_shader_create_info.pName = "main";
 
-	VkPipelineShaderStageCreateInfo shader_stages[] = { vertex_shader_create_info,
-														fragment_shader_create_info };
-
+	std::vector<VkPipelineShaderStageCreateInfo> shader_stages = { vertex_shader_create_info,
+																	fragment_shader_create_info };
 
 	// how the data for a single vertex (including info such as position, color, texture coords, normals, etc) is as a whole 
 	VkVertexInputBindingDescription binding_description{};
 	binding_description.binding = 0;
 	binding_description.stride = sizeof(Vertex);
 	binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-
 
 	// how the data for an attribute is defined within a vertex
 	std::array<VkVertexInputAttributeDescription, 4> attribute_describtions;
@@ -275,7 +272,6 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	attribute_describtions[3].location = 3;
 	attribute_describtions[3].format = VK_FORMAT_R32G32_SFLOAT;				// format data will take (also helps define size of data)
 	attribute_describtions[3].offset = offsetof(Vertex, texture_coords);	// where this attribute is defined in the data for a single vertex
-
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 
@@ -336,10 +332,10 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	// -- BLENDING --
 	// blend attachment state 
 	VkPipelineColorBlendAttachmentState color_state{};
-	color_state.colorWriteMask = VK_COLOR_COMPONENT_R_BIT |
-		VK_COLOR_COMPONENT_G_BIT |
-		VK_COLOR_COMPONENT_B_BIT |
-		VK_COLOR_COMPONENT_A_BIT;
+	color_state.colorWriteMask =	VK_COLOR_COMPONENT_R_BIT |
+									VK_COLOR_COMPONENT_G_BIT |
+									VK_COLOR_COMPONENT_B_BIT |
+									VK_COLOR_COMPONENT_A_BIT;
 
 	color_state.blendEnable = VK_TRUE;
 	// blending uses equation: (srcColorBlendFactor * new_color) color_blend_op (dstColorBlendFactor * old_color)
@@ -353,9 +349,12 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	VkPipelineColorBlendStateCreateInfo color_blending_create_info{};
 	color_blending_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
 	color_blending_create_info.logicOpEnable = VK_FALSE;										// alternative to calculations is to use logical operations
+	color_blending_create_info.logicOp = VK_LOGIC_OP_CLEAR;
 	color_blending_create_info.attachmentCount = 1;
 	color_blending_create_info.pAttachments = &color_state;
-
+	for (int i = 0; i < 4; i++) {
+		color_blending_create_info.blendConstants[0] = 0.f;
+	}
 	// -- PIPELINE LAYOUT --
 	VkPipelineLayoutCreateInfo pipeline_layout_create_info{};
 	pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -371,17 +370,17 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	// -- DEPTH STENCIL TESTING --
 	VkPipelineDepthStencilStateCreateInfo depth_stencil_create_info {};
 	depth_stencil_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-	depth_stencil_create_info.depthTestEnable = VK_FALSE;
+	depth_stencil_create_info.depthTestEnable = VK_TRUE;
 	depth_stencil_create_info.depthWriteEnable = VK_TRUE;
-	depth_stencil_create_info.depthCompareOp = VK_COMPARE_OP_LESS;
+	depth_stencil_create_info.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
 	depth_stencil_create_info.depthBoundsTestEnable = VK_FALSE;
 	depth_stencil_create_info.stencilTestEnable = VK_FALSE;
 
 	// -- GRAPHICS PIPELINE CREATION --
 	VkGraphicsPipelineCreateInfo graphics_pipeline_create_info{};
 	graphics_pipeline_create_info.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-	graphics_pipeline_create_info.stageCount = 2;
-	graphics_pipeline_create_info.pStages = shader_stages;
+	graphics_pipeline_create_info.stageCount = static_cast<uint32_t>(shader_stages.size());
+	graphics_pipeline_create_info.pStages = shader_stages.data();
 	graphics_pipeline_create_info.pVertexInputState = &vertex_input_create_info;
 	graphics_pipeline_create_info.pInputAssemblyState = &input_assembly;
 	graphics_pipeline_create_info.pViewportState = &viewport_state_create_info;
@@ -399,7 +398,8 @@ void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descrip
 	graphics_pipeline_create_info.basePipelineIndex = -1;
 
 	// create graphics pipeline 
-	result = vkCreateGraphicsPipelines(device->getLogicalDevice(), VK_NULL_HANDLE, 1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
+	result = vkCreateGraphicsPipelines(device->getLogicalDevice(), VK_NULL_HANDLE,
+		1, &graphics_pipeline_create_info, nullptr, &graphics_pipeline);
 	ASSERT_VULKAN(result, "Failed to create a graphics pipeline!")
 
 	// Destroy shader modules, no longer needed after pipeline created

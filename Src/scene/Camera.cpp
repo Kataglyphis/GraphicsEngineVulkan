@@ -19,9 +19,9 @@ Camera::Camera() :
 
 }
 
-void Camera::key_control(bool* keys, GLfloat delta_time)
+void Camera::key_control(bool* keys, float delta_time)
 {
-	GLfloat velocity = movement_speed * delta_time;
+	float velocity = movement_speed * delta_time;
 
 	if (keys[GLFW_KEY_W]) {
 
@@ -60,7 +60,7 @@ void Camera::key_control(bool* keys, GLfloat delta_time)
 	}
 }
 
-void Camera::mouse_control(GLfloat x_change, GLfloat y_change)
+void Camera::mouse_control(float x_change, float y_change)
 {
 
 	//here we only want to support views 90 degrees to each side 
@@ -85,17 +85,17 @@ void Camera::mouse_control(GLfloat x_change, GLfloat y_change)
 
 }
 
-void Camera::set_near_plane(GLfloat near_plane)
+void Camera::set_near_plane(float near_plane)
 {
 	this->near_plane = near_plane;
 }
 
-void Camera::set_far_plane(GLfloat far_plane)
+void Camera::set_far_plane(float far_plane)
 {
 	this->far_plane = far_plane;
 }
 
-void Camera::set_fov(GLfloat fov)
+void Camera::set_fov(float fov)
 {
 	this->fov = fov;
 }
