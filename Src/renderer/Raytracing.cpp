@@ -252,7 +252,7 @@ void Raytracing::createPipeline(const std::vector<VkDescriptorSetLayout>& descri
 
 	ASSERT_VULKAN(result, "Failed to create raytracing pipeline!")
 
-		vkDestroyShaderModule(device->getLogicalDevice(), raygen_shader_module, nullptr);
+	vkDestroyShaderModule(device->getLogicalDevice(), raygen_shader_module, nullptr);
 	vkDestroyShaderModule(device->getLogicalDevice(), raymiss_shader_module, nullptr);
 	vkDestroyShaderModule(device->getLogicalDevice(), raychit_shader_module, nullptr);
 	vkDestroyShaderModule(device->getLogicalDevice(), shadow_shader_module, nullptr);
@@ -304,6 +304,7 @@ void Raytracing::createSBT()
 	hitShaderBindingTableBuffer.create(device, handle_size,
 		bufferUsageFlags,
 		memoryUsageFlags);
+
 	void* mapped_raygen = nullptr;
 	vkMapMemory(device->getLogicalDevice(), raygenShaderBindingTableBuffer.getBufferMemory(), 0, VK_WHOLE_SIZE, 0, &mapped_raygen);
 

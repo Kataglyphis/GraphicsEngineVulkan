@@ -70,7 +70,7 @@ private:
 		// required by VK_KHR_spirv_1_4
 		VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME,
 		//required for pipeline library
-		VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
+		VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME
 
 
 

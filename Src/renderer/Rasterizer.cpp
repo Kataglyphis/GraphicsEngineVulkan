@@ -62,17 +62,17 @@ void Rasterizer::recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_i
 	// bind pipeline to be used in render pass
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
 
-	for (unsigned int m = 0; m < scene->getModelCount(); m++) {
+	for (int m = 0; m < scene->getModelCount(); m++) {
 
 		// for GCC doen't allow references on rvalues go like that ... 
-		pushConstant.model = scene->getModelMatrix(m);
+		pushConstant.model = scene->getModelMatrix(0);
 		// just "Push" constants to given shader stage directly (no buffer)
 		vkCmdPushConstants(commandBuffer,
 			pipeline_layout,
-			VK_SHADER_STAGE_VERTEX_BIT,								// stage to push constants to 
-			0,														// offset to push constants to update
+			VK_SHADER_STAGE_VERTEX_BIT,						// stage to push constants to 
+			0,													// offset to push constants to update
 			sizeof(PushConstantRasterizer),							// size of data being pushed 
-			&pushConstant);											// using model of current mesh (can be array)
+			&pushConstant);									// using model of current mesh (can be array)
 
 		for (unsigned int k = 0; k < scene->getMeshCount(m); k++) {
 
@@ -294,7 +294,7 @@ void Rasterizer::createTextures(VkCommandPool& commandPool)
 	// --- WE NEED A DIFFERENT LAYOUT FOR USAGE
 	VulkanImage& vulkanImage = depthBufferImage.getVulkanImage();
 	vulkanImage.transitionImageLayout(device->getLogicalDevice(),
-		device->getComputeQueue(),
+		device->getGraphicsQueue(),
 		commandPool,
 		VK_IMAGE_LAYOUT_UNDEFINED,
 		VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,

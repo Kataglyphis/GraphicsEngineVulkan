@@ -96,6 +96,12 @@ int Window::initialize() {
     return 0;
 }
 
+void Window::cleanUp()
+{
+    glfwDestroyWindow(main_window);
+    glfwTerminate();
+}
+
 void Window::update_viewport() {
 
     glfwGetFramebufferSize(main_window, &window_buffer_width, &window_buffer_height);
@@ -218,6 +224,5 @@ void Window::mouse_button_callback(GLFWwindow* window, int button, int action, i
 
 Window::~Window()
 {
-    glfwDestroyWindow(main_window);
-    glfwTerminate();
+    
 }

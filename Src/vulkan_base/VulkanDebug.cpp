@@ -39,9 +39,8 @@ void VulkanDebug::init(VkInstance* vulkanInstance)
 
 }
 
-VulkanDebug::~VulkanDebug()
+void VulkanDebug::cleanUp()
 {
-
 	if (ENABLE_VALIDATION_LAYERS) {
 
 		PFN_vkDestroyDebugUtilsMessengerEXT pvkDestroyDebugUtilsMessengerEXT =
@@ -50,4 +49,9 @@ VulkanDebug::~VulkanDebug()
 		pvkDestroyDebugUtilsMessengerEXT(*vulkanInstance, debug_messenger, NULL);
 
 	}
+}
+
+VulkanDebug::~VulkanDebug()
+{
+
 }

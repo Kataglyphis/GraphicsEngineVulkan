@@ -61,7 +61,7 @@ public:
 	VulkanDebug();
 
 	void						init(VkInstance* vulkanInstance);
-
+	void						cleanUp();
 	~VulkanDebug();
 
 private:

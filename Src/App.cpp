@@ -43,13 +43,6 @@ int App::run()
                                     gui.get(),
                                     camera.get()};
 
-    glm::mat4 dragon_model(1.0f);
-    //dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
-    //dragon_model = glm::scale(dragon_model, glm::vec3(10.0f, 10.0f, 10.0f));
-    //dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-    scene->update_model_matrix(dragon_model, 0);
-
     while (!window->get_should_close()) {
 
         //poll all events incoming from user

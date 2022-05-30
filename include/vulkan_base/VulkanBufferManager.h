@@ -31,7 +31,7 @@ public:
 												VulkanBuffer& vulkanBuffer,
 												VkBufferUsageFlags dstBufferUsageFlags,
 												VkMemoryPropertyFlags dstBufferMemoryPropertyFlags,
-												std::vector<T> data);
+												std::vector<T>& data);
 
 	~VulkanBufferManager();
 
@@ -48,7 +48,7 @@ inline void VulkanBufferManager::createBufferAndUploadVectorOnDevice(
 											VulkanBuffer& vulkanBuffer,
 											VkBufferUsageFlags dstBufferUsageFlags,
 											VkMemoryPropertyFlags dstBufferMemoryPropertyFlags,
-											std::vector<T> bufferData)
+											std::vector<T>& bufferData)
 {
 	VkDeviceSize bufferSize = sizeof(T) * bufferData.size();
 
@@ -79,7 +79,7 @@ inline void VulkanBufferManager::createBufferAndUploadVectorOnDevice(
 						dstBufferMemoryPropertyFlags);
 
 	// copy staging buffer to vertex buffer on GPU
-	copyBuffer(device->getLogicalDevice(), device->getComputeQueue(), commandPool,
+	copyBuffer(device->getLogicalDevice(), device->getGraphicsQueue(), commandPool,
 				stagingBuffer, vulkanBuffer, bufferSize);
 
 	stagingBuffer.cleanUp();

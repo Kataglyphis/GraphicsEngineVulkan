@@ -74,29 +74,26 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		//std::string modelFile = "../Resources/Model/bmw/bmw.obj";
 		//std::string modelFile = "../Resources/Model/testScene.obj";
 		//std::string modelFile = "../Resources/Model/San_Miguel/san-miguel-low-poly.obj";
-		scene->loadModel(device.get(), compute_command_pool, modelFile.str());
+		scene->loadModel(device.get(), graphics_command_pool, modelFile.str());
 
+		create_raytracing_descriptor_pool();
 		create_sampler_array_descriptor_set();
+		create_raytracing_descriptor_set_layouts();
+		std::vector<VkDescriptorSetLayout> layouts;
+		layouts.push_back(descriptor_set_layout);
+		layouts.push_back(raytracing_descriptor_set_layout);
+		raytracingStage.init(device.get(), &vulkanSwapChain, layouts);
 
 		glm::mat4 dragon_model(1.0f);
 		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
-		dragon_model = glm::scale(dragon_model, glm::vec3(1000.0f, 1000.0f, 1000.0f));
+		dragon_model = glm::scale(dragon_model, glm::vec3(1.0f, 1.0f, 1.0f));
 		/*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
 		dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
 		scene->update_model_matrix(dragon_model, 0);
 
-		asManager.createASForScene(device.get(), compute_command_pool, scene, tlas, blas);
-
-		create_raytracing_descriptor_pool();
+		asManager.createASForScene(device.get(), graphics_command_pool, scene, tlas, blas);
 		create_object_description_buffer();
-		create_raytracing_descriptor_set_layouts();
 		create_raytracing_descriptor_sets();
-
-		std::vector<VkDescriptorSetLayout> layouts;
-		layouts.push_back(descriptor_set_layout);
-		layouts.push_back(raytracing_descriptor_set_layout);
-
-		raytracingStage.init(device.get(), &vulkanSwapChain, layouts);
 
 		create_synchronization();
 
@@ -181,10 +178,9 @@ void VulkanRenderer::drawFrame()
 	 wait for given fence to signal (open) from last draw before continuing*/
 	VkResult result = vkWaitForFences(device->getLogicalDevice(), 1, &in_flight_fences[current_frame], VK_TRUE, std::numeric_limits<uint64_t>::max());
 	ASSERT_VULKAN(result, "Failed to wait for fences!")
-
 	// -- GET NEXT IMAGE --
 	uint32_t image_index;
-	result = vkAcquireNextImageKHR(	device->getLogicalDevice(), vulkanSwapChain.getSwapChain()/*swapchain*/,
+	result = vkAcquireNextImageKHR(	device->getLogicalDevice(), vulkanSwapChain.getSwapChain(),
 									std::numeric_limits<uint64_t>::max(), 
 									image_available[current_frame], VK_NULL_HANDLE, &image_index);
 
@@ -419,7 +415,7 @@ void VulkanRenderer::create_object_description_buffer()
 	std::vector<ObjectDescription> objectDescriptions = scene->getObjectDescriptions();
 
 	vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
-															compute_command_pool,
+															graphics_command_pool,
 															objectDescriptionBuffer,
 															VK_BUFFER_USAGE_TRANSFER_DST_BIT |
 															VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
@@ -827,7 +823,7 @@ void VulkanRenderer::create_uniform_buffers()
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
 
 		vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
-																compute_command_pool,
+																graphics_command_pool,
 																globalUBOBuffer[i],
 																VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | 
 																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
@@ -835,7 +831,7 @@ void VulkanRenderer::create_uniform_buffers()
 																globalUBOdata);
 
 		vulkanBufferManager.createBufferAndUploadVectorOnDevice(device.get(),
-																compute_command_pool,
+																graphics_command_pool,
 																sceneUBOBuffer[i],
 																VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT |
 																VK_BUFFER_USAGE_TRANSFER_DST_BIT,
