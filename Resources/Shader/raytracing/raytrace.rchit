@@ -77,10 +77,6 @@ void main() {
     Vertex v1 = vertices.v[ind.y];
     Vertex v2 = vertices.v[ind.z];
 
-    v0.pos.y *= -1;
-    v1.pos.y *= -1;
-    v2.pos.y *= -1;
-
     const vec3 barycentrics = vec3(1.0f - attribs.x - attribs.y, attribs.x, attribs.y);
 
     // compte coordinate of hit position 
@@ -99,7 +95,7 @@ void main() {
     vec3 ambient = vec3(0.f);
     int texture_id = materials.m[materialIDs.i[gl_PrimitiveID]].textureID;
     ambient += texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
-    ambient += materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
+    //ambient += materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 
     vec3 L = normalize(vec3(-sceneUBO.light_dir)); 
     // no need to normalize
@@ -133,7 +129,7 @@ void main() {
     vec3 light_color = vec3(1.f);
     float light_intensity = 1.f;
 
-	payload.hit_value = ambient;//vec3(0);
+	payload.hit_value = ambient;
 	// mode : switching between PBR models
 	// [0] --> EPIC GAMES 
 	// [1] --> PBR BOOK 

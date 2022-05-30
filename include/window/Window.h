@@ -13,6 +13,7 @@ public:
 
 	// init glfw and its context ...
 	int initialize();
+	void cleanUp();
 
 	// GETTER functions
 	bool get_should_close() { return glfwWindowShouldClose(main_window); }

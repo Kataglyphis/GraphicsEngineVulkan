@@ -136,7 +136,6 @@ void VulkanDevice::create_logical_device()
 	}
 
 	// -- ALL EXTENSION WE NEED
-
 	VkPhysicalDeviceDescriptorIndexingFeatures indexing_features{};
 	indexing_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
 	indexing_features.runtimeDescriptorArray = VK_TRUE;
@@ -154,7 +153,7 @@ void VulkanDevice::create_logical_device()
 	buffer_device_address_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES_EXT;
 	buffer_device_address_features.pNext = &features2;
 	buffer_device_address_features.bufferDeviceAddress = VK_TRUE;
-	buffer_device_address_features.bufferDeviceAddressCaptureReplay = VK_FALSE;
+	buffer_device_address_features.bufferDeviceAddressCaptureReplay = VK_TRUE;
 	buffer_device_address_features.bufferDeviceAddressMultiDevice = VK_FALSE;
 
 	// --ENABLE RAY TRACING PIPELINE

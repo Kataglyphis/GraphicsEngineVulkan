@@ -114,7 +114,7 @@ void ASManager::createBLAS(	VulkanDevice* device,
 
 	commandBufferManager.endAndSubmitCommandBuffer(	device->getLogicalDevice(), 
 													commandPool, 
-													device->getComputeQueue(), command_buffer);
+													device->getGraphicsQueue(), command_buffer);
 
 	for (auto& b : build_as_structures) {
 		blas.emplace_back(b.single_blas);
@@ -301,7 +301,7 @@ void ASManager::createTLAS(	VulkanDevice* device,
 
 	commandBufferManager.endAndSubmitCommandBuffer(	device->getLogicalDevice(), 
 													commandPool, 
-													device->getComputeQueue(), 
+													device->getGraphicsQueue(), 
 													command_buffer);
 
 }
