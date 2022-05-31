@@ -9,7 +9,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://jotrocken.blog/"><img src="images/vulkan-logo.png" alt="OpenGLEngine" width="400"></a>
+  <a href="https://jotrocken.blog/"><img src="images/vulkan-logo.png" alt="OpenGLEngine" width="200"></a>
   <a href="https://jotrocken.blog/"><img src="images/Engine_logo.png" alt="OpenGLEngine" width="200"></a>
   <a href="https://jotrocken.blog/"><img src="images/glm_logo.png" alt="OpenGLEngine" width="200"></a>
 </h1>
@@ -63,14 +63,9 @@
 
 [![Kataglyphis Engine][product-screenshot]](https://jotrocken.blog/)
 
-The thought behind this project is to implement modern algortihms and 
-techniques that modern graphic engines rely on. 
-Furthermore it should serve as a framework to enable further investigations
-in own research topics.
-Feel free to contribute and adding stuff :)
-Reminder: This project is based on my interest in implementing algortihms by
-my own and make own research. Hence you might encounter some bugs. Feel free 
-to report.
+This project provides me a solid Vulkan renderer starting point
+for implementing modern established rendering techniques and getting quickly
+started in own research topics. 
 
 ### Key Features
 
@@ -78,29 +73,30 @@ to report.
 |          Feature                    |   Implement Status |
 | ------------------------------------| :----------------: |
 | Rasterizer                          |         ✔️         |
-| Raytracing bascis                   |         ✔️         |
-| PBR support (UE4,disney,phong, etc.)|         ✔️         |
+| Raytracing                          |         ✔️         |
+| Path tracing                        |         ❌(ongoing)|
+| PBR support (UE4,disney,... etc.)   |         ✔️         |
 | .obj Model loading                  |         ✔️         |
 | Mip Mapping                         |         ✔️         |
 
 ### Built With
 
 * [Vulkan 1.3](https://www.vulkan.org/)
-* [GLM](https://github.com/g-truc/glm)
-* [GLFW](https://www.glfw.org/)
-* [TINYOBJLOADER](https://github.com/tinyobjloader/tinyobjloader)
-* [STB](https://github.com/nothings/stb)
-* [VMA](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)
-* [TINYGLTF](https://github.com/syoyo/tinygltf)
-* [DOXYGEN](https://www.doxygen.nl/index.html)
-* [GTEST](https://github.com/google/googletest)
-* [CMAKE](https://cmake.org/)
+* [glm](https://github.com/g-truc/glm)
+* [glfw](https://www.glfw.org/)
+* [tinyobjloader](https://github.com/tinyobjloader/tinyobjloader)
+* [stb](https://github.com/nothings/stb)
+* [vma](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)
+* [tinygltf](https://github.com/syoyo/tinygltf)
+* [doxygen](https://www.doxygen.nl/index.html)
+* [gtest](https://github.com/google/googletest)
+* [cmake](https://cmake.org/)
 
 ### Useful tools (you might also considering :) )
 
-* [CPPCHECK](https://cppcheck.sourceforge.io/)
-* [RENDERDOC](https://renderdoc.org/)
-* [NSIGHTGRAPHICS](https://developer.nvidia.com/nsight-graphics)
+* [cppcheck](https://cppcheck.sourceforge.io/)
+* [renderdoc](https://renderdoc.org/)
+* [nsightgraphics](https://developer.nvidia.com/nsight-graphics)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -110,11 +106,7 @@ I only guarantee a successful build for windows hence it is frequently tested.
 
 ### Prerequisites
 
-You will need Vulkan. If you want to build documantaries you will need [DOXYGEN] (https://www.doxygen.nl/index.html).
-
-### Shaders
-
-Now automatically compiled for you. No extra work needed :))
+You will need [Vulkan 1.3] (https://vulkan.lunarg.com/). If you want to build documantaries you will need [Doxygen] (https://www.doxygen.nl/index.html).
 
 ### Installation
 
@@ -127,7 +119,7 @@ Now automatically compiled for you. No extra work needed :))
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-_For more examples, please refer to the [Documentation](https://jotrocken.blog/)_
+_For more examples, please refer to the [Documentation](https://jotrockenmitlocken.de/)_
 
 
 <!-- ROADMAP -->
