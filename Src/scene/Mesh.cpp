@@ -8,6 +8,15 @@ Mesh::Mesh()
 {
 }
 
+void Mesh::cleanUp()
+{
+	vertexBuffer.cleanUp();
+	indexBuffer.cleanUp();
+	objectDescriptionBuffer.cleanUp();
+	materialIdsBuffer.cleanUp();
+	materialsBuffer.cleanUp();
+}
+
 Mesh::Mesh(	VulkanDevice* device, VkQueue transfer_queue,
 			VkCommandPool transfer_command_pool, 
 			std::vector<Vertex>& vertices, std::vector<uint32_t>& indices,

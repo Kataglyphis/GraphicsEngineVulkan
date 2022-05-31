@@ -76,6 +76,11 @@ void Raytracing::recordCommands(VkCommandBuffer& commandBuffer, const std::vecto
 
 void Raytracing::cleanUp()
 {
+	shaderBindingTableBuffer.cleanUp();
+	raygenShaderBindingTableBuffer.cleanUp();
+	missShaderBindingTableBuffer.cleanUp();
+	hitShaderBindingTableBuffer.cleanUp();
+
 	vkDestroyPipeline(device->getLogicalDevice(), pipeline, nullptr);
 	vkDestroyPipelineLayout(device->getLogicalDevice(), pipeline_layout, nullptr);
 }

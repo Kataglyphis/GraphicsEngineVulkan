@@ -47,6 +47,14 @@ void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id)
 
 }
 
+void Scene::cleanUp()
+{
+	
+	for (std::shared_ptr<Model> model : model_list) {
+		model->cleanUp();
+	}
+}
+
 uint32_t Scene::getNumberMeshes()
 {
 	uint32_t number_of_meshes = 0;

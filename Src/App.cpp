@@ -62,7 +62,7 @@ int App::run()
         scene->update_user_input(gui.get());
 
         vulkan_renderer.updateStateDueToUserInput(gui.get());
-        vulkan_renderer.update_uniforms(scene.get(),
+        vulkan_renderer.updateUniforms( scene.get(),
                                         camera.get(),
                                         window.get());
 
@@ -73,6 +73,11 @@ int App::run()
 
     }
 
+    vulkan_renderer.finishAllRenderCommands();
+
+    scene->cleanUp();
+    gui->cleanUp();
+    window->cleanUp();
     vulkan_renderer.clean_up();
 
     return EXIT_SUCCESS;

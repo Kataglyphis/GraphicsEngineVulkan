@@ -31,7 +31,6 @@
 #include "VulkanSwapChain.h"
 #include "VulkanInstance.h"
 #include "GUISceneSharedVars.h"
-#include "VulkanDebug.h"
 #include "GlobalUBO.h"
 #include "SceneUBO.h"
 #include <PushConstantRasterizer.h>
@@ -60,15 +59,14 @@ public:
 					GUI*	gui,
 					Camera* camera);
 
-	void	hot_reload_all_shader();
 	void	drawFrame();
 
-	void	update_uniforms(Scene* scene,
+	void	updateUniforms(	Scene* scene,
 							Camera* camera,
 							Window* window);
 
 	void	updateStateDueToUserInput(GUI* gui);
-
+	void	finishAllRenderCommands();
 	void	update_raytracing_descriptor_set(uint32_t image_index);
 	void	record_commands(uint32_t image_index);
 
@@ -76,7 +74,6 @@ public:
 	void	create_sampler_array_descriptor_set();
 
 	void	clean_up_swapchain();
-	void	clean_up_raytracing();
 	void	clean_up();
 
 	~VulkanRenderer();
@@ -84,6 +81,7 @@ public:
 private:
 
 	GUIRendererSharedVars			guiRendererSharedVars;
+	void							shaderHotReload();
 
 	// helper class for managing our buffers
 	VulkanBufferManager				vulkanBufferManager;
@@ -144,7 +142,6 @@ private:
 	TopLevelAccelerationStructure					tlas;
 	VulkanBuffer									objectDescriptionBuffer;
 
-	void							create_descriptor_pool_object_description();
 	void							create_object_description_buffer();
 
 	VkSampler						texture_sampler;

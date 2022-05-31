@@ -4,12 +4,14 @@ TopLevelAccelerationStructure::TopLevelAccelerationStructure()
 {
 }
 
-void TopLevelAccelerationStructure::cleanUp()
+void TopLevelAccelerationStructure::cleanUp(VulkanDevice* device)
 {
-	/*PFN_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =
+	PFN_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =
 		(PFN_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(device->getLogicalDevice(), "vkDestroyAccelerationStructureKHR");
 
-	pvkDestroyAccelerationStructureKHR(device->getLogicalDevice(), vulkanAS, nullptr);*/
+	pvkDestroyAccelerationStructureKHR(device->getLogicalDevice(), vulkanAS, nullptr);
+
+	vulkanBuffer.cleanUp();
 
 }
 

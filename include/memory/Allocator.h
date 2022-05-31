@@ -14,6 +14,8 @@ public:
 				const VkPhysicalDevice& physicalDevice, 
 				const VkInstance& instance);
 
+	void cleanUp();
+
 	~Allocator();
 
 private:

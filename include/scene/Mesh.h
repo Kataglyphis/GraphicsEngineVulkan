@@ -21,6 +21,8 @@ public:
     
     Mesh();
 
+    void                cleanUp();
+
     ObjectDescription&  getObjectDescription() { return object_description; };
     glm::mat4           getModel() { return model; };
     uint32_t            getVertexCount() { return vertex_count; };
