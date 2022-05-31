@@ -6,18 +6,16 @@ ASManager::ASManager()
 
 void ASManager::createASForScene(	VulkanDevice* device, 
 									VkCommandPool commandPool, 
-									Scene* scene, 
-									TopLevelAccelerationStructure& tlas, 
-									std::vector<BottomLevelAccelerationStructure>& blas)
+									Scene* scene)
 {
-	createBLAS(device, commandPool, scene, blas);
-	createTLAS(device, commandPool, scene, tlas, blas);
+	this->vulkanDevice = device;
+	createBLAS(device, commandPool, scene);
+	createTLAS(device, commandPool, scene);
 }
 
 void ASManager::createBLAS(	VulkanDevice* device,
 							VkCommandPool commandPool,
-							Scene* scene, 
-							std::vector<BottomLevelAccelerationStructure>& blas)
+							Scene* scene)
 {
 	// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING
 	// all functionality from extensions has to be loaded in the beginning
@@ -126,9 +124,7 @@ void ASManager::createBLAS(	VulkanDevice* device,
 
 void ASManager::createTLAS(	VulkanDevice* device, 
 							VkCommandPool commandPool, 
-							Scene* scene, 
-							TopLevelAccelerationStructure& tlas,
-							std::vector<BottomLevelAccelerationStructure>& blas)
+							Scene* scene)
 {
 
 	// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING
@@ -163,7 +159,7 @@ void ASManager::createTLAS(	VulkanDevice* device,
 
 		VkAccelerationStructureDeviceAddressInfoKHR acceleration_structure_device_address_info{};
 		acceleration_structure_device_address_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_DEVICE_ADDRESS_INFO_KHR;
-		acceleration_structure_device_address_info.accelerationStructure = blas[model_index].getAS();
+		acceleration_structure_device_address_info.accelerationStructure = blas[model_index].vulkanAS;
 
 		VkDeviceAddress acceleration_structure_device_address = pvkGetAccelerationStructureDeviceAddressKHR(device->getLogicalDevice(), &acceleration_structure_device_address_info);
 
@@ -245,7 +241,7 @@ void ASManager::createTLAS(	VulkanDevice* device,
 		&acceleration_structure_build_sizes_info);
 
 	// now we got the sizes 
-	VulkanBuffer& tlasVulkanBuffer = tlas.getVulkanBuffer();
+	VulkanBuffer& tlasVulkanBuffer = tlas.vulkanBuffer;
 	tlasVulkanBuffer.create(device,
 							acceleration_structure_build_sizes_info.accelerationStructureSize,
 							VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
@@ -264,7 +260,7 @@ void ASManager::createTLAS(	VulkanDevice* device,
 	acceleration_structure_create_info.type = VK_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL_KHR;
 	acceleration_structure_create_info.deviceAddress = 0;
 
-	VkAccelerationStructureKHR& tlAS = tlas.getAS();
+	VkAccelerationStructureKHR& tlAS = tlas.vulkanAS;
 	pvkCreateAccelerationStructureKHR(device->getLogicalDevice(), &acceleration_structure_create_info, nullptr, &tlAS);
 
 	VulkanBuffer scratchBuffer;
@@ -312,6 +308,20 @@ void ASManager::createTLAS(	VulkanDevice* device,
 
 void ASManager::cleanUp()
 {
+	PFN_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =
+		(PFN_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(vulkanDevice->getLogicalDevice(), "vkDestroyAccelerationStructureKHR");
+
+	pvkDestroyAccelerationStructureKHR(vulkanDevice->getLogicalDevice(), tlas.vulkanAS, nullptr);
+
+	tlas.vulkanBuffer.cleanUp();
+	
+	for (size_t index = 0; index < blas.size(); index++) {
+
+		pvkDestroyAccelerationStructureKHR(vulkanDevice->getLogicalDevice(), blas[index].vulkanAS, nullptr);
+
+		blas[index].vulkanBuffer.cleanUp();
+
+	}
 }
 
 ASManager::~ASManager()
@@ -335,7 +345,7 @@ void ASManager::createSingleBlas(	VulkanDevice* device,
 	acceleration_structure_create_info.sType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_KHR;
 	acceleration_structure_create_info.type = VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_KHR;
 	acceleration_structure_create_info.size = build_as_structure.size_info.accelerationStructureSize;
-	VulkanBuffer& blasVulkanBuffer = build_as_structure.single_blas.getVulkanBuffer();
+	VulkanBuffer& blasVulkanBuffer = build_as_structure.single_blas.vulkanBuffer;
 	blasVulkanBuffer.create(device,
 							build_as_structure.size_info.accelerationStructureSize,
 							VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
@@ -344,7 +354,7 @@ void ASManager::createSingleBlas(	VulkanDevice* device,
 							VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 	acceleration_structure_create_info.buffer = blasVulkanBuffer.getBuffer();
-	VkAccelerationStructureKHR& blas_as = build_as_structure.single_blas.getAS();
+	VkAccelerationStructureKHR& blas_as = build_as_structure.single_blas.vulkanAS;
 	pvkCreateAccelerationStructureKHR(device->getLogicalDevice(),
 		&acceleration_structure_create_info, nullptr,
 		&blas_as);

@@ -137,10 +137,8 @@ private:
 	std::vector<VkFence>			images_in_flight_fences;
 	void							create_synchronization();
 
-	ASManager asManager;
-	std::vector<BottomLevelAccelerationStructure>	blas;
-	TopLevelAccelerationStructure					tlas;
-	VulkanBuffer									objectDescriptionBuffer;
+	ASManager						asManager;
+	VulkanBuffer					objectDescriptionBuffer;
 
 	void							create_object_description_buffer();
 

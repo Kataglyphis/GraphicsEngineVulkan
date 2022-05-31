@@ -19,6 +19,7 @@ void Scene::loadModel(	VulkanDevice* device,
 	std::shared_ptr<Model> new_model = obj_loader.loadModel(modelFileName);
 
 	add_model(new_model);
+
 }
 
 void Scene::add_model(std::shared_ptr<Model> model)

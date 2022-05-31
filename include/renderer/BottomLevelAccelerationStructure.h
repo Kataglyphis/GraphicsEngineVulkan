@@ -3,20 +3,8 @@
 
 #include "VulkanBuffer.h"
 
-class BottomLevelAccelerationStructure
+struct BottomLevelAccelerationStructure
 {
-
-public:
-
-	BottomLevelAccelerationStructure();
-
-	VkAccelerationStructureKHR& getAS() { return vulkanAS; };
-	VulkanBuffer&				getVulkanBuffer() { return vulkanBuffer; };
-	void						cleanUp(VulkanDevice* device);
-
-	~BottomLevelAccelerationStructure();
-
-private:
 
 	VkAccelerationStructureKHR	vulkanAS;
 	VulkanBuffer				vulkanBuffer;
