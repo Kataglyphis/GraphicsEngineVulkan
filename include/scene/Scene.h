@@ -37,7 +37,7 @@ public:
 
 	void						update_user_input(GUI* gui);
 	void						update_model_matrix(glm::mat4 model_matrix, int model_id);
-	void						cleanUp();
+
 	const GUISceneSharedVars&	getGuiSceneSharedVars() { return guiSceneSharedVars; };
 
 	std::vector<Texture>&	getTextures(int model_index) { return model_list[model_index]->getTextures(); };
@@ -60,7 +60,7 @@ public:
 	void						add_model(std::shared_ptr<Model> model);
 	void						add_object_description(ObjectDescription object_description);
 
-
+	void						cleanUp();
 	~Scene();
 
 private:

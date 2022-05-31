@@ -29,22 +29,19 @@ public:
 
 	ASManager();
 
+	VkAccelerationStructureKHR& getTLAS() { return tlas.vulkanAS; };
+
 	void createASForScene(	VulkanDevice* device,
 							VkCommandPool commandPool,
-							Scene* scene,
-							TopLevelAccelerationStructure& tlas,
-							std::vector<BottomLevelAccelerationStructure>& blas);
+							Scene* scene);
 
 	void createBLAS(VulkanDevice* device, 
 					VkCommandPool commandPool, 
-					Scene* scene, 
-					std::vector<BottomLevelAccelerationStructure>& blas);
+					Scene* scene);
 
 	void createTLAS(VulkanDevice* device,
 					VkCommandPool commandPool,
-					Scene* scene,
-					TopLevelAccelerationStructure& tlas,
-					std::vector<BottomLevelAccelerationStructure>& blas);
+					Scene* scene);
 
 	void cleanUp();
 
@@ -52,8 +49,12 @@ public:
 
 private:
 
+	VulkanDevice*			vulkanDevice;
 	CommandBufferManager	commandBufferManager;
 	VulkanBufferManager		vulkanBufferManager;
+
+	std::vector<BottomLevelAccelerationStructure>	blas;
+	TopLevelAccelerationStructure					tlas;
 
 	void createSingleBlas(	VulkanDevice* device, 
 							VkCommandBuffer command_buffer,

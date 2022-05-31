@@ -95,7 +95,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
 		scene->update_model_matrix(dragon_model, 0);
 
-		asManager.createASForScene(device.get(), graphics_command_pool, scene, tlas, blas);
+		asManager.createASForScene(device.get(), graphics_command_pool, scene);
 		create_object_description_buffer();
 		create_raytracing_descriptor_sets();
 
@@ -536,7 +536,7 @@ void VulkanRenderer::create_raytracing_descriptor_sets()
 		descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
 		descriptor_set_acceleration_structure.pNext = nullptr;
 		descriptor_set_acceleration_structure.accelerationStructureCount = 1;
-		VkAccelerationStructureKHR& vulkanTLAS = tlas.getAS();
+		VkAccelerationStructureKHR& vulkanTLAS = asManager.getTLAS();
 		descriptor_set_acceleration_structure.pAccelerationStructures = &vulkanTLAS;
 
 		VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
@@ -1157,7 +1157,7 @@ void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
 	descriptor_set_acceleration_structure.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR;
 	descriptor_set_acceleration_structure.pNext = nullptr;
 	descriptor_set_acceleration_structure.accelerationStructureCount = 1;
-	VkAccelerationStructureKHR& tlasAS = tlas.getAS();
+	VkAccelerationStructureKHR& tlasAS = asManager.getTLAS();
 	descriptor_set_acceleration_structure.pAccelerationStructures = &tlasAS;
 
 	VkWriteDescriptorSet write_descriptor_set_acceleration_structure{};
@@ -1275,14 +1275,6 @@ void VulkanRenderer::clean_up()
 	objectDescriptionBuffer.cleanUp();
 
 	asManager.cleanUp();
-
-	tlas.cleanUp(device.get());
-
-	for (size_t index = 0; index < blas.size(); index++) {
-
-		blas[index].cleanUp(device.get());
-
-	}
 
 	vkFreeCommandBuffers(device->getLogicalDevice(), graphics_command_pool, 
 												static_cast<uint32_t>(command_buffers.size()), command_buffers.data());
