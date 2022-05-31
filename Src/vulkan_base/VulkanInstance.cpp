@@ -77,12 +77,6 @@ VulkanInstance::VulkanInstance()
 	VkResult result = vkCreateInstance(&create_info, nullptr, &instance);
 	ASSERT_VULKAN(result, "Failed to create a Vulkan instance!");
 
-	if (ENABLE_VALIDATION_LAYERS) {
-
-		// init per app custom debug messanger
-		vulkanDebug.init(&instance);
-
-	}
 }
 
 bool VulkanInstance::check_validation_layer_support()

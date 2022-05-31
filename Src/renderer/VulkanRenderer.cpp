@@ -24,11 +24,15 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 {
 
-	update_uniforms(scene, camera, window);
+	updateUniforms(scene, camera, window);
 
 	try {
 
 		instance		= VulkanInstance();
+
+		VkDebugReportFlagsEXT debugReportFlags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+		if (ENABLE_VALIDATION_LAYERS) debug::setupDebugging(instance.getVulkanInstance(), debugReportFlags,
+															VK_NULL_HANDLE);
 
 		create_surface();
 
@@ -112,7 +116,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 }
 
-void VulkanRenderer::update_uniforms(	Scene* scene, 
+void VulkanRenderer::updateUniforms(	Scene* scene, 
 										Camera* camera,
 										Window* window)
 {
@@ -143,12 +147,17 @@ void VulkanRenderer::updateStateDueToUserInput(GUI* gui)
 	this->guiRendererSharedVars	= gui->getGuiRendererSharedVars();
 
 	if (guiRendererSharedVars.shader_hot_reload_triggered) {
-		hot_reload_all_shader();
+		shaderHotReload();
 	}
 
 }
 
-void VulkanRenderer::hot_reload_all_shader()
+void VulkanRenderer::finishAllRenderCommands()
+{
+	vkDeviceWaitIdle(device->getLogicalDevice());
+}
+
+void VulkanRenderer::shaderHotReload()
 {
 
 	// wait until no actions being run on device before destroying
@@ -905,27 +914,6 @@ void VulkanRenderer::create_descriptor_pool_sampler()
 
 }
 
-void VulkanRenderer::create_descriptor_pool_object_description()
-{
-
-	// CREATE SAMPLER DESCRIPTOR POOL
-	// TEXTURE SAMPLER POOL
-	VkDescriptorPoolSize object_description_pool_size{};
-	object_description_pool_size.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-	object_description_pool_size.descriptorCount = MAX_OBJECTS;
-
-	VkDescriptorPoolCreateInfo object_description_pool_create_info{};
-	object_description_pool_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	object_description_pool_create_info.maxSets = 3;//MAX_OBJECTS;
-	object_description_pool_create_info.poolSizeCount = 1;
-	object_description_pool_create_info.pPoolSizes = &object_description_pool_size;
-
-	// create descriptor pool
-	VkResult result = vkCreateDescriptorPool(device->getLogicalDevice(), &object_description_pool_create_info, nullptr, &object_description_pool);
-	ASSERT_VULKAN(result, "Failed to create a object description descriptor pool!")
-
-}
-
 void VulkanRenderer::create_descriptor_sets()
 {
 
@@ -1055,7 +1043,7 @@ void VulkanRenderer::cleanUpUBOs()
 		vulkanBuffer.cleanUp();
 	}
 
-	for (VulkanBuffer vulkanBuffer : globalUBOBuffer) {
+	for (VulkanBuffer vulkanBuffer : sceneUBOBuffer) {
 		vulkanBuffer.cleanUp();
 	}
 }
@@ -1264,8 +1252,6 @@ void VulkanRenderer::check_changed_framebuffer_size()
 void VulkanRenderer::clean_up_swapchain()
 {
 
-	vkDeviceWaitIdle(device->getLogicalDevice());
-
 	rasterizer.cleanUp();
 
 	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), post_descriptor_set_layout, nullptr);
@@ -1274,49 +1260,36 @@ void VulkanRenderer::clean_up_swapchain()
 
 }
 
-void VulkanRenderer::clean_up_raytracing()
-{
-
-	raytracingStage.cleanUp();
-
-	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), raytracing_descriptor_set_layout, nullptr);
-
-	vkDestroyDescriptorPool(device->getLogicalDevice(), object_description_pool, nullptr);
-	vkDestroyDescriptorPool(device->getLogicalDevice(), raytracing_descriptor_pool, nullptr);
-
-	tlas.cleanUp();
-	
-	for (size_t index = 0; index < blas.size(); index++) {
-
-		blas[index].cleanUp();
-
-	}
-
-}
-
 void VulkanRenderer::clean_up()
 {
 
-	// wait until no actions being run on device before destroying
-	vkDeviceWaitIdle(device->getLogicalDevice());
-
 	cleanUpUBOs();
-
-	// -- SUBSUMMARIZE ALL SWAPCHAIN DEPENDEND THINGS
 	clean_up_swapchain();
+	raytracingStage.cleanUp();
+	postStage.cleanUp();
 
-	// -- CLEAN UP RAYTRACING STUFF
-	 clean_up_raytracing();
+	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), raytracing_descriptor_set_layout, nullptr);
 
-	 //instead of recreate command pool from scretch empty command buffers
+	vkDestroyDescriptorPool(device->getLogicalDevice(), raytracing_descriptor_pool, nullptr);
+
+	objectDescriptionBuffer.cleanUp();
+
+	asManager.cleanUp();
+
+	tlas.cleanUp(device.get());
+
+	for (size_t index = 0; index < blas.size(); index++) {
+
+		blas[index].cleanUp(device.get());
+
+	}
+
 	vkFreeCommandBuffers(device->getLogicalDevice(), graphics_command_pool, 
 												static_cast<uint32_t>(command_buffers.size()), command_buffers.data());
 
-	// -- DESTROY ALL LAYOUTS
 	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), descriptor_set_layout, nullptr);
 	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), sampler_set_layout, nullptr);
 
-	// -- TEXTURE REALTED
 	vkDestroyDescriptorPool(device->getLogicalDevice(), sampler_descriptor_pool, nullptr);
 	vkDestroySampler(device->getLogicalDevice(), texture_sampler, nullptr);
 
@@ -1332,9 +1305,10 @@ void VulkanRenderer::clean_up()
 
 	vulkanSwapChain.cleanUp();
 	vkDestroySurfaceKHR(instance.getVulkanInstance(), surface, nullptr);
+	allocator.cleanUp();
 	device->cleanUp();
+	debug::freeDebugCallback(instance.getVulkanInstance());
 	instance.cleanUp();
-
 }
 
 VulkanRenderer::~VulkanRenderer()

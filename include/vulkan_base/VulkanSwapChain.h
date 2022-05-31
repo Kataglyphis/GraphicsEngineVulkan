@@ -2,7 +2,7 @@
 #include "VulkanDevice.h"
 #include "Window.h"
 
-#include "VulkanDebug.h"
+#include "Utilities.h"
 #include "Texture.h"
 
 class VulkanSwapChain

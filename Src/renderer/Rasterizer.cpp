@@ -110,6 +110,12 @@ void Rasterizer::cleanUp()
 
 	}
 
+	for (Texture texture : offscreenTextures) {
+		texture.cleanUp();
+	}
+
+	depthBufferImage.cleanUp();
+
 	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
 	vkDestroyPipelineLayout(device->getLogicalDevice(), pipeline_layout, nullptr);
 	vkDestroyRenderPass(device->getLogicalDevice(), render_pass, nullptr);

@@ -15,6 +15,8 @@ public:
     Model();
     Model(std::vector<Mesh> new_mesh_list, uint32_t index);
 
+    void cleanUp();
+
     void add_new_mesh(  VulkanDevice* device, 
                         VkQueue transfer_queue, VkCommandPool command_pool, 
                         std::vector<Vertex>& vertices, 

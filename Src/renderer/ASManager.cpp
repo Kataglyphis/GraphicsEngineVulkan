@@ -119,6 +119,9 @@ void ASManager::createBLAS(	VulkanDevice* device,
 	for (auto& b : build_as_structures) {
 		blas.emplace_back(b.single_blas);
 	}
+
+	scratchBuffer.cleanUp();
+
 }
 
 void ASManager::createTLAS(	VulkanDevice* device, 
@@ -303,7 +306,12 @@ void ASManager::createTLAS(	VulkanDevice* device,
 													commandPool, 
 													device->getGraphicsQueue(), 
 													command_buffer);
+	scratchBuffer.cleanUp();
+	geometryInstanceBuffer.cleanUp();
+}
 
+void ASManager::cleanUp()
+{
 }
 
 ASManager::~ASManager()
@@ -346,8 +354,6 @@ void ASManager::createSingleBlas(	VulkanDevice* device,
 
 
 	pvkCmdBuildAccelerationStructuresKHR(command_buffer, 1, &build_as_structure.build_info, &build_as_structure.range_info);
-
-
 
 }
 

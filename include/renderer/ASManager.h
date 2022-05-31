@@ -46,6 +46,8 @@ public:
 					TopLevelAccelerationStructure& tlas,
 					std::vector<BottomLevelAccelerationStructure>& blas);
 
+	void cleanUp();
+
 	~ASManager();
 
 private:

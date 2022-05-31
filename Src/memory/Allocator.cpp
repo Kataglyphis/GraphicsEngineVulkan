@@ -1,6 +1,5 @@
 #include "Allocator.h"
 #include "Utilities.h"
-#include "VulkanDebug.h"
 
 Allocator::Allocator()
 {
@@ -24,7 +23,11 @@ Allocator::Allocator(	const VkDevice& device,
 
 }
 
-Allocator::~Allocator()
+void Allocator::cleanUp()
 {
 	vmaDestroyAllocator(vmaAllocator);
+}
+
+Allocator::~Allocator()
+{
 }

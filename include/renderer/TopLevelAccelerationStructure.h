@@ -12,9 +12,7 @@ public:
 	VkAccelerationStructureKHR& getAS() { return vulkanAS; };
 	VulkanBuffer&				getVulkanBuffer() { return vulkanBuffer; };
 
-	void						create();
-
-	void						cleanUp();
+	void						cleanUp(VulkanDevice* device);
 
 	~TopLevelAccelerationStructure();
 

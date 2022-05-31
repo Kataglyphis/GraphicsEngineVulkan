@@ -23,7 +23,6 @@ public:
 private:
 
 	VkInstance		instance;
-	VulkanDebug		vulkanDebug;
 
 	// use the standard validation layers from the SDK for error checking
 	std::vector<const char*> validationLayers = {
