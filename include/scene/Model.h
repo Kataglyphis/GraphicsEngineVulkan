@@ -13,7 +13,7 @@ class Model
 public:
 
     Model();
-    Model(std::vector<Mesh> new_mesh_list, uint32_t index);
+    Model(VulkanDevice* device);
 
     void cleanUp();
 
@@ -26,6 +26,7 @@ public:
 
     uint32_t                    getTextureCount() { return static_cast<uint32_t>(modelTextures.size()); };
     std::vector<Texture>&       getTextures() { return modelTextures; }
+    std::vector<VkSampler>&     getTextureSamplers() { return modelTextureSamplers; }
     std::vector<std::string>    getTextureList() { return texture_list; };
     uint32_t                    getMeshCount() { return 1; };
     Mesh*                       getMesh(size_t index) { return &mesh; };
@@ -41,10 +42,15 @@ public:
 
 private:
 
+    VulkanDevice*               device;
+
+    void                        addSampler(Texture newTexture);
+
     uint32_t                    mesh_model_index;
     Mesh                        mesh;
     glm::mat4                   model;
 
     std::vector<std::string>    texture_list;
     std::vector<Texture>        modelTextures;
+    std::vector<VkSampler>		modelTextureSamplers;
 };

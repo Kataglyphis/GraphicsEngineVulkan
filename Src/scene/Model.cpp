@@ -1,20 +1,24 @@
 #include "Model.h"
 
-Model::Model()
-{
+Model::Model() {
+
 }
 
-Model::Model(std::vector<Mesh> new_mesh_list, uint32_t index)
+Model::Model(VulkanDevice* device)
 {
-    //meshes = new_mesh_list;
-    model = glm::mat4(1.0f);
-    mesh_model_index = index;
+    this->device = device;
 }
 
 void Model::cleanUp()
 {
     for (Texture texture : modelTextures) {
         texture.cleanUp();
+    }
+
+    for (VkSampler texture_sampler : modelTextureSamplers) {
+
+        vkDestroySampler(device->getLogicalDevice(), texture_sampler, nullptr);
+
     }
 
     mesh.cleanUp();
@@ -42,6 +46,7 @@ void Model::set_model(glm::mat4 model)
 void Model::addTexture(Texture newTexture)
 {
     modelTextures.push_back(newTexture);
+    addSampler(newTexture);
 }
 
 uint32_t Model::getPrimitiveCount()
@@ -60,6 +65,34 @@ uint32_t Model::getPrimitiveCount()
 
 Model::~Model()
 {
+}
+
+void Model::addSampler(Texture newTexture)
+{
+
+    VkSampler newSampler;
+    // sampler create info
+    VkSamplerCreateInfo sampler_create_info{};
+    sampler_create_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+    sampler_create_info.magFilter = VK_FILTER_LINEAR;
+    sampler_create_info.minFilter = VK_FILTER_LINEAR;
+    sampler_create_info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    sampler_create_info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    sampler_create_info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    sampler_create_info.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK;
+    sampler_create_info.unnormalizedCoordinates = VK_FALSE;
+    sampler_create_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+    sampler_create_info.mipLodBias = 0.0f;
+    sampler_create_info.minLod = 0.0f;
+    sampler_create_info.maxLod = newTexture.getMipLevel();
+    sampler_create_info.anisotropyEnable = VK_TRUE;
+    sampler_create_info.maxAnisotropy = 16;									// max anisotropy sample level
+
+    VkResult result = vkCreateSampler(device->getLogicalDevice(), &sampler_create_info, nullptr, &newSampler);
+    ASSERT_VULKAN(result, "Failed to create a texture sampler!")
+
+    modelTextureSamplers.push_back(newSampler);
+
 }
 
 

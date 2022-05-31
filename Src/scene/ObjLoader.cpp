@@ -13,7 +13,7 @@ ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer_queue, VkCommandPool
 std::shared_ptr<Model> ObjLoader::loadModel(std::string modelFile)
 {
     // the model we want to load
-    std::shared_ptr<Model> new_model = std::make_shared<Model>();
+    std::shared_ptr<Model> new_model = std::make_shared<Model>(device);
 
     // first load txtures from model 
     std::vector<std::string> textureNames = loadTexturesAndMaterials(modelFile);

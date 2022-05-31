@@ -23,6 +23,7 @@ public:
 	void				setImage(VkImage image);
 	void				setImageView(VkImageView imageView);
 
+	uint32_t			getMipLevel() { return mip_levels; };
 	VulkanImage&		getVulkanImage() { return vulkanImage; };
 	VulkanImageView&	getVulkanImageView() { return vulkanImageView; };
 	VkImage&			getImage() { return vulkanImage.getImage(); };
@@ -45,7 +46,7 @@ public:
 
 private:
 
-	int					mip_levels = 0;
+	uint32_t			mip_levels = 0;
 
 	stbi_uc*			loadTextureData(	std::string file_name, 
 											int* width, int* height, 

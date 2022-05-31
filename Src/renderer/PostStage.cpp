@@ -18,6 +18,8 @@ void PostStage::init(	VulkanDevice* device,
 	this->device = device;
 	this->vulkanSwapChain = vulkanSwapChain;
 
+	createOffscreenTextureSampler();
+
 	createPushConstantRange();
 	createDepthbufferImage();
 	createRenderpass();
@@ -79,6 +81,8 @@ void PostStage::cleanUp()
 		vkDestroyFramebuffer(device->getLogicalDevice(), framebuffer, nullptr);
 
 	}
+	
+	vkDestroySampler(device->getLogicalDevice(), offscreenTextureSampler, nullptr);
 
 	vkDestroyRenderPass(device->getLogicalDevice(), render_pass, nullptr);
 	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
@@ -112,6 +116,31 @@ void PostStage::createDepthbufferImage()
 	depthBufferImage.createImageView(device,
 		depth_format,
 		VK_IMAGE_ASPECT_DEPTH_BIT, 1);
+}
+
+void PostStage::createOffscreenTextureSampler()
+{
+
+	// sampler create info
+	VkSamplerCreateInfo sampler_create_info{};
+	sampler_create_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+	sampler_create_info.magFilter = VK_FILTER_LINEAR;
+	sampler_create_info.minFilter = VK_FILTER_LINEAR;
+	sampler_create_info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+	sampler_create_info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+	sampler_create_info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+	sampler_create_info.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK;
+	sampler_create_info.unnormalizedCoordinates = VK_FALSE;
+	sampler_create_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+	sampler_create_info.mipLodBias = 0.0f;
+	sampler_create_info.minLod = 0.0f;
+	sampler_create_info.maxLod = 0.0f;
+	sampler_create_info.anisotropyEnable = VK_TRUE;
+	sampler_create_info.maxAnisotropy = 16;									// max anisotropy sample level
+
+	VkResult result = vkCreateSampler(device->getLogicalDevice(), &sampler_create_info, nullptr, &offscreenTextureSampler);
+	ASSERT_VULKAN(result, "Failed to create a texture sampler!")
+
 }
 
 void PostStage::createPushConstantRange()
