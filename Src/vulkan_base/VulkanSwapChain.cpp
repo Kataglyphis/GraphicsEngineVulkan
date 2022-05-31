@@ -112,7 +112,7 @@ void VulkanSwapChain::initVulkanContext(VulkanDevice* device,
 
 void VulkanSwapChain::cleanUp()
 {
-	
+
 	for (auto image : swap_chain_images) {
 
 		vkDestroyImageView(device->getLogicalDevice(), image.getImageView(), nullptr);

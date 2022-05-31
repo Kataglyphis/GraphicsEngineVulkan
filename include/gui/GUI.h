@@ -14,6 +14,8 @@
 #include "GUIRendererSharedVars.h"
 #include "CommandBufferManager.h"
 
+#include "Globals.h"
+
 class GUI
 {
 public:
@@ -26,7 +28,7 @@ public:
 									const VkCommandPool& graphics_command_pool);
 
 	GUISceneSharedVars				getGuiSceneSharedVars() { return guiSceneSharedVars; };
-	GUIRendererSharedVars			getGuiRendererSharedVars() { return guiRendererSharedVars; };
+	GUIRendererSharedVars&			getGuiRendererSharedVars() { return guiRendererSharedVars; };
 
 	void							render();
 

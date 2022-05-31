@@ -15,6 +15,8 @@ public:
 				VulkanSwapChain* vulkanSwapChain,
 				const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 
+	void			shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
+
 	VkRenderPass&	getRenderPass() { return render_pass; };
 	VkSampler&		getOffscreenSampler() { return offscreenTextureSampler; };
 
@@ -44,7 +46,7 @@ private:
 
 	void							createPushConstantRange();
 	void							createRenderpass();
-	void							createPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
+	void							createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 	void							createFramebuffer();
 
 };

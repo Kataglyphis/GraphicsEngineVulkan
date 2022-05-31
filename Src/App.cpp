@@ -78,7 +78,7 @@ int App::run()
     scene->cleanUp();
     gui->cleanUp();
     window->cleanUp();
-    vulkan_renderer.clean_up();
+    vulkan_renderer.cleanUp();
 
     return EXIT_SUCCESS;
 

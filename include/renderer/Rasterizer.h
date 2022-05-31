@@ -16,6 +16,8 @@ public:
 						const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts,
 						VkCommandPool& commandPool);
 
+	void		shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
+
 	Texture&	getOffscreenTexture(uint32_t index);
 
 	void		setPushConstant(PushConstantRasterizer pushConstant);

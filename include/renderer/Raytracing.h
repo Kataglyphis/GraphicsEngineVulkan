@@ -10,9 +10,15 @@ public:
 
 	Raytracing();
 
-	void init(	VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,
+	void init(	VulkanDevice* device,
 				const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
-	void recordCommands(VkCommandBuffer& commandBuffer, const std::vector<VkDescriptorSet>& descriptorSets);
+
+	void shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
+
+	void recordCommands(VkCommandBuffer& commandBuffer, 
+						VulkanSwapChain* vulkanSwapChain,
+						const std::vector<VkDescriptorSet>& descriptorSets);
+
 	void cleanUp();
 
 	~Raytracing();
@@ -22,7 +28,7 @@ private:
 	VulkanDevice*					device;
 	VulkanSwapChain*				vulkanSwapChain;
 
-	VkPipeline						pipeline;
+	VkPipeline						graphicsPipeline;
 	VkPipelineLayout				pipeline_layout;
 	PushConstantRaytracing			pc;
 	VkPushConstantRange				pc_ranges;
@@ -42,7 +48,7 @@ private:
 	VkPhysicalDeviceRayTracingPipelinePropertiesKHR raytracing_properties{};
 
 	void							createPCRange();
-	void							createPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
+	void							createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 	void							createSBT();
 };
 

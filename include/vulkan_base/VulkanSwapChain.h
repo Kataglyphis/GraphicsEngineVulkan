@@ -31,6 +31,7 @@ private:
 	Window*						window;
 
 	VkSwapchainKHR				swapchain;
+
 	std::vector<Texture>		swap_chain_images;
 	VkFormat					swap_chain_image_format;
 	VkExtent2D					swap_chain_extent;

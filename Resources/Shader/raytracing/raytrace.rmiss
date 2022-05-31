@@ -5,7 +5,7 @@
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 
 #include "../common/raycommon.glsl"
-#include "../../../include/renderer/PushConstantRayTracing.h"
+#include "../../../include/renderer/pushConstants/PushConstantRayTracing.h"
 
 layout(location = 0) rayPayloadInEXT HitPayload payload;
 
