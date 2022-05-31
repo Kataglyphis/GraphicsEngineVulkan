@@ -68,7 +68,7 @@ int Window::initialize() {
     }
     
     //allow it to resize
-    //glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     //retrieve new window
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);

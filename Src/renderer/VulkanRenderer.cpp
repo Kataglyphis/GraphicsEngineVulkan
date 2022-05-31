@@ -12,6 +12,7 @@
 #include "vk_mem_alloc.h"
 #include <ShaderHelper.h>
 #include <PushConstantPost.h>
+#include "Globals.h"
 
 VulkanRenderer::VulkanRenderer(	Window* window, 
 								Scene*	scene,
@@ -51,6 +52,8 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		create_uniform_buffers();
 		create_command_buffers();
 
+		createSynchronization();
+
 		createSharedRenderDescriptorSetLayouts();
 		std::vector<VkDescriptorSetLayout> descriptor_set_layouts_rasterizer = { sharedRenderDescriptorSetLayout };
 		rasterizer.init(device.get(), &vulkanSwapChain, descriptor_set_layouts_rasterizer, graphics_command_pool);
@@ -60,7 +63,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		createDescriptorPoolSharedRenderStages();
 		createSharedRenderDescriptorSet();
 
-		update_post_descriptor_set();
+		updatePostDescriptorSets();
 
 		std::stringstream modelFile;
 		modelFile << CMAKELISTS_DIR;
@@ -87,7 +90,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		std::vector<VkDescriptorSetLayout> layouts;
 		layouts.push_back(sharedRenderDescriptorSetLayout);
 		layouts.push_back(raytracingDescriptorSetLayout);
-		raytracingStage.init(device.get(), &vulkanSwapChain, layouts);
+		raytracingStage.init(device.get(), layouts);
 
 		glm::mat4 dragon_model(1.0f);
 		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
@@ -99,8 +102,8 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		asManager.createASForScene(device.get(), graphics_command_pool, scene);
 		create_object_description_buffer();
 		createRaytracingDescriptorSets();
+		updateRaytracingDescriptorSets();
 
-		create_synchronization();
 
 		gui->initializeVulkanContext(	device.get(),
 										instance.getVulkanInstance(),
@@ -145,10 +148,11 @@ void VulkanRenderer::updateUniforms(	Scene* scene,
 void VulkanRenderer::updateStateDueToUserInput(GUI* gui)
 {
 
-	this->guiRendererSharedVars	= gui->getGuiRendererSharedVars();
+	GUIRendererSharedVars&			guiRendererSharedVars = gui->getGuiRendererSharedVars();
 
 	if (guiRendererSharedVars.shader_hot_reload_triggered) {
 		shaderHotReload();
+		guiRendererSharedVars.shader_hot_reload_triggered = false;
 	}
 
 }
@@ -164,25 +168,24 @@ void VulkanRenderer::shaderHotReload()
 	// wait until no actions being run on device before destroying
 	vkDeviceWaitIdle(device->getLogicalDevice());
 
-	rasterizer.cleanUp();
 	std::vector<VkDescriptorSetLayout> descriptor_set_layouts = { sharedRenderDescriptorSetLayout };
-	rasterizer.init(device.get(), &vulkanSwapChain, descriptor_set_layouts, graphics_command_pool);
+	rasterizer.shaderHotReload(descriptor_set_layouts);
 
-	postStage.cleanUp();
 	std::vector<VkDescriptorSetLayout> descriptor_set_layouts_post = { post_descriptor_set_layout };
-	postStage.init(device.get(), &vulkanSwapChain, descriptor_set_layouts_post);
+	postStage.shaderHotReload(descriptor_set_layouts_post);
 
-	raytracingStage.cleanUp();
-	std::vector<VkDescriptorSetLayout> layouts;
-	layouts.push_back(sharedRenderDescriptorSetLayout);
-	layouts.push_back(raytracingDescriptorSetLayout);
-	raytracingStage.init(device.get(), &vulkanSwapChain, layouts);
+	std::vector<VkDescriptorSetLayout> layouts = {	sharedRenderDescriptorSetLayout , 
+													raytracingDescriptorSetLayout };
+	raytracingStage.shaderHotReload(layouts);
 
 }
 
 void VulkanRenderer::drawFrame()
 {
-	check_changed_framebuffer_size();
+	// We need to skip one frame 
+	// Due to ImGui need to call ImGui::NewFrame() again
+	// if we recreated swapchain
+	if(checkChangedFramebufferSize()) return;
 
 	 /*1. Get next available image to draw to and set something to signal when we're finished with the image  (a semaphore)
 	 wait for given fence to signal (open) from last draw before continuing*/
@@ -196,7 +199,7 @@ void VulkanRenderer::drawFrame()
 
 	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
 
-		recreate_swap_chain();
+		//recreate_swap_chain();
 		return;
 
 	}
@@ -223,6 +226,7 @@ void VulkanRenderer::drawFrame()
 
 	update_uniform_buffers(image_index);
 
+	GUIRendererSharedVars& guiRendererSharedVars = gui->getGuiRendererSharedVars();
 	if(guiRendererSharedVars.raytracing) update_raytracing_descriptor_set(image_index);
 
 	record_commands(image_index);
@@ -276,7 +280,7 @@ void VulkanRenderer::drawFrame()
 
 	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
 
-		recreate_swap_chain();
+		//recreate_swap_chain();
 		return;
 
 	}
@@ -362,7 +366,7 @@ void VulkanRenderer::create_post_descriptor_layout()
 
 }
 
-void VulkanRenderer::update_post_descriptor_set()
+void VulkanRenderer::updatePostDescriptorSets()
 {
 
 	// update all of descriptor set buffer bindings
@@ -412,6 +416,17 @@ void VulkanRenderer::createRaytracingDescriptorPool()
 	VkResult result = vkCreateDescriptorPool(device->getLogicalDevice(), &descriptor_pool_create_info, nullptr, &raytracingDescriptorPool);
 	ASSERT_VULKAN(result, "Failed to create command pool!")
 
+}
+
+void VulkanRenderer::cleanUpSync()
+{
+	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
+
+		vkDestroySemaphore(device->getLogicalDevice(), render_finished[i], nullptr);
+		vkDestroySemaphore(device->getLogicalDevice(), image_available[i], nullptr);
+		vkDestroyFence(device->getLogicalDevice(), in_flight_fences[i], nullptr);
+
+	}
 }
 
 void VulkanRenderer::create_object_description_buffer()
@@ -510,7 +525,12 @@ void VulkanRenderer::createRaytracingDescriptorSets()
 
 	VkResult result = vkAllocateDescriptorSets(device->getLogicalDevice(), &descriptor_set_allocate_info, raytracingDescriptorSet.data());
 	ASSERT_VULKAN(result, "Failed to allocate raytracing descriptor set!")
-		
+
+}
+
+void VulkanRenderer::updateRaytracingDescriptorSets()
+{
+
 	for (size_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) {
 
 		VkWriteDescriptorSetAccelerationStructureKHR descriptor_set_acceleration_structure{};
@@ -550,14 +570,13 @@ void VulkanRenderer::createRaytracingDescriptorSets()
 		descriptor_image_writer.pTexelBufferView = nullptr;
 
 		std::vector<VkWriteDescriptorSet> write_descriptor_sets = { write_descriptor_set_acceleration_structure,
-																	descriptor_image_writer};
+																	descriptor_image_writer };
 
 		// update the descriptor sets with new buffer/binding info
 		vkUpdateDescriptorSets(device->getLogicalDevice(), static_cast<uint32_t>(write_descriptor_sets.size()),
 			write_descriptor_sets.data(), 0, nullptr);
 
 	}
-	
 
 }
 
@@ -677,12 +696,12 @@ void VulkanRenderer::create_command_buffers()
 
 }
 
-void VulkanRenderer::create_synchronization()
+void VulkanRenderer::createSynchronization()
 {
 
-	image_available.resize(MAX_FRAME_DRAWS);
-	render_finished.resize(MAX_FRAME_DRAWS);
-	in_flight_fences.resize(MAX_FRAME_DRAWS);
+	image_available.resize(vulkanSwapChain.getNumberSwapChainImages(), VK_NULL_HANDLE);
+	render_finished.resize(vulkanSwapChain.getNumberSwapChainImages(), VK_NULL_HANDLE);
+	in_flight_fences.resize(vulkanSwapChain.getNumberSwapChainImages(), VK_NULL_HANDLE);
 	images_in_flight_fences.resize(vulkanSwapChain.getNumberSwapChainImages(), VK_NULL_HANDLE);
 
 	// semaphore creation information
@@ -698,8 +717,7 @@ void VulkanRenderer::create_synchronization()
 
 		if ((vkCreateSemaphore(device->getLogicalDevice(), &semaphore_create_info, nullptr, &image_available[i]) != VK_SUCCESS) ||
 			(vkCreateSemaphore(device->getLogicalDevice(), &semaphore_create_info, nullptr, &render_finished[i]) != VK_SUCCESS) || 
-			(vkCreateFence(device->getLogicalDevice(), &fence_create_info, nullptr, &in_flight_fences[i])		!= VK_SUCCESS)
-			){
+			(vkCreateFence(device->getLogicalDevice(), &fence_create_info, nullptr, &in_flight_fences[i])		!= VK_SUCCESS)){
 
 			throw std::runtime_error("Failed to create a semaphore and/or fence!");
 
@@ -994,41 +1012,6 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 
 }
 
-void VulkanRenderer::recreate_swap_chain()
-{
-
-	// capture case of minification
-	int width = 0, height = 0;
-	glfwGetFramebufferSize(window->get_window(), &width, &height);
-	while (width == 0 || height == 0) {
-		glfwGetFramebufferSize(window->get_window(), &width, &height);
-		glfwWaitEvents();
-	}
-
-	vkDeviceWaitIdle(device->getLogicalDevice());
-	vkQueueWaitIdle(device->getGraphicsQueue());
-
-	clean_up_swapchain();
-
-	vulkanSwapChain = VulkanSwapChain();
-	vulkanSwapChain.initVulkanContext(	device.get(),
-										window,
-										surface);
-	create_uniform_buffers();
-	create_command_buffers();
-	std::vector<VkDescriptorSetLayout> descriptor_set_layouts = { sharedRenderDescriptorSetLayout };
-	rasterizer.init(device.get(), &vulkanSwapChain, descriptor_set_layouts, graphics_command_pool);
-
-	// all post
-	std::vector<VkDescriptorSetLayout> descriptorSets = { post_descriptor_set_layout };
-	postStage.init(device.get(), &vulkanSwapChain, descriptorSets);
-	create_post_descriptor_layout();
-	update_post_descriptor_set();
-
-	images_in_flight_fences.resize(vulkanSwapChain.getNumberSwapChainImages(), VK_NULL_HANDLE);
-
-}
-
 void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
 {
 
@@ -1078,11 +1061,12 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
 												vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
 
+	GUIRendererSharedVars& guiRendererSharedVars = gui->getGuiRendererSharedVars();
 	if (guiRendererSharedVars.raytracing) {
 		
 		std::vector<VkDescriptorSet> sets = {	sharedRenderDescriptorSet[image_index],
 												raytracingDescriptorSet[image_index] };
-		raytracingStage.recordCommands(command_buffers[image_index], sets);
+		raytracingStage.recordCommands(command_buffers[image_index], &vulkanSwapChain, sets);
 
 	}
 	else {
@@ -1110,64 +1094,71 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 	
 }
 
-void VulkanRenderer::check_changed_framebuffer_size()
+bool VulkanRenderer::checkChangedFramebufferSize()
 {
 
 	if (window->framebuffer_size_has_changed()) {
 
-		int width, height;
-		glfwGetFramebufferSize(window->get_window(), &width, &height);
+		vkDeviceWaitIdle(device->getLogicalDevice());
+		vkQueueWaitIdle(device->getGraphicsQueue());
 
-		globalUBO.projection = glm::perspective(glm::radians(40.0f), (float)width / (float)height,
-															0.1f, 1000.f);
+		vulkanSwapChain.cleanUp();
+		vulkanSwapChain.initVulkanContext(device.get(), window, surface);
+
+		std::vector<VkDescriptorSetLayout> descriptor_set_layouts = { sharedRenderDescriptorSetLayout };
+		rasterizer.cleanUp();
+		rasterizer.init(device.get(), &vulkanSwapChain, descriptor_set_layouts, graphics_command_pool);
+
+		// all post
+		std::vector<VkDescriptorSetLayout> descriptorSets = { post_descriptor_set_layout };
+		postStage.cleanUp();
+		postStage.init(device.get(), &vulkanSwapChain, descriptorSets);
+
+		gui->cleanUp();
+		gui->initializeVulkanContext(	device.get(), 
+										instance.getVulkanInstance(), 
+										postStage.getRenderPass(), 
+										graphics_command_pool);
+
+		current_frame = 0;
+
+		updatePostDescriptorSets();
+		updateRaytracingDescriptorSets();
 
 		window->reset_framebuffer_has_changed();
-		framebuffer_resized = true;
+
+		return true;
 
 	}
+
+	return false;
 }
 
-void VulkanRenderer::clean_up_swapchain()
-{
-
-	rasterizer.cleanUp();
-
-	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), post_descriptor_set_layout, nullptr);
-	vkDestroyDescriptorPool(device->getLogicalDevice(), post_descriptor_pool, nullptr);
-	vkDestroyDescriptorPool(device->getLogicalDevice(), descriptorPoolSharedRenderStages, nullptr);
-
-}
-
-void VulkanRenderer::clean_up()
+void VulkanRenderer::cleanUp()
 {
 
 	cleanUpUBOs();
-	clean_up_swapchain();
+
+	rasterizer.cleanUp();
 	raytracingStage.cleanUp();
 	postStage.cleanUp();
 
-	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), raytracingDescriptorSetLayout, nullptr);
-
-	vkDestroyDescriptorPool(device->getLogicalDevice(), raytracingDescriptorPool, nullptr);
-
 	objectDescriptionBuffer.cleanUp();
-
 	asManager.cleanUp();
+
+	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), raytracingDescriptorSetLayout, nullptr);
+	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), post_descriptor_set_layout, nullptr);
+	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), sharedRenderDescriptorSetLayout, nullptr);
+	vkDestroyDescriptorPool(device->getLogicalDevice(), post_descriptor_pool, nullptr);
+	vkDestroyDescriptorPool(device->getLogicalDevice(), descriptorPoolSharedRenderStages, nullptr);
+	vkDestroyDescriptorPool(device->getLogicalDevice(), raytracingDescriptorPool, nullptr);
 
 	vkFreeCommandBuffers(device->getLogicalDevice(), graphics_command_pool, 
 												static_cast<uint32_t>(command_buffers.size()), command_buffers.data());
 
-	vkDestroyDescriptorSetLayout(device->getLogicalDevice(), sharedRenderDescriptorSetLayout, nullptr);
-
-	for (int i = 0; i < MAX_FRAME_DRAWS; i++) {
-
-		vkDestroySemaphore(device->getLogicalDevice(), render_finished[i], nullptr);
-		vkDestroySemaphore(device->getLogicalDevice(), image_available[i], nullptr);
-		vkDestroyFence(device->getLogicalDevice(), in_flight_fences[i], nullptr);
-
-	}
-
 	cleanUpCommandPools();
+
+	cleanUpSync();
 
 	vulkanSwapChain.cleanUp();
 	vkDestroySurfaceKHR(instance.getVulkanInstance(), surface, nullptr);

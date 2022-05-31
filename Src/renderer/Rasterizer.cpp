@@ -25,6 +25,12 @@ void Rasterizer::init(	VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,
 
 }
 
+void Rasterizer::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+{
+	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
+	createGraphicsPipeline(descriptor_set_layouts);
+}
+
 Texture& Rasterizer::getOffscreenTexture(uint32_t index)
 {
 	return offscreenTextures[index];
@@ -349,8 +355,8 @@ void Rasterizer::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>
 	fragment_shader_create_info.module = fragment_shader_module;
 	fragment_shader_create_info.pName = "main";
 
-	VkPipelineShaderStageCreateInfo shader_stages[] = { vertex_shader_create_info,
-														fragment_shader_create_info };
+	std::vector<VkPipelineShaderStageCreateInfo> shader_stages = {	vertex_shader_create_info,
+																	fragment_shader_create_info };
 
 	// how the data for a single vertex (including info such as position, color, texture coords, normals, etc) is as a whole 
 	VkVertexInputBindingDescription binding_description{};
@@ -477,8 +483,8 @@ void Rasterizer::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>
 	VkResult result = vkCreatePipelineLayout(device->getLogicalDevice(), &pipeline_layout_create_info, nullptr, &pipeline_layout);
 	ASSERT_VULKAN(result, "Failed to create pipeline layout!")
 
-		// -- DEPTH STENCIL TESTING --
-		VkPipelineDepthStencilStateCreateInfo depth_stencil_create_info {};
+	// -- DEPTH STENCIL TESTING --
+	VkPipelineDepthStencilStateCreateInfo depth_stencil_create_info {};
 	depth_stencil_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
 	depth_stencil_create_info.depthTestEnable = VK_TRUE;
 	depth_stencil_create_info.depthWriteEnable = VK_TRUE;
@@ -489,8 +495,8 @@ void Rasterizer::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>
 	// -- GRAPHICS PIPELINE CREATION --
 	VkGraphicsPipelineCreateInfo graphics_pipeline_create_info{};
 	graphics_pipeline_create_info.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-	graphics_pipeline_create_info.stageCount = 2;
-	graphics_pipeline_create_info.pStages = shader_stages;
+	graphics_pipeline_create_info.stageCount = static_cast<uint32_t>(shader_stages.size());
+	graphics_pipeline_create_info.pStages = shader_stages.data();
 	graphics_pipeline_create_info.pVertexInputState = &vertex_input_create_info;
 	graphics_pipeline_create_info.pInputAssemblyState = &input_assembly;
 	graphics_pipeline_create_info.pViewportState = &viewport_state_create_info;

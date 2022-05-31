@@ -23,9 +23,15 @@ void PostStage::init(	VulkanDevice* device,
 	createPushConstantRange();
 	createDepthbufferImage();
 	createRenderpass();
-	createPipeline(descriptorSetLayouts);
+	createGraphicsPipeline(descriptorSetLayouts);
 	createFramebuffer();
 
+}
+
+void PostStage::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+{
+	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
+	createGraphicsPipeline(descriptor_set_layouts);
 }
 
 void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_index,
@@ -228,7 +234,7 @@ void PostStage::createRenderpass()
 	ASSERT_VULKAN(result, "Failed to create render pass!")
 }
 
-void PostStage::createPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts)
+void PostStage::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts)
 {
 	std::stringstream post_shader_dir;
 	post_shader_dir << CMAKELISTS_DIR;

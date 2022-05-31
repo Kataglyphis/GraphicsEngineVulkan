@@ -9,19 +9,26 @@ Raytracing::Raytracing()
 {
 }
 
-void Raytracing::init(	VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,
+void Raytracing::init(	VulkanDevice* device,
 						const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts)
 {
 
 	this->device = device;
-	this->vulkanSwapChain = vulkanSwapChain;
 
 	createPCRange();
-	createPipeline(descriptorSetLayouts);
+	createGraphicsPipeline(descriptorSetLayouts);
 	createSBT();
 }
 
-void Raytracing::recordCommands(VkCommandBuffer& commandBuffer, const std::vector<VkDescriptorSet>& descriptorSets)
+void Raytracing::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+{
+	vkDestroyPipeline(device->getLogicalDevice(), graphicsPipeline, nullptr);
+	createGraphicsPipeline(descriptor_set_layouts);
+}
+
+void Raytracing::recordCommands(VkCommandBuffer& commandBuffer, 
+								VulkanSwapChain* vulkanSwapChain, 
+								const std::vector<VkDescriptorSet>& descriptorSets)
 {
 	uint32_t handle_size = raytracing_properties.shaderGroupHandleSize;
 	uint32_t handle_size_aligned = align_up(handle_size, raytracing_properties.shaderGroupHandleAlignment);
@@ -62,7 +69,7 @@ void Raytracing::recordCommands(VkCommandBuffer& commandBuffer, const std::vecto
 		sizeof(PushConstantRaytracing),
 		&pc);
 
-	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, pipeline);
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, graphicsPipeline);
 
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR, pipeline_layout,
 		0, static_cast<uint32_t>(descriptorSets.size()), descriptorSets.data(),
@@ -81,7 +88,7 @@ void Raytracing::cleanUp()
 	missShaderBindingTableBuffer.cleanUp();
 	hitShaderBindingTableBuffer.cleanUp();
 
-	vkDestroyPipeline(device->getLogicalDevice(), pipeline, nullptr);
+	vkDestroyPipeline(device->getLogicalDevice(), graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(device->getLogicalDevice(), pipeline_layout, nullptr);
 }
 
@@ -99,7 +106,7 @@ void Raytracing::createPCRange()
 	pc_ranges.size = sizeof(PushConstantRaytracing);	// size of data being passed
 }
 
-void Raytracing::createPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts)
+void Raytracing::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts)
 {
 
 	PFN_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =
@@ -253,7 +260,7 @@ void Raytracing::createPipeline(const std::vector<VkDescriptorSetLayout>& descri
 	raytracing_pipeline_create_info.layout = pipeline_layout;
 
 	result = pvkCreateRayTracingPipelinesKHR(device->getLogicalDevice(), VK_NULL_HANDLE, VK_NULL_HANDLE, 1,
-		&raytracing_pipeline_create_info, nullptr, &pipeline);
+		&raytracing_pipeline_create_info, nullptr, &graphicsPipeline);
 
 	ASSERT_VULKAN(result, "Failed to create raytracing pipeline!")
 
@@ -289,7 +296,7 @@ void Raytracing::createSBT()
 	std::vector<uint8_t> handles(sbt_size);
 
 	VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(device->getLogicalDevice(),
-		pipeline, 0, group_count, sbt_size,
+		graphicsPipeline, 0, group_count, sbt_size,
 		handles.data());
 	ASSERT_VULKAN(result, "Failed to get ray tracing shader group handles!")
 

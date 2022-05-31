@@ -22,10 +22,6 @@
 #include "Allocator.h"
 #include "Window.h"
 #include "Utilities.h"
-#include "Mesh.h"
-#include "Model.h"
-#include "Camera.h"
-#include "ObjLoader.h"
 #include "VulkanDevice.h"
 #include "QueueFamilyIndices.h"
 #include "VulkanSwapChain.h"
@@ -47,9 +43,6 @@
 #include <PostStage.h>
 #include <Raytracing.h>
 
-#include "BottomLevelAccelerationStructure.h"
-#include "TopLevelAccelerationStructure.h"
-
 class VulkanRenderer
 {
 public:
@@ -68,16 +61,13 @@ public:
 	void	updateStateDueToUserInput(GUI* gui);
 	void	finishAllRenderCommands();
 	void	update_raytracing_descriptor_set(uint32_t image_index);
-	void	record_commands(uint32_t image_index);
 
-	void	clean_up_swapchain();
-	void	clean_up();
+	void	cleanUp();
 
 	~VulkanRenderer();
 
 private:
 
-	GUIRendererSharedVars			guiRendererSharedVars;
 	void							shaderHotReload();
 
 	// helper class for managing our buffers
@@ -93,13 +83,13 @@ private:
 	std::unique_ptr<VulkanDevice>	device;
 
 	VulkanSwapChain					vulkanSwapChain;
-	void							recreate_swap_chain();
 
 	Window*							window;
 	Scene*							scene;
 	GUI*							gui;
 
 	// -- pools
+	void							record_commands(uint32_t image_index);
 	void							create_command_pool();
 	void							cleanUpCommandPools();
 	VkCommandPool					graphics_command_pool;
@@ -132,7 +122,8 @@ private:
 	std::vector<VkSemaphore>		render_finished;
 	std::vector<VkFence>			in_flight_fences;
 	std::vector<VkFence>			images_in_flight_fences;
-	void							create_synchronization();
+	void							createSynchronization();
+	void							cleanUpSync();
 
 	ASManager						asManager;
 	VulkanBuffer					objectDescriptionBuffer;
@@ -150,7 +141,7 @@ private:
 	VkDescriptorSetLayout			post_descriptor_set_layout;
 	std::vector<VkDescriptorSet>	post_descriptor_set;
 	void							create_post_descriptor_layout();
-	void							update_post_descriptor_set();
+	void							updatePostDescriptorSets();
 
 	VkDescriptorPool				raytracingDescriptorPool;
 	std::vector<VkDescriptorSet>	raytracingDescriptorSet;
@@ -158,10 +149,10 @@ private:
 
 	void							createRaytracingDescriptorSetLayouts();
 	void							createRaytracingDescriptorSets();
+	void							updateRaytracingDescriptorSets();
 	void							createRaytracingDescriptorPool();
 	
-	void							check_changed_framebuffer_size();
-	bool							framebuffer_resized{false};
+	bool							checkChangedFramebufferSize();
 
 };
 

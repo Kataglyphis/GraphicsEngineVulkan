@@ -19,7 +19,7 @@
 #include "../brdf/frostbite.glsl"
 
 #include "../../../include/renderer/SceneUBO.h"
-#include "../../../include/renderer/PushConstantRayTracing.h"
+#include "../../../include/renderer/pushConstants/PushConstantRayTracing.h"
 #include "../../../include/scene/ObjMaterial.h"
 #include "../../../include/scene/Vertex.h"
 #include "../../../include/scene/ObjectDescription.h"

@@ -10,7 +10,7 @@
 
 #include "../../../include/renderer/GlobalUBO.h"
 #include "../../../include/renderer/SceneUBO.h"
-#include "../../../include/renderer/PushConstantRayTracing.h"
+#include "../../../include/renderer/pushConstants/PushConstantRayTracing.h"
 
 layout(location = 0) rayPayloadEXT HitPayload payload;
 

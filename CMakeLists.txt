@@ -75,6 +75,12 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                       "Src/renderer/*.cpp"
                                         "include/renderer/*.hpp")
 
+FILE(GLOB PC_FILTER                     "include/renderer/pushConstants/*.h"                                   
+                                        "include/renderer/pushConstants/*.hpp")
+
+FILE(GLOB AS_FILTER                     "include/renderer/accelerationStructures/*.h"                "Src/renderer/accelerationStructures/*.cpp"
+                                        "include/renderer/accelerationStructures/*.hpp")
+
 FILE(GLOB VULKAN_BASE_FILTER            "include/vulkan_base/*.h"                                    "Src/vulkan_base/*.cpp"
                                         "include/vulkan_base/*.hpp")
 
@@ -96,14 +102,18 @@ FILE(GLOB COMMON_FILTER                 "include/common/*.h"
 FILE(GLOB APP_FILTER                    "include/*.h"                                               "Src/*.cpp"
                                         "include/*.hpp")
 
-FILE(GLOB GUI_FILTER                    "ExternalLib/IMGUI/*.h"                                     "ExternalLib/IMGUI/*.cpp"
+FILE(GLOB GUI_FILTER                    "include/gui/*.h"                                           "Src/gui/*.cpp")
+
+FILE(GLOB IMGUI_FILTER                  "ExternalLib/IMGUI/*.h"                                     "ExternalLib/IMGUI/*.cpp"
                                         "ExternalLib/IMGUI/backends/imgui_impl_glfw.h"              "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
-                                        "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp"
-                                        "include/gui/*.h"                                           "Src/gui/*.cpp")
+                                        "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp")
 
 source_group("vulkan_base"                                  FILES ${VULKAN_BASE_FILTER})
 source_group("gui"                                          FILES ${GUI_FILTER})
+source_group("gui/imgui"                                    FILES ${IMGUI_FILTER})
 source_group("renderer"                                     FILES ${RENDERER_FILTER})
+source_group("renderer/pc"                                  FILES ${PC_FILTER})
+source_group("renderer/AS"                                  FILES ${AS_FILTER})
 source_group("scene"                                        FILES ${SCENE_FILTER})
 source_group("window"                                       FILES ${WINDOW_FILTER})
 source_group("memory"                                       FILES ${MEMORY_FILTER})
@@ -212,12 +222,15 @@ ${COMMON_SHADER_FILTER}
 ${POST_SHADER_FILTER}
 ${BRDF_SHADER_FILTER}
 ${RENDERER_FILTER}
+${PC_FILTER}
+${AS_FILTER}
 ${SCENE_FILTER}
 ${WINDOW_FILTER}
 ${MEMORY_FILTER}
 ${COMMON_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
+${IMGUI_FILTER}
 ${UTIL_FILTER}
 ${VULKAN_BASE_FILTER}
 )
@@ -241,6 +254,8 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
+                                                    ./include/renderer/pushConstants
+                                                    ./include/renderer/accelerationStructures
                                                     ./include/vulkan_base
                                                     ./include/gui
                                                     ./include/common
