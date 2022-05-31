@@ -15,7 +15,8 @@ public:
 				VulkanSwapChain* vulkanSwapChain,
 				const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 
-	VkRenderPass& getRenderPass() { return render_pass; };
+	VkRenderPass&	getRenderPass() { return render_pass; };
+	VkSampler&		getOffscreenSampler() { return offscreenTextureSampler; };
 
 	void recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_index,
 						const std::vector<VkDescriptorSet>& descriptorSets);
@@ -33,6 +34,9 @@ private:
 	VkFormat						depth_format;
 	void							createDepthbufferImage();
 
+	VkSampler						offscreenTextureSampler;
+	void							createOffscreenTextureSampler();
+
 	VkPushConstantRange				push_constant_range;
 	VkRenderPass					render_pass;
 	VkPipeline						graphics_pipeline;
@@ -42,5 +46,6 @@ private:
 	void							createRenderpass();
 	void							createPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 	void							createFramebuffer();
+
 };
 

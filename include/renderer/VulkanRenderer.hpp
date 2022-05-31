@@ -70,9 +70,6 @@ public:
 	void	update_raytracing_descriptor_set(uint32_t image_index);
 	void	record_commands(uint32_t image_index);
 
-	// texture functions 
-	void	create_sampler_array_descriptor_set();
-
 	void	clean_up_swapchain();
 	void	clean_up();
 
@@ -139,38 +136,29 @@ private:
 
 	ASManager						asManager;
 	VulkanBuffer					objectDescriptionBuffer;
-
 	void							create_object_description_buffer();
 
-	VkSampler						texture_sampler;
+	VkDescriptorPool				descriptorPoolSharedRenderStages;
+	void							createDescriptorPoolSharedRenderStages();
+	VkDescriptorSetLayout			sharedRenderDescriptorSetLayout;
+	void							createSharedRenderDescriptorSetLayouts();
+	std::vector<VkDescriptorSet>	sharedRenderDescriptorSet;
+	void							createSharedRenderDescriptorSet();
+	void							updateTexturesInSharedRenderDescriptorSet();
+
 	VkDescriptorPool				post_descriptor_pool{};
 	VkDescriptorSetLayout			post_descriptor_set_layout;
 	std::vector<VkDescriptorSet>	post_descriptor_set;
 	void							create_post_descriptor_layout();
 	void							update_post_descriptor_set();
 
-	void							createDescriptors();
-	void							create_texture_sampler();
-	void							create_descriptor_pool_uniforms();
-	void							create_descriptor_pool_sampler();
-	void							create_descriptor_sets();
-	void							create_descriptor_set_layouts();
-	VkDescriptorSetLayout			descriptor_set_layout;			
-	VkDescriptorSetLayout			sampler_set_layout;				
+	VkDescriptorPool				raytracingDescriptorPool;
+	std::vector<VkDescriptorSet>	raytracingDescriptorSet;
+	VkDescriptorSetLayout			raytracingDescriptorSetLayout;
 
-	VkDescriptorPool				descriptor_pool;
-	VkDescriptorPool				sampler_descriptor_pool;
-	VkDescriptorPool				object_description_pool;
-	std::vector<VkDescriptorSet>	descriptor_sets;
-	VkDescriptorSet					sampler_descriptor_set;			
-
-	VkDescriptorPool				raytracing_descriptor_pool;
-	std::vector<VkDescriptorSet>	raytracing_descriptor_set;
-	VkDescriptorSetLayout			raytracing_descriptor_set_layout;
-
-	void							create_raytracing_descriptor_set_layouts();
-	void							create_raytracing_descriptor_sets();
-	void							create_raytracing_descriptor_pool();
+	void							createRaytracingDescriptorSetLayouts();
+	void							createRaytracingDescriptorSets();
+	void							createRaytracingDescriptorPool();
 	
 	void							check_changed_framebuffer_size();
 	bool							framebuffer_resized{false};

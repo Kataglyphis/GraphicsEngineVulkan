@@ -52,8 +52,8 @@ layout(buffer_reference, scalar) buffer Materials {
 	ObjMaterial m[]; 
 }; // all materials of .obj
 
-layout(set = 1, binding = SAMPLER_BINDING) uniform sampler texture_sampler;
-layout(set = 1, binding = TEXTURES_BINDING) uniform texture2D tex[MAX_TEXTURE_COUNT];
+layout(set = 0, binding = SAMPLER_BINDING) uniform sampler texture_sampler[MAX_TEXTURE_COUNT];
+layout(set = 0, binding = TEXTURES_BINDING) uniform texture2D tex[MAX_TEXTURE_COUNT];
 
 layout (location = 0) out vec4 out_color;
 
@@ -71,7 +71,7 @@ void main() {
 	vec3 ambient = vec3(0.f);
 
 	int texture_id	= materials.m[materialIDs.i[gl_PrimitiveID]].textureID;
-	ambient			+= texture(sampler2D(tex[texture_id], texture_sampler), texture_coordinates).xyz;
+	ambient			+= texture(sampler2D(tex[texture_id], texture_sampler[texture_id]), texture_coordinates).xyz;
 	//ambient			+= materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 
 	float roughness = 0.9;

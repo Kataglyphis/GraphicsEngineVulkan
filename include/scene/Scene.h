@@ -41,6 +41,7 @@ public:
 	const GUISceneSharedVars&	getGuiSceneSharedVars() { return guiSceneSharedVars; };
 
 	std::vector<Texture>&	getTextures(int model_index) { return model_list[model_index]->getTextures(); };
+	std::vector<VkSampler>& getTextureSampler(int model_index) { return model_list[model_index]->getTextureSamplers(); };
 	uint32_t				getTextureCount(int model_index) { return model_list[model_index]->getTextureCount(); };
 	uint32_t		getModelCount() { return static_cast<uint32_t>(model_list.size()); };
 	glm::mat4		getModelMatrix(int model_index) { return model_list[model_index]->getModel(); };

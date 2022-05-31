@@ -6,19 +6,17 @@ const int MAX_OBJECTS = 40;
 const int NUM_RAYTRACING_DESCRIPTOR_SET_LAYOUTS = 2;
 const int MAX_TEXTURE_COUNT = 23;
 
-// ----- RASTERIZER ----- START
+// ----- MAIN RENDER DESCRIPTOR SET ----- START (shared between rasterizer and raytracer)
 #define globalUBO_BINDING 0
 #define sceneUBO_BINDING 1
-#define OBJECT_DESCRIPTION_BINDING 3
-#define SAMPLER_BINDING 0
-// ----- RASTERIZER ----- END
+#define OBJECT_DESCRIPTION_BINDING 2
+#define TEXTURES_BINDING 3
+#define SAMPLER_BINDING 4
+// ----- MAIN RENDER DESCRIPTOR SET ----- END
 
 // ---- RAYTRACING BINDING ---- START
-
 #define TLAS_BINDING 0
 #define OUT_IMAGE_BINDING 1
-#define TEXTURES_BINDING 2
-#define SAMPLER_BINDING_RT 3
 // ---- RAYTRACING BINDING ---- END
 
 #endif
