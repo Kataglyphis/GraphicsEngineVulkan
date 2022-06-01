@@ -15,6 +15,7 @@ public:
 	void			shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
 
 	void			recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_index,
+									VulkanImage& vulkanImage,
 									VulkanSwapChain* vulkanSwapChain,
 									const std::vector<VkDescriptorSet>& descriptorSets);
 
@@ -48,11 +49,13 @@ private:
 	struct SpecializationData {
 
 		// standard values 
-		uint32_t specWorkGroupSizeX = 8;
+		uint32_t specWorkGroupSizeX = 16;
 		uint32_t specWorkGroupSizeY = 8;
 		uint32_t specWorkGroupSizeZ = 0;
 
-	} specializationData;
+	};
+
+	SpecializationData specializationData;
 
 	void createQueryPool();
 	void createPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);

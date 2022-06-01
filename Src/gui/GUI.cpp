@@ -47,7 +47,23 @@ void GUI::render()
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("Ray tracing", &guiRendererSharedVars.raytracing);
+	static int e = 0;
+	ImGui::RadioButton("Rasterizer", &e, 0); ImGui::SameLine();
+	ImGui::RadioButton("Raytracing", &e, 1); ImGui::SameLine();
+	ImGui::RadioButton("Path tracing", &e, 2);
+
+	switch (e) {
+	case 0: guiRendererSharedVars.raytracing = false;
+			guiRendererSharedVars.pathTracing = false;
+			break;
+	case 1: guiRendererSharedVars.raytracing = true;
+			guiRendererSharedVars.pathTracing = false;
+			break;
+	case 2: guiRendererSharedVars.raytracing = false;
+			guiRendererSharedVars.pathTracing = true; 
+			break;
+	}
+	//ImGui::Checkbox("Ray tracing", &guiRendererSharedVars.raytracing);
 
 	ImGui::Separator();
 

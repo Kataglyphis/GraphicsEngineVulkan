@@ -1071,6 +1071,9 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
 												vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
 
+	Texture& renderResult = rasterizer.getOffscreenTexture(image_index);
+	VulkanImage& vulkanImage = renderResult.getVulkanImage();
+
 	GUIRendererSharedVars& guiRendererSharedVars = gui->getGuiRendererSharedVars();
 	if (guiRendererSharedVars.raytracing) {
 		
@@ -1084,6 +1087,7 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 												raytracingDescriptorSet[image_index] };
 
 		pathTracing.recordCommands(command_buffers[image_index], image_index,
+									vulkanImage,
 									&vulkanSwapChain, sets);
 
 	} else {
@@ -1094,8 +1098,6 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 
 	}
 
-	Texture& renderResult = rasterizer.getOffscreenTexture(image_index);
-	VulkanImage& vulkanImage = renderResult.getVulkanImage();
 	vulkanImage.transitionImageLayout(	command_buffers[image_index],
 										VK_IMAGE_LAYOUT_GENERAL,
 										VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1,

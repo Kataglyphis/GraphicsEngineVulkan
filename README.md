@@ -74,7 +74,7 @@ started in own research topics.
 | ------------------------------------| :----------------: |
 | Rasterizer                          |         ✔️         |
 | Raytracing                          |         ✔️         |
-| Path tracing                        |         ❌(ongoing)|
+| Path tracing                        |         ✔️         |
 | PBR support (UE4,disney,... etc.)   |         ✔️         |
 | .obj Model loading                  |         ✔️         |
 | Mip Mapping                         |         ✔️         |
@@ -166,7 +166,6 @@ Thanks for free 3D Models:
 * [Morgan McGuire, Computer Graphics Archive, July 2017 (https://casual-effects.com/data)](http://casual-effects.com/data/)
 * [Viking room](https://sketchfab.com/3d-models/viking-room-a49f1b8e4f5c4ecf9e1fe7d81915ad38)
 
-
 ## Literature 
 
 Some very helpful literature, tutorials, etc. 
@@ -186,6 +185,9 @@ Physically Based Shading
 * [RealTimeRendering](https://www.realtimerendering.com/)
 * [Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs](https://hal.inria.fr/hal-01024289/)
 * [Sampling the GGX Distribution of Visible Normals](https://pdfs.semanticscholar.org/63bc/928467d760605cdbf77a25bb7c3ad957e40e.pdf)
+
+Path tracing
+*[NVIDIA Path tracing Tutorial](https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
