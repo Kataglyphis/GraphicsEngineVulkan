@@ -4,6 +4,8 @@
 #include <array>
 #include <algorithm>
 
+// Good source: https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp
+
 PathTracing::PathTracing()
 {
 }
@@ -42,17 +44,48 @@ void PathTracing::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_
 }
 
 void PathTracing::recordCommands(	VkCommandBuffer& commandBuffer, 
-									uint32_t image_index, 
+									uint32_t image_index,
+									VulkanImage& vulkanImage,
 									VulkanSwapChain* vulkanSwapChain,
 									const std::vector<VkDescriptorSet>& descriptorSets)
 {
 	// we have reset the pool; hence start by 0 
 	uint32_t query = 0;
 
-	vkCmdBeginQuery(commandBuffer, queryPool, 0, 0);
+	vkCmdResetQueryPool(commandBuffer, queryPool, 0, query_count);
 
 	vkCmdWriteTimestamp(commandBuffer, VkPipelineStageFlagBits::VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
 						queryPool, query++);
+
+	QueueFamilyIndices indices = device->getQueueFamilies();
+
+	VkImageSubresourceRange subresourceRange;
+	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.baseArrayLayer = 0;
+	subresourceRange.levelCount = 1;
+	subresourceRange.layerCount = 1;
+
+	VkImageMemoryBarrier presentToPathTracingImageBarrier{};
+	presentToPathTracingImageBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	presentToPathTracingImageBarrier.pNext = nullptr;
+	presentToPathTracingImageBarrier.srcQueueFamilyIndex = indices.graphics_family;
+	presentToPathTracingImageBarrier.dstQueueFamilyIndex = indices.compute_family;
+	presentToPathTracingImageBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	presentToPathTracingImageBarrier.dstAccessMask = VK_ACCESS_SHADER_WRITE_BIT;
+	presentToPathTracingImageBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+	presentToPathTracingImageBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+	presentToPathTracingImageBarrier.subresourceRange = subresourceRange;
+	presentToPathTracingImageBarrier.image = vulkanImage.getImage();
+	
+	vkCmdPipelineBarrier(commandBuffer,
+		VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, 
+		VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+		
+		0,
+		0, nullptr,
+		0, nullptr,
+		1, & presentToPathTracingImageBarrier);
 
 	VkExtent2D imageSize = vulkanSwapChain->getSwapChainExtent();
 	push_constant.width = imageSize.width;
@@ -70,15 +103,36 @@ void PathTracing::recordCommands(	VkCommandBuffer& commandBuffer,
 					pipeline);
 
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE,
-		pipeline_layout, 0, 1, &descriptorSets[image_index],
-		0, 0);
+							pipeline_layout, 0, static_cast<uint32_t>(descriptorSets.size()),
+								descriptorSets.data(),
+							0, 0);
 
 
 	uint32_t workGroupCountX = std::max((imageSize.width + specializationData.specWorkGroupSizeX - 1) / specializationData.specWorkGroupSizeX, 1U);
 	uint32_t workGroupCountY = std::max((imageSize.height + specializationData.specWorkGroupSizeY - 1) / specializationData.specWorkGroupSizeY, 1U);
-	uint32_t workGroupCountZ = 0;
+	uint32_t workGroupCountZ = 1;
 
 	vkCmdDispatch(commandBuffer, workGroupCountX, workGroupCountY, workGroupCountZ);
+
+	VkImageMemoryBarrier pathTracingToPresentImageBarrier{};
+	pathTracingToPresentImageBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	pathTracingToPresentImageBarrier.pNext = nullptr;
+	pathTracingToPresentImageBarrier.srcQueueFamilyIndex = indices.compute_family;
+	pathTracingToPresentImageBarrier.dstQueueFamilyIndex = indices.graphics_family;
+	pathTracingToPresentImageBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT;
+	pathTracingToPresentImageBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	pathTracingToPresentImageBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+	pathTracingToPresentImageBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+	pathTracingToPresentImageBarrier.image = vulkanImage.getImage();
+	pathTracingToPresentImageBarrier.subresourceRange = subresourceRange;
+
+	vkCmdPipelineBarrier(commandBuffer,
+		VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+		VK_PIPELINE_STAGE_VERTEX_SHADER_BIT,
+		0,
+		0, nullptr,
+		0, nullptr,
+		1, &pathTracingToPresentImageBarrier);
 
 	vkCmdWriteTimestamp(commandBuffer, VkPipelineStageFlagBits::VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
 						queryPool, query++);
@@ -96,7 +150,6 @@ void PathTracing::recordCommands(	VkCommandBuffer& commandBuffer,
 		pathTracingTiming = (static_cast<float>(queryResults[1] - queryResults[0])* timeStampPeriod) / 1000000.f;
 	}
 
-	vkCmdEndQuery(commandBuffer, queryPool, 0);
 }
 
 void PathTracing::cleanUp()
