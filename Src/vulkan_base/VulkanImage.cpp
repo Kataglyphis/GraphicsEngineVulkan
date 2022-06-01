@@ -131,10 +131,10 @@ void VulkanImage::transitionImageLayout(VkCommandBuffer command_buffer,
 
 		command_buffer,
 		src_stage, dst_stage,				// pipeline stages (match to src and dst accessmask)
-		0,									// no dependency flags
-		0, nullptr,							// memory barrier count + data
-		0, nullptr,							// buffer memory barrier count + data
-		1, &memory_barrier					// image memory barrier count + data
+		0,											// no dependency flags
+		0, nullptr,					// memory barrier count + data
+		0, nullptr,			// buffer memory barrier count + data
+		1, &memory_barrier	// image memory barrier count + data
 
 	);
 }

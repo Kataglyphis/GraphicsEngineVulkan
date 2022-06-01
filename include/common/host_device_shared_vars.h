@@ -1,7 +1,7 @@
 #ifndef HOST_DEVICE_SHARED_VARS
 #define HOST_DEVICE_SHARED_VARS
 
-const int MAX_TEXTURE_COUNT = 23;
+const int MAX_TEXTURE_COUNT = 1;
 
 // ----- MAIN RENDER DESCRIPTOR SET ----- START (shared between rasterizer and raytracer)
 #define globalUBO_BINDING 0
