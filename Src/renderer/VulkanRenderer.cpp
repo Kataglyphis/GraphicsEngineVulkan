@@ -67,8 +67,12 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 		std::stringstream modelFile;
 		modelFile << CMAKELISTS_DIR;
-		modelFile << "/Resources/Model/crytek-sponza/";
-		modelFile << "sponza_triag.obj";
+		modelFile << "/Resources/Model/VikingRoom/";
+		modelFile << "viking_room.obj";
+		/*modelFile << "/Resources/Model/Sulo/";
+		modelFile << "SuloLongDongLampe.obj";*/
+		/*modelFile << "/Resources/Model/crytek-sponza/";
+		modelFile << "sponza_triag.obj";*/
 
 		//std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
 		//std::string modelFile = "../Resources/Model/Dinosaurs/dinosaurs.obj";
