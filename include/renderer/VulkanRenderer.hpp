@@ -42,6 +42,7 @@
 #include "Rasterizer.h"
 #include <PostStage.h>
 #include <Raytracing.h>
+#include <PathTracing.h>
 
 class VulkanRenderer
 {
@@ -110,6 +111,7 @@ private:
 
 	Raytracing						raytracingStage;
 	Rasterizer						rasterizer;
+	PathTracing						pathTracing;
 	PostStage						postStage;
 
 	// new era of memory management for my project

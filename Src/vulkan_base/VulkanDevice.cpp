@@ -140,19 +140,12 @@ void VulkanDevice::create_logical_device()
 	indexing_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
 	indexing_features.runtimeDescriptorArray = VK_TRUE;
 	indexing_features.shaderSampledImageArrayNonUniformIndexing = VK_TRUE;
-
-	VkPhysicalDeviceFeatures2 features2{};
-	features2.pNext = &indexing_features;
-	features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-	features2.features.samplerAnisotropy = VK_TRUE;
-	features2.features.shaderInt64 = VK_TRUE;
-	features2.features.geometryShader = VK_TRUE;
-	features2.features.logicOp = VK_TRUE;
+	indexing_features.pNext = nullptr;
 
 	// -- NEEDED FOR QUERING THE DEVICE ADDRESS WHEN CREATING ACCELERATION STRUCTURES
 	VkPhysicalDeviceBufferDeviceAddressFeaturesEXT buffer_device_address_features{};
 	buffer_device_address_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES_EXT;
-	buffer_device_address_features.pNext = &features2;
+	buffer_device_address_features.pNext = &indexing_features;
 	buffer_device_address_features.bufferDeviceAddress = VK_TRUE;
 	buffer_device_address_features.bufferDeviceAddressCaptureReplay = VK_TRUE;
 	buffer_device_address_features.bufferDeviceAddressMultiDevice = VK_FALSE;
@@ -173,6 +166,38 @@ void VulkanDevice::create_logical_device()
 	acceleration_structure_features.accelerationStructureHostCommands = VK_FALSE;
 	acceleration_structure_features.descriptorBindingAccelerationStructureUpdateAfterBind = VK_FALSE;
 
+	VkPhysicalDeviceVulkan13Features features13;
+	features13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+	features13.maintenance4 = VK_TRUE;
+	features13.robustImageAccess = VK_FALSE;
+	features13.inlineUniformBlock = VK_FALSE;
+	features13.descriptorBindingInlineUniformBlockUpdateAfterBind = VK_FALSE;
+	features13.pipelineCreationCacheControl = VK_FALSE;
+	features13.privateData = VK_FALSE;
+	features13.shaderDemoteToHelperInvocation = VK_FALSE;
+	features13.shaderTerminateInvocation = VK_FALSE;
+	features13.subgroupSizeControl = VK_FALSE;
+	features13.computeFullSubgroups = VK_FALSE;
+	features13.synchronization2 = VK_FALSE;
+	features13.textureCompressionASTC_HDR = VK_FALSE;
+	features13.shaderZeroInitializeWorkgroupMemory = VK_FALSE;
+	features13.dynamicRendering = VK_FALSE;
+	features13.shaderIntegerDotProduct = VK_FALSE;
+	features13.pNext = &acceleration_structure_features;
+
+	VkPhysicalDeviceRayQueryFeaturesKHR rayQueryFeature;
+	rayQueryFeature.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_QUERY_FEATURES_KHR;
+	rayQueryFeature.pNext = &features13;
+	rayQueryFeature.rayQuery = VK_TRUE;
+
+	VkPhysicalDeviceFeatures2 features2{};
+	features2.pNext = &rayQueryFeature;
+	features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+	features2.features.samplerAnisotropy = VK_TRUE;
+	features2.features.shaderInt64 = VK_TRUE;
+	features2.features.geometryShader = VK_TRUE;
+	features2.features.logicOp = VK_TRUE;
+
 	// -- PREPARE FOR HAVING MORE EXTENSION BECAUSE WE NEED RAYTRACING CAPABILITIES
 	std::vector<const char*> extensions(device_extensions);
 
@@ -192,13 +217,7 @@ void VulkanDevice::create_logical_device()
 	device_create_info.pEnabledFeatures = NULL;
 
 
-	device_create_info.pNext = &acceleration_structure_features;
-	//device_create_info.pNext = &features2;
-
-	//// physical device features the logical device will be using 
-	//VkPhysicalDeviceFeatures device_features{};
-	//device_features.samplerAnisotropy = VK_TRUE;
-	//device_create_info.pEnabledFeatures = &device_features;
+	device_create_info.pNext = &features2;
 
 	// create logical device for the given physical device
 	VkResult result = vkCreateDevice(physical_device, &device_create_info, nullptr, &logical_device);

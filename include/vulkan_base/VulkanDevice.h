@@ -13,15 +13,16 @@ public:
 
 	VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface);
 
-	VkPhysicalDevice	getPhysicalDevice() const { return physical_device; };
-	VkDevice			getLogicalDevice() const { return logical_device; };
-	QueueFamilyIndices	getQueueFamilies();
-	VkQueue				getGraphicsQueue() const { return graphics_queue; };
-	VkQueue				getComputeQueue() const { return compute_queue; };
-	VkQueue				getPresentationQueue() const { return presentation_queue; };
-	SwapChainDetails	getSwapchainDetails();
+	VkPhysicalDeviceProperties	getPhysicalDeviceProperties() { return device_properties; };
+	VkPhysicalDevice			getPhysicalDevice() const { return physical_device; };
+	VkDevice					getLogicalDevice() const { return logical_device; };
+	QueueFamilyIndices			getQueueFamilies();
+	VkQueue						getGraphicsQueue() const { return graphics_queue; };
+	VkQueue						getComputeQueue() const { return compute_queue; };
+	VkQueue						getPresentationQueue() const { return presentation_queue; };
+	SwapChainDetails			getSwapchainDetails();
 
-	void				cleanUp();
+	void						cleanUp();
 
 	~VulkanDevice();
 
@@ -70,9 +71,9 @@ private:
 		// required by VK_KHR_spirv_1_4
 		VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME,
 		//required for pipeline library
-		VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME
-
-
+		VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
+		// lets start ray queries
+		VK_KHR_RAY_QUERY_EXTENSION_NAME
 
 	};
 };

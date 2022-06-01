@@ -11,18 +11,18 @@ public:
 
 	PostStage();
 
-	void init(	VulkanDevice* device, 
-				VulkanSwapChain* vulkanSwapChain,
-				const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
+	void			init(	VulkanDevice* device, 
+							VulkanSwapChain* vulkanSwapChain,
+							const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 
 	void			shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
 
 	VkRenderPass&	getRenderPass() { return render_pass; };
 	VkSampler&		getOffscreenSampler() { return offscreenTextureSampler; };
 
-	void recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_index,
-						const std::vector<VkDescriptorSet>& descriptorSets);
-	void cleanUp();
+	void			recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_index,
+									const std::vector<VkDescriptorSet>& descriptorSets);
+	void			cleanUp();
 
 	~PostStage();
 

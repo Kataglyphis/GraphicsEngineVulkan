@@ -208,11 +208,25 @@ file(GLOB BRDF_SHADER_FILTER
       ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.glsl
 )
 
+file(GLOB PATH_TRACING_SHADER_FILTER   
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.vert
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.frag
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.glsl
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.comp
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.geom
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rgen
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rchit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rahit
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rmiss
+      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.glsl
+)
+
 source_group("shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
 source_group("shaders/raytracing/" FILES ${RAYTRACING_SHADER_FILTER})
 source_group("shaders/common/" FILES ${COMMON_SHADER_FILTER})
 source_group("shaders/post/" FILES ${POST_SHADER_FILTER})
 source_group("shaders/brdf/" FILES ${BRDF_SHADER_FILTER})
+source_group("shaders/path_tracing/" FILES ${PATH_TRACING_SHADER_FILTER})
 
 # add the executable
 add_executable(${PROJECT_NAME}
@@ -221,6 +235,7 @@ ${RAYTRACING_SHADER_FILTER}
 ${COMMON_SHADER_FILTER}
 ${POST_SHADER_FILTER}
 ${BRDF_SHADER_FILTER}
+${PATH_TRACING_SHADER_FILTER}
 ${RENDERER_FILTER}
 ${PC_FILTER}
 ${AS_FILTER}
@@ -244,6 +259,10 @@ foreach(Shader ${RAYTRACING_SHADER_FILTER})
 endforeach()
 
 foreach(Shader ${RASTER_SHADER_FILTER})
+  add_shader(${PROJECT_NAME} ${Shader})
+endforeach()
+
+foreach(Shader ${PATH_TRACING_SHADER_FILTER})
   add_shader(${PROJECT_NAME} ${Shader})
 endforeach()
 

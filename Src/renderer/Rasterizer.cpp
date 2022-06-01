@@ -4,6 +4,7 @@
 #include <Vertex.h>
 #include <ShaderHelper.h>
 #include <File.h>
+#include <Vertex.h>
 
 Rasterizer::Rasterizer()
 {
@@ -364,33 +365,8 @@ void Rasterizer::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>
 	binding_description.stride = sizeof(Vertex);
 	binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;								// how to move between data after each vertex.
 
-
 	// how the data for an attribute is defined within a vertex
-	std::array<VkVertexInputAttributeDescription, 4> attribute_describtions;
-
-	// Position attribute
-	attribute_describtions[0].binding = 0;
-	attribute_describtions[0].location = 0;
-	attribute_describtions[0].format = VK_FORMAT_R32G32B32_SFLOAT;			// format data will take (also helps define size of data)
-	attribute_describtions[0].offset = offsetof(Vertex, pos);
-
-	// normal coord attribute
-	attribute_describtions[1].binding = 0;
-	attribute_describtions[1].location = 1;
-	attribute_describtions[1].format = VK_FORMAT_R32G32B32_SFLOAT;			// format data will take (also helps define size of data)
-	attribute_describtions[1].offset = offsetof(Vertex, normal);			// where this attribute is defined in the data for a single vertex
-
-	// normal coord attribute
-	attribute_describtions[2].binding = 0;
-	attribute_describtions[2].location = 2;
-	attribute_describtions[2].format = VK_FORMAT_R32G32B32_SFLOAT;			// format data will take (also helps define size of data)
-	attribute_describtions[2].offset = offsetof(Vertex, color);
-
-	attribute_describtions[3].binding = 0;
-	// texture coord attribute
-	attribute_describtions[3].location = 3;
-	attribute_describtions[3].format = VK_FORMAT_R32G32_SFLOAT;				// format data will take (also helps define size of data)
-	attribute_describtions[3].offset = offsetof(Vertex, texture_coords);	// where this attribute is defined in the data for a single vertex
+	std::array<VkVertexInputAttributeDescription, 4> attribute_describtions = vertex::getVertexInputAttributeDesc();
 
 	// CREATE PIPELINE
 	// 1.) Vertex input 
