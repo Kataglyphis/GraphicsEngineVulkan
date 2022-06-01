@@ -18,6 +18,7 @@ struct SceneUBO {
 
 	vec4 light_dir;
 	vec4 view_dir;
+	//xyz is position; w = fov
 	vec4 cam_pos;
 
 };

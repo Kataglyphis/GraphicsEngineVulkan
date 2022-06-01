@@ -91,6 +91,7 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		layouts.push_back(sharedRenderDescriptorSetLayout);
 		layouts.push_back(raytracingDescriptorSetLayout);
 		raytracingStage.init(device.get(), layouts);
+		pathTracing.init(device.get(), layouts);
 
 		glm::mat4 dragon_model(1.0f);
 		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
@@ -141,7 +142,7 @@ void VulkanRenderer::updateUniforms(	Scene* scene,
 															guiSceneSharedVars.directional_light_direction[2], 
 															1.0f);
 
-	sceneUBO.cam_pos					= glm::vec4(camera->get_camera_position(),1.0f);
+	sceneUBO.cam_pos					= glm::vec4(camera->get_camera_position(),camera->get_fov());
 
 }
 
@@ -177,6 +178,7 @@ void VulkanRenderer::shaderHotReload()
 	std::vector<VkDescriptorSetLayout> layouts = {	sharedRenderDescriptorSetLayout , 
 													raytracingDescriptorSetLayout };
 	raytracingStage.shaderHotReload(layouts);
+	pathTracing.shaderHotReload(layouts);
 
 }
 
@@ -485,16 +487,18 @@ void VulkanRenderer::createRaytracingDescriptorSetLayouts() {
 		descriptor_set_layout_bindings[0].descriptorType = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
 		descriptor_set_layout_bindings[0].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
-		descriptor_set_layout_bindings[0].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+		descriptor_set_layout_bindings[0].stageFlags =	VK_SHADER_STAGE_RAYGEN_BIT_KHR |
+														VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+														VK_SHADER_STAGE_COMPUTE_BIT;
 		// here comes to previous rendered image
 		descriptor_set_layout_bindings[1].binding = OUT_IMAGE_BINDING;
 		descriptor_set_layout_bindings[1].descriptorCount = 1;
 		descriptor_set_layout_bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 		descriptor_set_layout_bindings[1].pImmutableSamplers = nullptr;
 		// load them into the raygeneration and chlosest hit shader
-		descriptor_set_layout_bindings[1].stageFlags = VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-														VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+		descriptor_set_layout_bindings[1].stageFlags =	VK_SHADER_STAGE_RAYGEN_BIT_KHR |
+														VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+														VK_SHADER_STAGE_COMPUTE_BIT;
 
 		VkDescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{};
 		descriptor_set_layout_create_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -589,18 +593,20 @@ void VulkanRenderer::createSharedRenderDescriptorSetLayouts()
 	descriptor_set_layout_bindings[0].binding = globalUBO_BINDING;
 	descriptor_set_layout_bindings[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	descriptor_set_layout_bindings[0].descriptorCount = 1;																							
-	descriptor_set_layout_bindings[0].stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
-													VK_SHADER_STAGE_RAYGEN_BIT_KHR;												
+	descriptor_set_layout_bindings[0].stageFlags =	VK_SHADER_STAGE_VERTEX_BIT |
+													VK_SHADER_STAGE_RAYGEN_BIT_KHR |
+													VK_SHADER_STAGE_COMPUTE_BIT;
 	descriptor_set_layout_bindings[0].pImmutableSamplers = nullptr;																			
 
 	// our model matrix which updates every frame for each object
 	descriptor_set_layout_bindings[1].binding = sceneUBO_BINDING;
 	descriptor_set_layout_bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 	descriptor_set_layout_bindings[1].descriptorCount = 1;
-	descriptor_set_layout_bindings[1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT |
-										VK_SHADER_STAGE_FRAGMENT_BIT |
-										VK_SHADER_STAGE_RAYGEN_BIT_KHR |
-										VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+	descriptor_set_layout_bindings[1].stageFlags =	VK_SHADER_STAGE_VERTEX_BIT |
+													VK_SHADER_STAGE_FRAGMENT_BIT |
+													VK_SHADER_STAGE_RAYGEN_BIT_KHR |
+													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+													VK_SHADER_STAGE_COMPUTE_BIT;
 	descriptor_set_layout_bindings[1].pImmutableSamplers = nullptr;
 
 	descriptor_set_layout_bindings[2].binding = OBJECT_DESCRIPTION_BINDING;
@@ -608,8 +614,10 @@ void VulkanRenderer::createSharedRenderDescriptorSetLayouts()
 	descriptor_set_layout_bindings[2].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 	descriptor_set_layout_bindings[2].pImmutableSamplers = nullptr;
 	// load them into the raygeneration and chlosest hit shader
-	descriptor_set_layout_bindings[2].stageFlags =	VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT |
-													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+	descriptor_set_layout_bindings[2].stageFlags =	VK_SHADER_STAGE_VERTEX_BIT | 
+													VK_SHADER_STAGE_FRAGMENT_BIT |
+													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+													VK_SHADER_STAGE_COMPUTE_BIT;
 
 	// CREATE TEXTURE SAMPLER DESCRIPTOR SET LAYOUT
 	// texture binding info
@@ -617,14 +625,16 @@ void VulkanRenderer::createSharedRenderDescriptorSetLayouts()
 	descriptor_set_layout_bindings[3].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
 	descriptor_set_layout_bindings[3].descriptorCount = MAX_TEXTURE_COUNT;
 	descriptor_set_layout_bindings[3].stageFlags =	VK_SHADER_STAGE_FRAGMENT_BIT |
-													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+													VK_SHADER_STAGE_COMPUTE_BIT;
 	descriptor_set_layout_bindings[3].pImmutableSamplers = nullptr;
 
 	descriptor_set_layout_bindings[4].binding = TEXTURES_BINDING;
 	descriptor_set_layout_bindings[4].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 	descriptor_set_layout_bindings[4].descriptorCount = MAX_TEXTURE_COUNT;
 	descriptor_set_layout_bindings[4].stageFlags =	VK_SHADER_STAGE_FRAGMENT_BIT |
-													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+													VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR |
+													VK_SHADER_STAGE_COMPUTE_BIT;
 	descriptor_set_layout_bindings[4].pImmutableSamplers = nullptr;
 
 	// create descriptor set layout with given bindings
@@ -1068,8 +1078,15 @@ void VulkanRenderer::record_commands(uint32_t image_index)
 												raytracingDescriptorSet[image_index] };
 		raytracingStage.recordCommands(command_buffers[image_index], &vulkanSwapChain, sets);
 
-	}
-	else {
+	} else if (guiRendererSharedVars.pathTracing) {
+
+		std::vector<VkDescriptorSet> sets = { sharedRenderDescriptorSet[image_index],
+												raytracingDescriptorSet[image_index] };
+
+		pathTracing.recordCommands(command_buffers[image_index], image_index,
+									&vulkanSwapChain, sets);
+
+	} else {
 
 		std::vector<VkDescriptorSet> descriptorSets = { sharedRenderDescriptorSet[image_index]};
 
@@ -1142,6 +1159,7 @@ void VulkanRenderer::cleanUp()
 	rasterizer.cleanUp();
 	raytracingStage.cleanUp();
 	postStage.cleanUp();
+	pathTracing.cleanUp();
 
 	objectDescriptionBuffer.cleanUp();
 	asManager.cleanUp();

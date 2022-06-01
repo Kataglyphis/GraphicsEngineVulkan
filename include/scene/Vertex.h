@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
 #include <vector>
+#include <array>
+#include <vulkan/vulkan.h>
 
 class Vertex
 {
@@ -26,6 +28,12 @@ public:
 	}
 
 };
+
+namespace vertex {
+
+	std::array<VkVertexInputAttributeDescription, 4> getVertexInputAttributeDesc();
+
+}
 
 namespace std {
 	template<> struct hash<Vertex> {
