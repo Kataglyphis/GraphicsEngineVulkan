@@ -65,30 +65,6 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 
 		updatePostDescriptorSets();
 
-		std::stringstream modelFile;
-		modelFile << CMAKELISTS_DIR;
-		modelFile << "/Resources/Model/VikingRoom/";
-		modelFile << "viking_room.obj";
-		/*modelFile << "/Resources/Model/Sulo/";
-		modelFile << "SuloLongDongLampe.obj";*/
-		/*modelFile << "/Resources/Model/crytek-sponza/";
-		modelFile << "sponza_triag.obj";*/
-
-		//std::string modelFile = "../Resources/Model/crytek-sponza/sponza_triag.obj";
-		//std::string modelFile = "../Resources/Model/Dinosaurs/dinosaurs.obj";
-		//std::string modelFile = "../Resources/Model/Pillum/PilumPainting_export.obj";
-		//std::string modelFile = "../Resources/Model/sibenik/sibenik.obj";
-		//std::string modelFile = "../Resources/Model/sportsCar/sportsCar.obj";
-		//std::string modelFile = "../Resources/Model/StanfordDragon/dragon.obj";
-		//std::string modelFile = "../Resources/Model/CornellBox/CornellBox-Sphere.obj";
-		//std::string modelFile = "../Resources/Model/bunny/bunny.obj";
-		//std::string modelFile = "../Resources/Model/buddha/buddha.obj";
-		//std::string modelFile = "../Resources/Model/bmw/bmw.obj";
-		//std::string modelFile = "../Resources/Model/testScene.obj";
-		//std::string modelFile = "../Resources/Model/San_Miguel/san-miguel-low-poly.obj";
-		scene->loadModel(device.get(), graphics_command_pool, modelFile.str());
-		updateTexturesInSharedRenderDescriptorSet();
-
 		createRaytracingDescriptorPool();
 		createRaytracingDescriptorSetLayouts();
 		std::vector<VkDescriptorSetLayout> layouts;
@@ -97,12 +73,8 @@ VulkanRenderer::VulkanRenderer(	Window* window,
 		raytracingStage.init(device.get(), layouts);
 		pathTracing.init(device.get(), layouts);
 
-		glm::mat4 dragon_model(1.0f);
-		//dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f, -50.0f));
-		dragon_model = glm::scale(dragon_model, glm::vec3(1.0f, 1.0f, 1.0f));
-		/*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
-		dragon_model = glm::rotate(dragon_model, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/
-		scene->update_model_matrix(dragon_model, 0);
+		scene->loadModel(device.get(), graphics_command_pool);
+		updateTexturesInSharedRenderDescriptorSet();
 
 		asManager.createASForScene(device.get(), graphics_command_pool, scene);
 		create_object_description_buffer();
