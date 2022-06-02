@@ -216,7 +216,7 @@ void PathTracing::createPipeline(const std::vector<VkDescriptorSetLayout>& descr
 	VkShaderModule pathTracingModule = shaderHelper.createShaderModule(device, pathTracingShadercode);
 
 	// Specialization constant for workgroup size
-	std::array<VkSpecializationMapEntry, 3> specEntries;
+	std::array<VkSpecializationMapEntry, 2> specEntries;
 
 	specEntries[0].constantID = 0;
 	specEntries[0].size = sizeof(specializationData.specWorkGroupSizeX);
@@ -226,9 +226,9 @@ void PathTracing::createPipeline(const std::vector<VkDescriptorSetLayout>& descr
 	specEntries[1].size = sizeof(specializationData.specWorkGroupSizeY);
 	specEntries[1].offset = offsetof(SpecializationData, specWorkGroupSizeY);
 
-	specEntries[2].constantID = 2;
-	specEntries[2].size = sizeof(specializationData.specWorkGroupSizeZ);
-	specEntries[2].offset = offsetof(SpecializationData, specWorkGroupSizeZ);
+	//specEntries[2].constantID = 2;
+	//specEntries[2].size = sizeof(specializationData.specWorkGroupSizeZ);
+	//specEntries[2].offset = offsetof(SpecializationData, specWorkGroupSizeZ);
 
 	VkSpecializationInfo specInfo{};
 	specInfo.dataSize = sizeof(specializationData);
