@@ -10,15 +10,19 @@ void Scene::update_user_input(GUI* gui)
 }
 
 void Scene::loadModel(	VulkanDevice* device, 
-						VkCommandPool commandPool,
-						std::string modelFileName)
+						VkCommandPool commandPool)
 {
 	ObjLoader obj_loader(	device, device->getGraphicsQueue(),
 							commandPool);
 
+	std::string modelFileName = sceneConfig::getModelFile();
 	std::shared_ptr<Model> new_model = obj_loader.loadModel(modelFileName);
 
 	add_model(new_model);
+
+	glm::mat4 modelMatrix = sceneConfig::getModelMatrix();
+
+	update_model_matrix(modelMatrix, 0);
 
 }
 

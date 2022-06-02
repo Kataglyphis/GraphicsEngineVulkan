@@ -16,6 +16,7 @@
 #include <array>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
 
 #include "Window.h"
 #include "Utilities.h"
@@ -25,8 +26,7 @@
 #include "GUI.h"
 #include "GUISceneSharedVars.h"
 #include "ObjLoader.h"
-
-#include <string>
+#include "SceneConfig.h"
 
 class Scene
 {
@@ -55,8 +55,7 @@ public:
 	std::vector<std::shared_ptr<Model>> const&	get_model_list() { return model_list; };
 
 	void						loadModel(	VulkanDevice* device,
-											VkCommandPool commandPool, 
-											std::string modelFileName);
+											VkCommandPool commandPool);
 
 	void						add_model(std::shared_ptr<Model> model);
 	void						add_object_description(ObjectDescription object_description);

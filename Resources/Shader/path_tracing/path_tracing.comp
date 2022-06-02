@@ -152,7 +152,7 @@ void main() {
     vec3 summedPixelColor = vec3(0.0);
 
     // Limit the kernel to trace at most 64 samples.
-    const int NUM_SAMPLES = 4;
+    const int NUM_SAMPLES = 32;
     for(int sampleIdx = 0; sampleIdx < NUM_SAMPLES; sampleIdx++)
     {
         // vec4(0,0,0,1) in homogenous coordinates hints that it is the position in the origin
@@ -174,7 +174,7 @@ void main() {
         vec3 accumulatedRayColor = vec3(1.0);  // The amount of light that made it to the end of the current ray.
 
         // Limit the kernel to trace at most 32 segments.
-        for(int tracedSegments = 0; tracedSegments < 4; tracedSegments++)
+        for(int tracedSegments = 0; tracedSegments < 2; tracedSegments++)
         {
             // Trace the ray and see if and where it intersects the scene!
             // First, initialize a ray query object:
