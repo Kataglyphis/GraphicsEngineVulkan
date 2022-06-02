@@ -1,7 +1,7 @@
 # GraphicsEngineVulkan
 <h1 align="center">
   <br>
-  <a href="https://jotrocken.blog/"><img src="images/logo.png" alt="OpenGLEngine" width="200"></a>
+  <a href="https://jotrockenmitlocken.de"><img src="images/logo.png" alt="VulkanEngine" width="200"></a>
   <br>
   Cataglyphis Renderer 
   <br>
@@ -9,15 +9,16 @@
 
 <h1 align="center">
   <br>
-  <a href="https://jotrocken.blog/"><img src="images/vulkan-logo.png" alt="OpenGLEngine" width="200"></a>
-  <a href="https://jotrocken.blog/"><img src="images/Engine_logo.png" alt="OpenGLEngine" width="200"></a>
-  <a href="https://jotrocken.blog/"><img src="images/glm_logo.png" alt="OpenGLEngine" width="200"></a>
+  <a href="https://jotrockenmitlocken.de"><img src="images/vulkan-logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jotrockenmitlocken.de"><img src="images/Engine_logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jotrockenmitlocken.de"><img src="images/glm_logo.png" alt="VulkanEngine" width="200"></a>
 </h1>
 
-<h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrocken.blog/" target="_blank"></a>.</h4>
+<h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrockenmitlocken.de" target="_blank"></a>.</h4>
 
 [![Linux build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml)
 [![Windows build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=BX9AVVES2P9LN)
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -61,7 +62,16 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Kataglyphis Engine][product-screenshot]](https://jotrocken.blog/)
+<h1 align="center">
+  <br>
+  <a href="https://jotrockenmitlocken.de"><img src="images/Screenshot1.png" alt="VulkanEngine" width="400"></a>
+  <a href="https://jotrockenmitlocken.de"><img src="images/Screenshot2.png" alt="VulkanEngine" width="400"></a>
+  <a href="https://jotrockenmitlocken.de"><img src="images/Screenshot3.png" alt="VulkanEngine" width="700"></a>
+</h1>
+
+<!-- [![Kataglyphis Engine][product-screenshot1]](https://jotrockenmitlocken.de)
+[![Kataglyphis Engine][product-screenshot2]](https://jotrockenmitlocken.de)
+[![Kataglyphis Engine][product-screenshot3]](https://jotrockenmitlocken.de) -->
 
 This project provides me a solid Vulkan renderer starting point
 for implementing modern established rendering techniques and getting quickly
@@ -187,7 +197,7 @@ Physically Based Shading
 * [Sampling the GGX Distribution of Visible Normals](https://pdfs.semanticscholar.org/63bc/928467d760605cdbf77a25bb7c3ad957e40e.pdf)
 
 Path tracing
-*[NVIDIA Path tracing Tutorial](https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp)
+* [NVIDIA Path tracing Tutorial](https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -203,7 +213,9 @@ Path tracing
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/jonas-heinle-0b2a301a0/
-[product-screenshot]: images/Screenshot.png
+[product-screenshot1]: images/Screenshot1.png
+[product-screenshot2]: images/Screenshot2.png
+[product-screenshot3]: images/Screenshot3.png
 
 
 
