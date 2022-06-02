@@ -1,4 +1,3 @@
-# GraphicsEngineVulkan
 <h1 align="center">
   <br>
   <a href="https://jotrockenmitlocken.de"><img src="images/logo.png" alt="VulkanEngine" width="200"></a>
