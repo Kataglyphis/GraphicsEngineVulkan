@@ -23,7 +23,6 @@ Mesh::Mesh(	VulkanDevice* device, VkQueue transfer_queue,
 			std::vector<unsigned int>& materialIndex, std::vector<ObjMaterial>&	materials)
 {
 
-	VkTransformMatrixKHR transform_matrix{};
 	// glm uses column major matrices so transpose it for Vulkan want row major here
 	glm::mat4 transpose_transform = glm::transpose(glm::mat4(1.0f));
 	VkTransformMatrixKHR out_matrix;

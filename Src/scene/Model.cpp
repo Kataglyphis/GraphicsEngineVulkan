@@ -51,15 +51,15 @@ void Model::addTexture(Texture newTexture)
 
 uint32_t Model::getPrimitiveCount()
 {
-    uint32_t number_of_indices = 0;
+    /*uint32_t number_of_indices = 0;
 
-    /*for (Mesh mesh : meshes) {
+    for (Mesh mesh : meshes) {
 
         number_of_indices += mesh.get_index_count();
 
-    }*/
+    }
 
-    //return number_of_indices / 3;
+    return number_of_indices / 3;*/
     return mesh.getIndexCount() / 3;
 }
 
