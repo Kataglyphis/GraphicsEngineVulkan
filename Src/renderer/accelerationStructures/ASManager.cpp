@@ -33,7 +33,7 @@ void ASManager::createBLAS(	VulkanDevice* device,
 
 	std::vector<BlasInput> blas_input(scene->getModelCount());
 
-	for (unsigned int model_index = 0; model_index < scene->getModelCount(); model_index++) {
+	for (uint32_t model_index = 0; model_index < static_cast<uint32_t>(scene->getModelCount()); model_index++) {
 
 		std::shared_ptr<Model> mesh_model = scene->get_model_list()[model_index];
 		//blas_input.emplace_back();
@@ -390,7 +390,7 @@ void ASManager::createAccelerationStructureInfosBLAS(	VulkanDevice* device,
 
 	std::vector<uint32_t> max_primitive_cnt(blas_input.as_build_offset_info.size());
 
-	for (int temp = 0; temp < blas_input.as_build_offset_info.size(); temp++)
+	for (uint32_t temp = 0; temp < static_cast<uint32_t>(blas_input.as_build_offset_info.size()); temp++)
 		max_primitive_cnt[temp] = blas_input.as_build_offset_info[temp].primitiveCount;
 
 	pvkGetAccelerationStructureBuildSizesKHR(device->getLogicalDevice(),

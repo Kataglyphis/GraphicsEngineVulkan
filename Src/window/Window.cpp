@@ -34,11 +34,11 @@ Window::Window() :
 //please use this constructor; never the standard
 Window::Window(uint32_t window_width, uint32_t window_height) :
                         
-                        framebuffer_resized(false), 
                         window_width(window_width),  
                         window_height(window_height),
                         x_change(0.0f),
-                        y_change(0.0f)
+                        y_change(0.0f),
+                        framebuffer_resized(false)
 
 {
 

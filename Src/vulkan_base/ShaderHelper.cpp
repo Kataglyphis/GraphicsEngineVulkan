@@ -33,7 +33,7 @@ void ShaderHelper::compileShader(const std::string& shader_src_dir, const std::s
 
 	//std::cout << cmdShaderCompile.str().c_str();
 
-	system(cmdShaderCompile.str().c_str());
+	int result = system(cmdShaderCompile.str().c_str());
 }
 
 std::string ShaderHelper::getShaderSpvDir(const std::string& shader_src_dir, const std::string& shader_name)

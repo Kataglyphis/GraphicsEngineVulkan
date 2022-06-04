@@ -1044,9 +1044,6 @@ void VulkanRenderer::update_raytracing_descriptor_set(uint32_t image_index)
 void VulkanRenderer::record_commands(uint32_t image_index)
 {
 
-	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
-												vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
-
 	Texture& renderResult = rasterizer.getOffscreenTexture(image_index);
 	VulkanImage& vulkanImage = renderResult.getVulkanImage();
 
