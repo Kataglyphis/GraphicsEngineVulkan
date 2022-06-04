@@ -1,5 +1,24 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="1816960704">
+<analyzerinfo checksum="2764828261">
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;QueueFamilyIndices::is_valid&apos; can be const." verbose="The member function &apos;QueueFamilyIndices::is_valid&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\renderer\QueueFamilyIndices.h" line="10" column="7"/>
+            <symbol>QueueFamilyIndices::is_valid</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;VulkanDevice::getPhysicalDeviceProperties&apos; can be const." verbose="The member function &apos;VulkanDevice::getPhysicalDeviceProperties&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\vulkan_base\VulkanDevice.h" line="16" column="29"/>
+            <symbol>VulkanDevice::getPhysicalDeviceProperties</symbol>
+        </error>
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned expression &apos;memory_type_index&apos; is less than zero." verbose="The unsigned expression &apos;memory_type_index&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\Src\vulkan_base\VulkanBuffer.cpp" line="47" column="24" info="Unsigned less than zero"/>
+            <symbol>memory_type_index</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;create&apos; argument 1 names different: declaration &apos;vulkanDevice&apos; definition &apos;device&apos;." verbose="Function &apos;create&apos; argument 1 names different: declaration &apos;vulkanDevice&apos; definition &apos;device&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\Src\vulkan_base\VulkanBuffer.cpp" line="12" column="42"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\vulkan_base\VulkanBuffer.h" line="12" column="31"/>
+            <symbol>create</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="36" col="38" call-argexpr="&amp;properties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="36" col="38" call-argexpr="properties" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3874:28" call-funcname="vkGetPhysicalDeviceMemoryProperties" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/MemoryHelper.h" line="15" col="37" call-argexpr="&amp;memory_properties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3984:28" call-funcname="vkGetBufferMemoryRequirements" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp" line="34" col="31" call-argexpr="&amp;memory_requirements" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3972:32" call-funcname="vkBindBufferMemory" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp" line="60" col="20" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4104:28" call-funcname="vkDestroyBuffer" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp" line="69" col="18" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3940:28" call-funcname="vkFreeMemory" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp" line="70" col="15" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/>  </FileInfo>
   <FileInfo check="Class">
 <class name="VkExtent2D" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="2571" col="9" hash="16205352423417112205"/>
 <class name="VkExtent3D" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="2576" col="9" hash="16578149676478356496"/>
@@ -634,9 +653,21 @@
 <class name="VkStridedDeviceAddressRegionKHR" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="14350" col="9" hash="10805692040875357868"/>
 <class name="VkTraceRaysIndirectCommandKHR" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="14356" col="9" hash="654677482778964979"/>
 <class name="VkPhysicalDeviceRayQueryFeaturesKHR" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="14420" col="9" hash="11385093548994145570"/>
-<class name="VulkanBuffer" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBuffer.h" line="4" col="1" hash="17073435506053349295"/>
+<class name="QueueFamilyIndices" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/QueueFamilyIndices.h" line="3" col="1" hash="5154721861062401976"/>
+<class name="GLFWvidmode" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h" line="1959" col="9" hash="5014978948604091791"/>
+<class name="GLFWgammaramp" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h" line="1993" col="9" hash="15759332869564605894"/>
+<class name="GLFWimage" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h" line="2022" col="9" hash="18229993221891273149"/>
+<class name="GLFWgamepadstate" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h" line="2046" col="9" hash="15865163930354674965"/>
+<class name="GLFWallocator" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLFW/include/GLFW/glfw3.h" line="2067" col="9" hash="16950109287681390474"/>
+<class name="SwapChainDetails" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/SwapChainDetails.h" line="5" col="1" hash="577878947623651971"/>
+<class name="VulkanBuffer" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBuffer.h" line="6" col="1" hash="6953182802115359511"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:25:17" my-argnr="2" my-argname="formats" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="32" col="25" value="0"/>
   </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="create" lineNumber="12"/>
+    <functiondecl functionName="cleanUp" lineNumber="66"/>
     <functioncall functionName="VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_KHR"/>
     <functioncall functionName="VK_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL_KHR"/>
     <functioncall functionName="VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_KHR"/>
@@ -902,6 +933,7 @@
     <functioncall functionName="VK_SHADER_STAGE_INTERSECTION_BIT_KHR"/>
     <functioncall functionName="VK_SHADER_STAGE_MISS_BIT_KHR"/>
     <functioncall functionName="VK_SHADER_STAGE_RAYGEN_BIT_KHR"/>
+    <functioncall functionName="VK_SHARING_MODE_EXCLUSIVE"/>
     <functioncall functionName="VK_STENCIL_FACE_FRONT_AND_BACK"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_STENCIL_LAYOUT"/>
@@ -915,6 +947,7 @@
     <functioncall functionName="VK_STRUCTURE_TYPE_BIND_IMAGE_PLANE_MEMORY_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BLIT_IMAGE_INFO_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_COPY_2"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_IMAGE_COPY_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER_2"/>
@@ -969,6 +1002,7 @@
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_STENCIL_USAGE_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_VIEW_USAGE_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_FLAGS_INFO"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_BARRIER_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS"/>
@@ -1077,8 +1111,50 @@
     <functioncall functionName="VK_TOOL_PURPOSE_PROFILING_BIT"/>
     <functioncall functionName="VK_TOOL_PURPOSE_TRACING_BIT"/>
     <functioncall functionName="VK_TOOL_PURPOSE_VALIDATION_BIT"/>
+    <functioncall functionName="VkFormat"/>
+    <functioncall functionName="VkPresentModeKHR"/>
+    <functioncall functionName="VkSurfaceFormatKHR"/>
     <functioncall functionName="VulkanBuffer"/>
+    <functioncall functionName="buffer"/>
+    <functioncall functionName="bufferMemory"/>
+    <functioncall functionName="buffer_info"/>
+    <functioncall functionName="buffer_propertiy_flags"/>
+    <functioncall functionName="buffer_size"/>
+    <functioncall functionName="buffer_usage_flags"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="created"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="find_memory_type_index"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="format"/>
+    <functioncall functionName="formats"/>
+    <functioncall functionName="getLogicalDevice"/>
+    <functioncall functionName="getPhysicalDevice"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="memoryTypeBits"/>
+    <functioncall functionName="memoryTypeCount"/>
+    <functioncall functionName="memory_alloc_info"/>
+    <functioncall functionName="memory_properties"/>
+    <functioncall functionName="memory_requirements"/>
+    <functioncall functionName="memory_type_index"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="physical_device"/>
+    <functioncall functionName="properties"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="runtime_error"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="true"/>
     <functioncall functionName="uint32_t"/>
+    <functioncall functionName="vkAllocateMemory"/>
+    <functioncall functionName="vkBindBufferMemory"/>
+    <functioncall functionName="vkCreateBuffer"/>
+    <functioncall functionName="vkDestroyBuffer"/>
+    <functioncall functionName="vkFreeMemory"/>
+    <functioncall functionName="vkGetBufferMemoryRequirements"/>
+    <functioncall functionName="vkGetPhysicalDeviceFormatProperties"/>
+    <functioncall functionName="vkGetPhysicalDeviceMemoryProperties"/>
     <functioncall functionName="void"/>
   </FileInfo>
 </analyzerinfo>

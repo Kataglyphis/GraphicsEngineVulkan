@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="1146876534">
+<analyzerinfo checksum="4246379038">
         <error id="internalAstError" severity="error" msg="Syntax Error: AST broken, &apos;pCreateInfo&apos; doesn&apos;t have a parent." verbose="Syntax Error: AST broken, &apos;pCreateInfo&apos; doesn&apos;t have a parent." file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/VulkanRenderer.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\VULKAN_MEMORY_ALLOCATOR\include\vk_mem_alloc.h" line="16039" column="19"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\VULKAN_MEMORY_ALLOCATOR\include\vk_mem_alloc.h" line="16001" column="19"/>
         </error>
 </analyzerinfo>

@@ -49,7 +49,7 @@ public:
 
 private:
 
-	VulkanDevice*			vulkanDevice;
+	VulkanDevice*			vulkanDevice{VK_NULL_HANDLE};
 	CommandBufferManager	commandBufferManager;
 	VulkanBufferManager		vulkanBufferManager;
 

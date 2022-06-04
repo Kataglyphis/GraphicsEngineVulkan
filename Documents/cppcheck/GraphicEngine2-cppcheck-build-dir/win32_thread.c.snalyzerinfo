@@ -1,8 +1,0 @@
-_glfwPlatformCreateTls call:[TlsAlloc,_glfwInputError,assert]
-_glfwPlatformDestroyTls call:[TlsFree,memset,sizeof] noreturn:[TlsFree,memset]
-_glfwPlatformGetTls call:[TlsGetValue,assert] noreturn:[TlsGetValue]
-_glfwPlatformSetTls call:[TlsSetValue,assert] noreturn:[TlsSetValue]
-_glfwPlatformCreateMutex call:[InitializeCriticalSection,assert]
-_glfwPlatformDestroyMutex call:[DeleteCriticalSection,memset,sizeof] noreturn:[DeleteCriticalSection,memset]
-_glfwPlatformLockMutex call:[EnterCriticalSection,assert] noreturn:[EnterCriticalSection]
-_glfwPlatformUnlockMutex call:[LeaveCriticalSection,assert] noreturn:[LeaveCriticalSection]

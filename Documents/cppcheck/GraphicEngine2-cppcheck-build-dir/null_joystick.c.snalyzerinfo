@@ -1,5 +1,0 @@
-_glfwInitJoysticksNull
-_glfwTerminateJoysticksNull
-_glfwPollJoystickNull
-_glfwGetMappingNameNull
-_glfwUpdateGamepadGUIDNull

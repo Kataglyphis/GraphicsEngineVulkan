@@ -44,9 +44,9 @@ private:
 
 	void create_fonts_and_upload(const VkCommandPool& graphics_command_pool);
 
-	VulkanDevice*			device;
-	Window*					window;
-	VkDescriptorPool		gui_descriptor_pool;
+	VulkanDevice*			device{VK_NULL_HANDLE};
+	Window*					window{ VK_NULL_HANDLE };
+	VkDescriptorPool		gui_descriptor_pool{ VK_NULL_HANDLE };
 	CommandBufferManager	commandBufferManager;
 
 	GUISceneSharedVars		guiSceneSharedVars;

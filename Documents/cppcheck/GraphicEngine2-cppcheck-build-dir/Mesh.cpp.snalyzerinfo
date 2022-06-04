@@ -1061,22 +1061,7 @@ findLSB call:[call,sizeof,static_assert] noreturn:[call]
 findLSB call:[call,static_assert] noreturn:[call]
 findMSB call:[findMSB,static_assert]
 findMSB call:[call,sizeof,static_assert] noreturn:[call]
-load_texture_file call:[c_str,runtime_error,stbi_load] noreturn:[runtime_error]
 choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
-create_image_view call:[runtime_error,vkCreateImageView] noreturn:[runtime_error]
-find_memory_type_index call:[vkGetPhysicalDeviceMemoryProperties]
-create_image call:[find_memory_type_index,runtime_error,vkAllocateMemory,vkBindImageMemory,vkCreateImage,vkGetImageMemoryRequirements] noreturn:[runtime_error]
-create_buffer call:[find_memory_type_index,runtime_error,vkAllocateMemory,vkBindBufferMemory,vkCreateBuffer,vkGetBufferMemoryRequirements] noreturn:[runtime_error,vkBindBufferMemory]
-begin_command_buffer call:[vkAllocateCommandBuffers,vkBeginCommandBuffer]
-end_and_submit_command_buffer call:[printf,runtime_error,vkEndCommandBuffer,vkFreeCommandBuffers,vkQueueSubmit,vkQueueWaitIdle] noreturn:[runtime_error,vkFreeCommandBuffers]
-copy_buffer call:[begin_command_buffer,end_and_submit_command_buffer,vkCmdCopyBuffer] noreturn:[end_and_submit_command_buffer]
-copy_image_buffer call:[begin_command_buffer,end_and_submit_command_buffer,vkCmdCopyBufferToImage] noreturn:[end_and_submit_command_buffer]
-access_flags_for_image_layout call:[VkFlags] noreturn:[VkFlags]
-pipeline_stage_for_layout
-transition_image_layout call:[access_flags_for_image_layout,begin_command_buffer,end_and_submit_command_buffer,pipeline_stage_for_layout,vkCmdPipelineBarrier] noreturn:[end_and_submit_command_buffer]
-transition_image_layout_for_command_buffer call:[access_flags_for_image_layout,pipeline_stage_for_layout,vkCmdPipelineBarrier] noreturn:[vkCmdPipelineBarrier]
-generate_mipmaps call:[begin_command_buffer,end_and_submit_command_buffer,runtime_error,vkCmdBlitImage,vkCmdPipelineBarrier,vkGetPhysicalDeviceFormatProperties] noreturn:[end_and_submit_command_buffer,runtime_error]
-align_up call:[return]
 epsilon call:[epsilon,static_assert] noreturn:[epsilon]
 pi call:[static_assert]
 cos_one_over_two call:[genType] noreturn:[genType]
@@ -1315,19 +1300,30 @@ operator() call:[hash_combine,hasher]
 operator() call:[hash_combine,hasher]
 operator==
 operator() call:[return] noreturn:[return]
+is_valid
+getVulkanInstance
+getPhysicalDeviceProperties
+getPhysicalDevice
+getLogicalDevice
+getGraphicsQueue
+getComputeQueue
+getPresentationQueue
+getBuffer
+getBufferMemory
+createBufferAndUploadVectorOnDevice call:[cleanUp,copyBuffer,create,data,getBufferMemory,getGraphicsQueue,getLogicalDevice,memcpy,size,sizeof,vkMapMemory,vkUnmapMemory] noreturn:[cleanUp]
+getObjectDescription
+getModel
+getVertexCount
+getIndexCount
+getVertexBuffer call:[getBuffer] noreturn:[getBuffer]
+getMaterialIDBuffer call:[getBuffer] noreturn:[getBuffer]
+getIndexBuffer call:[getBuffer] noreturn:[getBuffer]
 Mesh
-Mesh call:[create_index_buffer,create_material_buffer,create_material_id_buffer,create_vertex_buffer,mat4,memcpy,size,sizeof,transpose,vkGetBufferDeviceAddress] noreturn:[mat4]
-set_model
-get_model
-get_object_description
-get_vertex_count
-get_index_count
-get_vertex_buffer
-get_materialID_buffer
-get_index_buffer
-destroy_buffers call:[vkDestroyBuffer,vkFreeMemory] noreturn:[vkFreeMemory]
+cleanUp call:[cleanUp] noreturn:[cleanUp]
+Mesh call:[createIndexBuffer,createMaterialBuffer,createMaterialIDBuffer,createVertexBuffer,getBuffer,getLogicalDevice,mat4,memcpy,size,sizeof,transpose,vkGetBufferDeviceAddress] noreturn:[mat4]
+setModel
 Mesh
-create_vertex_buffer call:[copy_buffer,create_buffer,data,memcpy,size,sizeof,vkDestroyBuffer,vkFreeMemory,vkMapMemory,vkUnmapMemory] noreturn:[vkFreeMemory]
-create_index_buffer call:[copy_buffer,create_buffer,data,memcpy,size,sizeof,vkDestroyBuffer,vkFreeMemory,vkMapMemory,vkUnmapMemory] noreturn:[vkFreeMemory]
-create_material_id_buffer call:[copy_buffer,create_buffer,data,memcpy,size,sizeof,vkDestroyBuffer,vkFreeMemory,vkMapMemory,vkUnmapMemory] noreturn:[vkFreeMemory]
-create_material_buffer call:[copy_buffer,create_buffer,data,memcpy,size,sizeof,vkDestroyBuffer,vkFreeMemory,vkMapMemory,vkUnmapMemory] noreturn:[vkFreeMemory]
+createVertexBuffer call:[createBufferAndUploadVectorOnDevice] noreturn:[createBufferAndUploadVectorOnDevice]
+createIndexBuffer call:[createBufferAndUploadVectorOnDevice] noreturn:[createBufferAndUploadVectorOnDevice]
+createMaterialIDBuffer call:[createBufferAndUploadVectorOnDevice] noreturn:[createBufferAndUploadVectorOnDevice]
+createMaterialBuffer call:[createBufferAndUploadVectorOnDevice] noreturn:[createBufferAndUploadVectorOnDevice]

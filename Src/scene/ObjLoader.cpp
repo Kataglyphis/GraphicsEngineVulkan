@@ -10,7 +10,7 @@ ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer_queue, VkCommandPool
 	this->command_pool      = command_pool;
 }
 
-std::shared_ptr<Model> ObjLoader::loadModel(std::string modelFile)
+std::shared_ptr<Model> ObjLoader::loadModel(const std::string& modelFile)
 {
     // the model we want to load
     std::shared_ptr<Model> new_model = std::make_shared<Model>(device);
@@ -52,7 +52,7 @@ std::shared_ptr<Model> ObjLoader::loadModel(std::string modelFile)
 	return new_model;
 }
 
-std::vector<std::string> ObjLoader::loadTexturesAndMaterials(std::string modelFile)
+std::vector<std::string> ObjLoader::loadTexturesAndMaterials(const std::string& modelFile)
 {
     tinyobj::ObjReaderConfig reader_config;
     tinyobj::ObjReader reader;
@@ -119,7 +119,7 @@ std::vector<std::string> ObjLoader::loadTexturesAndMaterials(std::string modelFi
     return textures;
 }
 
-void ObjLoader::loadVertices(std::string fileName)
+void ObjLoader::loadVertices(const std::string& fileName)
 {
     tinyobj::ObjReaderConfig reader_config;
     //reader_config.mtl_search_path = ""; // Path to material files

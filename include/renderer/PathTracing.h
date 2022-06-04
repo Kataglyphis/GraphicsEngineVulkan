@@ -12,7 +12,7 @@ public:
 
 	void			init(VulkanDevice* device, const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 
-	void			shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
+	void			shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts);
 
 	void			recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_index,
 									VulkanImage& vulkanImage,
@@ -25,24 +25,28 @@ public:
 
 private:
 
-	VulkanDevice* device;
+	VulkanDevice*			device{VK_NULL_HANDLE};
 
-	VkPipelineLayout pipeline_layout;
-	VkPipeline pipeline;
-	VkPushConstantRange pc_range;
-	PushConstantPathTracing push_constant{};
+	VkPipelineLayout		pipeline_layout{ VK_NULL_HANDLE };
+	VkPipeline				pipeline{ VK_NULL_HANDLE };
+	VkPushConstantRange		pc_range{ VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM, 0, 0};
+	PushConstantPathTracing push_constant{glm::vec4(0.f), 0, 0};
 
 	float					timeStampPeriod{ 0 };
-	uint64_t				pathTracingTiming;
+	uint64_t				pathTracingTiming{static_cast<uint64_t>(-1.f)};
 	uint32_t				query_count{ 2 };
 	std::vector<uint64_t>	queryResults;
-	VkQueryPool				queryPool;
+	VkQueryPool				queryPool{ VK_NULL_HANDLE };
 
 	struct {
 
-		uint32_t maxComputeWorkGroupCount[3];
-		uint32_t maxComputeWorkGroupInvocations;
-		uint32_t maxComputeWorkGroupSize[3];
+		uint32_t maxComputeWorkGroupCount[3] = {	static_cast<uint32_t>(-1) , 
+													static_cast<uint32_t>(-1), 
+													static_cast<uint32_t>(-1) };
+		uint32_t maxComputeWorkGroupInvocations = -1;
+		uint32_t maxComputeWorkGroupSize[3] = { static_cast<uint32_t>(-1) ,
+												static_cast<uint32_t>(-1),
+												static_cast<uint32_t>(-1) };
 
 	} computeLimits;
 

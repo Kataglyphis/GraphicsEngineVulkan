@@ -22,7 +22,7 @@ public:
 
 private:
 
-	VulkanDevice*	device;
+	VulkanDevice*	device{VK_NULL_HANDLE};
 
 	VkImageView		imageView;
 

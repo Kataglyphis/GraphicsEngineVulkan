@@ -14,7 +14,7 @@ public:
 				VkQueue transfer_queue, 
 				VkCommandPool command_pool);
 
-	std::shared_ptr<Model>		loadModel(std::string modelFile);
+	std::shared_ptr<Model>		loadModel(const std::string& modelFile);
 
 
 private:
@@ -29,7 +29,7 @@ private:
 	std::vector<unsigned int>	materialIndex;
 	std::vector<std::string>	textures;
 
-	std::vector<std::string>	loadTexturesAndMaterials(std::string modelFile);
-	void						loadVertices(std::string fileName);
+	std::vector<std::string>	loadTexturesAndMaterials(const std::string& modelFile);
+	void						loadVertices(const std::string& fileName);
 };
 

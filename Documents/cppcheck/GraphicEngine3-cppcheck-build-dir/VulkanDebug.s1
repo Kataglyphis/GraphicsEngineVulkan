@@ -1,0 +1,3 @@
+debugUtilsMessengerCallback call:[fflush,prefix,str]
+setupDebugging call:[ASSERT_VULKAN,vkCreateDebugUtilsMessengerEXT,vkGetInstanceProcAddr]
+freeDebugCallback call:[vkDestroyDebugUtilsMessengerEXT] noreturn:[vkDestroyDebugUtilsMessengerEXT]

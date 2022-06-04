@@ -1,3 +1,0 @@
-_glfwConnectNull
-_glfwInitNull call:[_glfwPollMonitorsNull]
-_glfwTerminateNull global:[_glfw] call:[_glfwTerminateEGL,_glfwTerminateOSMesa,free] noreturn:[_glfwTerminateEGL]

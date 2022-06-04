@@ -28,7 +28,7 @@ void PostStage::init(	VulkanDevice* device,
 
 }
 
-void PostStage::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+void PostStage::shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts)
 {
 	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
 	createGraphicsPipeline(descriptor_set_layouts);
@@ -42,7 +42,7 @@ void PostStage::recordCommands(	VkCommandBuffer& commandBuffer, uint32_t image_i
 	render_pass_begin_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	render_pass_begin_info.renderPass = render_pass;								// render pass to begin 
 	render_pass_begin_info.renderArea.offset = { 0,0 };								// start point of render pass in pixels 
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	render_pass_begin_info.renderArea.extent = swap_chain_extent;					// size of region to run render pass on (starting at offset)
 
 	// make sure the order you put the values into the array matches with the attchment order you have defined previous
@@ -110,7 +110,7 @@ void PostStage::createDepthbufferImage()
 
 	// create depth buffer image
 	// MIP LEVELS: for depth texture we only want 1 level :)
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	depthBufferImage.createImage(device,
 		swap_chain_extent.width, swap_chain_extent.height,
 		1, depth_format, VK_IMAGE_TILING_OPTIMAL,
@@ -302,7 +302,7 @@ void PostStage::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>&
 	VkViewport viewport{};
 	viewport.x = 0.0f;
 	viewport.y = 0.0f;
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	viewport.width = (float)swap_chain_extent.width;
 	viewport.height = (float)swap_chain_extent.height;
 	viewport.minDepth = 0.0f;
@@ -435,7 +435,7 @@ void PostStage::createFramebuffer()
 		frame_buffer_create_info.renderPass = render_pass;											// render pass layout the framebuffer will be used with
 		frame_buffer_create_info.attachmentCount = static_cast<uint32_t>(attachments.size());
 		frame_buffer_create_info.pAttachments = attachments.data();									// list of attachments (1:1 with render pass)
-		const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+		const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 		frame_buffer_create_info.width = swap_chain_extent.width;									// framebuffer width
 		frame_buffer_create_info.height = swap_chain_extent.height;									// framebuffer height
 		frame_buffer_create_info.layers = 1;														// framebuffer layer 

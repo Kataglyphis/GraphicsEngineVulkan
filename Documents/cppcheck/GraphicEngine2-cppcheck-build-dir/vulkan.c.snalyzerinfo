@@ -1,8 +1,0 @@
-_glfwInitVulkan global:[_glfw] call:[GetInstanceProcAddr,VkResult,_glfwGetVulkanResultString,_glfwInputError,_glfwPlatformGetModuleSymbol,_glfwPlatformLoadModule,_glfwTerminateVulkan,_glfw_calloc,_glfw_free,getRequiredInstanceExtensions,sizeof,strcmp,vkEnumerateInstanceExtensionProperties,void] noreturn:[_glfwInputError]
-_glfwTerminateVulkan global:[_glfw] call:[_glfwPlatformFreeModule] noreturn:[_glfwPlatformFreeModule]
-_glfwGetVulkanResultString
-glfwVulkanSupported global:[_glfw] call:[_glfwInitVulkan,_glfwInputError] noreturn:[_glfwInitVulkan]
-glfwGetRequiredInstanceExtensions global:[_glfw] call:[_glfwInitVulkan,_glfwInputError,assert,return]
-glfwGetInstanceProcAddress global:[_glfw] call:[GetInstanceProcAddr,_glfwInitVulkan,_glfwInputError,_glfwPlatformGetModuleSymbol,assert,return,strcmp,void] noreturn:[_glfwPlatformGetModuleSymbol]
-glfwGetPhysicalDevicePresentationSupport global:[_glfw] call:[_glfwInitVulkan,_glfwInputError,assert,getPhysicalDevicePresentationSupport] noreturn:[getPhysicalDevicePresentationSupport]
-glfwCreateWindowSurface global:[_glfw] call:[_glfwInitVulkan,_glfwInputError,assert,createWindowSurface] noreturn:[createWindowSurface]

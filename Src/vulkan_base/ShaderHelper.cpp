@@ -7,7 +7,7 @@ ShaderHelper::ShaderHelper()
 {
 }
 
-void ShaderHelper::compileShader(std::string shader_src_dir, std::string shader_name)
+void ShaderHelper::compileShader(const std::string& shader_src_dir, const std::string& shader_name)
 {
 	// GLSLC_EXE is set by cmake to the location of the vulkan glslc
 	std::stringstream shader_src_path;
@@ -36,7 +36,7 @@ void ShaderHelper::compileShader(std::string shader_src_dir, std::string shader_
 	system(cmdShaderCompile.str().c_str());
 }
 
-std::string ShaderHelper::getShaderSpvDir(std::string shader_src_dir, std::string shader_name)
+std::string ShaderHelper::getShaderSpvDir(const std::string& shader_src_dir, const std::string& shader_name)
 {
 	std::string shader_spv_dir = "spv/";
 

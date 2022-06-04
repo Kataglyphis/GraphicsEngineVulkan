@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="170492102">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="ASSERT_VULKAN"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO"/>
+    <functioncall functionName="c_str"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="data"/>
+    <functioncall functionName="getLogicalDevice"/>
+    <functioncall functionName="getShaderSpvDir"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="reinterpret_cast"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="shader_module"/>
+    <functioncall functionName="shader_module_create_info"/>
+    <functioncall functionName="shader_name"/>
+    <functioncall functionName="shader_src_dir"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="str"/>
+    <functioncall functionName="system"/>
+    <functioncall functionName="vkCreateShaderModule"/>
+  </FileInfo>
+</analyzerinfo>

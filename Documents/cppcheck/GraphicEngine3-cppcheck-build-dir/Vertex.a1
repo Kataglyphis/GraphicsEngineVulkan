@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3499197093">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="getVertexInputAttributeDesc" lineNumber="21"/>
+    <functioncall functionName="VK_FORMAT_R32G32B32_SFLOAT"/>
+    <functioncall functionName="VK_FORMAT_R32G32_SFLOAT"/>
+    <functioncall functionName="Vertex"/>
+    <functioncall functionName="VkVertexInputAttributeDescription"/>
+    <functioncall functionName="color"/>
+    <functioncall functionName="normal"/>
+    <functioncall functionName="offsetof"/>
+    <functioncall functionName="pos"/>
+    <functioncall functionName="texture_coords"/>
+    <functioncall functionName="vec3"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="348679932">
+<analyzerinfo checksum="2574193403">
         <error id="arrayIndexOutOfBounds" severity="error" msg="Array &apos;this-&gt;value[2]&apos; accessed at index 2, which is out of bounds." verbose="Array &apos;this-&gt;value[2]&apos; accessed at index 2, which is out of bounds." cwe="788" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\detail\type_mat3x2.inl" line="260" column="14" info="Array index out of bounds"/>
         </error>
@@ -294,13 +294,69 @@
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\renderer\QueueFamilyIndices.h" line="10" column="7"/>
             <symbol>QueueFamilyIndices::is_valid</symbol>
         </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;VulkanDevice::getPhysicalDeviceProperties&apos; can be const." verbose="The member function &apos;VulkanDevice::getPhysicalDeviceProperties&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\vulkan_base\VulkanDevice.h" line="16" column="29"/>
+            <symbol>VulkanDevice::getPhysicalDeviceProperties</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Texture::getMipLevel&apos; can be const." verbose="The member function &apos;Texture::getMipLevel&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Texture.h" line="26" column="13"/>
+            <symbol>Texture::getMipLevel</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Mesh::getModel&apos; can be const." verbose="The member function &apos;Mesh::getModel&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Mesh.h" line="27" column="25"/>
+            <symbol>Mesh::getModel</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Mesh::getVertexCount&apos; can be const." verbose="The member function &apos;Mesh::getVertexCount&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Mesh.h" line="28" column="25"/>
+            <symbol>Mesh::getVertexCount</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Mesh::getIndexCount&apos; can be const." verbose="The member function &apos;Mesh::getIndexCount&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Mesh.h" line="29" column="25"/>
+            <symbol>Mesh::getIndexCount</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Model::getTextureCount&apos; can be const." verbose="The member function &apos;Model::getTextureCount&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Model.h" line="27" column="33"/>
+            <symbol>Model::getTextureCount</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Model::getTextureList&apos; can be const." verbose="The member function &apos;Model::getTextureList&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Model.h" line="30" column="33"/>
+            <symbol>Model::getTextureList</symbol>
+        </error>
+        <error id="functionStatic" severity="performance" msg="Technically the member function &apos;Model::getMeshCount&apos; can be static (but you may consider moving to unnamed namespace)." verbose="The member function &apos;Model::getMeshCount&apos; can be made a static function. Making a function static can bring a performance benefit since no &apos;this&apos; instance is passed to the function. This change should not cause compiler errors but it does not necessarily make sense conceptually. Think about your design and the task of the function first - is it a function that must not access members of class instances? And maybe it is more appropriate to move this function to a unnamed namespace." cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Model.h" line="31" column="33"/>
+            <symbol>Model::getMeshCount</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Model::getModel&apos; can be const." verbose="The member function &apos;Model::getModel&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Model.h" line="33" column="33"/>
+            <symbol>Model::getModel</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Model::getCustomInstanceIndex&apos; can be const." verbose="The member function &apos;Model::getCustomInstanceIndex&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Model.h" line="34" column="33"/>
+            <symbol>Model::getCustomInstanceIndex</symbol>
+        </error>
         <error id="functionConst" severity="style" msg="Technically the member function &apos;GUI::getGuiSceneSharedVars&apos; can be const." verbose="The member function &apos;GUI::getGuiSceneSharedVars&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\gui\GUI.h" line="25" column="29"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\gui\GUI.h" line="30" column="24"/>
             <symbol>GUI::getGuiSceneSharedVars</symbol>
         </error>
         <error id="functionConst" severity="style" msg="Technically the member function &apos;Scene::getGuiSceneSharedVars&apos; can be const." verbose="The member function &apos;Scene::getGuiSceneSharedVars&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Scene.h" line="38" column="28"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Scene.h" line="41" column="28"/>
             <symbol>Scene::getGuiSceneSharedVars</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Scene::getModelCount&apos; can be const." verbose="The member function &apos;Scene::getModelCount&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Scene.h" line="46" column="12"/>
+            <symbol>Scene::getModelCount</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Scene::getNumberObjectDescriptions&apos; can be const." verbose="The member function &apos;Scene::getNumberObjectDescriptions&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Scene.h" line="52" column="12"/>
+            <symbol>Scene::getNumberObjectDescriptions</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Scene::getObjectDescriptions&apos; can be const." verbose="The member function &apos;Scene::getObjectDescriptions&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Scene.h" line="54" column="36"/>
+            <symbol>Scene::getObjectDescriptions</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;Scene::get_model_list&apos; can be const." verbose="The member function &apos;Scene::get_model_list&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Scene.h" line="55" column="45"/>
+            <symbol>Scene::get_model_list</symbol>
         </error>
         <error id="functionStatic" severity="performance" msg="Technically the member function &apos;ImVector &lt; unsigned short &gt;::max_size&apos; can be static (but you may consider moving to unnamed namespace)." verbose="The member function &apos;ImVector &lt; unsigned short &gt;::max_size&apos; can be made a static function. Making a function static can bring a performance benefit since no &apos;this&apos; instance is passed to the function. This change should not cause compiler errors but it does not necessarily make sense conceptually. Think about your design and the task of the function first - is it a function that must not access members of class instances? And maybe it is more appropriate to move this function to a unnamed namespace." cwe="398" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\IMGUI\imgui.h" line="1789" column="25"/>
@@ -390,6 +446,10 @@
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\gtx\dual_quaternion.hpp" line="76" column="44"/>
             <symbol>tdualquat</symbol>
         </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Model&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Model&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\scene\Model.h" line="16" column="5"/>
+            <symbol>Model</symbol>
+        </error>
         <error id="noExplicitConstructor" severity="style" msg="Struct &apos;ImGuiListClipper&apos; has a constructor with 1 argument that is not explicit." verbose="Struct &apos;ImGuiListClipper&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\IMGUI\imgui.h" line="2314" column="12"/>
             <symbol>ImGuiListClipper</symbol>
@@ -407,7 +467,7 @@
             <symbol>ImDrawList</symbol>
         </error>
         <error id="noExplicitConstructor" severity="style" msg="Class &apos;GUI&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;GUI&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\gui\GUI.h" line="18" column="2"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\gui\GUI.h" line="23" column="2"/>
             <symbol>GUI</symbol>
         </error>
         <error id="redundantCondition" severity="style" msg="Redundant condition: If &apos;req_comp &gt;= 3&apos;, the comparison &apos;req_comp&apos; is always true." verbose="Redundant condition: If &apos;req_comp &gt;= 3&apos;, the comparison &apos;req_comp&apos; is always true." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
@@ -801,10 +861,6 @@
         <error id="variableScope" severity="style" msg="The scope of the variable &apos;dispose&apos; can be reduced." verbose="The scope of the variable &apos;dispose&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="6702" column="8"/>
             <symbol>dispose</symbol>
-        </error>
-        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned expression &apos;memory_type_index&apos; is less than zero." verbose="The unsigned expression &apos;memory_type_index&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\common\Utilities.h" line="220" column="24" info="Unsigned less than zero"/>
-            <symbol>memory_type_index</symbol>
         </error>
         <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;vec&apos; argument 1 names different: declaration &apos;x&apos; definition &apos;_x&apos;." verbose="Function &apos;vec&apos; argument 1 names different: declaration &apos;x&apos; definition &apos;_x&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\detail\type_vec2.inl" line="39" column="55"/>
@@ -2221,6 +2277,11 @@
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="945" column="63"/>
             <symbol>stbi__pic_load</symbol>
         </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;createBufferAndUploadVectorOnDevice&apos; argument 6 names different: declaration &apos;data&apos; definition &apos;bufferData&apos;." verbose="Function &apos;createBufferAndUploadVectorOnDevice&apos; argument 6 names different: declaration &apos;data&apos; definition &apos;bufferData&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\vulkan_base\VulkanBufferManager.h" line="51" column="28"/>
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\vulkan_base\VulkanBufferManager.h" line="34" column="29"/>
+            <symbol>createBufferAndUploadVectorOnDevice</symbol>
+        </error>
         <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;equal&apos; argument 3 names different: declaration &apos;epsilon&apos; definition &apos;Epsilon&apos;." verbose="Function &apos;equal&apos; argument 3 names different: declaration &apos;epsilon&apos; definition &apos;Epsilon&apos;." cwe="628" inconclusive="true" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\ext\vector_relational.inl" line="9" column="105"/>
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\ext\vector_relational.hpp" line="39" column="100"/>
@@ -2431,9 +2492,29 @@
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\gtc\constants.hpp" line="35" column="38" info="Shadowed declaration"/>
             <symbol>one</symbol>
         </error>
-        <error id="passedByValue" severity="performance" msg="Function parameter &apos;file_name&apos; should be passed by const reference." verbose="Parameter &apos;file_name&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++." cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\include\common\Utilities.h" line="25" column="47"/>
-            <symbol>file_name</symbol>
+        <error id="constVariable" severity="style" msg="Variable &apos;xorig&apos; can be declared with const" verbose="Variable &apos;xorig&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4819" column="11" info="Variable &apos;xorig&apos; can be declared with const"/>
+            <symbol>xorig</symbol>
+        </error>
+        <error id="constVariable" severity="style" msg="Variable &apos;xspc&apos; can be declared with const" verbose="Variable &apos;xspc&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4821" column="11" info="Variable &apos;xspc&apos; can be declared with const"/>
+            <symbol>xspc</symbol>
+        </error>
+        <error id="constVariable" severity="style" msg="Variable &apos;yspc&apos; can be declared with const" verbose="Variable &apos;yspc&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4822" column="11" info="Variable &apos;yspc&apos; can be declared with const"/>
+            <symbol>yspc</symbol>
+        </error>
+        <error id="constVariable" severity="style" msg="Variable &apos;yorig&apos; can be declared with const" verbose="Variable &apos;yorig&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4820" column="11" info="Variable &apos;yorig&apos; can be declared with const"/>
+            <symbol>yorig</symbol>
+        </error>
+        <error id="constVariable" severity="style" msg="Variable &apos;shift_table&apos; can be declared with const" verbose="Variable &apos;shift_table&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="5338" column="24" info="Variable &apos;shift_table&apos; can be declared with const"/>
+            <symbol>shift_table</symbol>
+        </error>
+        <error id="constVariable" severity="style" msg="Variable &apos;mul_table&apos; can be declared with const" verbose="Variable &apos;mul_table&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="5333" column="24" info="Variable &apos;mul_table&apos; can be declared with const"/>
+            <symbol>mul_table</symbol>
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;c&apos; can be declared with const" verbose="Parameter &apos;c&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="833" column="72" info="Parameter &apos;c&apos; can be declared with const"/>
@@ -2441,6 +2522,10 @@
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;fac&apos; can be declared with const" verbose="Parameter &apos;fac&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="2182" column="120" info="Parameter &apos;fac&apos; can be declared with const"/>
+            <symbol>fac</symbol>
+        </error>
+        <error id="constParameter" severity="style" msg="Parameter &apos;fac&apos; can be declared with const" verbose="Parameter &apos;fac&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="2262" column="108" info="Parameter &apos;fac&apos; can be declared with const"/>
             <symbol>fac</symbol>
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;dequant&apos; can be declared with const" verbose="Parameter &apos;dequant&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
@@ -2451,25 +2536,17 @@
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="1983" column="55" info="Parameter &apos;count&apos; can be declared with const"/>
             <symbol>count</symbol>
         </error>
-        <error id="constParameter" severity="style" msg="Parameter &apos;dequant&apos; can be declared with const" verbose="Parameter &apos;dequant&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3039" column="62" info="Parameter &apos;dequant&apos; can be declared with const"/>
-            <symbol>dequant</symbol>
-        </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;in_near&apos; can be declared with const" verbose="Parameter &apos;in_near&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3411" column="63" info="Parameter &apos;in_near&apos; can be declared with const"/>
             <symbol>in_near</symbol>
         </error>
-        <error id="constParameter" severity="style" msg="Parameter &apos;fac&apos; can be declared with const" verbose="Parameter &apos;fac&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="2262" column="108" info="Parameter &apos;fac&apos; can be declared with const"/>
-            <symbol>fac</symbol>
+        <error id="constParameter" severity="style" msg="Parameter &apos;dequant&apos; can be declared with const" verbose="Parameter &apos;dequant&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3039" column="62" info="Parameter &apos;dequant&apos; can be declared with const"/>
+            <symbol>dequant</symbol>
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;in_far&apos; can be declared with const" verbose="Parameter &apos;in_far&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3411" column="81" info="Parameter &apos;in_far&apos; can be declared with const"/>
             <symbol>in_far</symbol>
-        </error>
-        <error id="constParameter" severity="style" msg="Parameter &apos;in_near&apos; can be declared with const" verbose="Parameter &apos;in_near&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3592" column="67" info="Parameter &apos;in_near&apos; can be declared with const"/>
-            <symbol>in_near</symbol>
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;in_far&apos; can be declared with const" verbose="Parameter &apos;in_far&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3451" column="82" info="Parameter &apos;in_far&apos; can be declared with const"/>
@@ -2477,6 +2554,10 @@
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;in_near&apos; can be declared with const" verbose="Parameter &apos;in_near&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3451" column="64" info="Parameter &apos;in_near&apos; can be declared with const"/>
+            <symbol>in_near</symbol>
+        </error>
+        <error id="constParameter" severity="style" msg="Parameter &apos;in_near&apos; can be declared with const" verbose="Parameter &apos;in_near&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="3592" column="67" info="Parameter &apos;in_near&apos; can be declared with const"/>
             <symbol>in_near</symbol>
         </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;tc&apos; can be declared with const" verbose="Parameter &apos;tc&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
@@ -2494,30 +2575,6 @@
         <error id="constParameter" severity="style" msg="Parameter &apos;input&apos; can be declared with const" verbose="Parameter &apos;input&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="7053" column="55" info="Parameter &apos;input&apos; can be declared with const"/>
             <symbol>input</symbol>
-        </error>
-        <error id="constVariable" severity="style" msg="Variable &apos;yorig&apos; can be declared with const" verbose="Variable &apos;yorig&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4820" column="11" info="Variable &apos;yorig&apos; can be declared with const"/>
-            <symbol>yorig</symbol>
-        </error>
-        <error id="constVariable" severity="style" msg="Variable &apos;yspc&apos; can be declared with const" verbose="Variable &apos;yspc&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4822" column="11" info="Variable &apos;yspc&apos; can be declared with const"/>
-            <symbol>yspc</symbol>
-        </error>
-        <error id="constVariable" severity="style" msg="Variable &apos;xspc&apos; can be declared with const" verbose="Variable &apos;xspc&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4821" column="11" info="Variable &apos;xspc&apos; can be declared with const"/>
-            <symbol>xspc</symbol>
-        </error>
-        <error id="constVariable" severity="style" msg="Variable &apos;xorig&apos; can be declared with const" verbose="Variable &apos;xorig&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="4819" column="11" info="Variable &apos;xorig&apos; can be declared with const"/>
-            <symbol>xorig</symbol>
-        </error>
-        <error id="constVariable" severity="style" msg="Variable &apos;shift_table&apos; can be declared with const" verbose="Variable &apos;shift_table&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="5338" column="24" info="Variable &apos;shift_table&apos; can be declared with const"/>
-            <symbol>shift_table</symbol>
-        </error>
-        <error id="constVariable" severity="style" msg="Variable &apos;mul_table&apos; can be declared with const" verbose="Variable &apos;mul_table&apos; can be declared with const" cwe="398" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="5333" column="24" info="Variable &apos;mul_table&apos; can be declared with const"/>
-            <symbol>mul_table</symbol>
         </error>
         <error id="shiftTooManyBitsSigned" severity="portability" msg="Shifting signed 32-bit value by 31 bits is implementation-defined behaviour" verbose="Shifting signed 32-bit value by 31 bits is implementation-defined behaviour" cwe="758" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/App.cpp">
             <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\detail\func_common.inl" line="36" column="19" info="Shift"/>
@@ -2569,7 +2626,7 @@
   <FileInfo check="ctu">
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/common.hpp:127:24" call-funcname="fract" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/func_common.inl" line="346" col="33" call-argexpr="x" call-argvaluetype="0" call-argvalue="0" warning="true">
   <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\GLM\glm\detail\func_common.inl" line="356" col="13" info="Assuming that condition &apos;x&lt;=static_cast&lt;genType&gt;(0)&apos; is not redundant"/>
-</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="876" col="25" call-argexpr="&amp;stbi__stdio_callbacks" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:999:12" call-funcname="stbi__addsizes_valid" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1031" col="27" call-argexpr="add" call-argvaluetype="0" call-argvalue="0">
+</function-call><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="36" col="38" call-argexpr="&amp;properties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="36" col="38" call-argexpr="properties" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="876" col="25" call-argexpr="&amp;stbi__stdio_callbacks" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:999:12" call-funcname="stbi__addsizes_valid" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1031" col="27" call-argexpr="add" call-argvaluetype="0" call-argvalue="0">
   <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="6712" col="49" info="Calling function &apos;stbi__mad3sizes_valid&apos;, 4th argument &apos;0&apos; value is 0"/>
 </function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:999:12" call-funcname="stbi__addsizes_valid" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1039" col="62" call-argexpr="add" call-argvaluetype="0" call-argvalue="0">
   <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="7444" col="87" info="Calling function &apos;stbi__mad4sizes_valid&apos;, 5th argument &apos;0&apos; value is 0"/>
@@ -2591,7 +2648,7 @@
   <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="6933" col="20" info="Assuming that condition &apos;!out&apos; is not redundant"/>
 </function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:6874:14" call-funcname="stbi__load_gif_main_outofmem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6939" col="57" call-argexpr="&amp;g" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:6700:17" call-funcname="stbi__gif_load_next" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6977" col="27" call-argexpr="&amp;g" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:6700:17" call-funcname="stbi__gif_load_next" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6977" col="27" call-argexpr="req_comp" call-argvaluetype="0" call-argvalue="0" warning="true">
   <path file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\ExternalLib\STB\stb_image.h" line="6985" col="11" info="Assuming that condition &apos;req_comp&apos; is not redundant"/>
-</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:6700:17" call-funcname="stbi__gif_load_next" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6977" col="27" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7095" col="36" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7101" col="33" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7110" col="30" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1036:12" call-funcname="stbi__mad4sizes_valid" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7128" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1059:14" call-funcname="stbi__malloc_mad4" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7132" col="42" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1646:12" call-funcname="stbi__getn" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7144" col="23" call-argexpr="rgbe" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7053:13" call-funcname="stbi__hdr_convert" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7145" col="30" call-argexpr="rgbe" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7053:13" call-funcname="stbi__hdr_convert" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7164" col="30" call-argexpr="rgbe" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1045:14" call-funcname="stbi__malloc_mad2" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7174" col="53" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7228" col="33" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7237" col="30" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:5384:14" call-funcname="stbi__bmp_parse_header" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7263" col="30" call-argexpr="&amp;info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:5384:14" call-funcname="stbi__bmp_parse_header" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7263" col="30" call-argexpr="info" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1036:12" call-funcname="stbi__mad4sizes_valid" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7444" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1059:14" call-funcname="stbi__malloc_mad4" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7447" col="39" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7463:17" call-funcname="stbi__pnm_skip_whitespace" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7516" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7482:17" call-funcname="stbi__pnm_getinteger" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7518" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7463:17" call-funcname="stbi__pnm_skip_whitespace" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7519" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7482:17" call-funcname="stbi__pnm_getinteger" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7521" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7463:17" call-funcname="stbi__pnm_skip_whitespace" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7522" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7482:17" call-funcname="stbi__pnm_getinteger" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7524" col="31" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:959:17" call-funcname="stbi__pnm_info" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7535" col="22" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:959:17" call-funcname="stbi__pnm_info" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7535" col="22" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:959:17" call-funcname="stbi__pnm_info" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7535" col="22" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7615" col="20" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7615" col="20" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7616" col="23" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7636" col="20" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7636" col="20" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7583:12" call-funcname="stbi__is_16_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7637" col="24" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7646" col="19" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7646" col="19" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7647" col="26" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7653" col="25" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7653" col="25" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7654" col="26" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7660" col="19" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7660" col="19" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7583:12" call-funcname="stbi__is_16_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7661" col="27" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7667" col="25" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7667" col="25" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7583:12" call-funcname="stbi__is_16_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7668" col="27" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:424:18" call-funcname="stbi_load" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="32" col="28" call-argexpr="&amp;channels" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:424:18" call-funcname="stbi_load" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="32" col="28" call-argexpr="channels" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="58" col="38" call-argexpr="&amp;properties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="58" col="38" call-argexpr="properties" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3874:28" call-funcname="vkGetPhysicalDeviceMemoryProperties" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="114" col="37" call-argexpr="&amp;memory_properties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3989:28" call-funcname="vkGetImageMemoryRequirements" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="166" col="30" call-argexpr="&amp;memory_requirements" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3989:28" call-funcname="vkGetImageMemoryRequirements" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="166" col="30" call-argexpr="memory_requirements" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3934:32" call-funcname="vkAllocateMemory" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="175" col="27" call-argexpr="&amp;memory_alloc_info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3934:32" call-funcname="vkAllocateMemory" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="175" col="27" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4098:32" call-funcname="vkCreateBuffer" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="199" col="34" call-argexpr="&amp;buffer_info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4098:32" call-funcname="vkCreateBuffer" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="199" col="34" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3934:32" call-funcname="vkAllocateMemory" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="229" col="27" call-argexpr="&amp;memory_alloc_info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3934:32" call-funcname="vkAllocateMemory" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="229" col="27" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4324:32" call-funcname="vkBeginCommandBuffer" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="264" col="22" call-argexpr="&amp;begin_info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3922:32" call-funcname="vkQueueSubmit" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="289" col="24" call-argexpr="&amp;submit_info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3922:32" call-funcname="vkQueueSubmit" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="289" col="24" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4449:28" call-funcname="vkCmdCopyBuffer" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="326" col="17" call-argexpr="&amp;buffer_copy_region" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4475:28" call-funcname="vkCmdCopyBufferToImage" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="350" col="24" call-argexpr="&amp;image_region" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="429" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="429" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="429" col="22" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="429" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="8" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="429" col="22" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="10" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="429" col="22" call-argexpr="&amp;memory_barrier" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="471" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="471" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="471" col="22" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="471" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="8" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="471" col="22" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="10" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="471" col="22" call-argexpr="&amp;memory_barrier" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="491" col="37" call-argexpr="&amp;formatProperties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3851:28" call-funcname="vkGetPhysicalDeviceFormatProperties" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="491" col="37" call-argexpr="formatProperties" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="524" col="23" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="524" col="23" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="524" col="23" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="524" col="23" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="8" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="524" col="23" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="10" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="524" col="23" call-argexpr="&amp;barrier" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4465:28" call-funcname="vkCmdBlitImage" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="550" col="17" call-argexpr="&amp;blit" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="562" col="23" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="562" col="23" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="562" col="23" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="562" col="23" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="8" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="562" col="23" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="10" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="562" col="23" call-argexpr="&amp;barrier" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="579" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="579" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="579" col="22" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="579" col="22" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="8" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="579" col="22" call-argexpr="nullptr" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4560:28" call-funcname="vkCmdPipelineBarrier" call-argnr="10" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="579" col="22" call-argexpr="&amp;barrier" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2552:21" call-funcname="AddPolyline" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2571" col="103" call-argexpr="flags" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2554:21" call-funcname="AddBezierCubic" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2606" col="174" call-argexpr="num_segments" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2574:21" call-funcname="PathBezierCubicCurveTo" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2607" col="139" call-argexpr="num_segments" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:253:15" call-funcname="ImVec2" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2712" col="130" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:253:15" call-funcname="ImVec2" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2712" col="130" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="876" col="4" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" my-argnr="1"/>
+</function-call><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:6700:17" call-funcname="stbi__gif_load_next" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6977" col="27" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7095" col="36" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7101" col="33" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7110" col="30" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1036:12" call-funcname="stbi__mad4sizes_valid" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7128" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1059:14" call-funcname="stbi__malloc_mad4" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7132" col="42" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1646:12" call-funcname="stbi__getn" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7144" col="23" call-argexpr="rgbe" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7053:13" call-funcname="stbi__hdr_convert" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7145" col="30" call-argexpr="rgbe" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7053:13" call-funcname="stbi__hdr_convert" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7164" col="30" call-argexpr="rgbe" call-argvaluetype="7" call-argvalue="4"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1045:14" call-funcname="stbi__malloc_mad2" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7174" col="53" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7228" col="33" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7031:14" call-funcname="stbi__hdr_gettoken" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7237" col="30" call-argexpr="buffer" call-argvaluetype="7" call-argvalue="1024"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:5384:14" call-funcname="stbi__bmp_parse_header" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7263" col="30" call-argexpr="&amp;info" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:5384:14" call-funcname="stbi__bmp_parse_header" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7263" col="30" call-argexpr="info" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1036:12" call-funcname="stbi__mad4sizes_valid" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7444" col="30" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1059:14" call-funcname="stbi__malloc_mad4" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7447" col="39" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7463:17" call-funcname="stbi__pnm_skip_whitespace" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7516" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7482:17" call-funcname="stbi__pnm_getinteger" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7518" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7463:17" call-funcname="stbi__pnm_skip_whitespace" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7519" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7482:17" call-funcname="stbi__pnm_getinteger" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7521" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7463:17" call-funcname="stbi__pnm_skip_whitespace" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7522" col="29" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7482:17" call-funcname="stbi__pnm_getinteger" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7524" col="31" call-argexpr="&amp;c" call-argvaluetype="7" call-argvalue="1"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:959:17" call-funcname="stbi__pnm_info" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7535" col="22" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:959:17" call-funcname="stbi__pnm_info" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7535" col="22" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:959:17" call-funcname="stbi__pnm_info" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7535" col="22" call-argexpr="NULL" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7615" col="20" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7615" col="20" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7616" col="23" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7636" col="20" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" call-funcname="stbi__start_file" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7636" col="20" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7583:12" call-funcname="stbi__is_16_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7637" col="24" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7646" col="19" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7646" col="19" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7647" col="26" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7653" col="25" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7653" col="25" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7654" col="26" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7660" col="19" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7660" col="19" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7583:12" call-funcname="stbi__is_16_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7661" col="27" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7667" col="25" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7667" col="25" call-argexpr="s" call-argvaluetype="4" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7583:12" call-funcname="stbi__is_16_main" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7668" col="27" call-argexpr="&amp;s" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3945:32" call-funcname="vkMapMemory" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h" line="68" col="13" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3945:32" call-funcname="vkMapMemory" call-argnr="5" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h" line="68" col="13" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3945:32" call-funcname="vkMapMemory" call-argnr="6" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h" line="68" col="13" call-argexpr="&amp;data" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2552:21" call-funcname="AddPolyline" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2571" col="103" call-argexpr="flags" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2554:21" call-funcname="AddBezierCubic" call-argnr="7" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2606" col="174" call-argexpr="num_segments" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2574:21" call-funcname="PathBezierCubicCurveTo" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2607" col="139" call-argexpr="num_segments" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:253:15" call-funcname="ImVec2" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2712" col="130" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:253:15" call-funcname="ImVec2" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2712" col="130" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3874:28" call-funcname="vkGetPhysicalDeviceMemoryProperties" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/MemoryHelper.h" line="15" col="37" call-argexpr="&amp;memory_properties" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="876" col="4" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:874:13" my-argnr="1"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:912:17" call-funcname="stbi__png_test" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1127" col="8" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1117:14" my-argnr="1"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:913:17" call-funcname="stbi__png_load" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1127" col="35" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1117:14" my-argnr="2"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:913:17" call-funcname="stbi__png_load" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1127" col="35" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1117:14" my-argnr="3"/>
@@ -2776,14 +2833,9 @@
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7541:12" call-funcname="stbi__info_main" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7654" col="11" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7650:13" my-argnr="5"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:823:13" call-funcname="stbi__start_mem" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7660" col="4" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7657:13" my-argnr="1"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" call-funcname="stbi__start_callbacks" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7667" col="4" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7664:13" my-argnr="2"/>
-<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:424:18" call-funcname="stbi_load" call-argnr="2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="32" col="19" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:25:17" my-argnr="2"/>
-<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:424:18" call-funcname="stbi_load" call-argnr="3" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="32" col="19" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:25:17" my-argnr="3"/>
-<function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3934:32" call-funcname="vkAllocateMemory" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="175" col="11" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:134:16" my-argnr="10"/>
-<function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:4098:32" call-funcname="vkCreateBuffer" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="199" col="20" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:186:13" my-argnr="6"/>
-<function-call call-id="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h:3934:32" call-funcname="vkAllocateMemory" call-argnr="4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="229" col="11" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:186:13" my-argnr="7"/>
-<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:621:29" call-funcname="BeginListBox" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2970" col="102" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2970:25" my-argnr="1"/>
-<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:687:29" call-funcname="OpenPopupOnItemClick" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2973" col="100" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2973:25" my-argnr="1"/>
-<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:696:29" call-funcname="BeginPopupContextWindow" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2990" col="116" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2990:25" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:621:29" call-funcname="BeginListBox" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2973" col="110" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2973:25" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:687:29" call-funcname="OpenPopupOnItemClick" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2976" col="103" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2976:25" my-argnr="1"/>
+<function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:696:29" call-funcname="BeginPopupContextWindow" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="2993" col="116" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:2993:25" my-argnr="1"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1811:25" call-funcname="push_back" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1813" col="78" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1813:25" my-argnr="1"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1819:25" call-funcname="find" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1821" col="77" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1821:25" my-argnr="1"/>
 <function-call call-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1819:25" call-funcname="find" call-argnr="1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1822" col="77" my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1822:25" my-argnr="1"/>
@@ -2798,7 +2850,7 @@
     </array-index>
   </FileInfo>
   <FileInfo check="Class">
-<class name="App" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/App.h" line="2" col="1" hash="10874720378811366839"/>
+<class name="App" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/App.h" line="2" col="1" hash="4550800168148799264"/>
 <class name="VkExtent2D" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="2571" col="9" hash="16205352423417112205"/>
 <class name="VkExtent3D" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="2576" col="9" hash="16578149676478356496"/>
 <class name="VkOffset2D" file="C:/VulkanSDK/1.3.211.0/Include/vulkan/vulkan_core.h" line="2582" col="9" hash="9489256998799080206"/>
@@ -3455,6 +3507,8 @@
 <class name="VmaVirtualBlockCreateInfo" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/VULKAN_MEMORY_ALLOCATOR/include/vk_mem_alloc.h" line="1491" col="9" hash="12082111565716356053"/>
 <class name="VmaVirtualAllocationCreateInfo" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/VULKAN_MEMORY_ALLOCATOR/include/vk_mem_alloc.h" line="1512" col="9" hash="7716954558133697678"/>
 <class name="VmaVirtualAllocationInfo" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/VULKAN_MEMORY_ALLOCATOR/include/vk_mem_alloc.h" line="1535" col="9" hash="17497207827285879156"/>
+<class name="QueueFamilyIndices" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/QueueFamilyIndices.h" line="3" col="1" hash="5154721861062401976"/>
+<class name="SwapChainDetails" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/SwapChainDetails.h" line="5" col="1" hash="577878947623651971"/>
 <class name="stbi_io_callbacks" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="408" col="9" hash="11705107323176315617"/>
 <class name="stbi__context" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="802" col="9" hash="16712254861965126960"/>
 <class name="stbi__result_info" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="898" col="9" hash="6939666905213935452"/>
@@ -3469,23 +3523,13 @@
 <class name="stbi__pic_packet" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6284" col="9" hash="5465335782172969765"/>
 <class name="stbi__gif_lzw" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6475" col="9" hash="9695820723445747503"/>
 <class name="stbi__gif" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="6482" col="9" hash="9310270853715209715"/>
-<class name="SwapChainDetails" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="12" col="1" hash="577878947623651971"/>
-<class name="SwapChainImage" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="20" col="1" hash="11965713891921174883"/>
-<class name="BLAS" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="27" col="1" hash="3898258643926144531"/>
-<class name="BuildAccelerationStructure" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="35" col="1" hash="17014038220206300301"/>
-<class name="BlasInput" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="44" col="1" hash="5894343548834545279"/>
-<class name="TLAS" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="51" col="1" hash="3579434319415777913"/>
-<class name="RayTracingImage" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="59" col="1" hash="16279887561029235881"/>
-<class name="OffScreenRenderImage" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="67" col="1" hash="4966656061517402454"/>
-<class name="OffscreenTexture" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/GlobalValues.h" line="75" col="1" hash="16524547035099874816"/>
-<class name="ObjMaterial" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjMaterial.h" line="19" col="1" hash="6178535869330493830"/>
-<class name="ObjectDescription" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjectDescription.h" line="11" col="1" hash="104876962143517803"/>
-<class name="QueueFamilyIndices" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/QueueFamilyIndices.h" line="3" col="1" hash="5154721861062401976"/>
 <class name="GUISceneSharedVars" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/GUISceneSharedVars.h" line="2" col="1" hash="11603216347661655136"/>
 <class name="GlobalUBO" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/GlobalUBO.h" line="18" col="1" hash="14464626210996443310"/>
 <class name="SceneUBO" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/SceneUBO.h" line="17" col="1" hash="15457208115246075390"/>
-<class name="PushConstantRasterizer" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/PushConstantRasterizer.h" line="18" col="1" hash="13044654993922079796"/>
-<class name="PushConstantRaytracing" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/PushConstantRayTracing.h" line="17" col="1" hash="6849718528906555596"/>
+<class name="PushConstantRasterizer" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantRasterizer.h" line="18" col="1" hash="13044654993922079796"/>
+<class name="PushConstantRaytracing" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantRayTracing.h" line="17" col="1" hash="6849718528906555596"/>
+<class name="ObjMaterial" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjMaterial.h" line="19" col="1" hash="6178535869330493830"/>
+<class name="ObjectDescription" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjectDescription.h" line="11" col="1" hash="104876962143517803"/>
 <class name="ImVec2" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="249" col="1" hash="688070512586759287"/>
 <class name="ImVec4" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="262" col="1" hash="2638745889090663251"/>
 <class name="ImNewWrapper" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1743" col="1" hash="3019713718933798540"/>
@@ -3509,7 +3553,14 @@
 <class name="ImGui_ImplVulkanH_Frame" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/backends/imgui_impl_vulkan.h" line="112" col="1" hash="277028518710921400"/>
 <class name="ImGui_ImplVulkanH_FrameSemaphores" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/backends/imgui_impl_vulkan.h" line="122" col="1" hash="12762541231080416945"/>
 <class name="ImGui_ImplVulkanH_Window" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/backends/imgui_impl_vulkan.h" line="130" col="1" hash="213801089095392549"/>
-<class name="GUIRendererSharedVars" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/GUIRendererSharedVars.h" line="1" col="1" hash="17628989333629135270"/>
+<class name="GUIRendererSharedVars" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/GUIRendererSharedVars.h" line="1" col="1" hash="18006053529846546568"/>
+<class name="TopLevelAccelerationStructure" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/TopLevelAccelerationStructure.h" line="6" col="1" hash="12607103298446316399"/>
+<class name="BottomLevelAccelerationStructure" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/BottomLevelAccelerationStructure.h" line="6" col="1" hash="686590674826743287"/>
+<class name="BuildAccelerationStructure" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/ASManager.h" line="10" col="1" hash="18279843491555163447"/>
+<class name="BlasInput" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/ASManager.h" line="19" col="1" hash="5894343548834545279"/>
+<class name="PushConstantPost" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantPost.h" line="17" col="1" hash="10022765523399448716"/>
+<class name="PushConstantPathTracing" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantPathTracing.h" line="17" col="1" hash="14376430036985722527"/>
+<class name="PathTracing::SpecializationData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/PathTracing.h" line="53" col="2" hash="13231237510645870754"/>
 <class name="ImVector &lt; unsigned short &gt;" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1765" col="1" hash="11807229349160092465"/>
 <class name="ImVector &lt; ImGuiTextRange &gt;" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1765" col="1" hash="3623217473172946036"/>
 <class name="ImVector &lt; char &gt;" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1765" col="1" hash="5092907385108377135"/>
@@ -3881,7 +3932,6 @@
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.hpp:126:24" my-argnr="1" my-argname="m" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.inl" line="154" col="42" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.hpp:132:24" my-argnr="1" my-argname="m" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.inl" line="166" col="42" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.hpp:138:24" my-argnr="1" my-argname="m" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.inl" line="178" col="42" value="0"/>
-    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanDebug.h:5:39" my-argnr="3" my-argname="pCallbackData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanDebug.h" line="28" col="35" value="0"/>
   </FileInfo>
   <FileInfo check="Uninitialized variables">
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/type_vec2.hpp:149:46" my-argnr="1" my-argname="v" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/type_vec2.inl" line="149" col="28" value="0"/>
@@ -4576,6 +4626,7 @@
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/matrix_transform.inl:128:40" my-argnr="3" my-argname="l_x" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/matrix_transform.inl" line="130" col="44" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/matrix_transform.inl:128:40" my-argnr="4" my-argname="l_y" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/matrix_transform.inl" line="132" col="44" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/matrix_transform.inl:128:40" my-argnr="5" my-argname="l_z" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/matrix_transform.inl" line="134" col="44" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:25:17" my-argnr="2" my-argname="formats" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="32" col="25" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:833:13" my-argnr="2" my-argname="c" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="835" col="13" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1317:14" my-argnr="1" my-argname="filename" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1337" col="25" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:1317:14" my-argnr="2" my-argname="mode" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="1337" col="35" value="0"/>
@@ -4616,7 +4667,8 @@
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:7053:13" my-argnr="2" my-argname="input" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7055" col="9" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:498:18" my-argnr="1" my-argname="f" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7614" col="21" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h:500:18" my-argnr="1" my-argname="f" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/STB/stb_image.h" line="7635" col="21" value="0"/>
-    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h:47:17" my-argnr="2" my-argname="formats" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.h" line="54" col="25" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h:29:7" my-argnr="3" my-argname="vulkanBuffer" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h" line="76" col="2" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h:29:7" my-argnr="6" my-argname="bufferData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanBufferManager.h" line="53" col="40" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/type_float.hpp:26:26" my-argnr="1" my-argname="x" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/type_float.hpp" line="28" col="8" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/type_float.hpp:49:26" my-argnr="1" my-argname="x" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/detail/type_float.hpp" line="51" col="8" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/quaternion_geometric.hpp:65:31" my-argnr="1" my-argname="q1" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/ext/quaternion_geometric.inl" line="30" col="4" value="0"/>
@@ -4706,8 +4758,7 @@
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/dual_quaternion.hpp:169:32" my-argnr="1" my-argname="x" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/dual_quaternion.inl" line="261" col="17" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/dual_quaternion.hpp:181:32" my-argnr="1" my-argname="x" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/dual_quaternion.inl" line="307" col="19" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.inl:15:18" my-argnr="1" my-argname="seed" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/GLM/glm/gtx/hash.inl" line="17" col="25" value="0"/>
-    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Vertex.h:24:7" my-argnr="1" my-argname="other" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Vertex.h" line="25" col="17" value="0"/>
-    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanDebug.h:5:39" my-argnr="3" my-argname="pCallbackData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan_base/VulkanDebug.h" line="28" col="35" value="0"/>
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Vertex.h:26:7" my-argnr="1" my-argname="other" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Vertex.h" line="27" col="17" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1779:25" my-argnr="1" my-argname="src" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1779" col="79" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1802:25" my-argnr="1" my-argname="rhs" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1802" col="78" value="0"/>
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1811:25" my-argnr="1" my-argname="v" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1811" col="141" value="0"/>
@@ -4786,7 +4837,7 @@
     <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h:1817:25" my-argnr="2" my-argname="v" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/IMGUI/imgui.h" line="1817" col="317" value="0"/>
   </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
-    <functiondecl functionName="run" lineNumber="27"/>
+    <functiondecl functionName="run" lineNumber="29"/>
     <functioncall functionName="A"/>
     <functioncall functionName="Add1"/>
     <functioncall functionName="AddBezierCubic"/>
@@ -4797,12 +4848,12 @@
     <functioncall functionName="AngleRad"/>
     <functioncall functionName="App"/>
     <functioncall functionName="B"/>
-    <functioncall functionName="BLAS"/>
     <functioncall functionName="Base"/>
     <functioncall functionName="Begin"/>
     <functioncall functionName="BeginListBox"/>
     <functioncall functionName="BeginPopupContextWindow"/>
     <functioncall functionName="Bits"/>
+    <functioncall functionName="BottomLevelAccelerationStructure"/>
     <functioncall functionName="BufTextLen"/>
     <functioncall functionName="Build"/>
     <functioncall functionName="C"/>
@@ -4856,7 +4907,6 @@
     <functioncall functionName="GENTYPE_MAT"/>
     <functioncall functionName="GENTYPE_QUAT"/>
     <functioncall functionName="GENTYPE_VEC"/>
-    <functioncall functionName="GLfloat"/>
     <functioncall functionName="GUI"/>
     <functioncall functionName="GetFrameCount"/>
     <functioncall functionName="GetWindowContentRegionMax"/>
@@ -5237,9 +5287,7 @@
     <functioncall functionName="Nref"/>
     <functioncall functionName="Num"/>
     <functioncall functionName="ObjMaterial"/>
-    <functioncall functionName="ObjReaderConfig"/>
     <functioncall functionName="ObjectDescription"/>
-    <functioncall functionName="OffscreenTexture"/>
     <functioncall functionName="Offset"/>
     <functioncall functionName="OpenPopupOnItemClick"/>
     <functioncall functionName="P"/>
@@ -5264,27 +5312,20 @@
     <functioncall functionName="STBI__SCAN_header"/>
     <functioncall functionName="STBI__SCAN_load"/>
     <functioncall functionName="STBI__SCAN_type"/>
-    <functioncall functionName="STBI_rgb_alpha"/>
     <functioncall functionName="Scene"/>
     <functioncall functionName="SetBit"/>
     <functioncall functionName="SetCurrentChannel"/>
+    <functioncall functionName="SetNextFrameWantCaptureKeyboard"/>
+    <functioncall functionName="SetNextFrameWantCaptureMouse"/>
     <functioncall functionName="SignA"/>
     <functioncall functionName="SignB"/>
     <functioncall functionName="Size"/>
     <functioncall functionName="SliderScalar"/>
     <functioncall functionName="SliderScalarN"/>
     <functioncall functionName="Split"/>
-    <functioncall functionName="SwapChainImage"/>
     <functioncall functionName="T"/>
-    <functioncall functionName="TEXTURE_TYPE_CUBE_BACK"/>
-    <functioncall functionName="TEXTURE_TYPE_CUBE_BOTTOM"/>
-    <functioncall functionName="TEXTURE_TYPE_CUBE_FRONT"/>
-    <functioncall functionName="TEXTURE_TYPE_CUBE_LEFT"/>
-    <functioncall functionName="TEXTURE_TYPE_CUBE_RIGHT"/>
-    <functioncall functionName="TEXTURE_TYPE_CUBE_TOP"/>
-    <functioncall functionName="TEXTURE_TYPE_NONE"/>
-    <functioncall functionName="TEXTURE_TYPE_SPHERE"/>
     <functioncall functionName="Temp"/>
+    <functioncall functionName="Texture"/>
     <functioncall functionName="Tmp"/>
     <functioncall functionName="U"/>
     <functioncall functionName="V"/>
@@ -5299,13 +5340,11 @@
     <functioncall functionName="VK_ACCESS_ACCELERATION_STRUCTURE_WRITE_BIT_KHR"/>
     <functioncall functionName="VK_ACCESS_FRAGMENT_SHADING_RATE_ATTACHMENT_READ_BIT_KHR"/>
     <functioncall functionName="VK_ACCESS_NONE"/>
-    <functioncall functionName="VK_ACCESS_SHADER_READ_BIT"/>
-    <functioncall functionName="VK_ACCESS_TRANSFER_READ_BIT"/>
-    <functioncall functionName="VK_ACCESS_TRANSFER_WRITE_BIT"/>
     <functioncall functionName="VK_ATTACHMENT_STORE_OP_NONE"/>
     <functioncall functionName="VK_BUFFER_CREATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT"/>
     <functioncall functionName="VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR"/>
     <functioncall functionName="VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT"/>
+    <functioncall functionName="VK_BUFFER_USAGE_TRANSFER_SRC_BIT"/>
     <functioncall functionName="VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_COMPACTION_BIT_KHR"/>
     <functioncall functionName="VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_UPDATE_BIT_KHR"/>
     <functioncall functionName="VK_BUILD_ACCELERATION_STRUCTURE_LOW_MEMORY_BIT_KHR"/>
@@ -5315,9 +5354,6 @@
     <functioncall functionName="VK_CHROMA_LOCATION_MIDPOINT"/>
     <functioncall functionName="VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT"/>
     <functioncall functionName="VK_COLOR_SPACE_SRGB_NONLINEAR_KHR"/>
-    <functioncall functionName="VK_COMMAND_BUFFER_LEVEL_PRIMARY"/>
-    <functioncall functionName="VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT"/>
-    <functioncall functionName="VK_COMPONENT_SWIZZLE_IDENTITY"/>
     <functioncall functionName="VK_COPY_ACCELERATION_STRUCTURE_MODE_CLONE_KHR"/>
     <functioncall functionName="VK_COPY_ACCELERATION_STRUCTURE_MODE_COMPACT_KHR"/>
     <functioncall functionName="VK_DEBUG_REPORT_OBJECT_TYPE_DEBUG_REPORT_CALLBACK_EXT_EXT"/>
@@ -5392,7 +5428,6 @@
     <functioncall functionName="VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT"/>
     <functioncall functionName="VK_FENCE_IMPORT_TEMPORARY_BIT"/>
     <functioncall functionName="VK_FILTER_CUBIC_IMG"/>
-    <functioncall functionName="VK_FILTER_LINEAR"/>
     <functioncall functionName="VK_FORMAT_A4B4G4R4_UNORM_PACK16"/>
     <functioncall functionName="VK_FORMAT_A4R4G4B4_UNORM_PACK16"/>
     <functioncall functionName="VK_FORMAT_ASTC_10x10_SFLOAT_BLOCK"/>
@@ -5412,6 +5447,7 @@
     <functioncall functionName="VK_FORMAT_B10X6G10X6R10X6G10X6_422_UNORM_4PACK16"/>
     <functioncall functionName="VK_FORMAT_B12X4G12X4R12X4G12X4_422_UNORM_4PACK16"/>
     <functioncall functionName="VK_FORMAT_B16G16R16G16_422_UNORM"/>
+    <functioncall functionName="VK_FORMAT_B8G8R8A8_UNORM"/>
     <functioncall functionName="VK_FORMAT_B8G8R8G8_422_UNORM"/>
     <functioncall functionName="VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT"/>
     <functioncall functionName="VK_FORMAT_FEATURE_DISJOINT_BIT"/>
@@ -5458,7 +5494,7 @@
     <functioncall functionName="VK_FORMAT_R12X4G12X4B12X4A12X4_UNORM_4PACK16"/>
     <functioncall functionName="VK_FORMAT_R12X4G12X4_UNORM_2PACK16"/>
     <functioncall functionName="VK_FORMAT_R12X4_UNORM_PACK16"/>
-    <functioncall functionName="VK_FORMAT_R32G32B32A32_SFLOAT"/>
+    <functioncall functionName="VK_FORMAT_UNDEFINED"/>
     <functioncall functionName="VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT"/>
     <functioncall functionName="VK_GEOMETRY_INSTANCE_FORCE_NO_OPAQUE_BIT_KHR"/>
     <functioncall functionName="VK_GEOMETRY_INSTANCE_FORCE_OPAQUE_BIT_KHR"/>
@@ -5469,7 +5505,6 @@
     <functioncall functionName="VK_GEOMETRY_OPAQUE_BIT_KHR"/>
     <functioncall functionName="VK_GEOMETRY_TYPE_AABBS_KHR"/>
     <functioncall functionName="VK_GEOMETRY_TYPE_TRIANGLES_KHR"/>
-    <functioncall functionName="VK_IMAGE_ASPECT_COLOR_BIT"/>
     <functioncall functionName="VK_IMAGE_ASPECT_NONE"/>
     <functioncall functionName="VK_IMAGE_ASPECT_PLANE_0_BIT"/>
     <functioncall functionName="VK_IMAGE_ASPECT_PLANE_1_BIT"/>
@@ -5487,20 +5522,15 @@
     <functioncall functionName="VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL"/>
     <functioncall functionName="VK_IMAGE_LAYOUT_FRAGMENT_SHADING_RATE_ATTACHMENT_OPTIMAL_KHR"/>
     <functioncall functionName="VK_IMAGE_LAYOUT_READ_ONLY_OPTIMAL"/>
-    <functioncall functionName="VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL"/>
     <functioncall functionName="VK_IMAGE_LAYOUT_STENCIL_ATTACHMENT_OPTIMAL"/>
     <functioncall functionName="VK_IMAGE_LAYOUT_STENCIL_READ_ONLY_OPTIMAL"/>
-    <functioncall functionName="VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL"/>
-    <functioncall functionName="VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL"/>
-    <functioncall functionName="VK_IMAGE_LAYOUT_UNDEFINED"/>
-    <functioncall functionName="VK_IMAGE_TYPE_2D"/>
     <functioncall functionName="VK_IMAGE_USAGE_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR"/>
-    <functioncall functionName="VK_IMAGE_VIEW_TYPE_2D"/>
     <functioncall functionName="VK_INDEX_TYPE_NONE_KHR"/>
     <functioncall functionName="VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT"/>
     <functioncall functionName="VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT"/>
     <functioncall functionName="VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT"/>
     <functioncall functionName="VK_MEMORY_HEAP_MULTI_INSTANCE_BIT"/>
+    <functioncall functionName="VK_MEMORY_PROPERTY_HOST_COHERENT_BIT"/>
     <functioncall functionName="VK_OBJECT_TYPE_DESCRIPTOR_UPDATE_TEMPLATE"/>
     <functioncall functionName="VK_OBJECT_TYPE_PRIVATE_DATA_SLOT"/>
     <functioncall functionName="VK_OBJECT_TYPE_SAMPLER_YCBCR_CONVERSION"/>
@@ -5529,11 +5559,9 @@
     <functioncall functionName="VK_PIPELINE_SHADER_STAGE_CREATE_ALLOW_VARYING_SUBGROUP_SIZE_BIT"/>
     <functioncall functionName="VK_PIPELINE_SHADER_STAGE_CREATE_REQUIRE_FULL_SUBGROUPS_BIT"/>
     <functioncall functionName="VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_KHR"/>
-    <functioncall functionName="VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT"/>
     <functioncall functionName="VK_PIPELINE_STAGE_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR"/>
     <functioncall functionName="VK_PIPELINE_STAGE_NONE"/>
     <functioncall functionName="VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_KHR"/>
-    <functioncall functionName="VK_PIPELINE_STAGE_TRANSFER_BIT"/>
     <functioncall functionName="VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES"/>
     <functioncall functionName="VK_POINT_CLIPPING_BEHAVIOR_USER_CLIP_PLANES_ONLY"/>
     <functioncall functionName="VK_QUEUE_GLOBAL_PRIORITY_HIGH_KHR"/>
@@ -5562,7 +5590,6 @@
     <functioncall functionName="VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY"/>
     <functioncall functionName="VK_SAMPLER_YCBCR_RANGE_ITU_FULL"/>
     <functioncall functionName="VK_SAMPLER_YCBCR_RANGE_ITU_NARROW"/>
-    <functioncall functionName="VK_SAMPLE_COUNT_1_BIT"/>
     <functioncall functionName="VK_SEMAPHORE_IMPORT_TEMPORARY_BIT"/>
     <functioncall functionName="VK_SEMAPHORE_TYPE_BINARY"/>
     <functioncall functionName="VK_SEMAPHORE_TYPE_TIMELINE"/>
@@ -5573,10 +5600,10 @@
     <functioncall functionName="VK_SHADER_STAGE_ANY_HIT_BIT_KHR"/>
     <functioncall functionName="VK_SHADER_STAGE_CALLABLE_BIT_KHR"/>
     <functioncall functionName="VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR"/>
+    <functioncall functionName="VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM"/>
     <functioncall functionName="VK_SHADER_STAGE_INTERSECTION_BIT_KHR"/>
     <functioncall functionName="VK_SHADER_STAGE_MISS_BIT_KHR"/>
     <functioncall functionName="VK_SHADER_STAGE_RAYGEN_BIT_KHR"/>
-    <functioncall functionName="VK_SHARING_MODE_EXCLUSIVE"/>
     <functioncall functionName="VK_STENCIL_FACE_FRONT_AND_BACK"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_STENCIL_LAYOUT"/>
@@ -5590,14 +5617,11 @@
     <functioncall functionName="VK_STRUCTURE_TYPE_BIND_IMAGE_PLANE_MEMORY_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BLIT_IMAGE_INFO_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_COPY_2"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_IMAGE_COPY_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_MEMORY_REQUIREMENTS_INFO_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_OPAQUE_CAPTURE_ADDRESS_CREATE_INFO"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_RENDERING_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_COPY_BUFFER_INFO_2"/>
@@ -5637,20 +5661,16 @@
     <functioncall functionName="VK_STRUCTURE_TYPE_FRAMEBUFFER_ATTACHMENT_IMAGE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_BLIT_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_COPY_2"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_FORMAT_LIST_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_FORMAT_PROPERTIES_2"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_MEMORY_REQUIREMENTS_INFO_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_PLANE_MEMORY_REQUIREMENTS_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_RESOLVE_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_SPARSE_MEMORY_REQUIREMENTS_INFO_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_STENCIL_USAGE_CREATE_INFO"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_VIEW_USAGE_CREATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_FLAGS_INFO"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_BARRIER_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS"/>
@@ -5741,7 +5761,6 @@
     <functioncall functionName="VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_SPARSE_IMAGE_FORMAT_PROPERTIES_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_SPARSE_IMAGE_MEMORY_REQUIREMENTS_2"/>
-    <functioncall functionName="VK_STRUCTURE_TYPE_SUBMIT_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_SUBMIT_INFO_2"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_SUBPASS_BEGIN_INFO"/>
     <functioncall functionName="VK_STRUCTURE_TYPE_SUBPASS_DEPENDENCY_2"/>
@@ -5777,21 +5796,19 @@
     <functioncall functionName="Vertex"/>
     <functioncall functionName="VkAccelerationStructureBuildRangeInfoKHR"/>
     <functioncall functionName="VkAccelerationStructureGeometryKHR"/>
-    <functioncall functionName="VkAccelerationStructureInstanceKHR"/>
-    <functioncall functionName="VkAccessFlags"/>
-    <functioncall functionName="VkBuffer"/>
     <functioncall functionName="VkCommandBuffer"/>
     <functioncall functionName="VkDescriptorSet"/>
-    <functioncall functionName="VkDeviceMemory"/>
+    <functioncall functionName="VkDescriptorSetLayout"/>
     <functioncall functionName="VkFence"/>
     <functioncall functionName="VkFormat"/>
     <functioncall functionName="VkFramebuffer"/>
-    <functioncall functionName="VkImage"/>
-    <functioncall functionName="VkImageView"/>
     <functioncall functionName="VkPresentModeKHR"/>
     <functioncall functionName="VkRayTracingShaderGroupCreateInfoKHR"/>
+    <functioncall functionName="VkSampler"/>
     <functioncall functionName="VkSemaphore"/>
     <functioncall functionName="VkSurfaceFormatKHR"/>
+    <functioncall functionName="VkVertexInputAttributeDescription"/>
+    <functioncall functionName="VulkanBuffer"/>
     <functioncall functionName="VulkanDevice"/>
     <functioncall functionName="W"/>
     <functioncall functionName="W1"/>
@@ -5833,36 +5850,28 @@
     <functioncall functionName="_z"/>
     <functioncall functionName="a"/>
     <functioncall functionName="abs"/>
-    <functioncall functionName="access_flags_for_image_layout"/>
     <functioncall functionName="acos"/>
     <functioncall functionName="acosh"/>
     <functioncall functionName="acount"/>
     <functioncall functionName="add"/>
     <functioncall functionName="all"/>
     <functioncall functionName="all_a"/>
-    <functioncall functionName="alloc_info"/>
     <functioncall functionName="angle"/>
     <functioncall functionName="ashift"/>
     <functioncall functionName="asin"/>
     <functioncall functionName="asinh"/>
     <functioncall functionName="aspect"/>
-    <functioncall functionName="aspectMask"/>
-    <functioncall functionName="aspect_flags"/>
     <functioncall functionName="assert"/>
     <functioncall functionName="atan"/>
     <functioncall functionName="atan2"/>
     <functioncall functionName="atanh"/>
-    <functioncall functionName="attrib_t"/>
     <functioncall functionName="avail"/>
     <functioncall functionName="axis"/>
     <functioncall functionName="b"/>
     <functioncall functionName="back"/>
     <functioncall functionName="background"/>
-    <functioncall functionName="barrier"/>
     <functioncall functionName="base"/>
     <functioncall functionName="bcount"/>
-    <functioncall functionName="begin_command_buffer"/>
-    <functioncall functionName="begin_info"/>
     <functioncall functionName="bgindex"/>
     <functioncall functionName="biggestIndex"/>
     <functioncall functionName="biggestVal"/>
@@ -5874,7 +5883,6 @@
     <functioncall functionName="bits"/>
     <functioncall functionName="bits_per_pixel"/>
     <functioncall functionName="blen"/>
-    <functioncall functionName="blit"/>
     <functioncall functionName="bool"/>
     <functioncall functionName="bottom"/>
     <functioncall functionName="bpc"/>
@@ -5882,13 +5890,8 @@
     <functioncall functionName="break"/>
     <functioncall functionName="bshift"/>
     <functioncall functionName="buffer"/>
-    <functioncall functionName="buffer_copy_region"/>
-    <functioncall functionName="buffer_info"/>
-    <functioncall functionName="buffer_memory"/>
-    <functioncall functionName="buffer_propertiy_flags"/>
-    <functioncall functionName="buffer_size"/>
+    <functioncall functionName="bufferSize"/>
     <functioncall functionName="buffer_start"/>
-    <functioncall functionName="buffer_usage_flags"/>
     <functioncall functionName="buflen"/>
     <functioncall functionName="bytes"/>
     <functioncall functionName="bytes_copy"/>
@@ -5898,9 +5901,7 @@
     <functioncall functionName="c"/>
     <functioncall functionName="c1"/>
     <functioncall functionName="c2"/>
-    <functioncall functionName="c_str"/>
     <functioncall functionName="call"/>
-    <functioncall functionName="callback_t"/>
     <functioncall functionName="capacity"/>
     <functioncall functionName="case"/>
     <functioncall functionName="ceil"/>
@@ -5908,12 +5909,11 @@
     <functioncall functionName="ch"/>
     <functioncall functionName="chained"/>
     <functioncall functionName="channel"/>
-    <functioncall functionName="channels"/>
     <functioncall functionName="channels_in_file"/>
     <functioncall functionName="char"/>
     <functioncall functionName="clamp"/>
     <functioncall functionName="clbk"/>
-    <functioncall functionName="clean_up"/>
+    <functioncall functionName="cleanUp"/>
     <functioncall functionName="clear"/>
     <functioncall functionName="code"/>
     <functioncall functionName="code_bits"/>
@@ -5923,19 +5923,20 @@
     <functioncall functionName="col"/>
     <functioncall functionName="col_type"/>
     <functioncall functionName="color"/>
-    <functioncall functionName="command_buffer"/>
-    <functioncall functionName="command_pool"/>
+    <functioncall functionName="commandPool"/>
     <functioncall functionName="comp"/>
     <functioncall functionName="compress"/>
     <functioncall functionName="compression"/>
     <functioncall functionName="conjugate"/>
     <functioncall functionName="const"/>
     <functioncall functionName="const_cast"/>
+    <functioncall functionName="copyBuffer"/>
     <functioncall functionName="cos"/>
     <functioncall functionName="cosTheta"/>
     <functioncall functionName="cos_one_over_two"/>
     <functioncall functionName="cosh"/>
     <functioncall functionName="count"/>
+    <functioncall functionName="create"/>
     <functioncall functionName="cross"/>
     <functioncall functionName="cur"/>
     <functioncall functionName="cur_y"/>
@@ -5961,10 +5962,9 @@
     <functioncall functionName="dot"/>
     <functioncall functionName="dotValue"/>
     <functioncall functionName="double"/>
-    <functioncall functionName="dragon_model"/>
     <functioncall functionName="drawFrame"/>
-    <functioncall functionName="dst_buffer"/>
-    <functioncall functionName="dst_stage"/>
+    <functioncall functionName="dstBufferMemoryPropertyFlags"/>
+    <functioncall functionName="dstBufferUsageFlags"/>
     <functioncall functionName="dual"/>
     <functioncall functionName="dual_v3"/>
     <functioncall functionName="dualquat_cast"/>
@@ -5975,7 +5975,6 @@
     <functioncall functionName="edge0"/>
     <functioncall functionName="edge1"/>
     <functioncall functionName="empty"/>
-    <functioncall functionName="end_and_submit_command_buffer"/>
     <functioncall functionName="eob_run"/>
     <functioncall functionName="eof"/>
     <functioncall functionName="epsilon"/>
@@ -5998,7 +5997,6 @@
     <functioncall functionName="fclose"/>
     <functioncall functionName="feof"/>
     <functioncall functionName="ferror"/>
-    <functioncall functionName="fflush"/>
     <functioncall functionName="fgetc"/>
     <functioncall functionName="filename"/>
     <functioncall functionName="fill"/>
@@ -6008,7 +6006,7 @@
     <functioncall functionName="find"/>
     <functioncall functionName="findLSB"/>
     <functioncall functionName="findMSB"/>
-    <functioncall functionName="find_memory_type_index"/>
+    <functioncall functionName="finishAllRenderCommands"/>
     <functioncall functionName="first"/>
     <functioncall functionName="fiveBitMask"/>
     <functioncall functionName="flag_true_if_should_convert"/>
@@ -6022,7 +6020,6 @@
     <functioncall functionName="fopen_s"/>
     <functioncall functionName="for"/>
     <functioncall functionName="format"/>
-    <functioncall functionName="formatProperties"/>
     <functioncall functionName="formats"/>
     <functioncall functionName="fourWSquaredMinus1"/>
     <functioncall functionName="fourXSquaredMinus1"/>
@@ -6049,6 +6046,22 @@
     <functioncall functionName="genTypeT"/>
     <functioncall functionName="genTypeU"/>
     <functioncall functionName="get"/>
+    <functioncall functionName="getBuffer"/>
+    <functioncall functionName="getBufferMemory"/>
+    <functioncall functionName="getGraphicsQueue"/>
+    <functioncall functionName="getImage"/>
+    <functioncall functionName="getImageView"/>
+    <functioncall functionName="getIndexBuffer"/>
+    <functioncall functionName="getIndexCount"/>
+    <functioncall functionName="getLogicalDevice"/>
+    <functioncall functionName="getMesh"/>
+    <functioncall functionName="getMeshCount"/>
+    <functioncall functionName="getModel"/>
+    <functioncall functionName="getObjectDescription"/>
+    <functioncall functionName="getTextureCount"/>
+    <functioncall functionName="getTextureSamplers"/>
+    <functioncall functionName="getTextures"/>
+    <functioncall functionName="getVertexBuffer"/>
     <functioncall functionName="get_keys"/>
     <functioncall functionName="get_should_close"/>
     <functioncall functionName="get_x_change"/>
@@ -6059,9 +6072,7 @@
     <functioncall functionName="good"/>
     <functioncall functionName="greaterThan"/>
     <functioncall functionName="greaterThanEqual"/>
-    <functioncall functionName="group_cb"/>
     <functioncall functionName="gshift"/>
-    <functioncall functionName="gui_draw_data"/>
     <functioncall functionName="h"/>
     <functioncall functionName="h2"/>
     <functioncall functionName="h_max"/>
@@ -6097,13 +6108,8 @@
     <functioncall functionName="if"/>
     <functioncall functionName="ilen"/>
     <functioncall functionName="image"/>
-    <functioncall functionName="image_create_info"/>
     <functioncall functionName="image_data"/>
     <functioncall functionName="image_data_len"/>
-    <functioncall functionName="image_format"/>
-    <functioncall functionName="image_memory"/>
-    <functioncall functionName="image_region"/>
-    <functioncall functionName="image_view"/>
     <functioncall functionName="img_buffer"/>
     <functioncall functionName="img_buffer_end"/>
     <functioncall functionName="img_buffer_original"/>
@@ -6118,14 +6124,11 @@
     <functioncall functionName="img_width_bytes"/>
     <functioncall functionName="img_x"/>
     <functioncall functionName="img_y"/>
-    <functioncall functionName="inStream"/>
     <functioncall functionName="in_far"/>
     <functioncall functionName="in_near"/>
     <functioncall functionName="index"/>
     <functioncall functionName="index1"/>
     <functioncall functionName="index2"/>
-    <functioncall functionName="index_cb"/>
-    <functioncall functionName="index_t"/>
     <functioncall functionName="infinitePerspectiveRH"/>
     <functioncall functionName="info"/>
     <functioncall functionName="init_code"/>
@@ -6154,7 +6157,6 @@
     <functioncall functionName="items_height"/>
     <functioncall functionName="j"/>
     <functioncall functionName="jfif"/>
-    <functioncall functionName="joint_and_weight_t"/>
     <functioncall functionName="k"/>
     <functioncall functionName="key_control"/>
     <functioncall functionName="l"/>
@@ -6167,7 +6169,6 @@
     <functioncall functionName="lambda_zy"/>
     <functioncall functionName="last_time"/>
     <functioncall functionName="layers"/>
-    <functioncall functionName="layout"/>
     <functioncall functionName="ldexp"/>
     <functioncall functionName="left"/>
     <functioncall functionName="len"/>
@@ -6194,8 +6195,6 @@
     <functioncall functionName="m1"/>
     <functioncall functionName="m1_copy"/>
     <functioncall functionName="m4"/>
-    <functioncall functionName="m_inStream"/>
-    <functioncall functionName="m_mtlBaseDir"/>
     <functioncall functionName="ma"/>
     <functioncall functionName="magbits"/>
     <functioncall functionName="main_decode_loop"/>
@@ -6207,8 +6206,8 @@
     <functioncall functionName="mask"/>
     <functioncall functionName="mat"/>
     <functioncall functionName="mat3_cast"/>
+    <functioncall functionName="mat4"/>
     <functioncall functionName="mat4_cast"/>
-    <functioncall functionName="material_t"/>
     <functioncall functionName="max"/>
     <functioncall functionName="maxVal"/>
     <functioncall functionName="max_x"/>
@@ -6218,38 +6217,30 @@
     <functioncall functionName="memcmp"/>
     <functioncall functionName="memcpy"/>
     <functioncall functionName="memmove"/>
-    <functioncall functionName="memoryTypeBits"/>
     <functioncall functionName="memoryTypeCount"/>
-    <functioncall functionName="memory_alloc_info"/>
-    <functioncall functionName="memory_barrier"/>
     <functioncall functionName="memory_properties"/>
-    <functioncall functionName="memory_requirements"/>
-    <functioncall functionName="memory_type_index"/>
     <functioncall functionName="memset"/>
+    <functioncall functionName="mesh_index"/>
     <functioncall functionName="mg"/>
     <functioncall functionName="min"/>
     <functioncall functionName="minVal"/>
-    <functioncall functionName="mip_levels"/>
     <functioncall functionName="mix"/>
     <functioncall functionName="mod"/>
     <functioncall functionName="mode"/>
     <functioncall functionName="model"/>
+    <functioncall functionName="model_index"/>
     <functioncall functionName="modf"/>
     <functioncall functionName="mouse_control"/>
     <functioncall functionName="mr"/>
-    <functioncall functionName="mtl_basedir"/>
-    <functioncall functionName="mtllib_cb"/>
     <functioncall functionName="n"/>
     <functioncall functionName="nearVal"/>
     <functioncall functionName="negative"/>
     <functioncall functionName="new_capacity"/>
     <functioncall functionName="new_data"/>
     <functioncall functionName="new_delays"/>
-    <functioncall functionName="new_layout"/>
     <functioncall functionName="new_size"/>
     <functioncall functionName="nk"/>
     <functioncall functionName="normal"/>
-    <functioncall functionName="normal_cb"/>
     <functioncall functionName="normalize"/>
     <functioncall functionName="notEqual"/>
     <functioncall functionName="not_"/>
@@ -6259,13 +6250,10 @@
     <functioncall functionName="num_segments"/>
     <functioncall functionName="o"/>
     <functioncall functionName="obj"/>
-    <functioncall functionName="object_cb"/>
     <functioncall functionName="obuf"/>
     <functioncall functionName="obuffer"/>
     <functioncall functionName="off"/>
     <functioncall functionName="ok"/>
-    <functioncall functionName="oldImageLayout"/>
-    <functioncall functionName="old_layout"/>
     <functioncall functionName="old_limit"/>
     <functioncall functionName="oldcode"/>
     <functioncall functionName="olen"/>
@@ -6286,14 +6274,12 @@
     <functioncall functionName="output"/>
     <functioncall functionName="output_bytes"/>
     <functioncall functionName="overflow"/>
-    <functioncall functionName="override"/>
     <functioncall functionName="p"/>
     <functioncall functionName="p0"/>
     <functioncall functionName="p1"/>
     <functioncall functionName="p2"/>
     <functioncall functionName="p3"/>
     <functioncall functionName="p4"/>
-    <functioncall functionName="pMessage"/>
     <functioncall functionName="packed_highp"/>
     <functioncall functionName="packed_lowp"/>
     <functioncall functionName="packed_mediump"/>
@@ -6314,10 +6300,8 @@
     <functioncall functionName="perspectiveLH_ZO"/>
     <functioncall functionName="perspectiveRH_NO"/>
     <functioncall functionName="perspectiveRH_ZO"/>
-    <functioncall functionName="physicalDevice"/>
     <functioncall functionName="physical_device"/>
     <functioncall functionName="pi"/>
-    <functioncall functionName="pipeline_stage_for_layout"/>
     <functioncall functionName="pitch"/>
     <functioncall functionName="pixelCount"/>
     <functioncall functionName="pixel_count"/>
@@ -6325,12 +6309,10 @@
     <functioncall functionName="pow"/>
     <functioncall functionName="power"/>
     <functioncall functionName="prefix"/>
-    <functioncall functionName="printf"/>
     <functioncall functionName="private:"/>
     <functioncall functionName="progressive"/>
     <functioncall functionName="proj"/>
     <functioncall functionName="projectZO"/>
-    <functioncall functionName="prop_flags"/>
     <functioncall functionName="properties"/>
     <functioncall functionName="push_back"/>
     <functioncall functionName="q"/>
@@ -6338,7 +6320,6 @@
     <functioncall functionName="qualifier"/>
     <functioncall functionName="quatLookAtRH"/>
     <functioncall functionName="quat_cast"/>
-    <functioncall functionName="queue"/>
     <functioncall functionName="qwx"/>
     <functioncall functionName="qwy"/>
     <functioncall functionName="qwz"/>
@@ -6399,7 +6380,6 @@
     <functioncall functionName="scan_n"/>
     <functioncall functionName="scanline"/>
     <functioncall functionName="seed"/>
-    <functioncall functionName="shape_t"/>
     <functioncall functionName="shared_data"/>
     <functioncall functionName="shared_ptr"/>
     <functioncall functionName="shift"/>
@@ -6410,14 +6390,12 @@
     <functioncall functionName="size_in_bytes"/>
     <functioncall functionName="sizeof"/>
     <functioncall functionName="sizes"/>
-    <functioncall functionName="skin_weight_t"/>
     <functioncall functionName="skip"/>
     <functioncall functionName="spec_end"/>
     <functioncall functionName="spec_start"/>
     <functioncall functionName="sqrt"/>
     <functioncall functionName="src"/>
-    <functioncall functionName="src_buffer"/>
-    <functioncall functionName="src_stage"/>
+    <functioncall functionName="stagingBuffer"/>
     <functioncall functionName="start_x"/>
     <functioncall functionName="start_y"/>
     <functioncall functionName="static_assert"/>
@@ -6600,13 +6578,11 @@
     <functioncall functionName="stbi_info_from_file"/>
     <functioncall functionName="stbi_is_16_bit_from_file"/>
     <functioncall functionName="stbi_is_hdr_from_file"/>
-    <functioncall functionName="stbi_load"/>
     <functioncall functionName="stbi_load_from_file"/>
     <functioncall functionName="stbi_load_from_file_16"/>
     <functioncall functionName="stbi_loadf_from_file"/>
     <functioncall functionName="stbi_zlib_decode_malloc_guesssize"/>
     <functioncall functionName="stbi_zlib_decode_malloc_guesssize_headerflag"/>
-    <functioncall functionName="stdout"/>
     <functioncall functionName="step"/>
     <functioncall functionName="str"/>
     <functioncall functionName="str_id"/>
@@ -6615,7 +6591,6 @@
     <functioncall functionName="string"/>
     <functioncall functionName="strncmp"/>
     <functioncall functionName="strtol"/>
-    <functioncall functionName="submit_info"/>
     <functioncall functionName="succ_high"/>
     <functioncall functionName="succ_low"/>
     <functioncall functionName="switch"/>
@@ -6626,7 +6601,6 @@
     <functioncall functionName="t2"/>
     <functioncall functionName="t3"/>
     <functioncall functionName="tag"/>
-    <functioncall functionName="tag_t"/>
     <functioncall functionName="tan"/>
     <functioncall functionName="tanHalfFovy"/>
     <functioncall functionName="tanh"/>
@@ -6637,7 +6611,6 @@
     <functioncall functionName="temp"/>
     <functioncall functionName="temp_out"/>
     <functioncall functionName="template"/>
-    <functioncall functionName="texcoord_cb"/>
     <functioncall functionName="texture_coords"/>
     <functioncall functionName="tga_bits_per_pixel"/>
     <functioncall functionName="tga_color_type"/>
@@ -6664,24 +6637,16 @@
     <functioncall functionName="th"/>
     <functioncall functionName="thickness"/>
     <functioncall functionName="this"/>
-    <functioncall functionName="tiling"/>
     <functioncall functionName="tmp"/>
     <functioncall functionName="tmp1"/>
-    <functioncall functionName="tmp_height"/>
-    <functioncall functionName="tmp_width"/>
     <functioncall functionName="toFloat16"/>
     <functioncall functionName="toFloat32"/>
     <functioncall functionName="token"/>
     <functioncall functionName="top"/>
     <functioncall functionName="tq"/>
     <functioncall functionName="trace"/>
-    <functioncall functionName="transfer_command_buffer"/>
-    <functioncall functionName="transfer_command_pool"/>
-    <functioncall functionName="transfer_queue"/>
     <functioncall functionName="translate"/>
     <functioncall functionName="transparent"/>
-    <functioncall functionName="triangulate"/>
-    <functioncall functionName="triangulation_method"/>
     <functioncall functionName="true"/>
     <functioncall functionName="trunc"/>
     <functioncall functionName="tweakedInfinitePerspective"/>
@@ -6696,11 +6661,8 @@
     <functioncall functionName="ungetc"/>
     <functioncall functionName="up"/>
     <functioncall functionName="updateStateDueToUserInput"/>
-    <functioncall functionName="update_model_matrix"/>
-    <functioncall functionName="update_uniforms"/>
+    <functioncall functionName="updateUniforms"/>
     <functioncall functionName="update_user_input"/>
-    <functioncall functionName="use_flags"/>
-    <functioncall functionName="usemtl_cb"/>
     <functioncall functionName="user"/>
     <functioncall functionName="uuv"/>
     <functioncall functionName="uv"/>
@@ -6715,37 +6677,19 @@
     <functioncall functionName="v_speed"/>
     <functioncall functionName="val"/>
     <functioncall functionName="valid"/>
-    <functioncall functionName="valid_"/>
     <functioncall functionName="value"/>
     <functioncall functionName="value_type"/>
     <functioncall functionName="values"/>
     <functioncall functionName="vec"/>
-    <functioncall functionName="vertex_cb"/>
-    <functioncall functionName="vertex_color"/>
-    <functioncall functionName="view_create_info"/>
     <functioncall functionName="viewport"/>
-    <functioncall functionName="vkAllocateCommandBuffers"/>
-    <functioncall functionName="vkAllocateMemory"/>
-    <functioncall functionName="vkBeginCommandBuffer"/>
-    <functioncall functionName="vkBindBufferMemory"/>
-    <functioncall functionName="vkBindImageMemory"/>
-    <functioncall functionName="vkCmdBlitImage"/>
-    <functioncall functionName="vkCmdCopyBuffer"/>
-    <functioncall functionName="vkCmdCopyBufferToImage"/>
-    <functioncall functionName="vkCmdPipelineBarrier"/>
-    <functioncall functionName="vkCreateBuffer"/>
-    <functioncall functionName="vkCreateImage"/>
-    <functioncall functionName="vkCreateImageView"/>
-    <functioncall functionName="vkEndCommandBuffer"/>
-    <functioncall functionName="vkFreeCommandBuffers"/>
-    <functioncall functionName="vkGetBufferMemoryRequirements"/>
-    <functioncall functionName="vkGetImageMemoryRequirements"/>
     <functioncall functionName="vkGetPhysicalDeviceFormatProperties"/>
     <functioncall functionName="vkGetPhysicalDeviceMemoryProperties"/>
-    <functioncall functionName="vkQueueSubmit"/>
-    <functioncall functionName="vkQueueWaitIdle"/>
+    <functioncall functionName="vkMapMemory"/>
+    <functioncall functionName="vkUnmapMemory"/>
     <functioncall functionName="void"/>
     <functioncall functionName="vs"/>
+    <functioncall functionName="vulkanAS"/>
+    <functioncall functionName="vulkanBuffer"/>
     <functioncall functionName="w"/>
     <functioncall functionName="w0"/>
     <functioncall functionName="w1"/>
@@ -6753,6 +6697,8 @@
     <functioncall functionName="w3"/>
     <functioncall functionName="w4"/>
     <functioncall functionName="w_lores"/>
+    <functioncall functionName="want_capture_keyboard"/>
+    <functioncall functionName="want_capture_mouse"/>
     <functioncall functionName="which"/>
     <functioncall functionName="while"/>
     <functioncall functionName="width"/>

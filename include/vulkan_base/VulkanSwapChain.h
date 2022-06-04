@@ -27,14 +27,14 @@ public:
 
 private:
 
-	VulkanDevice*				device;
-	Window*						window;
+	VulkanDevice*				device{VK_NULL_HANDLE};
+	Window*						window{ VK_NULL_HANDLE };
 
 	VkSwapchainKHR				swapchain;
 
 	std::vector<Texture>		swap_chain_images;
-	VkFormat					swap_chain_image_format;
-	VkExtent2D					swap_chain_extent;
+	VkFormat					swap_chain_image_format{ VK_FORMAT_B8G8R8A8_UNORM };
+	VkExtent2D					swap_chain_extent{0,0};
 
 	VkSurfaceFormatKHR			choose_best_surface_format(const std::vector<VkSurfaceFormatKHR>& formats);
 	VkPresentModeKHR			choose_best_presentation_mode(const std::vector<VkPresentModeKHR>& presentation_modes);

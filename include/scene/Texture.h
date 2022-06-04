@@ -18,7 +18,7 @@ public:
 
 	void				createFromFile(	VulkanDevice* device, 
 										VkCommandPool commandPool, 
-										std::string fileName);
+										const std::string& fileName);
 
 	void				setImage(VkImage image);
 	void				setImageView(VkImageView imageView);
@@ -48,7 +48,7 @@ private:
 
 	uint32_t			mip_levels = 0;
 
-	stbi_uc*			loadTextureData(	std::string file_name, 
+	stbi_uc*			loadTextureData(	const std::string& file_name, 
 											int* width, int* height, 
 											VkDeviceSize* image_size);
 

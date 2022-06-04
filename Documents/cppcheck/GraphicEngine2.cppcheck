@@ -10,12 +10,13 @@
     <max-template-recursion>100</max-template-recursion>
     <vs-configurations>
         <config>Debug</config>
-        <config>MinSizeRel</config>
-        <config>RelWithDebInfo</config>
         <config>Release</config>
     </vs-configurations>
     <paths>
         <dir name="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/include"/>
         <dir name="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src"/>
     </paths>
+    <exclude>
+        <path name="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/"/>
+    </exclude>
 </project>

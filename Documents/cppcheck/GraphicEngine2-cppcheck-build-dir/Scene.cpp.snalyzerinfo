@@ -1156,22 +1156,7 @@ get_buffer_width call:[return]
 get_buffer_height call:[return]
 get_window
 get_keys
-load_texture_file call:[c_str,runtime_error,stbi_load] noreturn:[runtime_error]
 choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
-create_image_view call:[runtime_error,vkCreateImageView] noreturn:[runtime_error]
-find_memory_type_index call:[vkGetPhysicalDeviceMemoryProperties]
-create_image call:[find_memory_type_index,runtime_error,vkAllocateMemory,vkBindImageMemory,vkCreateImage,vkGetImageMemoryRequirements] noreturn:[runtime_error]
-create_buffer call:[find_memory_type_index,runtime_error,vkAllocateMemory,vkBindBufferMemory,vkCreateBuffer,vkGetBufferMemoryRequirements] noreturn:[runtime_error,vkBindBufferMemory]
-begin_command_buffer call:[vkAllocateCommandBuffers,vkBeginCommandBuffer]
-end_and_submit_command_buffer call:[printf,runtime_error,vkEndCommandBuffer,vkFreeCommandBuffers,vkQueueSubmit,vkQueueWaitIdle] noreturn:[runtime_error,vkFreeCommandBuffers]
-copy_buffer call:[begin_command_buffer,end_and_submit_command_buffer,vkCmdCopyBuffer] noreturn:[end_and_submit_command_buffer]
-copy_image_buffer call:[begin_command_buffer,end_and_submit_command_buffer,vkCmdCopyBufferToImage] noreturn:[end_and_submit_command_buffer]
-access_flags_for_image_layout call:[VkFlags] noreturn:[VkFlags]
-pipeline_stage_for_layout
-transition_image_layout call:[access_flags_for_image_layout,begin_command_buffer,end_and_submit_command_buffer,pipeline_stage_for_layout,vkCmdPipelineBarrier] noreturn:[end_and_submit_command_buffer]
-transition_image_layout_for_command_buffer call:[access_flags_for_image_layout,pipeline_stage_for_layout,vkCmdPipelineBarrier] noreturn:[vkCmdPipelineBarrier]
-generate_mipmaps call:[begin_command_buffer,end_and_submit_command_buffer,runtime_error,vkCmdBlitImage,vkCmdPipelineBarrier,vkGetPhysicalDeviceFormatProperties] noreturn:[end_and_submit_command_buffer,runtime_error]
-align_up call:[return]
 float_t < float >
 operator=
 negative
@@ -1320,6 +1305,40 @@ operator() call:[hash_combine,hasher]
 operator() call:[hash_combine,hasher]
 operator==
 operator() call:[return] noreturn:[return]
+is_valid
+getVulkanInstance
+getPhysicalDeviceProperties
+getPhysicalDevice
+getLogicalDevice
+getGraphicsQueue
+getComputeQueue
+getPresentationQueue
+getBuffer
+getBufferMemory
+createBufferAndUploadVectorOnDevice call:[cleanUp,copyBuffer,create,data,getBufferMemory,getGraphicsQueue,getLogicalDevice,memcpy,size,sizeof,vkMapMemory,vkUnmapMemory] noreturn:[cleanUp]
+getObjectDescription
+getModel
+getVertexCount
+getIndexCount
+getVertexBuffer call:[getBuffer] noreturn:[getBuffer]
+getMaterialIDBuffer call:[getBuffer] noreturn:[getBuffer]
+getIndexBuffer call:[getBuffer] noreturn:[getBuffer]
+getImage
+getImageView
+getMipLevel
+getVulkanImage
+getVulkanImageView
+getImage call:[getImage] noreturn:[getImage]
+getImageView call:[getImageView] noreturn:[getImageView]
+getTextureCount call:[size]
+getTextures
+getTextureSamplers
+getTextureList
+getMeshCount
+getMesh
+getModel
+getCustomInstanceIndex
+getObjectDescription call:[getObjectDescription] noreturn:[getObjectDescription]
 get_camera_position
 get_camera_direction call:[normalize] noreturn:[normalize]
 get_up_axis
@@ -1418,6 +1437,8 @@ ImGuiViewport call:[memset,sizeof] noreturn:[memset]
 GetCenter call:[ImVec2] noreturn:[ImVec2]
 GetWorkCenter call:[ImVec2] noreturn:[ImVec2]
 ImGuiPlatformImeData call:[memset,sizeof] noreturn:[memset]
+CaptureKeyboardFromApp call:[SetNextFrameWantCaptureKeyboard] noreturn:[SetNextFrameWantCaptureKeyboard]
+CaptureMouseFromApp call:[SetNextFrameWantCaptureMouse] noreturn:[SetNextFrameWantCaptureMouse]
 GetWindowContentRegionWidth call:[GetWindowContentRegionMax,GetWindowContentRegionMin]
 ListBoxHeader call:[BeginListBox] noreturn:[BeginListBox]
 ListBoxFooter call:[EndListBox] noreturn:[EndListBox]
@@ -1432,33 +1453,29 @@ SliderFloat3 call:[SliderScalarN] noreturn:[SliderScalarN]
 SliderFloat4 call:[SliderScalarN] noreturn:[SliderScalarN]
 BeginPopupContextWindow call:[BeginPopupContextWindow] noreturn:[BeginPopupContextWindow]
 ImGui_ImplVulkanH_Window call:[memset,sizeof]
-is_valid
-debugCallback call:[fflush,prefix,str]
-getVulkanInstance
-getPhysicalDevice
-getLogicalDevice
-getGraphicsQueue
-getComputeQueue
-getPresentationQueue
 getGuiSceneSharedVars
 getGuiRendererSharedVars
 getGuiSceneSharedVars
+getTextures call:[getTextures] noreturn:[getTextures]
+getTextureSampler call:[getTextureSamplers] noreturn:[getTextureSamplers]
+getTextureCount call:[getTextureCount] noreturn:[getTextureCount]
+getModelCount call:[size]
+getModelMatrix call:[getModel] noreturn:[getModel]
+getMeshCount call:[getMeshCount]
+getVertexBuffer call:[getMesh,getVertexBuffer] noreturn:[getVertexBuffer]
+getIndexBuffer call:[getIndexBuffer,getMesh] noreturn:[getIndexBuffer]
+getIndexCount call:[getIndexCount,getMesh] noreturn:[getIndexCount]
+getNumberObjectDescriptions call:[size]
+getObjectDescriptions
+get_model_list
 Scene
 update_user_input call:[getGuiSceneSharedVars] noreturn:[getGuiSceneSharedVars]
-get_model_count call:[size]
-add_model call:[get_object_description,push_back] noreturn:[push_back]
+loadModel call:[add_model,getGraphicsQueue,getModelFile,getModelMatrix,loadModel,obj_loader,update_model_matrix] noreturn:[update_model_matrix]
+add_model call:[getObjectDescription,push_back] noreturn:[push_back]
 add_object_description call:[push_back] noreturn:[push_back]
-get_model_list
-update_model_matrix call:[get_model_count,runtime_error,set_model] noreturn:[runtime_error,set_model]
-clean_up call:[destroy_model,size] noreturn:[destroy_model]
-get_model_matrix call:[get_model] noreturn:[get_model]
-get_mesh_count call:[get_mesh_count]
-get_vertex_buffer call:[get_mesh,get_vertex_buffer] noreturn:[get_vertex_buffer]
-get_index_buffer call:[get_index_buffer,get_mesh] noreturn:[get_index_buffer]
-get_index_count call:[get_index_count,get_mesh] noreturn:[get_index_count]
-get_number_of_object_descriptions call:[size]
-get_number_of_meshes call:[get_mesh_count]
-get_object_descriptions
+update_model_matrix call:[getModelCount,runtime_error,set_model] noreturn:[runtime_error,set_model]
+cleanUp call:[cleanUp] noreturn:[cleanUp]
+getNumberMeshes call:[getMeshCount]
 Scene
 ImVector < unsigned short >
 ImVector < unsigned short > call:[operator=] noreturn:[operator=]
