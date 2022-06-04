@@ -1,0 +1,16 @@
+choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
+is_valid
+getVulkanInstance
+getPhysicalDeviceProperties
+getPhysicalDevice
+getLogicalDevice
+getGraphicsQueue
+getComputeQueue
+getPresentationQueue
+getBuffer
+getBufferMemory
+createBufferAndUploadVectorOnDevice call:[cleanUp,copyBuffer,create,data,getBufferMemory,getGraphicsQueue,getLogicalDevice,memcpy,size,sizeof,vkMapMemory,vkUnmapMemory] noreturn:[cleanUp]
+VulkanBufferManager
+copyBuffer call:[beginCommandBuffer,endAndSubmitCommandBuffer,getBuffer,vkCmdCopyBuffer] noreturn:[endAndSubmitCommandBuffer]
+copyImageBuffer call:[beginCommandBuffer,endAndSubmitCommandBuffer,vkCmdCopyBufferToImage] noreturn:[endAndSubmitCommandBuffer]
+VulkanBufferManager

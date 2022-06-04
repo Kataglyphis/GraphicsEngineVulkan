@@ -26,7 +26,7 @@ void Rasterizer::init(	VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,
 
 }
 
-void Rasterizer::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+void Rasterizer::shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts)
 {
 	vkDestroyPipeline(device->getLogicalDevice(), graphics_pipeline, nullptr);
 	createGraphicsPipeline(descriptor_set_layouts);
@@ -51,7 +51,7 @@ void Rasterizer::recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_i
 	render_pass_begin_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	render_pass_begin_info.renderPass = render_pass;		
 	render_pass_begin_info.renderArea.offset = { 0,0 };
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	render_pass_begin_info.renderArea.extent = swap_chain_extent;
 
 	// make sure the order you put the values into the array matches with the attchment order you have defined previous
@@ -229,7 +229,7 @@ void Rasterizer::createFramebuffer()
 		frame_buffer_create_info.renderPass = render_pass;
 		frame_buffer_create_info.attachmentCount = static_cast<uint32_t>(attachments.size());
 		frame_buffer_create_info.pAttachments = attachments.data();
-		const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+		const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 		frame_buffer_create_info.width = swap_chain_extent.width;
 		frame_buffer_create_info.height = swap_chain_extent.height;
 		frame_buffer_create_info.layers = 1;
@@ -259,7 +259,7 @@ void Rasterizer::createTextures(VkCommandPool& commandPool)
 	for (int index = 0; index < vulkanSwapChain->getNumberSwapChainImages(); index++) {
 
 		Texture texture{};
-		const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+		const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 		const VkFormat& swap_chain_image_format = vulkanSwapChain->getSwapChainFormat();
 
 		texture.createImage(device,
@@ -291,7 +291,7 @@ void Rasterizer::createTextures(VkCommandPool& commandPool)
 
 	// create depth buffer image
 	// MIP LEVELS: for depth texture we only want 1 level :)
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	depthBufferImage.createImage(device,
 		swap_chain_extent.width, swap_chain_extent.height, 1,
 		depth_format, VK_IMAGE_TILING_OPTIMAL,
@@ -388,7 +388,7 @@ void Rasterizer::createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>
 	VkViewport viewport{};
 	viewport.x = 0.0f;
 	viewport.y = 0.0f;
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	viewport.width = (float)swap_chain_extent.width;
 	viewport.height = (float)swap_chain_extent.height;
 	viewport.minDepth = 0.0f;

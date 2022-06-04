@@ -1,0 +1,21 @@
+is_valid
+choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
+getVulkanInstance
+getPhysicalDeviceProperties
+getPhysicalDevice
+getLogicalDevice
+getGraphicsQueue
+getComputeQueue
+getPresentationQueue
+getImage
+align_up call:[return]
+find_memory_type_index call:[vkGetPhysicalDeviceMemoryProperties]
+VulkanImage
+create call:[find_memory_type_index,getLogicalDevice,getPhysicalDevice,runtime_error,vkAllocateMemory,vkBindImageMemory,vkCreateImage,vkGetImageMemoryRequirements] noreturn:[runtime_error,vkBindImageMemory]
+transitionImageLayout call:[accessFlagsForImageLayout,beginCommandBuffer,endAndSubmitCommandBuffer,pipelineStageForLayout,vkCmdPipelineBarrier] noreturn:[endAndSubmitCommandBuffer]
+transitionImageLayout call:[accessFlagsForImageLayout,pipelineStageForLayout,vkCmdPipelineBarrier] noreturn:[vkCmdPipelineBarrier]
+setImage
+cleanUp call:[getLogicalDevice,vkDestroyImage,vkFreeMemory] noreturn:[vkFreeMemory]
+VulkanImage
+accessFlagsForImageLayout call:[VkAccessFlags] noreturn:[VkAccessFlags]
+pipelineStageForLayout

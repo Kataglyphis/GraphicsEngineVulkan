@@ -6,7 +6,7 @@ Texture::Texture()
 {
 }
 
-void Texture::createFromFile(VulkanDevice* device, VkCommandPool commandPool, std::string fileName)
+void Texture::createFromFile(VulkanDevice* device, VkCommandPool commandPool, const std::string& fileName)
 {
 	int width, height;
 	VkDeviceSize size;
@@ -115,7 +115,7 @@ Texture::~Texture()
 {
 }
 
-stbi_uc* Texture::loadTextureData(	std::string file_name, 
+stbi_uc* Texture::loadTextureData(	const std::string& file_name, 
 									int* width, int* height, 
 									VkDeviceSize* image_size)
 {

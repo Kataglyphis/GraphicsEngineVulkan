@@ -1,3 +1,0 @@
-_glfwPlatformInitTimer global:[_glfw] call:[QueryPerformanceFrequency] noreturn:[QueryPerformanceFrequency]
-_glfwPlatformGetTimerValue call:[QueryPerformanceCounter]
-_glfwPlatformGetTimerFrequency global:[_glfw]

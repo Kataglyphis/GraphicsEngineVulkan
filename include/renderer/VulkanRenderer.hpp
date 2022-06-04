@@ -139,15 +139,15 @@ private:
 	void							createSharedRenderDescriptorSet();
 	void							updateTexturesInSharedRenderDescriptorSet();
 
-	VkDescriptorPool				post_descriptor_pool{};
-	VkDescriptorSetLayout			post_descriptor_set_layout;
+	VkDescriptorPool				post_descriptor_pool{ VK_NULL_HANDLE };
+	VkDescriptorSetLayout			post_descriptor_set_layout{ VK_NULL_HANDLE };
 	std::vector<VkDescriptorSet>	post_descriptor_set;
 	void							create_post_descriptor_layout();
 	void							updatePostDescriptorSets();
 
-	VkDescriptorPool				raytracingDescriptorPool;
+	VkDescriptorPool				raytracingDescriptorPool{ VK_NULL_HANDLE };
 	std::vector<VkDescriptorSet>	raytracingDescriptorSet;
-	VkDescriptorSetLayout			raytracingDescriptorSetLayout;
+	VkDescriptorSetLayout			raytracingDescriptorSetLayout{ VK_NULL_HANDLE };
 
 	void							createRaytracingDescriptorSetLayouts();
 	void							createRaytracingDescriptorSets();

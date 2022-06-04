@@ -1,0 +1,5 @@
+choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
+CommandBufferManager
+beginCommandBuffer call:[vkAllocateCommandBuffers,vkBeginCommandBuffer]
+endAndSubmitCommandBuffer call:[runtime_error,vkEndCommandBuffer,vkFreeCommandBuffers,vkQueueSubmit,vkQueueWaitIdle] noreturn:[runtime_error,vkFreeCommandBuffers]
+CommandBufferManager

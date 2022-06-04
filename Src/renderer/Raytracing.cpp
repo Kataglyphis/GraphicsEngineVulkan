@@ -20,7 +20,7 @@ void Raytracing::init(	VulkanDevice* device,
 	createSBT();
 }
 
-void Raytracing::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+void Raytracing::shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts)
 {
 	vkDestroyPipeline(device->getLogicalDevice(), graphicsPipeline, nullptr);
 	createGraphicsPipeline(descriptor_set_layouts);
@@ -75,7 +75,7 @@ void Raytracing::recordCommands(VkCommandBuffer& commandBuffer,
 		0, static_cast<uint32_t>(descriptorSets.size()), descriptorSets.data(),
 		0, nullptr);
 
-	const VkExtent2D swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
+	const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
 	pvkCmdTraceRaysKHR(commandBuffer, &rgen_region, &miss_region,
 		&hit_region, &call_region,
 		swap_chain_extent.width, swap_chain_extent.height, 1);

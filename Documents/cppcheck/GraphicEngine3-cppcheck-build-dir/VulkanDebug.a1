@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2712459389">
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp:10:33" my-argnr="3" my-argname="pCallbackData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp" line="35" col="36" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp:10:33" my-argnr="3" my-argname="pCallbackData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp" line="35" col="36" value="0"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp:10:33" my-argnr="3" my-argname="pCallbackData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp" line="35" col="36" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp:10:33" my-argnr="3" my-argname="pCallbackData" file="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp" line="35" col="36" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="debugUtilsMessengerCallback" lineNumber="10"/>
+    <functiondecl functionName="setupDebugging" lineNumber="61"/>
+    <functiondecl functionName="freeDebugCallback" lineNumber="76"/>
+    <functiondecl functionName="debugUtilsMessengerCallback" lineNumber="10"/>
+    <functiondecl functionName="setupDebugging" lineNumber="61"/>
+    <functiondecl functionName="freeDebugCallback" lineNumber="76"/>
+    <functioncall functionName="ASSERT_VULKAN"/>
+    <functioncall functionName="LOGD"/>
+    <functioncall functionName="LOGE"/>
+    <functioncall functionName="PFN_vkCreateDebugUtilsMessengerEXT"/>
+    <functioncall functionName="PFN_vkDestroyDebugUtilsMessengerEXT"/>
+    <functioncall functionName="VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT"/>
+    <functioncall functionName="VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT"/>
+    <functioncall functionName="c_str"/>
+    <functioncall functionName="debugUtilsMessenger"/>
+    <functioncall functionName="debugUtilsMessengerCI"/>
+    <functioncall functionName="debugUtilsMessengerCallback"/>
+    <functioncall functionName="fflush"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="instance"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="pMessage"/>
+    <functioncall functionName="prefix"/>
+    <functioncall functionName="reinterpret_cast"/>
+    <functioncall functionName="stdout"/>
+    <functioncall functionName="str"/>
+    <functioncall functionName="vkCreateDebugUtilsMessengerEXT"/>
+    <functioncall functionName="vkDestroyDebugUtilsMessengerEXT"/>
+    <functioncall functionName="vkGetInstanceProcAddr"/>
+  </FileInfo>
+</analyzerinfo>

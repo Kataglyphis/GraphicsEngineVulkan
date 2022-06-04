@@ -39,7 +39,10 @@ private:
 
     VulkanBufferManager vulkanBufferManager;
 
-    ObjectDescription   object_description;
+    ObjectDescription   object_description{ static_cast<uint64_t>(-1),
+                                            static_cast<uint64_t>(-1),
+                                            static_cast<uint64_t>(-1),
+                                            static_cast<uint64_t>(-1) };
 
     VulkanBuffer        vertexBuffer;
     VulkanBuffer        indexBuffer;
@@ -49,11 +52,11 @@ private:
 
     glm::mat4           model;
 
-    uint32_t            vertex_count;
-    uint32_t            index_count;
+    uint32_t            vertex_count{ static_cast<uint32_t>(-1) };
+    uint32_t            index_count{ static_cast<uint32_t>(-1) };
 
 
-    VulkanDevice*       device;
+    VulkanDevice*       device{VK_NULL_HANDLE};
 
     void createVertexBuffer(  VkQueue transfer_queue, VkCommandPool transfer_command_pool, 
                                 std::vector<Vertex>& vertices);

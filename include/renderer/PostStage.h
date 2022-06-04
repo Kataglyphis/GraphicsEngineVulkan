@@ -15,7 +15,7 @@ public:
 							VulkanSwapChain* vulkanSwapChain,
 							const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);
 
-	void			shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
+	void			shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts);
 
 	VkRenderPass&	getRenderPass() { return render_pass; };
 	VkSampler&		getOffscreenSampler() { return offscreenTextureSampler; };
@@ -28,21 +28,21 @@ public:
 
 private:
 
-	VulkanDevice*					device;
-	VulkanSwapChain*				vulkanSwapChain;
+	VulkanDevice*					device{VK_NULL_HANDLE};
+	VulkanSwapChain*				vulkanSwapChain{ VK_NULL_HANDLE };
 
 	std::vector<VkFramebuffer>		framebuffers;
 	Texture							depthBufferImage;
-	VkFormat						depth_format;
+	VkFormat						depth_format{ VK_FORMAT_UNDEFINED };
 	void							createDepthbufferImage();
 
 	VkSampler						offscreenTextureSampler;
 	void							createOffscreenTextureSampler();
 
-	VkPushConstantRange				push_constant_range;
-	VkRenderPass					render_pass;
-	VkPipeline						graphics_pipeline;
-	VkPipelineLayout				pipeline_layout;
+	VkPushConstantRange				push_constant_range{ VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM, 0, 0 };
+	VkRenderPass					render_pass{ VK_NULL_HANDLE };
+	VkPipeline						graphics_pipeline{ VK_NULL_HANDLE };
+	VkPipelineLayout				pipeline_layout{ VK_NULL_HANDLE };
 
 	void							createPushConstantRange();
 	void							createRenderpass();

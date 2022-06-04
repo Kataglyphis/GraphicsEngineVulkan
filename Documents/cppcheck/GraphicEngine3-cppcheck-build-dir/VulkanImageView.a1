@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3356307359">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="ASSERT_VULKAN"/>
+    <functioncall functionName="VK_COMPONENT_SWIZZLE_IDENTITY"/>
+    <functioncall functionName="VK_IMAGE_VIEW_TYPE_2D"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO"/>
+    <functioncall functionName="aspect_flags"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="format"/>
+    <functioncall functionName="getLogicalDevice"/>
+    <functioncall functionName="image"/>
+    <functioncall functionName="imageView"/>
+    <functioncall functionName="mip_levels"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="view_create_info"/>
+    <functioncall functionName="vkCreateImageView"/>
+    <functioncall functionName="vkDestroyImageView"/>
+  </FileInfo>
+</analyzerinfo>

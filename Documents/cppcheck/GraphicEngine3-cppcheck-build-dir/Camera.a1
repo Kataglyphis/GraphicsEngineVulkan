@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="960557319">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="GLFW_KEY_A"/>
+    <functioncall functionName="GLFW_KEY_D"/>
+    <functioncall functionName="GLFW_KEY_E"/>
+    <functioncall functionName="GLFW_KEY_Q"/>
+    <functioncall functionName="GLFW_KEY_S"/>
+    <functioncall functionName="GLFW_KEY_W"/>
+    <functioncall functionName="cos"/>
+    <functioncall functionName="cross"/>
+    <functioncall functionName="far_plane"/>
+    <functioncall functionName="fov"/>
+    <functioncall functionName="front"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="lookAt"/>
+    <functioncall functionName="movement_speed"/>
+    <functioncall functionName="near_plane"/>
+    <functioncall functionName="new_camera_position"/>
+    <functioncall functionName="normalize"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="position"/>
+    <functioncall functionName="radians"/>
+    <functioncall functionName="right"/>
+    <functioncall functionName="sin"/>
+    <functioncall functionName="turn_speed"/>
+    <functioncall functionName="up"/>
+    <functioncall functionName="update"/>
+    <functioncall functionName="vec3"/>
+    <functioncall functionName="velocity"/>
+    <functioncall functionName="world_up"/>
+    <functioncall functionName="yaw"/>
+  </FileInfo>
+</analyzerinfo>

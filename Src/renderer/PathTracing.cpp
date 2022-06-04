@@ -35,7 +35,7 @@ void PathTracing::init(VulkanDevice* device, const std::vector<VkDescriptorSetLa
 
 }
 
-void PathTracing::shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts)
+void PathTracing::shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts)
 {
 
 	vkDestroyPipeline(device->getLogicalDevice(), pipeline, nullptr);

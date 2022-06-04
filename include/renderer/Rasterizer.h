@@ -16,7 +16,7 @@ public:
 						const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts,
 						VkCommandPool& commandPool);
 
-	void		shaderHotReload(std::vector<VkDescriptorSetLayout> descriptor_set_layouts);
+	void		shaderHotReload(const std::vector<VkDescriptorSetLayout>& descriptor_set_layouts);
 
 	Texture&	getOffscreenTexture(uint32_t index);
 
@@ -31,8 +31,8 @@ public:
 
 private:
 
-	VulkanDevice*					device;
-	VulkanSwapChain*				vulkanSwapChain;
+	VulkanDevice*					device{VK_NULL_HANDLE};
+	VulkanSwapChain*				vulkanSwapChain{ VK_NULL_HANDLE };
 
 	CommandBufferManager			commandBufferManager;
 
@@ -40,12 +40,12 @@ private:
 	std::vector<Texture>			offscreenTextures;
 	Texture							depthBufferImage;
 
-	VkPushConstantRange				push_constant_range;
-	PushConstantRasterizer			pushConstant;
+	VkPushConstantRange				push_constant_range{ VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM, 0, 0 };
+	PushConstantRasterizer			pushConstant{ glm::mat4(1.f) };
 
-	VkPipeline						graphics_pipeline;
-	VkPipelineLayout				pipeline_layout;
-	VkRenderPass					render_pass;
+	VkPipeline						graphics_pipeline{ VK_NULL_HANDLE };
+	VkPipelineLayout				pipeline_layout{ VK_NULL_HANDLE };
+	VkRenderPass					render_pass{ VK_NULL_HANDLE };
 
 	void							createTextures(VkCommandPool& commandPool);
 	void							createGraphicsPipeline(const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts);

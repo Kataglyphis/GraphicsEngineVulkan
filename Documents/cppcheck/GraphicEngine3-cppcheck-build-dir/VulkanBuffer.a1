@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="4585430">
+        <error id="unsignedLessThanZero" severity="style" msg="Checking if unsigned expression &apos;memory_type_index&apos; is less than zero." verbose="The unsigned expression &apos;memory_type_index&apos; will never be negative so it is either pointless or an error to check if it is." cwe="570" file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanBuffer.cpp">
+            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\Src\vulkan_base\VulkanBuffer.cpp" line="47" column="24" info="Unsigned less than zero"/>
+            <symbol>memory_type_index</symbol>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="ASSERT_VULKAN"/>
+    <functioncall functionName="VK_SHARING_MODE_EXCLUSIVE"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO"/>
+    <functioncall functionName="VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO"/>
+    <functioncall functionName="buffer"/>
+    <functioncall functionName="bufferMemory"/>
+    <functioncall functionName="buffer_info"/>
+    <functioncall functionName="buffer_propertiy_flags"/>
+    <functioncall functionName="buffer_size"/>
+    <functioncall functionName="buffer_usage_flags"/>
+    <functioncall functionName="created"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="find_memory_type_index"/>
+    <functioncall functionName="getLogicalDevice"/>
+    <functioncall functionName="getPhysicalDevice"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="memoryTypeBits"/>
+    <functioncall functionName="memory_alloc_info"/>
+    <functioncall functionName="memory_requirements"/>
+    <functioncall functionName="memory_type_index"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="result"/>
+    <functioncall functionName="runtime_error"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="vkAllocateMemory"/>
+    <functioncall functionName="vkBindBufferMemory"/>
+    <functioncall functionName="vkCreateBuffer"/>
+    <functioncall functionName="vkDestroyBuffer"/>
+    <functioncall functionName="vkFreeMemory"/>
+    <functioncall functionName="vkGetBufferMemoryRequirements"/>
+  </FileInfo>
+</analyzerinfo>

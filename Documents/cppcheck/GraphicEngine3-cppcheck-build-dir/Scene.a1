@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="4265914394">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="Model"/>
+    <functioncall functionName="add_model"/>
+    <functioncall functionName="cleanUp"/>
+    <functioncall functionName="commandPool"/>
+    <functioncall functionName="device"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="getGraphicsQueue"/>
+    <functioncall functionName="getGuiSceneSharedVars"/>
+    <functioncall functionName="getMeshCount"/>
+    <functioncall functionName="getModelCount"/>
+    <functioncall functionName="getModelFile"/>
+    <functioncall functionName="getModelMatrix"/>
+    <functioncall functionName="getObjectDescription"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="int32_t"/>
+    <functioncall functionName="loadModel"/>
+    <functioncall functionName="model"/>
+    <functioncall functionName="modelFileName"/>
+    <functioncall functionName="modelMatrix"/>
+    <functioncall functionName="model_id"/>
+    <functioncall functionName="model_list"/>
+    <functioncall functionName="model_matrix"/>
+    <functioncall functionName="new_model"/>
+    <functioncall functionName="obj_loader"/>
+    <functioncall functionName="object_description"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="runtime_error"/>
+    <functioncall functionName="set_model"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="uint32_t"/>
+    <functioncall functionName="update_model_matrix"/>
+  </FileInfo>
+</analyzerinfo>

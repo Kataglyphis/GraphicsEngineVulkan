@@ -1301,3 +1301,4 @@ operator==
 operator() call:[return] noreturn:[return]
 Vertex
 Vertex
+getVertexInputAttributeDesc call:[offsetof]

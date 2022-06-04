@@ -1,0 +1,15 @@
+is_valid
+choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
+getVulkanInstance
+getPhysicalDeviceProperties
+getPhysicalDevice
+getLogicalDevice
+getGraphicsQueue
+getComputeQueue
+getPresentationQueue
+getImageView
+VulkanImageView
+setImageView
+create call:[getLogicalDevice,runtime_error,vkCreateImageView] noreturn:[runtime_error]
+cleanUp call:[getLogicalDevice,vkDestroyImageView] noreturn:[vkDestroyImageView]
+VulkanImageView

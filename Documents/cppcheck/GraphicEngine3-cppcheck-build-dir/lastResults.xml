@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.7"/>
+    <errors>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/renderer/CommandBufferManager.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\renderer\CommandBufferManager.cpp" line="53"/>
+        </error>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/renderer/PostStage.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\renderer\PostStage.cpp" line="412"/>
+        </error>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/renderer/Rasterizer.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\renderer\Rasterizer.cpp" line="494"/>
+        </error>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/renderer/Raytracing.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\renderer\Raytracing.cpp" line="265"/>
+        </error>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/renderer/VulkanRenderer.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\renderer\VulkanRenderer.cpp" line="203"/>
+        </error>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/scene/Model.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\scene\Model.cpp" line="92"/>
+        </error>
+        <error id="stlFindInsert" severity="performance" msg="Searching before insertion is not necessary. Instead of &amp;#039;vertices_map[vert]=vertices.size()&amp;#039; consider using &amp;#039;vertices_map.try_emplace(vert, vertices.size());&amp;#039;." verbose="Searching before insertion is not necessary. Instead of &amp;#039;vertices_map[vert]=vertices.size()&amp;#039; consider using &amp;#039;vertices_map.try_emplace(vert, vertices.size());&amp;#039;." cwe="398" file0="../../Src/scene/ObjLoader.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\scene\ObjLoader.cpp" line="198"/>
+        </error>
+        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="../../Src/vulkan_base/VulkanImage.cpp" sinceDate="04.06.2022">
+            <location file="..\..\Src\vulkan_base\VulkanImage.cpp" line="50"/>
+        </error>
+    </errors>
+</results>

@@ -42,11 +42,11 @@ public:
 
 private:
 
-    VulkanDevice*               device;
+    VulkanDevice*               device{VK_NULL_HANDLE};
 
     void                        addSampler(Texture newTexture);
 
-    uint32_t                    mesh_model_index;
+    uint32_t                    mesh_model_index{ static_cast<uint32_t>(-1) };
     Mesh                        mesh;
     glm::mat4                   model;
 
