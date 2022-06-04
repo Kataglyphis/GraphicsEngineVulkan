@@ -69,7 +69,7 @@ void Rasterizer::recordCommands(VkCommandBuffer& commandBuffer, uint32_t image_i
 	// bind pipeline to be used in render pass
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
 
-	for (int m = 0; m < scene->getModelCount(); m++) {
+	for (uint32_t m = 0; m < static_cast<uint32_t>(scene->getModelCount()); m++) {
 
 		// for GCC doen't allow references on rvalues go like that ... 
 		pushConstant.model = scene->getModelMatrix(0);
@@ -256,7 +256,7 @@ void Rasterizer::createTextures(VkCommandPool& commandPool)
 	VkCommandBuffer cmdBuffer = commandBufferManager.beginCommandBuffer(device->getLogicalDevice(),
 									commandPool);
 
-	for (int index = 0; index < vulkanSwapChain->getNumberSwapChainImages(); index++) {
+	for (uint32_t index = 0; index < static_cast<uint32_t>(vulkanSwapChain->getNumberSwapChainImages()); index++) {
 
 		Texture texture{};
 		const VkExtent2D& swap_chain_extent = vulkanSwapChain->getSwapChainExtent();
