@@ -5,6 +5,7 @@
 #include <ShaderHelper.h>
 #include <File.h>
 #include <Vertex.h>
+#include <FormatHelper.h>
 
 Rasterizer::Rasterizer()
 {

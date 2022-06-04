@@ -6,6 +6,7 @@
 #include <ShaderHelper.h>
 #include <File.h>
 #include <GUI.h>
+#include <FormatHelper.h>
 
 PostStage::PostStage()
 {

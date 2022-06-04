@@ -22,14 +22,8 @@ void ASManager::createBLAS(	VulkanDevice* device,
 	// we need a reference to the device location of our geometry laying on the graphics card
 	// we already uploaded objects and created vertex and index buffers respectively
 
-	PFN_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR = (PFN_vkCmdBuildAccelerationStructuresKHR)
-		vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCmdBuildAccelerationStructuresKHR");
-
 	PFN_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR = (PFN_vkGetBufferDeviceAddressKHR)
 		vkGetDeviceProcAddr(device->getLogicalDevice(), "vkGetBufferDeviceAddress");
-
-	PFN_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR = (PFN_vkCreateAccelerationStructureKHR)
-		vkGetDeviceProcAddr(device->getLogicalDevice(), "vkCreateAccelerationStructureKHR");
 
 	std::vector<BlasInput> blas_input(scene->getModelCount());
 

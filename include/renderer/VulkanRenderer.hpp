@@ -35,7 +35,6 @@
 #include "VulkanBufferManager.h"
 #include "Texture.h"
 #include "ASManager.h"
-#include "MemoryHelper.h"
 #include "CommandBufferManager.h"
 #include "Scene.h"
 #include <GUI.h>
