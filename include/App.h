@@ -1,15 +1,11 @@
 #pragma once
-class App
-{
-public: 
+class App {
+  public:
+  App();
 
-	App();
+  int run();
 
-	int run();
+  ~App();
 
-	~App();
-
-private:
-
+  private:
 };
-

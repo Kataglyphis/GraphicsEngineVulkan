@@ -16,41 +16,32 @@
 #include "CommandBufferManager.h"
 #include "Globals.h"
 
-class GUI
-{
-public:
+class GUI {
+  public:
+  GUI(Window* window);
 
-	GUI(Window* window);
+  void initializeVulkanContext(
+    VulkanDevice* device, const VkInstance& instance, const VkRenderPass& post_render_pass, const VkCommandPool& graphics_command_pool);
 
-	void initializeVulkanContext(	VulkanDevice* device,
-									const VkInstance& instance,
-									const VkRenderPass& post_render_pass,
-									const VkCommandPool& graphics_command_pool);
+  GUISceneSharedVars getGuiSceneSharedVars() { return guiSceneSharedVars; };
+  GUIRendererSharedVars& getGuiRendererSharedVars() { return guiRendererSharedVars; };
 
-	GUISceneSharedVars				getGuiSceneSharedVars() { return guiSceneSharedVars; };
-	GUIRendererSharedVars&			getGuiRendererSharedVars() { return guiRendererSharedVars; };
+  void render();
 
-	void							render();
+  void cleanUp();
 
-	void							cleanUp();
+  ~GUI();
 
-	~GUI();
+  private:
+  void create_gui_context(Window* window, const VkInstance& instance, const VkRenderPass& post_render_pass);
 
-private:
+  void create_fonts_and_upload(const VkCommandPool& graphics_command_pool);
 
-	void create_gui_context(Window* window, 
-							const VkInstance& instance,
-							const VkRenderPass& post_render_pass);
+  VulkanDevice* device{ VK_NULL_HANDLE };
+  Window* window{ VK_NULL_HANDLE };
+  VkDescriptorPool gui_descriptor_pool{ VK_NULL_HANDLE };
+  CommandBufferManager commandBufferManager;
 
-	void create_fonts_and_upload(const VkCommandPool& graphics_command_pool);
-
-	VulkanDevice*			device{VK_NULL_HANDLE};
-	Window*					window{ VK_NULL_HANDLE };
-	VkDescriptorPool		gui_descriptor_pool{ VK_NULL_HANDLE };
-	CommandBufferManager	commandBufferManager;
-
-	GUISceneSharedVars		guiSceneSharedVars;
-	GUIRendererSharedVars	guiRendererSharedVars;
-
+  GUISceneSharedVars guiSceneSharedVars;
+  GUIRendererSharedVars guiRendererSharedVars;
 };
-

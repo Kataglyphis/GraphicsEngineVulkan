@@ -3,29 +3,22 @@
 
 #include "VulkanDevice.h"
 
-class VulkanImageView
-{
-public:
+class VulkanImageView {
+  public:
+  VulkanImageView();
 
-	VulkanImageView();
+  void setImageView(VkImageView imageView);
 
-	void			setImageView(VkImageView imageView);
+  VkImageView& getImageView() { return imageView; };
 
-	VkImageView&	getImageView() { return imageView; };
+  void create(VulkanDevice* device, VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
 
-	void			create(	VulkanDevice* device, VkImage image,
-							VkFormat format, VkImageAspectFlags aspect_flags,
-							uint32_t mip_levels);
+  void cleanUp();
 
-	void			cleanUp();
+  ~VulkanImageView();
 
-	~VulkanImageView();
+  private:
+  VulkanDevice* device{ VK_NULL_HANDLE };
 
-private:
-
-	VulkanDevice*	device{VK_NULL_HANDLE};
-
-	VkImageView		imageView;
-
+  VkImageView imageView;
 };
-

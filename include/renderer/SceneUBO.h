@@ -4,8 +4,8 @@
 // https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/
 
 #ifdef __cplusplus
-#pragma once
-#include <glm/glm.hpp>
+#  pragma once
+#  include <glm/glm.hpp>
 // GLSL Type
 using vec2 = glm::vec2;
 using vec3 = glm::vec3;
@@ -16,9 +16,8 @@ using uint = unsigned int;
 
 struct SceneUBO {
 
-	vec4 light_dir;
-	vec4 view_dir;
-	//xyz is position; w = fov
-	vec4 cam_pos;
-
+  vec4 light_dir;
+  vec4 view_dir;
+  //xyz is position; w = fov
+  vec4 cam_pos;
 };

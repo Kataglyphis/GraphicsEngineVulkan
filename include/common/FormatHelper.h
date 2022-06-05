@@ -4,33 +4,27 @@
 #include <vulkan/vulkan.h>
 #include <stdexcept>
 
-static VkFormat choose_supported_format(VkPhysicalDevice physical_device,
-										const std::vector<VkFormat>&formats, 
-										VkImageTiling tiling, 
-										VkFormatFeatureFlags feature_flags)
+static VkFormat choose_supported_format(
+  VkPhysicalDevice physical_device, const std::vector<VkFormat>& formats, VkImageTiling tiling, VkFormatFeatureFlags feature_flags)
 {
 
-	// loop through options and find compatible one
-	for (VkFormat format : formats) {
+  // loop through options and find compatible one
+  for (VkFormat format : formats) {
 
-		// get properties for give format on this device
-		VkFormatProperties properties;
-		vkGetPhysicalDeviceFormatProperties(physical_device, format, &properties);
+    // get properties for give format on this device
+    VkFormatProperties properties;
+    vkGetPhysicalDeviceFormatProperties(physical_device, format, &properties);
 
-		// depending on tiling choice, need to check for different bit flag
-		if (tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & feature_flags) == feature_flags) {
+    // depending on tiling choice, need to check for different bit flag
+    if (tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & feature_flags) == feature_flags) {
 
-			return format;
+      return format;
 
-		}
-		else if (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & feature_flags) == feature_flags) {
+    } else if (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & feature_flags) == feature_flags) {
 
-			return format;
+      return format;
+    }
+  }
 
-		}
-
-	}
-
-	throw std::runtime_error("Failed to find supported format!");
-
+  throw std::runtime_error("Failed to find supported format!");
 }

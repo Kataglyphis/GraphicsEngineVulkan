@@ -4,47 +4,33 @@
 #include "VulkanDevice.h"
 #include "CommandBufferManager.h"
 
-class VulkanImage
-{
-public:
-	
-	VulkanImage();
-	
-	void		create(	VulkanDevice* device,
-						uint32_t width, uint32_t height,
-						uint32_t mip_levels, VkFormat format,
-						VkImageTiling tiling,
-						VkImageUsageFlags use_flags,
-						VkMemoryPropertyFlags prop_flags);
+class VulkanImage {
+  public:
+  VulkanImage();
 
-	void		transitionImageLayout(	VkDevice device, VkQueue queue,
-										VkCommandPool command_pool,
-										VkImageLayout old_layout,
-										VkImageLayout new_layout,
-										VkImageAspectFlags aspectMask,
-										uint32_t mip_levels);
+  void create(VulkanDevice* device, uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags,
+    VkMemoryPropertyFlags prop_flags);
 
-	void		transitionImageLayout(	VkCommandBuffer command_buffer,
-										VkImageLayout old_layout,
-										VkImageLayout new_layout, uint32_t mip_levels,
-										VkImageAspectFlags aspectMask);
+  void transitionImageLayout(VkDevice device, VkQueue queue, VkCommandPool command_pool, VkImageLayout old_layout, VkImageLayout new_layout,
+    VkImageAspectFlags aspectMask, uint32_t mip_levels);
 
-	void		setImage(VkImage image);
-	VkImage&	getImage() { return image; };
+  void transitionImageLayout(
+    VkCommandBuffer command_buffer, VkImageLayout old_layout, VkImageLayout new_layout, uint32_t mip_levels, VkImageAspectFlags aspectMask);
 
-	void		cleanUp();
+  void setImage(VkImage image);
+  VkImage& getImage() { return image; };
 
-	~VulkanImage();
+  void cleanUp();
 
-private:
+  ~VulkanImage();
 
-	VulkanDevice*			device{VK_NULL_HANDLE};
-	CommandBufferManager	commandBufferManager;
+  private:
+  VulkanDevice* device{ VK_NULL_HANDLE };
+  CommandBufferManager commandBufferManager;
 
-	VkImage			image;
-	VkDeviceMemory	imageMemory;
+  VkImage image;
+  VkDeviceMemory imageMemory;
 
-	VkAccessFlags			accessFlagsForImageLayout(VkImageLayout layout);
-	VkPipelineStageFlags	pipelineStageForLayout(VkImageLayout oldImageLayout);
+  VkAccessFlags accessFlagsForImageLayout(VkImageLayout layout);
+  VkPipelineStageFlags pipelineStageForLayout(VkImageLayout oldImageLayout);
 };
-

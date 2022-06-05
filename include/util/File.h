@@ -2,22 +2,17 @@
 #include <string>
 #include <vector>
 
-class File
-{
+class File {
 
-public:
+  public:
+  explicit File(const std::string& file_location);
 
-	explicit File(const std::string& file_location);
+  std::string read();
+  std::vector<char> readCharSequence();
+  std::string getBaseDir();
 
-	std::string			read();
-	std::vector<char>	readCharSequence();
-	std::string			getBaseDir();
+  ~File();
 
-	~File();
-
-private:
-
-	std::string file_location;
-
+  private:
+  std::string file_location;
 };
-

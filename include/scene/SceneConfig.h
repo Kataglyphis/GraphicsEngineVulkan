@@ -7,7 +7,7 @@
 
 namespace sceneConfig {
 
-	std::string getModelFile();
-	glm::mat4	getModelMatrix();
+std::string getModelFile();
+glm::mat4 getModelMatrix();
 
 }

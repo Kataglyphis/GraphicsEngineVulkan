@@ -4,23 +4,16 @@
 
 #include <stdexcept>
 
-class Allocator
-{
+class Allocator {
 
-public:
+  public:
+  Allocator();
+  Allocator(const VkDevice& device, const VkPhysicalDevice& physicalDevice, const VkInstance& instance);
 
-	Allocator();
-	Allocator(	const VkDevice& device, 
-				const VkPhysicalDevice& physicalDevice, 
-				const VkInstance& instance);
+  void cleanUp();
 
-	void cleanUp();
+  ~Allocator();
 
-	~Allocator();
-
-private:
-
-	VmaAllocator vmaAllocator;
-
+  private:
+  VmaAllocator vmaAllocator;
 };
-
