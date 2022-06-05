@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 17)
+# specify the C/C++ standard
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED True)
 
 # set the project name
 project(GraphicsEngine VERSION 1.3
@@ -10,7 +13,7 @@ project(GraphicsEngine VERSION 1.3
                        LANGUAGES  CXX
                                   C)
 
-                                  include(FetchContent)
+include(FetchContent)
 # include google test to project
 FetchContent_Declare(
   googletest
