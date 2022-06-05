@@ -43,117 +43,107 @@
 #include "Raytracing.h"
 #include "PathTracing.h"
 
-class VulkanRenderer
-{
-public:
+class VulkanRenderer {
+  public:
+  VulkanRenderer(Window* window, Scene* scene, GUI* gui, Camera* camera);
 
-	VulkanRenderer(	Window* window, 
-					Scene*	scene,
-					GUI*	gui,
-					Camera* camera);
+  void drawFrame();
 
-	void	drawFrame();
+  void updateUniforms(Scene* scene, Camera* camera, Window* window);
 
-	void	updateUniforms(	Scene* scene,
-							Camera* camera,
-							Window* window);
+  void updateStateDueToUserInput(GUI* gui);
+  void finishAllRenderCommands();
+  void update_raytracing_descriptor_set(uint32_t image_index);
 
-	void	updateStateDueToUserInput(GUI* gui);
-	void	finishAllRenderCommands();
-	void	update_raytracing_descriptor_set(uint32_t image_index);
+  void cleanUp();
 
-	void	cleanUp();
+  ~VulkanRenderer();
 
-	~VulkanRenderer();
+  private:
+  void shaderHotReload();
 
-private:
+  // helper class for managing our buffers
+  VulkanBufferManager vulkanBufferManager;
 
-	void							shaderHotReload();
+  // Vulkan instance, stores all per-application states
+  VulkanInstance instance;
 
-	// helper class for managing our buffers
-	VulkanBufferManager				vulkanBufferManager;
+  // surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
+  VkSurfaceKHR surface;
+  void create_surface();
 
-	// Vulkan instance, stores all per-application states
-	VulkanInstance					instance;
+  std::unique_ptr<VulkanDevice> device;
 
-	// surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
-	VkSurfaceKHR					surface;
-	void							create_surface();
+  VulkanSwapChain vulkanSwapChain;
 
-	std::unique_ptr<VulkanDevice>	device;
+  Window* window;
+  Scene* scene;
+  GUI* gui;
 
-	VulkanSwapChain					vulkanSwapChain;
+  // -- pools
+  void record_commands(uint32_t image_index);
+  void create_command_pool();
+  void cleanUpCommandPools();
+  VkCommandPool graphics_command_pool;
+  VkCommandPool compute_command_pool;
 
-	Window*							window;
-	Scene*							scene;
-	GUI*							gui;
+  // uniform buffers
+  GlobalUBO globalUBO;
+  std::vector<VulkanBuffer> globalUBOBuffer;
+  SceneUBO sceneUBO;
+  std::vector<VulkanBuffer> sceneUBOBuffer;
+  void create_uniform_buffers();
+  void update_uniform_buffers(uint32_t image_index);
+  void cleanUpUBOs();
 
-	// -- pools
-	void							record_commands(uint32_t image_index);
-	void							create_command_pool();
-	void							cleanUpCommandPools();
-	VkCommandPool					graphics_command_pool;
-	VkCommandPool					compute_command_pool;
+  std::vector<VkCommandBuffer> command_buffers;
+  CommandBufferManager commandBufferManager;
+  void create_command_buffers();
 
-	// uniform buffers
-	GlobalUBO						globalUBO;
-	std::vector<VulkanBuffer>		globalUBOBuffer;
-	SceneUBO						sceneUBO;
-	std::vector<VulkanBuffer>		sceneUBOBuffer;
-	void							create_uniform_buffers();
-	void							update_uniform_buffers(uint32_t image_index);
-	void							cleanUpUBOs();
+  Raytracing raytracingStage;
+  Rasterizer rasterizer;
+  PathTracing pathTracing;
+  PostStage postStage;
 
-	std::vector<VkCommandBuffer>	command_buffers;
-	CommandBufferManager			commandBufferManager;
-	void							create_command_buffers();
+  // new era of memory management for my project
+  // for now on integrate vma
+  Allocator allocator;
 
-	Raytracing						raytracingStage;
-	Rasterizer						rasterizer;
-	PathTracing						pathTracing;
-	PostStage						postStage;
+  // -- synchronization
+  uint32_t current_frame{ 0 };
+  std::vector<VkSemaphore> image_available;
+  std::vector<VkSemaphore> render_finished;
+  std::vector<VkFence> in_flight_fences;
+  std::vector<VkFence> images_in_flight_fences;
+  void createSynchronization();
+  void cleanUpSync();
 
-	// new era of memory management for my project
-	// for now on integrate vma 
-	Allocator						allocator;
+  ASManager asManager;
+  VulkanBuffer objectDescriptionBuffer;
+  void create_object_description_buffer();
 
-	// -- synchronization
-	uint32_t						current_frame{ 0 };
-	std::vector<VkSemaphore>		image_available;
-	std::vector<VkSemaphore>		render_finished;
-	std::vector<VkFence>			in_flight_fences;
-	std::vector<VkFence>			images_in_flight_fences;
-	void							createSynchronization();
-	void							cleanUpSync();
+  VkDescriptorPool descriptorPoolSharedRenderStages;
+  void createDescriptorPoolSharedRenderStages();
+  VkDescriptorSetLayout sharedRenderDescriptorSetLayout;
+  void createSharedRenderDescriptorSetLayouts();
+  std::vector<VkDescriptorSet> sharedRenderDescriptorSet;
+  void createSharedRenderDescriptorSet();
+  void updateTexturesInSharedRenderDescriptorSet();
 
-	ASManager						asManager;
-	VulkanBuffer					objectDescriptionBuffer;
-	void							create_object_description_buffer();
+  VkDescriptorPool post_descriptor_pool{ VK_NULL_HANDLE };
+  VkDescriptorSetLayout post_descriptor_set_layout{ VK_NULL_HANDLE };
+  std::vector<VkDescriptorSet> post_descriptor_set;
+  void create_post_descriptor_layout();
+  void updatePostDescriptorSets();
 
-	VkDescriptorPool				descriptorPoolSharedRenderStages;
-	void							createDescriptorPoolSharedRenderStages();
-	VkDescriptorSetLayout			sharedRenderDescriptorSetLayout;
-	void							createSharedRenderDescriptorSetLayouts();
-	std::vector<VkDescriptorSet>	sharedRenderDescriptorSet;
-	void							createSharedRenderDescriptorSet();
-	void							updateTexturesInSharedRenderDescriptorSet();
+  VkDescriptorPool raytracingDescriptorPool{ VK_NULL_HANDLE };
+  std::vector<VkDescriptorSet> raytracingDescriptorSet;
+  VkDescriptorSetLayout raytracingDescriptorSetLayout{ VK_NULL_HANDLE };
 
-	VkDescriptorPool				post_descriptor_pool{ VK_NULL_HANDLE };
-	VkDescriptorSetLayout			post_descriptor_set_layout{ VK_NULL_HANDLE };
-	std::vector<VkDescriptorSet>	post_descriptor_set;
-	void							create_post_descriptor_layout();
-	void							updatePostDescriptorSets();
+  void createRaytracingDescriptorSetLayouts();
+  void createRaytracingDescriptorSets();
+  void updateRaytracingDescriptorSets();
+  void createRaytracingDescriptorPool();
 
-	VkDescriptorPool				raytracingDescriptorPool{ VK_NULL_HANDLE };
-	std::vector<VkDescriptorSet>	raytracingDescriptorSet;
-	VkDescriptorSetLayout			raytracingDescriptorSetLayout{ VK_NULL_HANDLE };
-
-	void							createRaytracingDescriptorSetLayouts();
-	void							createRaytracingDescriptorSets();
-	void							updateRaytracingDescriptorSets();
-	void							createRaytracingDescriptorPool();
-	
-	bool							checkChangedFramebufferSize();
-
+  bool checkChangedFramebufferSize();
 };
-

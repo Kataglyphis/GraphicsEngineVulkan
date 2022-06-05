@@ -4,8 +4,8 @@
 // https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/
 
 #ifdef __cplusplus
-#pragma once
-#include <glm/glm.hpp>
+#  pragma once
+#  include <glm/glm.hpp>
 // GLSL Type
 using vec2 = glm::vec2;
 using vec3 = glm::vec3;
@@ -16,20 +16,17 @@ using uint = unsigned int;
 
 // illumination model (see http://www.fileformat.info/format/material/)
 
-struct ObjMaterial
-{
+struct ObjMaterial {
 
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
-	vec3 transmittance;
-	vec3 emission;
-	float   shininess;
-	float   ior;		// index of refraction
-	float   dissolve;   // 1 == opaque; 0 == fully transparent
-							 
-	int illum;
-	int textureID;
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
+  vec3 transmittance;
+  vec3 emission;
+  float shininess;
+  float ior; // index of refraction
+  float dissolve; // 1 == opaque; 0 == fully transparent
 
+  int illum;
+  int textureID;
 };
-

@@ -1,77 +1,59 @@
 #include "Scene.h"
 
-Scene::Scene() {
+Scene::Scene() { }
 
-}
+void Scene::update_user_input(GUI* gui) { guiSceneSharedVars = gui->getGuiSceneSharedVars(); }
 
-void Scene::update_user_input(GUI* gui)
+void Scene::loadModel(VulkanDevice* device, VkCommandPool commandPool)
 {
-	guiSceneSharedVars = gui->getGuiSceneSharedVars();
-}
+  ObjLoader obj_loader(device, device->getGraphicsQueue(), commandPool);
 
-void Scene::loadModel(	VulkanDevice* device, 
-						VkCommandPool commandPool)
-{
-	ObjLoader obj_loader(	device, device->getGraphicsQueue(),
-							commandPool);
+  std::string modelFileName = sceneConfig::getModelFile();
+  std::shared_ptr<Model> new_model = obj_loader.loadModel(modelFileName);
 
-	std::string modelFileName = sceneConfig::getModelFile();
-	std::shared_ptr<Model> new_model = obj_loader.loadModel(modelFileName);
+  add_model(new_model);
 
-	add_model(new_model);
+  glm::mat4 modelMatrix = sceneConfig::getModelMatrix();
 
-	glm::mat4 modelMatrix = sceneConfig::getModelMatrix();
-
-	update_model_matrix(modelMatrix, 0);
-
+  update_model_matrix(modelMatrix, 0);
 }
 
 void Scene::add_model(std::shared_ptr<Model> model)
 {
-	model_list.push_back(model);
-	object_descriptions.push_back(model->getObjectDescription());
+  model_list.push_back(model);
+  object_descriptions.push_back(model->getObjectDescription());
 }
 
-void Scene::add_object_description(ObjectDescription object_description)
-{
-
-	object_descriptions.push_back(object_description);
-
-}
+void Scene::add_object_description(ObjectDescription object_description) { object_descriptions.push_back(object_description); }
 
 void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id)
 {
 
-	if (model_id >= static_cast<int32_t>(getModelCount()) || model_id < 0) {
+  if (model_id >= static_cast<int32_t>(getModelCount()) || model_id < 0) {
 
-		throw std::runtime_error("Wrong model id value!");
+    throw std::runtime_error("Wrong model id value!");
+  }
 
-	}
-
-	model_list[model_id]->set_model(model_matrix);
-
+  model_list[model_id]->set_model(model_matrix);
 }
 
 void Scene::cleanUp()
 {
-	
-	for (std::shared_ptr<Model> model : model_list) {
-		model->cleanUp();
-	}
+
+  for (std::shared_ptr<Model> model : model_list) {
+    model->cleanUp();
+  }
 }
 
 uint32_t Scene::getNumberMeshes()
 {
-	uint32_t number_of_meshes = 0;
-	
-	for (std::shared_ptr<Model> mesh_model : model_list) {
-		number_of_meshes += static_cast<uint32_t>(mesh_model->getMeshCount());
-	}
+  uint32_t number_of_meshes = 0;
 
-	return number_of_meshes;
+  for (std::shared_ptr<Model> mesh_model : model_list) {
+    number_of_meshes += static_cast<uint32_t>(mesh_model->getMeshCount());
+  }
+
+  return number_of_meshes;
 }
 
-Scene::~Scene() {
-
-}
-
+Scene::~Scene() { }
