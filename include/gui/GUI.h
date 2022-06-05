@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
@@ -13,7 +14,6 @@
 #include "GUISceneSharedVars.h"
 #include "GUIRendererSharedVars.h"
 #include "CommandBufferManager.h"
-
 #include "Globals.h"
 
 class GUI

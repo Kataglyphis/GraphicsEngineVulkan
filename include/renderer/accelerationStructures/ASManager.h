@@ -1,7 +1,7 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include "VulkanDevice.h"
 
+#include "VulkanDevice.h"
 #include "Scene.h"
 #include "TopLevelAccelerationStructure.h"
 #include "BottomLevelAccelerationStructure.h"

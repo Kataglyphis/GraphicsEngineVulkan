@@ -1,7 +1,6 @@
-#include "VulkanBuffer.h"
-
 #include <stdexcept>
 
+#include "VulkanBuffer.h"
 #include "Utilities.h"
 #include "MemoryHelper.h"
 

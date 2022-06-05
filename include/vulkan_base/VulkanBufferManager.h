@@ -67,7 +67,7 @@ inline void VulkanBufferManager::createBufferAndUploadVectorOnDevice(
 	// 2.) map the vertex buffer memory to that point
 	vkMapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory(), 0, bufferSize, 0, &data);
 	// 3.) copy memory from vertices vector to the point
-	std::memcpy(data, bufferData.data(), (size_t)bufferSize);
+	std::memcpy(data, bufferData.data(), static_cast<size_t>(bufferSize));
 	// 4.) unmap the vertex buffer memory
 	vkUnmapMemory(device->getLogicalDevice(), stagingBuffer.getBufferMemory());
 

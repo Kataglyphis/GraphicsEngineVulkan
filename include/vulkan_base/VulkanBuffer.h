@@ -25,9 +25,9 @@ private:
 
 	VulkanDevice*	device{VK_NULL_HANDLE};
 
-	VkBuffer		buffer;
-	VkDeviceMemory	bufferMemory;
+	VkBuffer		buffer{ VK_NULL_HANDLE };
+	VkDeviceMemory	bufferMemory{ VK_NULL_HANDLE };
 
-	bool created	= false;
+	bool			created{false};
 };
 

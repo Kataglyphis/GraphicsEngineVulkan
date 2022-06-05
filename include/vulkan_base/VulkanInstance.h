@@ -3,9 +3,9 @@
 #define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <vector>
 
 #include "VulkanDebug.h"
-#include <vector>
 
 class VulkanInstance
 {

@@ -1,6 +1,7 @@
+#include <limits>
+
 #include "VulkanSwapChain.h"
 #include "Utilities.h"
-#include <limits>
 
 VulkanSwapChain::VulkanSwapChain()
 {
@@ -113,7 +114,7 @@ void VulkanSwapChain::initVulkanContext(VulkanDevice* device,
 void VulkanSwapChain::cleanUp()
 {
 
-	for (auto image : swap_chain_images) {
+	for (Texture& image : swap_chain_images) {
 
 		vkDestroyImageView(device->getLogicalDevice(), image.getImageView(), nullptr);
 

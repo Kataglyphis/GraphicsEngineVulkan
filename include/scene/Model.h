@@ -2,11 +2,10 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include "Mesh.h"
 #include "Texture.h"
-
-#include <memory>
 
 class Model
 {
