@@ -10,8 +10,8 @@ project(GraphicsEngine VERSION 1.3
                        LANGUAGES  CXX
                                   C)
 
+                                  include(FetchContent)
 # include google test to project
-include(FetchContent)
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/f079775276a99fd4373569bf5761052a01844270.zip
@@ -19,6 +19,15 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+
+#include gsl
+# In this example we are picking a specific tag.
+# You can also pick a specific commit, if you need to.
+FetchContent_Declare(GSL
+    GIT_REPOSITORY "https://github.com/microsoft/GSL"
+    GIT_TAG "v4.0.0"
+)
+FetchContent_MakeAvailable(GSL)
 
 # compile glslc shaders 
 # source: https://www.reddit.com/r/vulkan/comments/kbaxlz/what_is_your_workflow_when_compiling_shader_files/
@@ -293,8 +302,6 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(ExternalLib/GLFW)
 
-target_link_libraries(${PROJECT_NAME} glfw)
-
 # add tests 
 # include(CTest)
 
@@ -311,17 +318,18 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                        ${PROJECT_BINARY_DIR})
 
 find_package(Threads REQUIRED)
-target_link_libraries(${PROJECT_NAME}   ${CMAKE_DL_LIBS}
-                                        Threads::Threads
-                                        Vulkan::Vulkan 
-                                        imgui 
-                                        stb
-                                        glm
-                                        tinyobjloader
-                                        vma
-                                        ktx)
+target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
+                                                Threads::Threads
+                                                Vulkan::Vulkan
+                                                glfw 
+                                                imgui 
+                                                stb
+                                                glm
+                                                tinyobjloader
+                                                vma
+                                                ktx)
 
-# set(THREADS_PREFER_PTHREAD_FLAG ON)
+target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 
 if(UNIX)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")

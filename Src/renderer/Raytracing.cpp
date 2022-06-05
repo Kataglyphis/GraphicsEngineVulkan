@@ -1,9 +1,10 @@
-#include "Raytracing.h"
-#include "MemoryHelper.h"
 #include <array>
 #include <vector>
-#include <File.h>
-#include <ShaderHelper.h>
+
+#include "Raytracing.h"
+#include "MemoryHelper.h"
+#include "File.h"
+#include "ShaderHelper.h"
 
 Raytracing::Raytracing()
 {

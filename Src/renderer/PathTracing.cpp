@@ -1,8 +1,9 @@
+#include <array>
+#include <algorithm>
+
 #include "PathTracing.h"
 #include "ShaderHelper.h"
 #include "File.h"
-#include <array>
-#include <algorithm>
 
 // Good source: https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp
 
@@ -59,7 +60,7 @@ void PathTracing::recordCommands(	VkCommandBuffer& commandBuffer,
 
 	QueueFamilyIndices indices = device->getQueueFamilies();
 
-	VkImageSubresourceRange subresourceRange;
+	VkImageSubresourceRange subresourceRange{};
 	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 	subresourceRange.baseMipLevel = 0;
 	subresourceRange.baseArrayLayer = 0;
@@ -216,7 +217,7 @@ void PathTracing::createPipeline(const std::vector<VkDescriptorSetLayout>& descr
 	VkShaderModule pathTracingModule = shaderHelper.createShaderModule(device, pathTracingShadercode);
 
 	// Specialization constant for workgroup size
-	std::array<VkSpecializationMapEntry, 2> specEntries;
+	std::array<VkSpecializationMapEntry, 2> specEntries{};
 
 	specEntries[0].constantID = 0;
 	specEntries[0].size = sizeof(specializationData.specWorkGroupSizeX);

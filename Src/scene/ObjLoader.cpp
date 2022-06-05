@@ -1,7 +1,7 @@
 #include "ObjLoader.h"
 #define TINYOBJLOADER_IMPLEMENTATION
-#include "tiny_obj_loader.h"
-#include <File.h>
+#include <tiny_obj_loader.h>
+#include "File.h"
 
 ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer_queue, VkCommandPool command_pool)
 {
@@ -77,7 +77,7 @@ std::vector<std::string> ObjLoader::loadTexturesAndMaterials(const std::string& 
     for (size_t i = 0; i < tol_materials.size(); i++) {
 
         const tinyobj::material_t* mp = &tol_materials[i];
-        ObjMaterial material;
+        ObjMaterial material{};
         material.ambient        = glm::vec3(mp->ambient[0], mp->ambient[1], mp->ambient[2]);
         material.diffuse        = glm::vec3(mp->diffuse[0], mp->diffuse[1], mp->diffuse[2]);
         material.specular       = glm::vec3(mp->specular[0], mp->specular[1], mp->specular[2]);

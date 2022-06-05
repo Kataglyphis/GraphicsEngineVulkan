@@ -100,12 +100,16 @@ started in own research topics.
 * [doxygen](https://www.doxygen.nl/index.html)
 * [gtest](https://github.com/google/googletest)
 * [cmake](https://cmake.org/)
+* [gsl](https://github.com/Microsoft/GSL)
 
 ### Useful tools (you might also considering :) )
 
 * [cppcheck](https://cppcheck.sourceforge.io/)
 * [renderdoc](https://renderdoc.org/)
 * [nsightgraphics](https://developer.nvidia.com/nsight-graphics)
+* [valgrind](https://valgrind.org/)
+* [clangtidy](https://github.com/llvm/llvm-project)
+* [visualstudio](https://visualstudio.microsoft.com/de/)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -115,7 +119,9 @@ I only guarantee a successful build for windows hence it is frequently tested.
 
 ### Prerequisites
 
-You will need [Vulkan 1.3] (https://vulkan.lunarg.com/). If you want to build documantaries you will need [Doxygen] (https://www.doxygen.nl/index.html).
+If you want to build documantaries you will need [Doxygen] (https://www.doxygen.nl/index.html).
+C++17 or higher required.
+Check for prerequisites from the used libraries.
 
 ### Installation
 

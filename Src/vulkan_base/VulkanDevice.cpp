@@ -166,7 +166,7 @@ void VulkanDevice::create_logical_device()
 	acceleration_structure_features.accelerationStructureHostCommands = VK_FALSE;
 	acceleration_structure_features.descriptorBindingAccelerationStructureUpdateAfterBind = VK_FALSE;
 
-	VkPhysicalDeviceVulkan13Features features13;
+	VkPhysicalDeviceVulkan13Features features13{};
 	features13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
 	features13.maintenance4 = VK_TRUE;
 	features13.robustImageAccess = VK_FALSE;
@@ -185,7 +185,7 @@ void VulkanDevice::create_logical_device()
 	features13.shaderIntegerDotProduct = VK_FALSE;
 	features13.pNext = &acceleration_structure_features;
 
-	VkPhysicalDeviceRayQueryFeaturesKHR rayQueryFeature;
+	VkPhysicalDeviceRayQueryFeaturesKHR rayQueryFeature{};
 	rayQueryFeature.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_QUERY_FEATURES_KHR;
 	rayQueryFeature.pNext = &features13;
 	rayQueryFeature.rayQuery = VK_TRUE;

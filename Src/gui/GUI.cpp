@@ -1,6 +1,5 @@
 #include "GUI.h"
 #include "VulkanDevice.h"
-
 #include "QueueFamilyIndices.h"
 #include "Utilities.h"
 

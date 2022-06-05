@@ -1,8 +1,9 @@
 #pragma once
+
 #include <vulkan/vulkan.h>
-#include <PushConstantPathTracing.h>
-#include <VulkanDevice.h>
-#include <VulkanSwapChain.h>
+#include "PushConstantPathTracing.h"
+#include "VulkanDevice.h"
+#include "VulkanSwapChain.h"
 
 class PathTracing
 {

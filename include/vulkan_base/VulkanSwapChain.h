@@ -1,7 +1,7 @@
 #pragma once
+
 #include "VulkanDevice.h"
 #include "Window.h"
-
 #include "Utilities.h"
 #include "Texture.h"
 
@@ -30,7 +30,7 @@ private:
 	VulkanDevice*				device{VK_NULL_HANDLE};
 	Window*						window{ VK_NULL_HANDLE };
 
-	VkSwapchainKHR				swapchain;
+	VkSwapchainKHR				swapchain{ VK_NULL_HANDLE };
 
 	std::vector<Texture>		swap_chain_images;
 	VkFormat					swap_chain_image_format{ VK_FORMAT_B8G8R8A8_UNORM };

@@ -191,18 +191,18 @@ void Window::mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
 
     // need to handle first occurance of a mouse moving event
     if (the_window->mouse_first_moved) {
-        the_window->last_x = (float)x_pos;
-        the_window->last_y = (float)y_pos;
+        the_window->last_x = static_cast<float>(x_pos);
+        the_window->last_y = static_cast<float>(y_pos);
         the_window->mouse_first_moved = false;
     }
 
-    the_window->x_change = (float)(x_pos - the_window->last_x);
+    the_window->x_change = static_cast<float>((x_pos - the_window->last_x));
     // take care of correct substraction :)
-    the_window->y_change = (float)(the_window->last_y - y_pos);
+    the_window->y_change = static_cast<float>((the_window->last_y - y_pos));
 
     //update params
-    the_window->last_x = (float)x_pos;
-    the_window->last_y = (float)y_pos;
+    the_window->last_x = static_cast<float>(x_pos);
+    the_window->last_y = static_cast<float>(y_pos);
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)

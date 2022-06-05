@@ -2,11 +2,11 @@
 #include <vector>
 #include <array>
 
-#include <Vertex.h>
-#include <ShaderHelper.h>
-#include <File.h>
-#include <GUI.h>
-#include <FormatHelper.h>
+#include "Vertex.h"
+#include "ShaderHelper.h"
+#include "File.h"
+#include "GUI.h"
+#include "FormatHelper.h"
 
 PostStage::PostStage()
 {

@@ -3,15 +3,15 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-
-#include "File.h"
-
 #ifndef VMA_IMPLEMENTATION
 #define VMA_IMPLEMENTATION
 #endif // !VMA_IMPLEMENTATION
-#include "vk_mem_alloc.h"
-#include <ShaderHelper.h>
-#include <PushConstantPost.h>
+#include <vk_mem_alloc.h>
+#include <gsl/gsl>
+
+#include "File.h"
+#include "ShaderHelper.h"
+#include "PushConstantPost.h"
 #include "Globals.h"
 
 VulkanRenderer::VulkanRenderer(	Window* window, 
@@ -377,7 +377,7 @@ void VulkanRenderer::updatePostDescriptorSets()
 void VulkanRenderer::createRaytracingDescriptorPool()
 {
 
-	std::array<VkDescriptorPoolSize,2> descriptor_pool_sizes;
+	std::array<VkDescriptorPoolSize, 2> descriptor_pool_sizes{};
 
 	descriptor_pool_sizes[0].type = VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR;
 	descriptor_pool_sizes[0].descriptorCount = 1;
@@ -455,7 +455,7 @@ void VulkanRenderer::create_object_description_buffer()
 void VulkanRenderer::createRaytracingDescriptorSetLayouts() {
 
 	{
-		std::array<VkDescriptorSetLayoutBinding, 2> descriptor_set_layout_bindings;
+		std::array<VkDescriptorSetLayoutBinding, 2> descriptor_set_layout_bindings{};
 
 		// here comes the top level acceleration structure
 		descriptor_set_layout_bindings[0].binding = TLAS_BINDING;
@@ -563,7 +563,7 @@ void VulkanRenderer::updateRaytracingDescriptorSets()
 void VulkanRenderer::createSharedRenderDescriptorSetLayouts()
 {
 
-	std::array<VkDescriptorSetLayoutBinding, 5> descriptor_set_layout_bindings;
+	std::array<VkDescriptorSetLayoutBinding, 5> descriptor_set_layout_bindings{};
 	// UNIFORM VALUES DESCRIPTOR SET LAYOUT
 	//globalUBO Binding info
 	descriptor_set_layout_bindings[0].binding = globalUBO_BINDING;
@@ -939,7 +939,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 							VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
 		 
 
-	VkBufferMemoryBarrier before_barrier_uvp;
+	VkBufferMemoryBarrier before_barrier_uvp{};
 	before_barrier_uvp.pNext = nullptr;
 	before_barrier_uvp.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
 	before_barrier_uvp.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
@@ -950,7 +950,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	before_barrier_uvp.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	before_barrier_uvp.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
-	VkBufferMemoryBarrier before_barrier_directions;
+	VkBufferMemoryBarrier before_barrier_directions{};
 	before_barrier_directions.pNext = nullptr;
 	before_barrier_directions.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
 	before_barrier_directions.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
@@ -969,7 +969,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	vkCmdUpdateBuffer(command_buffers[image_index], globalUBOBuffer[image_index].getBuffer(), 0, sizeof(GlobalUBO), &globalUBO);
 	vkCmdUpdateBuffer(command_buffers[image_index], sceneUBOBuffer[image_index].getBuffer(), 0, sizeof(SceneUBO), &sceneUBO);
 
-	VkBufferMemoryBarrier after_barrier_uvp;
+	VkBufferMemoryBarrier after_barrier_uvp{};
 	after_barrier_uvp.pNext = nullptr;
 	after_barrier_uvp.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
 	after_barrier_uvp.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
@@ -980,7 +980,7 @@ void VulkanRenderer::update_uniform_buffers(uint32_t image_index)
 	after_barrier_uvp.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	after_barrier_uvp.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
-	VkBufferMemoryBarrier after_barrier_directions;
+	VkBufferMemoryBarrier after_barrier_directions{};
 	after_barrier_directions.pNext = nullptr;
 	after_barrier_directions.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
 	after_barrier_directions.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;

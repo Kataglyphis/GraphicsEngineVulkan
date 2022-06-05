@@ -1,11 +1,12 @@
-#include "Rasterizer.h"
 #include <array>
 #include <vector>
-#include <Vertex.h>
-#include <ShaderHelper.h>
-#include <File.h>
-#include <Vertex.h>
-#include <FormatHelper.h>
+
+#include "Rasterizer.h"
+#include "Vertex.h"
+#include "ShaderHelper.h"
+#include "File.h"
+#include "Vertex.h"
+#include "FormatHelper.h"
 
 Rasterizer::Rasterizer()
 {
