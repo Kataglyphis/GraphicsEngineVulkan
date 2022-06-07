@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
+# *,-abseil-*,-altera-*,-android-*,-boost-*,	bugprone-*,	cert-*,clang-analyzer-*,concurrency-*,cppcoreguidelines-*,-darwin-*,-fuchsia-*,google-*,	hicpp-*,	-linuxkernel-*,	-llvm-*,	-llvmlibc-*,	misc-*,	modernize-*,	-mpi-*,	-objc-*,	-openmp-*,	performance-*,	portability-*,readability-*,-zircon-*
+
 # add compile flags; as restrictive as possible
 # for windows
 # source: https://github.com/cpp-best-practices/cppbestpractices/blob/master/02-Use_the_Tools_Available.md

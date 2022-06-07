@@ -3,8 +3,8 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = GraphicsEngine
-PROJECT_NUMBER         = 1.1
-PROJECT_BRIEF          =
+PROJECT_NUMBER         = 1.9
+PROJECT_BRIEF          = Epic graphics from hell
 PROJECT_LOGO           = ../images/Engine_logo.png
 OUTPUT_DIRECTORY       = ../Documents/doxygen
 CREATE_SUBDIRS         = YES
@@ -205,7 +205,7 @@ EXTRA_SEARCH_MAPPINGS  =
 #---------------------------------------------------------------------------
 # Configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 LATEX_OUTPUT           =
 LATEX_CMD_NAME         =
 MAKEINDEX_CMD_NAME     = makeindex
@@ -218,7 +218,7 @@ LATEX_FOOTER           =
 LATEX_EXTRA_STYLESHEET =
 LATEX_EXTRA_FILES      =
 PDF_HYPERLINKS         = YES
-USE_PDFLATEX           = NO
+USE_PDFLATEX           = YES
 LATEX_BATCHMODE        = NO
 LATEX_HIDE_INDICES     = NO
 LATEX_SOURCE_CODE      = NO
@@ -238,10 +238,10 @@ RTF_SOURCE_CODE        = NO
 #---------------------------------------------------------------------------
 # Configuration options related to the man page output
 #---------------------------------------------------------------------------
-GENERATE_MAN           = YES
+GENERATE_MAN           = NO
 MAN_OUTPUT             = pdf
 MAN_EXTENSION          = .3
-MAN_SUBDIR             =
+MAN_SUBDIR             = 
 MAN_LINKS              = NO
 #---------------------------------------------------------------------------
 # Configuration options related to the XML output

@@ -1,205 +1,205 @@
-\doxysection{Vulkan\+Swap\+Chain.\+cpp}
+\hypertarget{_vulkan_swap_chain_8cpp_source}{}\doxysection{Vulkan\+Swap\+Chain.\+cpp}
 \label{_vulkan_swap_chain_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanSwapChain.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanSwapChain.cpp}}
 \mbox{\hyperlink{_vulkan_swap_chain_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanSwapChain.h"{}}}
-\DoxyCodeLine{00002 }
-\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <limits>}}
-\DoxyCodeLine{00004 }
-\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
-\DoxyCodeLine{00006 }
-\DoxyCodeLine{00007 VulkanSwapChain::VulkanSwapChain() \{\}}
-\DoxyCodeLine{00008 }
-\DoxyCodeLine{00009 \textcolor{keywordtype}{void} VulkanSwapChain::initVulkanContext(VulkanDevice* device, Window* window,}
-\DoxyCodeLine{00010                                         \textcolor{keyword}{const} VkSurfaceKHR\& surface) \{}
-\DoxyCodeLine{00011   this-\/>device = device;}
-\DoxyCodeLine{00012   this-\/>window = window;}
-\DoxyCodeLine{00013 }
-\DoxyCodeLine{00014   \textcolor{comment}{// get swap chain details so we can pick the best settings}}
-\DoxyCodeLine{00015   SwapChainDetails swap\_chain\_details = device-\/>getSwapchainDetails();}
-\DoxyCodeLine{00016 }
-\DoxyCodeLine{00017   \textcolor{comment}{// 1. choose best surface format}}
-\DoxyCodeLine{00018   \textcolor{comment}{// 2. choose best presentation mode}}
-\DoxyCodeLine{00019   \textcolor{comment}{// 3. choose swap chain image resolution}}
-\DoxyCodeLine{00020 }
-\DoxyCodeLine{00021   VkSurfaceFormatKHR surface\_format =}
-\DoxyCodeLine{00022       choose\_best\_surface\_format(swap\_chain\_details.formats);}
-\DoxyCodeLine{00023   VkPresentModeKHR present\_mode =}
-\DoxyCodeLine{00024       choose\_best\_presentation\_mode(swap\_chain\_details.presentation\_mode);}
-\DoxyCodeLine{00025   VkExtent2D extent =}
-\DoxyCodeLine{00026       choose\_swap\_extent(swap\_chain\_details.surface\_capabilities);}
-\DoxyCodeLine{00027 }
-\DoxyCodeLine{00028   \textcolor{comment}{// how many images are in the swap chain; get 1 more than the minimum to allow}}
-\DoxyCodeLine{00029   \textcolor{comment}{// tiple buffering}}
-\DoxyCodeLine{00030   uint32\_t image\_count =}
-\DoxyCodeLine{00031       swap\_chain\_details.surface\_capabilities.minImageCount + 1;}
-\DoxyCodeLine{00032 }
-\DoxyCodeLine{00033   \textcolor{comment}{// if maxImageCount == 0, then limitless}}
-\DoxyCodeLine{00034   \textcolor{keywordflow}{if} (swap\_chain\_details.surface\_capabilities.maxImageCount > 0 \&\&}
-\DoxyCodeLine{00035       swap\_chain\_details.surface\_capabilities.maxImageCount < image\_count) \{}
-\DoxyCodeLine{00036     image\_count = swap\_chain\_details.surface\_capabilities.maxImageCount;}
-\DoxyCodeLine{00037   \}}
-\DoxyCodeLine{00038 }
-\DoxyCodeLine{00039   VkSwapchainCreateInfoKHR swap\_chain\_create\_info\{\};}
-\DoxyCodeLine{00040   swap\_chain\_create\_info.sType = VK\_STRUCTURE\_TYPE\_SWAPCHAIN\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{00041   swap\_chain\_create\_info.surface = surface;  \textcolor{comment}{// swapchain surface}}
-\DoxyCodeLine{00042   swap\_chain\_create\_info.imageFormat =}
-\DoxyCodeLine{00043       surface\_format.format;  \textcolor{comment}{// swapchain format}}
-\DoxyCodeLine{00044   swap\_chain\_create\_info.imageColorSpace =}
-\DoxyCodeLine{00045       surface\_format.colorSpace;  \textcolor{comment}{// swapchain color space}}
-\DoxyCodeLine{00046   swap\_chain\_create\_info.presentMode =}
-\DoxyCodeLine{00047       present\_mode;                             \textcolor{comment}{// swapchain presentation mode}}
-\DoxyCodeLine{00048   swap\_chain\_create\_info.imageExtent = extent;  \textcolor{comment}{// swapchain image extents}}
-\DoxyCodeLine{00049   swap\_chain\_create\_info.minImageCount =}
-\DoxyCodeLine{00050       image\_count;  \textcolor{comment}{// minimum images in swapchain}}
-\DoxyCodeLine{00051   swap\_chain\_create\_info.imageArrayLayers =}
-\DoxyCodeLine{00052       1;  \textcolor{comment}{// number of layers for each image in chain}}
-\DoxyCodeLine{00053   swap\_chain\_create\_info.imageUsage =}
-\DoxyCodeLine{00054       VK\_IMAGE\_USAGE\_COLOR\_ATTACHMENT\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT |}
-\DoxyCodeLine{00055       VK\_IMAGE\_USAGE\_STORAGE\_BIT |}
-\DoxyCodeLine{00056       VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT;  \textcolor{comment}{// what attachment images will be used}}
-\DoxyCodeLine{00057                                         \textcolor{comment}{// as}}
-\DoxyCodeLine{00058   swap\_chain\_create\_info.preTransform =}
-\DoxyCodeLine{00059       swap\_chain\_details.surface\_capabilities}
-\DoxyCodeLine{00060           .currentTransform;  \textcolor{comment}{// transform to perform on swap chain images}}
-\DoxyCodeLine{00061   swap\_chain\_create\_info.compositeAlpha =}
-\DoxyCodeLine{00062       VK\_COMPOSITE\_ALPHA\_OPAQUE\_BIT\_KHR;  \textcolor{comment}{// dont do blending; everything opaque}}
-\DoxyCodeLine{00063   swap\_chain\_create\_info.clipped = VK\_TRUE;  \textcolor{comment}{// of course activate clipping ! :)}}
-\DoxyCodeLine{00064 }
-\DoxyCodeLine{00065   \textcolor{comment}{// get queue family indices}}
-\DoxyCodeLine{00066   QueueFamilyIndices indices = device-\/>getQueueFamilies();}
-\DoxyCodeLine{00067 }
-\DoxyCodeLine{00068   \textcolor{comment}{// if graphics and presentation families are different then swapchain must let}}
-\DoxyCodeLine{00069   \textcolor{comment}{// images be shared between families}}
-\DoxyCodeLine{00070   \textcolor{keywordflow}{if} (indices.graphics\_family != indices.presentation\_family) \{}
-\DoxyCodeLine{00071     uint32\_t queue\_family\_indices[] = \{(uint32\_t)indices.graphics\_family,}
-\DoxyCodeLine{00072                                        (uint32\_t)indices.presentation\_family\};}
-\DoxyCodeLine{00073 }
-\DoxyCodeLine{00074     swap\_chain\_create\_info.imageSharingMode =}
-\DoxyCodeLine{00075         VK\_SHARING\_MODE\_CONCURRENT;  \textcolor{comment}{// image share handling}}
-\DoxyCodeLine{00076     swap\_chain\_create\_info.queueFamilyIndexCount =}
-\DoxyCodeLine{00077         2;  \textcolor{comment}{// number of queues to share images between}}
-\DoxyCodeLine{00078     swap\_chain\_create\_info.pQueueFamilyIndices =}
-\DoxyCodeLine{00079         queue\_family\_indices;  \textcolor{comment}{// array of queues to share between}}
-\DoxyCodeLine{00080 }
-\DoxyCodeLine{00081   \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{00082     swap\_chain\_create\_info.imageSharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
-\DoxyCodeLine{00083     swap\_chain\_create\_info.queueFamilyIndexCount = 0;}
-\DoxyCodeLine{00084     swap\_chain\_create\_info.pQueueFamilyIndices = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00085   \}}
-\DoxyCodeLine{00086 }
-\DoxyCodeLine{00087   \textcolor{comment}{// if old swap chain been destroyed and this one replaces it then link old one}}
-\DoxyCodeLine{00088   \textcolor{comment}{// to quickly hand over responsibilities}}
-\DoxyCodeLine{00089   swap\_chain\_create\_info.oldSwapchain = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{00090 }
-\DoxyCodeLine{00091   \textcolor{comment}{// create swap chain}}
-\DoxyCodeLine{00092   VkResult result = vkCreateSwapchainKHR(}
-\DoxyCodeLine{00093       device-\/>getLogicalDevice(), \&swap\_chain\_create\_info, \textcolor{keyword}{nullptr}, \&swapchain);}
-\DoxyCodeLine{00094   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed create swapchain!"{}});}
-\DoxyCodeLine{00095 }
-\DoxyCodeLine{00096   \textcolor{comment}{// store for later reference}}
-\DoxyCodeLine{00097   swap\_chain\_image\_format = surface\_format.format;}
-\DoxyCodeLine{00098   swap\_chain\_extent = extent;}
-\DoxyCodeLine{00099 }
-\DoxyCodeLine{00100   \textcolor{comment}{// get swapchain images (first count, then values)}}
-\DoxyCodeLine{00101   uint32\_t swapchain\_image\_count;}
-\DoxyCodeLine{00102   vkGetSwapchainImagesKHR(device-\/>getLogicalDevice(), swapchain,}
-\DoxyCodeLine{00103                           \&swapchain\_image\_count, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00104   std::vector<VkImage> images(swapchain\_image\_count);}
-\DoxyCodeLine{00105   vkGetSwapchainImagesKHR(device-\/>getLogicalDevice(), swapchain,}
-\DoxyCodeLine{00106                           \&swapchain\_image\_count, images.data());}
-\DoxyCodeLine{00107 }
-\DoxyCodeLine{00108   swap\_chain\_images.clear();}
-\DoxyCodeLine{00109 }
-\DoxyCodeLine{00110   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < images.size(); i++) \{}
-\DoxyCodeLine{00111     VkImage image = images[\textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(i)];}
-\DoxyCodeLine{00112     \textcolor{comment}{// store image handle}}
-\DoxyCodeLine{00113     Texture swap\_chain\_image\{\};}
-\DoxyCodeLine{00114     swap\_chain\_image.setImage(image);}
-\DoxyCodeLine{00115     swap\_chain\_image.createImageView(device, swap\_chain\_image\_format,}
-\DoxyCodeLine{00116                                      VK\_IMAGE\_ASPECT\_COLOR\_BIT, 1);}
-\DoxyCodeLine{00117 }
-\DoxyCodeLine{00118     \textcolor{comment}{// add to swapchain image list}}
-\DoxyCodeLine{00119     swap\_chain\_images.push\_back(swap\_chain\_image);}
-\DoxyCodeLine{00120   \}}
-\DoxyCodeLine{00121 \}}
-\DoxyCodeLine{00122 }
-\DoxyCodeLine{00123 \textcolor{keywordtype}{void} VulkanSwapChain::cleanUp() \{}
-\DoxyCodeLine{00124   \textcolor{keywordflow}{for} (Texture\& image : swap\_chain\_images) \{}
-\DoxyCodeLine{00125     vkDestroyImageView(device-\/>getLogicalDevice(), image.getImageView(),}
-\DoxyCodeLine{00126                        \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00127   \}}
-\DoxyCodeLine{00128 }
-\DoxyCodeLine{00129   vkDestroySwapchainKHR(device-\/>getLogicalDevice(), swapchain, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00130 \}}
-\DoxyCodeLine{00131 }
-\DoxyCodeLine{00132 VulkanSwapChain::\string~VulkanSwapChain() \{\}}
-\DoxyCodeLine{00133 }
-\DoxyCodeLine{00134 VkSurfaceFormatKHR VulkanSwapChain::choose\_best\_surface\_format(}
-\DoxyCodeLine{00135     \textcolor{keyword}{const} std::vector<VkSurfaceFormatKHR>\& formats) \{}
-\DoxyCodeLine{00136   \textcolor{comment}{// best format is subjective, but I go with:}}
-\DoxyCodeLine{00137   \textcolor{comment}{//  Format:           VK\_FORMAT\_R8G8B8A8\_UNORM (backup-\/format:}}
-\DoxyCodeLine{00138   \textcolor{comment}{//  VK\_FORMAT\_B8G8R8A8\_UNORM) color\_space:  VK\_COLOR\_SPACE\_SRGB\_NONLINEAR\_KHR}}
-\DoxyCodeLine{00139   \textcolor{comment}{//  the condition in if means all formats are available (no restrictions)}}
-\DoxyCodeLine{00140   \textcolor{keywordflow}{if} (formats.size() == 1 \&\& formats[0].format == VK\_FORMAT\_UNDEFINED) \{}
-\DoxyCodeLine{00141     \textcolor{keywordflow}{return} \{VK\_FORMAT\_R8G8B8A8\_UNORM, VK\_COLOR\_SPACE\_SRGB\_NONLINEAR\_KHR\};}
-\DoxyCodeLine{00142   \}}
-\DoxyCodeLine{00143 }
-\DoxyCodeLine{00144   \textcolor{comment}{// if restricted, search  for optimal format}}
-\DoxyCodeLine{00145   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& format : formats) \{}
-\DoxyCodeLine{00146     \textcolor{keywordflow}{if} ((format.format == VK\_FORMAT\_R8G8B8A8\_UNORM ||}
-\DoxyCodeLine{00147          format.format == VK\_FORMAT\_B8G8R8A8\_UNORM) \&\&}
-\DoxyCodeLine{00148         format.colorSpace == VK\_COLOR\_SPACE\_SRGB\_NONLINEAR\_KHR) \{}
-\DoxyCodeLine{00149       \textcolor{keywordflow}{return} format;}
-\DoxyCodeLine{00150     \}}
-\DoxyCodeLine{00151   \}}
-\DoxyCodeLine{00152 }
-\DoxyCodeLine{00153   \textcolor{comment}{// in case just return first one-\/-\/-\/ but really shouldn't be the case ....}}
-\DoxyCodeLine{00154   \textcolor{keywordflow}{return} formats[0];}
-\DoxyCodeLine{00155 \}}
-\DoxyCodeLine{00156 }
-\DoxyCodeLine{00157 VkPresentModeKHR VulkanSwapChain::choose\_best\_presentation\_mode(}
-\DoxyCodeLine{00158     \textcolor{keyword}{const} std::vector<VkPresentModeKHR>\& presentation\_modes) \{}
-\DoxyCodeLine{00159   \textcolor{comment}{// look for mailbox presentation mode}}
-\DoxyCodeLine{00160   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& presentation\_mode : presentation\_modes) \{}
-\DoxyCodeLine{00161     \textcolor{keywordflow}{if} (presentation\_mode == VK\_PRESENT\_MODE\_MAILBOX\_KHR) \{}
-\DoxyCodeLine{00162       \textcolor{keywordflow}{return} presentation\_mode;}
-\DoxyCodeLine{00163     \}}
-\DoxyCodeLine{00164   \}}
-\DoxyCodeLine{00165 }
-\DoxyCodeLine{00166   \textcolor{comment}{// if can't find, use FIFO as Vulkan spec says it must be present}}
-\DoxyCodeLine{00167   \textcolor{keywordflow}{return} VK\_PRESENT\_MODE\_FIFO\_KHR;}
-\DoxyCodeLine{00168 \}}
-\DoxyCodeLine{00169 }
-\DoxyCodeLine{00170 VkExtent2D VulkanSwapChain::choose\_swap\_extent(}
-\DoxyCodeLine{00171     \textcolor{keyword}{const} VkSurfaceCapabilitiesKHR\& surface\_capabilities) \{}
-\DoxyCodeLine{00172   \textcolor{comment}{// if current extent is at numeric limits, than extent can vary. Otherwise it}}
-\DoxyCodeLine{00173   \textcolor{comment}{// is size of window}}
-\DoxyCodeLine{00174   \textcolor{keywordflow}{if} (surface\_capabilities.currentExtent.width !=}
-\DoxyCodeLine{00175       std::numeric\_limits<uint32\_t>::max()) \{}
-\DoxyCodeLine{00176     \textcolor{keywordflow}{return} surface\_capabilities.currentExtent;}
-\DoxyCodeLine{00177 }
-\DoxyCodeLine{00178   \} \textcolor{keywordflow}{else} \{}
-\DoxyCodeLine{00179     \textcolor{keywordtype}{int} width, height;}
-\DoxyCodeLine{00180     glfwGetFramebufferSize(window-\/>get\_window(), \&width, \&height);}
-\DoxyCodeLine{00181 }
-\DoxyCodeLine{00182     \textcolor{comment}{// create new extent using window size}}
-\DoxyCodeLine{00183     VkExtent2D new\_extent\{\};}
-\DoxyCodeLine{00184     new\_extent.width = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(width);}
-\DoxyCodeLine{00185     new\_extent.height = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(height);}
-\DoxyCodeLine{00186 }
-\DoxyCodeLine{00187     \textcolor{comment}{// surface also defines max and min, so make sure within boundaries bly}}
-\DoxyCodeLine{00188     \textcolor{comment}{// clamping value}}
-\DoxyCodeLine{00189     new\_extent.width = std::max(}
-\DoxyCodeLine{00190         surface\_capabilities.minImageExtent.width,}
-\DoxyCodeLine{00191         std::min(surface\_capabilities.maxImageExtent.width, new\_extent.width));}
-\DoxyCodeLine{00192     new\_extent.height =}
-\DoxyCodeLine{00193         std::max(surface\_capabilities.minImageExtent.height,}
-\DoxyCodeLine{00194                  std::min(surface\_capabilities.maxImageExtent.height,}
-\DoxyCodeLine{00195                           new\_extent.height));}
-\DoxyCodeLine{00196 }
-\DoxyCodeLine{00197     \textcolor{keywordflow}{return} new\_extent;}
-\DoxyCodeLine{00198   \}}
-\DoxyCodeLine{00199 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}VulkanSwapChain.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00004}00004 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00007}00007 VulkanSwapChain::VulkanSwapChain() \{\}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00008}00008 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00009}00009 \textcolor{keywordtype}{void} VulkanSwapChain::initVulkanContext(VulkanDevice* device, Window* window,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00010}00010                                         \textcolor{keyword}{const} VkSurfaceKHR\& surface) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00011}00011   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00012}00012   this-\/>window = window;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00014}00014   \textcolor{comment}{// get swap chain details so we can pick the best settings}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00015}00015   SwapChainDetails swap\_chain\_details = device-\/>getSwapchainDetails();}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00017}00017   \textcolor{comment}{// 1. choose best surface format}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00018}00018   \textcolor{comment}{// 2. choose best presentation mode}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00019}00019   \textcolor{comment}{// 3. choose swap chain image resolution}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00021}00021   VkSurfaceFormatKHR surface\_format =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00022}00022       choose\_best\_surface\_format(swap\_chain\_details.formats);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00023}00023   VkPresentModeKHR present\_mode =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00024}00024       choose\_best\_presentation\_mode(swap\_chain\_details.presentation\_mode);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00025}00025   VkExtent2D extent =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00026}00026       choose\_swap\_extent(swap\_chain\_details.surface\_capabilities);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00027}00027 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00028}00028   \textcolor{comment}{// how many images are in the swap chain; get 1 more than the minimum to allow}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00029}00029   \textcolor{comment}{// tiple buffering}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00030}00030   uint32\_t image\_count =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00031}00031       swap\_chain\_details.surface\_capabilities.minImageCount + 1;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00032}00032 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00033}00033   \textcolor{comment}{// if maxImageCount == 0, then limitless}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00034}00034   \textcolor{keywordflow}{if} (swap\_chain\_details.surface\_capabilities.maxImageCount > 0 \&\&}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00035}00035       swap\_chain\_details.surface\_capabilities.maxImageCount < image\_count) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00036}00036     image\_count = swap\_chain\_details.surface\_capabilities.maxImageCount;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00037}00037   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00038}00038 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00039}00039   VkSwapchainCreateInfoKHR swap\_chain\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00040}00040   swap\_chain\_create\_info.sType = VK\_STRUCTURE\_TYPE\_SWAPCHAIN\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00041}00041   swap\_chain\_create\_info.surface = surface;  \textcolor{comment}{// swapchain surface}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00042}00042   swap\_chain\_create\_info.imageFormat =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00043}00043       surface\_format.format;  \textcolor{comment}{// swapchain format}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00044}00044   swap\_chain\_create\_info.imageColorSpace =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00045}00045       surface\_format.colorSpace;  \textcolor{comment}{// swapchain color space}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00046}00046   swap\_chain\_create\_info.presentMode =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00047}00047       present\_mode;                             \textcolor{comment}{// swapchain presentation mode}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00048}00048   swap\_chain\_create\_info.imageExtent = extent;  \textcolor{comment}{// swapchain image extents}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00049}00049   swap\_chain\_create\_info.minImageCount =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00050}00050       image\_count;  \textcolor{comment}{// minimum images in swapchain}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00051}00051   swap\_chain\_create\_info.imageArrayLayers =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00052}00052       1;  \textcolor{comment}{// number of layers for each image in chain}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00053}00053   swap\_chain\_create\_info.imageUsage =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00054}00054       VK\_IMAGE\_USAGE\_COLOR\_ATTACHMENT\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT |}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00055}00055       VK\_IMAGE\_USAGE\_STORAGE\_BIT |}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00056}00056       VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT;  \textcolor{comment}{// what attachment images will be used}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00057}00057                                         \textcolor{comment}{// as}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00058}00058   swap\_chain\_create\_info.preTransform =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00059}00059       swap\_chain\_details.surface\_capabilities}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00060}00060           .currentTransform;  \textcolor{comment}{// transform to perform on swap chain images}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00061}00061   swap\_chain\_create\_info.compositeAlpha =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00062}00062       VK\_COMPOSITE\_ALPHA\_OPAQUE\_BIT\_KHR;  \textcolor{comment}{// dont do blending; everything opaque}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00063}00063   swap\_chain\_create\_info.clipped = VK\_TRUE;  \textcolor{comment}{// of course activate clipping ! :)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00065}00065   \textcolor{comment}{// get queue family indices}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00066}00066   QueueFamilyIndices indices = device-\/>getQueueFamilies();}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00067}00067 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00068}00068   \textcolor{comment}{// if graphics and presentation families are different then swapchain must let}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00069}00069   \textcolor{comment}{// images be shared between families}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00070}00070   \textcolor{keywordflow}{if} (indices.graphics\_family != indices.presentation\_family) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00071}00071     uint32\_t queue\_family\_indices[] = \{(uint32\_t)indices.graphics\_family,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00072}00072                                        (uint32\_t)indices.presentation\_family\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00073}00073 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00074}00074     swap\_chain\_create\_info.imageSharingMode =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00075}00075         VK\_SHARING\_MODE\_CONCURRENT;  \textcolor{comment}{// image share handling}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00076}00076     swap\_chain\_create\_info.queueFamilyIndexCount =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00077}00077         2;  \textcolor{comment}{// number of queues to share images between}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00078}00078     swap\_chain\_create\_info.pQueueFamilyIndices =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00079}00079         queue\_family\_indices;  \textcolor{comment}{// array of queues to share between}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00080}00080 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00081}00081   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00082}00082     swap\_chain\_create\_info.imageSharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00083}00083     swap\_chain\_create\_info.queueFamilyIndexCount = 0;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00084}00084     swap\_chain\_create\_info.pQueueFamilyIndices = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00085}00085   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00086}00086 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00087}00087   \textcolor{comment}{// if old swap chain been destroyed and this one replaces it then link old one}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00088}00088   \textcolor{comment}{// to quickly hand over responsibilities}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00089}00089   swap\_chain\_create\_info.oldSwapchain = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00090}00090 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00091}00091   \textcolor{comment}{// create swap chain}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00092}00092   VkResult result = vkCreateSwapchainKHR(}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00093}00093       device-\/>getLogicalDevice(), \&swap\_chain\_create\_info, \textcolor{keyword}{nullptr}, \&swapchain);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00094}00094   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed create swapchain!"{}});}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00095}00095 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00096}00096   \textcolor{comment}{// store for later reference}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00097}00097   swap\_chain\_image\_format = surface\_format.format;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00098}00098   swap\_chain\_extent = extent;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00099}00099 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00100}00100   \textcolor{comment}{// get swapchain images (first count, then values)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00101}00101   uint32\_t swapchain\_image\_count;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00102}00102   vkGetSwapchainImagesKHR(device-\/>getLogicalDevice(), swapchain,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00103}00103                           \&swapchain\_image\_count, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00104}00104   std::vector<VkImage> images(swapchain\_image\_count);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00105}00105   vkGetSwapchainImagesKHR(device-\/>getLogicalDevice(), swapchain,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00106}00106                           \&swapchain\_image\_count, images.data());}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00107}00107 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00108}00108   swap\_chain\_images.clear();}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00109}00109 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00110}00110   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < images.size(); i++) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00111}00111     VkImage image = images[\textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(i)];}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00112}00112     \textcolor{comment}{// store image handle}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00113}00113     Texture swap\_chain\_image\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00114}00114     swap\_chain\_image.setImage(image);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00115}00115     swap\_chain\_image.createImageView(device, swap\_chain\_image\_format,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00116}00116                                      VK\_IMAGE\_ASPECT\_COLOR\_BIT, 1);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00117}00117 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00118}00118     \textcolor{comment}{// add to swapchain image list}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00119}00119     swap\_chain\_images.push\_back(swap\_chain\_image);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00120}00120   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00121}00121 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00122}00122 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00123}00123 \textcolor{keywordtype}{void} VulkanSwapChain::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00124}00124   \textcolor{keywordflow}{for} (Texture\& image : swap\_chain\_images) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00125}00125     vkDestroyImageView(device-\/>getLogicalDevice(), image.getImageView(),}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00126}00126                        \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00127}00127   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00128}00128 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00129}00129   vkDestroySwapchainKHR(device-\/>getLogicalDevice(), swapchain, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00130}00130 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00131}00131 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00132}00132 VulkanSwapChain::\string~VulkanSwapChain() \{\}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00133}00133 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00134}00134 VkSurfaceFormatKHR VulkanSwapChain::choose\_best\_surface\_format(}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00135}00135     \textcolor{keyword}{const} std::vector<VkSurfaceFormatKHR>\& formats) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00136}00136   \textcolor{comment}{// best format is subjective, but I go with:}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00137}00137   \textcolor{comment}{//  Format:           VK\_FORMAT\_R8G8B8A8\_UNORM (backup-\/format:}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00138}00138   \textcolor{comment}{//  VK\_FORMAT\_B8G8R8A8\_UNORM) color\_space:  VK\_COLOR\_SPACE\_SRGB\_NONLINEAR\_KHR}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00139}00139   \textcolor{comment}{//  the condition in if means all formats are available (no restrictions)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00140}00140   \textcolor{keywordflow}{if} (formats.size() == 1 \&\& formats[0].format == VK\_FORMAT\_UNDEFINED) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00141}00141     \textcolor{keywordflow}{return} \{VK\_FORMAT\_R8G8B8A8\_UNORM, VK\_COLOR\_SPACE\_SRGB\_NONLINEAR\_KHR\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00142}00142   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00143}00143 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00144}00144   \textcolor{comment}{// if restricted, search  for optimal format}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00145}00145   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& format : formats) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00146}00146     \textcolor{keywordflow}{if} ((format.format == VK\_FORMAT\_R8G8B8A8\_UNORM ||}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00147}00147          format.format == VK\_FORMAT\_B8G8R8A8\_UNORM) \&\&}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00148}00148         format.colorSpace == VK\_COLOR\_SPACE\_SRGB\_NONLINEAR\_KHR) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00149}00149       \textcolor{keywordflow}{return} format;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00150}00150     \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00151}00151   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00152}00152 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00153}00153   \textcolor{comment}{// in case just return first one-\/-\/-\/ but really shouldn't be the case ....}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00154}00154   \textcolor{keywordflow}{return} formats[0];}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00155}00155 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00156}00156 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00157}00157 VkPresentModeKHR VulkanSwapChain::choose\_best\_presentation\_mode(}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00158}00158     \textcolor{keyword}{const} std::vector<VkPresentModeKHR>\& presentation\_modes) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00159}00159   \textcolor{comment}{// look for mailbox presentation mode}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00160}00160   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& presentation\_mode : presentation\_modes) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00161}00161     \textcolor{keywordflow}{if} (presentation\_mode == VK\_PRESENT\_MODE\_MAILBOX\_KHR) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00162}00162       \textcolor{keywordflow}{return} presentation\_mode;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00163}00163     \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00164}00164   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00165}00165 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00166}00166   \textcolor{comment}{// if can't find, use FIFO as Vulkan spec says it must be present}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00167}00167   \textcolor{keywordflow}{return} VK\_PRESENT\_MODE\_FIFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00168}00168 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00169}00169 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00170}00170 VkExtent2D VulkanSwapChain::choose\_swap\_extent(}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00171}00171     \textcolor{keyword}{const} VkSurfaceCapabilitiesKHR\& surface\_capabilities) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00172}00172   \textcolor{comment}{// if current extent is at numeric limits, than extent can vary. Otherwise it}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00173}00173   \textcolor{comment}{// is size of window}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00174}00174   \textcolor{keywordflow}{if} (surface\_capabilities.currentExtent.width !=}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00175}00175       std::numeric\_limits<uint32\_t>::max()) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00176}00176     \textcolor{keywordflow}{return} surface\_capabilities.currentExtent;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00177}00177 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00178}00178   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00179}00179     \textcolor{keywordtype}{int} width, height;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00180}00180     glfwGetFramebufferSize(window-\/>get\_window(), \&width, \&height);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00181}00181 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00182}00182     \textcolor{comment}{// create new extent using window size}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00183}00183     VkExtent2D new\_extent\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00184}00184     new\_extent.width = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(width);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00185}00185     new\_extent.height = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(height);}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00186}00186 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00187}00187     \textcolor{comment}{// surface also defines max and min, so make sure within boundaries bly}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00188}00188     \textcolor{comment}{// clamping value}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00189}00189     new\_extent.width = std::max(}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00190}00190         surface\_capabilities.minImageExtent.width,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00191}00191         std::min(surface\_capabilities.maxImageExtent.width, new\_extent.width));}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00192}00192     new\_extent.height =}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00193}00193         std::max(surface\_capabilities.minImageExtent.height,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00194}00194                  std::min(surface\_capabilities.maxImageExtent.height,}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00195}00195                           new\_extent.height));}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00196}00196 }
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00197}00197     \textcolor{keywordflow}{return} new\_extent;}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00198}00198   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_swap_chain_8cpp_source_l00199}00199 \}}
 
 \end{DoxyCode}

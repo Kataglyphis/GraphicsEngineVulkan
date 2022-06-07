@@ -1,3 +1,0 @@
-App
-run call:[cleanUp,drawFrame,finishAllRenderCommands,get,get_keys,get_should_close,get_x_change,get_y_change,glfwGetTime,glfwPollEvents,key_control,mouse_control,render,updateStateDueToUserInput,updateUniforms,update_user_input] noreturn:[drawFrame]
-App

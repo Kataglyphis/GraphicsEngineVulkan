@@ -1,7 +1,0 @@
-choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
-getVulkanInstance
-VulkanInstance global:[ENABLE_VALIDATION_LAYERS] call:[check_instance_extension_support,check_validation_layer_support,data,glfwGetRequiredInstanceExtensions,push_back,runtime_error,size,vkCreateInstance] noreturn:[data,push_back,runtime_error]
-check_validation_layer_support call:[availableLayers,data,strcmp,vkEnumerateInstanceLayerProperties]
-check_instance_extension_support call:[data,extensions,strcmp,vkEnumerateInstanceExtensionProperties]
-cleanUp call:[vkDestroyInstance] noreturn:[vkDestroyInstance]
-VulkanInstance

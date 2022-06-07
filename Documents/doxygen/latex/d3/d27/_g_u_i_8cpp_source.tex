@@ -1,241 +1,241 @@
-\doxysection{GUI.\+cpp}
+\hypertarget{_g_u_i_8cpp_source}{}\doxysection{GUI.\+cpp}
 \label{_g_u_i_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp}}
 \mbox{\hyperlink{_g_u_i_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
-\DoxyCodeLine{00002 }
-\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include "{}QueueFamilyIndices.h"{}}}
-\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
-\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include "{}VulkanDevice.h"{}}}
-\DoxyCodeLine{00006 }
-\DoxyCodeLine{00007 GUI::GUI(Window* window) \{ this-\/>window = window; \}}
-\DoxyCodeLine{00008 }
-\DoxyCodeLine{00009 \textcolor{keywordtype}{void} GUI::initializeVulkanContext(VulkanDevice* device,}
-\DoxyCodeLine{00010                                   \textcolor{keyword}{const} VkInstance\& instance,}
-\DoxyCodeLine{00011                                   \textcolor{keyword}{const} VkRenderPass\& post\_render\_pass,}
-\DoxyCodeLine{00012                                   \textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
-\DoxyCodeLine{00013   this-\/>device = device;}
-\DoxyCodeLine{00014 }
-\DoxyCodeLine{00015   create\_gui\_context(window, instance, post\_render\_pass);}
-\DoxyCodeLine{00016   create\_fonts\_and\_upload(graphics\_command\_pool);}
-\DoxyCodeLine{00017 \}}
-\DoxyCodeLine{00018 }
-\DoxyCodeLine{00019 \textcolor{keywordtype}{void} GUI::render() \{}
-\DoxyCodeLine{00020   \textcolor{comment}{// Start the Dear ImGui frame}}
-\DoxyCodeLine{00021   ImGui\_ImplVulkan\_NewFrame();}
-\DoxyCodeLine{00022   ImGui\_ImplGlfw\_NewFrame();}
-\DoxyCodeLine{00023   ImGui::NewFrame();}
-\DoxyCodeLine{00024 }
-\DoxyCodeLine{00025   \textcolor{comment}{// ImGui::ShowDemoWindow();}}
-\DoxyCodeLine{00026 }
-\DoxyCodeLine{00027   \textcolor{comment}{// render your GUI}}
-\DoxyCodeLine{00028   ImGui::Begin(\textcolor{stringliteral}{"{}GUI v1.4.4"{}});}
-\DoxyCodeLine{00029 }
-\DoxyCodeLine{00030   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}Hot shader reload"{}})) \{}
-\DoxyCodeLine{00031     \textcolor{keywordflow}{if} (ImGui::Button(\textcolor{stringliteral}{"{}All shader!"{}})) \{}
-\DoxyCodeLine{00032       guiRendererSharedVars.shader\_hot\_reload\_triggered = \textcolor{keyword}{true};}
-\DoxyCodeLine{00033     \}}
-\DoxyCodeLine{00034   \}}
-\DoxyCodeLine{00035 }
-\DoxyCodeLine{00036   ImGui::Separator();}
-\DoxyCodeLine{00037 }
-\DoxyCodeLine{00038   \textcolor{keyword}{static} \textcolor{keywordtype}{int} e = 0;}
-\DoxyCodeLine{00039   ImGui::RadioButton(\textcolor{stringliteral}{"{}Rasterizer"{}}, \&e, 0);}
-\DoxyCodeLine{00040   ImGui::SameLine();}
-\DoxyCodeLine{00041   ImGui::RadioButton(\textcolor{stringliteral}{"{}Raytracing"{}}, \&e, 1);}
-\DoxyCodeLine{00042   ImGui::SameLine();}
-\DoxyCodeLine{00043   ImGui::RadioButton(\textcolor{stringliteral}{"{}Path tracing"{}}, \&e, 2);}
-\DoxyCodeLine{00044 }
-\DoxyCodeLine{00045   \textcolor{keywordflow}{switch} (e) \{}
-\DoxyCodeLine{00046     \textcolor{keywordflow}{case} 0:}
-\DoxyCodeLine{00047       guiRendererSharedVars.raytracing = \textcolor{keyword}{false};}
-\DoxyCodeLine{00048       guiRendererSharedVars.pathTracing = \textcolor{keyword}{false};}
-\DoxyCodeLine{00049       \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00050     \textcolor{keywordflow}{case} 1:}
-\DoxyCodeLine{00051       guiRendererSharedVars.raytracing = \textcolor{keyword}{true};}
-\DoxyCodeLine{00052       guiRendererSharedVars.pathTracing = \textcolor{keyword}{false};}
-\DoxyCodeLine{00053       \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00054     \textcolor{keywordflow}{case} 2:}
-\DoxyCodeLine{00055       guiRendererSharedVars.raytracing = \textcolor{keyword}{false};}
-\DoxyCodeLine{00056       guiRendererSharedVars.pathTracing = \textcolor{keyword}{true};}
-\DoxyCodeLine{00057       \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00058   \}}
-\DoxyCodeLine{00059   \textcolor{comment}{// ImGui::Checkbox("{}Ray tracing"{}, \&guiRendererSharedVars.raytracing);}}
-\DoxyCodeLine{00060 }
-\DoxyCodeLine{00061   ImGui::Separator();}
-\DoxyCodeLine{00062 }
-\DoxyCodeLine{00063   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}Graphic Settings"{}})) \{}
-\DoxyCodeLine{00064     \textcolor{keywordflow}{if} (ImGui::TreeNode(\textcolor{stringliteral}{"{}Directional Light"{}})) \{}
-\DoxyCodeLine{00065       ImGui::Separator();}
-\DoxyCodeLine{00066       ImGui::SliderFloat(\textcolor{stringliteral}{"{}Ambient intensity"{}},}
-\DoxyCodeLine{00067                          \&guiSceneSharedVars.direcional\_light\_radiance, 0.0f,}
-\DoxyCodeLine{00068                          50.0f);}
-\DoxyCodeLine{00069       ImGui::Separator();}
-\DoxyCodeLine{00070       \textcolor{comment}{// Edit a color (stored as \string~4 floats)}}
-\DoxyCodeLine{00071       ImGui::ColorEdit3(\textcolor{stringliteral}{"{}Directional Light Color"{}},}
-\DoxyCodeLine{00072                         guiSceneSharedVars.directional\_light\_color);}
-\DoxyCodeLine{00073       ImGui::Separator();}
-\DoxyCodeLine{00074       ImGui::SliderFloat3(\textcolor{stringliteral}{"{}Light Direction"{}},}
-\DoxyCodeLine{00075                           guiSceneSharedVars.directional\_light\_direction, -\/1.f,}
-\DoxyCodeLine{00076                           1.0f);}
-\DoxyCodeLine{00077 }
-\DoxyCodeLine{00078       ImGui::TreePop();}
-\DoxyCodeLine{00079     \}}
-\DoxyCodeLine{00080   \}}
-\DoxyCodeLine{00081 }
-\DoxyCodeLine{00082   ImGui::Separator();}
-\DoxyCodeLine{00083 }
-\DoxyCodeLine{00084   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}GUI Settings"{}})) \{}
-\DoxyCodeLine{00085     ImGuiStyle\& style = ImGui::GetStyle();}
-\DoxyCodeLine{00086 }
-\DoxyCodeLine{00087     \textcolor{keywordflow}{if} (ImGui::SliderFloat(\textcolor{stringliteral}{"{}Frame Rounding"{}}, \&style.FrameRounding, 0.0f, 12.0f,}
-\DoxyCodeLine{00088                            \textcolor{stringliteral}{"{}\%.0f"{}})) \{}
-\DoxyCodeLine{00089       style.GrabRounding = style.FrameRounding;  \textcolor{comment}{// Make GrabRounding always the}}
-\DoxyCodeLine{00090                                                  \textcolor{comment}{// same value as FrameRounding}}
-\DoxyCodeLine{00091     \}}
-\DoxyCodeLine{00092     \{}
-\DoxyCodeLine{00093       \textcolor{keywordtype}{bool} border = (style.FrameBorderSize > 0.0f);}
-\DoxyCodeLine{00094       \textcolor{keywordflow}{if} (ImGui::Checkbox(\textcolor{stringliteral}{"{}FrameBorder"{}}, \&border)) \{}
-\DoxyCodeLine{00095         style.FrameBorderSize = border ? 1.0f : 0.0f;}
-\DoxyCodeLine{00096       \}}
-\DoxyCodeLine{00097     \}}
-\DoxyCodeLine{00098     ImGui::SliderFloat(\textcolor{stringliteral}{"{}WindowRounding"{}}, \&style.WindowRounding, 0.0f, 12.0f,}
-\DoxyCodeLine{00099                        \textcolor{stringliteral}{"{}\%.0f"{}});}
-\DoxyCodeLine{00100   \}}
-\DoxyCodeLine{00101 }
-\DoxyCodeLine{00102   ImGui::Separator();}
-\DoxyCodeLine{00103 }
-\DoxyCodeLine{00104   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}KEY Bindings"{}})) \{}
-\DoxyCodeLine{00105     ImGui::Text(}
-\DoxyCodeLine{00106         \textcolor{stringliteral}{"{}WASD for moving Forward, backward and to the side\(\backslash\)n QE for rotating "{}});}
-\DoxyCodeLine{00107   \}}
-\DoxyCodeLine{00108 }
-\DoxyCodeLine{00109   ImGui::Separator();}
-\DoxyCodeLine{00110 }
-\DoxyCodeLine{00111   ImGui::Text(\textcolor{stringliteral}{"{}Application average \%.3f ms/frame (\%.1f FPS)"{}},}
-\DoxyCodeLine{00112               1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);}
-\DoxyCodeLine{00113 }
-\DoxyCodeLine{00114   ImGui::End();}
-\DoxyCodeLine{00115 \}}
-\DoxyCodeLine{00116 }
-\DoxyCodeLine{00117 \textcolor{keywordtype}{void} GUI::cleanUp() \{}
-\DoxyCodeLine{00118   \textcolor{comment}{// clean up of GUI stuff}}
-\DoxyCodeLine{00119   ImGui\_ImplVulkan\_Shutdown();}
-\DoxyCodeLine{00120   ImGui\_ImplGlfw\_Shutdown();}
-\DoxyCodeLine{00121   ImGui::DestroyContext();}
-\DoxyCodeLine{00122   vkDestroyDescriptorPool(device-\/>getLogicalDevice(), gui\_descriptor\_pool,}
-\DoxyCodeLine{00123                           \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00124 \}}
-\DoxyCodeLine{00125 }
-\DoxyCodeLine{00126 \textcolor{keywordtype}{void} GUI::create\_gui\_context(Window* window, \textcolor{keyword}{const} VkInstance\& instance,}
-\DoxyCodeLine{00127                              \textcolor{keyword}{const} VkRenderPass\& post\_render\_pass) \{}
-\DoxyCodeLine{00128   IMGUI\_CHECKVERSION();}
-\DoxyCodeLine{00129   ImGui::CreateContext();}
-\DoxyCodeLine{00130   ImGuiIO\& io = ImGui::GetIO();}
-\DoxyCodeLine{00131   (void)io;}
-\DoxyCodeLine{00132 }
-\DoxyCodeLine{00133   \textcolor{keywordtype}{float} size\_pixels = 18;}
-\DoxyCodeLine{00134 }
-\DoxyCodeLine{00135   std::stringstream fontDir;}
-\DoxyCodeLine{00136   fontDir << CMAKELISTS\_DIR;}
-\DoxyCodeLine{00137   fontDir << \textcolor{stringliteral}{"{}/ExternalLib/IMGUI/misc/fonts/"{}};}
-\DoxyCodeLine{00138 }
-\DoxyCodeLine{00139   std::stringstream robo\_font;}
-\DoxyCodeLine{00140   robo\_font << fontDir.str() << \textcolor{stringliteral}{"{}Roboto-\/Medium.ttf"{}};}
-\DoxyCodeLine{00141   std::stringstream Cousine\_font;}
-\DoxyCodeLine{00142   Cousine\_font << fontDir.str() << \textcolor{stringliteral}{"{}Cousine-\/Regular.ttf"{}};}
-\DoxyCodeLine{00143   std::stringstream DroidSans\_font;}
-\DoxyCodeLine{00144   DroidSans\_font << fontDir.str() << \textcolor{stringliteral}{"{}DroidSans.ttf"{}};}
-\DoxyCodeLine{00145   std::stringstream Karla\_font;}
-\DoxyCodeLine{00146   Karla\_font << fontDir.str() << \textcolor{stringliteral}{"{}Karla-\/Regular.ttf"{}};}
-\DoxyCodeLine{00147   std::stringstream proggy\_clean\_font;}
-\DoxyCodeLine{00148   proggy\_clean\_font << fontDir.str() << \textcolor{stringliteral}{"{}ProggyClean.ttf"{}};}
-\DoxyCodeLine{00149   std::stringstream proggy\_tiny\_font;}
-\DoxyCodeLine{00150   proggy\_tiny\_font << fontDir.str() << \textcolor{stringliteral}{"{}ProggyTiny.ttf"{}};}
-\DoxyCodeLine{00151 }
-\DoxyCodeLine{00152   io.Fonts-\/>AddFontFromFileTTF(robo\_font.str().c\_str(), size\_pixels);}
-\DoxyCodeLine{00153   io.Fonts-\/>AddFontFromFileTTF(Cousine\_font.str().c\_str(), size\_pixels);}
-\DoxyCodeLine{00154   io.Fonts-\/>AddFontFromFileTTF(DroidSans\_font.str().c\_str(), size\_pixels);}
-\DoxyCodeLine{00155   io.Fonts-\/>AddFontFromFileTTF(Karla\_font.str().c\_str(), size\_pixels);}
-\DoxyCodeLine{00156   io.Fonts-\/>AddFontFromFileTTF(proggy\_clean\_font.str().c\_str(), size\_pixels);}
-\DoxyCodeLine{00157   io.Fonts-\/>AddFontFromFileTTF(proggy\_tiny\_font.str().c\_str(), size\_pixels);}
-\DoxyCodeLine{00158 }
-\DoxyCodeLine{00159   ImGui::PushStyleVar(ImGuiStyleVar\_WindowRounding, 10);}
-\DoxyCodeLine{00160   ImGui::PushStyleVar(ImGuiStyleVar\_FrameRounding, 10);}
-\DoxyCodeLine{00161   ImGui::PushStyleVar(ImGuiStyleVar\_FrameBorderSize, 1);}
-\DoxyCodeLine{00162   io.ConfigFlags |=}
-\DoxyCodeLine{00163       ImGuiConfigFlags\_NavEnableKeyboard;  \textcolor{comment}{// Enable Keyboard Controls}}
-\DoxyCodeLine{00164   io.ConfigFlags |= ImGuiConfigFlags\_NavEnableSetMousePos;}
-\DoxyCodeLine{00165   io.WantCaptureMouse = \textcolor{keyword}{true};}
-\DoxyCodeLine{00166   \textcolor{comment}{// io.ConfigFlags |= ImGuiConfigFlags\_NavEnableGamepad;      // Enable Gamepad}}
-\DoxyCodeLine{00167   \textcolor{comment}{// Controls}}
-\DoxyCodeLine{00168 }
-\DoxyCodeLine{00169   \textcolor{comment}{// Setup Dear ImGui style}}
-\DoxyCodeLine{00170   ImGui::StyleColorsDark();}
-\DoxyCodeLine{00171   \textcolor{comment}{// ImGui::StyleColorsClassic();}}
-\DoxyCodeLine{00172 }
-\DoxyCodeLine{00173   ImGui\_ImplGlfw\_InitForVulkan(window-\/>get\_window(), \textcolor{keyword}{false});}
-\DoxyCodeLine{00174 }
-\DoxyCodeLine{00175   \textcolor{comment}{// Create Descriptor Pool}}
-\DoxyCodeLine{00176   VkDescriptorPoolSize gui\_pool\_sizes[] = \{}
-\DoxyCodeLine{00177       \{VK\_DESCRIPTOR\_TYPE\_SAMPLER, 10\},}
-\DoxyCodeLine{00178       \{VK\_DESCRIPTOR\_TYPE\_COMBINED\_IMAGE\_SAMPLER, 10\},}
-\DoxyCodeLine{00179       \{VK\_DESCRIPTOR\_TYPE\_SAMPLED\_IMAGE, 10\},}
-\DoxyCodeLine{00180       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_IMAGE, 10\},}
-\DoxyCodeLine{00181       \{VK\_DESCRIPTOR\_TYPE\_UNIFORM\_TEXEL\_BUFFER, 10\},}
-\DoxyCodeLine{00182       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_TEXEL\_BUFFER, 10\},}
-\DoxyCodeLine{00183       \{VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER, 10\},}
-\DoxyCodeLine{00184       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER, 10\},}
-\DoxyCodeLine{00185       \{VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER\_DYNAMIC, 10\},}
-\DoxyCodeLine{00186       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER\_DYNAMIC, 10\},}
-\DoxyCodeLine{00187       \{VK\_DESCRIPTOR\_TYPE\_INPUT\_ATTACHMENT, 100\}\};}
-\DoxyCodeLine{00188 }
-\DoxyCodeLine{00189   VkDescriptorPoolCreateInfo gui\_pool\_info = \{\};}
-\DoxyCodeLine{00190   gui\_pool\_info.sType = VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_POOL\_CREATE\_INFO;}
-\DoxyCodeLine{00191   gui\_pool\_info.flags = VK\_DESCRIPTOR\_POOL\_CREATE\_FREE\_DESCRIPTOR\_SET\_BIT;}
-\DoxyCodeLine{00192   gui\_pool\_info.maxSets = 10 * IM\_ARRAYSIZE(gui\_pool\_sizes);}
-\DoxyCodeLine{00193   gui\_pool\_info.poolSizeCount = (uint32\_t)IM\_ARRAYSIZE(gui\_pool\_sizes);}
-\DoxyCodeLine{00194   gui\_pool\_info.pPoolSizes = gui\_pool\_sizes;}
-\DoxyCodeLine{00195 }
-\DoxyCodeLine{00196   VkResult result =}
-\DoxyCodeLine{00197       vkCreateDescriptorPool(device-\/>getLogicalDevice(), \&gui\_pool\_info,}
-\DoxyCodeLine{00198                              \textcolor{keyword}{nullptr}, \&gui\_descriptor\_pool);}
-\DoxyCodeLine{00199   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a gui descriptor pool!"{}})}
-\DoxyCodeLine{00200 }
-\DoxyCodeLine{00201   QueueFamilyIndices indices = device-\/>getQueueFamilies();}
-\DoxyCodeLine{00202 }
-\DoxyCodeLine{00203   ImGui\_ImplVulkan\_InitInfo init\_info = \{\};}
-\DoxyCodeLine{00204   init\_info.Instance = instance;}
-\DoxyCodeLine{00205   init\_info.PhysicalDevice = device-\/>getPhysicalDevice();}
-\DoxyCodeLine{00206   init\_info.Device = device-\/>getLogicalDevice();}
-\DoxyCodeLine{00207   init\_info.QueueFamily = indices.graphics\_family;}
-\DoxyCodeLine{00208   init\_info.Queue = device-\/>getGraphicsQueue();}
-\DoxyCodeLine{00209   init\_info.DescriptorPool = gui\_descriptor\_pool;}
-\DoxyCodeLine{00210   init\_info.PipelineCache = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{00211   init\_info.MinImageCount = 2;}
-\DoxyCodeLine{00212   init\_info.ImageCount = MAX\_FRAME\_DRAWS;}
-\DoxyCodeLine{00213   init\_info.Allocator = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{00214   init\_info.CheckVkResultFn = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{00215   init\_info.Subpass = 0;}
-\DoxyCodeLine{00216   init\_info.MSAASamples = VK\_SAMPLE\_COUNT\_1\_BIT;}
-\DoxyCodeLine{00217 }
-\DoxyCodeLine{00218   ImGui\_ImplVulkan\_Init(\&init\_info, post\_render\_pass);}
-\DoxyCodeLine{00219 \}}
-\DoxyCodeLine{00220 }
-\DoxyCodeLine{00221 \textcolor{keywordtype}{void} GUI::create\_fonts\_and\_upload(\textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
-\DoxyCodeLine{00222   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
-\DoxyCodeLine{00223       device-\/>getLogicalDevice(), graphics\_command\_pool);}
-\DoxyCodeLine{00224   ImGui\_ImplVulkan\_CreateFontsTexture(command\_buffer);}
-\DoxyCodeLine{00225   commandBufferManager.endAndSubmitCommandBuffer(}
-\DoxyCodeLine{00226       device-\/>getLogicalDevice(), graphics\_command\_pool,}
-\DoxyCodeLine{00227       device-\/>getGraphicsQueue(), command\_buffer);}
-\DoxyCodeLine{00228 }
-\DoxyCodeLine{00229   \textcolor{comment}{// wait until no actions being run on device before destroying}}
-\DoxyCodeLine{00230   vkDeviceWaitIdle(device-\/>getLogicalDevice());}
-\DoxyCodeLine{00231   \textcolor{comment}{// clear font textures from cpu data}}
-\DoxyCodeLine{00232   ImGui\_ImplVulkan\_DestroyFontUploadObjects();}
-\DoxyCodeLine{00233 \}}
-\DoxyCodeLine{00234 }
-\DoxyCodeLine{00235 GUI::\string~GUI() \{\}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}QueueFamilyIndices.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}VulkanDevice.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00007}00007 GUI::GUI(Window* window) \{ this-\/>window = window; \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00008}00008 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00009}00009 \textcolor{keywordtype}{void} GUI::initializeVulkanContext(VulkanDevice* device,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00010}00010                                   \textcolor{keyword}{const} VkInstance\& instance,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00011}00011                                   \textcolor{keyword}{const} VkRenderPass\& post\_render\_pass,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00012}00012                                   \textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00013}00013   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00014}00014 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00015}00015   create\_gui\_context(window, instance, post\_render\_pass);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00016}00016   create\_fonts\_and\_upload(graphics\_command\_pool);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00017}00017 \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00018}00018 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00019}00019 \textcolor{keywordtype}{void} GUI::render() \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00020}00020   \textcolor{comment}{// Start the Dear ImGui frame}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00021}00021   ImGui\_ImplVulkan\_NewFrame();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00022}00022   ImGui\_ImplGlfw\_NewFrame();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00023}00023   ImGui::NewFrame();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00025}00025   \textcolor{comment}{// ImGui::ShowDemoWindow();}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00026}00026 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00027}00027   \textcolor{comment}{// render your GUI}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00028}00028   ImGui::Begin(\textcolor{stringliteral}{"{}GUI v1.4.4"{}});}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00030}00030   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}Hot shader reload"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00031}00031     \textcolor{keywordflow}{if} (ImGui::Button(\textcolor{stringliteral}{"{}All shader!"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00032}00032       guiRendererSharedVars.shader\_hot\_reload\_triggered = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00033}00033     \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00034}00034   \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00036}00036   ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00038}00038   \textcolor{keyword}{static} \textcolor{keywordtype}{int} e = 0;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00039}00039   ImGui::RadioButton(\textcolor{stringliteral}{"{}Rasterizer"{}}, \&e, 0);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00040}00040   ImGui::SameLine();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00041}00041   ImGui::RadioButton(\textcolor{stringliteral}{"{}Raytracing"{}}, \&e, 1);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00042}00042   ImGui::SameLine();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00043}00043   ImGui::RadioButton(\textcolor{stringliteral}{"{}Path tracing"{}}, \&e, 2);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00044}00044 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00045}00045   \textcolor{keywordflow}{switch} (e) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00046}00046     \textcolor{keywordflow}{case} 0:}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00047}00047       guiRendererSharedVars.raytracing = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00048}00048       guiRendererSharedVars.pathTracing = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00049}00049       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00050}00050     \textcolor{keywordflow}{case} 1:}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00051}00051       guiRendererSharedVars.raytracing = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00052}00052       guiRendererSharedVars.pathTracing = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00053}00053       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00054}00054     \textcolor{keywordflow}{case} 2:}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00055}00055       guiRendererSharedVars.raytracing = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00056}00056       guiRendererSharedVars.pathTracing = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00057}00057       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00058}00058   \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00059}00059   \textcolor{comment}{// ImGui::Checkbox("{}Ray tracing"{}, \&guiRendererSharedVars.raytracing);}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00061}00061   ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00062}00062 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00063}00063   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}Graphic Settings"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00064}00064     \textcolor{keywordflow}{if} (ImGui::TreeNode(\textcolor{stringliteral}{"{}Directional Light"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00065}00065       ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00066}00066       ImGui::SliderFloat(\textcolor{stringliteral}{"{}Ambient intensity"{}},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00067}00067                          \&guiSceneSharedVars.direcional\_light\_radiance, 0.0f,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00068}00068                          50.0f);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00069}00069       ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00070}00070       \textcolor{comment}{// Edit a color (stored as \string~4 floats)}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00071}00071       ImGui::ColorEdit3(\textcolor{stringliteral}{"{}Directional Light Color"{}},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00072}00072                         guiSceneSharedVars.directional\_light\_color);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00073}00073       ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00074}00074       ImGui::SliderFloat3(\textcolor{stringliteral}{"{}Light Direction"{}},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00075}00075                           guiSceneSharedVars.directional\_light\_direction, -\/1.f,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00076}00076                           1.0f);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00077}00077 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00078}00078       ImGui::TreePop();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00079}00079     \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00080}00080   \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00081}00081 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00082}00082   ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00083}00083 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00084}00084   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}GUI Settings"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00085}00085     ImGuiStyle\& style = ImGui::GetStyle();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00086}00086 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00087}00087     \textcolor{keywordflow}{if} (ImGui::SliderFloat(\textcolor{stringliteral}{"{}Frame Rounding"{}}, \&style.FrameRounding, 0.0f, 12.0f,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00088}00088                            \textcolor{stringliteral}{"{}\%.0f"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00089}00089       style.GrabRounding = style.FrameRounding;  \textcolor{comment}{// Make GrabRounding always the}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00090}00090                                                  \textcolor{comment}{// same value as FrameRounding}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00091}00091     \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00092}00092     \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00093}00093       \textcolor{keywordtype}{bool} border = (style.FrameBorderSize > 0.0f);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00094}00094       \textcolor{keywordflow}{if} (ImGui::Checkbox(\textcolor{stringliteral}{"{}FrameBorder"{}}, \&border)) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00095}00095         style.FrameBorderSize = border ? 1.0f : 0.0f;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00096}00096       \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00097}00097     \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00098}00098     ImGui::SliderFloat(\textcolor{stringliteral}{"{}WindowRounding"{}}, \&style.WindowRounding, 0.0f, 12.0f,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00099}00099                        \textcolor{stringliteral}{"{}\%.0f"{}});}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00100}00100   \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00101}00101 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00102}00102   ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00103}00103 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00104}00104   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}KEY Bindings"{}})) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00105}00105     ImGui::Text(}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00106}00106         \textcolor{stringliteral}{"{}WASD for moving Forward, backward and to the side\(\backslash\)n QE for rotating "{}});}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00107}00107   \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00108}00108 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00109}00109   ImGui::Separator();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00110}00110 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00111}00111   ImGui::Text(\textcolor{stringliteral}{"{}Application average \%.3f ms/frame (\%.1f FPS)"{}},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00112}00112               1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00113}00113 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00114}00114   ImGui::End();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00115}00115 \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00116}00116 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00117}00117 \textcolor{keywordtype}{void} GUI::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00118}00118   \textcolor{comment}{// clean up of GUI stuff}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00119}00119   ImGui\_ImplVulkan\_Shutdown();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00120}00120   ImGui\_ImplGlfw\_Shutdown();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00121}00121   ImGui::DestroyContext();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00122}00122   vkDestroyDescriptorPool(device-\/>getLogicalDevice(), gui\_descriptor\_pool,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00123}00123                           \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00124}00124 \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00125}00125 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00126}00126 \textcolor{keywordtype}{void} GUI::create\_gui\_context(Window* window, \textcolor{keyword}{const} VkInstance\& instance,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00127}00127                              \textcolor{keyword}{const} VkRenderPass\& post\_render\_pass) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00128}00128   IMGUI\_CHECKVERSION();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00129}00129   ImGui::CreateContext();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00130}00130   ImGuiIO\& io = ImGui::GetIO();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00131}00131   (void)io;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00132}00132 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00133}00133   \textcolor{keywordtype}{float} size\_pixels = 18;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00134}00134 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00135}00135   std::stringstream fontDir;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00136}00136   fontDir << CMAKELISTS\_DIR;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00137}00137   fontDir << \textcolor{stringliteral}{"{}/ExternalLib/IMGUI/misc/fonts/"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00138}00138 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00139}00139   std::stringstream robo\_font;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00140}00140   robo\_font << fontDir.str() << \textcolor{stringliteral}{"{}Roboto-\/Medium.ttf"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00141}00141   std::stringstream Cousine\_font;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00142}00142   Cousine\_font << fontDir.str() << \textcolor{stringliteral}{"{}Cousine-\/Regular.ttf"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00143}00143   std::stringstream DroidSans\_font;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00144}00144   DroidSans\_font << fontDir.str() << \textcolor{stringliteral}{"{}DroidSans.ttf"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00145}00145   std::stringstream Karla\_font;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00146}00146   Karla\_font << fontDir.str() << \textcolor{stringliteral}{"{}Karla-\/Regular.ttf"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00147}00147   std::stringstream proggy\_clean\_font;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00148}00148   proggy\_clean\_font << fontDir.str() << \textcolor{stringliteral}{"{}ProggyClean.ttf"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00149}00149   std::stringstream proggy\_tiny\_font;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00150}00150   proggy\_tiny\_font << fontDir.str() << \textcolor{stringliteral}{"{}ProggyTiny.ttf"{}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00151}00151 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00152}00152   io.Fonts-\/>AddFontFromFileTTF(robo\_font.str().c\_str(), size\_pixels);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00153}00153   io.Fonts-\/>AddFontFromFileTTF(Cousine\_font.str().c\_str(), size\_pixels);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00154}00154   io.Fonts-\/>AddFontFromFileTTF(DroidSans\_font.str().c\_str(), size\_pixels);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00155}00155   io.Fonts-\/>AddFontFromFileTTF(Karla\_font.str().c\_str(), size\_pixels);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00156}00156   io.Fonts-\/>AddFontFromFileTTF(proggy\_clean\_font.str().c\_str(), size\_pixels);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00157}00157   io.Fonts-\/>AddFontFromFileTTF(proggy\_tiny\_font.str().c\_str(), size\_pixels);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00158}00158 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00159}00159   ImGui::PushStyleVar(ImGuiStyleVar\_WindowRounding, 10);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00160}00160   ImGui::PushStyleVar(ImGuiStyleVar\_FrameRounding, 10);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00161}00161   ImGui::PushStyleVar(ImGuiStyleVar\_FrameBorderSize, 1);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00162}00162   io.ConfigFlags |=}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00163}00163       ImGuiConfigFlags\_NavEnableKeyboard;  \textcolor{comment}{// Enable Keyboard Controls}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00164}00164   io.ConfigFlags |= ImGuiConfigFlags\_NavEnableSetMousePos;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00165}00165   io.WantCaptureMouse = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00166}00166   \textcolor{comment}{// io.ConfigFlags |= ImGuiConfigFlags\_NavEnableGamepad;      // Enable Gamepad}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00167}00167   \textcolor{comment}{// Controls}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00168}00168 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00169}00169   \textcolor{comment}{// Setup Dear ImGui style}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00170}00170   ImGui::StyleColorsDark();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00171}00171   \textcolor{comment}{// ImGui::StyleColorsClassic();}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00172}00172 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00173}00173   ImGui\_ImplGlfw\_InitForVulkan(window-\/>get\_window(), \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00174}00174 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00175}00175   \textcolor{comment}{// Create Descriptor Pool}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00176}00176   VkDescriptorPoolSize gui\_pool\_sizes[] = \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00177}00177       \{VK\_DESCRIPTOR\_TYPE\_SAMPLER, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00178}00178       \{VK\_DESCRIPTOR\_TYPE\_COMBINED\_IMAGE\_SAMPLER, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00179}00179       \{VK\_DESCRIPTOR\_TYPE\_SAMPLED\_IMAGE, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00180}00180       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_IMAGE, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00181}00181       \{VK\_DESCRIPTOR\_TYPE\_UNIFORM\_TEXEL\_BUFFER, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00182}00182       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_TEXEL\_BUFFER, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00183}00183       \{VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00184}00184       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00185}00185       \{VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER\_DYNAMIC, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00186}00186       \{VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER\_DYNAMIC, 10\},}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00187}00187       \{VK\_DESCRIPTOR\_TYPE\_INPUT\_ATTACHMENT, 100\}\};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00188}00188 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00189}00189   VkDescriptorPoolCreateInfo gui\_pool\_info = \{\};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00190}00190   gui\_pool\_info.sType = VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00191}00191   gui\_pool\_info.flags = VK\_DESCRIPTOR\_POOL\_CREATE\_FREE\_DESCRIPTOR\_SET\_BIT;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00192}00192   gui\_pool\_info.maxSets = 10 * IM\_ARRAYSIZE(gui\_pool\_sizes);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00193}00193   gui\_pool\_info.poolSizeCount = (uint32\_t)IM\_ARRAYSIZE(gui\_pool\_sizes);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00194}00194   gui\_pool\_info.pPoolSizes = gui\_pool\_sizes;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00195}00195 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00196}00196   VkResult result =}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00197}00197       vkCreateDescriptorPool(device-\/>getLogicalDevice(), \&gui\_pool\_info,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00198}00198                              \textcolor{keyword}{nullptr}, \&gui\_descriptor\_pool);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00199}00199   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a gui descriptor pool!"{}})}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00200}00200 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00201}00201   QueueFamilyIndices indices = device-\/>getQueueFamilies();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00202}00202 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00203}00203   ImGui\_ImplVulkan\_InitInfo init\_info = \{\};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00204}00204   init\_info.Instance = instance;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00205}00205   init\_info.PhysicalDevice = device-\/>getPhysicalDevice();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00206}00206   init\_info.Device = device-\/>getLogicalDevice();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00207}00207   init\_info.QueueFamily = indices.graphics\_family;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00208}00208   init\_info.Queue = device-\/>getGraphicsQueue();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00209}00209   init\_info.DescriptorPool = gui\_descriptor\_pool;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00210}00210   init\_info.PipelineCache = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00211}00211   init\_info.MinImageCount = 2;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00212}00212   init\_info.ImageCount = MAX\_FRAME\_DRAWS;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00213}00213   init\_info.Allocator = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00214}00214   init\_info.CheckVkResultFn = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00215}00215   init\_info.Subpass = 0;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00216}00216   init\_info.MSAASamples = VK\_SAMPLE\_COUNT\_1\_BIT;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00217}00217 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00218}00218   ImGui\_ImplVulkan\_Init(\&init\_info, post\_render\_pass);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00219}00219 \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00220}00220 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00221}00221 \textcolor{keywordtype}{void} GUI::create\_fonts\_and\_upload(\textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00222}00222   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00223}00223       device-\/>getLogicalDevice(), graphics\_command\_pool);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00224}00224   ImGui\_ImplVulkan\_CreateFontsTexture(command\_buffer);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00225}00225   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00226}00226       device-\/>getLogicalDevice(), graphics\_command\_pool,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00227}00227       device-\/>getGraphicsQueue(), command\_buffer);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00228}00228 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00229}00229   \textcolor{comment}{// wait until no actions being run on device before destroying}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00230}00230   vkDeviceWaitIdle(device-\/>getLogicalDevice());}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00231}00231   \textcolor{comment}{// clear font textures from cpu data}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00232}00232   ImGui\_ImplVulkan\_DestroyFontUploadObjects();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00233}00233 \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00234}00234 }
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00235}00235 GUI::\string~GUI() \{\}}
 
 \end{DoxyCode}

@@ -1,2 +1,0 @@
-getModelFile call:[str] noreturn:[str]
-getModelMatrix call:[modelMatrix,scale,vec3]

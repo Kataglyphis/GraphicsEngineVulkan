@@ -1,4 +1,0 @@
-choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
-debugUtilsMessengerCallback call:[fflush,prefix,str]
-setupDebugging call:[runtime_error,vkCreateDebugUtilsMessengerEXT,vkGetInstanceProcAddr] noreturn:[runtime_error]
-freeDebugCallback call:[vkDestroyDebugUtilsMessengerEXT] noreturn:[vkDestroyDebugUtilsMessengerEXT]

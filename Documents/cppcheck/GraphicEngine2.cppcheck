@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="1">
-    <builddir>GraphicEngine2-cppcheck-build-dir</builddir>
+    <builddir>C:/Users/jonas/Desktop/GraphicsEngineVulkan/build/cppbuild</builddir>
     <platform>Unspecified</platform>
     <importproject>../../build/GraphicsEngine.sln</importproject>
     <analyze-all-vs-configs>false</analyze-all-vs-configs>
@@ -18,5 +18,6 @@
     </paths>
     <exclude>
         <path name="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/ExternalLib/"/>
+        <path name="C:/Users/jonas/Desktop/GraphicsEngineVulkan/ExternalLib/"/>
     </exclude>
 </project>

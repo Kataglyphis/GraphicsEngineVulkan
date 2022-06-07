@@ -1,0 +1,156 @@
+.TH "debug" 3 "Tue Jun 7 2022" "Version 1.9" "GraphicsEngine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+debug
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "VKAPI_ATTR VkBool32 VKAPI_CALL \fBdebugUtilsMessengerCallback\fP (VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)"
+.br
+.ti -1c
+.RI "void \fBsetupDebugging\fP (VkInstance instance, VkDebugReportFlagsEXT flags, VkDebugReportCallbackEXT callBack)"
+.br
+.ti -1c
+.RI "void \fBfreeDebugCallback\fP (VkInstance instance)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "PFN_vkCreateDebugUtilsMessengerEXT \fBvkCreateDebugUtilsMessengerEXT\fP"
+.br
+.ti -1c
+.RI "PFN_vkDestroyDebugUtilsMessengerEXT \fBvkDestroyDebugUtilsMessengerEXT\fP"
+.br
+.ti -1c
+.RI "VkDebugUtilsMessengerEXT \fBdebugUtilsMessenger\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "VKAPI_ATTR VkBool32 VKAPI_CALL debug::debugUtilsMessengerCallback (VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT * pCallbackData, void * pUserData)"
+
+.PP
+Definition at line \fB10\fP of file \fBVulkanDebug\&.cpp\fP\&.
+.PP
+.nf
+14                      {
+15   // Select prefix depending on flags passed to the callback
+16   std::string prefix("");
+17 
+18   if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+19     prefix = "VERBOSE: ";
+20   } else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+21     prefix = "INFO: ";
+22   } else if (messageSeverity &
+23              VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+24     prefix = "WARNING: ";
+25   } else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+26     prefix = "ERROR: ";
+27   }
+28 
+29   // Display message to default output (console/logcat)
+30   std::stringstream debugMessage;
+31   debugMessage << prefix << "[" << pCallbackData->messageIdNumber << "]["
+32                << pCallbackData->pMessageIdName
+33                << "] : " << pCallbackData->pMessage;
+34 
+35 #if defined(__ANDROID__)
+36   if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+37     LOGE("%s", debugMessage\&.str()\&.c_str());
+38   } else {
+39     LOGD("%s", debugMessage\&.str()\&.c_str());
+40   }
+41 #else
+42   if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+43     std::cerr << debugMessage\&.str() << "\n";
+44   } else {
+45     std::cout << debugMessage\&.str() << "\n";
+46   }
+47   fflush(stdout);
+48 #endif
+49 
+50   // The return value of this callback controls whether the Vulkan call that
+51   // caused the validation message will be aborted or not We return VK_FALSE as
+52   // we DON'T want Vulkan calls that cause a validation message to abort If you
+53   // instead want to have calls abort, pass in VK_TRUE and the function will
+54   // return VK_ERROR_VALIDATION_FAILED_EXT
+55   return VK_FALSE;
+56 }
+.fi
+.PP
+Referenced by \fBsetupDebugging()\fP\&.
+.SS "void debug::freeDebugCallback (VkInstance instance)"
+
+.PP
+Definition at line \fB82\fP of file \fBVulkanDebug\&.cpp\fP\&.
+.PP
+.nf
+82                                             {
+83   if (debugUtilsMessenger != VK_NULL_HANDLE) {
+84     vkDestroyDebugUtilsMessengerEXT(instance, debugUtilsMessenger, nullptr);
+85   }
+86 }
+.fi
+.PP
+References \fBdebugUtilsMessenger\fP, and \fBvkDestroyDebugUtilsMessengerEXT\fP\&.
+.SS "void debug::setupDebugging (VkInstance instance, VkDebugReportFlagsEXT flags, VkDebugReportCallbackEXT callBack)"
+
+.PP
+Definition at line \fB58\fP of file \fBVulkanDebug\&.cpp\fP\&.
+.PP
+.nf
+59                                                        {
+60   vkCreateDebugUtilsMessengerEXT =
+61       reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(
+62           vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT"));
+63   vkDestroyDebugUtilsMessengerEXT =
+64       reinterpret_cast<PFN_vkDestroyDebugUtilsMessengerEXT>(
+65           vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT"));
+66 
+67   VkDebugUtilsMessengerCreateInfoEXT debugUtilsMessengerCI{};
+68   debugUtilsMessengerCI\&.sType =
+69       VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+70   debugUtilsMessengerCI\&.messageSeverity =
+71       VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+72       VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+73   debugUtilsMessengerCI\&.messageType =
+74       VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+75       VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT;
+76   debugUtilsMessengerCI\&.pfnUserCallback = debugUtilsMessengerCallback;
+77   ASSERT_VULKAN(vkCreateDebugUtilsMessengerEXT(instance, &debugUtilsMessengerCI,
+78                                                nullptr, &debugUtilsMessenger),
+79                 "Failed to create debug messenger")
+80 }
+.fi
+.PP
+References \fBdebugUtilsMessenger\fP, \fBdebugUtilsMessengerCallback()\fP, \fBvkCreateDebugUtilsMessengerEXT\fP, and \fBvkDestroyDebugUtilsMessengerEXT\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "VkDebugUtilsMessengerEXT debug::debugUtilsMessenger"
+
+.PP
+Definition at line \fB8\fP of file \fBVulkanDebug\&.cpp\fP\&.
+.PP
+Referenced by \fBfreeDebugCallback()\fP, and \fBsetupDebugging()\fP\&.
+.SS "PFN_vkCreateDebugUtilsMessengerEXT debug::vkCreateDebugUtilsMessengerEXT"
+
+.PP
+Definition at line \fB6\fP of file \fBVulkanDebug\&.cpp\fP\&.
+.PP
+Referenced by \fBsetupDebugging()\fP\&.
+.SS "PFN_vkDestroyDebugUtilsMessengerEXT debug::vkDestroyDebugUtilsMessengerEXT"
+
+.PP
+Definition at line \fB7\fP of file \fBVulkanDebug\&.cpp\fP\&.
+.PP
+Referenced by \fBfreeDebugCallback()\fP, and \fBsetupDebugging()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for GraphicsEngine from the source code\&.

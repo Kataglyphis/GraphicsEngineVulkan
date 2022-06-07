@@ -1,3 +1,0 @@
-debugUtilsMessengerCallback call:[LOGD,LOGE,c_str,prefix,str] noreturn:[LOGD,LOGE]
-setupDebugging call:[ASSERT_VULKAN,vkCreateDebugUtilsMessengerEXT,vkGetInstanceProcAddr]
-freeDebugCallback call:[vkDestroyDebugUtilsMessengerEXT] noreturn:[vkDestroyDebugUtilsMessengerEXT]
