@@ -1,19 +1,20 @@
 #pragma once
 #include <vulkan/vulkan.h>
+
 #include <memory>
 
 #include "Model.h"
-#include "Vertex.h"
 #include "ObjMaterial.h"
+#include "Vertex.h"
 
 class ObjLoader {
-  public:
-  ObjLoader(VulkanDevice* device, VkQueue transfer_queue, VkCommandPool command_pool);
+ public:
+  ObjLoader(VulkanDevice* device, VkQueue transfer_queue,
+            VkCommandPool command_pool);
 
   std::shared_ptr<Model> loadModel(const std::string& modelFile);
 
-
-  private:
+ private:
   VulkanDevice* device;
   VkQueue transfer_queue;
   VkCommandPool command_pool;
@@ -24,6 +25,7 @@ class ObjLoader {
   std::vector<unsigned int> materialIndex;
   std::vector<std::string> textures;
 
-  std::vector<std::string> loadTexturesAndMaterials(const std::string& modelFile);
+  std::vector<std::string> loadTexturesAndMaterials(
+      const std::string& modelFile);
   void loadVertices(const std::string& fileName);
 };

@@ -1,0 +1,61 @@
+\doxysection{Scene.\+cpp}
+\label{_scene_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Scene.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Scene.cpp}}
+\mbox{\hyperlink{_scene_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Scene.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 Scene::Scene() \{\}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{keywordtype}{void} Scene::update\_user\_input(GUI* gui) \{}
+\DoxyCodeLine{00006   guiSceneSharedVars = gui-\/>getGuiSceneSharedVars();}
+\DoxyCodeLine{00007 \}}
+\DoxyCodeLine{00008 }
+\DoxyCodeLine{00009 \textcolor{keywordtype}{void} Scene::loadModel(VulkanDevice* device, VkCommandPool commandPool) \{}
+\DoxyCodeLine{00010   ObjLoader obj\_loader(device, device-\/>getGraphicsQueue(), commandPool);}
+\DoxyCodeLine{00011 }
+\DoxyCodeLine{00012   std::string modelFileName = sceneConfig::getModelFile();}
+\DoxyCodeLine{00013   std::shared\_ptr<Model> new\_model = obj\_loader.loadModel(modelFileName);}
+\DoxyCodeLine{00014 }
+\DoxyCodeLine{00015   add\_model(new\_model);}
+\DoxyCodeLine{00016 }
+\DoxyCodeLine{00017   glm::mat4 modelMatrix = sceneConfig::getModelMatrix();}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019   update\_model\_matrix(modelMatrix, 0);}
+\DoxyCodeLine{00020 \}}
+\DoxyCodeLine{00021 }
+\DoxyCodeLine{00022 \textcolor{keywordtype}{void} Scene::add\_model(std::shared\_ptr<Model> model) \{}
+\DoxyCodeLine{00023   model\_list.push\_back(model);}
+\DoxyCodeLine{00024   object\_descriptions.push\_back(model-\/>getObjectDescription());}
+\DoxyCodeLine{00025 \}}
+\DoxyCodeLine{00026 }
+\DoxyCodeLine{00027 \textcolor{keywordtype}{void} Scene::add\_object\_description(ObjectDescription object\_description) \{}
+\DoxyCodeLine{00028   object\_descriptions.push\_back(object\_description);}
+\DoxyCodeLine{00029 \}}
+\DoxyCodeLine{00030 }
+\DoxyCodeLine{00031 \textcolor{keywordtype}{void} Scene::update\_model\_matrix(glm::mat4 model\_matrix, \textcolor{keywordtype}{int} model\_id) \{}
+\DoxyCodeLine{00032   \textcolor{keywordflow}{if} (model\_id >= \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(getModelCount()) || model\_id < 0) \{}
+\DoxyCodeLine{00033     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Wrong model id value!"{}});}
+\DoxyCodeLine{00034   \}}
+\DoxyCodeLine{00035 }
+\DoxyCodeLine{00036   model\_list[model\_id]-\/>set\_model(model\_matrix);}
+\DoxyCodeLine{00037 \}}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039 \textcolor{keywordtype}{void} Scene::cleanUp() \{}
+\DoxyCodeLine{00040   \textcolor{keywordflow}{for} (std::shared\_ptr<Model> model : model\_list) \{}
+\DoxyCodeLine{00041     model-\/>cleanUp();}
+\DoxyCodeLine{00042   \}}
+\DoxyCodeLine{00043 \}}
+\DoxyCodeLine{00044 }
+\DoxyCodeLine{00045 uint32\_t Scene::getNumberMeshes() \{}
+\DoxyCodeLine{00046   uint32\_t number\_of\_meshes = 0;}
+\DoxyCodeLine{00047 }
+\DoxyCodeLine{00048   \textcolor{keywordflow}{for} (std::shared\_ptr<Model> mesh\_model : model\_list) \{}
+\DoxyCodeLine{00049     number\_of\_meshes += \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(mesh\_model-\/>getMeshCount());}
+\DoxyCodeLine{00050   \}}
+\DoxyCodeLine{00051 }
+\DoxyCodeLine{00052   \textcolor{keywordflow}{return} number\_of\_meshes;}
+\DoxyCodeLine{00053 \}}
+\DoxyCodeLine{00054 }
+\DoxyCodeLine{00055 Scene::\string~Scene() \{\}}
+
+\end{DoxyCode}

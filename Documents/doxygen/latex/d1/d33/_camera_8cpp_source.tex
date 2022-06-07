@@ -1,0 +1,112 @@
+\doxysection{Camera.\+cpp}
+\label{_camera_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Camera.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Camera.cpp}}
+\mbox{\hyperlink{_camera_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Camera.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 Camera::Camera()}
+\DoxyCodeLine{00004     :}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006       position(glm::vec3(0.0f, 100.0f, -\/80.0f)),}
+\DoxyCodeLine{00007       front(glm::vec3(0.0f, 0.0f, -\/1.f)),}
+\DoxyCodeLine{00008       world\_up(glm::vec3(0.0f, 1.0f, 0.0f)),}
+\DoxyCodeLine{00009       right(glm::normalize(glm::cross(front, world\_up))),}
+\DoxyCodeLine{00010       up(glm::normalize(glm::cross(right, front))),}
+\DoxyCodeLine{00011       yaw(80.f),}
+\DoxyCodeLine{00012       pitch(-\/40.0f),}
+\DoxyCodeLine{00013       movement\_speed(200.f),}
+\DoxyCodeLine{00014       turn\_speed(0.25f),}
+\DoxyCodeLine{00015       near\_plane(0.1f),}
+\DoxyCodeLine{00016       far\_plane(4000.f),}
+\DoxyCodeLine{00017       fov(45.f)}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019 \{\}}
+\DoxyCodeLine{00020 }
+\DoxyCodeLine{00021 \textcolor{keywordtype}{void} Camera::key\_control(\textcolor{keywordtype}{bool}* keys, \textcolor{keywordtype}{float} delta\_time) \{}
+\DoxyCodeLine{00022   \textcolor{keywordtype}{float} velocity = movement\_speed * delta\_time;}
+\DoxyCodeLine{00023 }
+\DoxyCodeLine{00024   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_W]) \{}
+\DoxyCodeLine{00025     position += front * velocity;}
+\DoxyCodeLine{00026   \}}
+\DoxyCodeLine{00027 }
+\DoxyCodeLine{00028   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_D]) \{}
+\DoxyCodeLine{00029     position += right * velocity;}
+\DoxyCodeLine{00030   \}}
+\DoxyCodeLine{00031 }
+\DoxyCodeLine{00032   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_A]) \{}
+\DoxyCodeLine{00033     position += -\/right * velocity;}
+\DoxyCodeLine{00034   \}}
+\DoxyCodeLine{00035 }
+\DoxyCodeLine{00036   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_S]) \{}
+\DoxyCodeLine{00037     position += -\/front * velocity;}
+\DoxyCodeLine{00038   \}}
+\DoxyCodeLine{00039 }
+\DoxyCodeLine{00040   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_Q]) \{}
+\DoxyCodeLine{00041     yaw += -\/velocity;}
+\DoxyCodeLine{00042   \}}
+\DoxyCodeLine{00043 }
+\DoxyCodeLine{00044   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_E]) \{}
+\DoxyCodeLine{00045     yaw += velocity;}
+\DoxyCodeLine{00046   \}}
+\DoxyCodeLine{00047 \}}
+\DoxyCodeLine{00048 }
+\DoxyCodeLine{00049 \textcolor{keywordtype}{void} Camera::mouse\_control(\textcolor{keywordtype}{float} x\_change, \textcolor{keywordtype}{float} y\_change) \{}
+\DoxyCodeLine{00050   \textcolor{comment}{// here we only want to support views 90 degrees to each side}}
+\DoxyCodeLine{00051   \textcolor{comment}{// again choose turn speed well in respect to its ordinal scale}}
+\DoxyCodeLine{00052   x\_change *= turn\_speed;}
+\DoxyCodeLine{00053   y\_change *= turn\_speed;}
+\DoxyCodeLine{00054 }
+\DoxyCodeLine{00055   yaw += x\_change;}
+\DoxyCodeLine{00056   pitch += y\_change;}
+\DoxyCodeLine{00057 }
+\DoxyCodeLine{00058   \textcolor{keywordflow}{if} (pitch > 89.0f) \{}
+\DoxyCodeLine{00059     pitch = 89.0f;}
+\DoxyCodeLine{00060   \}}
+\DoxyCodeLine{00061 }
+\DoxyCodeLine{00062   \textcolor{keywordflow}{if} (pitch < -\/89.0f) \{}
+\DoxyCodeLine{00063     pitch = -\/89.0f;}
+\DoxyCodeLine{00064   \}}
+\DoxyCodeLine{00065 }
+\DoxyCodeLine{00066   \textcolor{comment}{// by changing the rotations you need to update all parameters}}
+\DoxyCodeLine{00067   \textcolor{comment}{// for we retrieve them later for further calculations!}}
+\DoxyCodeLine{00068   update();}
+\DoxyCodeLine{00069 \}}
+\DoxyCodeLine{00070 }
+\DoxyCodeLine{00071 \textcolor{keywordtype}{void} Camera::set\_near\_plane(\textcolor{keywordtype}{float} near\_plane) \{ this-\/>near\_plane = near\_plane; \}}
+\DoxyCodeLine{00072 }
+\DoxyCodeLine{00073 \textcolor{keywordtype}{void} Camera::set\_far\_plane(\textcolor{keywordtype}{float} far\_plane) \{ this-\/>far\_plane = far\_plane; \}}
+\DoxyCodeLine{00074 }
+\DoxyCodeLine{00075 \textcolor{keywordtype}{void} Camera::set\_fov(\textcolor{keywordtype}{float} fov) \{ this-\/>fov = fov; \}}
+\DoxyCodeLine{00076 }
+\DoxyCodeLine{00077 \textcolor{keywordtype}{void} Camera::set\_camera\_position(glm::vec3 new\_camera\_position) \{}
+\DoxyCodeLine{00078   this-\/>position = new\_camera\_position;}
+\DoxyCodeLine{00079 \}}
+\DoxyCodeLine{00080 }
+\DoxyCodeLine{00081 glm::mat4 Camera::calculate\_viewmatrix() \{}
+\DoxyCodeLine{00082   \textcolor{comment}{// very necessary for further calc}}
+\DoxyCodeLine{00083   \textcolor{keywordflow}{return} glm::lookAt(position, position + front, up);}
+\DoxyCodeLine{00084 \}}
+\DoxyCodeLine{00085 }
+\DoxyCodeLine{00086 Camera::\string~Camera() \{\}}
+\DoxyCodeLine{00087 }
+\DoxyCodeLine{00088 \textcolor{keywordtype}{void} Camera::update() \{}
+\DoxyCodeLine{00089   \textcolor{comment}{// https://learnopengl.com/Getting-\/started/Camera?fbclid=IwAR1WEr4jt6IyWC52s\_WKYHtaFoeug37pG5YqbDPifgn5F1UXPbUjWbJWiqQ}}
+\DoxyCodeLine{00090   \textcolor{comment}{//  thats a bit tricky; have a look to link above if there a questions :)}}
+\DoxyCodeLine{00091   \textcolor{comment}{//  but simple geometrical analysis}}
+\DoxyCodeLine{00092   \textcolor{comment}{//  consider yaw you are turnig to the side; pich as you move the head forward}}
+\DoxyCodeLine{00093   \textcolor{comment}{//  and back; roll rotations around z-\/axis will make you dizzy :)) notice that}}
+\DoxyCodeLine{00094   \textcolor{comment}{//  to roll will not chnge my front vector}}
+\DoxyCodeLine{00095   front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));}
+\DoxyCodeLine{00096   front.y = sin(glm::radians(pitch));}
+\DoxyCodeLine{00097   front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));}
+\DoxyCodeLine{00098   front = glm::normalize(front);}
+\DoxyCodeLine{00099 }
+\DoxyCodeLine{00100   \textcolor{comment}{// retrieve the right vector with some world\_up}}
+\DoxyCodeLine{00101   right = glm::normalize(glm::cross(front, world\_up));}
+\DoxyCodeLine{00102 }
+\DoxyCodeLine{00103   \textcolor{comment}{// but this means the up vector must again be calculated with right vector}}
+\DoxyCodeLine{00104   \textcolor{comment}{// calculated!!!}}
+\DoxyCodeLine{00105   up = glm::normalize(glm::cross(right, front));}
+\DoxyCodeLine{00106 \}}
+
+\end{DoxyCode}

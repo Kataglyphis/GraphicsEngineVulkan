@@ -1,0 +1,225 @@
+\doxysection{Obj\+Loader.\+cpp}
+\label{_obj_loader_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/ObjLoader.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/ObjLoader.cpp}}
+\mbox{\hyperlink{_obj_loader_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}ObjLoader.h"{}}}
+\DoxyCodeLine{00002 \textcolor{preprocessor}{\#define TINYOBJLOADER\_IMPLEMENTATION}}
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <tiny\_obj\_loader.h>}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{00006 }
+\DoxyCodeLine{00007 ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer\_queue,}
+\DoxyCodeLine{00008                      VkCommandPool command\_pool) \{}
+\DoxyCodeLine{00009   this-\/>device = device;}
+\DoxyCodeLine{00010   this-\/>transfer\_queue = transfer\_queue;}
+\DoxyCodeLine{00011   this-\/>command\_pool = command\_pool;}
+\DoxyCodeLine{00012 \}}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014 std::shared\_ptr<Model> ObjLoader::loadModel(\textcolor{keyword}{const} std::string\& modelFile) \{}
+\DoxyCodeLine{00015   \textcolor{comment}{// the model we want to load}}
+\DoxyCodeLine{00016   std::shared\_ptr<Model> new\_model = std::make\_shared<Model>(device);}
+\DoxyCodeLine{00017 }
+\DoxyCodeLine{00018   \textcolor{comment}{// first load txtures from model}}
+\DoxyCodeLine{00019   std::vector<std::string> textureNames = loadTexturesAndMaterials(modelFile);}
+\DoxyCodeLine{00020   std::vector<int> matToTex(textureNames.size());}
+\DoxyCodeLine{00021 }
+\DoxyCodeLine{00022   \textcolor{comment}{// now that we have the names lets create the vulkan side of textures}}
+\DoxyCodeLine{00023   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < textureNames.size(); i++) \{}
+\DoxyCodeLine{00024     \textcolor{comment}{// If material had no texture, set '0' to indicate no texture, texture 0}}
+\DoxyCodeLine{00025     \textcolor{comment}{// will be reserved for a default texture}}
+\DoxyCodeLine{00026     \textcolor{keywordflow}{if} (!textureNames[i].empty()) \{}
+\DoxyCodeLine{00027       \textcolor{comment}{// Otherwise, create texture and set value to index of new texture}}
+\DoxyCodeLine{00028       Texture texture;}
+\DoxyCodeLine{00029       texture.createFromFile(device, command\_pool, textureNames[i]);}
+\DoxyCodeLine{00030       new\_model-\/>addTexture(texture);}
+\DoxyCodeLine{00031       matToTex[i] = new\_model-\/>getTextureCount();}
+\DoxyCodeLine{00032 }
+\DoxyCodeLine{00033     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{00034       matToTex[i] = 0;}
+\DoxyCodeLine{00035     \}}
+\DoxyCodeLine{00036   \}}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038   loadVertices(modelFile);}
+\DoxyCodeLine{00039 }
+\DoxyCodeLine{00040   new\_model-\/>add\_new\_mesh(device, transfer\_queue, command\_pool, vertices,}
+\DoxyCodeLine{00041                           indices, materialIndex, this-\/>materials);}
+\DoxyCodeLine{00042 }
+\DoxyCodeLine{00043   \textcolor{keywordflow}{return} new\_model;}
+\DoxyCodeLine{00044 \}}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046 std::vector<std::string> ObjLoader::loadTexturesAndMaterials(}
+\DoxyCodeLine{00047     \textcolor{keyword}{const} std::string\& modelFile) \{}
+\DoxyCodeLine{00048   tinyobj::ObjReaderConfig reader\_config;}
+\DoxyCodeLine{00049   tinyobj::ObjReader reader;}
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051   \textcolor{keywordflow}{if} (!reader.ParseFromFile(modelFile, reader\_config)) \{}
+\DoxyCodeLine{00052     \textcolor{keywordflow}{if} (!reader.Error().empty()) \{}
+\DoxyCodeLine{00053       std::cerr << \textcolor{stringliteral}{"{}TinyObjReader: "{}} << reader.Error();}
+\DoxyCodeLine{00054     \}}
+\DoxyCodeLine{00055     exit(EXIT\_FAILURE);}
+\DoxyCodeLine{00056   \}}
+\DoxyCodeLine{00057 }
+\DoxyCodeLine{00058   \textcolor{keywordflow}{if} (!reader.Warning().empty()) \{}
+\DoxyCodeLine{00059     std::cout << \textcolor{stringliteral}{"{}TinyObjReader: "{}} << reader.Warning();}
+\DoxyCodeLine{00060   \}}
+\DoxyCodeLine{00061 }
+\DoxyCodeLine{00062   \textcolor{keyword}{auto}\& tol\_materials = reader.GetMaterials();}
+\DoxyCodeLine{00063   textures.reserve(tol\_materials.size());}
+\DoxyCodeLine{00064 }
+\DoxyCodeLine{00065   \textcolor{keywordtype}{int} texture\_id = 0;}
+\DoxyCodeLine{00066 }
+\DoxyCodeLine{00067   \textcolor{comment}{// we now iterate over all materials to get diffuse textures}}
+\DoxyCodeLine{00068   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < tol\_materials.size(); i++) \{}
+\DoxyCodeLine{00069     \textcolor{keyword}{const} tinyobj::material\_t* mp = \&tol\_materials[i];}
+\DoxyCodeLine{00070     ObjMaterial material\{\};}
+\DoxyCodeLine{00071     material.ambient =}
+\DoxyCodeLine{00072         glm::vec3(mp-\/>ambient[0], mp-\/>ambient[1], mp-\/>ambient[2]);}
+\DoxyCodeLine{00073     material.diffuse =}
+\DoxyCodeLine{00074         glm::vec3(mp-\/>diffuse[0], mp-\/>diffuse[1], mp-\/>diffuse[2]);}
+\DoxyCodeLine{00075     material.specular =}
+\DoxyCodeLine{00076         glm::vec3(mp-\/>specular[0], mp-\/>specular[1], mp-\/>specular[2]);}
+\DoxyCodeLine{00077     material.emission =}
+\DoxyCodeLine{00078         glm::vec3(mp-\/>emission[0], mp-\/>emission[1], mp-\/>emission[2]);}
+\DoxyCodeLine{00079     material.transmittance = glm::vec3(}
+\DoxyCodeLine{00080         mp-\/>transmittance[0], mp-\/>transmittance[1], mp-\/>transmittance[2]);}
+\DoxyCodeLine{00081     material.dissolve = mp-\/>dissolve;}
+\DoxyCodeLine{00082     material.ior = mp-\/>ior;}
+\DoxyCodeLine{00083     material.shininess = mp-\/>shininess;}
+\DoxyCodeLine{00084     material.illum = mp-\/>illum;}
+\DoxyCodeLine{00085 }
+\DoxyCodeLine{00086     \textcolor{keywordflow}{if} (mp-\/>diffuse\_texname.length() > 0) \{}
+\DoxyCodeLine{00087       std::string relative\_texture\_filename = mp-\/>diffuse\_texname;}
+\DoxyCodeLine{00088       File model\_file(modelFile);}
+\DoxyCodeLine{00089       std::string texture\_filename =}
+\DoxyCodeLine{00090           model\_file.getBaseDir() + \textcolor{stringliteral}{"{}/textures/"{}} + relative\_texture\_filename;}
+\DoxyCodeLine{00091 }
+\DoxyCodeLine{00092       textures.push\_back(texture\_filename);}
+\DoxyCodeLine{00093       material.textureID = texture\_id;}
+\DoxyCodeLine{00094       texture\_id++;}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{00097       material.textureID = 0;}
+\DoxyCodeLine{00098       textures.push\_back(\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00099     \}}
+\DoxyCodeLine{00100 }
+\DoxyCodeLine{00101     materials.push\_back(material);}
+\DoxyCodeLine{00102   \}}
+\DoxyCodeLine{00103 }
+\DoxyCodeLine{00104   \textcolor{comment}{// for the case no .mtl file is given place some random standard material ...}}
+\DoxyCodeLine{00105   \textcolor{keywordflow}{if} (tol\_materials.empty()) \{}
+\DoxyCodeLine{00106     materials.emplace\_back(ObjMaterial());}
+\DoxyCodeLine{00107   \}}
+\DoxyCodeLine{00108 }
+\DoxyCodeLine{00109   \textcolor{keywordflow}{return} textures;}
+\DoxyCodeLine{00110 \}}
+\DoxyCodeLine{00111 }
+\DoxyCodeLine{00112 \textcolor{keywordtype}{void} ObjLoader::loadVertices(\textcolor{keyword}{const} std::string\& fileName) \{}
+\DoxyCodeLine{00113   tinyobj::ObjReaderConfig reader\_config;}
+\DoxyCodeLine{00114   \textcolor{comment}{// reader\_config.mtl\_search\_path = "{}"{}; // Path to material files}}
+\DoxyCodeLine{00115 }
+\DoxyCodeLine{00116   tinyobj::ObjReader reader;}
+\DoxyCodeLine{00117 }
+\DoxyCodeLine{00118   \textcolor{keywordflow}{if} (!reader.ParseFromFile(fileName, reader\_config)) \{}
+\DoxyCodeLine{00119     \textcolor{keywordflow}{if} (!reader.Error().empty()) \{}
+\DoxyCodeLine{00120       std::cerr << \textcolor{stringliteral}{"{}TinyObjReader: "{}} << reader.Error();}
+\DoxyCodeLine{00121     \}}
+\DoxyCodeLine{00122     exit(EXIT\_FAILURE);}
+\DoxyCodeLine{00123   \}}
+\DoxyCodeLine{00124 }
+\DoxyCodeLine{00125   \textcolor{keywordflow}{if} (!reader.Warning().empty()) \{}
+\DoxyCodeLine{00126     std::cout << \textcolor{stringliteral}{"{}TinyObjReader: "{}} << reader.Warning();}
+\DoxyCodeLine{00127   \}}
+\DoxyCodeLine{00128 }
+\DoxyCodeLine{00129   \textcolor{keyword}{auto}\& attrib = reader.GetAttrib();}
+\DoxyCodeLine{00130   \textcolor{keyword}{auto}\& shapes = reader.GetShapes();}
+\DoxyCodeLine{00131   \textcolor{keyword}{auto}\& materials = reader.GetMaterials();}
+\DoxyCodeLine{00132 }
+\DoxyCodeLine{00133   std::unordered\_map<Vertex, uint32\_t> vertices\_map\{\};}
+\DoxyCodeLine{00134 }
+\DoxyCodeLine{00135   \textcolor{comment}{// Loop over shapes}}
+\DoxyCodeLine{00136   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} s = 0; s < shapes.size(); s++) \{}
+\DoxyCodeLine{00137     \textcolor{comment}{// prepare for enlargement}}
+\DoxyCodeLine{00138     vertices.reserve(shapes[s].mesh.indices.size() + vertices.size());}
+\DoxyCodeLine{00139     indices.reserve(shapes[s].mesh.indices.size() + indices.size());}
+\DoxyCodeLine{00140 }
+\DoxyCodeLine{00141     \textcolor{comment}{// Loop over faces(polygon)}}
+\DoxyCodeLine{00142     \textcolor{keywordtype}{size\_t} index\_offset = 0;}
+\DoxyCodeLine{00143     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} f = 0; f < shapes[s].mesh.num\_face\_vertices.size(); f++) \{}
+\DoxyCodeLine{00144       \textcolor{keywordtype}{size\_t} fv = size\_t(shapes[s].mesh.num\_face\_vertices[f]);}
+\DoxyCodeLine{00145 }
+\DoxyCodeLine{00146       \textcolor{comment}{// Loop over vertices in the face.}}
+\DoxyCodeLine{00147       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} v = 0; v < fv; v++) \{}
+\DoxyCodeLine{00148         \textcolor{comment}{// access to vertex}}
+\DoxyCodeLine{00149         tinyobj::index\_t idx = shapes[s].mesh.indices[index\_offset + v];}
+\DoxyCodeLine{00150         tinyobj::real\_t vx = attrib.vertices[3 * size\_t(idx.vertex\_index) + 0];}
+\DoxyCodeLine{00151         tinyobj::real\_t vy = attrib.vertices[3 * size\_t(idx.vertex\_index) + 1];}
+\DoxyCodeLine{00152         tinyobj::real\_t vz = attrib.vertices[3 * size\_t(idx.vertex\_index) + 2];}
+\DoxyCodeLine{00153         glm::vec3 pos = \{vx, vy, vz\};}
+\DoxyCodeLine{00154 }
+\DoxyCodeLine{00155         glm::vec3 normals(0.0f);}
+\DoxyCodeLine{00156         \textcolor{comment}{// Check if `normal\_index` is zero or positive. negative = no normal}}
+\DoxyCodeLine{00157         \textcolor{comment}{// data}}
+\DoxyCodeLine{00158         \textcolor{keywordflow}{if} (idx.normal\_index >= 0 \&\& !attrib.normals.empty()) \{}
+\DoxyCodeLine{00159           tinyobj::real\_t nx = attrib.normals[3 * size\_t(idx.normal\_index) + 0];}
+\DoxyCodeLine{00160           tinyobj::real\_t ny = attrib.normals[3 * size\_t(idx.normal\_index) + 1];}
+\DoxyCodeLine{00161           tinyobj::real\_t nz = attrib.normals[3 * size\_t(idx.normal\_index) + 2];}
+\DoxyCodeLine{00162           normals = glm::vec3(nx, ny, nz);}
+\DoxyCodeLine{00163         \}}
+\DoxyCodeLine{00164 }
+\DoxyCodeLine{00165         glm::vec3 color(-\/1.f);}
+\DoxyCodeLine{00166         \textcolor{keywordflow}{if} (!attrib.colors.empty()) \{}
+\DoxyCodeLine{00167           tinyobj::real\_t red = attrib.colors[3 * size\_t(idx.vertex\_index) + 0];}
+\DoxyCodeLine{00168           tinyobj::real\_t green =}
+\DoxyCodeLine{00169               attrib.colors[3 * size\_t(idx.vertex\_index) + 1];}
+\DoxyCodeLine{00170           tinyobj::real\_t blue =}
+\DoxyCodeLine{00171               attrib.colors[3 * size\_t(idx.vertex\_index) + 2];}
+\DoxyCodeLine{00172           color = glm::vec3(red, green, blue);}
+\DoxyCodeLine{00173         \}}
+\DoxyCodeLine{00174 }
+\DoxyCodeLine{00175         glm::vec2 tex\_coords(0.0f);}
+\DoxyCodeLine{00176         \textcolor{comment}{// Check if `texcoord\_index` is zero or positive. negative = no texcoord}}
+\DoxyCodeLine{00177         \textcolor{comment}{// data}}
+\DoxyCodeLine{00178         \textcolor{keywordflow}{if} (idx.texcoord\_index >= 0 \&\& !attrib.texcoords.empty()) \{}
+\DoxyCodeLine{00179           tinyobj::real\_t tx =}
+\DoxyCodeLine{00180               attrib.texcoords[2 * size\_t(idx.texcoord\_index) + 0];}
+\DoxyCodeLine{00181           \textcolor{comment}{// flip y coordinate !!}}
+\DoxyCodeLine{00182           tinyobj::real\_t ty =}
+\DoxyCodeLine{00183               1.f -\/ attrib.texcoords[2 * size\_t(idx.texcoord\_index) + 1];}
+\DoxyCodeLine{00184           tex\_coords = glm::vec2(tx, ty);}
+\DoxyCodeLine{00185         \}}
+\DoxyCodeLine{00186 }
+\DoxyCodeLine{00187         Vertex vert\{pos, normals, color, tex\_coords\};}
+\DoxyCodeLine{00188 }
+\DoxyCodeLine{00189         \textcolor{keywordflow}{if} (vertices\_map.count(vert) == 0) \{}
+\DoxyCodeLine{00190           vertices\_map[vert] = vertices.size();}
+\DoxyCodeLine{00191           vertices.push\_back(vert);}
+\DoxyCodeLine{00192         \}}
+\DoxyCodeLine{00193 }
+\DoxyCodeLine{00194         indices.push\_back(vertices\_map[vert]);}
+\DoxyCodeLine{00195       \}}
+\DoxyCodeLine{00196 }
+\DoxyCodeLine{00197       index\_offset += fv;}
+\DoxyCodeLine{00198 }
+\DoxyCodeLine{00199       \textcolor{comment}{// per-\/face material; face usually is triangle}}
+\DoxyCodeLine{00200       \textcolor{comment}{// matToTex[shapes[s].mesh.material\_ids[f]]}}
+\DoxyCodeLine{00201       materialIndex.push\_back(shapes[s].mesh.material\_ids[f]);}
+\DoxyCodeLine{00202     \}}
+\DoxyCodeLine{00203   \}}
+\DoxyCodeLine{00204 }
+\DoxyCodeLine{00205   \textcolor{comment}{// precompute normals if no provided}}
+\DoxyCodeLine{00206   \textcolor{keywordflow}{if} (attrib.normals.empty()) \{}
+\DoxyCodeLine{00207     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < indices.size(); i += 3) \{}
+\DoxyCodeLine{00208       Vertex\& v0 = vertices[indices[i + 0]];}
+\DoxyCodeLine{00209       Vertex\& v1 = vertices[indices[i + 1]];}
+\DoxyCodeLine{00210       Vertex\& v2 = vertices[indices[i + 2]];}
+\DoxyCodeLine{00211 }
+\DoxyCodeLine{00212       glm::vec3 n =}
+\DoxyCodeLine{00213           glm::normalize(glm::cross((v1.pos -\/ v0.pos), (v2.pos -\/ v0.pos)));}
+\DoxyCodeLine{00214       v0.normal = n;}
+\DoxyCodeLine{00215       v1.normal = n;}
+\DoxyCodeLine{00216       v2.normal = n;}
+\DoxyCodeLine{00217     \}}
+\DoxyCodeLine{00218   \}}
+\DoxyCodeLine{00219 \}}
+
+\end{DoxyCode}

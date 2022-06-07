@@ -1,0 +1,204 @@
+\doxysection{Window.\+cpp}
+\label{_window_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/window/Window.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/window/Window.cpp}}
+\mbox{\hyperlink{_window_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Window.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <imgui.h>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <imgui\_impl\_glfw.h>}}
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include <imgui\_impl\_vulkan.h>}}
+\DoxyCodeLine{00006 }
+\DoxyCodeLine{00007 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{00008 }
+\DoxyCodeLine{00009 \textcolor{comment}{// GLFW Callback functions}}
+\DoxyCodeLine{00010 \textcolor{keyword}{static} \textcolor{keywordtype}{void} onErrorCallback(\textcolor{keywordtype}{int} error, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* description) \{}
+\DoxyCodeLine{00011   fprintf(stderr, \textcolor{stringliteral}{"{}GLFW Error \%d: \%s\(\backslash\)n"{}}, error, description);}
+\DoxyCodeLine{00012 \}}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014 Window::Window()}
+\DoxyCodeLine{00015     :}
+\DoxyCodeLine{00016 }
+\DoxyCodeLine{00017       window\_width(800.f),}
+\DoxyCodeLine{00018       window\_height(600.f),}
+\DoxyCodeLine{00019       x\_change(0.0f),}
+\DoxyCodeLine{00020       y\_change(0.0f),}
+\DoxyCodeLine{00021       framebuffer\_resized(false)}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023 \{}
+\DoxyCodeLine{00024   \textcolor{comment}{// all keys non-\/pressed in the beginning}}
+\DoxyCodeLine{00025   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < 1024; i++) \{}
+\DoxyCodeLine{00026     keys[i] = 0;}
+\DoxyCodeLine{00027   \}}
+\DoxyCodeLine{00028 }
+\DoxyCodeLine{00029   initialize();}
+\DoxyCodeLine{00030 \}}
+\DoxyCodeLine{00031 }
+\DoxyCodeLine{00032 \textcolor{comment}{// please use this constructor; never the standard}}
+\DoxyCodeLine{00033 Window::Window(uint32\_t window\_width, uint32\_t window\_height)}
+\DoxyCodeLine{00034     :}
+\DoxyCodeLine{00035 }
+\DoxyCodeLine{00036       window\_width(window\_width),}
+\DoxyCodeLine{00037       window\_height(window\_height),}
+\DoxyCodeLine{00038       x\_change(0.0f),}
+\DoxyCodeLine{00039       y\_change(0.0f),}
+\DoxyCodeLine{00040       framebuffer\_resized(false)}
+\DoxyCodeLine{00041 }
+\DoxyCodeLine{00042 \{}
+\DoxyCodeLine{00043   \textcolor{comment}{// all keys non-\/pressed in the beginning}}
+\DoxyCodeLine{00044   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < 1024; i++) \{}
+\DoxyCodeLine{00045     keys[i] = 0;}
+\DoxyCodeLine{00046   \}}
+\DoxyCodeLine{00047 }
+\DoxyCodeLine{00048   initialize();}
+\DoxyCodeLine{00049 \}}
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051 \textcolor{keywordtype}{int} Window::initialize() \{}
+\DoxyCodeLine{00052   glfwSetErrorCallback(onErrorCallback);}
+\DoxyCodeLine{00053   \textcolor{keywordflow}{if} (!glfwInit()) \{}
+\DoxyCodeLine{00054     printf(\textcolor{stringliteral}{"{}GLFW Init failed!"{}});}
+\DoxyCodeLine{00055     glfwTerminate();}
+\DoxyCodeLine{00056     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{00057   \}}
+\DoxyCodeLine{00058 }
+\DoxyCodeLine{00059   \textcolor{keywordflow}{if} (!glfwVulkanSupported()) \{}
+\DoxyCodeLine{00060     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}No Vulkan Supported!"{}});}
+\DoxyCodeLine{00061   \}}
+\DoxyCodeLine{00062 }
+\DoxyCodeLine{00063   \textcolor{comment}{// allow it to resize}}
+\DoxyCodeLine{00064   glfwWindowHint(GLFW\_RESIZABLE, GLFW\_TRUE);}
+\DoxyCodeLine{00065 }
+\DoxyCodeLine{00066   \textcolor{comment}{// retrieve new window}}
+\DoxyCodeLine{00067   glfwWindowHint(GLFW\_CLIENT\_API, GLFW\_NO\_API);}
+\DoxyCodeLine{00068   main\_window =}
+\DoxyCodeLine{00069       glfwCreateWindow(window\_width, window\_height,}
+\DoxyCodeLine{00070                        \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)\_\_/ Epic graphics from hell \(\backslash\)\(\backslash\)\_\_/ "{}}, NULL, NULL);}
+\DoxyCodeLine{00071 }
+\DoxyCodeLine{00072   \textcolor{keywordflow}{if} (!main\_window) \{}
+\DoxyCodeLine{00073     printf(\textcolor{stringliteral}{"{}GLFW Window creation failed!"{}});}
+\DoxyCodeLine{00074     glfwTerminate();}
+\DoxyCodeLine{00075     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{00076   \}}
+\DoxyCodeLine{00077 }
+\DoxyCodeLine{00078   \textcolor{comment}{// get buffer size information}}
+\DoxyCodeLine{00079   glfwGetFramebufferSize(main\_window, \&window\_buffer\_width,}
+\DoxyCodeLine{00080                          \&window\_buffer\_height);}
+\DoxyCodeLine{00081 }
+\DoxyCodeLine{00082   init\_callbacks();}
+\DoxyCodeLine{00083 }
+\DoxyCodeLine{00084   \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{00085 \}}
+\DoxyCodeLine{00086 }
+\DoxyCodeLine{00087 \textcolor{keywordtype}{void} Window::cleanUp() \{}
+\DoxyCodeLine{00088   glfwDestroyWindow(main\_window);}
+\DoxyCodeLine{00089   glfwTerminate();}
+\DoxyCodeLine{00090 \}}
+\DoxyCodeLine{00091 }
+\DoxyCodeLine{00092 \textcolor{keywordtype}{void} Window::update\_viewport() \{}
+\DoxyCodeLine{00093   glfwGetFramebufferSize(main\_window, \&window\_buffer\_width,}
+\DoxyCodeLine{00094                          \&window\_buffer\_height);}
+\DoxyCodeLine{00095 \}}
+\DoxyCodeLine{00096 }
+\DoxyCodeLine{00097 \textcolor{keywordtype}{void} Window::set\_buffer\_size(\textcolor{keywordtype}{float} window\_buffer\_width,}
+\DoxyCodeLine{00098                              \textcolor{keywordtype}{float} window\_buffer\_height) \{}
+\DoxyCodeLine{00099   this-\/>window\_buffer\_width = window\_buffer\_width;}
+\DoxyCodeLine{00100   this-\/>window\_buffer\_height = window\_buffer\_height;}
+\DoxyCodeLine{00101 \}}
+\DoxyCodeLine{00102 }
+\DoxyCodeLine{00103 \textcolor{keywordtype}{float} Window::get\_x\_change() \{}
+\DoxyCodeLine{00104   \textcolor{keywordtype}{float} the\_change = x\_change;}
+\DoxyCodeLine{00105   x\_change = 0.0f;}
+\DoxyCodeLine{00106   \textcolor{keywordflow}{return} the\_change;}
+\DoxyCodeLine{00107 \}}
+\DoxyCodeLine{00108 }
+\DoxyCodeLine{00109 \textcolor{keywordtype}{float} Window::get\_y\_change() \{}
+\DoxyCodeLine{00110   \textcolor{keywordtype}{float} the\_change = y\_change;}
+\DoxyCodeLine{00111   y\_change = 0.0f;}
+\DoxyCodeLine{00112   \textcolor{keywordflow}{return} the\_change;}
+\DoxyCodeLine{00113 \}}
+\DoxyCodeLine{00114 }
+\DoxyCodeLine{00115 \textcolor{keywordtype}{float} Window::get\_height() \{ \textcolor{keywordflow}{return} float(window\_height); \}}
+\DoxyCodeLine{00116 }
+\DoxyCodeLine{00117 \textcolor{keywordtype}{float} Window::get\_width() \{ \textcolor{keywordflow}{return} float(window\_width); \}}
+\DoxyCodeLine{00118 }
+\DoxyCodeLine{00119 \textcolor{keywordtype}{bool} Window::framebuffer\_size\_has\_changed() \{ \textcolor{keywordflow}{return} framebuffer\_resized; \}}
+\DoxyCodeLine{00120 }
+\DoxyCodeLine{00121 \textcolor{keywordtype}{void} Window::init\_callbacks() \{}
+\DoxyCodeLine{00122   \textcolor{comment}{// TODO: remember this section for our later game logic}}
+\DoxyCodeLine{00123   \textcolor{comment}{// for the space ship to fly around}}
+\DoxyCodeLine{00124   glfwSetWindowUserPointer(main\_window, \textcolor{keyword}{this});}
+\DoxyCodeLine{00125   glfwSetKeyCallback(main\_window, \&key\_callback);}
+\DoxyCodeLine{00126   glfwSetMouseButtonCallback(main\_window, \&mouse\_button\_callback);}
+\DoxyCodeLine{00127   glfwSetFramebufferSizeCallback(main\_window, \&framebuffer\_size\_callback);}
+\DoxyCodeLine{00128 \}}
+\DoxyCodeLine{00129 }
+\DoxyCodeLine{00130 \textcolor{keywordtype}{void} Window::framebuffer\_size\_callback(GLFWwindow* window, \textcolor{keywordtype}{int} width,}
+\DoxyCodeLine{00131                                        \textcolor{keywordtype}{int} height) \{}
+\DoxyCodeLine{00132   \textcolor{keyword}{auto} app = \textcolor{keyword}{reinterpret\_cast<}Window*\textcolor{keyword}{>}(glfwGetWindowUserPointer(window));}
+\DoxyCodeLine{00133   app-\/>framebuffer\_resized = \textcolor{keyword}{true};}
+\DoxyCodeLine{00134   app-\/>window\_width = width;}
+\DoxyCodeLine{00135   app-\/>window\_height = height;}
+\DoxyCodeLine{00136 \}}
+\DoxyCodeLine{00137 }
+\DoxyCodeLine{00138 \textcolor{keywordtype}{void} Window::reset\_framebuffer\_has\_changed() \{}
+\DoxyCodeLine{00139   this-\/>framebuffer\_resized = \textcolor{keyword}{false};}
+\DoxyCodeLine{00140 \}}
+\DoxyCodeLine{00141 }
+\DoxyCodeLine{00142 \textcolor{keywordtype}{void} Window::key\_callback(GLFWwindow* window, \textcolor{keywordtype}{int} key, \textcolor{keywordtype}{int} code, \textcolor{keywordtype}{int} action,}
+\DoxyCodeLine{00143                           \textcolor{keywordtype}{int} mode) \{}
+\DoxyCodeLine{00144   Window* the\_window = \textcolor{keyword}{static\_cast<}Window*\textcolor{keyword}{>}(glfwGetWindowUserPointer(window));}
+\DoxyCodeLine{00145 }
+\DoxyCodeLine{00146   \textcolor{keywordflow}{if} (key == GLFW\_KEY\_ESCAPE \&\& action == GLFW\_PRESS) \{}
+\DoxyCodeLine{00147     glfwSetWindowShouldClose(window, VK\_TRUE);}
+\DoxyCodeLine{00148   \}}
+\DoxyCodeLine{00149 }
+\DoxyCodeLine{00150   \textcolor{keywordflow}{if} (key >= 0 \&\& key < 1024) \{}
+\DoxyCodeLine{00151     \textcolor{keywordflow}{if} (action == GLFW\_PRESS) \{}
+\DoxyCodeLine{00152       the\_window-\/>keys[key] = \textcolor{keyword}{true};}
+\DoxyCodeLine{00153 }
+\DoxyCodeLine{00154     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (action == GLFW\_RELEASE) \{}
+\DoxyCodeLine{00155       the\_window-\/>keys[key] = \textcolor{keyword}{false};}
+\DoxyCodeLine{00156     \}}
+\DoxyCodeLine{00157   \}}
+\DoxyCodeLine{00158 \}}
+\DoxyCodeLine{00159 }
+\DoxyCodeLine{00160 \textcolor{keywordtype}{void} Window::mouse\_callback(GLFWwindow* window, \textcolor{keywordtype}{double} x\_pos, \textcolor{keywordtype}{double} y\_pos) \{}
+\DoxyCodeLine{00161   Window* the\_window = \textcolor{keyword}{static\_cast<}Window*\textcolor{keyword}{>}(glfwGetWindowUserPointer(window));}
+\DoxyCodeLine{00162 }
+\DoxyCodeLine{00163   \textcolor{comment}{// need to handle first occurance of a mouse moving event}}
+\DoxyCodeLine{00164   \textcolor{keywordflow}{if} (the\_window-\/>mouse\_first\_moved) \{}
+\DoxyCodeLine{00165     the\_window-\/>last\_x = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(x\_pos);}
+\DoxyCodeLine{00166     the\_window-\/>last\_y = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(y\_pos);}
+\DoxyCodeLine{00167     the\_window-\/>mouse\_first\_moved = \textcolor{keyword}{false};}
+\DoxyCodeLine{00168   \}}
+\DoxyCodeLine{00169 }
+\DoxyCodeLine{00170   the\_window-\/>x\_change = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}((x\_pos -\/ the\_window-\/>last\_x));}
+\DoxyCodeLine{00171   \textcolor{comment}{// take care of correct substraction :)}}
+\DoxyCodeLine{00172   the\_window-\/>y\_change = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}((the\_window-\/>last\_y -\/ y\_pos));}
+\DoxyCodeLine{00173 }
+\DoxyCodeLine{00174   \textcolor{comment}{// update params}}
+\DoxyCodeLine{00175   the\_window-\/>last\_x = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(x\_pos);}
+\DoxyCodeLine{00176   the\_window-\/>last\_y = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(y\_pos);}
+\DoxyCodeLine{00177 \}}
+\DoxyCodeLine{00178 }
+\DoxyCodeLine{00179 \textcolor{keywordtype}{void} Window::mouse\_button\_callback(GLFWwindow* window, \textcolor{keywordtype}{int} button, \textcolor{keywordtype}{int} action,}
+\DoxyCodeLine{00180                                    \textcolor{keywordtype}{int} mods) \{}
+\DoxyCodeLine{00181   \textcolor{keywordflow}{if} (ImGui::GetCurrentContext() != \textcolor{keyword}{nullptr} \&\&}
+\DoxyCodeLine{00182       ImGui::GetIO().WantCaptureMouse) \{}
+\DoxyCodeLine{00183     ImGuiIO\& io = ImGui::GetIO();}
+\DoxyCodeLine{00184     io.AddMouseButtonEvent(button, action);}
+\DoxyCodeLine{00185     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00186   \}}
+\DoxyCodeLine{00187 }
+\DoxyCodeLine{00188   Window* the\_window = \textcolor{keyword}{static\_cast<}Window*\textcolor{keyword}{>}(glfwGetWindowUserPointer(window));}
+\DoxyCodeLine{00189 }
+\DoxyCodeLine{00190   \textcolor{keywordflow}{if} ((action == GLFW\_PRESS) \&\& (button == GLFW\_MOUSE\_BUTTON\_RIGHT)) \{}
+\DoxyCodeLine{00191     glfwSetCursorPosCallback(window, mouse\_callback);}
+\DoxyCodeLine{00192   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{00193     the\_window-\/>mouse\_first\_moved = \textcolor{keyword}{true};}
+\DoxyCodeLine{00194     glfwSetCursorPosCallback(window, NULL);}
+\DoxyCodeLine{00195   \}}
+\DoxyCodeLine{00196 \}}
+\DoxyCodeLine{00197 }
+\DoxyCodeLine{00198 Window::\string~Window() \{\}}
+
+\end{DoxyCode}

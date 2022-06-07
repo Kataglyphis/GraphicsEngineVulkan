@@ -7,7 +7,8 @@ const int MAX_TEXTURE_COUNT = 24;
 const int MAX_TEXTURE_COUNT = 1;
 #endif
 
-// ----- MAIN RENDER DESCRIPTOR SET ----- START (shared between rasterizer and raytracer)
+// ----- MAIN RENDER DESCRIPTOR SET ----- START (shared between rasterizer and
+// raytracer)
 #define globalUBO_BINDING 0
 #define sceneUBO_BINDING 1
 #define OBJECT_DESCRIPTION_BINDING 2

@@ -1,0 +1,215 @@
+\doxysection{Texture.\+cpp}
+\label{_texture_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Texture.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Texture.cpp}}
+\mbox{\hyperlink{_texture_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Texture.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 Texture::Texture() \{\}}
+\DoxyCodeLine{00007 }
+\DoxyCodeLine{00008 \textcolor{keywordtype}{void} Texture::createFromFile(VulkanDevice* device, VkCommandPool commandPool,}
+\DoxyCodeLine{00009                              \textcolor{keyword}{const} std::string\& fileName) \{}
+\DoxyCodeLine{00010   \textcolor{keywordtype}{int} width, height;}
+\DoxyCodeLine{00011   VkDeviceSize size;}
+\DoxyCodeLine{00012   stbi\_uc* image\_data = loadTextureData(fileName, \&width, \&height, \&size);}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014   mip\_levels =}
+\DoxyCodeLine{00015       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(std::floor(std::log2(std::max(width, height)))) + 1;}
+\DoxyCodeLine{00016 }
+\DoxyCodeLine{00017   \textcolor{comment}{// create staging buffer to hold loaded data, ready to copy to device}}
+\DoxyCodeLine{00018   VulkanBuffer stagingBuffer;}
+\DoxyCodeLine{00019   stagingBuffer.create(device, size, VK\_BUFFER\_USAGE\_TRANSFER\_SRC\_BIT,}
+\DoxyCodeLine{00020                        VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
+\DoxyCodeLine{00021                            VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT);}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023   \textcolor{comment}{// copy image data to staging buffer}}
+\DoxyCodeLine{00024   \textcolor{keywordtype}{void}* data;}
+\DoxyCodeLine{00025   vkMapMemory(device-\/>getLogicalDevice(), stagingBuffer.getBufferMemory(), 0,}
+\DoxyCodeLine{00026               size, 0, \&data);}
+\DoxyCodeLine{00027   memcpy(data, image\_data, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(size));}
+\DoxyCodeLine{00028   vkUnmapMemory(device-\/>getLogicalDevice(), stagingBuffer.getBufferMemory());}
+\DoxyCodeLine{00029 }
+\DoxyCodeLine{00030   \textcolor{comment}{// free original image data}}
+\DoxyCodeLine{00031   stbi\_image\_free(image\_data);}
+\DoxyCodeLine{00032 }
+\DoxyCodeLine{00033   createImage(device, width, height, mip\_levels, VK\_FORMAT\_R8G8B8A8\_UNORM,}
+\DoxyCodeLine{00034               VK\_IMAGE\_TILING\_OPTIMAL,}
+\DoxyCodeLine{00035               VK\_IMAGE\_USAGE\_TRANSFER\_SRC\_BIT |}
+\DoxyCodeLine{00036                   VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT,}
+\DoxyCodeLine{00037               VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039   \textcolor{comment}{// copy data to image}}
+\DoxyCodeLine{00040   \textcolor{comment}{// transition image to be DST for copy operation}}
+\DoxyCodeLine{00041   vulkanImage.transitionImageLayout(}
+\DoxyCodeLine{00042       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
+\DoxyCodeLine{00043       VK\_IMAGE\_LAYOUT\_UNDEFINED, VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL,}
+\DoxyCodeLine{00044       VK\_IMAGE\_ASPECT\_COLOR\_BIT, mip\_levels);}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046   \textcolor{comment}{// copy data to image}}
+\DoxyCodeLine{00047   vulkanBufferManager.copyImageBuffer(}
+\DoxyCodeLine{00048       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
+\DoxyCodeLine{00049       stagingBuffer.getBuffer(), vulkanImage.getImage(), width, height);}
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051   \textcolor{comment}{// generate mipmaps}}
+\DoxyCodeLine{00052   generateMipMaps(device-\/>getPhysicalDevice(), device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00053                   commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{00054                   vulkanImage.getImage(), VK\_FORMAT\_R8G8B8A8\_SRGB, width,}
+\DoxyCodeLine{00055                   height, mip\_levels);}
+\DoxyCodeLine{00056 }
+\DoxyCodeLine{00057   stagingBuffer.cleanUp();}
+\DoxyCodeLine{00058 }
+\DoxyCodeLine{00059   createImageView(device, VK\_FORMAT\_R8G8B8A8\_UNORM, VK\_IMAGE\_ASPECT\_COLOR\_BIT,}
+\DoxyCodeLine{00060                   mip\_levels);}
+\DoxyCodeLine{00061 \}}
+\DoxyCodeLine{00062 }
+\DoxyCodeLine{00063 \textcolor{keywordtype}{void} Texture::setImage(VkImage image) \{ vulkanImage.setImage(image); \}}
+\DoxyCodeLine{00064 }
+\DoxyCodeLine{00065 \textcolor{keywordtype}{void} Texture::setImageView(VkImageView imageView) \{}
+\DoxyCodeLine{00066   vulkanImageView.setImageView(imageView);}
+\DoxyCodeLine{00067 \}}
+\DoxyCodeLine{00068 }
+\DoxyCodeLine{00069 \textcolor{keywordtype}{void} Texture::createImage(VulkanDevice* device, uint32\_t width, uint32\_t height,}
+\DoxyCodeLine{00070                           uint32\_t mip\_levels, VkFormat format,}
+\DoxyCodeLine{00071                           VkImageTiling tiling, VkImageUsageFlags use\_flags,}
+\DoxyCodeLine{00072                           VkMemoryPropertyFlags prop\_flags) \{}
+\DoxyCodeLine{00073   vulkanImage.create(device, width, height, mip\_levels, format, tiling,}
+\DoxyCodeLine{00074                      use\_flags, prop\_flags);}
+\DoxyCodeLine{00075 \}}
+\DoxyCodeLine{00076 }
+\DoxyCodeLine{00077 \textcolor{keywordtype}{void} Texture::createImageView(VulkanDevice* device, VkFormat format,}
+\DoxyCodeLine{00078                               VkImageAspectFlags aspect\_flags,}
+\DoxyCodeLine{00079                               uint32\_t mip\_levels) \{}
+\DoxyCodeLine{00080   vulkanImageView.create(device, vulkanImage.getImage(), format, aspect\_flags,}
+\DoxyCodeLine{00081                          mip\_levels);}
+\DoxyCodeLine{00082 \}}
+\DoxyCodeLine{00083 }
+\DoxyCodeLine{00084 \textcolor{keywordtype}{void} Texture::cleanUp() \{}
+\DoxyCodeLine{00085   vulkanImageView.cleanUp();}
+\DoxyCodeLine{00086   vulkanImage.cleanUp();}
+\DoxyCodeLine{00087 \}}
+\DoxyCodeLine{00088 }
+\DoxyCodeLine{00089 Texture::\string~Texture() \{\}}
+\DoxyCodeLine{00090 }
+\DoxyCodeLine{00091 stbi\_uc* Texture::loadTextureData(\textcolor{keyword}{const} std::string\& file\_name, \textcolor{keywordtype}{int}* width,}
+\DoxyCodeLine{00092                                   \textcolor{keywordtype}{int}* height, VkDeviceSize* image\_size) \{}
+\DoxyCodeLine{00093   \textcolor{comment}{// number of channels image uses}}
+\DoxyCodeLine{00094   \textcolor{keywordtype}{int} channels;}
+\DoxyCodeLine{00095   \textcolor{comment}{// load pixel data for image}}
+\DoxyCodeLine{00096   \textcolor{comment}{// std::string file\_loc = "{}../Resources/Textures/"{} + file\_name;}}
+\DoxyCodeLine{00097   stbi\_uc* image =}
+\DoxyCodeLine{00098       stbi\_load(file\_name.c\_str(), width, height, \&channels, STBI\_rgb\_alpha);}
+\DoxyCodeLine{00099 }
+\DoxyCodeLine{00100   \textcolor{keywordflow}{if} (!image) \{}
+\DoxyCodeLine{00101     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to load a texture file! ("{}} + file\_name +}
+\DoxyCodeLine{00102                              \textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{00103   \}}
+\DoxyCodeLine{00104 }
+\DoxyCodeLine{00105   \textcolor{comment}{// calculate image size using given and known data}}
+\DoxyCodeLine{00106   *image\_size = *width * *height * 4;}
+\DoxyCodeLine{00107 }
+\DoxyCodeLine{00108   \textcolor{keywordflow}{return} image;}
+\DoxyCodeLine{00109 \}}
+\DoxyCodeLine{00110 }
+\DoxyCodeLine{00111 \textcolor{keywordtype}{void} Texture::generateMipMaps(VkPhysicalDevice physical\_device, VkDevice device,}
+\DoxyCodeLine{00112                               VkCommandPool command\_pool, VkQueue queue,}
+\DoxyCodeLine{00113                               VkImage image, VkFormat image\_format,}
+\DoxyCodeLine{00114                               int32\_t width, int32\_t height,}
+\DoxyCodeLine{00115                               uint32\_t mip\_levels) \{}
+\DoxyCodeLine{00116   \textcolor{comment}{// Check if image format supports linear blitting}}
+\DoxyCodeLine{00117   VkFormatProperties formatProperties;}
+\DoxyCodeLine{00118   vkGetPhysicalDeviceFormatProperties(physical\_device, image\_format,}
+\DoxyCodeLine{00119                                       \&formatProperties);}
+\DoxyCodeLine{00120 }
+\DoxyCodeLine{00121   \textcolor{keywordflow}{if} (!(formatProperties.optimalTilingFeatures \&}
+\DoxyCodeLine{00122         VK\_FORMAT\_FEATURE\_SAMPLED\_IMAGE\_FILTER\_LINEAR\_BIT)) \{}
+\DoxyCodeLine{00123     \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{00124         \textcolor{stringliteral}{"{}Texture image format does not support linear blitting!"{}});}
+\DoxyCodeLine{00125   \}}
+\DoxyCodeLine{00126 }
+\DoxyCodeLine{00127   VkCommandBuffer command\_buffer =}
+\DoxyCodeLine{00128       commandBufferManager.beginCommandBuffer(device, command\_pool);}
+\DoxyCodeLine{00129 }
+\DoxyCodeLine{00130   VkImageMemoryBarrier barrier\{\};}
+\DoxyCodeLine{00131   barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00132   barrier.image = image;}
+\DoxyCodeLine{00133   barrier.srcQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{00134   barrier.dstQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{00135   barrier.subresourceRange.aspectMask = VK\_IMAGE\_ASPECT\_COLOR\_BIT;}
+\DoxyCodeLine{00136   barrier.subresourceRange.baseArrayLayer = 0;}
+\DoxyCodeLine{00137   barrier.subresourceRange.layerCount = 1;}
+\DoxyCodeLine{00138   barrier.subresourceRange.levelCount = 1;}
+\DoxyCodeLine{00139 }
+\DoxyCodeLine{00140   \textcolor{comment}{// TEMP VARS needed for decreasing step by step for factor 2}}
+\DoxyCodeLine{00141   int32\_t tmp\_width = width;}
+\DoxyCodeLine{00142   int32\_t tmp\_height = height;}
+\DoxyCodeLine{00143 }
+\DoxyCodeLine{00144   \textcolor{comment}{// -\/-\/ WE START AT 1 !}}
+\DoxyCodeLine{00145   \textcolor{keywordflow}{for} (uint32\_t i = 1; i < mip\_levels; i++) \{}
+\DoxyCodeLine{00146     \textcolor{comment}{// WAIT for previous mip map level for being ready}}
+\DoxyCodeLine{00147     barrier.subresourceRange.baseMipLevel = i -\/ 1;}
+\DoxyCodeLine{00148     \textcolor{comment}{// HERE we TRANSITION for having a SRC format now}}
+\DoxyCodeLine{00149     barrier.oldLayout = VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL;}
+\DoxyCodeLine{00150     barrier.newLayout = VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL;}
+\DoxyCodeLine{00151     barrier.srcAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{00152     barrier.dstAccessMask = VK\_ACCESS\_TRANSFER\_READ\_BIT;}
+\DoxyCodeLine{00153 }
+\DoxyCodeLine{00154     vkCmdPipelineBarrier(command\_buffer, VK\_PIPELINE\_STAGE\_TRANSFER\_BIT,}
+\DoxyCodeLine{00155                          VK\_PIPELINE\_STAGE\_TRANSFER\_BIT, 0, 0, \textcolor{keyword}{nullptr}, 0,}
+\DoxyCodeLine{00156                          \textcolor{keyword}{nullptr}, 1, \&barrier);}
+\DoxyCodeLine{00157 }
+\DoxyCodeLine{00158     \textcolor{comment}{// when barrier over we can now blit :)}}
+\DoxyCodeLine{00159     VkImageBlit blit\{\};}
+\DoxyCodeLine{00160 }
+\DoxyCodeLine{00161     \textcolor{comment}{// -\/-\/ OFFSETS describing the 3D-\/dimesnion of the region}}
+\DoxyCodeLine{00162     blit.srcOffsets[0] = \{0, 0, 0\};}
+\DoxyCodeLine{00163     blit.srcOffsets[1] = \{tmp\_width, tmp\_height, 1\};}
+\DoxyCodeLine{00164     blit.srcSubresource.aspectMask = VK\_IMAGE\_ASPECT\_COLOR\_BIT;}
+\DoxyCodeLine{00165     \textcolor{comment}{// copy from previous level}}
+\DoxyCodeLine{00166     blit.srcSubresource.mipLevel = i -\/ 1;}
+\DoxyCodeLine{00167     blit.srcSubresource.baseArrayLayer = 0;}
+\DoxyCodeLine{00168     blit.srcSubresource.layerCount = 1;}
+\DoxyCodeLine{00169     \textcolor{comment}{// -\/-\/ OFFSETS describing the 3D-\/dimesnion of the region}}
+\DoxyCodeLine{00170     blit.dstOffsets[0] = \{0, 0, 0\};}
+\DoxyCodeLine{00171     blit.dstOffsets[1] = \{tmp\_width > 1 ? tmp\_width / 2 : 1,}
+\DoxyCodeLine{00172                           tmp\_height > 1 ? tmp\_height / 2 : 1, 1\};}
+\DoxyCodeLine{00173     blit.dstSubresource.aspectMask = VK\_IMAGE\_ASPECT\_COLOR\_BIT;}
+\DoxyCodeLine{00174     \textcolor{comment}{// -\/-\/ COPY to next mipmap level}}
+\DoxyCodeLine{00175     blit.dstSubresource.mipLevel = i;}
+\DoxyCodeLine{00176     blit.dstSubresource.baseArrayLayer = 0;}
+\DoxyCodeLine{00177     blit.dstSubresource.layerCount = 1;}
+\DoxyCodeLine{00178 }
+\DoxyCodeLine{00179     vkCmdBlitImage(command\_buffer, image, VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL,}
+\DoxyCodeLine{00180                    image, VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL, 1, \&blit,}
+\DoxyCodeLine{00181                    VK\_FILTER\_LINEAR);}
+\DoxyCodeLine{00182 }
+\DoxyCodeLine{00183     \textcolor{comment}{// REARRANGE image formats for having the correct image formats again}}
+\DoxyCodeLine{00184     barrier.oldLayout = VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL;}
+\DoxyCodeLine{00185     barrier.newLayout = VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL;}
+\DoxyCodeLine{00186     barrier.srcAccessMask = VK\_ACCESS\_TRANSFER\_READ\_BIT;}
+\DoxyCodeLine{00187     barrier.dstAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{00188 }
+\DoxyCodeLine{00189     vkCmdPipelineBarrier(command\_buffer, VK\_PIPELINE\_STAGE\_TRANSFER\_BIT,}
+\DoxyCodeLine{00190                          VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT, 0, 0, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00191                          0, \textcolor{keyword}{nullptr}, 1, \&barrier);}
+\DoxyCodeLine{00192 }
+\DoxyCodeLine{00193     \textcolor{keywordflow}{if} (tmp\_width > 1) tmp\_width /= 2;}
+\DoxyCodeLine{00194     \textcolor{keywordflow}{if} (tmp\_height > 1) tmp\_height /= 2;}
+\DoxyCodeLine{00195   \}}
+\DoxyCodeLine{00196 }
+\DoxyCodeLine{00197   barrier.subresourceRange.baseMipLevel = mip\_levels -\/ 1;}
+\DoxyCodeLine{00198   barrier.oldLayout = VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL;}
+\DoxyCodeLine{00199   barrier.newLayout = VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL;}
+\DoxyCodeLine{00200   barrier.srcAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{00201   barrier.dstAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{00202 }
+\DoxyCodeLine{00203   vkCmdPipelineBarrier(command\_buffer, VK\_PIPELINE\_STAGE\_TRANSFER\_BIT,}
+\DoxyCodeLine{00204                        VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT, 0, 0, \textcolor{keyword}{nullptr}, 0,}
+\DoxyCodeLine{00205                        \textcolor{keyword}{nullptr}, 1, \&barrier);}
+\DoxyCodeLine{00206 }
+\DoxyCodeLine{00207   commandBufferManager.endAndSubmitCommandBuffer(device, command\_pool, queue,}
+\DoxyCodeLine{00208                                                  command\_buffer);}
+\DoxyCodeLine{00209 \}}
+
+\end{DoxyCode}

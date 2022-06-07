@@ -1,0 +1,55 @@
+\doxysection{Vulkan\+Image\+View.\+cpp}
+\label{_vulkan_image_view_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImageView.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImageView.cpp}}
+\mbox{\hyperlink{_vulkan_image_view_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanImageView.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 VulkanImageView::VulkanImageView() \{\}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{keywordtype}{void} VulkanImageView::setImageView(VkImageView imageView) \{}
+\DoxyCodeLine{00006   this-\/>imageView = imageView;}
+\DoxyCodeLine{00007 \}}
+\DoxyCodeLine{00008 }
+\DoxyCodeLine{00009 \textcolor{keywordtype}{void} VulkanImageView::create(VulkanDevice* device, VkImage image,}
+\DoxyCodeLine{00010                              VkFormat format, VkImageAspectFlags aspect\_flags,}
+\DoxyCodeLine{00011                              uint32\_t mip\_levels) \{}
+\DoxyCodeLine{00012   this-\/>device = device;}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014   VkImageViewCreateInfo view\_create\_info\{\};}
+\DoxyCodeLine{00015   view\_create\_info.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_VIEW\_CREATE\_INFO;}
+\DoxyCodeLine{00016   view\_create\_info.image = image;  \textcolor{comment}{// image to create view for}}
+\DoxyCodeLine{00017   view\_create\_info.viewType = VK\_IMAGE\_VIEW\_TYPE\_2D;  \textcolor{comment}{// typ of image}}
+\DoxyCodeLine{00018   view\_create\_info.format = format;}
+\DoxyCodeLine{00019   view\_create\_info.components.r =}
+\DoxyCodeLine{00020       VK\_COMPONENT\_SWIZZLE\_IDENTITY;  \textcolor{comment}{// allows remapping of rgba components to}}
+\DoxyCodeLine{00021                                       \textcolor{comment}{// other rgba values}}
+\DoxyCodeLine{00022   view\_create\_info.components.g = VK\_COMPONENT\_SWIZZLE\_IDENTITY;}
+\DoxyCodeLine{00023   view\_create\_info.components.b = VK\_COMPONENT\_SWIZZLE\_IDENTITY;}
+\DoxyCodeLine{00024   view\_create\_info.components.a = VK\_COMPONENT\_SWIZZLE\_IDENTITY;}
+\DoxyCodeLine{00025 }
+\DoxyCodeLine{00026   \textcolor{comment}{// subresources allow the view to view only a part of an image}}
+\DoxyCodeLine{00027   view\_create\_info.subresourceRange.aspectMask =}
+\DoxyCodeLine{00028       aspect\_flags;  \textcolor{comment}{// which aspect of an image to view (e.g. color bit for}}
+\DoxyCodeLine{00029                      \textcolor{comment}{// viewing color)}}
+\DoxyCodeLine{00030   view\_create\_info.subresourceRange.baseMipLevel =}
+\DoxyCodeLine{00031       0;  \textcolor{comment}{// start mipmap level to view from}}
+\DoxyCodeLine{00032   view\_create\_info.subresourceRange.levelCount =}
+\DoxyCodeLine{00033       mip\_levels;  \textcolor{comment}{// number of mipmap levels to view}}
+\DoxyCodeLine{00034   view\_create\_info.subresourceRange.baseArrayLayer =}
+\DoxyCodeLine{00035       0;  \textcolor{comment}{// start array level to view from}}
+\DoxyCodeLine{00036   view\_create\_info.subresourceRange.layerCount =}
+\DoxyCodeLine{00037       1;  \textcolor{comment}{// number of array levels to view}}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039   \textcolor{comment}{// create image view}}
+\DoxyCodeLine{00040   VkResult result = vkCreateImageView(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00041                                       \&view\_create\_info, \textcolor{keyword}{nullptr}, \&imageView);}
+\DoxyCodeLine{00042   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create an image view!"{}})}
+\DoxyCodeLine{00043 \}}
+\DoxyCodeLine{00044 }
+\DoxyCodeLine{00045 \textcolor{keywordtype}{void} VulkanImageView::cleanUp() \{}
+\DoxyCodeLine{00046   vkDestroyImageView(device-\/>getLogicalDevice(), imageView, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00047 \}}
+\DoxyCodeLine{00048 }
+\DoxyCodeLine{00049 VulkanImageView::\string~VulkanImageView() \{\}}
+
+\end{DoxyCode}

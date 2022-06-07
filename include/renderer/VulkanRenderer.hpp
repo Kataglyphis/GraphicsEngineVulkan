@@ -1,50 +1,50 @@
 #pragma once
+
 #define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
 
 #include <GLFW/glfw3.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <stdexcept>
-#include <vector>
-#include <memory>
-#include <cstring>
-#include <iostream>
-#include <set>
 #include <algorithm>
 #include <array>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstring>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
+#include <memory>
+#include <set>
 #include <sstream>
+#include <stdexcept>
+#include <vector>
 
+#include "ASManager.h"
 #include "Allocator.h"
-#include "Window.h"
-#include "Utilities.h"
-#include "VulkanDevice.h"
-#include "QueueFamilyIndices.h"
-#include "VulkanSwapChain.h"
-#include "VulkanInstance.h"
+#include "CommandBufferManager.h"
+#include "GUI.h"
 #include "GUISceneSharedVars.h"
 #include "GlobalUBO.h"
-#include "SceneUBO.h"
+#include "PathTracing.h"
+#include "PostStage.h"
 #include "PushConstantRasterizer.h"
 #include "PushConstantRayTracing.h"
+#include "QueueFamilyIndices.h"
+#include "Rasterizer.h"
+#include "Raytracing.h"
+#include "Scene.h"
+#include "SceneUBO.h"
+#include "Texture.h"
+#include "Utilities.h"
 #include "VulkanBuffer.h"
 #include "VulkanBufferManager.h"
-#include "Texture.h"
-#include "ASManager.h"
-#include "CommandBufferManager.h"
-#include "Scene.h"
-#include "GUI.h"
-#include "Rasterizer.h"
-#include "PostStage.h"
-#include "Raytracing.h"
-#include "PathTracing.h"
+#include "VulkanDevice.h"
+#include "VulkanInstance.h"
+#include "VulkanSwapChain.h"
+#include "Window.h"
 
 class VulkanRenderer {
-  public:
+ public:
   VulkanRenderer(Window* window, Scene* scene, GUI* gui, Camera* camera);
 
   void drawFrame();
@@ -59,7 +59,7 @@ class VulkanRenderer {
 
   ~VulkanRenderer();
 
-  private:
+ private:
   void shaderHotReload();
 
   // helper class for managing our buffers
@@ -68,7 +68,8 @@ class VulkanRenderer {
   // Vulkan instance, stores all per-application states
   VulkanInstance instance;
 
-  // surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS also their own
+  // surface defined on windows as WIN32 window system, Linux f.e. X11, MacOS
+  // also their own
   VkSurfaceKHR surface;
   void create_surface();
 
@@ -110,7 +111,7 @@ class VulkanRenderer {
   Allocator allocator;
 
   // -- synchronization
-  uint32_t current_frame{ 0 };
+  uint32_t current_frame{0};
   std::vector<VkSemaphore> image_available;
   std::vector<VkSemaphore> render_finished;
   std::vector<VkFence> in_flight_fences;
@@ -130,15 +131,15 @@ class VulkanRenderer {
   void createSharedRenderDescriptorSet();
   void updateTexturesInSharedRenderDescriptorSet();
 
-  VkDescriptorPool post_descriptor_pool{ VK_NULL_HANDLE };
-  VkDescriptorSetLayout post_descriptor_set_layout{ VK_NULL_HANDLE };
+  VkDescriptorPool post_descriptor_pool{VK_NULL_HANDLE};
+  VkDescriptorSetLayout post_descriptor_set_layout{VK_NULL_HANDLE};
   std::vector<VkDescriptorSet> post_descriptor_set;
   void create_post_descriptor_layout();
   void updatePostDescriptorSets();
 
-  VkDescriptorPool raytracingDescriptorPool{ VK_NULL_HANDLE };
+  VkDescriptorPool raytracingDescriptorPool{VK_NULL_HANDLE};
   std::vector<VkDescriptorSet> raytracingDescriptorSet;
-  VkDescriptorSetLayout raytracingDescriptorSetLayout{ VK_NULL_HANDLE };
+  VkDescriptorSetLayout raytracingDescriptorSetLayout{VK_NULL_HANDLE};
 
   void createRaytracingDescriptorSetLayouts();
   void createRaytracingDescriptorSets();

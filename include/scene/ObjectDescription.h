@@ -4,12 +4,11 @@
 // https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/
 
 #ifdef __cplusplus
-#  pragma once
-#  include <vulkan/vulkan.h>
+#pragma once
+#include <vulkan/vulkan.h>
 #endif
 
 struct ObjectDescription {
-
   uint64_t vertex_address;
   uint64_t index_address;
   uint64_t material_index_address;

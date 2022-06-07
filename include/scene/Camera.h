@@ -9,8 +9,7 @@
 #include <GLFW/glfw3.h>
 
 class Camera {
-
-  public:
+ public:
   Camera();
 
   void key_control(bool* keys, float delta_time);
@@ -32,10 +31,9 @@ class Camera {
   void set_fov(float fov);
   void set_camera_position(glm::vec3 new_camera_position);
 
-
   ~Camera();
 
-  private:
+ private:
   glm::vec3 position;
   glm::vec3 front;
   glm::vec3 world_up;

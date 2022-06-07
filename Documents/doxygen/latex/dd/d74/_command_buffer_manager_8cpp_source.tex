@@ -1,0 +1,62 @@
+\doxysection{Command\+Buffer\+Manager.\+cpp}
+\label{_command_buffer_manager_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/CommandBufferManager.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/CommandBufferManager.cpp}}
+\mbox{\hyperlink{_command_buffer_manager_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}CommandBufferManager.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 CommandBufferManager::CommandBufferManager() \{\}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 VkCommandBuffer CommandBufferManager::beginCommandBuffer(}
+\DoxyCodeLine{00006     VkDevice device, VkCommandPool command\_pool) \{}
+\DoxyCodeLine{00007   \textcolor{comment}{// command buffer to hold transfer commands}}
+\DoxyCodeLine{00008   VkCommandBuffer command\_buffer;}
+\DoxyCodeLine{00009 }
+\DoxyCodeLine{00010   \textcolor{comment}{// command buffer details}}
+\DoxyCodeLine{00011   VkCommandBufferAllocateInfo alloc\_info\{\};}
+\DoxyCodeLine{00012   alloc\_info.sType = VK\_STRUCTURE\_TYPE\_COMMAND\_BUFFER\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00013   alloc\_info.level = VK\_COMMAND\_BUFFER\_LEVEL\_PRIMARY;}
+\DoxyCodeLine{00014   alloc\_info.commandPool = command\_pool;}
+\DoxyCodeLine{00015   alloc\_info.commandBufferCount = 1;}
+\DoxyCodeLine{00016 }
+\DoxyCodeLine{00017   \textcolor{comment}{// allocate command buffer from pool}}
+\DoxyCodeLine{00018   vkAllocateCommandBuffers(device, \&alloc\_info, \&command\_buffer);}
+\DoxyCodeLine{00019 }
+\DoxyCodeLine{00020   \textcolor{comment}{// infromation to begin the command buffer record}}
+\DoxyCodeLine{00021   VkCommandBufferBeginInfo begin\_info\{\};}
+\DoxyCodeLine{00022   begin\_info.sType = VK\_STRUCTURE\_TYPE\_COMMAND\_BUFFER\_BEGIN\_INFO;}
+\DoxyCodeLine{00023   \textcolor{comment}{// we are only using the command buffer once, so set up for one time submit}}
+\DoxyCodeLine{00024   begin\_info.flags = VK\_COMMAND\_BUFFER\_USAGE\_ONE\_TIME\_SUBMIT\_BIT;}
+\DoxyCodeLine{00025 }
+\DoxyCodeLine{00026   \textcolor{comment}{// begin recording transfer commands}}
+\DoxyCodeLine{00027   vkBeginCommandBuffer(command\_buffer, \&begin\_info);}
+\DoxyCodeLine{00028 }
+\DoxyCodeLine{00029   \textcolor{keywordflow}{return} command\_buffer;}
+\DoxyCodeLine{00030 \}}
+\DoxyCodeLine{00031 }
+\DoxyCodeLine{00032 \textcolor{keywordtype}{void} CommandBufferManager::endAndSubmitCommandBuffer(}
+\DoxyCodeLine{00033     VkDevice device, VkCommandPool command\_pool, VkQueue queue,}
+\DoxyCodeLine{00034     VkCommandBuffer\& command\_buffer) \{}
+\DoxyCodeLine{00035   \textcolor{comment}{// end commands}}
+\DoxyCodeLine{00036   VkResult result = vkEndCommandBuffer(command\_buffer);}
+\DoxyCodeLine{00037   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to end command buffer!"{}})}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039   \textcolor{comment}{// queue submission information}}
+\DoxyCodeLine{00040   VkSubmitInfo submit\_info\{\};}
+\DoxyCodeLine{00041   submit\_info.sType = VK\_STRUCTURE\_TYPE\_SUBMIT\_INFO;}
+\DoxyCodeLine{00042   submit\_info.commandBufferCount = 1;}
+\DoxyCodeLine{00043   submit\_info.pCommandBuffers = \&command\_buffer;}
+\DoxyCodeLine{00044 }
+\DoxyCodeLine{00045   \textcolor{comment}{// submit transfer command to transfer queue and wait until it finishes}}
+\DoxyCodeLine{00046   result = vkQueueSubmit(queue, 1, \&submit\_info, VK\_NULL\_HANDLE);}
+\DoxyCodeLine{00047   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to submit to queue!"{}})}
+\DoxyCodeLine{00048 }
+\DoxyCodeLine{00049   result = vkQueueWaitIdle(queue);}
+\DoxyCodeLine{00050   ASSERT\_VULKAN(result, "{}Failed to wait Idle!"{})}
+\DoxyCodeLine{00051 }
+\DoxyCodeLine{00052   \textcolor{comment}{// free temporary command buffer back to pool}}
+\DoxyCodeLine{00053   vkFreeCommandBuffers(device, command\_pool, 1, \&command\_buffer);}
+\DoxyCodeLine{00054 \}}
+\DoxyCodeLine{00055 }
+\DoxyCodeLine{00056 CommandBufferManager::\string~CommandBufferManager() \{\}}
+
+\end{DoxyCode}

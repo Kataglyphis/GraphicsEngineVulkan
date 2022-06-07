@@ -4,7 +4,6 @@
 #include "VulkanBuffer.h"
 
 struct BottomLevelAccelerationStructure {
-
   VkAccelerationStructureKHR vulkanAS;
   VulkanBuffer vulkanBuffer;
 };

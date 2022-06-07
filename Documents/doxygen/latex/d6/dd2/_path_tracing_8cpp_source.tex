@@ -1,0 +1,273 @@
+\doxysection{Path\+Tracing.\+cpp}
+\label{_path_tracing_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/PathTracing.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/PathTracing.cpp}}
+\mbox{\hyperlink{_path_tracing_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}PathTracing.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{00007 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
+\DoxyCodeLine{00008 }
+\DoxyCodeLine{00009 \textcolor{comment}{// Good source:}}
+\DoxyCodeLine{00010 \textcolor{comment}{// https://github.com/nvpro-\/samples/vk\_mini\_path\_tracer/blob/main/vk\_mini\_path\_tracer/main.cpp}}
+\DoxyCodeLine{00011 }
+\DoxyCodeLine{00012 PathTracing::PathTracing() \{\}}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014 \textcolor{keywordtype}{void} PathTracing::init(}
+\DoxyCodeLine{00015     VulkanDevice* device,}
+\DoxyCodeLine{00016     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{00017   this-\/>device = device;}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019   VkPhysicalDeviceProperties physicalDeviceProps =}
+\DoxyCodeLine{00020       device-\/>getPhysicalDeviceProperties();}
+\DoxyCodeLine{00021   timeStampPeriod = physicalDeviceProps.limits.timestampPeriod;}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023   \textcolor{comment}{// save the limits for handling all special cases later on}}
+\DoxyCodeLine{00024   computeLimits.maxComputeWorkGroupCount[0] =}
+\DoxyCodeLine{00025       physicalDeviceProps.limits.maxComputeWorkGroupCount[0];}
+\DoxyCodeLine{00026   computeLimits.maxComputeWorkGroupCount[1] =}
+\DoxyCodeLine{00027       physicalDeviceProps.limits.maxComputeWorkGroupCount[1];}
+\DoxyCodeLine{00028   computeLimits.maxComputeWorkGroupCount[2] =}
+\DoxyCodeLine{00029       physicalDeviceProps.limits.maxComputeWorkGroupCount[2];}
+\DoxyCodeLine{00030 }
+\DoxyCodeLine{00031   computeLimits.maxComputeWorkGroupInvocations =}
+\DoxyCodeLine{00032       physicalDeviceProps.limits.maxComputeWorkGroupInvocations;}
+\DoxyCodeLine{00033 }
+\DoxyCodeLine{00034   computeLimits.maxComputeWorkGroupSize[0] =}
+\DoxyCodeLine{00035       physicalDeviceProps.limits.maxComputeWorkGroupSize[0];}
+\DoxyCodeLine{00036   computeLimits.maxComputeWorkGroupSize[1] =}
+\DoxyCodeLine{00037       physicalDeviceProps.limits.maxComputeWorkGroupSize[1];}
+\DoxyCodeLine{00038   computeLimits.maxComputeWorkGroupSize[2] =}
+\DoxyCodeLine{00039       physicalDeviceProps.limits.maxComputeWorkGroupSize[2];}
+\DoxyCodeLine{00040 }
+\DoxyCodeLine{00041   queryResults.resize(query\_count);}
+\DoxyCodeLine{00042   createQueryPool();}
+\DoxyCodeLine{00043 }
+\DoxyCodeLine{00044   createPipeline(descriptorSetLayouts);}
+\DoxyCodeLine{00045 \}}
+\DoxyCodeLine{00046 }
+\DoxyCodeLine{00047 \textcolor{keywordtype}{void} PathTracing::shaderHotReload(}
+\DoxyCodeLine{00048     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
+\DoxyCodeLine{00049   vkDestroyPipeline(device-\/>getLogicalDevice(), pipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00050   createPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{00051 \}}
+\DoxyCodeLine{00052 }
+\DoxyCodeLine{00053 \textcolor{keywordtype}{void} PathTracing::recordCommands(}
+\DoxyCodeLine{00054     VkCommandBuffer\& commandBuffer, uint32\_t image\_index,}
+\DoxyCodeLine{00055     VulkanImage\& vulkanImage, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{00056     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
+\DoxyCodeLine{00057   \textcolor{comment}{// we have reset the pool; hence start by 0}}
+\DoxyCodeLine{00058   uint32\_t query = 0;}
+\DoxyCodeLine{00059 }
+\DoxyCodeLine{00060   vkCmdResetQueryPool(commandBuffer, queryPool, 0, query\_count);}
+\DoxyCodeLine{00061 }
+\DoxyCodeLine{00062   vkCmdWriteTimestamp(}
+\DoxyCodeLine{00063       commandBuffer,}
+\DoxyCodeLine{00064       VkPipelineStageFlagBits::VK\_PIPELINE\_STAGE\_COMPUTE\_SHADER\_BIT, queryPool,}
+\DoxyCodeLine{00065       query++);}
+\DoxyCodeLine{00066 }
+\DoxyCodeLine{00067   QueueFamilyIndices indices = device-\/>getQueueFamilies();}
+\DoxyCodeLine{00068 }
+\DoxyCodeLine{00069   VkImageSubresourceRange subresourceRange\{\};}
+\DoxyCodeLine{00070   subresourceRange.aspectMask = VK\_IMAGE\_ASPECT\_COLOR\_BIT;}
+\DoxyCodeLine{00071   subresourceRange.baseMipLevel = 0;}
+\DoxyCodeLine{00072   subresourceRange.baseArrayLayer = 0;}
+\DoxyCodeLine{00073   subresourceRange.levelCount = 1;}
+\DoxyCodeLine{00074   subresourceRange.layerCount = 1;}
+\DoxyCodeLine{00075 }
+\DoxyCodeLine{00076   VkImageMemoryBarrier presentToPathTracingImageBarrier\{\};}
+\DoxyCodeLine{00077   presentToPathTracingImageBarrier.sType =}
+\DoxyCodeLine{00078       VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00079   presentToPathTracingImageBarrier.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00080   presentToPathTracingImageBarrier.srcQueueFamilyIndex =}
+\DoxyCodeLine{00081       indices.graphics\_family;}
+\DoxyCodeLine{00082   presentToPathTracingImageBarrier.dstQueueFamilyIndex = indices.compute\_family;}
+\DoxyCodeLine{00083   presentToPathTracingImageBarrier.srcAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{00084   presentToPathTracingImageBarrier.dstAccessMask = VK\_ACCESS\_SHADER\_WRITE\_BIT;}
+\DoxyCodeLine{00085   presentToPathTracingImageBarrier.oldLayout = VK\_IMAGE\_LAYOUT\_GENERAL;}
+\DoxyCodeLine{00086   presentToPathTracingImageBarrier.newLayout = VK\_IMAGE\_LAYOUT\_GENERAL;}
+\DoxyCodeLine{00087   presentToPathTracingImageBarrier.subresourceRange = subresourceRange;}
+\DoxyCodeLine{00088   presentToPathTracingImageBarrier.image = vulkanImage.getImage();}
+\DoxyCodeLine{00089 }
+\DoxyCodeLine{00090   vkCmdPipelineBarrier(commandBuffer, VK\_PIPELINE\_STAGE\_VERTEX\_SHADER\_BIT,}
+\DoxyCodeLine{00091                        VK\_PIPELINE\_STAGE\_COMPUTE\_SHADER\_BIT,}
+\DoxyCodeLine{00092 }
+\DoxyCodeLine{00093                        0, 0, \textcolor{keyword}{nullptr}, 0, \textcolor{keyword}{nullptr}, 1,}
+\DoxyCodeLine{00094                        \&presentToPathTracingImageBarrier);}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096   VkExtent2D imageSize = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00097   push\_constant.width = imageSize.width;}
+\DoxyCodeLine{00098   push\_constant.height = imageSize.height;}
+\DoxyCodeLine{00099   push\_constant.clearColor = \{0.2f, 0.65f, 0.4f, 1.0f\};}
+\DoxyCodeLine{00100 }
+\DoxyCodeLine{00101   vkCmdPushConstants(commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{00102                      VK\_SHADER\_STAGE\_COMPUTE\_BIT, 0,}
+\DoxyCodeLine{00103                      \textcolor{keyword}{sizeof}(PushConstantPathTracing), \&push\_constant);}
+\DoxyCodeLine{00104 }
+\DoxyCodeLine{00105   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_COMPUTE, pipeline);}
+\DoxyCodeLine{00106 }
+\DoxyCodeLine{00107   vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_COMPUTE,}
+\DoxyCodeLine{00108                           pipeline\_layout, 0,}
+\DoxyCodeLine{00109                           \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
+\DoxyCodeLine{00110                           descriptorSets.data(), 0, 0);}
+\DoxyCodeLine{00111 }
+\DoxyCodeLine{00112   uint32\_t workGroupCountX =}
+\DoxyCodeLine{00113       std::max((imageSize.width + specializationData.specWorkGroupSizeX -\/ 1) /}
+\DoxyCodeLine{00114                    specializationData.specWorkGroupSizeX,}
+\DoxyCodeLine{00115                1U);}
+\DoxyCodeLine{00116   uint32\_t workGroupCountY =}
+\DoxyCodeLine{00117       std::max((imageSize.height + specializationData.specWorkGroupSizeY -\/ 1) /}
+\DoxyCodeLine{00118                    specializationData.specWorkGroupSizeY,}
+\DoxyCodeLine{00119                1U);}
+\DoxyCodeLine{00120   uint32\_t workGroupCountZ = 1;}
+\DoxyCodeLine{00121 }
+\DoxyCodeLine{00122   vkCmdDispatch(commandBuffer, workGroupCountX, workGroupCountY,}
+\DoxyCodeLine{00123                 workGroupCountZ);}
+\DoxyCodeLine{00124 }
+\DoxyCodeLine{00125   VkImageMemoryBarrier pathTracingToPresentImageBarrier\{\};}
+\DoxyCodeLine{00126   pathTracingToPresentImageBarrier.sType =}
+\DoxyCodeLine{00127       VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00128   pathTracingToPresentImageBarrier.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00129   pathTracingToPresentImageBarrier.srcQueueFamilyIndex = indices.compute\_family;}
+\DoxyCodeLine{00130   pathTracingToPresentImageBarrier.dstQueueFamilyIndex =}
+\DoxyCodeLine{00131       indices.graphics\_family;}
+\DoxyCodeLine{00132   pathTracingToPresentImageBarrier.srcAccessMask = VK\_ACCESS\_SHADER\_WRITE\_BIT;}
+\DoxyCodeLine{00133   pathTracingToPresentImageBarrier.dstAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{00134   pathTracingToPresentImageBarrier.oldLayout = VK\_IMAGE\_LAYOUT\_GENERAL;}
+\DoxyCodeLine{00135   pathTracingToPresentImageBarrier.newLayout = VK\_IMAGE\_LAYOUT\_GENERAL;}
+\DoxyCodeLine{00136   pathTracingToPresentImageBarrier.image = vulkanImage.getImage();}
+\DoxyCodeLine{00137   pathTracingToPresentImageBarrier.subresourceRange = subresourceRange;}
+\DoxyCodeLine{00138 }
+\DoxyCodeLine{00139   vkCmdPipelineBarrier(commandBuffer, VK\_PIPELINE\_STAGE\_COMPUTE\_SHADER\_BIT,}
+\DoxyCodeLine{00140                        VK\_PIPELINE\_STAGE\_VERTEX\_SHADER\_BIT, 0, 0, \textcolor{keyword}{nullptr}, 0,}
+\DoxyCodeLine{00141                        \textcolor{keyword}{nullptr}, 1, \&pathTracingToPresentImageBarrier);}
+\DoxyCodeLine{00142 }
+\DoxyCodeLine{00143   vkCmdWriteTimestamp(}
+\DoxyCodeLine{00144       commandBuffer,}
+\DoxyCodeLine{00145       VkPipelineStageFlagBits::VK\_PIPELINE\_STAGE\_COMPUTE\_SHADER\_BIT, queryPool,}
+\DoxyCodeLine{00146       query++);}
+\DoxyCodeLine{00147   VkResult result = vkGetQueryPoolResults(}
+\DoxyCodeLine{00148       device-\/>getLogicalDevice(), queryPool, 0, query\_count,}
+\DoxyCodeLine{00149       queryResults.size() * \textcolor{keyword}{sizeof}(uint64\_t), queryResults.data(),}
+\DoxyCodeLine{00150       \textcolor{keyword}{static\_cast<}VkDeviceSize\textcolor{keyword}{>}(\textcolor{keyword}{sizeof}(uint64\_t)), VK\_QUERY\_RESULT\_64\_BIT);}
+\DoxyCodeLine{00151 }
+\DoxyCodeLine{00152   \textcolor{keywordflow}{if} (result != VK\_NOT\_READY) \{}
+\DoxyCodeLine{00153     pathTracingTiming = (\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(queryResults[1] -\/ queryResults[0]) *}
+\DoxyCodeLine{00154                          timeStampPeriod) /}
+\DoxyCodeLine{00155                         1000000.f;}
+\DoxyCodeLine{00156   \}}
+\DoxyCodeLine{00157 \}}
+\DoxyCodeLine{00158 }
+\DoxyCodeLine{00159 \textcolor{keywordtype}{void} PathTracing::cleanUp() \{}
+\DoxyCodeLine{00160   vkDestroyPipeline(device-\/>getLogicalDevice(), pipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00161   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00162 }
+\DoxyCodeLine{00163   vkDestroyQueryPool(device-\/>getLogicalDevice(), queryPool, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00164 \}}
+\DoxyCodeLine{00165 }
+\DoxyCodeLine{00166 PathTracing::\string~PathTracing() \{\}}
+\DoxyCodeLine{00167 }
+\DoxyCodeLine{00168 \textcolor{keywordtype}{void} PathTracing::createQueryPool() \{}
+\DoxyCodeLine{00169   VkQueryPoolCreateInfo queryPoolInfo = \{\};}
+\DoxyCodeLine{00170   queryPoolInfo.sType = VK\_STRUCTURE\_TYPE\_QUERY\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{00171   \textcolor{comment}{// This query pool will store pipeline statistics}}
+\DoxyCodeLine{00172   queryPoolInfo.queryType = VK\_QUERY\_TYPE\_TIMESTAMP;}
+\DoxyCodeLine{00173   \textcolor{comment}{// Pipeline counters to be returned for this pool}}
+\DoxyCodeLine{00174   queryPoolInfo.pipelineStatistics =}
+\DoxyCodeLine{00175       VK\_QUERY\_PIPELINE\_STATISTIC\_COMPUTE\_SHADER\_INVOCATIONS\_BIT;}
+\DoxyCodeLine{00176   queryPoolInfo.queryCount = query\_count;}
+\DoxyCodeLine{00177   ASSERT\_VULKAN(vkCreateQueryPool(device-\/>getLogicalDevice(), \&queryPoolInfo,}
+\DoxyCodeLine{00178                                   NULL, \&queryPool),}
+\DoxyCodeLine{00179                 \textcolor{stringliteral}{"{}Failed to create query pool!"{}});}
+\DoxyCodeLine{00180 \}}
+\DoxyCodeLine{00181 }
+\DoxyCodeLine{00182 \textcolor{keywordtype}{void} PathTracing::createPipeline(}
+\DoxyCodeLine{00183     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{00184   VkPushConstantRange push\_constant\_range\{\};}
+\DoxyCodeLine{00185   push\_constant\_range.stageFlags = VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00186   push\_constant\_range.offset = 0;}
+\DoxyCodeLine{00187   push\_constant\_range.size = \textcolor{keyword}{sizeof}(PushConstantPathTracing);}
+\DoxyCodeLine{00188 }
+\DoxyCodeLine{00189   VkPipelineLayoutCreateInfo compute\_pipeline\_layout\_create\_info\{\};}
+\DoxyCodeLine{00190   compute\_pipeline\_layout\_create\_info.sType =}
+\DoxyCodeLine{00191       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{00192   compute\_pipeline\_layout\_create\_info.setLayoutCount =}
+\DoxyCodeLine{00193       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
+\DoxyCodeLine{00194   compute\_pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
+\DoxyCodeLine{00195   compute\_pipeline\_layout\_create\_info.pPushConstantRanges =}
+\DoxyCodeLine{00196       \&push\_constant\_range;}
+\DoxyCodeLine{00197   compute\_pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
+\DoxyCodeLine{00198 }
+\DoxyCodeLine{00199   ASSERT\_VULKAN(vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00200                                        \&compute\_pipeline\_layout\_create\_info,}
+\DoxyCodeLine{00201                                        \textcolor{keyword}{nullptr}, \&pipeline\_layout),}
+\DoxyCodeLine{00202                 \textcolor{stringliteral}{"{}Failed to create compute path tracing pipeline layout!"{}});}
+\DoxyCodeLine{00203 }
+\DoxyCodeLine{00204   \textcolor{comment}{// create pipeline}}
+\DoxyCodeLine{00205   std::stringstream pathTracing\_shader\_dir;}
+\DoxyCodeLine{00206   pathTracing\_shader\_dir << CMAKELISTS\_DIR;}
+\DoxyCodeLine{00207   pathTracing\_shader\_dir << \textcolor{stringliteral}{"{}/Resources/Shader/path\_tracing/"{}};}
+\DoxyCodeLine{00208 }
+\DoxyCodeLine{00209   std::string pathTracing\_shader = \textcolor{stringliteral}{"{}path\_tracing.comp"{}};}
+\DoxyCodeLine{00210 }
+\DoxyCodeLine{00211   ShaderHelper shaderHelper;}
+\DoxyCodeLine{00212   File pathTracingShaderFile(shaderHelper.getShaderSpvDir(}
+\DoxyCodeLine{00213       pathTracing\_shader\_dir.str(), pathTracing\_shader));}
+\DoxyCodeLine{00214   std::vector<char> pathTracingShadercode =}
+\DoxyCodeLine{00215       pathTracingShaderFile.readCharSequence();}
+\DoxyCodeLine{00216 }
+\DoxyCodeLine{00217   shaderHelper.compileShader(pathTracing\_shader\_dir.str(), pathTracing\_shader);}
+\DoxyCodeLine{00218 }
+\DoxyCodeLine{00219   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
+\DoxyCodeLine{00220   VkShaderModule pathTracingModule =}
+\DoxyCodeLine{00221       shaderHelper.createShaderModule(device, pathTracingShadercode);}
+\DoxyCodeLine{00222 }
+\DoxyCodeLine{00223   \textcolor{comment}{// Specialization constant for workgroup size}}
+\DoxyCodeLine{00224   std::array<VkSpecializationMapEntry, 2> specEntries\{\};}
+\DoxyCodeLine{00225 }
+\DoxyCodeLine{00226   specEntries[0].constantID = 0;}
+\DoxyCodeLine{00227   specEntries[0].size = \textcolor{keyword}{sizeof}(specializationData.specWorkGroupSizeX);}
+\DoxyCodeLine{00228   specEntries[0].offset = 0;}
+\DoxyCodeLine{00229 }
+\DoxyCodeLine{00230   specEntries[1].constantID = 1;}
+\DoxyCodeLine{00231   specEntries[1].size = \textcolor{keyword}{sizeof}(specializationData.specWorkGroupSizeY);}
+\DoxyCodeLine{00232   specEntries[1].offset = offsetof(SpecializationData, specWorkGroupSizeY);}
+\DoxyCodeLine{00233 }
+\DoxyCodeLine{00234   \textcolor{comment}{// specEntries[2].constantID = 2;}}
+\DoxyCodeLine{00235   \textcolor{comment}{// specEntries[2].size = sizeof(specializationData.specWorkGroupSizeZ);}}
+\DoxyCodeLine{00236   \textcolor{comment}{// specEntries[2].offset = offsetof(SpecializationData, specWorkGroupSizeZ);}}
+\DoxyCodeLine{00237 }
+\DoxyCodeLine{00238   VkSpecializationInfo specInfo\{\};}
+\DoxyCodeLine{00239   specInfo.dataSize = \textcolor{keyword}{sizeof}(specializationData);}
+\DoxyCodeLine{00240   specInfo.mapEntryCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(specEntries.size());}
+\DoxyCodeLine{00241   specInfo.pMapEntries = specEntries.data();}
+\DoxyCodeLine{00242   specInfo.pData = \&specializationData;}
+\DoxyCodeLine{00243 }
+\DoxyCodeLine{00244   VkPipelineShaderStageCreateInfo compute\_shader\_integrate\_create\_info\{\};}
+\DoxyCodeLine{00245   compute\_shader\_integrate\_create\_info.sType =}
+\DoxyCodeLine{00246       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00247   compute\_shader\_integrate\_create\_info.stage = VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00248   compute\_shader\_integrate\_create\_info.module = pathTracingModule;}
+\DoxyCodeLine{00249   compute\_shader\_integrate\_create\_info.pSpecializationInfo = \&specInfo;}
+\DoxyCodeLine{00250   compute\_shader\_integrate\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00251 }
+\DoxyCodeLine{00252   \textcolor{comment}{// -\/-\/ COMPUTE PIPELINE CREATION -\/-\/}}
+\DoxyCodeLine{00253   VkComputePipelineCreateInfo compute\_pipeline\_create\_info\{\};}
+\DoxyCodeLine{00254   compute\_pipeline\_create\_info.sType =}
+\DoxyCodeLine{00255       VK\_STRUCTURE\_TYPE\_COMPUTE\_PIPELINE\_CREATE\_INFO;}
+\DoxyCodeLine{00256   compute\_pipeline\_create\_info.stage = compute\_shader\_integrate\_create\_info;}
+\DoxyCodeLine{00257   compute\_pipeline\_create\_info.layout = pipeline\_layout;}
+\DoxyCodeLine{00258   compute\_pipeline\_create\_info.flags = 0;}
+\DoxyCodeLine{00259   \textcolor{comment}{// create compute pipeline}}
+\DoxyCodeLine{00260   ASSERT\_VULKAN(vkCreateComputePipelines(}
+\DoxyCodeLine{00261                     device-\/>getLogicalDevice(), VK\_NULL\_HANDLE, 1,}
+\DoxyCodeLine{00262                     \&compute\_pipeline\_create\_info, \textcolor{keyword}{nullptr}, \&pipeline),}
+\DoxyCodeLine{00263                 \textcolor{stringliteral}{"{}Failed to create a compute pipeline!"{}});}
+\DoxyCodeLine{00264 }
+\DoxyCodeLine{00265   \textcolor{comment}{// Destroy shader modules, no longer needed after pipeline created}}
+\DoxyCodeLine{00266   vkDestroyShaderModule(device-\/>getLogicalDevice(), pathTracingModule, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00267 \}}
+
+\end{DoxyCode}

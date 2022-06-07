@@ -1,0 +1,223 @@
+\doxysection{Vulkan\+Image.\+cpp}
+\label{_vulkan_image_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImage.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImage.cpp}}
+\mbox{\hyperlink{_vulkan_image_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanImage.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 VulkanImage::VulkanImage() \{\}}
+\DoxyCodeLine{00007 }
+\DoxyCodeLine{00008 \textcolor{keywordtype}{void} VulkanImage::create(VulkanDevice* device, uint32\_t width, uint32\_t height,}
+\DoxyCodeLine{00009                          uint32\_t mip\_levels, VkFormat format,}
+\DoxyCodeLine{00010                          VkImageTiling tiling, VkImageUsageFlags use\_flags,}
+\DoxyCodeLine{00011                          VkMemoryPropertyFlags prop\_flags) \{}
+\DoxyCodeLine{00012   this-\/>device = device;}
+\DoxyCodeLine{00013   \textcolor{comment}{// CREATE image}}
+\DoxyCodeLine{00014   \textcolor{comment}{// image creation info}}
+\DoxyCodeLine{00015   VkImageCreateInfo image\_create\_info\{\};}
+\DoxyCodeLine{00016   image\_create\_info.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00017   image\_create\_info.imageType = VK\_IMAGE\_TYPE\_2D;  \textcolor{comment}{// type of image (1D, 2D, 3D)}}
+\DoxyCodeLine{00018   image\_create\_info.extent.width = width;          \textcolor{comment}{// width if image extent}}
+\DoxyCodeLine{00019   image\_create\_info.extent.height = height;        \textcolor{comment}{// height if image extent}}
+\DoxyCodeLine{00020   image\_create\_info.extent.depth = 1;              \textcolor{comment}{// height if image extent}}
+\DoxyCodeLine{00021   image\_create\_info.mipLevels = mip\_levels;        \textcolor{comment}{// number of mipmap levels}}
+\DoxyCodeLine{00022   image\_create\_info.arrayLayers = 1;  \textcolor{comment}{// number of levels in image array}}
+\DoxyCodeLine{00023   image\_create\_info.format = format;  \textcolor{comment}{// format type of image}}
+\DoxyCodeLine{00024   image\_create\_info.tiling =}
+\DoxyCodeLine{00025       tiling;  \textcolor{comment}{// tiling of image ("{}arranged"{} for optimal reading)}}
+\DoxyCodeLine{00026   image\_create\_info.initialLayout =}
+\DoxyCodeLine{00027       VK\_IMAGE\_LAYOUT\_UNDEFINED;  \textcolor{comment}{// layout of image data on creation}}
+\DoxyCodeLine{00028   image\_create\_info.usage =}
+\DoxyCodeLine{00029       use\_flags;  \textcolor{comment}{// bit flags defining what image will be used for}}
+\DoxyCodeLine{00030   image\_create\_info.samples =}
+\DoxyCodeLine{00031       VK\_SAMPLE\_COUNT\_1\_BIT;  \textcolor{comment}{// number of samples for multisampling}}
+\DoxyCodeLine{00032   image\_create\_info.sharingMode =}
+\DoxyCodeLine{00033       VK\_SHARING\_MODE\_EXCLUSIVE;  \textcolor{comment}{// whether image can be shared between queues}}
+\DoxyCodeLine{00034 }
+\DoxyCodeLine{00035   VkResult result = vkCreateImage(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00036                                   \&image\_create\_info, \textcolor{keyword}{nullptr}, \&image);}
+\DoxyCodeLine{00037   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create an image!"{}})}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039   \textcolor{comment}{// CREATE memory for image}}
+\DoxyCodeLine{00040   \textcolor{comment}{// get memory requirements for a type of image}}
+\DoxyCodeLine{00041   VkMemoryRequirements memory\_requirements;}
+\DoxyCodeLine{00042   vkGetImageMemoryRequirements(device-\/>getLogicalDevice(), image,}
+\DoxyCodeLine{00043                                \&memory\_requirements);}
+\DoxyCodeLine{00044 }
+\DoxyCodeLine{00045   \textcolor{comment}{// allocate memory using image requirements and user defined properties}}
+\DoxyCodeLine{00046   VkMemoryAllocateInfo memory\_alloc\_info\{\};}
+\DoxyCodeLine{00047   memory\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00048   memory\_alloc\_info.allocationSize = memory\_requirements.size;}
+\DoxyCodeLine{00049   memory\_alloc\_info.memoryTypeIndex =}
+\DoxyCodeLine{00050       find\_memory\_type\_index(device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{00051                              memory\_requirements.memoryTypeBits, prop\_flags);}
+\DoxyCodeLine{00052 }
+\DoxyCodeLine{00053   result = vkAllocateMemory(device-\/>getLogicalDevice(), \&memory\_alloc\_info,}
+\DoxyCodeLine{00054                             \textcolor{keyword}{nullptr}, \&imageMemory);}
+\DoxyCodeLine{00055   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate memory!"{}})}
+\DoxyCodeLine{00056 }
+\DoxyCodeLine{00057   \textcolor{comment}{// connect memory to image}}
+\DoxyCodeLine{00058   vkBindImageMemory(device-\/>getLogicalDevice(), image, imageMemory, 0);}
+\DoxyCodeLine{00059 \}}
+\DoxyCodeLine{00060 }
+\DoxyCodeLine{00061 \textcolor{keywordtype}{void} VulkanImage::transitionImageLayout(VkDevice device, VkQueue queue,}
+\DoxyCodeLine{00062                                         VkCommandPool command\_pool,}
+\DoxyCodeLine{00063                                         VkImageLayout old\_layout,}
+\DoxyCodeLine{00064                                         VkImageLayout new\_layout,}
+\DoxyCodeLine{00065                                         VkImageAspectFlags aspectMask,}
+\DoxyCodeLine{00066                                         uint32\_t mip\_levels) \{}
+\DoxyCodeLine{00067   VkCommandBuffer command\_buffer =}
+\DoxyCodeLine{00068       commandBufferManager.beginCommandBuffer(device, command\_pool);}
+\DoxyCodeLine{00069 }
+\DoxyCodeLine{00070   \textcolor{comment}{// VK\_IMAGE\_ASPECT\_COLOR\_BIT}}
+\DoxyCodeLine{00071   VkImageMemoryBarrier memory\_barrier\{\};}
+\DoxyCodeLine{00072   memory\_barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00073   memory\_barrier.oldLayout = old\_layout;}
+\DoxyCodeLine{00074   memory\_barrier.newLayout = new\_layout;}
+\DoxyCodeLine{00075   memory\_barrier.srcQueueFamilyIndex =}
+\DoxyCodeLine{00076       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition from}}
+\DoxyCodeLine{00077   memory\_barrier.dstQueueFamilyIndex =}
+\DoxyCodeLine{00078       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition to}}
+\DoxyCodeLine{00079   memory\_barrier.image =}
+\DoxyCodeLine{00080       image;  \textcolor{comment}{// image being accessed and modified as part of barrier}}
+\DoxyCodeLine{00081   memory\_barrier.subresourceRange.aspectMask =}
+\DoxyCodeLine{00082       aspectMask;  \textcolor{comment}{// aspect of image being altered}}
+\DoxyCodeLine{00083   memory\_barrier.subresourceRange.baseMipLevel =}
+\DoxyCodeLine{00084       0;  \textcolor{comment}{// first mip level to start alterations on}}
+\DoxyCodeLine{00085   memory\_barrier.subresourceRange.levelCount =}
+\DoxyCodeLine{00086       mip\_levels;  \textcolor{comment}{// number of mip levels to alter starting from baseMipLevel}}
+\DoxyCodeLine{00087   memory\_barrier.subresourceRange.baseArrayLayer =}
+\DoxyCodeLine{00088       0;  \textcolor{comment}{// first layer to start alterations on}}
+\DoxyCodeLine{00089   memory\_barrier.subresourceRange.layerCount =}
+\DoxyCodeLine{00090       1;  \textcolor{comment}{// number of layers to alter starting from baseArrayLayer}}
+\DoxyCodeLine{00091 }
+\DoxyCodeLine{00092   \textcolor{comment}{// if transitioning from new image to image ready to receive data}}
+\DoxyCodeLine{00093   memory\_barrier.srcAccessMask = accessFlagsForImageLayout(old\_layout);}
+\DoxyCodeLine{00094   memory\_barrier.dstAccessMask = accessFlagsForImageLayout(new\_layout);}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096   VkPipelineStageFlags src\_stage = pipelineStageForLayout(old\_layout);}
+\DoxyCodeLine{00097   VkPipelineStageFlags dst\_stage = pipelineStageForLayout(new\_layout);}
+\DoxyCodeLine{00098 }
+\DoxyCodeLine{00099   vkCmdPipelineBarrier(}
+\DoxyCodeLine{00100 }
+\DoxyCodeLine{00101       command\_buffer, src\_stage,}
+\DoxyCodeLine{00102       dst\_stage,  \textcolor{comment}{// pipeline stages (match to src and dst accessmask)}}
+\DoxyCodeLine{00103       0,          \textcolor{comment}{// no dependency flags}}
+\DoxyCodeLine{00104       0,}
+\DoxyCodeLine{00105       \textcolor{keyword}{nullptr},  \textcolor{comment}{// memory barrier count + data}}
+\DoxyCodeLine{00106       0,}
+\DoxyCodeLine{00107       \textcolor{keyword}{nullptr},  \textcolor{comment}{// buffer memory barrier count + data}}
+\DoxyCodeLine{00108       1,}
+\DoxyCodeLine{00109       \&memory\_barrier  \textcolor{comment}{// image memory barrier count + data}}
+\DoxyCodeLine{00110 }
+\DoxyCodeLine{00111   );}
+\DoxyCodeLine{00112 }
+\DoxyCodeLine{00113   commandBufferManager.endAndSubmitCommandBuffer(device, command\_pool, queue,}
+\DoxyCodeLine{00114                                                  command\_buffer);}
+\DoxyCodeLine{00115 \}}
+\DoxyCodeLine{00116 }
+\DoxyCodeLine{00117 \textcolor{keywordtype}{void} VulkanImage::transitionImageLayout(VkCommandBuffer command\_buffer,}
+\DoxyCodeLine{00118                                         VkImageLayout old\_layout,}
+\DoxyCodeLine{00119                                         VkImageLayout new\_layout,}
+\DoxyCodeLine{00120                                         uint32\_t mip\_levels,}
+\DoxyCodeLine{00121                                         VkImageAspectFlags aspectMask) \{}
+\DoxyCodeLine{00122   VkImageMemoryBarrier memory\_barrier\{\};}
+\DoxyCodeLine{00123   memory\_barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00124   memory\_barrier.oldLayout = old\_layout;}
+\DoxyCodeLine{00125   memory\_barrier.newLayout = new\_layout;}
+\DoxyCodeLine{00126   memory\_barrier.srcQueueFamilyIndex =}
+\DoxyCodeLine{00127       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition from}}
+\DoxyCodeLine{00128   memory\_barrier.dstQueueFamilyIndex =}
+\DoxyCodeLine{00129       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition to}}
+\DoxyCodeLine{00130   memory\_barrier.image =}
+\DoxyCodeLine{00131       image;  \textcolor{comment}{// image being accessed and modified as part of barrier}}
+\DoxyCodeLine{00132   memory\_barrier.subresourceRange.aspectMask =}
+\DoxyCodeLine{00133       aspectMask;  \textcolor{comment}{// aspect of image being altered}}
+\DoxyCodeLine{00134   memory\_barrier.subresourceRange.baseMipLevel =}
+\DoxyCodeLine{00135       0;  \textcolor{comment}{// first mip level to start alterations on}}
+\DoxyCodeLine{00136   memory\_barrier.subresourceRange.levelCount =}
+\DoxyCodeLine{00137       mip\_levels;  \textcolor{comment}{// number of mip levels to alter starting from baseMipLevel}}
+\DoxyCodeLine{00138   memory\_barrier.subresourceRange.baseArrayLayer =}
+\DoxyCodeLine{00139       0;  \textcolor{comment}{// first layer to start alterations on}}
+\DoxyCodeLine{00140   memory\_barrier.subresourceRange.layerCount =}
+\DoxyCodeLine{00141       1;  \textcolor{comment}{// number of layers to alter starting from baseArrayLayer}}
+\DoxyCodeLine{00142 }
+\DoxyCodeLine{00143   memory\_barrier.srcAccessMask = accessFlagsForImageLayout(old\_layout);}
+\DoxyCodeLine{00144   memory\_barrier.dstAccessMask = accessFlagsForImageLayout(new\_layout);}
+\DoxyCodeLine{00145 }
+\DoxyCodeLine{00146   VkPipelineStageFlags src\_stage = pipelineStageForLayout(old\_layout);}
+\DoxyCodeLine{00147   VkPipelineStageFlags dst\_stage = pipelineStageForLayout(new\_layout);}
+\DoxyCodeLine{00148 }
+\DoxyCodeLine{00149   \textcolor{comment}{// if transitioning from new image to image ready to receive data}}
+\DoxyCodeLine{00150 }
+\DoxyCodeLine{00151   vkCmdPipelineBarrier(}
+\DoxyCodeLine{00152 }
+\DoxyCodeLine{00153       command\_buffer, src\_stage,}
+\DoxyCodeLine{00154       dst\_stage,  \textcolor{comment}{// pipeline stages (match to src and dst accessmask)}}
+\DoxyCodeLine{00155       0,          \textcolor{comment}{// no dependency flags}}
+\DoxyCodeLine{00156       0,}
+\DoxyCodeLine{00157       \textcolor{keyword}{nullptr},  \textcolor{comment}{// memory barrier count + data}}
+\DoxyCodeLine{00158       0,}
+\DoxyCodeLine{00159       \textcolor{keyword}{nullptr},  \textcolor{comment}{// buffer memory barrier count + data}}
+\DoxyCodeLine{00160       1,}
+\DoxyCodeLine{00161       \&memory\_barrier  \textcolor{comment}{// image memory barrier count + data}}
+\DoxyCodeLine{00162 }
+\DoxyCodeLine{00163   );}
+\DoxyCodeLine{00164 \}}
+\DoxyCodeLine{00165 }
+\DoxyCodeLine{00166 \textcolor{keywordtype}{void} VulkanImage::setImage(VkImage image) \{ this-\/>image = image; \}}
+\DoxyCodeLine{00167 }
+\DoxyCodeLine{00168 \textcolor{keywordtype}{void} VulkanImage::cleanUp() \{}
+\DoxyCodeLine{00169   vkDestroyImage(device-\/>getLogicalDevice(), image, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00170   vkFreeMemory(device-\/>getLogicalDevice(), imageMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00171 \}}
+\DoxyCodeLine{00172 }
+\DoxyCodeLine{00173 VulkanImage::\string~VulkanImage() \{\}}
+\DoxyCodeLine{00174 }
+\DoxyCodeLine{00175 VkAccessFlags VulkanImage::accessFlagsForImageLayout(VkImageLayout layout) \{}
+\DoxyCodeLine{00176   \textcolor{keywordflow}{switch} (layout) \{}
+\DoxyCodeLine{00177     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_PREINITIALIZED:}
+\DoxyCodeLine{00178       \textcolor{keywordflow}{return} VK\_ACCESS\_HOST\_WRITE\_BIT;}
+\DoxyCodeLine{00179     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL:}
+\DoxyCodeLine{00180       \textcolor{keywordflow}{return} VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{00181     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL:}
+\DoxyCodeLine{00182       \textcolor{keywordflow}{return} VK\_ACCESS\_TRANSFER\_READ\_BIT;}
+\DoxyCodeLine{00183     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{00184       \textcolor{keywordflow}{return} VK\_ACCESS\_COLOR\_ATTACHMENT\_WRITE\_BIT;}
+\DoxyCodeLine{00185     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{00186       \textcolor{keywordflow}{return} VK\_ACCESS\_DEPTH\_STENCIL\_ATTACHMENT\_WRITE\_BIT;}
+\DoxyCodeLine{00187     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL:}
+\DoxyCodeLine{00188       \textcolor{keywordflow}{return} VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{00189     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00190       \textcolor{keywordflow}{return} VkAccessFlags();}
+\DoxyCodeLine{00191   \}}
+\DoxyCodeLine{00192 \}}
+\DoxyCodeLine{00193 }
+\DoxyCodeLine{00194 VkPipelineStageFlags VulkanImage::pipelineStageForLayout(}
+\DoxyCodeLine{00195     VkImageLayout oldImageLayout) \{}
+\DoxyCodeLine{00196   \textcolor{keywordflow}{switch} (oldImageLayout) \{}
+\DoxyCodeLine{00197     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL:}
+\DoxyCodeLine{00198     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL:}
+\DoxyCodeLine{00199       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_TRANSFER\_BIT;}
+\DoxyCodeLine{00200     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{00201       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;}
+\DoxyCodeLine{00202     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{00203       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_ALL\_COMMANDS\_BIT;  \textcolor{comment}{// We do this to allow queue}}
+\DoxyCodeLine{00204                                                   \textcolor{comment}{// other than graphic return}}
+\DoxyCodeLine{00205                                                   \textcolor{comment}{// VK\_PIPELINE\_STAGE\_EARLY\_FRAGMENT\_TESTS\_BIT;}}
+\DoxyCodeLine{00206     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL:}
+\DoxyCodeLine{00207       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_ALL\_COMMANDS\_BIT;  \textcolor{comment}{// We do this to allow queue}}
+\DoxyCodeLine{00208                                                   \textcolor{comment}{// other than graphic return}}
+\DoxyCodeLine{00209                                                   \textcolor{comment}{// VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT;}}
+\DoxyCodeLine{00210     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_PREINITIALIZED:}
+\DoxyCodeLine{00211       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_HOST\_BIT;}
+\DoxyCodeLine{00212     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_UNDEFINED:}
+\DoxyCodeLine{00213       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_TOP\_OF\_PIPE\_BIT;}
+\DoxyCodeLine{00214     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00215       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_BOTTOM\_OF\_PIPE\_BIT;}
+\DoxyCodeLine{00216   \}}
+\DoxyCodeLine{00217 \}}
+
+\end{DoxyCode}

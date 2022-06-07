@@ -1,19 +1,19 @@
 #pragma once
-#include <vulkan/vulkan.h>
 #include <vk_mem_alloc.h>
+#include <vulkan/vulkan.h>
 
 #include <stdexcept>
 
 class Allocator {
-
-  public:
+ public:
   Allocator();
-  Allocator(const VkDevice& device, const VkPhysicalDevice& physicalDevice, const VkInstance& instance);
+  Allocator(const VkDevice& device, const VkPhysicalDevice& physicalDevice,
+            const VkInstance& instance);
 
   void cleanUp();
 
   ~Allocator();
 
-  private:
+ private:
   VmaAllocator vmaAllocator;
 };

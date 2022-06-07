@@ -1,0 +1,31 @@
+\doxysection{Allocator.\+cpp}
+\label{_allocator_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/memory/Allocator.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/memory/Allocator.cpp}}
+\mbox{\hyperlink{_allocator_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Allocator.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 Allocator::Allocator() \{\}}
+\DoxyCodeLine{00006 }
+\DoxyCodeLine{00007 Allocator::Allocator(\textcolor{keyword}{const} VkDevice\& device,}
+\DoxyCodeLine{00008                      \textcolor{keyword}{const} VkPhysicalDevice\& physicalDevice,}
+\DoxyCodeLine{00009                      \textcolor{keyword}{const} VkInstance\& instance) \{}
+\DoxyCodeLine{00010   \textcolor{comment}{// see here:}}
+\DoxyCodeLine{00011   \textcolor{comment}{// https://gpuopen-\/librariesandsdks.github.io/VulkanMemoryAllocator/html/quick\_start.html}}
+\DoxyCodeLine{00012   VmaAllocatorCreateInfo allocatorCreateInfo = \{\};}
+\DoxyCodeLine{00013   allocatorCreateInfo.flags = VMA\_ALLOCATOR\_CREATE\_BUFFER\_DEVICE\_ADDRESS\_BIT;}
+\DoxyCodeLine{00014   allocatorCreateInfo.vulkanApiVersion = VK\_API\_VERSION\_1\_3;}
+\DoxyCodeLine{00015   allocatorCreateInfo.physicalDevice = physicalDevice;}
+\DoxyCodeLine{00016   allocatorCreateInfo.device = device;}
+\DoxyCodeLine{00017   allocatorCreateInfo.instance = instance;}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019   ASSERT\_VULKAN(vmaCreateAllocator(\&allocatorCreateInfo, \&vmaAllocator),}
+\DoxyCodeLine{00020                 \textcolor{stringliteral}{"{}Failed to create vma allocator!"{}})}
+\DoxyCodeLine{00021 \}}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023 \textcolor{keywordtype}{void} Allocator::cleanUp() \{ vmaDestroyAllocator(vmaAllocator); \}}
+\DoxyCodeLine{00024 }
+\DoxyCodeLine{00025 Allocator::\string~Allocator() \{\}}
+
+\end{DoxyCode}

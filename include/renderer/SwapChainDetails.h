@@ -1,6 +1,7 @@
 #pragma once
-#include <vector>
 #include <vulkan/vulkan.h>
+
+#include <vector>
 
 struct SwapChainDetails {
   // surface properties, e.g. image size/extent

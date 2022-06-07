@@ -1,0 +1,66 @@
+\doxysection{File.\+cpp}
+\label{_file_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/util/File.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/util/File.cpp}}
+\mbox{\hyperlink{_file_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 File::File(\textcolor{keyword}{const} std::string\& file\_location) \{}
+\DoxyCodeLine{00007   this-\/>file\_location = file\_location;}
+\DoxyCodeLine{00008 \}}
+\DoxyCodeLine{00009 }
+\DoxyCodeLine{00010 std::string File::read() \{}
+\DoxyCodeLine{00011   std::string content;}
+\DoxyCodeLine{00012   std::ifstream file\_stream(file\_location, std::ios::in);}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014   \textcolor{keywordflow}{if} (!file\_stream.is\_open()) \{}
+\DoxyCodeLine{00015     printf(\textcolor{stringliteral}{"{}Failed to read \%s. File does not exist."{}}, file\_location.c\_str());}
+\DoxyCodeLine{00016     \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00017   \}}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019   std::string line = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00020   \textcolor{keywordflow}{while} (!file\_stream.eof()) \{}
+\DoxyCodeLine{00021     std::getline(file\_stream, line);}
+\DoxyCodeLine{00022     content.append(line + \textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{00023   \}}
+\DoxyCodeLine{00024 }
+\DoxyCodeLine{00025   file\_stream.close();}
+\DoxyCodeLine{00026   \textcolor{keywordflow}{return} content;}
+\DoxyCodeLine{00027 \}}
+\DoxyCodeLine{00028 }
+\DoxyCodeLine{00029 std::vector<char> File::readCharSequence() \{}
+\DoxyCodeLine{00030   \textcolor{comment}{// open stream from given file}}
+\DoxyCodeLine{00031   \textcolor{comment}{// std::ios::binary tells stream to read file as binary}}
+\DoxyCodeLine{00032   \textcolor{comment}{// std::ios:ate tells stream to start reading from end of file}}
+\DoxyCodeLine{00033   std::ifstream file(file\_location, std::ios::binary | std::ios::ate);}
+\DoxyCodeLine{00034 }
+\DoxyCodeLine{00035   \textcolor{comment}{// check if file stream sucessfully opened}}
+\DoxyCodeLine{00036   \textcolor{keywordflow}{if} (!file.is\_open()) \{}
+\DoxyCodeLine{00037     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to open a file!"{}});}
+\DoxyCodeLine{00038   \}}
+\DoxyCodeLine{00039 }
+\DoxyCodeLine{00040   \textcolor{keywordtype}{size\_t} file\_size = (size\_t)file.tellg();}
+\DoxyCodeLine{00041   std::vector<char> file\_buffer(file\_size);}
+\DoxyCodeLine{00042 }
+\DoxyCodeLine{00043   \textcolor{comment}{// move read position to start of file}}
+\DoxyCodeLine{00044   file.seekg(0);}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046   \textcolor{comment}{// read the file data into the buffer (stream "{}file\_size"{} in total)}}
+\DoxyCodeLine{00047   file.read(file\_buffer.data(), file\_size);}
+\DoxyCodeLine{00048 }
+\DoxyCodeLine{00049   file.close();}
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051   \textcolor{keywordflow}{return} file\_buffer;}
+\DoxyCodeLine{00052 \}}
+\DoxyCodeLine{00053 }
+\DoxyCodeLine{00054 std::string File::getBaseDir() \{}
+\DoxyCodeLine{00055   \textcolor{keywordflow}{if} (file\_location.find\_last\_of(\textcolor{stringliteral}{"{}/\(\backslash\)\(\backslash\)"{}}) != std::string::npos)}
+\DoxyCodeLine{00056     \textcolor{keywordflow}{return} file\_location.substr(0, file\_location.find\_last\_of(\textcolor{stringliteral}{"{}/\(\backslash\)\(\backslash\)"{}}));}
+\DoxyCodeLine{00057   \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00058 \}}
+\DoxyCodeLine{00059 }
+\DoxyCodeLine{00060 File::\string~File() \{\}}
+
+\end{DoxyCode}

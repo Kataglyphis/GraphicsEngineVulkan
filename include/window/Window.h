@@ -7,8 +7,7 @@
 #include <GLFW/glfw3.h>
 
 class Window {
-
-  public:
+ public:
   Window();
   Window(uint32_t window_width, uint32_t window_height);
 
@@ -37,7 +36,7 @@ class Window {
 
   ~Window();
 
-  private:
+ private:
   GLFWwindow* main_window;
   uint32_t window_width, window_height;
   // what key(-s) was/were pressed
@@ -49,15 +48,18 @@ class Window {
   bool mouse_first_moved;
   bool framebuffer_resized;
 
-  //buffers to store our window data to
+  // buffers to store our window data to
   int window_buffer_width, window_buffer_height;
 
-  //we need to start our window callbacks for interaction
+  // we need to start our window callbacks for interaction
   void init_callbacks();
-  static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+  static void framebuffer_size_callback(GLFWwindow* window, int width,
+                                        int height);
 
-  //need to be static ...
-  static void key_callback(GLFWwindow* window, int key, int code, int action, int mode);
+  // need to be static ...
+  static void key_callback(GLFWwindow* window, int key, int code, int action,
+                           int mode);
   static void mouse_callback(GLFWwindow* window, double x_pos, double y_pos);
-  static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+  static void mouse_button_callback(GLFWwindow* window, int button, int action,
+                                    int mods);
 };

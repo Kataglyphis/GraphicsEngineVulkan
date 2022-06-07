@@ -1,0 +1,551 @@
+\doxysection{ASManager.\+cpp}
+\label{_a_s_manager_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures/ASManager.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures/ASManager.cpp}}
+\mbox{\hyperlink{_a_s_manager_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}ASManager.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 ASManager::ASManager() \{\}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{keywordtype}{void} ASManager::createASForScene(VulkanDevice* device,}
+\DoxyCodeLine{00006                                  VkCommandPool commandPool, Scene* scene) \{}
+\DoxyCodeLine{00007   this-\/>vulkanDevice = device;}
+\DoxyCodeLine{00008   createBLAS(device, commandPool, scene);}
+\DoxyCodeLine{00009   createTLAS(device, commandPool, scene);}
+\DoxyCodeLine{00010 \}}
+\DoxyCodeLine{00011 }
+\DoxyCodeLine{00012 \textcolor{keywordtype}{void} ASManager::createBLAS(VulkanDevice* device, VkCommandPool commandPool,}
+\DoxyCodeLine{00013                            Scene* scene) \{}
+\DoxyCodeLine{00014   \textcolor{comment}{// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING}}
+\DoxyCodeLine{00015   \textcolor{comment}{// all functionality from extensions has to be loaded in the beginning}}
+\DoxyCodeLine{00016   \textcolor{comment}{// we need a reference to the device location of our geometry laying on the}}
+\DoxyCodeLine{00017   \textcolor{comment}{// graphics card we already uploaded objects and created vertex and index}}
+\DoxyCodeLine{00018   \textcolor{comment}{// buffers respectively}}
+\DoxyCodeLine{00019 }
+\DoxyCodeLine{00020   PFN\_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR =}
+\DoxyCodeLine{00021       (PFN\_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00022           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
+\DoxyCodeLine{00023 }
+\DoxyCodeLine{00024   std::vector<BlasInput> blas\_input(scene-\/>getModelCount());}
+\DoxyCodeLine{00025 }
+\DoxyCodeLine{00026   \textcolor{keywordflow}{for} (uint32\_t model\_index = 0;}
+\DoxyCodeLine{00027        model\_index < static\_cast<uint32\_t>(scene-\/>getModelCount());}
+\DoxyCodeLine{00028        model\_index++) \{}
+\DoxyCodeLine{00029     std::shared\_ptr<Model> mesh\_model = scene-\/>get\_model\_list()[model\_index];}
+\DoxyCodeLine{00030     \textcolor{comment}{// blas\_input.emplace\_back();}}
+\DoxyCodeLine{00031     blas\_input[model\_index].as\_geometry.reserve(mesh\_model-\/>getMeshCount());}
+\DoxyCodeLine{00032     blas\_input[model\_index].as\_build\_offset\_info.reserve(}
+\DoxyCodeLine{00033         mesh\_model-\/>getMeshCount());}
+\DoxyCodeLine{00034 }
+\DoxyCodeLine{00035     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} mesh\_index = 0; mesh\_index < mesh\_model-\/>getMeshCount();}
+\DoxyCodeLine{00036          mesh\_index++) \{}
+\DoxyCodeLine{00037       VkAccelerationStructureGeometryKHR acceleration\_structure\_geometry\{\};}
+\DoxyCodeLine{00038       VkAccelerationStructureBuildRangeInfoKHR}
+\DoxyCodeLine{00039           acceleration\_structure\_build\_range\_info\{\};}
+\DoxyCodeLine{00040 }
+\DoxyCodeLine{00041       objectToVkGeometryKHR(device, mesh\_model-\/>getMesh(mesh\_index),}
+\DoxyCodeLine{00042                             acceleration\_structure\_geometry,}
+\DoxyCodeLine{00043                             acceleration\_structure\_build\_range\_info);}
+\DoxyCodeLine{00044       \textcolor{comment}{// this only specifies the acceleration structure}}
+\DoxyCodeLine{00045       \textcolor{comment}{// we are building it in the end for the whole model with the build}}
+\DoxyCodeLine{00046       \textcolor{comment}{// command}}
+\DoxyCodeLine{00047 }
+\DoxyCodeLine{00048       blas\_input[model\_index].as\_geometry.push\_back(}
+\DoxyCodeLine{00049           acceleration\_structure\_geometry);}
+\DoxyCodeLine{00050       blas\_input[model\_index].as\_build\_offset\_info.push\_back(}
+\DoxyCodeLine{00051           acceleration\_structure\_build\_range\_info);}
+\DoxyCodeLine{00052     \}}
+\DoxyCodeLine{00053   \}}
+\DoxyCodeLine{00054 }
+\DoxyCodeLine{00055   std::vector<BuildAccelerationStructure> build\_as\_structures;}
+\DoxyCodeLine{00056   build\_as\_structures.resize(scene-\/>getModelCount());}
+\DoxyCodeLine{00057 }
+\DoxyCodeLine{00058   VkDeviceSize max\_scratch\_size = 0;}
+\DoxyCodeLine{00059   VkDeviceSize total\_size\_all\_BLAS = 0;}
+\DoxyCodeLine{00060 }
+\DoxyCodeLine{00061   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < scene-\/>getModelCount(); i++) \{}
+\DoxyCodeLine{00062     VkDeviceSize current\_scretch\_size = 0;}
+\DoxyCodeLine{00063     VkDeviceSize current\_size = 0;}
+\DoxyCodeLine{00064 }
+\DoxyCodeLine{00065     createAccelerationStructureInfosBLAS(device, build\_as\_structures[i],}
+\DoxyCodeLine{00066                                          blas\_input[i], current\_scretch\_size,}
+\DoxyCodeLine{00067                                          current\_size);}
+\DoxyCodeLine{00068 }
+\DoxyCodeLine{00069     total\_size\_all\_BLAS += current\_size;}
+\DoxyCodeLine{00070     max\_scratch\_size = std::max(max\_scratch\_size, current\_scretch\_size);}
+\DoxyCodeLine{00071   \}}
+\DoxyCodeLine{00072 }
+\DoxyCodeLine{00073   VulkanBuffer scratchBuffer;}
+\DoxyCodeLine{00074 }
+\DoxyCodeLine{00075   scratchBuffer.create(device, max\_scratch\_size,}
+\DoxyCodeLine{00076                        VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT |}
+\DoxyCodeLine{00077                            VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00078                            VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00079                        VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00080                            VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{00081 }
+\DoxyCodeLine{00082   VkBufferDeviceAddressInfo scratch\_buffer\_device\_address\_info\{\};}
+\DoxyCodeLine{00083   scratch\_buffer\_device\_address\_info.sType =}
+\DoxyCodeLine{00084       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{00085   scratch\_buffer\_device\_address\_info.buffer = scratchBuffer.getBuffer();}
+\DoxyCodeLine{00086 }
+\DoxyCodeLine{00087   VkDeviceAddress scratch\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
+\DoxyCodeLine{00088       device-\/>getLogicalDevice(), \&scratch\_buffer\_device\_address\_info);}
+\DoxyCodeLine{00089 }
+\DoxyCodeLine{00090   VkDeviceOrHostAddressKHR scratch\_device\_or\_host\_address\{\};}
+\DoxyCodeLine{00091   scratch\_device\_or\_host\_address.deviceAddress = scratch\_buffer\_address;}
+\DoxyCodeLine{00092 }
+\DoxyCodeLine{00093   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
+\DoxyCodeLine{00094       device-\/>getLogicalDevice(), commandPool);}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < scene-\/>getModelCount(); i++) \{}
+\DoxyCodeLine{00097     createSingleBlas(device, command\_buffer, build\_as\_structures[i],}
+\DoxyCodeLine{00098                      scratch\_buffer\_address);}
+\DoxyCodeLine{00099 }
+\DoxyCodeLine{00100     VkMemoryBarrier barrier;}
+\DoxyCodeLine{00101     barrier.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00102     barrier.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00103     barrier.srcAccessMask = VK\_ACCESS\_ACCELERATION\_STRUCTURE\_WRITE\_BIT\_KHR;}
+\DoxyCodeLine{00104     barrier.dstAccessMask = VK\_ACCESS\_ACCELERATION\_STRUCTURE\_READ\_BIT\_KHR;}
+\DoxyCodeLine{00105 }
+\DoxyCodeLine{00106     vkCmdPipelineBarrier(command\_buffer,}
+\DoxyCodeLine{00107                          VK\_PIPELINE\_STAGE\_ACCELERATION\_STRUCTURE\_BUILD\_BIT\_KHR,}
+\DoxyCodeLine{00108                          VK\_PIPELINE\_STAGE\_ACCELERATION\_STRUCTURE\_BUILD\_BIT\_KHR,}
+\DoxyCodeLine{00109                          0, 1, \&barrier, 0, \textcolor{keyword}{nullptr}, 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00110   \}}
+\DoxyCodeLine{00111 }
+\DoxyCodeLine{00112   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{00113       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{00114       command\_buffer);}
+\DoxyCodeLine{00115 }
+\DoxyCodeLine{00116   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& b : build\_as\_structures) \{}
+\DoxyCodeLine{00117     blas.emplace\_back(b.single\_blas);}
+\DoxyCodeLine{00118   \}}
+\DoxyCodeLine{00119 }
+\DoxyCodeLine{00120   scratchBuffer.cleanUp();}
+\DoxyCodeLine{00121 \}}
+\DoxyCodeLine{00122 }
+\DoxyCodeLine{00123 \textcolor{keywordtype}{void} ASManager::createTLAS(VulkanDevice* device, VkCommandPool commandPool,}
+\DoxyCodeLine{00124                            Scene* scene) \{}
+\DoxyCodeLine{00125   \textcolor{comment}{// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING}}
+\DoxyCodeLine{00126   \textcolor{comment}{// all functionality from extensions has to be loaded in the beginning}}
+\DoxyCodeLine{00127   \textcolor{comment}{// we need a reference to the device location of our geometry laying on the}}
+\DoxyCodeLine{00128   \textcolor{comment}{// graphics card we already uploaded objects and created vertex and index}}
+\DoxyCodeLine{00129   \textcolor{comment}{// buffers respectively}}
+\DoxyCodeLine{00130   PFN\_vkGetAccelerationStructureBuildSizesKHR}
+\DoxyCodeLine{00131       pvkGetAccelerationStructureBuildSizesKHR =}
+\DoxyCodeLine{00132           (PFN\_vkGetAccelerationStructureBuildSizesKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00133               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00134               \textcolor{stringliteral}{"{}vkGetAccelerationStructureBuildSizesKHR"{}});}
+\DoxyCodeLine{00135 }
+\DoxyCodeLine{00136   PFN\_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR =}
+\DoxyCodeLine{00137       (PFN\_vkCreateAccelerationStructureKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00138           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateAccelerationStructureKHR"{}});}
+\DoxyCodeLine{00139 }
+\DoxyCodeLine{00140   PFN\_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR =}
+\DoxyCodeLine{00141       (PFN\_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00142           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
+\DoxyCodeLine{00143 }
+\DoxyCodeLine{00144   PFN\_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR =}
+\DoxyCodeLine{00145       (PFN\_vkCmdBuildAccelerationStructuresKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00146           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCmdBuildAccelerationStructuresKHR"{}});}
+\DoxyCodeLine{00147 }
+\DoxyCodeLine{00148   PFN\_vkGetAccelerationStructureDeviceAddressKHR}
+\DoxyCodeLine{00149       pvkGetAccelerationStructureDeviceAddressKHR =}
+\DoxyCodeLine{00150           (PFN\_vkGetAccelerationStructureDeviceAddressKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00151               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00152               \textcolor{stringliteral}{"{}vkGetAccelerationStructureDeviceAddressKHR"{}});}
+\DoxyCodeLine{00153 }
+\DoxyCodeLine{00154   std::vector<VkAccelerationStructureInstanceKHR> tlas\_instances;}
+\DoxyCodeLine{00155   tlas\_instances.reserve(scene-\/>getModelCount());}
+\DoxyCodeLine{00156 }
+\DoxyCodeLine{00157   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} model\_index = 0; model\_index < scene-\/>getModelCount();}
+\DoxyCodeLine{00158        model\_index++) \{}
+\DoxyCodeLine{00159     \textcolor{comment}{// glm uses column major matrices so transpose it for Vulkan want row major}}
+\DoxyCodeLine{00160     \textcolor{comment}{// here}}
+\DoxyCodeLine{00161     glm::mat4 transpose\_transform =}
+\DoxyCodeLine{00162         glm::transpose(scene-\/>getModelMatrix(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(model\_index)));}
+\DoxyCodeLine{00163     VkTransformMatrixKHR out\_matrix;}
+\DoxyCodeLine{00164     memcpy(\&out\_matrix, \&transpose\_transform, \textcolor{keyword}{sizeof}(VkTransformMatrixKHR));}
+\DoxyCodeLine{00165 }
+\DoxyCodeLine{00166     VkAccelerationStructureDeviceAddressInfoKHR}
+\DoxyCodeLine{00167         acceleration\_structure\_device\_address\_info\{\};}
+\DoxyCodeLine{00168     acceleration\_structure\_device\_address\_info.sType =}
+\DoxyCodeLine{00169         VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_DEVICE\_ADDRESS\_INFO\_KHR;}
+\DoxyCodeLine{00170     acceleration\_structure\_device\_address\_info.accelerationStructure =}
+\DoxyCodeLine{00171         blas[model\_index].vulkanAS;}
+\DoxyCodeLine{00172 }
+\DoxyCodeLine{00173     VkDeviceAddress acceleration\_structure\_device\_address =}
+\DoxyCodeLine{00174         pvkGetAccelerationStructureDeviceAddressKHR(}
+\DoxyCodeLine{00175             device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00176             \&acceleration\_structure\_device\_address\_info);}
+\DoxyCodeLine{00177 }
+\DoxyCodeLine{00178     VkAccelerationStructureInstanceKHR geometry\_instance\{\};}
+\DoxyCodeLine{00179     geometry\_instance.transform = out\_matrix;}
+\DoxyCodeLine{00180     geometry\_instance.instanceCustomIndex =}
+\DoxyCodeLine{00181         model\_index;  \textcolor{comment}{// gl\_InstanceCustomIndexEXT}}
+\DoxyCodeLine{00182     geometry\_instance.mask = 0xFF;}
+\DoxyCodeLine{00183     geometry\_instance.instanceShaderBindingTableRecordOffset = 0;}
+\DoxyCodeLine{00184     geometry\_instance.flags =}
+\DoxyCodeLine{00185         VK\_GEOMETRY\_INSTANCE\_TRIANGLE\_FACING\_CULL\_DISABLE\_BIT\_KHR;}
+\DoxyCodeLine{00186     geometry\_instance.accelerationStructureReference =}
+\DoxyCodeLine{00187         acceleration\_structure\_device\_address;}
+\DoxyCodeLine{00188     geometry\_instance.instanceShaderBindingTableRecordOffset =}
+\DoxyCodeLine{00189         0;  \textcolor{comment}{// same hit group for all objects}}
+\DoxyCodeLine{00190 }
+\DoxyCodeLine{00191     tlas\_instances.emplace\_back(geometry\_instance);}
+\DoxyCodeLine{00192   \}}
+\DoxyCodeLine{00193 }
+\DoxyCodeLine{00194   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
+\DoxyCodeLine{00195       device-\/>getLogicalDevice(), commandPool);}
+\DoxyCodeLine{00196 }
+\DoxyCodeLine{00197   VulkanBuffer geometryInstanceBuffer;}
+\DoxyCodeLine{00198 }
+\DoxyCodeLine{00199   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00200       device, commandPool, geometryInstanceBuffer,}
+\DoxyCodeLine{00201       VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00202           VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_BUILD\_INPUT\_READ\_ONLY\_BIT\_KHR |}
+\DoxyCodeLine{00203           VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00204       VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00205           VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT,}
+\DoxyCodeLine{00206       tlas\_instances);}
+\DoxyCodeLine{00207 }
+\DoxyCodeLine{00208   VkBufferDeviceAddressInfo geometry\_instance\_buffer\_device\_address\_info\{\};}
+\DoxyCodeLine{00209   geometry\_instance\_buffer\_device\_address\_info.sType =}
+\DoxyCodeLine{00210       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{00211   geometry\_instance\_buffer\_device\_address\_info.buffer =}
+\DoxyCodeLine{00212       geometryInstanceBuffer.getBuffer();}
+\DoxyCodeLine{00213 }
+\DoxyCodeLine{00214   VkDeviceAddress geometry\_instance\_buffer\_address =}
+\DoxyCodeLine{00215       pvkGetBufferDeviceAddressKHR(}
+\DoxyCodeLine{00216           device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00217           \&geometry\_instance\_buffer\_device\_address\_info);}
+\DoxyCodeLine{00218 }
+\DoxyCodeLine{00219   \textcolor{comment}{// Make sure the copy of the instance buffer are copied before triggering the}}
+\DoxyCodeLine{00220   \textcolor{comment}{// acceleration structure build}}
+\DoxyCodeLine{00221   VkMemoryBarrier barrier;}
+\DoxyCodeLine{00222   barrier.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00223   barrier.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00224   barrier.srcAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{00225   barrier.dstAccessMask = VK\_ACCESS\_ACCELERATION\_STRUCTURE\_WRITE\_BIT\_KHR;}
+\DoxyCodeLine{00226   vkCmdPipelineBarrier(command\_buffer, VK\_PIPELINE\_STAGE\_TRANSFER\_BIT,}
+\DoxyCodeLine{00227                        VK\_PIPELINE\_STAGE\_ACCELERATION\_STRUCTURE\_BUILD\_BIT\_KHR,}
+\DoxyCodeLine{00228                        0, 1, \&barrier, 0, \textcolor{keyword}{nullptr}, 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00229 }
+\DoxyCodeLine{00230   VkAccelerationStructureGeometryInstancesDataKHR}
+\DoxyCodeLine{00231       acceleration\_structure\_geometry\_instances\_data\{\};}
+\DoxyCodeLine{00232   acceleration\_structure\_geometry\_instances\_data.sType =}
+\DoxyCodeLine{00233       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_GEOMETRY\_INSTANCES\_DATA\_KHR;}
+\DoxyCodeLine{00234   acceleration\_structure\_geometry\_instances\_data.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00235   acceleration\_structure\_geometry\_instances\_data.data.deviceAddress =}
+\DoxyCodeLine{00236       geometry\_instance\_buffer\_address;}
+\DoxyCodeLine{00237 }
+\DoxyCodeLine{00238   VkAccelerationStructureGeometryKHR topAS\_acceleration\_structure\_geometry\{\};}
+\DoxyCodeLine{00239   topAS\_acceleration\_structure\_geometry.sType =}
+\DoxyCodeLine{00240       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_GEOMETRY\_KHR;}
+\DoxyCodeLine{00241   topAS\_acceleration\_structure\_geometry.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00242   topAS\_acceleration\_structure\_geometry.geometryType =}
+\DoxyCodeLine{00243       VK\_GEOMETRY\_TYPE\_INSTANCES\_KHR;}
+\DoxyCodeLine{00244   topAS\_acceleration\_structure\_geometry.geometry.instances =}
+\DoxyCodeLine{00245       acceleration\_structure\_geometry\_instances\_data;}
+\DoxyCodeLine{00246 }
+\DoxyCodeLine{00247   \textcolor{comment}{// find sizes}}
+\DoxyCodeLine{00248   VkAccelerationStructureBuildGeometryInfoKHR}
+\DoxyCodeLine{00249       acceleration\_structure\_build\_geometry\_info\{\};}
+\DoxyCodeLine{00250   acceleration\_structure\_build\_geometry\_info.sType =}
+\DoxyCodeLine{00251       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_BUILD\_GEOMETRY\_INFO\_KHR;}
+\DoxyCodeLine{00252   acceleration\_structure\_build\_geometry\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00253   acceleration\_structure\_build\_geometry\_info.type =}
+\DoxyCodeLine{00254       VK\_ACCELERATION\_STRUCTURE\_TYPE\_TOP\_LEVEL\_KHR;}
+\DoxyCodeLine{00255   acceleration\_structure\_build\_geometry\_info.flags =}
+\DoxyCodeLine{00256       VK\_BUILD\_ACCELERATION\_STRUCTURE\_PREFER\_FAST\_TRACE\_BIT\_KHR;}
+\DoxyCodeLine{00257   acceleration\_structure\_build\_geometry\_info.mode =}
+\DoxyCodeLine{00258       VK\_BUILD\_ACCELERATION\_STRUCTURE\_MODE\_BUILD\_KHR;}
+\DoxyCodeLine{00259   acceleration\_structure\_build\_geometry\_info.srcAccelerationStructure =}
+\DoxyCodeLine{00260       VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00261   acceleration\_structure\_build\_geometry\_info.geometryCount = 1;}
+\DoxyCodeLine{00262   acceleration\_structure\_build\_geometry\_info.pGeometries =}
+\DoxyCodeLine{00263       \&topAS\_acceleration\_structure\_geometry;}
+\DoxyCodeLine{00264 }
+\DoxyCodeLine{00265   VkAccelerationStructureBuildSizesInfoKHR}
+\DoxyCodeLine{00266       acceleration\_structure\_build\_sizes\_info\{\};}
+\DoxyCodeLine{00267   acceleration\_structure\_build\_sizes\_info.sType =}
+\DoxyCodeLine{00268       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_BUILD\_SIZES\_INFO\_KHR;}
+\DoxyCodeLine{00269   acceleration\_structure\_build\_sizes\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00270   acceleration\_structure\_build\_sizes\_info.accelerationStructureSize = 0;}
+\DoxyCodeLine{00271   acceleration\_structure\_build\_sizes\_info.updateScratchSize = 0;}
+\DoxyCodeLine{00272   acceleration\_structure\_build\_sizes\_info.buildScratchSize = 0;}
+\DoxyCodeLine{00273 }
+\DoxyCodeLine{00274   uint32\_t count\_instance = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(tlas\_instances.size());}
+\DoxyCodeLine{00275   pvkGetAccelerationStructureBuildSizesKHR(}
+\DoxyCodeLine{00276       device-\/>getLogicalDevice(), VK\_ACCELERATION\_STRUCTURE\_BUILD\_TYPE\_HOST\_KHR,}
+\DoxyCodeLine{00277       \&acceleration\_structure\_build\_geometry\_info, \&count\_instance,}
+\DoxyCodeLine{00278       \&acceleration\_structure\_build\_sizes\_info);}
+\DoxyCodeLine{00279 }
+\DoxyCodeLine{00280   \textcolor{comment}{// now we got the sizes}}
+\DoxyCodeLine{00281   VulkanBuffer\& tlasVulkanBuffer = tlas.vulkanBuffer;}
+\DoxyCodeLine{00282   tlasVulkanBuffer.create(}
+\DoxyCodeLine{00283       device, acceleration\_structure\_build\_sizes\_info.accelerationStructureSize,}
+\DoxyCodeLine{00284       VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_STORAGE\_BIT\_KHR |}
+\DoxyCodeLine{00285           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00286           VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00287       VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00288           VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT);}
+\DoxyCodeLine{00289 }
+\DoxyCodeLine{00290   VkAccelerationStructureCreateInfoKHR acceleration\_structure\_create\_info\{\};}
+\DoxyCodeLine{00291   acceleration\_structure\_create\_info.sType =}
+\DoxyCodeLine{00292       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00293   acceleration\_structure\_create\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00294   acceleration\_structure\_create\_info.createFlags = 0;}
+\DoxyCodeLine{00295   acceleration\_structure\_create\_info.buffer = tlasVulkanBuffer.getBuffer();}
+\DoxyCodeLine{00296   acceleration\_structure\_create\_info.offset = 0;}
+\DoxyCodeLine{00297   acceleration\_structure\_create\_info.size =}
+\DoxyCodeLine{00298       acceleration\_structure\_build\_sizes\_info.accelerationStructureSize;}
+\DoxyCodeLine{00299   acceleration\_structure\_create\_info.type =}
+\DoxyCodeLine{00300       VK\_ACCELERATION\_STRUCTURE\_TYPE\_TOP\_LEVEL\_KHR;}
+\DoxyCodeLine{00301   acceleration\_structure\_create\_info.deviceAddress = 0;}
+\DoxyCodeLine{00302 }
+\DoxyCodeLine{00303   VkAccelerationStructureKHR\& tlAS = tlas.vulkanAS;}
+\DoxyCodeLine{00304   pvkCreateAccelerationStructureKHR(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00305                                     \&acceleration\_structure\_create\_info,}
+\DoxyCodeLine{00306                                     \textcolor{keyword}{nullptr}, \&tlAS);}
+\DoxyCodeLine{00307 }
+\DoxyCodeLine{00308   VulkanBuffer scratchBuffer;}
+\DoxyCodeLine{00309 }
+\DoxyCodeLine{00310   scratchBuffer.create(device,}
+\DoxyCodeLine{00311                        acceleration\_structure\_build\_sizes\_info.buildScratchSize,}
+\DoxyCodeLine{00312                        VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT |}
+\DoxyCodeLine{00313                            VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00314                            VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00315                        VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00316                            VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT);}
+\DoxyCodeLine{00317 }
+\DoxyCodeLine{00318   VkBufferDeviceAddressInfo scratch\_buffer\_device\_address\_info\{\};}
+\DoxyCodeLine{00319   scratch\_buffer\_device\_address\_info.sType =}
+\DoxyCodeLine{00320       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{00321   scratch\_buffer\_device\_address\_info.buffer = scratchBuffer.getBuffer();}
+\DoxyCodeLine{00322 }
+\DoxyCodeLine{00323   VkDeviceAddress scratch\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
+\DoxyCodeLine{00324       device-\/>getLogicalDevice(), \&scratch\_buffer\_device\_address\_info);}
+\DoxyCodeLine{00325 }
+\DoxyCodeLine{00326   \textcolor{comment}{// update build info}}
+\DoxyCodeLine{00327   acceleration\_structure\_build\_geometry\_info.scratchData.deviceAddress =}
+\DoxyCodeLine{00328       scratch\_buffer\_address;}
+\DoxyCodeLine{00329   acceleration\_structure\_build\_geometry\_info.srcAccelerationStructure =}
+\DoxyCodeLine{00330       VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00331   acceleration\_structure\_build\_geometry\_info.dstAccelerationStructure = tlAS;}
+\DoxyCodeLine{00332 }
+\DoxyCodeLine{00333   VkAccelerationStructureBuildRangeInfoKHR}
+\DoxyCodeLine{00334       acceleration\_structure\_build\_range\_info\{\};}
+\DoxyCodeLine{00335   acceleration\_structure\_build\_range\_info.primitiveCount =}
+\DoxyCodeLine{00336       scene-\/>getModelCount();}
+\DoxyCodeLine{00337   acceleration\_structure\_build\_range\_info.primitiveOffset = 0;}
+\DoxyCodeLine{00338   acceleration\_structure\_build\_range\_info.firstVertex = 0;}
+\DoxyCodeLine{00339   acceleration\_structure\_build\_range\_info.transformOffset = 0;}
+\DoxyCodeLine{00340 }
+\DoxyCodeLine{00341   VkAccelerationStructureBuildRangeInfoKHR*}
+\DoxyCodeLine{00342       acceleration\_structure\_build\_range\_infos =}
+\DoxyCodeLine{00343           \&acceleration\_structure\_build\_range\_info;}
+\DoxyCodeLine{00344 }
+\DoxyCodeLine{00345   pvkCmdBuildAccelerationStructuresKHR(}
+\DoxyCodeLine{00346       command\_buffer, 1, \&acceleration\_structure\_build\_geometry\_info,}
+\DoxyCodeLine{00347       \&acceleration\_structure\_build\_range\_infos);}
+\DoxyCodeLine{00348 }
+\DoxyCodeLine{00349   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{00350       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{00351       command\_buffer);}
+\DoxyCodeLine{00352   scratchBuffer.cleanUp();}
+\DoxyCodeLine{00353   geometryInstanceBuffer.cleanUp();}
+\DoxyCodeLine{00354 \}}
+\DoxyCodeLine{00355 }
+\DoxyCodeLine{00356 \textcolor{keywordtype}{void} ASManager::cleanUp() \{}
+\DoxyCodeLine{00357   PFN\_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =}
+\DoxyCodeLine{00358       (PFN\_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00359           vulkanDevice-\/>getLogicalDevice(),}
+\DoxyCodeLine{00360           \textcolor{stringliteral}{"{}vkDestroyAccelerationStructureKHR"{}});}
+\DoxyCodeLine{00361 }
+\DoxyCodeLine{00362   pvkDestroyAccelerationStructureKHR(vulkanDevice-\/>getLogicalDevice(),}
+\DoxyCodeLine{00363                                      tlas.vulkanAS, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00364 }
+\DoxyCodeLine{00365   tlas.vulkanBuffer.cleanUp();}
+\DoxyCodeLine{00366 }
+\DoxyCodeLine{00367   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} index = 0; index < blas.size(); index++) \{}
+\DoxyCodeLine{00368     pvkDestroyAccelerationStructureKHR(vulkanDevice-\/>getLogicalDevice(),}
+\DoxyCodeLine{00369                                        blas[index].vulkanAS, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00370 }
+\DoxyCodeLine{00371     blas[index].vulkanBuffer.cleanUp();}
+\DoxyCodeLine{00372   \}}
+\DoxyCodeLine{00373 \}}
+\DoxyCodeLine{00374 }
+\DoxyCodeLine{00375 ASManager::\string~ASManager() \{\}}
+\DoxyCodeLine{00376 }
+\DoxyCodeLine{00377 \textcolor{keywordtype}{void} ASManager::createSingleBlas(}
+\DoxyCodeLine{00378     VulkanDevice* device, VkCommandBuffer command\_buffer,}
+\DoxyCodeLine{00379     BuildAccelerationStructure\& build\_as\_structure,}
+\DoxyCodeLine{00380     VkDeviceAddress scratch\_device\_or\_host\_address) \{}
+\DoxyCodeLine{00381   PFN\_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR =}
+\DoxyCodeLine{00382       (PFN\_vkCreateAccelerationStructureKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00383           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateAccelerationStructureKHR"{}});}
+\DoxyCodeLine{00384 }
+\DoxyCodeLine{00385   PFN\_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR =}
+\DoxyCodeLine{00386       (PFN\_vkCmdBuildAccelerationStructuresKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00387           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCmdBuildAccelerationStructuresKHR"{}});}
+\DoxyCodeLine{00388 }
+\DoxyCodeLine{00389   VkAccelerationStructureCreateInfoKHR acceleration\_structure\_create\_info\{\};}
+\DoxyCodeLine{00390   acceleration\_structure\_create\_info.sType =}
+\DoxyCodeLine{00391       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00392   acceleration\_structure\_create\_info.type =}
+\DoxyCodeLine{00393       VK\_ACCELERATION\_STRUCTURE\_TYPE\_BOTTOM\_LEVEL\_KHR;}
+\DoxyCodeLine{00394   acceleration\_structure\_create\_info.size =}
+\DoxyCodeLine{00395       build\_as\_structure.size\_info.accelerationStructureSize;}
+\DoxyCodeLine{00396   VulkanBuffer\& blasVulkanBuffer = build\_as\_structure.single\_blas.vulkanBuffer;}
+\DoxyCodeLine{00397   blasVulkanBuffer.create(}
+\DoxyCodeLine{00398       device, build\_as\_structure.size\_info.accelerationStructureSize,}
+\DoxyCodeLine{00399       VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_STORAGE\_BIT\_KHR |}
+\DoxyCodeLine{00400           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00401           VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00402       VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00403           VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{00404 }
+\DoxyCodeLine{00405   acceleration\_structure\_create\_info.buffer = blasVulkanBuffer.getBuffer();}
+\DoxyCodeLine{00406   VkAccelerationStructureKHR\& blas\_as = build\_as\_structure.single\_blas.vulkanAS;}
+\DoxyCodeLine{00407   pvkCreateAccelerationStructureKHR(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00408                                     \&acceleration\_structure\_create\_info,}
+\DoxyCodeLine{00409                                     \textcolor{keyword}{nullptr}, \&blas\_as);}
+\DoxyCodeLine{00410 }
+\DoxyCodeLine{00411   build\_as\_structure.build\_info.dstAccelerationStructure = blas\_as;}
+\DoxyCodeLine{00412   build\_as\_structure.build\_info.scratchData.deviceAddress =}
+\DoxyCodeLine{00413       scratch\_device\_or\_host\_address;}
+\DoxyCodeLine{00414 }
+\DoxyCodeLine{00415   pvkCmdBuildAccelerationStructuresKHR(command\_buffer, 1,}
+\DoxyCodeLine{00416                                        \&build\_as\_structure.build\_info,}
+\DoxyCodeLine{00417                                        \&build\_as\_structure.range\_info);}
+\DoxyCodeLine{00418 \}}
+\DoxyCodeLine{00419 }
+\DoxyCodeLine{00420 \textcolor{keywordtype}{void} ASManager::createAccelerationStructureInfosBLAS(}
+\DoxyCodeLine{00421     VulkanDevice* device, BuildAccelerationStructure\& build\_as\_structure,}
+\DoxyCodeLine{00422     BlasInput\& blas\_input, VkDeviceSize\& current\_scretch\_size,}
+\DoxyCodeLine{00423     VkDeviceSize\& current\_size) \{}
+\DoxyCodeLine{00424   PFN\_vkGetAccelerationStructureBuildSizesKHR}
+\DoxyCodeLine{00425       pvkGetAccelerationStructureBuildSizesKHR =}
+\DoxyCodeLine{00426           (PFN\_vkGetAccelerationStructureBuildSizesKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00427               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00428               \textcolor{stringliteral}{"{}vkGetAccelerationStructureBuildSizesKHR"{}});}
+\DoxyCodeLine{00429 }
+\DoxyCodeLine{00430   build\_as\_structure.build\_info.sType =}
+\DoxyCodeLine{00431       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_BUILD\_GEOMETRY\_INFO\_KHR;}
+\DoxyCodeLine{00432   build\_as\_structure.build\_info.type =}
+\DoxyCodeLine{00433       VK\_ACCELERATION\_STRUCTURE\_TYPE\_BOTTOM\_LEVEL\_KHR;}
+\DoxyCodeLine{00434   build\_as\_structure.build\_info.flags =}
+\DoxyCodeLine{00435       VK\_BUILD\_ACCELERATION\_STRUCTURE\_PREFER\_FAST\_TRACE\_BIT\_KHR;}
+\DoxyCodeLine{00436   build\_as\_structure.build\_info.mode =}
+\DoxyCodeLine{00437       VK\_BUILD\_ACCELERATION\_STRUCTURE\_MODE\_BUILD\_KHR;}
+\DoxyCodeLine{00438   build\_as\_structure.build\_info.geometryCount =}
+\DoxyCodeLine{00439       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(blas\_input.as\_geometry.size());}
+\DoxyCodeLine{00440   build\_as\_structure.build\_info.pGeometries = blas\_input.as\_geometry.data();}
+\DoxyCodeLine{00441 }
+\DoxyCodeLine{00442   build\_as\_structure.range\_info = blas\_input.as\_build\_offset\_info.data();}
+\DoxyCodeLine{00443 }
+\DoxyCodeLine{00444   build\_as\_structure.size\_info.sType =}
+\DoxyCodeLine{00445       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_BUILD\_SIZES\_INFO\_KHR;}
+\DoxyCodeLine{00446 }
+\DoxyCodeLine{00447   std::vector<uint32\_t> max\_primitive\_cnt(}
+\DoxyCodeLine{00448       blas\_input.as\_build\_offset\_info.size());}
+\DoxyCodeLine{00449 }
+\DoxyCodeLine{00450   \textcolor{keywordflow}{for} (uint32\_t temp = 0;}
+\DoxyCodeLine{00451        temp < static\_cast<uint32\_t>(blas\_input.as\_build\_offset\_info.size());}
+\DoxyCodeLine{00452        temp++)}
+\DoxyCodeLine{00453     max\_primitive\_cnt[temp] =}
+\DoxyCodeLine{00454         blas\_input.as\_build\_offset\_info[temp].primitiveCount;}
+\DoxyCodeLine{00455 }
+\DoxyCodeLine{00456   pvkGetAccelerationStructureBuildSizesKHR(}
+\DoxyCodeLine{00457       device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00458       VK\_ACCELERATION\_STRUCTURE\_BUILD\_TYPE\_DEVICE\_KHR,}
+\DoxyCodeLine{00459       \&build\_as\_structure.build\_info, max\_primitive\_cnt.data(),}
+\DoxyCodeLine{00460       \&build\_as\_structure.size\_info);}
+\DoxyCodeLine{00461 }
+\DoxyCodeLine{00462   current\_size = build\_as\_structure.size\_info.accelerationStructureSize;}
+\DoxyCodeLine{00463   current\_scretch\_size = build\_as\_structure.size\_info.buildScratchSize;}
+\DoxyCodeLine{00464 \}}
+\DoxyCodeLine{00465 }
+\DoxyCodeLine{00466 \textcolor{keywordtype}{void} ASManager::objectToVkGeometryKHR(}
+\DoxyCodeLine{00467     VulkanDevice* device, Mesh* mesh,}
+\DoxyCodeLine{00468     VkAccelerationStructureGeometryKHR\& acceleration\_structure\_geometry,}
+\DoxyCodeLine{00469     VkAccelerationStructureBuildRangeInfoKHR\&}
+\DoxyCodeLine{00470         acceleration\_structure\_build\_range\_info) \{}
+\DoxyCodeLine{00471   \textcolor{comment}{// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING}}
+\DoxyCodeLine{00472   \textcolor{comment}{// all functionality from extensions has to be loaded in the beginning}}
+\DoxyCodeLine{00473   \textcolor{comment}{// we need a reference to the device location of our geometry laying on the}}
+\DoxyCodeLine{00474   \textcolor{comment}{// graphics card we already uploaded objects and created vertex and index}}
+\DoxyCodeLine{00475   \textcolor{comment}{// buffers respectively}}
+\DoxyCodeLine{00476   PFN\_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR =}
+\DoxyCodeLine{00477       (PFN\_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00478           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
+\DoxyCodeLine{00479 }
+\DoxyCodeLine{00480   \textcolor{comment}{// all starts with the address of our vertex and index data we already}}
+\DoxyCodeLine{00481   \textcolor{comment}{// uploaded in buffers earlier when loading the meshes/models}}
+\DoxyCodeLine{00482   VkBufferDeviceAddressInfo vertex\_buffer\_device\_address\_info\{\};}
+\DoxyCodeLine{00483   vertex\_buffer\_device\_address\_info.sType =}
+\DoxyCodeLine{00484       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{00485   vertex\_buffer\_device\_address\_info.buffer = mesh-\/>getVertexBuffer();}
+\DoxyCodeLine{00486   vertex\_buffer\_device\_address\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00487 }
+\DoxyCodeLine{00488   VkBufferDeviceAddressInfo index\_buffer\_device\_address\_info\{\};}
+\DoxyCodeLine{00489   index\_buffer\_device\_address\_info.sType =}
+\DoxyCodeLine{00490       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{00491   index\_buffer\_device\_address\_info.buffer = mesh-\/>getIndexBuffer();}
+\DoxyCodeLine{00492   index\_buffer\_device\_address\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00493 }
+\DoxyCodeLine{00494   \textcolor{comment}{// receiving address to move on}}
+\DoxyCodeLine{00495   VkDeviceAddress vertex\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
+\DoxyCodeLine{00496       device-\/>getLogicalDevice(), \&vertex\_buffer\_device\_address\_info);}
+\DoxyCodeLine{00497   VkDeviceAddress index\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
+\DoxyCodeLine{00498       device-\/>getLogicalDevice(), \&index\_buffer\_device\_address\_info);}
+\DoxyCodeLine{00499 }
+\DoxyCodeLine{00500   \textcolor{comment}{// convert to const address for further processing}}
+\DoxyCodeLine{00501   VkDeviceOrHostAddressConstKHR vertex\_device\_or\_host\_address\_const\{\};}
+\DoxyCodeLine{00502   vertex\_device\_or\_host\_address\_const.deviceAddress = vertex\_buffer\_address;}
+\DoxyCodeLine{00503 }
+\DoxyCodeLine{00504   VkDeviceOrHostAddressConstKHR index\_device\_or\_host\_address\_const\{\};}
+\DoxyCodeLine{00505   index\_device\_or\_host\_address\_const.deviceAddress = index\_buffer\_address;}
+\DoxyCodeLine{00506 }
+\DoxyCodeLine{00507   VkAccelerationStructureGeometryTrianglesDataKHR}
+\DoxyCodeLine{00508       acceleration\_structure\_triangles\_data\{\};}
+\DoxyCodeLine{00509   acceleration\_structure\_triangles\_data.sType =}
+\DoxyCodeLine{00510       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_GEOMETRY\_TRIANGLES\_DATA\_KHR;}
+\DoxyCodeLine{00511   acceleration\_structure\_triangles\_data.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00512   acceleration\_structure\_triangles\_data.vertexFormat =}
+\DoxyCodeLine{00513       VK\_FORMAT\_R32G32B32\_SFLOAT;}
+\DoxyCodeLine{00514   acceleration\_structure\_triangles\_data.vertexData =}
+\DoxyCodeLine{00515       vertex\_device\_or\_host\_address\_const;}
+\DoxyCodeLine{00516   acceleration\_structure\_triangles\_data.vertexStride = \textcolor{keyword}{sizeof}(Vertex);}
+\DoxyCodeLine{00517   acceleration\_structure\_triangles\_data.maxVertex = mesh-\/>getVertexCount();}
+\DoxyCodeLine{00518   acceleration\_structure\_triangles\_data.indexType = VK\_INDEX\_TYPE\_UINT32;}
+\DoxyCodeLine{00519   acceleration\_structure\_triangles\_data.indexData =}
+\DoxyCodeLine{00520       index\_device\_or\_host\_address\_const;}
+\DoxyCodeLine{00521 }
+\DoxyCodeLine{00522   \textcolor{comment}{// can also be instances or AABBs; not covered here}}
+\DoxyCodeLine{00523   \textcolor{comment}{// but to identify as triangles put it ito these struct}}
+\DoxyCodeLine{00524   VkAccelerationStructureGeometryDataKHR acceleration\_structure\_geometry\_data\{\};}
+\DoxyCodeLine{00525   acceleration\_structure\_geometry\_data.triangles =}
+\DoxyCodeLine{00526       acceleration\_structure\_triangles\_data;}
+\DoxyCodeLine{00527 }
+\DoxyCodeLine{00528   acceleration\_structure\_geometry.sType =}
+\DoxyCodeLine{00529       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_GEOMETRY\_KHR;}
+\DoxyCodeLine{00530   acceleration\_structure\_geometry.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00531   acceleration\_structure\_geometry.geometryType = VK\_GEOMETRY\_TYPE\_TRIANGLES\_KHR;}
+\DoxyCodeLine{00532   acceleration\_structure\_geometry.geometry =}
+\DoxyCodeLine{00533       acceleration\_structure\_geometry\_data;}
+\DoxyCodeLine{00534   acceleration\_structure\_geometry.flags = VK\_GEOMETRY\_OPAQUE\_BIT\_KHR;}
+\DoxyCodeLine{00535 }
+\DoxyCodeLine{00536   \textcolor{comment}{// we have triangles so divide the number of vertices with 3!!}}
+\DoxyCodeLine{00537   \textcolor{comment}{// for our simple case a no brainer}}
+\DoxyCodeLine{00538   \textcolor{comment}{// take entire data to build BLAS}}
+\DoxyCodeLine{00539   \textcolor{comment}{// number of indices is truly the stick point here}}
+\DoxyCodeLine{00540   acceleration\_structure\_build\_range\_info.primitiveCount =}
+\DoxyCodeLine{00541       mesh-\/>getIndexCount() / 3;}
+\DoxyCodeLine{00542   acceleration\_structure\_build\_range\_info.primitiveOffset = 0;}
+\DoxyCodeLine{00543   acceleration\_structure\_build\_range\_info.firstVertex = 0;}
+\DoxyCodeLine{00544   acceleration\_structure\_build\_range\_info.transformOffset = 0;}
+\DoxyCodeLine{00545 \}}
+
+\end{DoxyCode}
