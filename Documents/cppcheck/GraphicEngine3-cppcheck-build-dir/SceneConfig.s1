@@ -1,2 +1,0 @@
-getModelFile call:[str] noreturn:[str]
-getModelMatrix call:[modelMatrix,radians,rotate,scale,vec3]

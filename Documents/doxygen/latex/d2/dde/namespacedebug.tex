@@ -1,4 +1,4 @@
-\doxysection{debug Namespace Reference}
+\hypertarget{namespacedebug}{}\doxysection{debug Namespace Reference}
 \label{namespacedebug}\index{debug@{debug}}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -21,7 +21,7 @@ Vk\+Debug\+Utils\+Messenger\+EXT \mbox{\hyperlink{namespacedebug_a9f1286c41f0bc0
 
 
 \doxysubsection{Function Documentation}
-\mbox{\label{namespacedebug_a2c211b70c4398422cdff97189048fe44}} 
+\mbox{\Hypertarget{namespacedebug_a2c211b70c4398422cdff97189048fe44}\label{namespacedebug_a2c211b70c4398422cdff97189048fe44}} 
 \index{debug@{debug}!debugUtilsMessengerCallback@{debugUtilsMessengerCallback}}
 \index{debugUtilsMessengerCallback@{debugUtilsMessengerCallback}!debug@{debug}}
 \doxysubsubsection{\texorpdfstring{debugUtilsMessengerCallback()}{debugUtilsMessengerCallback()}}
@@ -84,7 +84,7 @@ Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debuggin
 
 Here is the caller graph for this function\+:
 % FIG 0
-\mbox{\label{namespacedebug_a0090a7de5456794069c8360a0780ed52}} 
+\mbox{\Hypertarget{namespacedebug_a0090a7de5456794069c8360a0780ed52}\label{namespacedebug_a0090a7de5456794069c8360a0780ed52}} 
 \index{debug@{debug}!freeDebugCallback@{freeDebugCallback}}
 \index{freeDebugCallback@{freeDebugCallback}!debug@{debug}}
 \doxysubsubsection{\texorpdfstring{freeDebugCallback()}{freeDebugCallback()}}
@@ -97,8 +97,8 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{82}} of fi
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00082                                             \{}
-\DoxyCodeLine{00083   \textcolor{keywordflow}{if} (debugUtilsMessenger != VK\_NULL\_HANDLE) \{}
-\DoxyCodeLine{00084     vkDestroyDebugUtilsMessengerEXT(instance, debugUtilsMessenger, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00083   \textcolor{keywordflow}{if} (\mbox{\hyperlink{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}{debugUtilsMessenger}} != VK\_NULL\_HANDLE) \{}
+\DoxyCodeLine{00084     \mbox{\hyperlink{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}{vkDestroyDebugUtilsMessengerEXT}}(instance, \mbox{\hyperlink{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}{debugUtilsMessenger}}, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{00085   \}}
 \DoxyCodeLine{00086 \}}
 
@@ -107,7 +107,7 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{82}} of fi
 
 References \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{debug\+Utils\+Messenger}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00007}{vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}}.
 
-\mbox{\label{namespacedebug_a2d3861f9b449521a13975f6f21342c43}} 
+\mbox{\Hypertarget{namespacedebug_a2d3861f9b449521a13975f6f21342c43}\label{namespacedebug_a2d3861f9b449521a13975f6f21342c43}} 
 \index{debug@{debug}!setupDebugging@{setupDebugging}}
 \index{setupDebugging@{setupDebugging}!debug@{debug}}
 \doxysubsubsection{\texorpdfstring{setupDebugging()}{setupDebugging()}}
@@ -120,10 +120,10 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{58}} of fi
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00059                                                        \{}
-\DoxyCodeLine{00060   vkCreateDebugUtilsMessengerEXT =}
+\DoxyCodeLine{00060   \mbox{\hyperlink{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}{vkCreateDebugUtilsMessengerEXT}} =}
 \DoxyCodeLine{00061       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkCreateDebugUtilsMessengerEXT\textcolor{keyword}{>}(}
 \DoxyCodeLine{00062           vkGetInstanceProcAddr(instance, \textcolor{stringliteral}{"{}vkCreateDebugUtilsMessengerEXT"{}}));}
-\DoxyCodeLine{00063   vkDestroyDebugUtilsMessengerEXT =}
+\DoxyCodeLine{00063   \mbox{\hyperlink{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}{vkDestroyDebugUtilsMessengerEXT}} =}
 \DoxyCodeLine{00064       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkDestroyDebugUtilsMessengerEXT\textcolor{keyword}{>}(}
 \DoxyCodeLine{00065           vkGetInstanceProcAddr(instance, \textcolor{stringliteral}{"{}vkDestroyDebugUtilsMessengerEXT"{}}));}
 \DoxyCodeLine{00066 }
@@ -136,9 +136,9 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{58}} of fi
 \DoxyCodeLine{00073   debugUtilsMessengerCI.messageType =}
 \DoxyCodeLine{00074       VK\_DEBUG\_UTILS\_MESSAGE\_TYPE\_GENERAL\_BIT\_EXT |}
 \DoxyCodeLine{00075       VK\_DEBUG\_UTILS\_MESSAGE\_TYPE\_VALIDATION\_BIT\_EXT;}
-\DoxyCodeLine{00076   debugUtilsMessengerCI.pfnUserCallback = debugUtilsMessengerCallback;}
-\DoxyCodeLine{00077   ASSERT\_VULKAN(vkCreateDebugUtilsMessengerEXT(instance, \&debugUtilsMessengerCI,}
-\DoxyCodeLine{00078                                                \textcolor{keyword}{nullptr}, \&debugUtilsMessenger),}
+\DoxyCodeLine{00076   debugUtilsMessengerCI.pfnUserCallback = \mbox{\hyperlink{namespacedebug_a2c211b70c4398422cdff97189048fe44}{debugUtilsMessengerCallback}};}
+\DoxyCodeLine{00077   ASSERT\_VULKAN(\mbox{\hyperlink{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}{vkCreateDebugUtilsMessengerEXT}}(instance, \&debugUtilsMessengerCI,}
+\DoxyCodeLine{00078                                                \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}{debugUtilsMessenger}}),}
 \DoxyCodeLine{00079                 \textcolor{stringliteral}{"{}Failed to create debug messenger"{}})}
 \DoxyCodeLine{00080 \}}
 
@@ -152,7 +152,7 @@ Here is the call graph for this function\+:
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\label{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}} 
+\mbox{\Hypertarget{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}\label{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}} 
 \index{debug@{debug}!debugUtilsMessenger@{debugUtilsMessenger}}
 \index{debugUtilsMessenger@{debugUtilsMessenger}!debug@{debug}}
 \doxysubsubsection{\texorpdfstring{debugUtilsMessenger}{debugUtilsMessenger}}
@@ -166,7 +166,7 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{8}} of fil
 
 Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{free\+Debug\+Callback()}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
 
-\mbox{\label{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}} 
+\mbox{\Hypertarget{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}\label{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}} 
 \index{debug@{debug}!vkCreateDebugUtilsMessengerEXT@{vkCreateDebugUtilsMessengerEXT}}
 \index{vkCreateDebugUtilsMessengerEXT@{vkCreateDebugUtilsMessengerEXT}!debug@{debug}}
 \doxysubsubsection{\texorpdfstring{vkCreateDebugUtilsMessengerEXT}{vkCreateDebugUtilsMessengerEXT}}
@@ -180,7 +180,7 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00006}{6}} of fil
 
 Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
 
-\mbox{\label{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}} 
+\mbox{\Hypertarget{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}\label{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}} 
 \index{debug@{debug}!vkDestroyDebugUtilsMessengerEXT@{vkDestroyDebugUtilsMessengerEXT}}
 \index{vkDestroyDebugUtilsMessengerEXT@{vkDestroyDebugUtilsMessengerEXT}!debug@{debug}}
 \doxysubsubsection{\texorpdfstring{vkDestroyDebugUtilsMessengerEXT}{vkDestroyDebugUtilsMessengerEXT}}

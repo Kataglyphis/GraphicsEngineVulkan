@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<analyzerinfo checksum="3738563415">
-        <error id="unknownMacro" severity="error" msg="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." verbose="There is an unknown macro here somewhere. Configuration is required. If ASSERT_VULKAN is a macro then please configure it." file0="C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanImage.cpp">
-            <location file="C:\Users\jonas_l6e3q\Desktop\GraphicsEngineVulkan\Src\vulkan_base\VulkanImage.cpp" line="50" column="2"/>
-        </error>
-</analyzerinfo>

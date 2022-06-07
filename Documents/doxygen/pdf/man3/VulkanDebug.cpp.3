@@ -1,0 +1,49 @@
+.TH "C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp" 3 "Tue Jun 7 2022" "Version 1.9" "GraphicsEngine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan_base/VulkanDebug.cpp
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'VulkanDebug\&.h'\fP
+.br
+\fC#include 'Utilities\&.h'\fP
+.br
+
+.SS "Namespaces"
+
+.in +1c
+.ti -1c
+.RI "namespace \fBdebug\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "VKAPI_ATTR VkBool32 VKAPI_CALL \fBdebug::debugUtilsMessengerCallback\fP (VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)"
+.br
+.ti -1c
+.RI "void \fBdebug::setupDebugging\fP (VkInstance instance, VkDebugReportFlagsEXT flags, VkDebugReportCallbackEXT callBack)"
+.br
+.ti -1c
+.RI "void \fBdebug::freeDebugCallback\fP (VkInstance instance)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "PFN_vkCreateDebugUtilsMessengerEXT \fBdebug::vkCreateDebugUtilsMessengerEXT\fP"
+.br
+.ti -1c
+.RI "PFN_vkDestroyDebugUtilsMessengerEXT \fBdebug::vkDestroyDebugUtilsMessengerEXT\fP"
+.br
+.ti -1c
+.RI "VkDebugUtilsMessengerEXT \fBdebug::debugUtilsMessenger\fP"
+.br
+.in -1c
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for GraphicsEngine from the source code\&.

@@ -1,82 +1,79 @@
-\doxysection{App.\+cpp}
+\hypertarget{_app_8cpp_source}{}\doxysection{App.\+cpp}
 \label{_app_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/App.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/App.cpp}}
 \mbox{\hyperlink{_app_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}App.h"{}}}
-\DoxyCodeLine{00002 }
-\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <vulkan/vulkan.h>}}
-\DoxyCodeLine{00004 \textcolor{preprocessor}{\#define GLFW\_INCLUDE\_NONE}}
-\DoxyCodeLine{00005 \textcolor{preprocessor}{\#define GLFW\_INCLUDE\_VULKAN}}
-\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include <GLFW/glfw3.h>}}
-\DoxyCodeLine{00007 }
-\DoxyCodeLine{00008 \textcolor{preprocessor}{\#define GLM\_FORCE\_RADIANS}}
-\DoxyCodeLine{00009 \textcolor{preprocessor}{\#define GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE}}
-\DoxyCodeLine{00010 }
-\DoxyCodeLine{00011 \textcolor{preprocessor}{\#include <glm/glm.hpp>}}
-\DoxyCodeLine{00012 \textcolor{preprocessor}{\#include <glm/mat4x4.hpp>}}
-\DoxyCodeLine{00013 }
-\DoxyCodeLine{00014 \textcolor{preprocessor}{\#include <iostream>}}
-\DoxyCodeLine{00015 \textcolor{preprocessor}{\#include <stdexcept>}}
-\DoxyCodeLine{00016 \textcolor{preprocessor}{\#include <vector>}}
-\DoxyCodeLine{00017 \textcolor{preprocessor}{\#include <memory>}}
-\DoxyCodeLine{00018 }
-\DoxyCodeLine{00019 \textcolor{preprocessor}{\#include "{}Window.h"{}}}
-\DoxyCodeLine{00020 \textcolor{preprocessor}{\#include "{}VulkanRenderer.hpp"{}}}
-\DoxyCodeLine{00021 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
-\DoxyCodeLine{00022 }
-\DoxyCodeLine{00023 App::App() \{ \}}
-\DoxyCodeLine{00024 }
-\DoxyCodeLine{00025 \textcolor{keywordtype}{int} App::run()}
-\DoxyCodeLine{00026 \{}
-\DoxyCodeLine{00027 }
-\DoxyCodeLine{00028   \textcolor{keywordtype}{int} window\_width = 1200;}
-\DoxyCodeLine{00029   \textcolor{keywordtype}{int} window\_height = 768;}
-\DoxyCodeLine{00030 }
-\DoxyCodeLine{00031   \textcolor{keywordtype}{float} delta\_time = 0.0f;}
-\DoxyCodeLine{00032   \textcolor{keywordtype}{float} last\_time = 0.0f;}
-\DoxyCodeLine{00033 }
-\DoxyCodeLine{00034   std::unique\_ptr<Window> window = std::make\_unique<Window>(window\_width, window\_height);}
-\DoxyCodeLine{00035   std::unique\_ptr<Scene> scene = std::make\_unique<Scene>();}
-\DoxyCodeLine{00036   std::unique\_ptr<GUI> gui = std::make\_unique<GUI>(window.get());}
-\DoxyCodeLine{00037   std::unique\_ptr<Camera> camera = std::make\_unique<Camera>();}
-\DoxyCodeLine{00038 }
-\DoxyCodeLine{00039   VulkanRenderer vulkan\_renderer\{ window.get(), scene.get(), gui.get(), camera.get() \};}
-\DoxyCodeLine{00040 }
-\DoxyCodeLine{00041   \textcolor{keywordflow}{while} (!window-\/>get\_should\_close()) \{}
-\DoxyCodeLine{00042 }
-\DoxyCodeLine{00043     \textcolor{comment}{//poll all events incoming from user}}
-\DoxyCodeLine{00044     glfwPollEvents();}
-\DoxyCodeLine{00045 }
-\DoxyCodeLine{00046     \textcolor{comment}{// handle events for the camera}}
-\DoxyCodeLine{00047     camera-\/>key\_control(window-\/>get\_keys(), delta\_time);}
-\DoxyCodeLine{00048     camera-\/>mouse\_control(window-\/>get\_x\_change(), window-\/>get\_y\_change());}
-\DoxyCodeLine{00049 }
-\DoxyCodeLine{00050 }
-\DoxyCodeLine{00051     \textcolor{keywordtype}{float} now = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(glfwGetTime());}
-\DoxyCodeLine{00052     delta\_time = now -\/ last\_time;}
-\DoxyCodeLine{00053     last\_time = now;}
-\DoxyCodeLine{00054 }
-\DoxyCodeLine{00055     scene-\/>update\_user\_input(gui.get());}
-\DoxyCodeLine{00056 }
-\DoxyCodeLine{00057     vulkan\_renderer.updateStateDueToUserInput(gui.get());}
-\DoxyCodeLine{00058     vulkan\_renderer.updateUniforms(scene.get(), camera.get(), window.get());}
-\DoxyCodeLine{00059 \textcolor{comment}{}}
-\DoxyCodeLine{00060 \textcolor{comment}{    //// retrieve updates from the UI}}
-\DoxyCodeLine{00061 \textcolor{comment}{}    gui-\/>render();}
-\DoxyCodeLine{00062 }
-\DoxyCodeLine{00063     vulkan\_renderer.drawFrame();}
-\DoxyCodeLine{00064   \}}
-\DoxyCodeLine{00065 }
-\DoxyCodeLine{00066   vulkan\_renderer.finishAllRenderCommands();}
-\DoxyCodeLine{00067 }
-\DoxyCodeLine{00068   scene-\/>cleanUp();}
-\DoxyCodeLine{00069   gui-\/>cleanUp();}
-\DoxyCodeLine{00070   window-\/>cleanUp();}
-\DoxyCodeLine{00071   vulkan\_renderer.cleanUp();}
-\DoxyCodeLine{00072 }
-\DoxyCodeLine{00073   \textcolor{keywordflow}{return} EXIT\_SUCCESS;}
-\DoxyCodeLine{00074 \}}
-\DoxyCodeLine{00075 }
-\DoxyCodeLine{00076 App::\string~App() \{ \}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}App.h"{}}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <vulkan/vulkan.h>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00004}\mbox{\hyperlink{_app_8cpp_a088324ad8995e3eb76024e3e79083d48}{00004}} \textcolor{preprocessor}{\#define GLFW\_INCLUDE\_NONE}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00005}\mbox{\hyperlink{_app_8cpp_ab91f325a54d3e35fe831a86d6382c2a9}{00005}} \textcolor{preprocessor}{\#define GLFW\_INCLUDE\_VULKAN}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include <GLFW/glfw3.h>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00007}00007 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00008}\mbox{\hyperlink{_app_8cpp_a816ab7d5c2ce1f0a01216042837beb93}{00008}} \textcolor{preprocessor}{\#define GLM\_FORCE\_RADIANS}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00009}\mbox{\hyperlink{_app_8cpp_aa53e0967978ad7a8792f6961156ec968}{00009}} \textcolor{preprocessor}{\#define GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00011}00011 \textcolor{preprocessor}{\#include <glm/glm.hpp>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00012}00012 \textcolor{preprocessor}{\#include <glm/mat4x4.hpp>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00013}00013 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00014}00014 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00015}00015 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00016}00016 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00018}00018 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00019}00019 \textcolor{preprocessor}{\#include "{}VulkanRenderer.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00020}00020 \textcolor{preprocessor}{\#include "{}Window.h"{}}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00021}00021 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00022}00022 App::App() \{\}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00023}00023 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00024}00024 \textcolor{keywordtype}{int} App::run() \{}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00025}00025   \textcolor{keywordtype}{int} window\_width = 1200;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00026}00026   \textcolor{keywordtype}{int} window\_height = 768;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00027}00027 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00028}00028   \textcolor{keywordtype}{float} delta\_time = 0.0f;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00029}00029   \textcolor{keywordtype}{float} last\_time = 0.0f;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00030}00030 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00031}00031   std::unique\_ptr<Window> window =}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00032}00032       std::make\_unique<Window>(window\_width, window\_height);}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00033}00033   std::unique\_ptr<Scene> scene = std::make\_unique<Scene>();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00034}00034   std::unique\_ptr<GUI> gui = std::make\_unique<GUI>(window.get());}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00035}00035   std::unique\_ptr<Camera> camera = std::make\_unique<Camera>();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00037}00037   VulkanRenderer vulkan\_renderer\{window.get(), scene.get(), gui.get(),}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00038}00038                                  camera.get()\};}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00040}00040   \textcolor{keywordflow}{while} (!window-\/>get\_should\_close()) \{}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00041}00041     \textcolor{comment}{// poll all events incoming from user}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00042}00042     glfwPollEvents();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00044}00044     \textcolor{comment}{// handle events for the camera}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00045}00045     camera-\/>key\_control(window-\/>get\_keys(), delta\_time);}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00046}00046     camera-\/>mouse\_control(window-\/>get\_x\_change(), window-\/>get\_y\_change());}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00047}00047 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00048}00048     \textcolor{keywordtype}{float} now = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(glfwGetTime());}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00049}00049     delta\_time = now -\/ last\_time;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00050}00050     last\_time = now;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00051}00051 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00052}00052     scene-\/>update\_user\_input(gui.get());}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00053}00053 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00054}00054     vulkan\_renderer.updateStateDueToUserInput(gui.get());}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00055}00055     vulkan\_renderer.updateUniforms(scene.get(), camera.get(), window.get());}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00056}00056 \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00057}00057 \textcolor{comment}{    //// retrieve updates from the UI}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00058}00058 \textcolor{comment}{}    gui-\/>render();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00059}00059 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00060}00060     vulkan\_renderer.drawFrame();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00061}00061   \}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00062}00062 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00063}00063   vulkan\_renderer.finishAllRenderCommands();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00065}00065   scene-\/>cleanUp();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00066}00066   gui-\/>cleanUp();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00067}00067   window-\/>cleanUp();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00068}00068   vulkan\_renderer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00070}00070   \textcolor{keywordflow}{return} EXIT\_SUCCESS;}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00071}00071 \}}
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00072}00072 }
+\DoxyCodeLine{\Hypertarget{_app_8cpp_source_l00073}00073 App::\string~App() \{\}}
 
 \end{DoxyCode}

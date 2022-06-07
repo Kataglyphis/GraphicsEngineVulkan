@@ -26,8 +26,9 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="../../Engine_logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.1</span>
+   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.9</span>
    </div>
+   <div id="projectbrief">Epic graphics from hell</div>
   </td>
  </tr>
  </tbody>
@@ -105,17 +106,17 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">    8</span>  std::stringstream modelFile;</div>
 <div class="line"><span class="lineno">    9</span>  modelFile &lt;&lt; CMAKELISTS_DIR;</div>
 <div class="line"><span class="lineno">   10</span><span class="preprocessor">#if NDEBUG</span></div>
-<div class="line"><span class="lineno">   11</span>    modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/crytek-sponza/&quot;</span>;</div>
-<div class="line"><span class="lineno">   12</span>    modelFile &lt;&lt; <span class="stringliteral">&quot;sponza_triag.obj&quot;</span>;</div>
+<div class="line"><span class="lineno">   11</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/crytek-sponza/&quot;</span>;</div>
+<div class="line"><span class="lineno">   12</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;sponza_triag.obj&quot;</span>;</div>
 <div class="line"><span class="lineno">   13</span> </div>
 <div class="line"><span class="lineno">   14</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   15</span><span class="preprocessor">    #ifdef SULO_MODE</span></div>
-<div class="line"><span class="lineno">   16</span>    modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/Sulo/&quot;</span>;</div>
-<div class="line"><span class="lineno">   17</span>    modelFile &lt;&lt; <span class="stringliteral">&quot;SuloLongDongLampe_v2.obj&quot;</span>;</div>
-<div class="line"><span class="lineno">   18</span><span class="preprocessor">    #else </span></div>
-<div class="line"><span class="lineno">   19</span>    modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/VikingRoom/&quot;</span>;</div>
-<div class="line"><span class="lineno">   20</span>    modelFile &lt;&lt; <span class="stringliteral">&quot;viking_room.obj&quot;</span>;</div>
-<div class="line"><span class="lineno">   21</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><span class="lineno">   15</span><span class="preprocessor">#ifdef SULO_MODE</span></div>
+<div class="line"><span class="lineno">   16</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/Sulo/&quot;</span>;</div>
+<div class="line"><span class="lineno">   17</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;SuloLongDongLampe_v2.obj&quot;</span>;</div>
+<div class="line"><span class="lineno">   18</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">   19</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/VikingRoom/&quot;</span>;</div>
+<div class="line"><span class="lineno">   20</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;viking_room.obj&quot;</span>;</div>
+<div class="line"><span class="lineno">   21</span><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="lineno">   23</span> </div>
 <div class="line"><span class="lineno">   24</span>  <span class="keywordflow">return</span> modelFile.str();</div>
@@ -166,17 +167,17 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   51</span> </div>
 <div class="line"><span class="lineno">   52</span><span class="preprocessor">#else</span></div>
 <div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="comment">// dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f,</span></div>
-<div class="line"><span class="lineno">   55</span>  <span class="comment">// -50.0f));</span></div>
-<div class="line"><span class="lineno">   56</span><span class="preprocessor">  #if SULO_MODE</span></div>
+<div class="line"><span class="lineno">   54</span><span class="comment">// dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f,</span></div>
+<div class="line"><span class="lineno">   55</span><span class="comment">// -50.0f));</span></div>
+<div class="line"><span class="lineno">   56</span><span class="preprocessor">#if SULO_MODE</span></div>
 <div class="line"><span class="lineno">   57</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));</div>
-<div class="line"><span class="lineno">   58</span><span class="preprocessor">  #else </span></div>
+<div class="line"><span class="lineno">   58</span><span class="preprocessor">#else</span></div>
 <div class="line"><span class="lineno">   59</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));</div>
 <div class="line"><span class="lineno">   60</span>  modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f),</div>
 <div class="line"><span class="lineno">   61</span>                            glm::vec3(1.0f, 0.0f, 0.0f));</div>
 <div class="line"><span class="lineno">   62</span>  modelMatrix =</div>
 <div class="line"><span class="lineno">   63</span>      glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));</div>
-<div class="line"><span class="lineno">   64</span><span class="preprocessor">  #endif</span></div>
+<div class="line"><span class="lineno">   64</span><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="lineno">   67</span> </div>
@@ -191,7 +192,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../df/dcb/namespacescene_config.html">sceneConfig</a></li>
-    <li class="footer">Generated on Tue Jun 7 2022 13:44:51 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Jun 7 2022 17:26:12 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

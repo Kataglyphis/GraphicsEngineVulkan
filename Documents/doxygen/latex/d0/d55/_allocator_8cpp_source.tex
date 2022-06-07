@@ -1,31 +1,31 @@
-\doxysection{Allocator.\+cpp}
+\hypertarget{_allocator_8cpp_source}{}\doxysection{Allocator.\+cpp}
 \label{_allocator_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/memory/Allocator.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/memory/Allocator.cpp}}
 \mbox{\hyperlink{_allocator_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Allocator.h"{}}}
-\DoxyCodeLine{00002 }
-\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
-\DoxyCodeLine{00004 }
-\DoxyCodeLine{00005 Allocator::Allocator() \{\}}
-\DoxyCodeLine{00006 }
-\DoxyCodeLine{00007 Allocator::Allocator(\textcolor{keyword}{const} VkDevice\& device,}
-\DoxyCodeLine{00008                      \textcolor{keyword}{const} VkPhysicalDevice\& physicalDevice,}
-\DoxyCodeLine{00009                      \textcolor{keyword}{const} VkInstance\& instance) \{}
-\DoxyCodeLine{00010   \textcolor{comment}{// see here:}}
-\DoxyCodeLine{00011   \textcolor{comment}{// https://gpuopen-\/librariesandsdks.github.io/VulkanMemoryAllocator/html/quick\_start.html}}
-\DoxyCodeLine{00012   VmaAllocatorCreateInfo allocatorCreateInfo = \{\};}
-\DoxyCodeLine{00013   allocatorCreateInfo.flags = VMA\_ALLOCATOR\_CREATE\_BUFFER\_DEVICE\_ADDRESS\_BIT;}
-\DoxyCodeLine{00014   allocatorCreateInfo.vulkanApiVersion = VK\_API\_VERSION\_1\_3;}
-\DoxyCodeLine{00015   allocatorCreateInfo.physicalDevice = physicalDevice;}
-\DoxyCodeLine{00016   allocatorCreateInfo.device = device;}
-\DoxyCodeLine{00017   allocatorCreateInfo.instance = instance;}
-\DoxyCodeLine{00018 }
-\DoxyCodeLine{00019   ASSERT\_VULKAN(vmaCreateAllocator(\&allocatorCreateInfo, \&vmaAllocator),}
-\DoxyCodeLine{00020                 \textcolor{stringliteral}{"{}Failed to create vma allocator!"{}})}
-\DoxyCodeLine{00021 \}}
-\DoxyCodeLine{00022 }
-\DoxyCodeLine{00023 \textcolor{keywordtype}{void} Allocator::cleanUp() \{ vmaDestroyAllocator(vmaAllocator); \}}
-\DoxyCodeLine{00024 }
-\DoxyCodeLine{00025 Allocator::\string~Allocator() \{\}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Allocator.h"{}}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00004}00004 }
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00005}00005 Allocator::Allocator() \{\}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00007}00007 Allocator::Allocator(\textcolor{keyword}{const} VkDevice\& device,}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00008}00008                      \textcolor{keyword}{const} VkPhysicalDevice\& physicalDevice,}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00009}00009                      \textcolor{keyword}{const} VkInstance\& instance) \{}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00010}00010   \textcolor{comment}{// see here:}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00011}00011   \textcolor{comment}{// https://gpuopen-\/librariesandsdks.github.io/VulkanMemoryAllocator/html/quick\_start.html}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00012}00012   VmaAllocatorCreateInfo allocatorCreateInfo = \{\};}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00013}00013   allocatorCreateInfo.flags = VMA\_ALLOCATOR\_CREATE\_BUFFER\_DEVICE\_ADDRESS\_BIT;}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00014}00014   allocatorCreateInfo.vulkanApiVersion = VK\_API\_VERSION\_1\_3;}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00015}00015   allocatorCreateInfo.physicalDevice = physicalDevice;}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00016}00016   allocatorCreateInfo.device = device;}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00017}00017   allocatorCreateInfo.instance = instance;}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00018}00018 }
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00019}00019   ASSERT\_VULKAN(vmaCreateAllocator(\&allocatorCreateInfo, \&vmaAllocator),}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00020}00020                 \textcolor{stringliteral}{"{}Failed to create vma allocator!"{}})}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00021}00021 \}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00023}00023 \textcolor{keywordtype}{void} Allocator::cleanUp() \{ vmaDestroyAllocator(vmaAllocator); \}}
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_allocator_8cpp_source_l00025}00025 Allocator::\string~Allocator() \{\}}
 
 \end{DoxyCode}

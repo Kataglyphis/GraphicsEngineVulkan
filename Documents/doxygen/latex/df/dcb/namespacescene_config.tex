@@ -1,4 +1,4 @@
-\doxysection{scene\+Config Namespace Reference}
+\hypertarget{namespacescene_config}{}\doxysection{scene\+Config Namespace Reference}
 \label{namespacescene_config}\index{sceneConfig@{sceneConfig}}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -10,7 +10,7 @@ glm\+::mat4 \mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446
 
 
 \doxysubsection{Function Documentation}
-\mbox{\label{namespacescene_config_a6c53371694e44e40c835e48f27def71f}} 
+\mbox{\Hypertarget{namespacescene_config_a6c53371694e44e40c835e48f27def71f}\label{namespacescene_config_a6c53371694e44e40c835e48f27def71f}} 
 \index{sceneConfig@{sceneConfig}!getModelFile@{getModelFile}}
 \index{getModelFile@{getModelFile}!sceneConfig@{sceneConfig}}
 \doxysubsubsection{\texorpdfstring{getModelFile()}{getModelFile()}}
@@ -26,17 +26,17 @@ Definition at line \mbox{\hyperlink{_scene_config_8cpp_source_l00007}{7}} of fil
 \DoxyCodeLine{00008   std::stringstream modelFile;}
 \DoxyCodeLine{00009   modelFile << CMAKELISTS\_DIR;}
 \DoxyCodeLine{00010 \textcolor{preprocessor}{\#if NDEBUG}}
-\DoxyCodeLine{00011     modelFile << \textcolor{stringliteral}{"{}/Resources/Model/crytek-\/sponza/"{}};}
-\DoxyCodeLine{00012     modelFile << \textcolor{stringliteral}{"{}sponza\_triag.obj"{}};}
+\DoxyCodeLine{00011   modelFile << \textcolor{stringliteral}{"{}/Resources/Model/crytek-\/sponza/"{}};}
+\DoxyCodeLine{00012   modelFile << \textcolor{stringliteral}{"{}sponza\_triag.obj"{}};}
 \DoxyCodeLine{00013 }
 \DoxyCodeLine{00014 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{00015 \textcolor{preprocessor}{    \#ifdef SULO\_MODE}}
-\DoxyCodeLine{00016     modelFile << \textcolor{stringliteral}{"{}/Resources/Model/Sulo/"{}};}
-\DoxyCodeLine{00017     modelFile << \textcolor{stringliteral}{"{}SuloLongDongLampe\_v2.obj"{}};}
-\DoxyCodeLine{00018 \textcolor{preprocessor}{    \#else }}
-\DoxyCodeLine{00019     modelFile << \textcolor{stringliteral}{"{}/Resources/Model/VikingRoom/"{}};}
-\DoxyCodeLine{00020     modelFile << \textcolor{stringliteral}{"{}viking\_room.obj"{}};}
-\DoxyCodeLine{00021 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{00015 \textcolor{preprocessor}{\#ifdef SULO\_MODE}}
+\DoxyCodeLine{00016   modelFile << \textcolor{stringliteral}{"{}/Resources/Model/Sulo/"{}};}
+\DoxyCodeLine{00017   modelFile << \textcolor{stringliteral}{"{}SuloLongDongLampe\_v2.obj"{}};}
+\DoxyCodeLine{00018 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00019   modelFile << \textcolor{stringliteral}{"{}/Resources/Model/VikingRoom/"{}};}
+\DoxyCodeLine{00020   modelFile << \textcolor{stringliteral}{"{}viking\_room.obj"{}};}
+\DoxyCodeLine{00021 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00022 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00023 }
 \DoxyCodeLine{00024   \textcolor{keywordflow}{return} modelFile.str();}
@@ -56,7 +56,7 @@ Definition at line \mbox{\hyperlink{_scene_config_8cpp_source_l00007}{7}} of fil
 \DoxyCodeLine{00038 \}}
 
 \end{DoxyCode}
-\mbox{\label{namespacescene_config_a71330a511f748716643e88a4d446875c}} 
+\mbox{\Hypertarget{namespacescene_config_a71330a511f748716643e88a4d446875c}\label{namespacescene_config_a71330a511f748716643e88a4d446875c}} 
 \index{sceneConfig@{sceneConfig}!getModelMatrix@{getModelMatrix}}
 \index{getModelMatrix@{getModelMatrix}!sceneConfig@{sceneConfig}}
 \doxysubsubsection{\texorpdfstring{getModelMatrix()}{getModelMatrix()}}
@@ -82,17 +82,17 @@ Definition at line \mbox{\hyperlink{_scene_config_8cpp_source_l00040}{40}} of fi
 \DoxyCodeLine{00051 }
 \DoxyCodeLine{00052 \textcolor{preprocessor}{\#else}}
 \DoxyCodeLine{00053 }
-\DoxyCodeLine{00054   \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
-\DoxyCodeLine{00055   \textcolor{comment}{// -\/50.0f));}}
-\DoxyCodeLine{00056 \textcolor{preprocessor}{  \#if SULO\_MODE}}
+\DoxyCodeLine{00054 \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
+\DoxyCodeLine{00055 \textcolor{comment}{// -\/50.0f));}}
+\DoxyCodeLine{00056 \textcolor{preprocessor}{\#if SULO\_MODE}}
 \DoxyCodeLine{00057   modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));}
-\DoxyCodeLine{00058 \textcolor{preprocessor}{  \#else }}
+\DoxyCodeLine{00058 \textcolor{preprocessor}{\#else}}
 \DoxyCodeLine{00059   modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));}
 \DoxyCodeLine{00060   modelMatrix = glm::rotate(modelMatrix, glm::radians(-\/90.f),}
 \DoxyCodeLine{00061                             glm::vec3(1.0f, 0.0f, 0.0f));}
 \DoxyCodeLine{00062   modelMatrix =}
 \DoxyCodeLine{00063       glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));}
-\DoxyCodeLine{00064 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{00064 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00065 }
 \DoxyCodeLine{00066 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00067 }

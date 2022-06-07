@@ -132,7 +132,7 @@
       citecolor=blue,%
       unicode,%
       pdftitle={Graphics\+Engine},%
-      pdfsubject={}%
+      pdfsubject={Epic graphics from hell}%
     }
   % Custom commands used by the header
   % Custom commands
@@ -152,6 +152,12 @@
 \begin{document}
   \raggedbottom
   % Titlepage & ToC
+    % To avoid duplicate page anchors due to reuse of same numbers for
+    % the index (be it as roman numbers)
+    \hypersetup{pageanchor=false,
+                bookmarksnumbered=true,
+                pdfencoding=unicode
+               }
   \pagenumbering{alph}
   \begin{titlepage}
   \vspace*{7cm}
@@ -166,6 +172,8 @@
   \tableofcontents
   \clearemptydoublepage
   \pagenumbering{arabic}
+  % re-enable anchors again
+  \hypersetup{pageanchor=true}
 %--- Begin generated contents ---
 \chapter{Namespace Index}
 \input{namespaces}

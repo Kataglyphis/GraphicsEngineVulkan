@@ -1,5 +1,0 @@
-File
-read call:[append,c_str,close,eof,file_stream,getline,is_open,printf] noreturn:[append]
-readCharSequence call:[close,data,file,file_buffer,is_open,read,runtime_error,seekg,tellg] noreturn:[runtime_error]
-getBaseDir call:[find_last_of,substr] noreturn:[substr]
-File

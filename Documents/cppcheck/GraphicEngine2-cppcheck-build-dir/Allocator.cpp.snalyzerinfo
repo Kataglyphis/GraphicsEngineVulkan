@@ -1,5 +1,0 @@
-choose_supported_format call:[runtime_error,vkGetPhysicalDeviceFormatProperties] noreturn:[runtime_error]
-Allocator
-Allocator call:[runtime_error,vmaCreateAllocator] noreturn:[runtime_error]
-cleanUp call:[vmaDestroyAllocator] noreturn:[vmaDestroyAllocator]
-Allocator

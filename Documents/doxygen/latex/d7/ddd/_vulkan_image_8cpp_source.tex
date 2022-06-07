@@ -1,223 +1,223 @@
-\doxysection{Vulkan\+Image.\+cpp}
+\hypertarget{_vulkan_image_8cpp_source}{}\doxysection{Vulkan\+Image.\+cpp}
 \label{_vulkan_image_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImage.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImage.cpp}}
 \mbox{\hyperlink{_vulkan_image_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanImage.h"{}}}
-\DoxyCodeLine{00002 }
-\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
-\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
-\DoxyCodeLine{00005 }
-\DoxyCodeLine{00006 VulkanImage::VulkanImage() \{\}}
-\DoxyCodeLine{00007 }
-\DoxyCodeLine{00008 \textcolor{keywordtype}{void} VulkanImage::create(VulkanDevice* device, uint32\_t width, uint32\_t height,}
-\DoxyCodeLine{00009                          uint32\_t mip\_levels, VkFormat format,}
-\DoxyCodeLine{00010                          VkImageTiling tiling, VkImageUsageFlags use\_flags,}
-\DoxyCodeLine{00011                          VkMemoryPropertyFlags prop\_flags) \{}
-\DoxyCodeLine{00012   this-\/>device = device;}
-\DoxyCodeLine{00013   \textcolor{comment}{// CREATE image}}
-\DoxyCodeLine{00014   \textcolor{comment}{// image creation info}}
-\DoxyCodeLine{00015   VkImageCreateInfo image\_create\_info\{\};}
-\DoxyCodeLine{00016   image\_create\_info.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_CREATE\_INFO;}
-\DoxyCodeLine{00017   image\_create\_info.imageType = VK\_IMAGE\_TYPE\_2D;  \textcolor{comment}{// type of image (1D, 2D, 3D)}}
-\DoxyCodeLine{00018   image\_create\_info.extent.width = width;          \textcolor{comment}{// width if image extent}}
-\DoxyCodeLine{00019   image\_create\_info.extent.height = height;        \textcolor{comment}{// height if image extent}}
-\DoxyCodeLine{00020   image\_create\_info.extent.depth = 1;              \textcolor{comment}{// height if image extent}}
-\DoxyCodeLine{00021   image\_create\_info.mipLevels = mip\_levels;        \textcolor{comment}{// number of mipmap levels}}
-\DoxyCodeLine{00022   image\_create\_info.arrayLayers = 1;  \textcolor{comment}{// number of levels in image array}}
-\DoxyCodeLine{00023   image\_create\_info.format = format;  \textcolor{comment}{// format type of image}}
-\DoxyCodeLine{00024   image\_create\_info.tiling =}
-\DoxyCodeLine{00025       tiling;  \textcolor{comment}{// tiling of image ("{}arranged"{} for optimal reading)}}
-\DoxyCodeLine{00026   image\_create\_info.initialLayout =}
-\DoxyCodeLine{00027       VK\_IMAGE\_LAYOUT\_UNDEFINED;  \textcolor{comment}{// layout of image data on creation}}
-\DoxyCodeLine{00028   image\_create\_info.usage =}
-\DoxyCodeLine{00029       use\_flags;  \textcolor{comment}{// bit flags defining what image will be used for}}
-\DoxyCodeLine{00030   image\_create\_info.samples =}
-\DoxyCodeLine{00031       VK\_SAMPLE\_COUNT\_1\_BIT;  \textcolor{comment}{// number of samples for multisampling}}
-\DoxyCodeLine{00032   image\_create\_info.sharingMode =}
-\DoxyCodeLine{00033       VK\_SHARING\_MODE\_EXCLUSIVE;  \textcolor{comment}{// whether image can be shared between queues}}
-\DoxyCodeLine{00034 }
-\DoxyCodeLine{00035   VkResult result = vkCreateImage(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{00036                                   \&image\_create\_info, \textcolor{keyword}{nullptr}, \&image);}
-\DoxyCodeLine{00037   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create an image!"{}})}
-\DoxyCodeLine{00038 }
-\DoxyCodeLine{00039   \textcolor{comment}{// CREATE memory for image}}
-\DoxyCodeLine{00040   \textcolor{comment}{// get memory requirements for a type of image}}
-\DoxyCodeLine{00041   VkMemoryRequirements memory\_requirements;}
-\DoxyCodeLine{00042   vkGetImageMemoryRequirements(device-\/>getLogicalDevice(), image,}
-\DoxyCodeLine{00043                                \&memory\_requirements);}
-\DoxyCodeLine{00044 }
-\DoxyCodeLine{00045   \textcolor{comment}{// allocate memory using image requirements and user defined properties}}
-\DoxyCodeLine{00046   VkMemoryAllocateInfo memory\_alloc\_info\{\};}
-\DoxyCodeLine{00047   memory\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
-\DoxyCodeLine{00048   memory\_alloc\_info.allocationSize = memory\_requirements.size;}
-\DoxyCodeLine{00049   memory\_alloc\_info.memoryTypeIndex =}
-\DoxyCodeLine{00050       find\_memory\_type\_index(device-\/>getPhysicalDevice(),}
-\DoxyCodeLine{00051                              memory\_requirements.memoryTypeBits, prop\_flags);}
-\DoxyCodeLine{00052 }
-\DoxyCodeLine{00053   result = vkAllocateMemory(device-\/>getLogicalDevice(), \&memory\_alloc\_info,}
-\DoxyCodeLine{00054                             \textcolor{keyword}{nullptr}, \&imageMemory);}
-\DoxyCodeLine{00055   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate memory!"{}})}
-\DoxyCodeLine{00056 }
-\DoxyCodeLine{00057   \textcolor{comment}{// connect memory to image}}
-\DoxyCodeLine{00058   vkBindImageMemory(device-\/>getLogicalDevice(), image, imageMemory, 0);}
-\DoxyCodeLine{00059 \}}
-\DoxyCodeLine{00060 }
-\DoxyCodeLine{00061 \textcolor{keywordtype}{void} VulkanImage::transitionImageLayout(VkDevice device, VkQueue queue,}
-\DoxyCodeLine{00062                                         VkCommandPool command\_pool,}
-\DoxyCodeLine{00063                                         VkImageLayout old\_layout,}
-\DoxyCodeLine{00064                                         VkImageLayout new\_layout,}
-\DoxyCodeLine{00065                                         VkImageAspectFlags aspectMask,}
-\DoxyCodeLine{00066                                         uint32\_t mip\_levels) \{}
-\DoxyCodeLine{00067   VkCommandBuffer command\_buffer =}
-\DoxyCodeLine{00068       commandBufferManager.beginCommandBuffer(device, command\_pool);}
-\DoxyCodeLine{00069 }
-\DoxyCodeLine{00070   \textcolor{comment}{// VK\_IMAGE\_ASPECT\_COLOR\_BIT}}
-\DoxyCodeLine{00071   VkImageMemoryBarrier memory\_barrier\{\};}
-\DoxyCodeLine{00072   memory\_barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
-\DoxyCodeLine{00073   memory\_barrier.oldLayout = old\_layout;}
-\DoxyCodeLine{00074   memory\_barrier.newLayout = new\_layout;}
-\DoxyCodeLine{00075   memory\_barrier.srcQueueFamilyIndex =}
-\DoxyCodeLine{00076       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition from}}
-\DoxyCodeLine{00077   memory\_barrier.dstQueueFamilyIndex =}
-\DoxyCodeLine{00078       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition to}}
-\DoxyCodeLine{00079   memory\_barrier.image =}
-\DoxyCodeLine{00080       image;  \textcolor{comment}{// image being accessed and modified as part of barrier}}
-\DoxyCodeLine{00081   memory\_barrier.subresourceRange.aspectMask =}
-\DoxyCodeLine{00082       aspectMask;  \textcolor{comment}{// aspect of image being altered}}
-\DoxyCodeLine{00083   memory\_barrier.subresourceRange.baseMipLevel =}
-\DoxyCodeLine{00084       0;  \textcolor{comment}{// first mip level to start alterations on}}
-\DoxyCodeLine{00085   memory\_barrier.subresourceRange.levelCount =}
-\DoxyCodeLine{00086       mip\_levels;  \textcolor{comment}{// number of mip levels to alter starting from baseMipLevel}}
-\DoxyCodeLine{00087   memory\_barrier.subresourceRange.baseArrayLayer =}
-\DoxyCodeLine{00088       0;  \textcolor{comment}{// first layer to start alterations on}}
-\DoxyCodeLine{00089   memory\_barrier.subresourceRange.layerCount =}
-\DoxyCodeLine{00090       1;  \textcolor{comment}{// number of layers to alter starting from baseArrayLayer}}
-\DoxyCodeLine{00091 }
-\DoxyCodeLine{00092   \textcolor{comment}{// if transitioning from new image to image ready to receive data}}
-\DoxyCodeLine{00093   memory\_barrier.srcAccessMask = accessFlagsForImageLayout(old\_layout);}
-\DoxyCodeLine{00094   memory\_barrier.dstAccessMask = accessFlagsForImageLayout(new\_layout);}
-\DoxyCodeLine{00095 }
-\DoxyCodeLine{00096   VkPipelineStageFlags src\_stage = pipelineStageForLayout(old\_layout);}
-\DoxyCodeLine{00097   VkPipelineStageFlags dst\_stage = pipelineStageForLayout(new\_layout);}
-\DoxyCodeLine{00098 }
-\DoxyCodeLine{00099   vkCmdPipelineBarrier(}
-\DoxyCodeLine{00100 }
-\DoxyCodeLine{00101       command\_buffer, src\_stage,}
-\DoxyCodeLine{00102       dst\_stage,  \textcolor{comment}{// pipeline stages (match to src and dst accessmask)}}
-\DoxyCodeLine{00103       0,          \textcolor{comment}{// no dependency flags}}
-\DoxyCodeLine{00104       0,}
-\DoxyCodeLine{00105       \textcolor{keyword}{nullptr},  \textcolor{comment}{// memory barrier count + data}}
-\DoxyCodeLine{00106       0,}
-\DoxyCodeLine{00107       \textcolor{keyword}{nullptr},  \textcolor{comment}{// buffer memory barrier count + data}}
-\DoxyCodeLine{00108       1,}
-\DoxyCodeLine{00109       \&memory\_barrier  \textcolor{comment}{// image memory barrier count + data}}
-\DoxyCodeLine{00110 }
-\DoxyCodeLine{00111   );}
-\DoxyCodeLine{00112 }
-\DoxyCodeLine{00113   commandBufferManager.endAndSubmitCommandBuffer(device, command\_pool, queue,}
-\DoxyCodeLine{00114                                                  command\_buffer);}
-\DoxyCodeLine{00115 \}}
-\DoxyCodeLine{00116 }
-\DoxyCodeLine{00117 \textcolor{keywordtype}{void} VulkanImage::transitionImageLayout(VkCommandBuffer command\_buffer,}
-\DoxyCodeLine{00118                                         VkImageLayout old\_layout,}
-\DoxyCodeLine{00119                                         VkImageLayout new\_layout,}
-\DoxyCodeLine{00120                                         uint32\_t mip\_levels,}
-\DoxyCodeLine{00121                                         VkImageAspectFlags aspectMask) \{}
-\DoxyCodeLine{00122   VkImageMemoryBarrier memory\_barrier\{\};}
-\DoxyCodeLine{00123   memory\_barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
-\DoxyCodeLine{00124   memory\_barrier.oldLayout = old\_layout;}
-\DoxyCodeLine{00125   memory\_barrier.newLayout = new\_layout;}
-\DoxyCodeLine{00126   memory\_barrier.srcQueueFamilyIndex =}
-\DoxyCodeLine{00127       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition from}}
-\DoxyCodeLine{00128   memory\_barrier.dstQueueFamilyIndex =}
-\DoxyCodeLine{00129       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition to}}
-\DoxyCodeLine{00130   memory\_barrier.image =}
-\DoxyCodeLine{00131       image;  \textcolor{comment}{// image being accessed and modified as part of barrier}}
-\DoxyCodeLine{00132   memory\_barrier.subresourceRange.aspectMask =}
-\DoxyCodeLine{00133       aspectMask;  \textcolor{comment}{// aspect of image being altered}}
-\DoxyCodeLine{00134   memory\_barrier.subresourceRange.baseMipLevel =}
-\DoxyCodeLine{00135       0;  \textcolor{comment}{// first mip level to start alterations on}}
-\DoxyCodeLine{00136   memory\_barrier.subresourceRange.levelCount =}
-\DoxyCodeLine{00137       mip\_levels;  \textcolor{comment}{// number of mip levels to alter starting from baseMipLevel}}
-\DoxyCodeLine{00138   memory\_barrier.subresourceRange.baseArrayLayer =}
-\DoxyCodeLine{00139       0;  \textcolor{comment}{// first layer to start alterations on}}
-\DoxyCodeLine{00140   memory\_barrier.subresourceRange.layerCount =}
-\DoxyCodeLine{00141       1;  \textcolor{comment}{// number of layers to alter starting from baseArrayLayer}}
-\DoxyCodeLine{00142 }
-\DoxyCodeLine{00143   memory\_barrier.srcAccessMask = accessFlagsForImageLayout(old\_layout);}
-\DoxyCodeLine{00144   memory\_barrier.dstAccessMask = accessFlagsForImageLayout(new\_layout);}
-\DoxyCodeLine{00145 }
-\DoxyCodeLine{00146   VkPipelineStageFlags src\_stage = pipelineStageForLayout(old\_layout);}
-\DoxyCodeLine{00147   VkPipelineStageFlags dst\_stage = pipelineStageForLayout(new\_layout);}
-\DoxyCodeLine{00148 }
-\DoxyCodeLine{00149   \textcolor{comment}{// if transitioning from new image to image ready to receive data}}
-\DoxyCodeLine{00150 }
-\DoxyCodeLine{00151   vkCmdPipelineBarrier(}
-\DoxyCodeLine{00152 }
-\DoxyCodeLine{00153       command\_buffer, src\_stage,}
-\DoxyCodeLine{00154       dst\_stage,  \textcolor{comment}{// pipeline stages (match to src and dst accessmask)}}
-\DoxyCodeLine{00155       0,          \textcolor{comment}{// no dependency flags}}
-\DoxyCodeLine{00156       0,}
-\DoxyCodeLine{00157       \textcolor{keyword}{nullptr},  \textcolor{comment}{// memory barrier count + data}}
-\DoxyCodeLine{00158       0,}
-\DoxyCodeLine{00159       \textcolor{keyword}{nullptr},  \textcolor{comment}{// buffer memory barrier count + data}}
-\DoxyCodeLine{00160       1,}
-\DoxyCodeLine{00161       \&memory\_barrier  \textcolor{comment}{// image memory barrier count + data}}
-\DoxyCodeLine{00162 }
-\DoxyCodeLine{00163   );}
-\DoxyCodeLine{00164 \}}
-\DoxyCodeLine{00165 }
-\DoxyCodeLine{00166 \textcolor{keywordtype}{void} VulkanImage::setImage(VkImage image) \{ this-\/>image = image; \}}
-\DoxyCodeLine{00167 }
-\DoxyCodeLine{00168 \textcolor{keywordtype}{void} VulkanImage::cleanUp() \{}
-\DoxyCodeLine{00169   vkDestroyImage(device-\/>getLogicalDevice(), image, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00170   vkFreeMemory(device-\/>getLogicalDevice(), imageMemory, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00171 \}}
-\DoxyCodeLine{00172 }
-\DoxyCodeLine{00173 VulkanImage::\string~VulkanImage() \{\}}
-\DoxyCodeLine{00174 }
-\DoxyCodeLine{00175 VkAccessFlags VulkanImage::accessFlagsForImageLayout(VkImageLayout layout) \{}
-\DoxyCodeLine{00176   \textcolor{keywordflow}{switch} (layout) \{}
-\DoxyCodeLine{00177     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_PREINITIALIZED:}
-\DoxyCodeLine{00178       \textcolor{keywordflow}{return} VK\_ACCESS\_HOST\_WRITE\_BIT;}
-\DoxyCodeLine{00179     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL:}
-\DoxyCodeLine{00180       \textcolor{keywordflow}{return} VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
-\DoxyCodeLine{00181     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL:}
-\DoxyCodeLine{00182       \textcolor{keywordflow}{return} VK\_ACCESS\_TRANSFER\_READ\_BIT;}
-\DoxyCodeLine{00183     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL:}
-\DoxyCodeLine{00184       \textcolor{keywordflow}{return} VK\_ACCESS\_COLOR\_ATTACHMENT\_WRITE\_BIT;}
-\DoxyCodeLine{00185     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL:}
-\DoxyCodeLine{00186       \textcolor{keywordflow}{return} VK\_ACCESS\_DEPTH\_STENCIL\_ATTACHMENT\_WRITE\_BIT;}
-\DoxyCodeLine{00187     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL:}
-\DoxyCodeLine{00188       \textcolor{keywordflow}{return} VK\_ACCESS\_SHADER\_READ\_BIT;}
-\DoxyCodeLine{00189     \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{00190       \textcolor{keywordflow}{return} VkAccessFlags();}
-\DoxyCodeLine{00191   \}}
-\DoxyCodeLine{00192 \}}
-\DoxyCodeLine{00193 }
-\DoxyCodeLine{00194 VkPipelineStageFlags VulkanImage::pipelineStageForLayout(}
-\DoxyCodeLine{00195     VkImageLayout oldImageLayout) \{}
-\DoxyCodeLine{00196   \textcolor{keywordflow}{switch} (oldImageLayout) \{}
-\DoxyCodeLine{00197     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL:}
-\DoxyCodeLine{00198     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL:}
-\DoxyCodeLine{00199       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_TRANSFER\_BIT;}
-\DoxyCodeLine{00200     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL:}
-\DoxyCodeLine{00201       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;}
-\DoxyCodeLine{00202     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL:}
-\DoxyCodeLine{00203       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_ALL\_COMMANDS\_BIT;  \textcolor{comment}{// We do this to allow queue}}
-\DoxyCodeLine{00204                                                   \textcolor{comment}{// other than graphic return}}
-\DoxyCodeLine{00205                                                   \textcolor{comment}{// VK\_PIPELINE\_STAGE\_EARLY\_FRAGMENT\_TESTS\_BIT;}}
-\DoxyCodeLine{00206     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL:}
-\DoxyCodeLine{00207       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_ALL\_COMMANDS\_BIT;  \textcolor{comment}{// We do this to allow queue}}
-\DoxyCodeLine{00208                                                   \textcolor{comment}{// other than graphic return}}
-\DoxyCodeLine{00209                                                   \textcolor{comment}{// VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT;}}
-\DoxyCodeLine{00210     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_PREINITIALIZED:}
-\DoxyCodeLine{00211       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_HOST\_BIT;}
-\DoxyCodeLine{00212     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_UNDEFINED:}
-\DoxyCodeLine{00213       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_TOP\_OF\_PIPE\_BIT;}
-\DoxyCodeLine{00214     \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{00215       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_BOTTOM\_OF\_PIPE\_BIT;}
-\DoxyCodeLine{00216   \}}
-\DoxyCodeLine{00217 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}VulkanImage.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00005}00005 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00006}00006 VulkanImage::VulkanImage() \{\}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00007}00007 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00008}00008 \textcolor{keywordtype}{void} VulkanImage::create(VulkanDevice* device, uint32\_t width, uint32\_t height,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00009}00009                          uint32\_t mip\_levels, VkFormat format,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00010}00010                          VkImageTiling tiling, VkImageUsageFlags use\_flags,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00011}00011                          VkMemoryPropertyFlags prop\_flags) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00012}00012   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00013}00013   \textcolor{comment}{// CREATE image}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00014}00014   \textcolor{comment}{// image creation info}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00015}00015   VkImageCreateInfo image\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00016}00016   image\_create\_info.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00017}00017   image\_create\_info.imageType = VK\_IMAGE\_TYPE\_2D;  \textcolor{comment}{// type of image (1D, 2D, 3D)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00018}00018   image\_create\_info.extent.width = width;          \textcolor{comment}{// width if image extent}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00019}00019   image\_create\_info.extent.height = height;        \textcolor{comment}{// height if image extent}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00020}00020   image\_create\_info.extent.depth = 1;              \textcolor{comment}{// height if image extent}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00021}00021   image\_create\_info.mipLevels = mip\_levels;        \textcolor{comment}{// number of mipmap levels}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00022}00022   image\_create\_info.arrayLayers = 1;  \textcolor{comment}{// number of levels in image array}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00023}00023   image\_create\_info.format = format;  \textcolor{comment}{// format type of image}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00024}00024   image\_create\_info.tiling =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00025}00025       tiling;  \textcolor{comment}{// tiling of image ("{}arranged"{} for optimal reading)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00026}00026   image\_create\_info.initialLayout =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00027}00027       VK\_IMAGE\_LAYOUT\_UNDEFINED;  \textcolor{comment}{// layout of image data on creation}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00028}00028   image\_create\_info.usage =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00029}00029       use\_flags;  \textcolor{comment}{// bit flags defining what image will be used for}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00030}00030   image\_create\_info.samples =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00031}00031       VK\_SAMPLE\_COUNT\_1\_BIT;  \textcolor{comment}{// number of samples for multisampling}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00032}00032   image\_create\_info.sharingMode =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00033}00033       VK\_SHARING\_MODE\_EXCLUSIVE;  \textcolor{comment}{// whether image can be shared between queues}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00034}00034 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00035}00035   VkResult result = vkCreateImage(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00036}00036                                   \&image\_create\_info, \textcolor{keyword}{nullptr}, \&image);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00037}00037   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create an image!"{}})}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00038}00038 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00039}00039   \textcolor{comment}{// CREATE memory for image}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00040}00040   \textcolor{comment}{// get memory requirements for a type of image}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00041}00041   VkMemoryRequirements memory\_requirements;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00042}00042   vkGetImageMemoryRequirements(device-\/>getLogicalDevice(), image,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00043}00043                                \&memory\_requirements);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00044}00044 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00045}00045   \textcolor{comment}{// allocate memory using image requirements and user defined properties}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00046}00046   VkMemoryAllocateInfo memory\_alloc\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00047}00047   memory\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00048}00048   memory\_alloc\_info.allocationSize = memory\_requirements.size;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00049}00049   memory\_alloc\_info.memoryTypeIndex =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00050}00050       find\_memory\_type\_index(device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00051}00051                              memory\_requirements.memoryTypeBits, prop\_flags);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00052}00052 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00053}00053   result = vkAllocateMemory(device-\/>getLogicalDevice(), \&memory\_alloc\_info,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00054}00054                             \textcolor{keyword}{nullptr}, \&imageMemory);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00055}00055   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate memory!"{}})}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00056}00056 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00057}00057   \textcolor{comment}{// connect memory to image}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00058}00058   vkBindImageMemory(device-\/>getLogicalDevice(), image, imageMemory, 0);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00059}00059 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00061}00061 \textcolor{keywordtype}{void} VulkanImage::transitionImageLayout(VkDevice device, VkQueue queue,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00062}00062                                         VkCommandPool command\_pool,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00063}00063                                         VkImageLayout old\_layout,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00064}00064                                         VkImageLayout new\_layout,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00065}00065                                         VkImageAspectFlags aspectMask,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00066}00066                                         uint32\_t mip\_levels) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00067}00067   VkCommandBuffer command\_buffer =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00068}00068       commandBufferManager.beginCommandBuffer(device, command\_pool);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00070}00070   \textcolor{comment}{// VK\_IMAGE\_ASPECT\_COLOR\_BIT}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00071}00071   VkImageMemoryBarrier memory\_barrier\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00072}00072   memory\_barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00073}00073   memory\_barrier.oldLayout = old\_layout;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00074}00074   memory\_barrier.newLayout = new\_layout;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00075}00075   memory\_barrier.srcQueueFamilyIndex =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00076}00076       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition from}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00077}00077   memory\_barrier.dstQueueFamilyIndex =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00078}00078       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition to}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00079}00079   memory\_barrier.image =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00080}00080       image;  \textcolor{comment}{// image being accessed and modified as part of barrier}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00081}00081   memory\_barrier.subresourceRange.aspectMask =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00082}00082       aspectMask;  \textcolor{comment}{// aspect of image being altered}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00083}00083   memory\_barrier.subresourceRange.baseMipLevel =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00084}00084       0;  \textcolor{comment}{// first mip level to start alterations on}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00085}00085   memory\_barrier.subresourceRange.levelCount =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00086}00086       mip\_levels;  \textcolor{comment}{// number of mip levels to alter starting from baseMipLevel}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00087}00087   memory\_barrier.subresourceRange.baseArrayLayer =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00088}00088       0;  \textcolor{comment}{// first layer to start alterations on}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00089}00089   memory\_barrier.subresourceRange.layerCount =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00090}00090       1;  \textcolor{comment}{// number of layers to alter starting from baseArrayLayer}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00091}00091 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00092}00092   \textcolor{comment}{// if transitioning from new image to image ready to receive data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00093}00093   memory\_barrier.srcAccessMask = accessFlagsForImageLayout(old\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00094}00094   memory\_barrier.dstAccessMask = accessFlagsForImageLayout(new\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00095}00095 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00096}00096   VkPipelineStageFlags src\_stage = pipelineStageForLayout(old\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00097}00097   VkPipelineStageFlags dst\_stage = pipelineStageForLayout(new\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00098}00098 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00099}00099   vkCmdPipelineBarrier(}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00100}00100 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00101}00101       command\_buffer, src\_stage,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00102}00102       dst\_stage,  \textcolor{comment}{// pipeline stages (match to src and dst accessmask)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00103}00103       0,          \textcolor{comment}{// no dependency flags}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00104}00104       0,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00105}00105       \textcolor{keyword}{nullptr},  \textcolor{comment}{// memory barrier count + data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00106}00106       0,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00107}00107       \textcolor{keyword}{nullptr},  \textcolor{comment}{// buffer memory barrier count + data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00108}00108       1,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00109}00109       \&memory\_barrier  \textcolor{comment}{// image memory barrier count + data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00110}00110 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00111}00111   );}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00112}00112 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00113}00113   commandBufferManager.endAndSubmitCommandBuffer(device, command\_pool, queue,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00114}00114                                                  command\_buffer);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00115}00115 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00116}00116 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00117}00117 \textcolor{keywordtype}{void} VulkanImage::transitionImageLayout(VkCommandBuffer command\_buffer,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00118}00118                                         VkImageLayout old\_layout,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00119}00119                                         VkImageLayout new\_layout,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00120}00120                                         uint32\_t mip\_levels,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00121}00121                                         VkImageAspectFlags aspectMask) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00122}00122   VkImageMemoryBarrier memory\_barrier\{\};}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00123}00123   memory\_barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00124}00124   memory\_barrier.oldLayout = old\_layout;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00125}00125   memory\_barrier.newLayout = new\_layout;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00126}00126   memory\_barrier.srcQueueFamilyIndex =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00127}00127       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition from}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00128}00128   memory\_barrier.dstQueueFamilyIndex =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00129}00129       VK\_QUEUE\_FAMILY\_IGNORED;  \textcolor{comment}{// Queue family to transition to}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00130}00130   memory\_barrier.image =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00131}00131       image;  \textcolor{comment}{// image being accessed and modified as part of barrier}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00132}00132   memory\_barrier.subresourceRange.aspectMask =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00133}00133       aspectMask;  \textcolor{comment}{// aspect of image being altered}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00134}00134   memory\_barrier.subresourceRange.baseMipLevel =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00135}00135       0;  \textcolor{comment}{// first mip level to start alterations on}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00136}00136   memory\_barrier.subresourceRange.levelCount =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00137}00137       mip\_levels;  \textcolor{comment}{// number of mip levels to alter starting from baseMipLevel}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00138}00138   memory\_barrier.subresourceRange.baseArrayLayer =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00139}00139       0;  \textcolor{comment}{// first layer to start alterations on}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00140}00140   memory\_barrier.subresourceRange.layerCount =}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00141}00141       1;  \textcolor{comment}{// number of layers to alter starting from baseArrayLayer}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00142}00142 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00143}00143   memory\_barrier.srcAccessMask = accessFlagsForImageLayout(old\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00144}00144   memory\_barrier.dstAccessMask = accessFlagsForImageLayout(new\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00145}00145 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00146}00146   VkPipelineStageFlags src\_stage = pipelineStageForLayout(old\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00147}00147   VkPipelineStageFlags dst\_stage = pipelineStageForLayout(new\_layout);}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00148}00148 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00149}00149   \textcolor{comment}{// if transitioning from new image to image ready to receive data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00150}00150 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00151}00151   vkCmdPipelineBarrier(}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00152}00152 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00153}00153       command\_buffer, src\_stage,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00154}00154       dst\_stage,  \textcolor{comment}{// pipeline stages (match to src and dst accessmask)}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00155}00155       0,          \textcolor{comment}{// no dependency flags}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00156}00156       0,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00157}00157       \textcolor{keyword}{nullptr},  \textcolor{comment}{// memory barrier count + data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00158}00158       0,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00159}00159       \textcolor{keyword}{nullptr},  \textcolor{comment}{// buffer memory barrier count + data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00160}00160       1,}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00161}00161       \&memory\_barrier  \textcolor{comment}{// image memory barrier count + data}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00162}00162 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00163}00163   );}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00164}00164 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00165}00165 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00166}00166 \textcolor{keywordtype}{void} VulkanImage::setImage(VkImage image) \{ this-\/>image = image; \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00167}00167 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00168}00168 \textcolor{keywordtype}{void} VulkanImage::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00169}00169   vkDestroyImage(device-\/>getLogicalDevice(), image, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00170}00170   vkFreeMemory(device-\/>getLogicalDevice(), imageMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00171}00171 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00172}00172 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00173}00173 VulkanImage::\string~VulkanImage() \{\}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00174}00174 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00175}00175 VkAccessFlags VulkanImage::accessFlagsForImageLayout(VkImageLayout layout) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00176}00176   \textcolor{keywordflow}{switch} (layout) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00177}00177     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_PREINITIALIZED:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00178}00178       \textcolor{keywordflow}{return} VK\_ACCESS\_HOST\_WRITE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00179}00179     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00180}00180       \textcolor{keywordflow}{return} VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00181}00181     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00182}00182       \textcolor{keywordflow}{return} VK\_ACCESS\_TRANSFER\_READ\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00183}00183     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00184}00184       \textcolor{keywordflow}{return} VK\_ACCESS\_COLOR\_ATTACHMENT\_WRITE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00185}00185     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00186}00186       \textcolor{keywordflow}{return} VK\_ACCESS\_DEPTH\_STENCIL\_ATTACHMENT\_WRITE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00187}00187     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00188}00188       \textcolor{keywordflow}{return} VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00189}00189     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00190}00190       \textcolor{keywordflow}{return} VkAccessFlags();}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00191}00191   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00192}00192 \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00193}00193 }
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00194}00194 VkPipelineStageFlags VulkanImage::pipelineStageForLayout(}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00195}00195     VkImageLayout oldImageLayout) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00196}00196   \textcolor{keywordflow}{switch} (oldImageLayout) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00197}00197     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00198}00198     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_TRANSFER\_SRC\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00199}00199       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_TRANSFER\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00200}00200     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00201}00201       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00202}00202     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00203}00203       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_ALL\_COMMANDS\_BIT;  \textcolor{comment}{// We do this to allow queue}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00204}00204                                                   \textcolor{comment}{// other than graphic return}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00205}00205                                                   \textcolor{comment}{// VK\_PIPELINE\_STAGE\_EARLY\_FRAGMENT\_TESTS\_BIT;}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00206}00206     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00207}00207       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_ALL\_COMMANDS\_BIT;  \textcolor{comment}{// We do this to allow queue}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00208}00208                                                   \textcolor{comment}{// other than graphic return}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00209}00209                                                   \textcolor{comment}{// VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT;}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00210}00210     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_PREINITIALIZED:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00211}00211       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_HOST\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00212}00212     \textcolor{keywordflow}{case} VK\_IMAGE\_LAYOUT\_UNDEFINED:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00213}00213       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_TOP\_OF\_PIPE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00214}00214     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00215}00215       \textcolor{keywordflow}{return} VK\_PIPELINE\_STAGE\_BOTTOM\_OF\_PIPE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00216}00216   \}}
+\DoxyCodeLine{\Hypertarget{_vulkan_image_8cpp_source_l00217}00217 \}}
 
 \end{DoxyCode}
