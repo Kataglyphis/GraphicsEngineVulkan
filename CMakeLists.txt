@@ -61,7 +61,8 @@ set(CLANG_WARNINGS
           -Wlifetime #(only special branch of Clang currently) shows object lifetime issues
 )
 
-if(TRUE)
+option(TREAT_WARNINGS_AS_ERRORS "Treat warnings as errors" ON)
+if(TREAT_WARNINGS_AS_ERRORS)
   set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
   set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
 endif()
@@ -422,23 +423,34 @@ else (DOXYGEN_FOUND)
   message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-find_program(CPPCHECK cppcheck)
-if(CPPCHECK)
-  set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --suppress=missingInclude --enable=all --suppressions-list=Documents/cppcheck/suppressions.txt)
-endif(CPPCHECK)
+option(ENABLE_CPPCHECK "Enable cppcheck" OFF)#ON
+if(ENABLE_CPPCHECK)
+  find_program(CPPCHECK cppcheck)
+  if(CPPCHECK)
+    set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --suppress=missingInclude --enable=all --suppressions-list=Documents/cppcheck/suppressions.txt)
+  endif(CPPCHECK)
+endif()
 
-find_program(CLANGTIDY clang-tidy)
-if(CLANGTIDY)
-  set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY})
-endif(CLANGTIDY)
+option(ENABLE_CLANGTIDY "Enable clangtidy" OFF)#ON
+if(ENABLE_CLANGTIDY)
+  find_program(CLANGTIDY clang-tidy)
+  if(CLANGTIDY)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY})
+  endif(CLANGTIDY)
+endif()
 
 enable_testing()
 
 include(GoogleTest)
 
+FILE(GLOB RENDERER_TEST_FILTER                  "Test/*.h"                                               "Test/*.cpp"
+                                                "Test/*.hpp")
+
+source_group("TEST_FILES"                                   FILES ${RENDERER_TEST_FILTER})
+
 add_executable( vulkanRendererTester
                 # all test specific files -- start
-                "Test/vulkanRendererTest.cpp"
+                ${RENDERER_TEST_FILTER}
                 # all test specific files -- end
                 ${RASTER_SHADER_FILTER}
                 ${RAYTRACING_SHADER_FILTER}
