@@ -1,11 +1,12 @@
 #include "Scene.h"
 
-Scene::Scene() { }
+Scene::Scene() {}
 
-void Scene::update_user_input(GUI* gui) { guiSceneSharedVars = gui->getGuiSceneSharedVars(); }
+void Scene::update_user_input(GUI* gui) {
+  guiSceneSharedVars = gui->getGuiSceneSharedVars();
+}
 
-void Scene::loadModel(VulkanDevice* device, VkCommandPool commandPool)
-{
+void Scene::loadModel(VulkanDevice* device, VkCommandPool commandPool) {
   ObjLoader obj_loader(device, device->getGraphicsQueue(), commandPool);
 
   std::string modelFileName = sceneConfig::getModelFile();
@@ -18,35 +19,30 @@ void Scene::loadModel(VulkanDevice* device, VkCommandPool commandPool)
   update_model_matrix(modelMatrix, 0);
 }
 
-void Scene::add_model(std::shared_ptr<Model> model)
-{
+void Scene::add_model(std::shared_ptr<Model> model) {
   model_list.push_back(model);
   object_descriptions.push_back(model->getObjectDescription());
 }
 
-void Scene::add_object_description(ObjectDescription object_description) { object_descriptions.push_back(object_description); }
+void Scene::add_object_description(ObjectDescription object_description) {
+  object_descriptions.push_back(object_description);
+}
 
-void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id)
-{
-
+void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id) {
   if (model_id >= static_cast<int32_t>(getModelCount()) || model_id < 0) {
-
     throw std::runtime_error("Wrong model id value!");
   }
 
   model_list[model_id]->set_model(model_matrix);
 }
 
-void Scene::cleanUp()
-{
-
+void Scene::cleanUp() {
   for (std::shared_ptr<Model> model : model_list) {
     model->cleanUp();
   }
 }
 
-uint32_t Scene::getNumberMeshes()
-{
+uint32_t Scene::getNumberMeshes() {
   uint32_t number_of_meshes = 0;
 
   for (std::shared_ptr<Model> mesh_model : model_list) {
@@ -56,4 +52,4 @@ uint32_t Scene::getNumberMeshes()
   return number_of_meshes;
 }
 
-Scene::~Scene() { }
+Scene::~Scene() {}

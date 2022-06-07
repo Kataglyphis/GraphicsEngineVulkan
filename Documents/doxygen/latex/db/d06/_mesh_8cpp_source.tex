@@ -1,0 +1,130 @@
+\doxysection{Mesh.\+cpp}
+\label{_mesh_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Mesh.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Mesh.cpp}}
+\mbox{\hyperlink{_mesh_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Mesh.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include "{}VulkanBuffer.h"{}}}
+\DoxyCodeLine{00007 }
+\DoxyCodeLine{00008 Mesh::Mesh() \{\}}
+\DoxyCodeLine{00009 }
+\DoxyCodeLine{00010 \textcolor{keywordtype}{void} Mesh::cleanUp() \{}
+\DoxyCodeLine{00011   vertexBuffer.cleanUp();}
+\DoxyCodeLine{00012   indexBuffer.cleanUp();}
+\DoxyCodeLine{00013   objectDescriptionBuffer.cleanUp();}
+\DoxyCodeLine{00014   materialIdsBuffer.cleanUp();}
+\DoxyCodeLine{00015   materialsBuffer.cleanUp();}
+\DoxyCodeLine{00016 \}}
+\DoxyCodeLine{00017 }
+\DoxyCodeLine{00018 Mesh::Mesh(VulkanDevice* device, VkQueue transfer\_queue,}
+\DoxyCodeLine{00019            VkCommandPool transfer\_command\_pool, std::vector<Vertex>\& vertices,}
+\DoxyCodeLine{00020            std::vector<uint32\_t>\& indices,}
+\DoxyCodeLine{00021            std::vector<unsigned int>\& materialIndex,}
+\DoxyCodeLine{00022            std::vector<ObjMaterial>\& materials) \{}
+\DoxyCodeLine{00023   \textcolor{comment}{// glm uses column major matrices so transpose it for Vulkan want row major}}
+\DoxyCodeLine{00024   \textcolor{comment}{// here}}
+\DoxyCodeLine{00025   glm::mat4 transpose\_transform = glm::transpose(glm::mat4(1.0f));}
+\DoxyCodeLine{00026   VkTransformMatrixKHR out\_matrix;}
+\DoxyCodeLine{00027   std::memcpy(\&out\_matrix, \&transpose\_transform, \textcolor{keyword}{sizeof}(VkTransformMatrixKHR));}
+\DoxyCodeLine{00028 }
+\DoxyCodeLine{00029   index\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(indices.size());}
+\DoxyCodeLine{00030   vertex\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(vertices.size());}
+\DoxyCodeLine{00031   this-\/>device = device;}
+\DoxyCodeLine{00032   object\_description = ObjectDescription\{\};}
+\DoxyCodeLine{00033   createVertexBuffer(transfer\_queue, transfer\_command\_pool, vertices);}
+\DoxyCodeLine{00034   createIndexBuffer(transfer\_queue, transfer\_command\_pool, indices);}
+\DoxyCodeLine{00035   createMaterialIDBuffer(transfer\_queue, transfer\_command\_pool, materialIndex);}
+\DoxyCodeLine{00036   createMaterialBuffer(transfer\_queue, transfer\_command\_pool, materials);}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038   VkBufferDeviceAddressInfo vertex\_info\{\};}
+\DoxyCodeLine{00039   vertex\_info.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO\_KHR;}
+\DoxyCodeLine{00040   vertex\_info.buffer = vertexBuffer.getBuffer();}
+\DoxyCodeLine{00041 }
+\DoxyCodeLine{00042   VkBufferDeviceAddressInfo index\_info\{\};}
+\DoxyCodeLine{00043   index\_info.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO\_KHR;}
+\DoxyCodeLine{00044   index\_info.buffer = indexBuffer.getBuffer();}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046   VkBufferDeviceAddressInfo material\_index\_info\{\};}
+\DoxyCodeLine{00047   material\_index\_info.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO\_KHR;}
+\DoxyCodeLine{00048   material\_index\_info.buffer = materialIdsBuffer.getBuffer();}
+\DoxyCodeLine{00049 }
+\DoxyCodeLine{00050   VkBufferDeviceAddressInfo material\_info\{\};}
+\DoxyCodeLine{00051   material\_info.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO\_KHR;}
+\DoxyCodeLine{00052   material\_info.buffer = materialsBuffer.getBuffer();}
+\DoxyCodeLine{00053 }
+\DoxyCodeLine{00054   object\_description.index\_address =}
+\DoxyCodeLine{00055       vkGetBufferDeviceAddress(device-\/>getLogicalDevice(), \&index\_info);}
+\DoxyCodeLine{00056   object\_description.vertex\_address =}
+\DoxyCodeLine{00057       vkGetBufferDeviceAddress(device-\/>getLogicalDevice(), \&vertex\_info);}
+\DoxyCodeLine{00058   object\_description.material\_index\_address = vkGetBufferDeviceAddress(}
+\DoxyCodeLine{00059       device-\/>getLogicalDevice(), \&material\_index\_info);}
+\DoxyCodeLine{00060   object\_description.material\_address =}
+\DoxyCodeLine{00061       vkGetBufferDeviceAddress(device-\/>getLogicalDevice(), \&material\_info);}
+\DoxyCodeLine{00062 }
+\DoxyCodeLine{00063   model = glm::mat4(1.0f);}
+\DoxyCodeLine{00064 \}}
+\DoxyCodeLine{00065 }
+\DoxyCodeLine{00066 \textcolor{keywordtype}{void} Mesh::setModel(glm::mat4 new\_model) \{ model = new\_model; \}}
+\DoxyCodeLine{00067 }
+\DoxyCodeLine{00068 Mesh::\string~Mesh() \{\}}
+\DoxyCodeLine{00069 }
+\DoxyCodeLine{00070 \textcolor{keywordtype}{void} Mesh::createVertexBuffer(VkQueue transfer\_queue,}
+\DoxyCodeLine{00071                               VkCommandPool transfer\_command\_pool,}
+\DoxyCodeLine{00072                               std::vector<Vertex>\& vertices) \{}
+\DoxyCodeLine{00073   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00074       device, transfer\_command\_pool, vertexBuffer,}
+\DoxyCodeLine{00075       VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT | VK\_BUFFER\_USAGE\_VERTEX\_BUFFER\_BIT |}
+\DoxyCodeLine{00076           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00077           VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_BUILD\_INPUT\_READ\_ONLY\_BIT\_KHR |}
+\DoxyCodeLine{00078           VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT,}
+\DoxyCodeLine{00079       VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00080           VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT,}
+\DoxyCodeLine{00081       vertices);}
+\DoxyCodeLine{00082 \}}
+\DoxyCodeLine{00083 }
+\DoxyCodeLine{00084 \textcolor{keywordtype}{void} Mesh::createIndexBuffer(VkQueue transfer\_queue,}
+\DoxyCodeLine{00085                              VkCommandPool transfer\_command\_pool,}
+\DoxyCodeLine{00086                              std::vector<uint32\_t>\& indices) \{}
+\DoxyCodeLine{00087   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00088       device, transfer\_command\_pool, indexBuffer,}
+\DoxyCodeLine{00089       VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT | VK\_BUFFER\_USAGE\_INDEX\_BUFFER\_BIT |}
+\DoxyCodeLine{00090           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00091           VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_BUILD\_INPUT\_READ\_ONLY\_BIT\_KHR |}
+\DoxyCodeLine{00092           VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT,}
+\DoxyCodeLine{00093       VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00094           VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT,}
+\DoxyCodeLine{00095       indices);}
+\DoxyCodeLine{00096 \}}
+\DoxyCodeLine{00097 }
+\DoxyCodeLine{00098 \textcolor{keywordtype}{void} Mesh::createMaterialIDBuffer(VkQueue transfer\_queue,}
+\DoxyCodeLine{00099                                   VkCommandPool transfer\_command\_pool,}
+\DoxyCodeLine{00100                                   std::vector<unsigned int>\& materialIndex) \{}
+\DoxyCodeLine{00101   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00102       device, transfer\_command\_pool, materialIdsBuffer,}
+\DoxyCodeLine{00103       VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT | VK\_BUFFER\_USAGE\_INDEX\_BUFFER\_BIT |}
+\DoxyCodeLine{00104           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00105           VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_BUILD\_INPUT\_READ\_ONLY\_BIT\_KHR |}
+\DoxyCodeLine{00106           VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT,}
+\DoxyCodeLine{00107       VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00108           VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT,}
+\DoxyCodeLine{00109       materialIndex);}
+\DoxyCodeLine{00110 \}}
+\DoxyCodeLine{00111 }
+\DoxyCodeLine{00112 \textcolor{keywordtype}{void} Mesh::createMaterialBuffer(VkQueue transfer\_queue,}
+\DoxyCodeLine{00113                                 VkCommandPool transfer\_command\_pool,}
+\DoxyCodeLine{00114                                 std::vector<ObjMaterial>\& materials) \{}
+\DoxyCodeLine{00115   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00116       device, transfer\_command\_pool, materialsBuffer,}
+\DoxyCodeLine{00117       VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT | VK\_BUFFER\_USAGE\_INDEX\_BUFFER\_BIT |}
+\DoxyCodeLine{00118           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00119           VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_BUILD\_INPUT\_READ\_ONLY\_BIT\_KHR |}
+\DoxyCodeLine{00120           VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT,}
+\DoxyCodeLine{00121       VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00122           VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT,}
+\DoxyCodeLine{00123       materials);}
+\DoxyCodeLine{00124 \}}
+
+\end{DoxyCode}

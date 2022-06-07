@@ -1,11 +1,13 @@
 #include "File.h"
-#include <iostream>
+
 #include <fstream>
+#include <iostream>
 
-File::File(const std::string& file_location) { this->file_location = file_location; }
+File::File(const std::string& file_location) {
+  this->file_location = file_location;
+}
 
-std::string File::read()
-{
+std::string File::read() {
   std::string content;
   std::ifstream file_stream(file_location, std::ios::in);
 
@@ -24,8 +26,7 @@ std::string File::read()
   return content;
 }
 
-std::vector<char> File::readCharSequence()
-{
+std::vector<char> File::readCharSequence() {
   // open stream from given file
   // std::ios::binary tells stream to read file as binary
   // std::ios:ate tells stream to start reading from end of file
@@ -33,7 +34,6 @@ std::vector<char> File::readCharSequence()
 
   // check if file stream sucessfully opened
   if (!file.is_open()) {
-
     throw std::runtime_error("Failed to open a file!");
   }
 
@@ -51,10 +51,10 @@ std::vector<char> File::readCharSequence()
   return file_buffer;
 }
 
-std::string File::getBaseDir()
-{
-  if (file_location.find_last_of("/\\") != std::string::npos) return file_location.substr(0, file_location.find_last_of("/\\"));
+std::string File::getBaseDir() {
+  if (file_location.find_last_of("/\\") != std::string::npos)
+    return file_location.substr(0, file_location.find_last_of("/\\"));
   return "";
 }
 
-File::~File() { }
+File::~File() {}

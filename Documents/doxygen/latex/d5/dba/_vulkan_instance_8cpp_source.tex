@@ -1,0 +1,139 @@
+\doxysection{Vulkan\+Instance.\+cpp}
+\label{_vulkan_instance_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanInstance.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanInstance.cpp}}
+\mbox{\hyperlink{_vulkan_instance_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanInstance.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{00006 }
+\DoxyCodeLine{00007 VulkanInstance::VulkanInstance() \{}
+\DoxyCodeLine{00008   \textcolor{keywordflow}{if} (ENABLE\_VALIDATION\_LAYERS \&\& !check\_validation\_layer\_support()) \{}
+\DoxyCodeLine{00009     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Validation layers requested, but not available!"{}});}
+\DoxyCodeLine{00010   \}}
+\DoxyCodeLine{00011 }
+\DoxyCodeLine{00012   \textcolor{comment}{// info about app}}
+\DoxyCodeLine{00013   \textcolor{comment}{// most data doesn't affect program; is for developer convenience}}
+\DoxyCodeLine{00014   VkApplicationInfo app\_info\{\};}
+\DoxyCodeLine{00015   app\_info.sType = VK\_STRUCTURE\_TYPE\_APPLICATION\_INFO;}
+\DoxyCodeLine{00016   app\_info.pApplicationName =}
+\DoxyCodeLine{00017       \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)\_\_/ Epic Graphics from hell \(\backslash\)\(\backslash\)\_\_/"{}};  \textcolor{comment}{// custom name of app}}
+\DoxyCodeLine{00018   app\_info.applicationVersion =}
+\DoxyCodeLine{00019       VK\_MAKE\_VERSION(1, 3, 1);                       \textcolor{comment}{// custom version of app}}
+\DoxyCodeLine{00020   app\_info.pEngineName = \textcolor{stringliteral}{"{}Cataglyphis Renderer"{}};      \textcolor{comment}{// custom engine name}}
+\DoxyCodeLine{00021   app\_info.engineVersion = VK\_MAKE\_VERSION(1, 3, 3);  \textcolor{comment}{// custom engine version}}
+\DoxyCodeLine{00022   app\_info.apiVersion = VK\_API\_VERSION\_1\_3;           \textcolor{comment}{// the vulkan version}}
+\DoxyCodeLine{00023 }
+\DoxyCodeLine{00024   \textcolor{comment}{// creation info for a VkInstance}}
+\DoxyCodeLine{00025   VkInstanceCreateInfo create\_info\{\};}
+\DoxyCodeLine{00026   create\_info.sType = VK\_STRUCTURE\_TYPE\_INSTANCE\_CREATE\_INFO;}
+\DoxyCodeLine{00027   create\_info.pApplicationInfo = \&app\_info;}
+\DoxyCodeLine{00028 }
+\DoxyCodeLine{00029   \textcolor{comment}{// add validation layers IF enabled to the creeate info struct}}
+\DoxyCodeLine{00030   \textcolor{keywordflow}{if} (ENABLE\_VALIDATION\_LAYERS) \{}
+\DoxyCodeLine{00031     create\_info.enabledLayerCount =}
+\DoxyCodeLine{00032         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(validationLayers.size());}
+\DoxyCodeLine{00033     create\_info.ppEnabledLayerNames = validationLayers.data();}
+\DoxyCodeLine{00034 }
+\DoxyCodeLine{00035   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{00036     create\_info.enabledLayerCount = 0;}
+\DoxyCodeLine{00037     create\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00038   \}}
+\DoxyCodeLine{00039 }
+\DoxyCodeLine{00040   \textcolor{comment}{// create list to hold instance extensions}}
+\DoxyCodeLine{00041   std::vector<const char*> instance\_extensions = std::vector<const char*>();}
+\DoxyCodeLine{00042 }
+\DoxyCodeLine{00043   \textcolor{comment}{// Setup extensions the instance will use}}
+\DoxyCodeLine{00044   uint32\_t glfw\_extensions\_count = 0;  \textcolor{comment}{// GLFW may require multiple extensions}}
+\DoxyCodeLine{00045   \textcolor{keyword}{const} \textcolor{keywordtype}{char}** glfw\_extensions;  \textcolor{comment}{// Extensions passed as array of cstrings, so}}
+\DoxyCodeLine{00046                                  \textcolor{comment}{// need pointer(array) to pointer}}
+\DoxyCodeLine{00047 }
+\DoxyCodeLine{00048   \textcolor{comment}{// set GLFW extensions}}
+\DoxyCodeLine{00049   glfw\_extensions = glfwGetRequiredInstanceExtensions(\&glfw\_extensions\_count);}
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051   \textcolor{comment}{// Add GLFW extensions to list of extensions}}
+\DoxyCodeLine{00052   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < glfw\_extensions\_count; i++) \{}
+\DoxyCodeLine{00053     instance\_extensions.push\_back(glfw\_extensions[i]);}
+\DoxyCodeLine{00054   \}}
+\DoxyCodeLine{00055 }
+\DoxyCodeLine{00056   \textcolor{keywordflow}{if} (ENABLE\_VALIDATION\_LAYERS) \{}
+\DoxyCodeLine{00057     instance\_extensions.push\_back(VK\_EXT\_DEBUG\_UTILS\_EXTENSION\_NAME);}
+\DoxyCodeLine{00058   \}}
+\DoxyCodeLine{00059 }
+\DoxyCodeLine{00060   \textcolor{comment}{// check instance extensions supported}}
+\DoxyCodeLine{00061   \textcolor{keywordflow}{if} (!check\_instance\_extension\_support(\&instance\_extensions)) \{}
+\DoxyCodeLine{00062     \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{00063         \textcolor{stringliteral}{"{}VkInstance does not support required extensions!"{}});}
+\DoxyCodeLine{00064   \}}
+\DoxyCodeLine{00065 }
+\DoxyCodeLine{00066   create\_info.enabledExtensionCount =}
+\DoxyCodeLine{00067       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(instance\_extensions.size());}
+\DoxyCodeLine{00068   create\_info.ppEnabledExtensionNames = instance\_extensions.data();}
+\DoxyCodeLine{00069 }
+\DoxyCodeLine{00070   \textcolor{comment}{// create instance}}
+\DoxyCodeLine{00071   VkResult result = vkCreateInstance(\&create\_info, \textcolor{keyword}{nullptr}, \&instance);}
+\DoxyCodeLine{00072   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a Vulkan instance!"{}});}
+\DoxyCodeLine{00073 \}}
+\DoxyCodeLine{00074 }
+\DoxyCodeLine{00075 \textcolor{keywordtype}{bool} VulkanInstance::check\_validation\_layer\_support() \{}
+\DoxyCodeLine{00076   uint32\_t layerCount;}
+\DoxyCodeLine{00077   vkEnumerateInstanceLayerProperties(\&layerCount, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00078 }
+\DoxyCodeLine{00079   std::vector<VkLayerProperties> availableLayers(layerCount);}
+\DoxyCodeLine{00080   vkEnumerateInstanceLayerProperties(\&layerCount, availableLayers.data());}
+\DoxyCodeLine{00081 }
+\DoxyCodeLine{00082   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keywordtype}{char}* layerName : validationLayers) \{}
+\DoxyCodeLine{00083     \textcolor{keywordtype}{bool} layerFound = \textcolor{keyword}{false};}
+\DoxyCodeLine{00084 }
+\DoxyCodeLine{00085     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& layerProperties : availableLayers) \{}
+\DoxyCodeLine{00086       \textcolor{keywordflow}{if} (strcmp(layerName, layerProperties.layerName) == 0) \{}
+\DoxyCodeLine{00087         layerFound = \textcolor{keyword}{true};}
+\DoxyCodeLine{00088         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00089       \}}
+\DoxyCodeLine{00090     \}}
+\DoxyCodeLine{00091 }
+\DoxyCodeLine{00092     \textcolor{keywordflow}{if} (!layerFound) \{}
+\DoxyCodeLine{00093       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{00094     \}}
+\DoxyCodeLine{00095   \}}
+\DoxyCodeLine{00096 }
+\DoxyCodeLine{00097   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{00098 \}}
+\DoxyCodeLine{00099 }
+\DoxyCodeLine{00100 \textcolor{keywordtype}{bool} VulkanInstance::check\_instance\_extension\_support(}
+\DoxyCodeLine{00101     std::vector<const char*>* check\_extensions) \{}
+\DoxyCodeLine{00102   \textcolor{comment}{// Need to get number of extensions to create array of correct size to hold}}
+\DoxyCodeLine{00103   \textcolor{comment}{// extensions}}
+\DoxyCodeLine{00104   uint32\_t extension\_count = 0;}
+\DoxyCodeLine{00105   vkEnumerateInstanceExtensionProperties(\textcolor{keyword}{nullptr}, \&extension\_count, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00106 }
+\DoxyCodeLine{00107   \textcolor{comment}{// create a list of VkExtensionProperties using count}}
+\DoxyCodeLine{00108   std::vector<VkExtensionProperties> extensions(extension\_count);}
+\DoxyCodeLine{00109   vkEnumerateInstanceExtensionProperties(\textcolor{keyword}{nullptr}, \&extension\_count,}
+\DoxyCodeLine{00110                                          extensions.data());}
+\DoxyCodeLine{00111 }
+\DoxyCodeLine{00112   \textcolor{comment}{// check if given extensions are in list of available extensions}}
+\DoxyCodeLine{00113   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& check\_extension : *check\_extensions) \{}
+\DoxyCodeLine{00114     \textcolor{keywordtype}{bool} has\_extension = \textcolor{keyword}{false};}
+\DoxyCodeLine{00115 }
+\DoxyCodeLine{00116     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& extension : extensions) \{}
+\DoxyCodeLine{00117       \textcolor{keywordflow}{if} (strcmp(check\_extension, extension.extensionName)) \{}
+\DoxyCodeLine{00118         has\_extension = \textcolor{keyword}{true};}
+\DoxyCodeLine{00119         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00120       \}}
+\DoxyCodeLine{00121     \}}
+\DoxyCodeLine{00122 }
+\DoxyCodeLine{00123     \textcolor{keywordflow}{if} (!has\_extension) \{}
+\DoxyCodeLine{00124       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{00125     \}}
+\DoxyCodeLine{00126   \}}
+\DoxyCodeLine{00127 }
+\DoxyCodeLine{00128   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{00129 \}}
+\DoxyCodeLine{00130 }
+\DoxyCodeLine{00131 \textcolor{keywordtype}{void} VulkanInstance::cleanUp() \{ vkDestroyInstance(instance, \textcolor{keyword}{nullptr}); \}}
+\DoxyCodeLine{00132 }
+\DoxyCodeLine{00133 VulkanInstance::\string~VulkanInstance() \{\}}
+
+\end{DoxyCode}

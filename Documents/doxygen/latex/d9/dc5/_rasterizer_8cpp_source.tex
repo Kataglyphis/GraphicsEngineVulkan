@@ -1,0 +1,551 @@
+\doxysection{Rasterizer.\+cpp}
+\label{_rasterizer_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp}}
+\mbox{\hyperlink{_rasterizer_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Rasterizer.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{00007 \textcolor{preprocessor}{\#include "{}FormatHelper.h"{}}}
+\DoxyCodeLine{00008 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
+\DoxyCodeLine{00009 \textcolor{preprocessor}{\#include "{}Vertex.h"{}}}
+\DoxyCodeLine{00010 }
+\DoxyCodeLine{00011 Rasterizer::Rasterizer() \{\}}
+\DoxyCodeLine{00012 }
+\DoxyCodeLine{00013 \textcolor{keywordtype}{void} Rasterizer::init(}
+\DoxyCodeLine{00014     VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{00015     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts,}
+\DoxyCodeLine{00016     VkCommandPool\& commandPool) \{}
+\DoxyCodeLine{00017   this-\/>device = device;}
+\DoxyCodeLine{00018   this-\/>vulkanSwapChain = vulkanSwapChain;}
+\DoxyCodeLine{00019 }
+\DoxyCodeLine{00020   createTextures(commandPool);}
+\DoxyCodeLine{00021   createRenderPass();}
+\DoxyCodeLine{00022   createPushConstantRange();}
+\DoxyCodeLine{00023   createGraphicsPipeline(descriptorSetLayouts);}
+\DoxyCodeLine{00024   createFramebuffer();}
+\DoxyCodeLine{00025 \}}
+\DoxyCodeLine{00026 }
+\DoxyCodeLine{00027 \textcolor{keywordtype}{void} Rasterizer::shaderHotReload(}
+\DoxyCodeLine{00028     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
+\DoxyCodeLine{00029   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00030   createGraphicsPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{00031 \}}
+\DoxyCodeLine{00032 }
+\DoxyCodeLine{00033 Texture\& Rasterizer::getOffscreenTexture(uint32\_t index) \{}
+\DoxyCodeLine{00034   \textcolor{keywordflow}{return} offscreenTextures[index];}
+\DoxyCodeLine{00035 \}}
+\DoxyCodeLine{00036 }
+\DoxyCodeLine{00037 \textcolor{keywordtype}{void} Rasterizer::setPushConstant(PushConstantRasterizer pushConstant) \{}
+\DoxyCodeLine{00038   this-\/>pushConstant = pushConstant;}
+\DoxyCodeLine{00039 \}}
+\DoxyCodeLine{00040 }
+\DoxyCodeLine{00041 \textcolor{keywordtype}{void} Rasterizer::recordCommands(}
+\DoxyCodeLine{00042     VkCommandBuffer\& commandBuffer, uint32\_t image\_index, Scene* scene,}
+\DoxyCodeLine{00043     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
+\DoxyCodeLine{00044   \textcolor{comment}{// information about how to begin a render pass (only needed for graphical}}
+\DoxyCodeLine{00045   \textcolor{comment}{// applications)}}
+\DoxyCodeLine{00046   VkRenderPassBeginInfo render\_pass\_begin\_info\{\};}
+\DoxyCodeLine{00047   render\_pass\_begin\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_BEGIN\_INFO;}
+\DoxyCodeLine{00048   render\_pass\_begin\_info.renderPass = render\_pass;}
+\DoxyCodeLine{00049   render\_pass\_begin\_info.renderArea.offset = \{0, 0\};}
+\DoxyCodeLine{00050   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00051   render\_pass\_begin\_info.renderArea.extent = swap\_chain\_extent;}
+\DoxyCodeLine{00052 }
+\DoxyCodeLine{00053   \textcolor{comment}{// make sure the order you put the values into the array matches with the}}
+\DoxyCodeLine{00054   \textcolor{comment}{// attchment order you have defined previous}}
+\DoxyCodeLine{00055   std::array<VkClearValue, 2> clear\_values = \{\};}
+\DoxyCodeLine{00056   clear\_values[0].color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
+\DoxyCodeLine{00057   clear\_values[1].depthStencil = \{1.0f, 0\};}
+\DoxyCodeLine{00058 }
+\DoxyCodeLine{00059   render\_pass\_begin\_info.pClearValues = clear\_values.data();}
+\DoxyCodeLine{00060   render\_pass\_begin\_info.clearValueCount =}
+\DoxyCodeLine{00061       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(clear\_values.size());}
+\DoxyCodeLine{00062   render\_pass\_begin\_info.framebuffer = framebuffer[image\_index];}
+\DoxyCodeLine{00063 }
+\DoxyCodeLine{00064   \textcolor{comment}{// begin render pass}}
+\DoxyCodeLine{00065   vkCmdBeginRenderPass(commandBuffer, \&render\_pass\_begin\_info,}
+\DoxyCodeLine{00066                        VK\_SUBPASS\_CONTENTS\_INLINE);}
+\DoxyCodeLine{00067 }
+\DoxyCodeLine{00068   \textcolor{comment}{// bind pipeline to be used in render pass}}
+\DoxyCodeLine{00069   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
+\DoxyCodeLine{00070                     graphics\_pipeline);}
+\DoxyCodeLine{00071 }
+\DoxyCodeLine{00072   \textcolor{keywordflow}{for} (uint32\_t m = 0; m < static\_cast<uint32\_t>(scene-\/>getModelCount()); m++) \{}
+\DoxyCodeLine{00073     \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
+\DoxyCodeLine{00074     pushConstant.model = scene-\/>getModelMatrix(0);}
+\DoxyCodeLine{00075     \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
+\DoxyCodeLine{00076     vkCmdPushConstants(}
+\DoxyCodeLine{00077         commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{00078         VK\_SHADER\_STAGE\_VERTEX\_BIT,      \textcolor{comment}{// stage to push constants to}}
+\DoxyCodeLine{00079         0,                               \textcolor{comment}{// offset to push constants to update}}
+\DoxyCodeLine{00080         \textcolor{keyword}{sizeof}(PushConstantRasterizer),  \textcolor{comment}{// size of data being pushed}}
+\DoxyCodeLine{00081         \&pushConstant);  \textcolor{comment}{// using model of current mesh (can be array)}}
+\DoxyCodeLine{00082 }
+\DoxyCodeLine{00083     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k = 0; k < scene-\/>getMeshCount(m); k++) \{}
+\DoxyCodeLine{00084       \textcolor{comment}{// list of vertex buffers we want to draw}}
+\DoxyCodeLine{00085       VkBuffer vertex\_buffers[] = \{}
+\DoxyCodeLine{00086           scene-\/>getVertexBuffer(m, k)\};  \textcolor{comment}{// buffers to bind}}
+\DoxyCodeLine{00087       VkDeviceSize offsets[] = \{0\};}
+\DoxyCodeLine{00088       vkCmdBindVertexBuffers(}
+\DoxyCodeLine{00089           commandBuffer, 0, 1, vertex\_buffers,}
+\DoxyCodeLine{00090           offsets);  \textcolor{comment}{// command to bind vertex buffer before drawing with them}}
+\DoxyCodeLine{00091 }
+\DoxyCodeLine{00092       \textcolor{comment}{// bind mesh index buffer with 0 offset and using the uint32 type}}
+\DoxyCodeLine{00093       vkCmdBindIndexBuffer(commandBuffer, scene-\/>getIndexBuffer(m, k), 0,}
+\DoxyCodeLine{00094                            VK\_INDEX\_TYPE\_UINT32);}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096       \textcolor{comment}{// bind descriptor sets}}
+\DoxyCodeLine{00097       vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
+\DoxyCodeLine{00098                               pipeline\_layout, 0,}
+\DoxyCodeLine{00099                               \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
+\DoxyCodeLine{00100                               descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00101 }
+\DoxyCodeLine{00102       \textcolor{comment}{// execute pipeline}}
+\DoxyCodeLine{00103       vkCmdDrawIndexed(commandBuffer,}
+\DoxyCodeLine{00104                        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(scene-\/>getIndexCount(m, k)), 1, 0,}
+\DoxyCodeLine{00105                        0, 0);}
+\DoxyCodeLine{00106     \}}
+\DoxyCodeLine{00107   \}}
+\DoxyCodeLine{00108 }
+\DoxyCodeLine{00109   \textcolor{comment}{// end render pass}}
+\DoxyCodeLine{00110   vkCmdEndRenderPass(commandBuffer);}
+\DoxyCodeLine{00111 \}}
+\DoxyCodeLine{00112 }
+\DoxyCodeLine{00113 \textcolor{keywordtype}{void} Rasterizer::cleanUp() \{}
+\DoxyCodeLine{00114   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} framebuffer : framebuffer) \{}
+\DoxyCodeLine{00115     vkDestroyFramebuffer(device-\/>getLogicalDevice(), framebuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00116   \}}
+\DoxyCodeLine{00117 }
+\DoxyCodeLine{00118   \textcolor{keywordflow}{for} (Texture texture : offscreenTextures) \{}
+\DoxyCodeLine{00119     texture.cleanUp();}
+\DoxyCodeLine{00120   \}}
+\DoxyCodeLine{00121 }
+\DoxyCodeLine{00122   depthBufferImage.cleanUp();}
+\DoxyCodeLine{00123 }
+\DoxyCodeLine{00124   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00125   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00126   vkDestroyRenderPass(device-\/>getLogicalDevice(), render\_pass, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00127 \}}
+\DoxyCodeLine{00128 }
+\DoxyCodeLine{00129 Rasterizer::\string~Rasterizer() \{\}}
+\DoxyCodeLine{00130 }
+\DoxyCodeLine{00131 \textcolor{keywordtype}{void} Rasterizer::createRenderPass() \{}
+\DoxyCodeLine{00132   \textcolor{comment}{// Color attachment of render pass}}
+\DoxyCodeLine{00133   VkAttachmentDescription color\_attachment\{\};}
+\DoxyCodeLine{00134   \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
+\DoxyCodeLine{00135       vulkanSwapChain-\/>getSwapChainFormat();}
+\DoxyCodeLine{00136   color\_attachment.format =}
+\DoxyCodeLine{00137       swap\_chain\_image\_format;  \textcolor{comment}{// format to use for attachment}}
+\DoxyCodeLine{00138   color\_attachment.samples =}
+\DoxyCodeLine{00139       VK\_SAMPLE\_COUNT\_1\_BIT;  \textcolor{comment}{// number of samples to write for multisampling}}
+\DoxyCodeLine{00140   color\_attachment.loadOp =}
+\DoxyCodeLine{00141       VK\_ATTACHMENT\_LOAD\_OP\_CLEAR;  \textcolor{comment}{// describes what to do with attachment}}
+\DoxyCodeLine{00142                                     \textcolor{comment}{// before rendering}}
+\DoxyCodeLine{00143   color\_attachment.storeOp =}
+\DoxyCodeLine{00144       VK\_ATTACHMENT\_STORE\_OP\_STORE;  \textcolor{comment}{// describes what to do with attachment}}
+\DoxyCodeLine{00145                                      \textcolor{comment}{// after rendering}}
+\DoxyCodeLine{00146   color\_attachment.stencilLoadOp =}
+\DoxyCodeLine{00147       VK\_ATTACHMENT\_LOAD\_OP\_DONT\_CARE;  \textcolor{comment}{// describes what to do with stencil}}
+\DoxyCodeLine{00148                                         \textcolor{comment}{// before rendering}}
+\DoxyCodeLine{00149   color\_attachment.stencilStoreOp =}
+\DoxyCodeLine{00150       VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;  \textcolor{comment}{// describes what to do with stencil}}
+\DoxyCodeLine{00151                                          \textcolor{comment}{// after rendering}}
+\DoxyCodeLine{00152 }
+\DoxyCodeLine{00153   \textcolor{comment}{// framebuffer data will be stored as an image, but images can be given}}
+\DoxyCodeLine{00154   \textcolor{comment}{// different layouts to give optimal use for certain operations}}
+\DoxyCodeLine{00155   color\_attachment.initialLayout =}
+\DoxyCodeLine{00156       VK\_IMAGE\_LAYOUT\_GENERAL;  \textcolor{comment}{// image data layout before render pass starts}}
+\DoxyCodeLine{00157   color\_attachment.finalLayout =}
+\DoxyCodeLine{00158       VK\_IMAGE\_LAYOUT\_GENERAL;  \textcolor{comment}{// image data layout after render pass (to}}
+\DoxyCodeLine{00159                                 \textcolor{comment}{// change to)}}
+\DoxyCodeLine{00160 }
+\DoxyCodeLine{00161   \textcolor{comment}{// depth attachment of render pass}}
+\DoxyCodeLine{00162   VkAttachmentDescription depth\_attachment\{\};}
+\DoxyCodeLine{00163   depth\_attachment.format = choose\_supported\_format(}
+\DoxyCodeLine{00164       device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{00165       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
+\DoxyCodeLine{00166        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
+\DoxyCodeLine{00167       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
+\DoxyCodeLine{00168 }
+\DoxyCodeLine{00169   depth\_attachment.samples = VK\_SAMPLE\_COUNT\_1\_BIT;}
+\DoxyCodeLine{00170   depth\_attachment.loadOp = VK\_ATTACHMENT\_LOAD\_OP\_CLEAR;}
+\DoxyCodeLine{00171   depth\_attachment.storeOp = VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;}
+\DoxyCodeLine{00172   depth\_attachment.stencilLoadOp = VK\_ATTACHMENT\_LOAD\_OP\_DONT\_CARE;}
+\DoxyCodeLine{00173   depth\_attachment.stencilStoreOp = VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;}
+\DoxyCodeLine{00174   depth\_attachment.initialLayout = VK\_IMAGE\_LAYOUT\_UNDEFINED;}
+\DoxyCodeLine{00175   depth\_attachment.finalLayout =}
+\DoxyCodeLine{00176       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL;}
+\DoxyCodeLine{00177 }
+\DoxyCodeLine{00178   \textcolor{comment}{// attachment reference uses an attachment index that refers to index in the}}
+\DoxyCodeLine{00179   \textcolor{comment}{// attachment list passed to renderPassCreateInfo}}
+\DoxyCodeLine{00180   VkAttachmentReference color\_attachment\_reference\{\};}
+\DoxyCodeLine{00181   color\_attachment\_reference.attachment = 0;}
+\DoxyCodeLine{00182   color\_attachment\_reference.layout = VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL;}
+\DoxyCodeLine{00183 }
+\DoxyCodeLine{00184   \textcolor{comment}{// attachment reference}}
+\DoxyCodeLine{00185   VkAttachmentReference depth\_attachment\_reference\{\};}
+\DoxyCodeLine{00186   depth\_attachment\_reference.attachment = 1;}
+\DoxyCodeLine{00187   depth\_attachment\_reference.layout =}
+\DoxyCodeLine{00188       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL;}
+\DoxyCodeLine{00189 }
+\DoxyCodeLine{00190   \textcolor{comment}{// information about a particular subpass the render pass is using}}
+\DoxyCodeLine{00191   VkSubpassDescription subpass\{\};}
+\DoxyCodeLine{00192   subpass.pipelineBindPoint =}
+\DoxyCodeLine{00193       VK\_PIPELINE\_BIND\_POINT\_GRAPHICS;  \textcolor{comment}{// pipeline type subpass is to be bound}}
+\DoxyCodeLine{00194                                         \textcolor{comment}{// to}}
+\DoxyCodeLine{00195   subpass.colorAttachmentCount = 1;}
+\DoxyCodeLine{00196   subpass.pColorAttachments = \&color\_attachment\_reference;}
+\DoxyCodeLine{00197   subpass.pDepthStencilAttachment = \&depth\_attachment\_reference;}
+\DoxyCodeLine{00198 }
+\DoxyCodeLine{00199   \textcolor{comment}{// need to determine when layout transitions occur using subpass dependencies}}
+\DoxyCodeLine{00200   std::array<VkSubpassDependency, 1> subpass\_dependencies;}
+\DoxyCodeLine{00201 }
+\DoxyCodeLine{00202   \textcolor{comment}{// conversion from VK\_IMAGE\_LAYOUT\_UNDEFINED to}}
+\DoxyCodeLine{00203   \textcolor{comment}{// VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL transition must happen after ....}}
+\DoxyCodeLine{00204   subpass\_dependencies[0].srcSubpass =}
+\DoxyCodeLine{00205       VK\_SUBPASS\_EXTERNAL;  \textcolor{comment}{// subpass index (VK\_SUBPASS\_EXTERNAL = Special}}
+\DoxyCodeLine{00206                             \textcolor{comment}{// value meaning outside of renderpass)}}
+\DoxyCodeLine{00207   subpass\_dependencies[0].srcStageMask =}
+\DoxyCodeLine{00208       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;  \textcolor{comment}{// pipeline stage}}
+\DoxyCodeLine{00209   subpass\_dependencies[0].srcAccessMask =}
+\DoxyCodeLine{00210       0;  \textcolor{comment}{// stage access mask (memory access)}}
+\DoxyCodeLine{00211 }
+\DoxyCodeLine{00212   \textcolor{comment}{// but must happen before ...}}
+\DoxyCodeLine{00213   subpass\_dependencies[0].dstSubpass = 0;}
+\DoxyCodeLine{00214   subpass\_dependencies[0].dstStageMask =}
+\DoxyCodeLine{00215       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;}
+\DoxyCodeLine{00216   subpass\_dependencies[0].dstAccessMask = VK\_ACCESS\_COLOR\_ATTACHMENT\_WRITE\_BIT;}
+\DoxyCodeLine{00217   subpass\_dependencies[0].dependencyFlags = 0;  \textcolor{comment}{// VK\_DEPENDENCY\_BY\_REGION\_BIT;}}
+\DoxyCodeLine{00218 }
+\DoxyCodeLine{00219   std::array<VkAttachmentDescription, 2> render\_pass\_attachments = \{}
+\DoxyCodeLine{00220       color\_attachment, depth\_attachment\};}
+\DoxyCodeLine{00221 }
+\DoxyCodeLine{00222   \textcolor{comment}{// create info for render pass}}
+\DoxyCodeLine{00223   VkRenderPassCreateInfo render\_pass\_create\_info\{\};}
+\DoxyCodeLine{00224   render\_pass\_create\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_CREATE\_INFO;}
+\DoxyCodeLine{00225   render\_pass\_create\_info.attachmentCount =}
+\DoxyCodeLine{00226       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(render\_pass\_attachments.size());}
+\DoxyCodeLine{00227   render\_pass\_create\_info.pAttachments = render\_pass\_attachments.data();}
+\DoxyCodeLine{00228   render\_pass\_create\_info.subpassCount = 1;}
+\DoxyCodeLine{00229   render\_pass\_create\_info.pSubpasses = \&subpass;}
+\DoxyCodeLine{00230   render\_pass\_create\_info.dependencyCount =}
+\DoxyCodeLine{00231       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(subpass\_dependencies.size());}
+\DoxyCodeLine{00232   render\_pass\_create\_info.pDependencies = subpass\_dependencies.data();}
+\DoxyCodeLine{00233 }
+\DoxyCodeLine{00234   VkResult result =}
+\DoxyCodeLine{00235       vkCreateRenderPass(device-\/>getLogicalDevice(), \&render\_pass\_create\_info,}
+\DoxyCodeLine{00236                          \textcolor{keyword}{nullptr}, \&render\_pass);}
+\DoxyCodeLine{00237   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create render pass!"{}})}
+\DoxyCodeLine{00238 \}}
+\DoxyCodeLine{00239 }
+\DoxyCodeLine{00240 \textcolor{keywordtype}{void} Rasterizer::createFramebuffer() \{}
+\DoxyCodeLine{00241   framebuffer.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{00242 }
+\DoxyCodeLine{00243   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < framebuffer.size(); i++) \{}
+\DoxyCodeLine{00244     std::array<VkImageView, 2> attachments = \{}
+\DoxyCodeLine{00245         offscreenTextures[i].getImageView(), depthBufferImage.getImageView()\};}
+\DoxyCodeLine{00246 }
+\DoxyCodeLine{00247     VkFramebufferCreateInfo frame\_buffer\_create\_info\{\};}
+\DoxyCodeLine{00248     frame\_buffer\_create\_info.sType = VK\_STRUCTURE\_TYPE\_FRAMEBUFFER\_CREATE\_INFO;}
+\DoxyCodeLine{00249     frame\_buffer\_create\_info.renderPass = render\_pass;}
+\DoxyCodeLine{00250     frame\_buffer\_create\_info.attachmentCount =}
+\DoxyCodeLine{00251         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attachments.size());}
+\DoxyCodeLine{00252     frame\_buffer\_create\_info.pAttachments = attachments.data();}
+\DoxyCodeLine{00253     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00254     frame\_buffer\_create\_info.width = swap\_chain\_extent.width;}
+\DoxyCodeLine{00255     frame\_buffer\_create\_info.height = swap\_chain\_extent.height;}
+\DoxyCodeLine{00256     frame\_buffer\_create\_info.layers = 1;}
+\DoxyCodeLine{00257 }
+\DoxyCodeLine{00258     VkResult result = vkCreateFramebuffer(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00259                                           \&frame\_buffer\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00260                                           \&framebuffer[i]);}
+\DoxyCodeLine{00261     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create framebuffer!"{}});}
+\DoxyCodeLine{00262   \}}
+\DoxyCodeLine{00263 \}}
+\DoxyCodeLine{00264 }
+\DoxyCodeLine{00265 \textcolor{keywordtype}{void} Rasterizer::createPushConstantRange() \{}
+\DoxyCodeLine{00266   \textcolor{comment}{// define push constant values (no 'create' needed)}}
+\DoxyCodeLine{00267   push\_constant\_range.stageFlags = VK\_SHADER\_STAGE\_VERTEX\_BIT;}
+\DoxyCodeLine{00268   push\_constant\_range.offset = 0;}
+\DoxyCodeLine{00269   push\_constant\_range.size = \textcolor{keyword}{sizeof}(PushConstantRasterizer);}
+\DoxyCodeLine{00270 \}}
+\DoxyCodeLine{00271 }
+\DoxyCodeLine{00272 \textcolor{keywordtype}{void} Rasterizer::createTextures(VkCommandPool\& commandPool) \{}
+\DoxyCodeLine{00273   offscreenTextures.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{00274 }
+\DoxyCodeLine{00275   VkCommandBuffer cmdBuffer = commandBufferManager.beginCommandBuffer(}
+\DoxyCodeLine{00276       device-\/>getLogicalDevice(), commandPool);}
+\DoxyCodeLine{00277 }
+\DoxyCodeLine{00278   \textcolor{keywordflow}{for} (uint32\_t index = 0;}
+\DoxyCodeLine{00279        index <}
+\DoxyCodeLine{00280        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{00281        index++) \{}
+\DoxyCodeLine{00282     Texture texture\{\};}
+\DoxyCodeLine{00283     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00284     \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
+\DoxyCodeLine{00285         vulkanSwapChain-\/>getSwapChainFormat();}
+\DoxyCodeLine{00286 }
+\DoxyCodeLine{00287     texture.createImage(}
+\DoxyCodeLine{00288         device, swap\_chain\_extent.width, swap\_chain\_extent.height, 1,}
+\DoxyCodeLine{00289         swap\_chain\_image\_format, VK\_IMAGE\_TILING\_OPTIMAL,}
+\DoxyCodeLine{00290         VK\_IMAGE\_USAGE\_COLOR\_ATTACHMENT\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT |}
+\DoxyCodeLine{00291             VK\_IMAGE\_USAGE\_STORAGE\_BIT | VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00292         VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{00293 }
+\DoxyCodeLine{00294     texture.createImageView(device, swap\_chain\_image\_format,}
+\DoxyCodeLine{00295                             VK\_IMAGE\_ASPECT\_COLOR\_BIT, 1);}
+\DoxyCodeLine{00296 }
+\DoxyCodeLine{00297     \textcolor{comment}{// -\/-\/-\/ WE NEED A DIFFERENT LAYOUT FOR USAGE}}
+\DoxyCodeLine{00298     VulkanImage\& image = texture.getVulkanImage();}
+\DoxyCodeLine{00299     image.transitionImageLayout(cmdBuffer, VK\_IMAGE\_LAYOUT\_UNDEFINED,}
+\DoxyCodeLine{00300                                 VK\_IMAGE\_LAYOUT\_GENERAL, 1,}
+\DoxyCodeLine{00301                                 VK\_IMAGE\_ASPECT\_COLOR\_BIT);}
+\DoxyCodeLine{00302 }
+\DoxyCodeLine{00303     offscreenTextures[index] = texture;}
+\DoxyCodeLine{00304   \}}
+\DoxyCodeLine{00305 }
+\DoxyCodeLine{00306   VkFormat depth\_format = choose\_supported\_format(}
+\DoxyCodeLine{00307       device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{00308       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
+\DoxyCodeLine{00309        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
+\DoxyCodeLine{00310       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
+\DoxyCodeLine{00311 }
+\DoxyCodeLine{00312   \textcolor{comment}{// create depth buffer image}}
+\DoxyCodeLine{00313   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
+\DoxyCodeLine{00314   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00315   depthBufferImage.createImage(device, swap\_chain\_extent.width,}
+\DoxyCodeLine{00316                                swap\_chain\_extent.height, 1, depth\_format,}
+\DoxyCodeLine{00317                                VK\_IMAGE\_TILING\_OPTIMAL,}
+\DoxyCodeLine{00318                                VK\_IMAGE\_USAGE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT,}
+\DoxyCodeLine{00319                                VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{00320 }
+\DoxyCodeLine{00321   \textcolor{comment}{// depth buffer image view}}
+\DoxyCodeLine{00322   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
+\DoxyCodeLine{00323   depthBufferImage.createImageView(}
+\DoxyCodeLine{00324       device, depth\_format,}
+\DoxyCodeLine{00325       VK\_IMAGE\_ASPECT\_DEPTH\_BIT | VK\_IMAGE\_ASPECT\_STENCIL\_BIT, 1);}
+\DoxyCodeLine{00326 }
+\DoxyCodeLine{00327   \textcolor{comment}{// -\/-\/-\/ WE NEED A DIFFERENT LAYOUT FOR USAGE}}
+\DoxyCodeLine{00328   VulkanImage\& vulkanImage = depthBufferImage.getVulkanImage();}
+\DoxyCodeLine{00329   vulkanImage.transitionImageLayout(}
+\DoxyCodeLine{00330       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
+\DoxyCodeLine{00331       VK\_IMAGE\_LAYOUT\_UNDEFINED,}
+\DoxyCodeLine{00332       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL,}
+\DoxyCodeLine{00333       VK\_IMAGE\_ASPECT\_DEPTH\_BIT | VK\_IMAGE\_ASPECT\_STENCIL\_BIT, 1);}
+\DoxyCodeLine{00334 }
+\DoxyCodeLine{00335   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{00336       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{00337       cmdBuffer);}
+\DoxyCodeLine{00338 \}}
+\DoxyCodeLine{00339 }
+\DoxyCodeLine{00340 \textcolor{keywordtype}{void} Rasterizer::createGraphicsPipeline(}
+\DoxyCodeLine{00341     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{00342   std::stringstream rasterizer\_shader\_dir;}
+\DoxyCodeLine{00343   rasterizer\_shader\_dir << CMAKELISTS\_DIR;}
+\DoxyCodeLine{00344   rasterizer\_shader\_dir << \textcolor{stringliteral}{"{}/Resources/Shader/rasterizer/"{}};}
+\DoxyCodeLine{00345 }
+\DoxyCodeLine{00346   ShaderHelper shaderHelper;}
+\DoxyCodeLine{00347   shaderHelper.compileShader(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.vert"{}});}
+\DoxyCodeLine{00348   shaderHelper.compileShader(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.frag"{}});}
+\DoxyCodeLine{00349 }
+\DoxyCodeLine{00350   File vertexFile(}
+\DoxyCodeLine{00351       shaderHelper.getShaderSpvDir(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.vert"{}}));}
+\DoxyCodeLine{00352   File fragmentFile(}
+\DoxyCodeLine{00353       shaderHelper.getShaderSpvDir(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.frag"{}}));}
+\DoxyCodeLine{00354   std::vector<char> vertex\_shader\_code = vertexFile.readCharSequence();}
+\DoxyCodeLine{00355   std::vector<char> fragment\_shader\_code = fragmentFile.readCharSequence();}
+\DoxyCodeLine{00356 }
+\DoxyCodeLine{00357   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
+\DoxyCodeLine{00358   VkShaderModule vertex\_shader\_module =}
+\DoxyCodeLine{00359       shaderHelper.createShaderModule(device, vertex\_shader\_code);}
+\DoxyCodeLine{00360   VkShaderModule fragment\_shader\_module =}
+\DoxyCodeLine{00361       shaderHelper.createShaderModule(device, fragment\_shader\_code);}
+\DoxyCodeLine{00362 }
+\DoxyCodeLine{00363   \textcolor{comment}{// shader stage creation information}}
+\DoxyCodeLine{00364   \textcolor{comment}{// vertex stage creation information}}
+\DoxyCodeLine{00365   VkPipelineShaderStageCreateInfo vertex\_shader\_create\_info\{\};}
+\DoxyCodeLine{00366   vertex\_shader\_create\_info.sType =}
+\DoxyCodeLine{00367       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00368   vertex\_shader\_create\_info.stage = VK\_SHADER\_STAGE\_VERTEX\_BIT;}
+\DoxyCodeLine{00369   vertex\_shader\_create\_info.module = vertex\_shader\_module;}
+\DoxyCodeLine{00370   vertex\_shader\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00371 }
+\DoxyCodeLine{00372   \textcolor{comment}{// fragment stage creation information}}
+\DoxyCodeLine{00373   VkPipelineShaderStageCreateInfo fragment\_shader\_create\_info\{\};}
+\DoxyCodeLine{00374   fragment\_shader\_create\_info.sType =}
+\DoxyCodeLine{00375       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00376   fragment\_shader\_create\_info.stage = VK\_SHADER\_STAGE\_FRAGMENT\_BIT;}
+\DoxyCodeLine{00377   fragment\_shader\_create\_info.module = fragment\_shader\_module;}
+\DoxyCodeLine{00378   fragment\_shader\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00379 }
+\DoxyCodeLine{00380   std::vector<VkPipelineShaderStageCreateInfo> shader\_stages = \{}
+\DoxyCodeLine{00381       vertex\_shader\_create\_info, fragment\_shader\_create\_info\};}
+\DoxyCodeLine{00382 }
+\DoxyCodeLine{00383   \textcolor{comment}{// how the data for a single vertex (including info such as position, color,}}
+\DoxyCodeLine{00384   \textcolor{comment}{// texture coords, normals, etc) is as a whole}}
+\DoxyCodeLine{00385   VkVertexInputBindingDescription binding\_description\{\};}
+\DoxyCodeLine{00386   binding\_description.binding = 0;}
+\DoxyCodeLine{00387   binding\_description.stride = \textcolor{keyword}{sizeof}(Vertex);}
+\DoxyCodeLine{00388   binding\_description.inputRate =}
+\DoxyCodeLine{00389       VK\_VERTEX\_INPUT\_RATE\_VERTEX;  \textcolor{comment}{// how to move between data after each}}
+\DoxyCodeLine{00390                                     \textcolor{comment}{// vertex.}}
+\DoxyCodeLine{00391 }
+\DoxyCodeLine{00392   \textcolor{comment}{// how the data for an attribute is defined within a vertex}}
+\DoxyCodeLine{00393   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions =}
+\DoxyCodeLine{00394       vertex::getVertexInputAttributeDesc();}
+\DoxyCodeLine{00395 }
+\DoxyCodeLine{00396   \textcolor{comment}{// CREATE PIPELINE}}
+\DoxyCodeLine{00397   \textcolor{comment}{// 1.) Vertex input}}
+\DoxyCodeLine{00398   VkPipelineVertexInputStateCreateInfo vertex\_input\_create\_info\{\};}
+\DoxyCodeLine{00399   vertex\_input\_create\_info.sType =}
+\DoxyCodeLine{00400       VK\_STRUCTURE\_TYPE\_PIPELINE\_VERTEX\_INPUT\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00401   vertex\_input\_create\_info.vertexBindingDescriptionCount = 1;}
+\DoxyCodeLine{00402   vertex\_input\_create\_info.pVertexBindingDescriptions = \&binding\_description;}
+\DoxyCodeLine{00403   vertex\_input\_create\_info.vertexAttributeDescriptionCount =}
+\DoxyCodeLine{00404       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attribute\_describtions.size());}
+\DoxyCodeLine{00405   vertex\_input\_create\_info.pVertexAttributeDescriptions =}
+\DoxyCodeLine{00406       attribute\_describtions.data();}
+\DoxyCodeLine{00407 }
+\DoxyCodeLine{00408   \textcolor{comment}{// input assembly}}
+\DoxyCodeLine{00409   VkPipelineInputAssemblyStateCreateInfo input\_assembly\{\};}
+\DoxyCodeLine{00410   input\_assembly.sType =}
+\DoxyCodeLine{00411       VK\_STRUCTURE\_TYPE\_PIPELINE\_INPUT\_ASSEMBLY\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00412   input\_assembly.topology = VK\_PRIMITIVE\_TOPOLOGY\_TRIANGLE\_LIST;}
+\DoxyCodeLine{00413   input\_assembly.primitiveRestartEnable = VK\_FALSE;}
+\DoxyCodeLine{00414 }
+\DoxyCodeLine{00415   \textcolor{comment}{// viewport \& scissor}}
+\DoxyCodeLine{00416   \textcolor{comment}{// create a viewport info struct}}
+\DoxyCodeLine{00417   VkViewport viewport\{\};}
+\DoxyCodeLine{00418   viewport.x = 0.0f;}
+\DoxyCodeLine{00419   viewport.y = 0.0f;}
+\DoxyCodeLine{00420   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00421   viewport.width = (float)swap\_chain\_extent.width;}
+\DoxyCodeLine{00422   viewport.height = (\textcolor{keywordtype}{float})swap\_chain\_extent.height;}
+\DoxyCodeLine{00423   viewport.minDepth = 0.0f;}
+\DoxyCodeLine{00424   viewport.maxDepth = 1.0f;}
+\DoxyCodeLine{00425 }
+\DoxyCodeLine{00426   \textcolor{comment}{// create a scissor info struct}}
+\DoxyCodeLine{00427   VkRect2D scissor\{\};}
+\DoxyCodeLine{00428   scissor.offset = \{0, 0\};}
+\DoxyCodeLine{00429   scissor.extent = swap\_chain\_extent;}
+\DoxyCodeLine{00430 }
+\DoxyCodeLine{00431   VkPipelineViewportStateCreateInfo viewport\_state\_create\_info\{\};}
+\DoxyCodeLine{00432   viewport\_state\_create\_info.sType =}
+\DoxyCodeLine{00433       VK\_STRUCTURE\_TYPE\_PIPELINE\_VIEWPORT\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00434   viewport\_state\_create\_info.viewportCount = 1;}
+\DoxyCodeLine{00435   viewport\_state\_create\_info.pViewports = \&viewport;}
+\DoxyCodeLine{00436   viewport\_state\_create\_info.scissorCount = 1;}
+\DoxyCodeLine{00437   viewport\_state\_create\_info.pScissors = \&scissor;}
+\DoxyCodeLine{00438 }
+\DoxyCodeLine{00439   \textcolor{comment}{// RASTERIZER}}
+\DoxyCodeLine{00440   VkPipelineRasterizationStateCreateInfo rasterizer\_create\_info\{\};}
+\DoxyCodeLine{00441   rasterizer\_create\_info.sType =}
+\DoxyCodeLine{00442       VK\_STRUCTURE\_TYPE\_PIPELINE\_RASTERIZATION\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00443   rasterizer\_create\_info.depthClampEnable = VK\_FALSE;}
+\DoxyCodeLine{00444   rasterizer\_create\_info.rasterizerDiscardEnable = VK\_FALSE;}
+\DoxyCodeLine{00445   rasterizer\_create\_info.polygonMode = VK\_POLYGON\_MODE\_FILL;}
+\DoxyCodeLine{00446   rasterizer\_create\_info.lineWidth = 1.0f;}
+\DoxyCodeLine{00447   rasterizer\_create\_info.cullMode = VK\_CULL\_MODE\_BACK\_BIT;  \textcolor{comment}{//}}
+\DoxyCodeLine{00448   \textcolor{comment}{// winding to determine which side is front; y-\/coordinate is inverted in}}
+\DoxyCodeLine{00449   \textcolor{comment}{// comparison to OpenGL}}
+\DoxyCodeLine{00450   rasterizer\_create\_info.frontFace = VK\_FRONT\_FACE\_COUNTER\_CLOCKWISE;}
+\DoxyCodeLine{00451   rasterizer\_create\_info.depthBiasClamp = VK\_FALSE;}
+\DoxyCodeLine{00452 }
+\DoxyCodeLine{00453   \textcolor{comment}{// -\/-\/ MULTISAMPLING -\/-\/}}
+\DoxyCodeLine{00454   VkPipelineMultisampleStateCreateInfo multisample\_create\_info\{\};}
+\DoxyCodeLine{00455   multisample\_create\_info.sType =}
+\DoxyCodeLine{00456       VK\_STRUCTURE\_TYPE\_PIPELINE\_MULTISAMPLE\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00457   multisample\_create\_info.sampleShadingEnable = VK\_FALSE;}
+\DoxyCodeLine{00458   multisample\_create\_info.rasterizationSamples = VK\_SAMPLE\_COUNT\_1\_BIT;}
+\DoxyCodeLine{00459 }
+\DoxyCodeLine{00460   \textcolor{comment}{// -\/-\/ BLENDING -\/-\/}}
+\DoxyCodeLine{00461   \textcolor{comment}{// blend attachment state}}
+\DoxyCodeLine{00462   VkPipelineColorBlendAttachmentState color\_state\{\};}
+\DoxyCodeLine{00463   color\_state.colorWriteMask =}
+\DoxyCodeLine{00464       VK\_COLOR\_COMPONENT\_R\_BIT | VK\_COLOR\_COMPONENT\_G\_BIT |}
+\DoxyCodeLine{00465       VK\_COLOR\_COMPONENT\_B\_BIT | VK\_COLOR\_COMPONENT\_A\_BIT;}
+\DoxyCodeLine{00466 }
+\DoxyCodeLine{00467   color\_state.blendEnable = VK\_TRUE;}
+\DoxyCodeLine{00468   \textcolor{comment}{// blending uses equation: (srcColorBlendFactor * new\_color) color\_blend\_op}}
+\DoxyCodeLine{00469   \textcolor{comment}{// (dstColorBlendFactor * old\_color)}}
+\DoxyCodeLine{00470   color\_state.srcColorBlendFactor = VK\_BLEND\_FACTOR\_SRC\_ALPHA;}
+\DoxyCodeLine{00471   color\_state.dstColorBlendFactor = VK\_BLEND\_FACTOR\_ONE\_MINUS\_SRC\_ALPHA;}
+\DoxyCodeLine{00472   color\_state.colorBlendOp = VK\_BLEND\_OP\_ADD;}
+\DoxyCodeLine{00473   color\_state.srcAlphaBlendFactor = VK\_BLEND\_FACTOR\_ONE;}
+\DoxyCodeLine{00474   color\_state.dstAlphaBlendFactor = VK\_BLEND\_FACTOR\_ZERO;}
+\DoxyCodeLine{00475   color\_state.alphaBlendOp = VK\_BLEND\_OP\_ADD;}
+\DoxyCodeLine{00476 }
+\DoxyCodeLine{00477   VkPipelineColorBlendStateCreateInfo color\_blending\_create\_info\{\};}
+\DoxyCodeLine{00478   color\_blending\_create\_info.sType =}
+\DoxyCodeLine{00479       VK\_STRUCTURE\_TYPE\_PIPELINE\_COLOR\_BLEND\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00480   color\_blending\_create\_info.logicOpEnable = VK\_FALSE;}
+\DoxyCodeLine{00481   color\_blending\_create\_info.attachmentCount = 1;}
+\DoxyCodeLine{00482   color\_blending\_create\_info.pAttachments = \&color\_state;}
+\DoxyCodeLine{00483 }
+\DoxyCodeLine{00484   \textcolor{comment}{// -\/-\/ PIPELINE LAYOUT -\/-\/}}
+\DoxyCodeLine{00485   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
+\DoxyCodeLine{00486   pipeline\_layout\_create\_info.sType =}
+\DoxyCodeLine{00487       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{00488   pipeline\_layout\_create\_info.setLayoutCount =}
+\DoxyCodeLine{00489       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
+\DoxyCodeLine{00490   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
+\DoxyCodeLine{00491   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
+\DoxyCodeLine{00492   pipeline\_layout\_create\_info.pPushConstantRanges = \&push\_constant\_range;}
+\DoxyCodeLine{00493 }
+\DoxyCodeLine{00494   \textcolor{comment}{// create pipeline layout}}
+\DoxyCodeLine{00495   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00496                                            \&pipeline\_layout\_create\_info,}
+\DoxyCodeLine{00497                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
+\DoxyCodeLine{00498   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create pipeline layout!"{}})}
+\DoxyCodeLine{00499 }
+\DoxyCodeLine{00500   \textcolor{comment}{// -\/-\/ DEPTH STENCIL TESTING -\/-\/}}
+\DoxyCodeLine{00501   VkPipelineDepthStencilStateCreateInfo depth\_stencil\_create\_info\{\};}
+\DoxyCodeLine{00502   depth\_stencil\_create\_info.sType =}
+\DoxyCodeLine{00503       VK\_STRUCTURE\_TYPE\_PIPELINE\_DEPTH\_STENCIL\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{00504   depth\_stencil\_create\_info.depthTestEnable = VK\_TRUE;}
+\DoxyCodeLine{00505   depth\_stencil\_create\_info.depthWriteEnable = VK\_TRUE;}
+\DoxyCodeLine{00506   depth\_stencil\_create\_info.depthCompareOp = VK\_COMPARE\_OP\_LESS;}
+\DoxyCodeLine{00507   depth\_stencil\_create\_info.depthBoundsTestEnable = VK\_FALSE;}
+\DoxyCodeLine{00508   depth\_stencil\_create\_info.stencilTestEnable = VK\_FALSE;}
+\DoxyCodeLine{00509 }
+\DoxyCodeLine{00510   \textcolor{comment}{// -\/-\/ GRAPHICS PIPELINE CREATION -\/-\/}}
+\DoxyCodeLine{00511   VkGraphicsPipelineCreateInfo graphics\_pipeline\_create\_info\{\};}
+\DoxyCodeLine{00512   graphics\_pipeline\_create\_info.sType =}
+\DoxyCodeLine{00513       VK\_STRUCTURE\_TYPE\_GRAPHICS\_PIPELINE\_CREATE\_INFO;}
+\DoxyCodeLine{00514   graphics\_pipeline\_create\_info.stageCount =}
+\DoxyCodeLine{00515       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
+\DoxyCodeLine{00516   graphics\_pipeline\_create\_info.pStages = shader\_stages.data();}
+\DoxyCodeLine{00517   graphics\_pipeline\_create\_info.pVertexInputState = \&vertex\_input\_create\_info;}
+\DoxyCodeLine{00518   graphics\_pipeline\_create\_info.pInputAssemblyState = \&input\_assembly;}
+\DoxyCodeLine{00519   graphics\_pipeline\_create\_info.pViewportState = \&viewport\_state\_create\_info;}
+\DoxyCodeLine{00520   graphics\_pipeline\_create\_info.pDynamicState = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00521   graphics\_pipeline\_create\_info.pRasterizationState = \&rasterizer\_create\_info;}
+\DoxyCodeLine{00522   graphics\_pipeline\_create\_info.pMultisampleState = \&multisample\_create\_info;}
+\DoxyCodeLine{00523   graphics\_pipeline\_create\_info.pColorBlendState = \&color\_blending\_create\_info;}
+\DoxyCodeLine{00524   graphics\_pipeline\_create\_info.pDepthStencilState = \&depth\_stencil\_create\_info;}
+\DoxyCodeLine{00525   graphics\_pipeline\_create\_info.layout = pipeline\_layout;}
+\DoxyCodeLine{00526   graphics\_pipeline\_create\_info.renderPass = render\_pass;}
+\DoxyCodeLine{00527   graphics\_pipeline\_create\_info.subpass = 0;}
+\DoxyCodeLine{00528 }
+\DoxyCodeLine{00529   \textcolor{comment}{// pipeline derivatives : can create multiple pipelines that derive from one}}
+\DoxyCodeLine{00530   \textcolor{comment}{// another for optimization}}
+\DoxyCodeLine{00531   graphics\_pipeline\_create\_info.basePipelineHandle = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00532   graphics\_pipeline\_create\_info.basePipelineIndex = -\/1;}
+\DoxyCodeLine{00533 }
+\DoxyCodeLine{00534   \textcolor{comment}{// create graphics pipeline}}
+\DoxyCodeLine{00535   result = vkCreateGraphicsPipelines(device-\/>getLogicalDevice(), VK\_NULL\_HANDLE,}
+\DoxyCodeLine{00536                                      1, \&graphics\_pipeline\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00537                                      \&graphics\_pipeline);}
+\DoxyCodeLine{00538   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a graphics pipeline!"{}})}
+\DoxyCodeLine{00539 }
+\DoxyCodeLine{00540   \textcolor{comment}{// Destroy shader modules, no longer needed after pipeline created}}
+\DoxyCodeLine{00541   vkDestroyShaderModule(device-\/>getLogicalDevice(), vertex\_shader\_module,}
+\DoxyCodeLine{00542                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{00543   vkDestroyShaderModule(device-\/>getLogicalDevice(), fragment\_shader\_module,}
+\DoxyCodeLine{00544                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{00545 \}}
+
+\end{DoxyCode}

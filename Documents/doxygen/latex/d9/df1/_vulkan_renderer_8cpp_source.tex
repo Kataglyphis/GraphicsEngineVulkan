@@ -1,0 +1,1233 @@
+\doxysection{Vulkan\+Renderer.\+cpp}
+\label{_vulkan_renderer_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/VulkanRenderer.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/VulkanRenderer.cpp}}
+\mbox{\hyperlink{_vulkan_renderer_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanRenderer.hpp"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{00006 }
+\DoxyCodeLine{00007 \textcolor{preprocessor}{\#ifndef VMA\_IMPLEMENTATION}}
+\DoxyCodeLine{00008 \textcolor{preprocessor}{\#define VMA\_IMPLEMENTATION}}
+\DoxyCodeLine{00009 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// !VMA\_IMPLEMENTATION}}
+\DoxyCodeLine{00010 \textcolor{preprocessor}{\#include <vk\_mem\_alloc.h>}}
+\DoxyCodeLine{00011 }
+\DoxyCodeLine{00012 \textcolor{preprocessor}{\#define STB\_IMAGE\_IMPLEMENTATION}}
+\DoxyCodeLine{00013 \textcolor{preprocessor}{\#include <stb\_image.h>}}
+\DoxyCodeLine{00014 }
+\DoxyCodeLine{00015 \textcolor{preprocessor}{\#include <gsl/gsl>}}
+\DoxyCodeLine{00016 }
+\DoxyCodeLine{00017 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{00018 \textcolor{preprocessor}{\#include "{}Globals.h"{}}}
+\DoxyCodeLine{00019 \textcolor{preprocessor}{\#include "{}PushConstantPost.h"{}}}
+\DoxyCodeLine{00020 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
+\DoxyCodeLine{00021 }
+\DoxyCodeLine{00022 VulkanRenderer::VulkanRenderer(Window* window, Scene* scene, GUI* gui,}
+\DoxyCodeLine{00023                                Camera* camera)}
+\DoxyCodeLine{00024     :}
+\DoxyCodeLine{00025 }
+\DoxyCodeLine{00026       window(window),}
+\DoxyCodeLine{00027       scene(scene),}
+\DoxyCodeLine{00028       gui(gui)}
+\DoxyCodeLine{00029 }
+\DoxyCodeLine{00030 \{}
+\DoxyCodeLine{00031   updateUniforms(scene, camera, window);}
+\DoxyCodeLine{00032 }
+\DoxyCodeLine{00033   \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{00034     instance = VulkanInstance();}
+\DoxyCodeLine{00035 }
+\DoxyCodeLine{00036     VkDebugReportFlagsEXT debugReportFlags =}
+\DoxyCodeLine{00037         VK\_DEBUG\_REPORT\_ERROR\_BIT\_EXT | VK\_DEBUG\_REPORT\_WARNING\_BIT\_EXT;}
+\DoxyCodeLine{00038     \textcolor{keywordflow}{if} (ENABLE\_VALIDATION\_LAYERS)}
+\DoxyCodeLine{00039       debug::setupDebugging(instance.getVulkanInstance(), debugReportFlags,}
+\DoxyCodeLine{00040                             VK\_NULL\_HANDLE);}
+\DoxyCodeLine{00041 }
+\DoxyCodeLine{00042     create\_surface();}
+\DoxyCodeLine{00043 }
+\DoxyCodeLine{00044     device = std::make\_unique<VulkanDevice>(\&instance, \&surface);}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046     allocator =}
+\DoxyCodeLine{00047         Allocator(device-\/>getLogicalDevice(), device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{00048                   instance.getVulkanInstance());}
+\DoxyCodeLine{00049 }
+\DoxyCodeLine{00050     create\_command\_pool();}
+\DoxyCodeLine{00051 }
+\DoxyCodeLine{00052     vulkanSwapChain.initVulkanContext(device.get(), window, surface);}
+\DoxyCodeLine{00053     create\_uniform\_buffers();}
+\DoxyCodeLine{00054     create\_command\_buffers();}
+\DoxyCodeLine{00055 }
+\DoxyCodeLine{00056     createSynchronization();}
+\DoxyCodeLine{00057 }
+\DoxyCodeLine{00058     createSharedRenderDescriptorSetLayouts();}
+\DoxyCodeLine{00059     std::vector<VkDescriptorSetLayout> descriptor\_set\_layouts\_rasterizer = \{}
+\DoxyCodeLine{00060         sharedRenderDescriptorSetLayout\};}
+\DoxyCodeLine{00061     rasterizer.init(device.get(), \&vulkanSwapChain,}
+\DoxyCodeLine{00062                     descriptor\_set\_layouts\_rasterizer, graphics\_command\_pool);}
+\DoxyCodeLine{00063     create\_post\_descriptor\_layout();}
+\DoxyCodeLine{00064     std::vector<VkDescriptorSetLayout> descriptor\_set\_layouts\_post = \{}
+\DoxyCodeLine{00065         post\_descriptor\_set\_layout\};}
+\DoxyCodeLine{00066     postStage.init(device.get(), \&vulkanSwapChain, descriptor\_set\_layouts\_post);}
+\DoxyCodeLine{00067     createDescriptorPoolSharedRenderStages();}
+\DoxyCodeLine{00068     createSharedRenderDescriptorSet();}
+\DoxyCodeLine{00069 }
+\DoxyCodeLine{00070     updatePostDescriptorSets();}
+\DoxyCodeLine{00071 }
+\DoxyCodeLine{00072     createRaytracingDescriptorPool();}
+\DoxyCodeLine{00073     createRaytracingDescriptorSetLayouts();}
+\DoxyCodeLine{00074     std::vector<VkDescriptorSetLayout> layouts;}
+\DoxyCodeLine{00075     layouts.push\_back(sharedRenderDescriptorSetLayout);}
+\DoxyCodeLine{00076     layouts.push\_back(raytracingDescriptorSetLayout);}
+\DoxyCodeLine{00077     raytracingStage.init(device.get(), layouts);}
+\DoxyCodeLine{00078     pathTracing.init(device.get(), layouts);}
+\DoxyCodeLine{00079 }
+\DoxyCodeLine{00080     scene-\/>loadModel(device.get(), graphics\_command\_pool);}
+\DoxyCodeLine{00081     \textcolor{comment}{//updateTexturesInSharedRenderDescriptorSet();}}
+\DoxyCodeLine{00082 }
+\DoxyCodeLine{00083     asManager.createASForScene(device.get(), graphics\_command\_pool, scene);}
+\DoxyCodeLine{00084     create\_object\_description\_buffer();}
+\DoxyCodeLine{00085     createRaytracingDescriptorSets();}
+\DoxyCodeLine{00086     updateRaytracingDescriptorSets();}
+\DoxyCodeLine{00087 }
+\DoxyCodeLine{00088     gui-\/>initializeVulkanContext(device.get(), instance.getVulkanInstance(),}
+\DoxyCodeLine{00089                                  postStage.getRenderPass(),}
+\DoxyCodeLine{00090                                  graphics\_command\_pool);}
+\DoxyCodeLine{00091 }
+\DoxyCodeLine{00092   \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::runtime\_error\& e) \{}
+\DoxyCodeLine{00093     printf(\textcolor{stringliteral}{"{}ERROR: \%s\(\backslash\)n"{}}, e.what());}
+\DoxyCodeLine{00094   \}}
+\DoxyCodeLine{00095 \}}
+\DoxyCodeLine{00096 }
+\DoxyCodeLine{00097 \textcolor{keywordtype}{void} VulkanRenderer::updateUniforms(Scene* scene, Camera* camera,}
+\DoxyCodeLine{00098                                     Window* window) \{}
+\DoxyCodeLine{00099   \textcolor{keyword}{const} GUISceneSharedVars guiSceneSharedVars = scene-\/>getGuiSceneSharedVars();}
+\DoxyCodeLine{00100 }
+\DoxyCodeLine{00101   globalUBO.view = camera-\/>calculate\_viewmatrix();}
+\DoxyCodeLine{00102   globalUBO.projection =}
+\DoxyCodeLine{00103       glm::perspective(glm::radians(camera-\/>get\_fov()),}
+\DoxyCodeLine{00104                        (\textcolor{keywordtype}{float})window-\/>get\_width() / (\textcolor{keywordtype}{float})window-\/>get\_height(),}
+\DoxyCodeLine{00105                        camera-\/>get\_near\_plane(), camera-\/>get\_far\_plane());}
+\DoxyCodeLine{00106 }
+\DoxyCodeLine{00107   sceneUBO.view\_dir = glm::vec4(camera-\/>get\_camera\_direction(), 1.0f);}
+\DoxyCodeLine{00108 }
+\DoxyCodeLine{00109   sceneUBO.light\_dir =}
+\DoxyCodeLine{00110       glm::vec4(guiSceneSharedVars.directional\_light\_direction[0],}
+\DoxyCodeLine{00111                 guiSceneSharedVars.directional\_light\_direction[1],}
+\DoxyCodeLine{00112                 guiSceneSharedVars.directional\_light\_direction[2], 1.0f);}
+\DoxyCodeLine{00113 }
+\DoxyCodeLine{00114   sceneUBO.cam\_pos =}
+\DoxyCodeLine{00115       glm::vec4(camera-\/>get\_camera\_position(), camera-\/>get\_fov());}
+\DoxyCodeLine{00116 \}}
+\DoxyCodeLine{00117 }
+\DoxyCodeLine{00118 \textcolor{keywordtype}{void} VulkanRenderer::updateStateDueToUserInput(GUI* gui) \{}
+\DoxyCodeLine{00119   GUIRendererSharedVars\& guiRendererSharedVars =}
+\DoxyCodeLine{00120       gui-\/>getGuiRendererSharedVars();}
+\DoxyCodeLine{00121 }
+\DoxyCodeLine{00122   \textcolor{keywordflow}{if} (guiRendererSharedVars.shader\_hot\_reload\_triggered) \{}
+\DoxyCodeLine{00123     shaderHotReload();}
+\DoxyCodeLine{00124     guiRendererSharedVars.shader\_hot\_reload\_triggered = \textcolor{keyword}{false};}
+\DoxyCodeLine{00125   \}}
+\DoxyCodeLine{00126 \}}
+\DoxyCodeLine{00127 }
+\DoxyCodeLine{00128 \textcolor{keywordtype}{void} VulkanRenderer::finishAllRenderCommands() \{}
+\DoxyCodeLine{00129   vkDeviceWaitIdle(device-\/>getLogicalDevice());}
+\DoxyCodeLine{00130 \}}
+\DoxyCodeLine{00131 }
+\DoxyCodeLine{00132 \textcolor{keywordtype}{void} VulkanRenderer::shaderHotReload() \{}
+\DoxyCodeLine{00133   \textcolor{comment}{// wait until no actions being run on device before destroying}}
+\DoxyCodeLine{00134   vkDeviceWaitIdle(device-\/>getLogicalDevice());}
+\DoxyCodeLine{00135 }
+\DoxyCodeLine{00136   std::vector<VkDescriptorSetLayout> descriptor\_set\_layouts = \{}
+\DoxyCodeLine{00137       sharedRenderDescriptorSetLayout\};}
+\DoxyCodeLine{00138   rasterizer.shaderHotReload(descriptor\_set\_layouts);}
+\DoxyCodeLine{00139 }
+\DoxyCodeLine{00140   std::vector<VkDescriptorSetLayout> descriptor\_set\_layouts\_post = \{}
+\DoxyCodeLine{00141       post\_descriptor\_set\_layout\};}
+\DoxyCodeLine{00142   postStage.shaderHotReload(descriptor\_set\_layouts\_post);}
+\DoxyCodeLine{00143 }
+\DoxyCodeLine{00144   std::vector<VkDescriptorSetLayout> layouts = \{sharedRenderDescriptorSetLayout,}
+\DoxyCodeLine{00145                                                 raytracingDescriptorSetLayout\};}
+\DoxyCodeLine{00146   raytracingStage.shaderHotReload(layouts);}
+\DoxyCodeLine{00147   pathTracing.shaderHotReload(layouts);}
+\DoxyCodeLine{00148 \}}
+\DoxyCodeLine{00149 }
+\DoxyCodeLine{00150 \textcolor{keywordtype}{void} VulkanRenderer::drawFrame() \{}
+\DoxyCodeLine{00151   \textcolor{comment}{// We need to skip one frame}}
+\DoxyCodeLine{00152   \textcolor{comment}{// Due to ImGui need to call ImGui::NewFrame() again}}
+\DoxyCodeLine{00153   \textcolor{comment}{// if we recreated swapchain}}
+\DoxyCodeLine{00154   \textcolor{keywordflow}{if} (checkChangedFramebufferSize()) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00155 }
+\DoxyCodeLine{00156   \textcolor{comment}{/*1. Get next available image to draw to and set something to signal when}}
+\DoxyCodeLine{00157 \textcolor{comment}{     we're finished with the image  (a semaphore) wait for given fence to signal}}
+\DoxyCodeLine{00158 \textcolor{comment}{     (open) from last draw before continuing*/}}
+\DoxyCodeLine{00159   VkResult result = vkWaitForFences(device-\/>getLogicalDevice(), 1,}
+\DoxyCodeLine{00160                                     \&in\_flight\_fences[current\_frame], VK\_TRUE,}
+\DoxyCodeLine{00161                                     std::numeric\_limits<uint64\_t>::max());}
+\DoxyCodeLine{00162   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to wait for fences!"{}})}
+\DoxyCodeLine{00163   \textcolor{comment}{// -\/-\/ GET NEXT IMAGE -\/-\/}}
+\DoxyCodeLine{00164   uint32\_t image\_index;}
+\DoxyCodeLine{00165   result = vkAcquireNextImageKHR(}
+\DoxyCodeLine{00166       device-\/>getLogicalDevice(), vulkanSwapChain.getSwapChain(),}
+\DoxyCodeLine{00167       std::numeric\_limits<uint64\_t>::max(), image\_available[current\_frame],}
+\DoxyCodeLine{00168       VK\_NULL\_HANDLE, \&image\_index);}
+\DoxyCodeLine{00169 }
+\DoxyCodeLine{00170   if (result == VK\_ERROR\_OUT\_OF\_DATE\_KHR) \{}
+\DoxyCodeLine{00171     \textcolor{comment}{// recreate\_swap\_chain();}}
+\DoxyCodeLine{00172     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00173 }
+\DoxyCodeLine{00174   \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (result != VK\_SUCCESS \&\& result != VK\_SUBOPTIMAL\_KHR) \{}
+\DoxyCodeLine{00175     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to acquire next image!"{}});}
+\DoxyCodeLine{00176   \}}
+\DoxyCodeLine{00177 \textcolor{comment}{}}
+\DoxyCodeLine{00178 \textcolor{comment}{  //// check if previous frame is using this image (i.e. there is its fence to}}
+\DoxyCodeLine{00179 \textcolor{comment}{  ///wait on)}}
+\DoxyCodeLine{00180 \textcolor{comment}{}  \textcolor{keywordflow}{if} (images\_in\_flight\_fences[image\_index] != VK\_NULL\_HANDLE) \{}
+\DoxyCodeLine{00181     vkWaitForFences(device-\/>getLogicalDevice(), 1,}
+\DoxyCodeLine{00182                     \&images\_in\_flight\_fences[image\_index], VK\_TRUE, UINT64\_MAX);}
+\DoxyCodeLine{00183   \}}
+\DoxyCodeLine{00184 }
+\DoxyCodeLine{00185   \textcolor{comment}{// mark the image as now being in use by this frame}}
+\DoxyCodeLine{00186   images\_in\_flight\_fences[image\_index] = in\_flight\_fences[current\_frame];}
+\DoxyCodeLine{00187 }
+\DoxyCodeLine{00188   VkCommandBufferBeginInfo buffer\_begin\_info\{\};}
+\DoxyCodeLine{00189   buffer\_begin\_info.sType = VK\_STRUCTURE\_TYPE\_COMMAND\_BUFFER\_BEGIN\_INFO;}
+\DoxyCodeLine{00190   buffer\_begin\_info.flags = VK\_COMMAND\_BUFFER\_USAGE\_ONE\_TIME\_SUBMIT\_BIT;}
+\DoxyCodeLine{00191   \textcolor{comment}{// start recording commands to command buffer}}
+\DoxyCodeLine{00192   result =}
+\DoxyCodeLine{00193       vkBeginCommandBuffer(command\_buffers[image\_index], \&buffer\_begin\_info);}
+\DoxyCodeLine{00194   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to start recording a command buffer!"{}})}
+\DoxyCodeLine{00195 }
+\DoxyCodeLine{00196   update\_uniform\_buffers(image\_index);}
+\DoxyCodeLine{00197 }
+\DoxyCodeLine{00198   GUIRendererSharedVars\& guiRendererSharedVars =}
+\DoxyCodeLine{00199       gui-\/>getGuiRendererSharedVars();}
+\DoxyCodeLine{00200   if (guiRendererSharedVars.raytracing)}
+\DoxyCodeLine{00201     update\_raytracing\_descriptor\_set(image\_index);}
+\DoxyCodeLine{00202 }
+\DoxyCodeLine{00203   record\_commands(image\_index);}
+\DoxyCodeLine{00204 }
+\DoxyCodeLine{00205   \textcolor{comment}{// stop recording to command buffer}}
+\DoxyCodeLine{00206   result = vkEndCommandBuffer(command\_buffers[image\_index]);}
+\DoxyCodeLine{00207   ASSERT\_VULKAN(result, "{}Failed to stop recording a command buffer!"{})}
+\DoxyCodeLine{00208 }
+\DoxyCodeLine{00209   \textcolor{comment}{// 2. Submit command buffer to queue for execution, making sure it waits for}}
+\DoxyCodeLine{00210   \textcolor{comment}{// the image to be signalled as available before drawing and signals when it}}
+\DoxyCodeLine{00211   \textcolor{comment}{// has finished rendering}}
+\DoxyCodeLine{00212   \textcolor{comment}{// -\/-\/ SUBMIT COMMAND BUFFER TO RENDER -\/-\/}}
+\DoxyCodeLine{00213   VkSubmitInfo submit\_info\{\};}
+\DoxyCodeLine{00214   submit\_info.sType = VK\_STRUCTURE\_TYPE\_SUBMIT\_INFO;}
+\DoxyCodeLine{00215   submit\_info.waitSemaphoreCount = 1;  \textcolor{comment}{// number of semaphores to wait on}}
+\DoxyCodeLine{00216   submit\_info.pWaitSemaphores =}
+\DoxyCodeLine{00217       \&image\_available[current\_frame];  \textcolor{comment}{// list of semaphores to wait on}}
+\DoxyCodeLine{00218 }
+\DoxyCodeLine{00219   VkPipelineStageFlags wait\_stages = \{}
+\DoxyCodeLine{00220 }
+\DoxyCodeLine{00221       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT \textcolor{comment}{/*|}}
+\DoxyCodeLine{00222 \textcolor{comment}{                  VK\_PIPELINE\_STAGE\_TOP\_OF\_PIPE\_BIT |}}
+\DoxyCodeLine{00223 \textcolor{comment}{                  VK\_PIPELINE\_STAGE\_2\_RAY\_TRACING\_SHADER\_BIT\_KHR*/}}
+\DoxyCodeLine{00224 }
+\DoxyCodeLine{00225   \};}
+\DoxyCodeLine{00226 }
+\DoxyCodeLine{00227   submit\_info.pWaitDstStageMask =}
+\DoxyCodeLine{00228       \&wait\_stages;  \textcolor{comment}{// stages to check semaphores at}}
+\DoxyCodeLine{00229 }
+\DoxyCodeLine{00230   submit\_info.commandBufferCount = 1;  \textcolor{comment}{// number of command buffers to submit}}
+\DoxyCodeLine{00231   submit\_info.pCommandBuffers =}
+\DoxyCodeLine{00232       \&command\_buffers[image\_index];     \textcolor{comment}{// command buffer to submit}}
+\DoxyCodeLine{00233   submit\_info.signalSemaphoreCount = 1;  \textcolor{comment}{// number of semaphores to signal}}
+\DoxyCodeLine{00234   submit\_info.pSignalSemaphores =}
+\DoxyCodeLine{00235       \&render\_finished[current\_frame];  \textcolor{comment}{// semaphores to signal when command}}
+\DoxyCodeLine{00236                                         \textcolor{comment}{// buffer finishes}}
+\DoxyCodeLine{00237 }
+\DoxyCodeLine{00238   result = vkResetFences(device-\/>getLogicalDevice(), 1,}
+\DoxyCodeLine{00239                          \&in\_flight\_fences[current\_frame]);}
+\DoxyCodeLine{00240   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to reset fences!"{}})}
+\DoxyCodeLine{00241 }
+\DoxyCodeLine{00242   \textcolor{comment}{// submit command buffer to queue}}
+\DoxyCodeLine{00243   result = vkQueueSubmit(device-\/>getGraphicsQueue(), 1, \&submit\_info,}
+\DoxyCodeLine{00244                          in\_flight\_fences[current\_frame]);}
+\DoxyCodeLine{00245   ASSERT\_VULKAN(result, "{}Failed to submit command buffer to queue!"{})}
+\DoxyCodeLine{00246 }
+\DoxyCodeLine{00247   \textcolor{comment}{// 3. Present image to screen when it has signalled finished rendering}}
+\DoxyCodeLine{00248   \textcolor{comment}{// -\/-\/ PRESENT RENDERED IMAGE TO SCREEN -\/-\/}}
+\DoxyCodeLine{00249   VkPresentInfoKHR present\_info\{\};}
+\DoxyCodeLine{00250   present\_info.sType = VK\_STRUCTURE\_TYPE\_PRESENT\_INFO\_KHR;}
+\DoxyCodeLine{00251   present\_info.waitSemaphoreCount = 1;  \textcolor{comment}{// number of semaphores to wait on}}
+\DoxyCodeLine{00252   present\_info.pWaitSemaphores =}
+\DoxyCodeLine{00253       \&render\_finished[current\_frame];  \textcolor{comment}{// semaphores to wait on}}
+\DoxyCodeLine{00254   present\_info.swapchainCount = 1;      \textcolor{comment}{// number of swapchains to present to}}
+\DoxyCodeLine{00255   \textcolor{keyword}{const} VkSwapchainKHR swapchain = vulkanSwapChain.getSwapChain();}
+\DoxyCodeLine{00256   present\_info.pSwapchains = \&swapchain;  \textcolor{comment}{// swapchains to present images to}}
+\DoxyCodeLine{00257   present\_info.pImageIndices =}
+\DoxyCodeLine{00258       \&image\_index;  \textcolor{comment}{// index of images in swapchain to present}}
+\DoxyCodeLine{00259 }
+\DoxyCodeLine{00260   result = vkQueuePresentKHR(device-\/>getPresentationQueue(), \&present\_info);}
+\DoxyCodeLine{00261 }
+\DoxyCodeLine{00262   \textcolor{keywordflow}{if} (result == VK\_ERROR\_OUT\_OF\_DATE\_KHR) \{}
+\DoxyCodeLine{00263     \textcolor{comment}{// recreate\_swap\_chain();}}
+\DoxyCodeLine{00264     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00265 }
+\DoxyCodeLine{00266   \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (result != VK\_SUCCESS \&\& result != VK\_SUBOPTIMAL\_KHR) \{}
+\DoxyCodeLine{00267     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to acquire next image!"{}});}
+\DoxyCodeLine{00268   \}}
+\DoxyCodeLine{00269 }
+\DoxyCodeLine{00270   \textcolor{keywordflow}{if} (result != VK\_SUCCESS) \{}
+\DoxyCodeLine{00271     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to submit to present queue!"{}});}
+\DoxyCodeLine{00272   \}}
+\DoxyCodeLine{00273 }
+\DoxyCodeLine{00274   current\_frame = (current\_frame + 1) \% MAX\_FRAME\_DRAWS;}
+\DoxyCodeLine{00275 \}}
+\DoxyCodeLine{00276 }
+\DoxyCodeLine{00277 \textcolor{keywordtype}{void} VulkanRenderer::create\_surface() \{}
+\DoxyCodeLine{00278   \textcolor{comment}{// create surface (creates a surface create info struct, runs the create}}
+\DoxyCodeLine{00279   \textcolor{comment}{// surface function, returns result)}}
+\DoxyCodeLine{00280   ASSERT\_VULKAN(}
+\DoxyCodeLine{00281       glfwCreateWindowSurface(instance.getVulkanInstance(),}
+\DoxyCodeLine{00282                               window-\/>get\_window(), \textcolor{keyword}{nullptr}, \&surface),}
+\DoxyCodeLine{00283       \textcolor{stringliteral}{"{}Failed to create a surface!"{}});}
+\DoxyCodeLine{00284 \}}
+\DoxyCodeLine{00285 }
+\DoxyCodeLine{00286 \textcolor{keywordtype}{void} VulkanRenderer::create\_post\_descriptor\_layout() \{}
+\DoxyCodeLine{00287   \textcolor{comment}{// UNIFORM VALUES DESCRIPTOR SET LAYOUT}}
+\DoxyCodeLine{00288   \textcolor{comment}{// globalUBO Binding info}}
+\DoxyCodeLine{00289   VkDescriptorSetLayoutBinding post\_sampler\_layout\_binding\{\};}
+\DoxyCodeLine{00290   post\_sampler\_layout\_binding.binding =}
+\DoxyCodeLine{00291       0;  \textcolor{comment}{// binding point in shader (designated by binding number in shader)}}
+\DoxyCodeLine{00292   post\_sampler\_layout\_binding.descriptorType =}
+\DoxyCodeLine{00293       VK\_DESCRIPTOR\_TYPE\_COMBINED\_IMAGE\_SAMPLER;  \textcolor{comment}{// type of descriptor}}
+\DoxyCodeLine{00294                                                   \textcolor{comment}{// (uniform, dynamic uniform,}}
+\DoxyCodeLine{00295                                                   \textcolor{comment}{// image sampler, etc)}}
+\DoxyCodeLine{00296   post\_sampler\_layout\_binding.descriptorCount =}
+\DoxyCodeLine{00297       1;  \textcolor{comment}{// number of descriptors for binding}}
+\DoxyCodeLine{00298   post\_sampler\_layout\_binding.stageFlags =}
+\DoxyCodeLine{00299       VK\_SHADER\_STAGE\_FRAGMENT\_BIT;  \textcolor{comment}{// we need to say at which shader we bind}}
+\DoxyCodeLine{00300                                      \textcolor{comment}{// this uniform to}}
+\DoxyCodeLine{00301   post\_sampler\_layout\_binding.pImmutableSamplers =}
+\DoxyCodeLine{00302       \textcolor{keyword}{nullptr};  \textcolor{comment}{// for texture: can make sampler data unchangeable (immutable)}}
+\DoxyCodeLine{00303                 \textcolor{comment}{// by specifying in layout}}
+\DoxyCodeLine{00304 }
+\DoxyCodeLine{00305   std::vector<VkDescriptorSetLayoutBinding> layout\_bindings = \{}
+\DoxyCodeLine{00306       post\_sampler\_layout\_binding\};}
+\DoxyCodeLine{00307 }
+\DoxyCodeLine{00308   \textcolor{comment}{// create descriptor set layout with given bindings}}
+\DoxyCodeLine{00309   VkDescriptorSetLayoutCreateInfo layout\_create\_info\{\};}
+\DoxyCodeLine{00310   layout\_create\_info.sType =}
+\DoxyCodeLine{00311       VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_SET\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{00312   layout\_create\_info.bindingCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00313       layout\_bindings.size());  \textcolor{comment}{// only have 1 for the globalUBO}}
+\DoxyCodeLine{00314   layout\_create\_info.pBindings =}
+\DoxyCodeLine{00315       layout\_bindings.data();  \textcolor{comment}{// array of binding infos}}
+\DoxyCodeLine{00316 }
+\DoxyCodeLine{00317   \textcolor{comment}{// create descriptor set layout}}
+\DoxyCodeLine{00318   VkResult result = vkCreateDescriptorSetLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00319                                                 \&layout\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00320                                                 \&post\_descriptor\_set\_layout);}
+\DoxyCodeLine{00321   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create descriptor set layout!"{}})}
+\DoxyCodeLine{00322 }
+\DoxyCodeLine{00323   VkDescriptorPoolSize post\_pool\_size\{\};}
+\DoxyCodeLine{00324   post\_pool\_size.type = VK\_DESCRIPTOR\_TYPE\_COMBINED\_IMAGE\_SAMPLER;}
+\DoxyCodeLine{00325   post\_pool\_size.descriptorCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(1);}
+\DoxyCodeLine{00326 }
+\DoxyCodeLine{00327   \textcolor{comment}{// list of pool sizes}}
+\DoxyCodeLine{00328   std::vector<VkDescriptorPoolSize> descriptor\_pool\_sizes = \{post\_pool\_size\};}
+\DoxyCodeLine{00329 }
+\DoxyCodeLine{00330   VkDescriptorPoolCreateInfo pool\_create\_info\{\};}
+\DoxyCodeLine{00331   pool\_create\_info.sType = VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{00332   pool\_create\_info.maxSets =}
+\DoxyCodeLine{00333       vulkanSwapChain}
+\DoxyCodeLine{00334           .getNumberSwapChainImages();  \textcolor{comment}{// maximum number of descriptor sets}}
+\DoxyCodeLine{00335                                         \textcolor{comment}{// that can be created from pool}}
+\DoxyCodeLine{00336   pool\_create\_info.poolSizeCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00337       descriptor\_pool\_sizes.size());  \textcolor{comment}{// amount of pool sizes being passed}}
+\DoxyCodeLine{00338   pool\_create\_info.pPoolSizes =}
+\DoxyCodeLine{00339       descriptor\_pool\_sizes.data();  \textcolor{comment}{// pool sizes to create pool with}}
+\DoxyCodeLine{00340 }
+\DoxyCodeLine{00341   \textcolor{comment}{// create descriptor pool}}
+\DoxyCodeLine{00342   result = vkCreateDescriptorPool(device-\/>getLogicalDevice(), \&pool\_create\_info,}
+\DoxyCodeLine{00343                                   \textcolor{keyword}{nullptr}, \&post\_descriptor\_pool);}
+\DoxyCodeLine{00344   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a descriptor pool!"{}})}
+\DoxyCodeLine{00345 }
+\DoxyCodeLine{00346   \textcolor{comment}{// resize descriptor set list so one for every buffer}}
+\DoxyCodeLine{00347   post\_descriptor\_set.resize(vulkanSwapChain.getNumberSwapChainImages());}
+\DoxyCodeLine{00348 }
+\DoxyCodeLine{00349   std::vector<VkDescriptorSetLayout> set\_layouts(}
+\DoxyCodeLine{00350       vulkanSwapChain.getNumberSwapChainImages(), post\_descriptor\_set\_layout);}
+\DoxyCodeLine{00351 }
+\DoxyCodeLine{00352   \textcolor{comment}{// descriptor set allocation info}}
+\DoxyCodeLine{00353   VkDescriptorSetAllocateInfo set\_alloc\_info\{\};}
+\DoxyCodeLine{00354   set\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_SET\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00355   set\_alloc\_info.descriptorPool =}
+\DoxyCodeLine{00356       post\_descriptor\_pool;  \textcolor{comment}{// pool to allocate descriptor set from}}
+\DoxyCodeLine{00357   set\_alloc\_info.descriptorSetCount =}
+\DoxyCodeLine{00358       vulkanSwapChain.getNumberSwapChainImages();  \textcolor{comment}{// number of sets to allocate}}
+\DoxyCodeLine{00359   set\_alloc\_info.pSetLayouts =}
+\DoxyCodeLine{00360       set\_layouts.data();  \textcolor{comment}{// layouts to use to allocate sets (1:1 relationship)}}
+\DoxyCodeLine{00361 }
+\DoxyCodeLine{00362   \textcolor{comment}{// allocate descriptor sets (multiple)}}
+\DoxyCodeLine{00363   result = vkAllocateDescriptorSets(device-\/>getLogicalDevice(), \&set\_alloc\_info,}
+\DoxyCodeLine{00364                                     post\_descriptor\_set.data());}
+\DoxyCodeLine{00365   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create descriptor sets!"{}})}
+\DoxyCodeLine{00366 \}}
+\DoxyCodeLine{00367 }
+\DoxyCodeLine{00368 \textcolor{keywordtype}{void} VulkanRenderer::updatePostDescriptorSets() \{}
+\DoxyCodeLine{00369   \textcolor{comment}{// update all of descriptor set buffer bindings}}
+\DoxyCodeLine{00370   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) \{}
+\DoxyCodeLine{00371     \textcolor{comment}{// texture image info}}
+\DoxyCodeLine{00372     VkDescriptorImageInfo image\_info\{\};}
+\DoxyCodeLine{00373     image\_info.imageLayout = VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL;}
+\DoxyCodeLine{00374     Texture\& renderResult = rasterizer.getOffscreenTexture(i);}
+\DoxyCodeLine{00375     image\_info.imageView = renderResult.getImageView();}
+\DoxyCodeLine{00376     image\_info.sampler = postStage.getOffscreenSampler();}
+\DoxyCodeLine{00377 }
+\DoxyCodeLine{00378     \textcolor{comment}{// descriptor write info}}
+\DoxyCodeLine{00379     VkWriteDescriptorSet descriptor\_write\{\};}
+\DoxyCodeLine{00380     descriptor\_write.sType = VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00381     descriptor\_write.dstSet = post\_descriptor\_set[i];}
+\DoxyCodeLine{00382     descriptor\_write.dstBinding = 0;}
+\DoxyCodeLine{00383     descriptor\_write.dstArrayElement = 0;}
+\DoxyCodeLine{00384     descriptor\_write.descriptorType = VK\_DESCRIPTOR\_TYPE\_COMBINED\_IMAGE\_SAMPLER;}
+\DoxyCodeLine{00385     descriptor\_write.descriptorCount = 1;}
+\DoxyCodeLine{00386     descriptor\_write.pImageInfo = \&image\_info;}
+\DoxyCodeLine{00387 }
+\DoxyCodeLine{00388     \textcolor{comment}{// update new descriptor set}}
+\DoxyCodeLine{00389     vkUpdateDescriptorSets(device-\/>getLogicalDevice(), 1, \&descriptor\_write, 0,}
+\DoxyCodeLine{00390                            \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00391   \}}
+\DoxyCodeLine{00392 \}}
+\DoxyCodeLine{00393 }
+\DoxyCodeLine{00394 \textcolor{keywordtype}{void} VulkanRenderer::createRaytracingDescriptorPool() \{}
+\DoxyCodeLine{00395   std::array<VkDescriptorPoolSize, 2> descriptor\_pool\_sizes\{\};}
+\DoxyCodeLine{00396 }
+\DoxyCodeLine{00397   descriptor\_pool\_sizes[0].type = VK\_DESCRIPTOR\_TYPE\_ACCELERATION\_STRUCTURE\_KHR;}
+\DoxyCodeLine{00398   descriptor\_pool\_sizes[0].descriptorCount = 1;}
+\DoxyCodeLine{00399 }
+\DoxyCodeLine{00400   descriptor\_pool\_sizes[1].type = VK\_DESCRIPTOR\_TYPE\_STORAGE\_IMAGE;}
+\DoxyCodeLine{00401   descriptor\_pool\_sizes[1].descriptorCount = 1;}
+\DoxyCodeLine{00402 }
+\DoxyCodeLine{00403   VkDescriptorPoolCreateInfo descriptor\_pool\_create\_info\{\};}
+\DoxyCodeLine{00404   descriptor\_pool\_create\_info.sType =}
+\DoxyCodeLine{00405       VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{00406   descriptor\_pool\_create\_info.poolSizeCount =}
+\DoxyCodeLine{00407       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptor\_pool\_sizes.size());}
+\DoxyCodeLine{00408   descriptor\_pool\_create\_info.pPoolSizes = descriptor\_pool\_sizes.data();}
+\DoxyCodeLine{00409   descriptor\_pool\_create\_info.maxSets =}
+\DoxyCodeLine{00410       vulkanSwapChain.getNumberSwapChainImages();}
+\DoxyCodeLine{00411 }
+\DoxyCodeLine{00412   VkResult result = vkCreateDescriptorPool(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00413                                            \&descriptor\_pool\_create\_info,}
+\DoxyCodeLine{00414                                            \textcolor{keyword}{nullptr}, \&raytracingDescriptorPool);}
+\DoxyCodeLine{00415   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create command pool!"{}})}
+\DoxyCodeLine{00416 \}}
+\DoxyCodeLine{00417 }
+\DoxyCodeLine{00418 \textcolor{keywordtype}{void} VulkanRenderer::cleanUpSync() \{}
+\DoxyCodeLine{00419   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < MAX\_FRAME\_DRAWS; i++) \{}
+\DoxyCodeLine{00420     vkDestroySemaphore(device-\/>getLogicalDevice(), render\_finished[i], \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00421     vkDestroySemaphore(device-\/>getLogicalDevice(), image\_available[i], \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00422     vkDestroyFence(device-\/>getLogicalDevice(), in\_flight\_fences[i], \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00423   \}}
+\DoxyCodeLine{00424 \}}
+\DoxyCodeLine{00425 }
+\DoxyCodeLine{00426 \textcolor{keywordtype}{void} VulkanRenderer::create\_object\_description\_buffer() \{}
+\DoxyCodeLine{00427   std::vector<ObjectDescription> objectDescriptions =}
+\DoxyCodeLine{00428       scene-\/>getObjectDescriptions();}
+\DoxyCodeLine{00429 }
+\DoxyCodeLine{00430   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00431       device.get(), graphics\_command\_pool, objectDescriptionBuffer,}
+\DoxyCodeLine{00432       VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT |}
+\DoxyCodeLine{00433           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
+\DoxyCodeLine{00434           VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT,}
+\DoxyCodeLine{00435       VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT |}
+\DoxyCodeLine{00436           VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT,}
+\DoxyCodeLine{00437       objectDescriptions);}
+\DoxyCodeLine{00438 }
+\DoxyCodeLine{00439   \textcolor{comment}{// update the object description set}}
+\DoxyCodeLine{00440   \textcolor{comment}{// update all of descriptor set buffer bindings}}
+\DoxyCodeLine{00441   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) \{}
+\DoxyCodeLine{00442     VkDescriptorBufferInfo object\_descriptions\_buffer\_info\{\};}
+\DoxyCodeLine{00443     \textcolor{comment}{// image\_info.sampler = VK\_DESCRIPTOR\_TYPE\_SAMPLER;}}
+\DoxyCodeLine{00444     object\_descriptions\_buffer\_info.buffer =}
+\DoxyCodeLine{00445         objectDescriptionBuffer.getBuffer();}
+\DoxyCodeLine{00446     object\_descriptions\_buffer\_info.offset = 0;}
+\DoxyCodeLine{00447     object\_descriptions\_buffer\_info.range = VK\_WHOLE\_SIZE;}
+\DoxyCodeLine{00448 }
+\DoxyCodeLine{00449     VkWriteDescriptorSet descriptor\_object\_descriptions\_writer\{\};}
+\DoxyCodeLine{00450     descriptor\_object\_descriptions\_writer.sType =}
+\DoxyCodeLine{00451         VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00452     descriptor\_object\_descriptions\_writer.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00453     descriptor\_object\_descriptions\_writer.dstSet = sharedRenderDescriptorSet[i];}
+\DoxyCodeLine{00454     descriptor\_object\_descriptions\_writer.dstBinding =}
+\DoxyCodeLine{00455         OBJECT\_DESCRIPTION\_BINDING;}
+\DoxyCodeLine{00456     descriptor\_object\_descriptions\_writer.dstArrayElement = 0;}
+\DoxyCodeLine{00457     descriptor\_object\_descriptions\_writer.descriptorCount = 1;}
+\DoxyCodeLine{00458     descriptor\_object\_descriptions\_writer.descriptorType =}
+\DoxyCodeLine{00459         VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER;}
+\DoxyCodeLine{00460     descriptor\_object\_descriptions\_writer.pImageInfo = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00461     descriptor\_object\_descriptions\_writer.pBufferInfo =}
+\DoxyCodeLine{00462         \&object\_descriptions\_buffer\_info;}
+\DoxyCodeLine{00463     descriptor\_object\_descriptions\_writer.pTexelBufferView =}
+\DoxyCodeLine{00464         \textcolor{keyword}{nullptr};  \textcolor{comment}{// information about buffer data to bind}}
+\DoxyCodeLine{00465 }
+\DoxyCodeLine{00466     std::vector<VkWriteDescriptorSet> write\_descriptor\_sets = \{}
+\DoxyCodeLine{00467         descriptor\_object\_descriptions\_writer\};}
+\DoxyCodeLine{00468 }
+\DoxyCodeLine{00469     \textcolor{comment}{// update the descriptor sets with new buffer/binding info}}
+\DoxyCodeLine{00470     vkUpdateDescriptorSets(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00471                            \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(write\_descriptor\_sets.size()),}
+\DoxyCodeLine{00472                            write\_descriptor\_sets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00473   \}}
+\DoxyCodeLine{00474 \}}
+\DoxyCodeLine{00475 }
+\DoxyCodeLine{00476 \textcolor{keywordtype}{void} VulkanRenderer::createRaytracingDescriptorSetLayouts() \{}
+\DoxyCodeLine{00477   \{}
+\DoxyCodeLine{00478     std::array<VkDescriptorSetLayoutBinding, 2>}
+\DoxyCodeLine{00479         descriptor\_set\_layout\_bindings\{\};}
+\DoxyCodeLine{00480 }
+\DoxyCodeLine{00481     \textcolor{comment}{// here comes the top level acceleration structure}}
+\DoxyCodeLine{00482     descriptor\_set\_layout\_bindings[0].binding = TLAS\_BINDING;}
+\DoxyCodeLine{00483     descriptor\_set\_layout\_bindings[0].descriptorCount = 1;}
+\DoxyCodeLine{00484     descriptor\_set\_layout\_bindings[0].descriptorType =}
+\DoxyCodeLine{00485         VK\_DESCRIPTOR\_TYPE\_ACCELERATION\_STRUCTURE\_KHR;}
+\DoxyCodeLine{00486     descriptor\_set\_layout\_bindings[0].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00487     \textcolor{comment}{// load them into the raygeneration and chlosest hit shader}}
+\DoxyCodeLine{00488     descriptor\_set\_layout\_bindings[0].stageFlags =}
+\DoxyCodeLine{00489         VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR | VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00490         VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00491     \textcolor{comment}{// here comes to previous rendered image}}
+\DoxyCodeLine{00492     descriptor\_set\_layout\_bindings[1].binding = OUT\_IMAGE\_BINDING;}
+\DoxyCodeLine{00493     descriptor\_set\_layout\_bindings[1].descriptorCount = 1;}
+\DoxyCodeLine{00494     descriptor\_set\_layout\_bindings[1].descriptorType =}
+\DoxyCodeLine{00495         VK\_DESCRIPTOR\_TYPE\_STORAGE\_IMAGE;}
+\DoxyCodeLine{00496     descriptor\_set\_layout\_bindings[1].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00497     \textcolor{comment}{// load them into the raygeneration and chlosest hit shader}}
+\DoxyCodeLine{00498     descriptor\_set\_layout\_bindings[1].stageFlags =}
+\DoxyCodeLine{00499         VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR | VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00500         VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00501 }
+\DoxyCodeLine{00502     VkDescriptorSetLayoutCreateInfo descriptor\_set\_layout\_create\_info\{\};}
+\DoxyCodeLine{00503     descriptor\_set\_layout\_create\_info.sType =}
+\DoxyCodeLine{00504         VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_SET\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{00505     descriptor\_set\_layout\_create\_info.bindingCount =}
+\DoxyCodeLine{00506         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptor\_set\_layout\_bindings.size());}
+\DoxyCodeLine{00507     descriptor\_set\_layout\_create\_info.pBindings =}
+\DoxyCodeLine{00508         descriptor\_set\_layout\_bindings.data();}
+\DoxyCodeLine{00509 }
+\DoxyCodeLine{00510     VkResult result = vkCreateDescriptorSetLayout(}
+\DoxyCodeLine{00511         device-\/>getLogicalDevice(), \&descriptor\_set\_layout\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00512         \&raytracingDescriptorSetLayout);}
+\DoxyCodeLine{00513     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing descriptor set layout!"{}})}
+\DoxyCodeLine{00514   \}}
+\DoxyCodeLine{00515 \}}
+\DoxyCodeLine{00516 }
+\DoxyCodeLine{00517 \textcolor{keywordtype}{void} VulkanRenderer::createRaytracingDescriptorSets() \{}
+\DoxyCodeLine{00518   \textcolor{comment}{// resize descriptor set list so one for every buffer}}
+\DoxyCodeLine{00519   raytracingDescriptorSet.resize(vulkanSwapChain.getNumberSwapChainImages());}
+\DoxyCodeLine{00520 }
+\DoxyCodeLine{00521   std::vector<VkDescriptorSetLayout> set\_layouts(}
+\DoxyCodeLine{00522       vulkanSwapChain.getNumberSwapChainImages(),}
+\DoxyCodeLine{00523       raytracingDescriptorSetLayout);}
+\DoxyCodeLine{00524 }
+\DoxyCodeLine{00525   VkDescriptorSetAllocateInfo descriptor\_set\_allocate\_info\{\};}
+\DoxyCodeLine{00526   descriptor\_set\_allocate\_info.sType =}
+\DoxyCodeLine{00527       VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_SET\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00528   ;}
+\DoxyCodeLine{00529   descriptor\_set\_allocate\_info.descriptorPool = raytracingDescriptorPool;}
+\DoxyCodeLine{00530   descriptor\_set\_allocate\_info.descriptorSetCount =}
+\DoxyCodeLine{00531       vulkanSwapChain.getNumberSwapChainImages();}
+\DoxyCodeLine{00532   descriptor\_set\_allocate\_info.pSetLayouts = set\_layouts.data();}
+\DoxyCodeLine{00533 }
+\DoxyCodeLine{00534   VkResult result = vkAllocateDescriptorSets(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00535                                              \&descriptor\_set\_allocate\_info,}
+\DoxyCodeLine{00536                                              raytracingDescriptorSet.data());}
+\DoxyCodeLine{00537   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate raytracing descriptor set!"{}})}
+\DoxyCodeLine{00538 \}}
+\DoxyCodeLine{00539 }
+\DoxyCodeLine{00540 \textcolor{keywordtype}{void} VulkanRenderer::updateRaytracingDescriptorSets() \{}
+\DoxyCodeLine{00541   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) \{}
+\DoxyCodeLine{00542     VkWriteDescriptorSetAccelerationStructureKHR}
+\DoxyCodeLine{00543         descriptor\_set\_acceleration\_structure\{\};}
+\DoxyCodeLine{00544     descriptor\_set\_acceleration\_structure.sType =}
+\DoxyCodeLine{00545         VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET\_ACCELERATION\_STRUCTURE\_KHR;}
+\DoxyCodeLine{00546     descriptor\_set\_acceleration\_structure.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00547     descriptor\_set\_acceleration\_structure.accelerationStructureCount = 1;}
+\DoxyCodeLine{00548     VkAccelerationStructureKHR\& vulkanTLAS = asManager.getTLAS();}
+\DoxyCodeLine{00549     descriptor\_set\_acceleration\_structure.pAccelerationStructures = \&vulkanTLAS;}
+\DoxyCodeLine{00550 }
+\DoxyCodeLine{00551     VkWriteDescriptorSet write\_descriptor\_set\_acceleration\_structure\{\};}
+\DoxyCodeLine{00552     write\_descriptor\_set\_acceleration\_structure.sType =}
+\DoxyCodeLine{00553         VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00554     write\_descriptor\_set\_acceleration\_structure.pNext =}
+\DoxyCodeLine{00555         \&descriptor\_set\_acceleration\_structure;}
+\DoxyCodeLine{00556     write\_descriptor\_set\_acceleration\_structure.dstSet =}
+\DoxyCodeLine{00557         raytracingDescriptorSet[i];}
+\DoxyCodeLine{00558     write\_descriptor\_set\_acceleration\_structure.dstBinding = TLAS\_BINDING;}
+\DoxyCodeLine{00559     write\_descriptor\_set\_acceleration\_structure.dstArrayElement = 0;}
+\DoxyCodeLine{00560     write\_descriptor\_set\_acceleration\_structure.descriptorCount = 1;}
+\DoxyCodeLine{00561     write\_descriptor\_set\_acceleration\_structure.descriptorType =}
+\DoxyCodeLine{00562         VK\_DESCRIPTOR\_TYPE\_ACCELERATION\_STRUCTURE\_KHR;}
+\DoxyCodeLine{00563     write\_descriptor\_set\_acceleration\_structure.pImageInfo = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00564     write\_descriptor\_set\_acceleration\_structure.pBufferInfo = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00565     write\_descriptor\_set\_acceleration\_structure.pTexelBufferView = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00566 }
+\DoxyCodeLine{00567     VkDescriptorImageInfo image\_info\{\};}
+\DoxyCodeLine{00568     Texture\& renderResult = rasterizer.getOffscreenTexture(i);}
+\DoxyCodeLine{00569     image\_info.imageView = renderResult.getImageView();}
+\DoxyCodeLine{00570     image\_info.imageLayout = VK\_IMAGE\_LAYOUT\_GENERAL;}
+\DoxyCodeLine{00571 }
+\DoxyCodeLine{00572     VkWriteDescriptorSet descriptor\_image\_writer\{\};}
+\DoxyCodeLine{00573     descriptor\_image\_writer.sType = VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00574     descriptor\_image\_writer.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00575     descriptor\_image\_writer.dstSet = raytracingDescriptorSet[i];}
+\DoxyCodeLine{00576     descriptor\_image\_writer.dstBinding = OUT\_IMAGE\_BINDING;}
+\DoxyCodeLine{00577     descriptor\_image\_writer.dstArrayElement = 0;}
+\DoxyCodeLine{00578     descriptor\_image\_writer.descriptorCount = 1;}
+\DoxyCodeLine{00579     descriptor\_image\_writer.descriptorType = VK\_DESCRIPTOR\_TYPE\_STORAGE\_IMAGE;}
+\DoxyCodeLine{00580     descriptor\_image\_writer.pImageInfo = \&image\_info;}
+\DoxyCodeLine{00581     descriptor\_image\_writer.pBufferInfo = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00582     descriptor\_image\_writer.pTexelBufferView = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00583 }
+\DoxyCodeLine{00584     std::vector<VkWriteDescriptorSet> write\_descriptor\_sets = \{}
+\DoxyCodeLine{00585         write\_descriptor\_set\_acceleration\_structure, descriptor\_image\_writer\};}
+\DoxyCodeLine{00586 }
+\DoxyCodeLine{00587     \textcolor{comment}{// update the descriptor sets with new buffer/binding info}}
+\DoxyCodeLine{00588     vkUpdateDescriptorSets(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00589                            \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(write\_descriptor\_sets.size()),}
+\DoxyCodeLine{00590                            write\_descriptor\_sets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00591   \}}
+\DoxyCodeLine{00592 \}}
+\DoxyCodeLine{00593 }
+\DoxyCodeLine{00594 \textcolor{keywordtype}{void} VulkanRenderer::createSharedRenderDescriptorSetLayouts() \{}
+\DoxyCodeLine{00595   std::array<VkDescriptorSetLayoutBinding, 5> descriptor\_set\_layout\_bindings\{\};}
+\DoxyCodeLine{00596   \textcolor{comment}{// UNIFORM VALUES DESCRIPTOR SET LAYOUT}}
+\DoxyCodeLine{00597   \textcolor{comment}{// globalUBO Binding info}}
+\DoxyCodeLine{00598   descriptor\_set\_layout\_bindings[0].binding = globalUBO\_BINDING;}
+\DoxyCodeLine{00599   descriptor\_set\_layout\_bindings[0].descriptorType =}
+\DoxyCodeLine{00600       VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER;}
+\DoxyCodeLine{00601   descriptor\_set\_layout\_bindings[0].descriptorCount = 1;}
+\DoxyCodeLine{00602   descriptor\_set\_layout\_bindings[0].stageFlags =}
+\DoxyCodeLine{00603       VK\_SHADER\_STAGE\_VERTEX\_BIT | VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
+\DoxyCodeLine{00604       VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00605   descriptor\_set\_layout\_bindings[0].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00606 }
+\DoxyCodeLine{00607   \textcolor{comment}{// our model matrix which updates every frame for each object}}
+\DoxyCodeLine{00608   descriptor\_set\_layout\_bindings[1].binding = sceneUBO\_BINDING;}
+\DoxyCodeLine{00609   descriptor\_set\_layout\_bindings[1].descriptorType =}
+\DoxyCodeLine{00610       VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER;}
+\DoxyCodeLine{00611   descriptor\_set\_layout\_bindings[1].descriptorCount = 1;}
+\DoxyCodeLine{00612   descriptor\_set\_layout\_bindings[1].stageFlags =}
+\DoxyCodeLine{00613       VK\_SHADER\_STAGE\_VERTEX\_BIT | VK\_SHADER\_STAGE\_FRAGMENT\_BIT |}
+\DoxyCodeLine{00614       VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR | VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00615       VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00616   descriptor\_set\_layout\_bindings[1].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00617 }
+\DoxyCodeLine{00618   descriptor\_set\_layout\_bindings[2].binding = OBJECT\_DESCRIPTION\_BINDING;}
+\DoxyCodeLine{00619   descriptor\_set\_layout\_bindings[2].descriptorCount = 1;}
+\DoxyCodeLine{00620   descriptor\_set\_layout\_bindings[2].descriptorType =}
+\DoxyCodeLine{00621       VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER;}
+\DoxyCodeLine{00622   descriptor\_set\_layout\_bindings[2].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00623   \textcolor{comment}{// load them into the raygeneration and chlosest hit shader}}
+\DoxyCodeLine{00624   descriptor\_set\_layout\_bindings[2].stageFlags =}
+\DoxyCodeLine{00625       VK\_SHADER\_STAGE\_VERTEX\_BIT | VK\_SHADER\_STAGE\_FRAGMENT\_BIT |}
+\DoxyCodeLine{00626       VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR | VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00627 }
+\DoxyCodeLine{00628   \textcolor{comment}{// CREATE TEXTURE SAMPLER DESCRIPTOR SET LAYOUT}}
+\DoxyCodeLine{00629   \textcolor{comment}{// texture binding info}}
+\DoxyCodeLine{00630   descriptor\_set\_layout\_bindings[3].binding = SAMPLER\_BINDING;}
+\DoxyCodeLine{00631   descriptor\_set\_layout\_bindings[3].descriptorType = VK\_DESCRIPTOR\_TYPE\_SAMPLER;}
+\DoxyCodeLine{00632   descriptor\_set\_layout\_bindings[3].descriptorCount = MAX\_TEXTURE\_COUNT;}
+\DoxyCodeLine{00633   descriptor\_set\_layout\_bindings[3].stageFlags =}
+\DoxyCodeLine{00634       VK\_SHADER\_STAGE\_FRAGMENT\_BIT | VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00635       VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00636   descriptor\_set\_layout\_bindings[3].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00637 }
+\DoxyCodeLine{00638   descriptor\_set\_layout\_bindings[4].binding = TEXTURES\_BINDING;}
+\DoxyCodeLine{00639   descriptor\_set\_layout\_bindings[4].descriptorType =}
+\DoxyCodeLine{00640       VK\_DESCRIPTOR\_TYPE\_SAMPLED\_IMAGE;}
+\DoxyCodeLine{00641   descriptor\_set\_layout\_bindings[4].descriptorCount = MAX\_TEXTURE\_COUNT;}
+\DoxyCodeLine{00642   descriptor\_set\_layout\_bindings[4].stageFlags =}
+\DoxyCodeLine{00643       VK\_SHADER\_STAGE\_FRAGMENT\_BIT | VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00644       VK\_SHADER\_STAGE\_COMPUTE\_BIT;}
+\DoxyCodeLine{00645   descriptor\_set\_layout\_bindings[4].pImmutableSamplers = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00646 }
+\DoxyCodeLine{00647   \textcolor{comment}{// create descriptor set layout with given bindings}}
+\DoxyCodeLine{00648   VkDescriptorSetLayoutCreateInfo layout\_create\_info\{\};}
+\DoxyCodeLine{00649   layout\_create\_info.sType =}
+\DoxyCodeLine{00650       VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_SET\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{00651   layout\_create\_info.bindingCount =}
+\DoxyCodeLine{00652       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptor\_set\_layout\_bindings.size());}
+\DoxyCodeLine{00653   layout\_create\_info.pBindings = descriptor\_set\_layout\_bindings.data();}
+\DoxyCodeLine{00654 }
+\DoxyCodeLine{00655   \textcolor{comment}{// create descriptor set layout}}
+\DoxyCodeLine{00656   VkResult result = vkCreateDescriptorSetLayout(}
+\DoxyCodeLine{00657       device-\/>getLogicalDevice(), \&layout\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00658       \&sharedRenderDescriptorSetLayout);}
+\DoxyCodeLine{00659   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create descriptor set layout!"{}})}
+\DoxyCodeLine{00660 \}}
+\DoxyCodeLine{00661 }
+\DoxyCodeLine{00662 \textcolor{keywordtype}{void} VulkanRenderer::create\_command\_pool() \{}
+\DoxyCodeLine{00663   \textcolor{comment}{// get indices of queue familes from device}}
+\DoxyCodeLine{00664   QueueFamilyIndices queue\_family\_indices = device-\/>getQueueFamilies();}
+\DoxyCodeLine{00665 }
+\DoxyCodeLine{00666   \{}
+\DoxyCodeLine{00667     VkCommandPoolCreateInfo pool\_info\{\};}
+\DoxyCodeLine{00668     pool\_info.sType = VK\_STRUCTURE\_TYPE\_COMMAND\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{00669     pool\_info.flags =}
+\DoxyCodeLine{00670         VK\_COMMAND\_POOL\_CREATE\_RESET\_COMMAND\_BUFFER\_BIT;  \textcolor{comment}{// we are ready now to}}
+\DoxyCodeLine{00671                                                           \textcolor{comment}{// re-\/record our}}
+\DoxyCodeLine{00672                                                           \textcolor{comment}{// command buffers}}
+\DoxyCodeLine{00673     pool\_info.queueFamilyIndex =}
+\DoxyCodeLine{00674         queue\_family\_indices}
+\DoxyCodeLine{00675             .graphics\_family;  \textcolor{comment}{// queue family type that buffers from this}}
+\DoxyCodeLine{00676                                \textcolor{comment}{// command pool will use}}
+\DoxyCodeLine{00677 }
+\DoxyCodeLine{00678     \textcolor{comment}{// create a graphics queue family command pool}}
+\DoxyCodeLine{00679     VkResult result =}
+\DoxyCodeLine{00680         vkCreateCommandPool(device-\/>getLogicalDevice(), \&pool\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00681                             \&graphics\_command\_pool);}
+\DoxyCodeLine{00682     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create command pool!"{}})}
+\DoxyCodeLine{00683   \}}
+\DoxyCodeLine{00684 }
+\DoxyCodeLine{00685   \{}
+\DoxyCodeLine{00686     VkCommandPoolCreateInfo pool\_info\{\};}
+\DoxyCodeLine{00687     pool\_info.sType = VK\_STRUCTURE\_TYPE\_COMMAND\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{00688     pool\_info.flags =}
+\DoxyCodeLine{00689         VK\_COMMAND\_POOL\_CREATE\_RESET\_COMMAND\_BUFFER\_BIT;  \textcolor{comment}{// we are ready now to}}
+\DoxyCodeLine{00690                                                           \textcolor{comment}{// re-\/record our}}
+\DoxyCodeLine{00691                                                           \textcolor{comment}{// command buffers}}
+\DoxyCodeLine{00692     pool\_info.queueFamilyIndex =}
+\DoxyCodeLine{00693         queue\_family\_indices.compute\_family;  \textcolor{comment}{// queue family type that buffers}}
+\DoxyCodeLine{00694                                               \textcolor{comment}{// from this command pool will use}}
+\DoxyCodeLine{00695 }
+\DoxyCodeLine{00696     \textcolor{comment}{// create a graphics queue family command pool}}
+\DoxyCodeLine{00697     VkResult result = vkCreateCommandPool(}
+\DoxyCodeLine{00698         device-\/>getLogicalDevice(), \&pool\_info, \textcolor{keyword}{nullptr}, \&compute\_command\_pool);}
+\DoxyCodeLine{00699     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create command pool!"{}})}
+\DoxyCodeLine{00700   \}}
+\DoxyCodeLine{00701 \}}
+\DoxyCodeLine{00702 }
+\DoxyCodeLine{00703 \textcolor{keywordtype}{void} VulkanRenderer::cleanUpCommandPools() \{}
+\DoxyCodeLine{00704   vkDestroyCommandPool(device-\/>getLogicalDevice(), graphics\_command\_pool,}
+\DoxyCodeLine{00705                        \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00706   vkDestroyCommandPool(device-\/>getLogicalDevice(), compute\_command\_pool,}
+\DoxyCodeLine{00707                        \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00708 \}}
+\DoxyCodeLine{00709 }
+\DoxyCodeLine{00710 \textcolor{keywordtype}{void} VulkanRenderer::create\_command\_buffers() \{}
+\DoxyCodeLine{00711   \textcolor{comment}{// resize command buffer count to have one for each framebuffer}}
+\DoxyCodeLine{00712   command\_buffers.resize(vulkanSwapChain.getNumberSwapChainImages());}
+\DoxyCodeLine{00713 }
+\DoxyCodeLine{00714   VkCommandBufferAllocateInfo command\_buffer\_alloc\_info\{\};}
+\DoxyCodeLine{00715   command\_buffer\_alloc\_info.sType =}
+\DoxyCodeLine{00716       VK\_STRUCTURE\_TYPE\_COMMAND\_BUFFER\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00717   command\_buffer\_alloc\_info.commandPool = graphics\_command\_pool;}
+\DoxyCodeLine{00718   command\_buffer\_alloc\_info.level = VK\_COMMAND\_BUFFER\_LEVEL\_PRIMARY;}
+\DoxyCodeLine{00719 }
+\DoxyCodeLine{00720   command\_buffer\_alloc\_info.commandBufferCount =}
+\DoxyCodeLine{00721       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(command\_buffers.size());}
+\DoxyCodeLine{00722 }
+\DoxyCodeLine{00723   VkResult result = vkAllocateCommandBuffers(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00724                                              \&command\_buffer\_alloc\_info,}
+\DoxyCodeLine{00725                                              command\_buffers.data());}
+\DoxyCodeLine{00726   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate command buffers!"{}})}
+\DoxyCodeLine{00727 \}}
+\DoxyCodeLine{00728 }
+\DoxyCodeLine{00729 \textcolor{keywordtype}{void} VulkanRenderer::createSynchronization() \{}
+\DoxyCodeLine{00730   image\_available.resize(vulkanSwapChain.getNumberSwapChainImages(),}
+\DoxyCodeLine{00731                          VK\_NULL\_HANDLE);}
+\DoxyCodeLine{00732   render\_finished.resize(vulkanSwapChain.getNumberSwapChainImages(),}
+\DoxyCodeLine{00733                          VK\_NULL\_HANDLE);}
+\DoxyCodeLine{00734   in\_flight\_fences.resize(vulkanSwapChain.getNumberSwapChainImages(),}
+\DoxyCodeLine{00735                           VK\_NULL\_HANDLE);}
+\DoxyCodeLine{00736   images\_in\_flight\_fences.resize(vulkanSwapChain.getNumberSwapChainImages(),}
+\DoxyCodeLine{00737                                  VK\_NULL\_HANDLE);}
+\DoxyCodeLine{00738 }
+\DoxyCodeLine{00739   \textcolor{comment}{// semaphore creation information}}
+\DoxyCodeLine{00740   VkSemaphoreCreateInfo semaphore\_create\_info\{\};}
+\DoxyCodeLine{00741   semaphore\_create\_info.sType = VK\_STRUCTURE\_TYPE\_SEMAPHORE\_CREATE\_INFO;}
+\DoxyCodeLine{00742 }
+\DoxyCodeLine{00743   \textcolor{comment}{// fence creation information}}
+\DoxyCodeLine{00744   VkFenceCreateInfo fence\_create\_info\{\};}
+\DoxyCodeLine{00745   fence\_create\_info.sType = VK\_STRUCTURE\_TYPE\_FENCE\_CREATE\_INFO;}
+\DoxyCodeLine{00746   fence\_create\_info.flags = VK\_FENCE\_CREATE\_SIGNALED\_BIT;}
+\DoxyCodeLine{00747 }
+\DoxyCodeLine{00748   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < MAX\_FRAME\_DRAWS; i++) \{}
+\DoxyCodeLine{00749     \textcolor{keywordflow}{if} ((vkCreateSemaphore(device-\/>getLogicalDevice(), \&semaphore\_create\_info,}
+\DoxyCodeLine{00750                            \textcolor{keyword}{nullptr}, \&image\_available[i]) != VK\_SUCCESS) ||}
+\DoxyCodeLine{00751         (vkCreateSemaphore(device-\/>getLogicalDevice(), \&semaphore\_create\_info,}
+\DoxyCodeLine{00752                            \textcolor{keyword}{nullptr}, \&render\_finished[i]) != VK\_SUCCESS) ||}
+\DoxyCodeLine{00753         (vkCreateFence(device-\/>getLogicalDevice(), \&fence\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00754                        \&in\_flight\_fences[i]) != VK\_SUCCESS)) \{}
+\DoxyCodeLine{00755       \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to create a semaphore and/or fence!"{}});}
+\DoxyCodeLine{00756     \}}
+\DoxyCodeLine{00757   \}}
+\DoxyCodeLine{00758 \}}
+\DoxyCodeLine{00759 }
+\DoxyCodeLine{00760 \textcolor{keywordtype}{void} VulkanRenderer::create\_uniform\_buffers() \{}
+\DoxyCodeLine{00761   \textcolor{comment}{// one uniform buffer for each image (and by extension, command buffer)}}
+\DoxyCodeLine{00762   globalUBOBuffer.resize(vulkanSwapChain.getNumberSwapChainImages());}
+\DoxyCodeLine{00763   sceneUBOBuffer.resize(vulkanSwapChain.getNumberSwapChainImages());}
+\DoxyCodeLine{00764 \textcolor{comment}{}}
+\DoxyCodeLine{00765 \textcolor{comment}{  //// temporary buffer to "{}stage"{} vertex data before transfering to GPU}}
+\DoxyCodeLine{00766 \textcolor{comment}{}  \textcolor{comment}{// VulkanBuffer       stagingBuffer;}}
+\DoxyCodeLine{00767   std::vector<GlobalUBO> globalUBOdata;}
+\DoxyCodeLine{00768   globalUBOdata.push\_back(globalUBO);}
+\DoxyCodeLine{00769 }
+\DoxyCodeLine{00770   std::vector<SceneUBO> sceneUBOdata;}
+\DoxyCodeLine{00771   sceneUBOdata.push\_back(sceneUBO);}
+\DoxyCodeLine{00772 }
+\DoxyCodeLine{00773   \textcolor{comment}{// create uniform buffers}}
+\DoxyCodeLine{00774   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) \{}
+\DoxyCodeLine{00775     vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00776         device.get(), graphics\_command\_pool, globalUBOBuffer[i],}
+\DoxyCodeLine{00777         VK\_BUFFER\_USAGE\_UNIFORM\_BUFFER\_BIT | VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00778         VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT, globalUBOdata);}
+\DoxyCodeLine{00779 }
+\DoxyCodeLine{00780     vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{00781         device.get(), graphics\_command\_pool, sceneUBOBuffer[i],}
+\DoxyCodeLine{00782         VK\_BUFFER\_USAGE\_UNIFORM\_BUFFER\_BIT | VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{00783         VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT, sceneUBOdata);}
+\DoxyCodeLine{00784   \}}
+\DoxyCodeLine{00785 \}}
+\DoxyCodeLine{00786 }
+\DoxyCodeLine{00787 \textcolor{keywordtype}{void} VulkanRenderer::createDescriptorPoolSharedRenderStages() \{}
+\DoxyCodeLine{00788   \textcolor{comment}{// CREATE UNIFORM DESCRIPTOR POOL}}
+\DoxyCodeLine{00789   \textcolor{comment}{// type of descriptors + how many descriptors, not descriptor sets (combined}}
+\DoxyCodeLine{00790   \textcolor{comment}{// makes the pool size) ViewProjection Pool}}
+\DoxyCodeLine{00791   VkDescriptorPoolSize vp\_pool\_size\{\};}
+\DoxyCodeLine{00792   vp\_pool\_size.type = VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER;}
+\DoxyCodeLine{00793   vp\_pool\_size.descriptorCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(globalUBOBuffer.size());}
+\DoxyCodeLine{00794 }
+\DoxyCodeLine{00795   \textcolor{comment}{// DIRECTION POOL}}
+\DoxyCodeLine{00796   VkDescriptorPoolSize directions\_pool\_size\{\};}
+\DoxyCodeLine{00797   directions\_pool\_size.type = VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER;}
+\DoxyCodeLine{00798   directions\_pool\_size.descriptorCount =}
+\DoxyCodeLine{00799       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(sceneUBOBuffer.size());}
+\DoxyCodeLine{00800 }
+\DoxyCodeLine{00801   VkDescriptorPoolSize object\_descriptions\_pool\_size\{\};}
+\DoxyCodeLine{00802   object\_descriptions\_pool\_size.type = VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER;}
+\DoxyCodeLine{00803   object\_descriptions\_pool\_size.descriptorCount =}
+\DoxyCodeLine{00804       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(\textcolor{keyword}{sizeof}(ObjectDescription) * MAX\_OBJECTS);}
+\DoxyCodeLine{00805 }
+\DoxyCodeLine{00806   \textcolor{comment}{// TEXTURE SAMPLER POOL}}
+\DoxyCodeLine{00807   VkDescriptorPoolSize sampler\_pool\_size\{\};}
+\DoxyCodeLine{00808   sampler\_pool\_size.type = VK\_DESCRIPTOR\_TYPE\_SAMPLER;}
+\DoxyCodeLine{00809   sampler\_pool\_size.descriptorCount = MAX\_TEXTURE\_COUNT;}
+\DoxyCodeLine{00810 }
+\DoxyCodeLine{00811   VkDescriptorPoolSize sampled\_image\_pool\_size\{\};}
+\DoxyCodeLine{00812   sampled\_image\_pool\_size.type = VK\_DESCRIPTOR\_TYPE\_SAMPLED\_IMAGE;}
+\DoxyCodeLine{00813   sampled\_image\_pool\_size.descriptorCount = MAX\_TEXTURE\_COUNT;}
+\DoxyCodeLine{00814 }
+\DoxyCodeLine{00815   \textcolor{comment}{// list of pool sizes}}
+\DoxyCodeLine{00816   std::vector<VkDescriptorPoolSize> descriptor\_pool\_sizes = \{}
+\DoxyCodeLine{00817       vp\_pool\_size, directions\_pool\_size, object\_descriptions\_pool\_size,}
+\DoxyCodeLine{00818       sampler\_pool\_size, sampled\_image\_pool\_size\};}
+\DoxyCodeLine{00819 }
+\DoxyCodeLine{00820   VkDescriptorPoolCreateInfo pool\_create\_info\{\};}
+\DoxyCodeLine{00821   pool\_create\_info.sType = VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_POOL\_CREATE\_INFO;}
+\DoxyCodeLine{00822   pool\_create\_info.maxSets =}
+\DoxyCodeLine{00823       vulkanSwapChain}
+\DoxyCodeLine{00824           .getNumberSwapChainImages();  \textcolor{comment}{// maximum number of descriptor sets}}
+\DoxyCodeLine{00825                                         \textcolor{comment}{// that can be created from pool}}
+\DoxyCodeLine{00826   pool\_create\_info.poolSizeCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00827       descriptor\_pool\_sizes.size());  \textcolor{comment}{// amount of pool sizes being passed}}
+\DoxyCodeLine{00828   pool\_create\_info.pPoolSizes =}
+\DoxyCodeLine{00829       descriptor\_pool\_sizes.data();  \textcolor{comment}{// pool sizes to create pool with}}
+\DoxyCodeLine{00830 }
+\DoxyCodeLine{00831   \textcolor{comment}{// create descriptor pool}}
+\DoxyCodeLine{00832   VkResult result =}
+\DoxyCodeLine{00833       vkCreateDescriptorPool(device-\/>getLogicalDevice(), \&pool\_create\_info,}
+\DoxyCodeLine{00834                              \textcolor{keyword}{nullptr}, \&descriptorPoolSharedRenderStages);}
+\DoxyCodeLine{00835   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a descriptor pool!"{}})}
+\DoxyCodeLine{00836 \}}
+\DoxyCodeLine{00837 }
+\DoxyCodeLine{00838 \textcolor{keywordtype}{void} VulkanRenderer::createSharedRenderDescriptorSet() \{}
+\DoxyCodeLine{00839   \textcolor{comment}{// resize descriptor set list so one for every buffer}}
+\DoxyCodeLine{00840   sharedRenderDescriptorSet.resize(vulkanSwapChain.getNumberSwapChainImages());}
+\DoxyCodeLine{00841 }
+\DoxyCodeLine{00842   std::vector<VkDescriptorSetLayout> set\_layouts(}
+\DoxyCodeLine{00843       vulkanSwapChain.getNumberSwapChainImages(),}
+\DoxyCodeLine{00844       sharedRenderDescriptorSetLayout);}
+\DoxyCodeLine{00845 }
+\DoxyCodeLine{00846   \textcolor{comment}{// descriptor set allocation info}}
+\DoxyCodeLine{00847   VkDescriptorSetAllocateInfo set\_alloc\_info\{\};}
+\DoxyCodeLine{00848   set\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_DESCRIPTOR\_SET\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00849   set\_alloc\_info.descriptorPool =}
+\DoxyCodeLine{00850       descriptorPoolSharedRenderStages;  \textcolor{comment}{// pool to allocate descriptor set from}}
+\DoxyCodeLine{00851   set\_alloc\_info.descriptorSetCount =}
+\DoxyCodeLine{00852       vulkanSwapChain.getNumberSwapChainImages();  \textcolor{comment}{// number of sets to allocate}}
+\DoxyCodeLine{00853   set\_alloc\_info.pSetLayouts =}
+\DoxyCodeLine{00854       set\_layouts.data();  \textcolor{comment}{// layouts to use to allocate sets (1:1 relationship)}}
+\DoxyCodeLine{00855 }
+\DoxyCodeLine{00856   \textcolor{comment}{// allocate descriptor sets (multiple)}}
+\DoxyCodeLine{00857   VkResult result =}
+\DoxyCodeLine{00858       vkAllocateDescriptorSets(device-\/>getLogicalDevice(), \&set\_alloc\_info,}
+\DoxyCodeLine{00859                                sharedRenderDescriptorSet.data());}
+\DoxyCodeLine{00860   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create descriptor sets!"{}})}
+\DoxyCodeLine{00861 }
+\DoxyCodeLine{00862   \textcolor{comment}{// update all of descriptor set buffer bindings}}
+\DoxyCodeLine{00863   for (\textcolor{keywordtype}{size\_t} i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) \{}
+\DoxyCodeLine{00864     \textcolor{comment}{// VIEW PROJECTION DESCRIPTOR}}
+\DoxyCodeLine{00865     \textcolor{comment}{// buffer info and data offset info}}
+\DoxyCodeLine{00866     VkDescriptorBufferInfo globalUBO\_buffer\_info\{\};}
+\DoxyCodeLine{00867     globalUBO\_buffer\_info.buffer =}
+\DoxyCodeLine{00868         globalUBOBuffer[i].getBuffer();  \textcolor{comment}{// buffer to get data from}}
+\DoxyCodeLine{00869     globalUBO\_buffer\_info.offset = 0;    \textcolor{comment}{// position of start of data}}
+\DoxyCodeLine{00870     globalUBO\_buffer\_info.range = \textcolor{keyword}{sizeof}(globalUBO);  \textcolor{comment}{// size of data}}
+\DoxyCodeLine{00871 }
+\DoxyCodeLine{00872     \textcolor{comment}{// data about connection between binding and buffer}}
+\DoxyCodeLine{00873     VkWriteDescriptorSet globalUBO\_set\_write\{\};}
+\DoxyCodeLine{00874     globalUBO\_set\_write.sType = VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00875     globalUBO\_set\_write.dstSet =}
+\DoxyCodeLine{00876         sharedRenderDescriptorSet[i];  \textcolor{comment}{// descriptor set to update}}
+\DoxyCodeLine{00877     globalUBO\_set\_write.dstBinding =}
+\DoxyCodeLine{00878         0;  \textcolor{comment}{// binding to update (matches with binding on layout/shader)}}
+\DoxyCodeLine{00879     globalUBO\_set\_write.dstArrayElement = 0;  \textcolor{comment}{// index in array to update}}
+\DoxyCodeLine{00880     globalUBO\_set\_write.descriptorType =}
+\DoxyCodeLine{00881         VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER;    \textcolor{comment}{// type of descriptor}}
+\DoxyCodeLine{00882     globalUBO\_set\_write.descriptorCount = 1;  \textcolor{comment}{// amount to update}}
+\DoxyCodeLine{00883     globalUBO\_set\_write.pBufferInfo =}
+\DoxyCodeLine{00884         \&globalUBO\_buffer\_info;  \textcolor{comment}{// information about buffer data to bind}}
+\DoxyCodeLine{00885 }
+\DoxyCodeLine{00886     \textcolor{comment}{// VIEW PROJECTION DESCRIPTOR}}
+\DoxyCodeLine{00887     \textcolor{comment}{// buffer info and data offset info}}
+\DoxyCodeLine{00888     VkDescriptorBufferInfo sceneUBO\_buffer\_info\{\};}
+\DoxyCodeLine{00889     sceneUBO\_buffer\_info.buffer =}
+\DoxyCodeLine{00890         sceneUBOBuffer[i].getBuffer();              \textcolor{comment}{// buffer to get data from}}
+\DoxyCodeLine{00891     sceneUBO\_buffer\_info.offset = 0;                \textcolor{comment}{// position of start of data}}
+\DoxyCodeLine{00892     sceneUBO\_buffer\_info.range = \textcolor{keyword}{sizeof}(sceneUBO);  \textcolor{comment}{// size of data}}
+\DoxyCodeLine{00893 }
+\DoxyCodeLine{00894     \textcolor{comment}{// data about connection between binding and buffer}}
+\DoxyCodeLine{00895     VkWriteDescriptorSet sceneUBO\_set\_write\{\};}
+\DoxyCodeLine{00896     sceneUBO\_set\_write.sType = VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00897     sceneUBO\_set\_write.dstSet =}
+\DoxyCodeLine{00898         sharedRenderDescriptorSet[i];  \textcolor{comment}{// descriptor set to update}}
+\DoxyCodeLine{00899     sceneUBO\_set\_write.dstBinding =}
+\DoxyCodeLine{00900         1;  \textcolor{comment}{// binding to update (matches with binding on layout/shader)}}
+\DoxyCodeLine{00901     sceneUBO\_set\_write.dstArrayElement = 0;  \textcolor{comment}{// index in array to update}}
+\DoxyCodeLine{00902     sceneUBO\_set\_write.descriptorType =}
+\DoxyCodeLine{00903         VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER;   \textcolor{comment}{// type of descriptor}}
+\DoxyCodeLine{00904     sceneUBO\_set\_write.descriptorCount = 1;  \textcolor{comment}{// amount to update}}
+\DoxyCodeLine{00905     sceneUBO\_set\_write.pBufferInfo =}
+\DoxyCodeLine{00906         \&sceneUBO\_buffer\_info;  \textcolor{comment}{// information about buffer data to bind}}
+\DoxyCodeLine{00907 }
+\DoxyCodeLine{00908     std::vector<VkWriteDescriptorSet> write\_descriptor\_sets = \{}
+\DoxyCodeLine{00909         globalUBO\_set\_write, sceneUBO\_set\_write\};}
+\DoxyCodeLine{00910 }
+\DoxyCodeLine{00911     \textcolor{comment}{// update the descriptor sets with new buffer/binding info}}
+\DoxyCodeLine{00912     vkUpdateDescriptorSets(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00913                            \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(write\_descriptor\_sets.size()),}
+\DoxyCodeLine{00914                            write\_descriptor\_sets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00915   \}}
+\DoxyCodeLine{00916 \}}
+\DoxyCodeLine{00917 }
+\DoxyCodeLine{00918 \textcolor{keywordtype}{void} VulkanRenderer::updateTexturesInSharedRenderDescriptorSet() \{}
+\DoxyCodeLine{00919   std::vector<Texture>\& modelTextures = scene-\/>getTextures(0);}
+\DoxyCodeLine{00920   std::vector<VkDescriptorImageInfo> image\_info\_textures;}
+\DoxyCodeLine{00921   image\_info\_textures.resize(scene-\/>getTextureCount(0));}
+\DoxyCodeLine{00922   \textcolor{keywordflow}{for} (uint32\_t i = 0; i < scene-\/>getTextureCount(0); i++) \{}
+\DoxyCodeLine{00923     image\_info\_textures[i].imageLayout =}
+\DoxyCodeLine{00924         VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL;}
+\DoxyCodeLine{00925     image\_info\_textures[i].imageView = modelTextures[i].getImageView();}
+\DoxyCodeLine{00926     image\_info\_textures[i].sampler = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00927   \}}
+\DoxyCodeLine{00928 }
+\DoxyCodeLine{00929   std::vector<VkSampler>\& modelTextureSampler = scene-\/>getTextureSampler(0);}
+\DoxyCodeLine{00930   std::vector<VkDescriptorImageInfo> image\_info\_texture\_sampler;}
+\DoxyCodeLine{00931   image\_info\_texture\_sampler.resize(scene-\/>getTextureCount(0));}
+\DoxyCodeLine{00932   \textcolor{keywordflow}{for} (uint32\_t i = 0; i < scene-\/>getTextureCount(0); i++) \{}
+\DoxyCodeLine{00933     image\_info\_texture\_sampler[i].imageLayout =}
+\DoxyCodeLine{00934         VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL;}
+\DoxyCodeLine{00935     image\_info\_texture\_sampler[i].imageView = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00936     image\_info\_texture\_sampler[i].sampler = modelTextureSampler[i];}
+\DoxyCodeLine{00937   \}}
+\DoxyCodeLine{00938 }
+\DoxyCodeLine{00939   \textcolor{keywordflow}{for} (uint32\_t i = 0; i < vulkanSwapChain.getNumberSwapChainImages(); i++) \{}
+\DoxyCodeLine{00940     \textcolor{comment}{// descriptor write info}}
+\DoxyCodeLine{00941     VkWriteDescriptorSet descriptor\_write\{\};}
+\DoxyCodeLine{00942     descriptor\_write.sType = VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00943     descriptor\_write.dstSet = sharedRenderDescriptorSet[i];}
+\DoxyCodeLine{00944     descriptor\_write.dstBinding = TEXTURES\_BINDING;}
+\DoxyCodeLine{00945     descriptor\_write.dstArrayElement = 0;}
+\DoxyCodeLine{00946     descriptor\_write.descriptorType = VK\_DESCRIPTOR\_TYPE\_SAMPLED\_IMAGE;}
+\DoxyCodeLine{00947     descriptor\_write.descriptorCount =}
+\DoxyCodeLine{00948         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(image\_info\_textures.size());}
+\DoxyCodeLine{00949     descriptor\_write.pImageInfo = image\_info\_textures.data();}
+\DoxyCodeLine{00950 }
+\DoxyCodeLine{00951     \textcolor{comment}{/*VkDescriptorImageInfo sampler\_info;}}
+\DoxyCodeLine{00952 \textcolor{comment}{                sampler\_info.imageView = nullptr;}}
+\DoxyCodeLine{00953 \textcolor{comment}{                sampler\_info.sampler = texture\_sampler;*/}}
+\DoxyCodeLine{00954 }
+\DoxyCodeLine{00955     \textcolor{comment}{// descriptor write info}}
+\DoxyCodeLine{00956     VkWriteDescriptorSet descriptor\_write\_sampler\{\};}
+\DoxyCodeLine{00957     descriptor\_write\_sampler.sType = VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{00958     descriptor\_write\_sampler.dstSet = sharedRenderDescriptorSet[i];}
+\DoxyCodeLine{00959     descriptor\_write\_sampler.dstBinding = SAMPLER\_BINDING;}
+\DoxyCodeLine{00960     descriptor\_write\_sampler.dstArrayElement = 0;}
+\DoxyCodeLine{00961     descriptor\_write\_sampler.descriptorType = VK\_DESCRIPTOR\_TYPE\_SAMPLER;}
+\DoxyCodeLine{00962     descriptor\_write\_sampler.descriptorCount =}
+\DoxyCodeLine{00963         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(image\_info\_texture\_sampler.size());}
+\DoxyCodeLine{00964     descriptor\_write\_sampler.pImageInfo = image\_info\_texture\_sampler.data();}
+\DoxyCodeLine{00965 }
+\DoxyCodeLine{00966     std::vector<VkWriteDescriptorSet> write\_descriptor\_sets = \{}
+\DoxyCodeLine{00967         descriptor\_write, descriptor\_write\_sampler\};}
+\DoxyCodeLine{00968 }
+\DoxyCodeLine{00969     \textcolor{comment}{// update new descriptor set}}
+\DoxyCodeLine{00970     vkUpdateDescriptorSets(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00971                            \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(write\_descriptor\_sets.size()),}
+\DoxyCodeLine{00972                            write\_descriptor\_sets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00973   \}}
+\DoxyCodeLine{00974 \}}
+\DoxyCodeLine{00975 }
+\DoxyCodeLine{00976 \textcolor{keywordtype}{void} VulkanRenderer::cleanUpUBOs() \{}
+\DoxyCodeLine{00977   \textcolor{keywordflow}{for} (VulkanBuffer vulkanBuffer : globalUBOBuffer) \{}
+\DoxyCodeLine{00978     vulkanBuffer.cleanUp();}
+\DoxyCodeLine{00979   \}}
+\DoxyCodeLine{00980 }
+\DoxyCodeLine{00981   \textcolor{keywordflow}{for} (VulkanBuffer vulkanBuffer : sceneUBOBuffer) \{}
+\DoxyCodeLine{00982     vulkanBuffer.cleanUp();}
+\DoxyCodeLine{00983   \}}
+\DoxyCodeLine{00984 \}}
+\DoxyCodeLine{00985 }
+\DoxyCodeLine{00986 \textcolor{keywordtype}{void} VulkanRenderer::update\_uniform\_buffers(uint32\_t image\_index) \{}
+\DoxyCodeLine{00987   \textcolor{keyword}{auto} usage\_stage\_flags = VK\_PIPELINE\_STAGE\_VERTEX\_SHADER\_BIT |}
+\DoxyCodeLine{00988                            VK\_PIPELINE\_STAGE\_RAY\_TRACING\_SHADER\_BIT\_KHR |}
+\DoxyCodeLine{00989                            VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT;}
+\DoxyCodeLine{00990 }
+\DoxyCodeLine{00991   VkBufferMemoryBarrier before\_barrier\_uvp\{\};}
+\DoxyCodeLine{00992   before\_barrier\_uvp.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00993   before\_barrier\_uvp.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_MEMORY\_BARRIER;}
+\DoxyCodeLine{00994   before\_barrier\_uvp.srcAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{00995   before\_barrier\_uvp.dstAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{00996   before\_barrier\_uvp.buffer = globalUBOBuffer[image\_index].getBuffer();}
+\DoxyCodeLine{00997   before\_barrier\_uvp.offset = 0;}
+\DoxyCodeLine{00998   before\_barrier\_uvp.size = \textcolor{keyword}{sizeof}(globalUBO);}
+\DoxyCodeLine{00999   before\_barrier\_uvp.dstQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01000   before\_barrier\_uvp.srcQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01001 }
+\DoxyCodeLine{01002   VkBufferMemoryBarrier before\_barrier\_directions\{\};}
+\DoxyCodeLine{01003   before\_barrier\_directions.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01004   before\_barrier\_directions.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_MEMORY\_BARRIER;}
+\DoxyCodeLine{01005   before\_barrier\_directions.srcAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{01006   before\_barrier\_directions.dstAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{01007   before\_barrier\_directions.buffer = globalUBOBuffer[image\_index].getBuffer();}
+\DoxyCodeLine{01008   before\_barrier\_directions.offset = 0;}
+\DoxyCodeLine{01009   before\_barrier\_directions.size = \textcolor{keyword}{sizeof}(sceneUBO);}
+\DoxyCodeLine{01010   before\_barrier\_directions.srcQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01011   before\_barrier\_directions.dstQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01012 }
+\DoxyCodeLine{01013   vkCmdPipelineBarrier(command\_buffers[image\_index], usage\_stage\_flags,}
+\DoxyCodeLine{01014                        VK\_PIPELINE\_STAGE\_TRANSFER\_BIT, 0, 0, \textcolor{keyword}{nullptr}, 1,}
+\DoxyCodeLine{01015                        \&before\_barrier\_uvp, 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01016   vkCmdPipelineBarrier(command\_buffers[image\_index], usage\_stage\_flags,}
+\DoxyCodeLine{01017                        VK\_PIPELINE\_STAGE\_TRANSFER\_BIT, 0, 0, \textcolor{keyword}{nullptr}, 1,}
+\DoxyCodeLine{01018                        \&before\_barrier\_directions, 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01019 }
+\DoxyCodeLine{01020   vkCmdUpdateBuffer(command\_buffers[image\_index],}
+\DoxyCodeLine{01021                     globalUBOBuffer[image\_index].getBuffer(), 0,}
+\DoxyCodeLine{01022                     \textcolor{keyword}{sizeof}(GlobalUBO), \&globalUBO);}
+\DoxyCodeLine{01023   vkCmdUpdateBuffer(command\_buffers[image\_index],}
+\DoxyCodeLine{01024                     sceneUBOBuffer[image\_index].getBuffer(), 0,}
+\DoxyCodeLine{01025                     \textcolor{keyword}{sizeof}(SceneUBO), \&sceneUBO);}
+\DoxyCodeLine{01026 }
+\DoxyCodeLine{01027   VkBufferMemoryBarrier after\_barrier\_uvp\{\};}
+\DoxyCodeLine{01028   after\_barrier\_uvp.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01029   after\_barrier\_uvp.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_MEMORY\_BARRIER;}
+\DoxyCodeLine{01030   after\_barrier\_uvp.srcAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{01031   after\_barrier\_uvp.dstAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{01032   after\_barrier\_uvp.buffer = globalUBOBuffer[image\_index].getBuffer();}
+\DoxyCodeLine{01033   after\_barrier\_uvp.offset = 0;}
+\DoxyCodeLine{01034   after\_barrier\_uvp.size = \textcolor{keyword}{sizeof}(GlobalUBO);}
+\DoxyCodeLine{01035   after\_barrier\_uvp.dstQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01036   after\_barrier\_uvp.srcQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01037 }
+\DoxyCodeLine{01038   VkBufferMemoryBarrier after\_barrier\_directions\{\};}
+\DoxyCodeLine{01039   after\_barrier\_directions.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01040   after\_barrier\_directions.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_MEMORY\_BARRIER;}
+\DoxyCodeLine{01041   after\_barrier\_directions.srcAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
+\DoxyCodeLine{01042   after\_barrier\_directions.dstAccessMask = VK\_ACCESS\_SHADER\_READ\_BIT;}
+\DoxyCodeLine{01043   after\_barrier\_directions.buffer = globalUBOBuffer[image\_index].getBuffer();}
+\DoxyCodeLine{01044   after\_barrier\_directions.offset = 0;}
+\DoxyCodeLine{01045   after\_barrier\_directions.size = \textcolor{keyword}{sizeof}(SceneUBO);}
+\DoxyCodeLine{01046   after\_barrier\_directions.dstQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01047   after\_barrier\_directions.srcQueueFamilyIndex = VK\_QUEUE\_FAMILY\_IGNORED;}
+\DoxyCodeLine{01048 }
+\DoxyCodeLine{01049   vkCmdPipelineBarrier(command\_buffers[image\_index],}
+\DoxyCodeLine{01050                        VK\_PIPELINE\_STAGE\_TRANSFER\_BIT, usage\_stage\_flags, 0, 0,}
+\DoxyCodeLine{01051                        \textcolor{keyword}{nullptr}, 1, \&after\_barrier\_uvp, 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01052   vkCmdPipelineBarrier(command\_buffers[image\_index],}
+\DoxyCodeLine{01053                        VK\_PIPELINE\_STAGE\_TRANSFER\_BIT, usage\_stage\_flags, 0, 0,}
+\DoxyCodeLine{01054                        \textcolor{keyword}{nullptr}, 1, \&after\_barrier\_directions, 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01055 \}}
+\DoxyCodeLine{01056 }
+\DoxyCodeLine{01057 \textcolor{keywordtype}{void} VulkanRenderer::update\_raytracing\_descriptor\_set(uint32\_t image\_index) \{}
+\DoxyCodeLine{01058   VkWriteDescriptorSetAccelerationStructureKHR}
+\DoxyCodeLine{01059       descriptor\_set\_acceleration\_structure\{\};}
+\DoxyCodeLine{01060   descriptor\_set\_acceleration\_structure.sType =}
+\DoxyCodeLine{01061       VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET\_ACCELERATION\_STRUCTURE\_KHR;}
+\DoxyCodeLine{01062   descriptor\_set\_acceleration\_structure.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01063   descriptor\_set\_acceleration\_structure.accelerationStructureCount = 1;}
+\DoxyCodeLine{01064   VkAccelerationStructureKHR\& tlasAS = asManager.getTLAS();}
+\DoxyCodeLine{01065   descriptor\_set\_acceleration\_structure.pAccelerationStructures = \&tlasAS;}
+\DoxyCodeLine{01066 }
+\DoxyCodeLine{01067   VkWriteDescriptorSet write\_descriptor\_set\_acceleration\_structure\{\};}
+\DoxyCodeLine{01068   write\_descriptor\_set\_acceleration\_structure.sType =}
+\DoxyCodeLine{01069       VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{01070   write\_descriptor\_set\_acceleration\_structure.pNext =}
+\DoxyCodeLine{01071       \&descriptor\_set\_acceleration\_structure;}
+\DoxyCodeLine{01072   write\_descriptor\_set\_acceleration\_structure.dstSet =}
+\DoxyCodeLine{01073       raytracingDescriptorSet[image\_index];}
+\DoxyCodeLine{01074   write\_descriptor\_set\_acceleration\_structure.dstBinding = TLAS\_BINDING;}
+\DoxyCodeLine{01075   write\_descriptor\_set\_acceleration\_structure.dstArrayElement = 0;}
+\DoxyCodeLine{01076   write\_descriptor\_set\_acceleration\_structure.descriptorCount = 1;}
+\DoxyCodeLine{01077   write\_descriptor\_set\_acceleration\_structure.descriptorType =}
+\DoxyCodeLine{01078       VK\_DESCRIPTOR\_TYPE\_ACCELERATION\_STRUCTURE\_KHR;}
+\DoxyCodeLine{01079   write\_descriptor\_set\_acceleration\_structure.pImageInfo = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01080   write\_descriptor\_set\_acceleration\_structure.pBufferInfo = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01081   write\_descriptor\_set\_acceleration\_structure.pTexelBufferView = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01082 }
+\DoxyCodeLine{01083   VkDescriptorBufferInfo object\_description\_buffer\_info\{\};}
+\DoxyCodeLine{01084   object\_description\_buffer\_info.buffer = objectDescriptionBuffer.getBuffer();}
+\DoxyCodeLine{01085   object\_description\_buffer\_info.offset = 0;}
+\DoxyCodeLine{01086   object\_description\_buffer\_info.range = VK\_WHOLE\_SIZE;}
+\DoxyCodeLine{01087 }
+\DoxyCodeLine{01088   VkWriteDescriptorSet object\_description\_buffer\_write\{\};}
+\DoxyCodeLine{01089   object\_description\_buffer\_write.sType =}
+\DoxyCodeLine{01090       VK\_STRUCTURE\_TYPE\_WRITE\_DESCRIPTOR\_SET;}
+\DoxyCodeLine{01091   object\_description\_buffer\_write.dstSet =}
+\DoxyCodeLine{01092       sharedRenderDescriptorSet[image\_index];}
+\DoxyCodeLine{01093   object\_description\_buffer\_write.descriptorType =}
+\DoxyCodeLine{01094       VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER;}
+\DoxyCodeLine{01095   object\_description\_buffer\_write.dstBinding = OBJECT\_DESCRIPTION\_BINDING;}
+\DoxyCodeLine{01096   object\_description\_buffer\_write.pBufferInfo = \&object\_description\_buffer\_info;}
+\DoxyCodeLine{01097   object\_description\_buffer\_write.descriptorCount = 1;}
+\DoxyCodeLine{01098 }
+\DoxyCodeLine{01099   std::vector<VkWriteDescriptorSet> write\_descriptor\_sets = \{}
+\DoxyCodeLine{01100       write\_descriptor\_set\_acceleration\_structure,}
+\DoxyCodeLine{01101       object\_description\_buffer\_write\};}
+\DoxyCodeLine{01102 }
+\DoxyCodeLine{01103   vkUpdateDescriptorSets(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{01104                          \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(write\_descriptor\_sets.size()),}
+\DoxyCodeLine{01105                          write\_descriptor\_sets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01106 \}}
+\DoxyCodeLine{01107 }
+\DoxyCodeLine{01108 \textcolor{keywordtype}{void} VulkanRenderer::record\_commands(uint32\_t image\_index) \{}
+\DoxyCodeLine{01109   Texture\& renderResult = rasterizer.getOffscreenTexture(image\_index);}
+\DoxyCodeLine{01110   VulkanImage\& vulkanImage = renderResult.getVulkanImage();}
+\DoxyCodeLine{01111 }
+\DoxyCodeLine{01112   GUIRendererSharedVars\& guiRendererSharedVars =}
+\DoxyCodeLine{01113       gui-\/>getGuiRendererSharedVars();}
+\DoxyCodeLine{01114   \textcolor{keywordflow}{if} (guiRendererSharedVars.raytracing) \{}
+\DoxyCodeLine{01115     std::vector<VkDescriptorSet> sets = \{sharedRenderDescriptorSet[image\_index],}
+\DoxyCodeLine{01116                                          raytracingDescriptorSet[image\_index]\};}
+\DoxyCodeLine{01117     raytracingStage.recordCommands(command\_buffers[image\_index],}
+\DoxyCodeLine{01118                                    \&vulkanSwapChain, sets);}
+\DoxyCodeLine{01119 }
+\DoxyCodeLine{01120   \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (guiRendererSharedVars.pathTracing) \{}
+\DoxyCodeLine{01121     std::vector<VkDescriptorSet> sets = \{sharedRenderDescriptorSet[image\_index],}
+\DoxyCodeLine{01122                                          raytracingDescriptorSet[image\_index]\};}
+\DoxyCodeLine{01123 }
+\DoxyCodeLine{01124     pathTracing.recordCommands(command\_buffers[image\_index], image\_index,}
+\DoxyCodeLine{01125                                vulkanImage, \&vulkanSwapChain, sets);}
+\DoxyCodeLine{01126 }
+\DoxyCodeLine{01127   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{01128     std::vector<VkDescriptorSet> descriptorSets = \{}
+\DoxyCodeLine{01129         sharedRenderDescriptorSet[image\_index]\};}
+\DoxyCodeLine{01130 }
+\DoxyCodeLine{01131     rasterizer.recordCommands(command\_buffers[image\_index], image\_index, scene,}
+\DoxyCodeLine{01132                               descriptorSets);}
+\DoxyCodeLine{01133   \}}
+\DoxyCodeLine{01134 }
+\DoxyCodeLine{01135   vulkanImage.transitionImageLayout(}
+\DoxyCodeLine{01136       command\_buffers[image\_index], VK\_IMAGE\_LAYOUT\_GENERAL,}
+\DoxyCodeLine{01137       VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL, 1, VK\_IMAGE\_ASPECT\_COLOR\_BIT);}
+\DoxyCodeLine{01138 }
+\DoxyCodeLine{01139   std::vector<VkDescriptorSet> descriptorSets = \{}
+\DoxyCodeLine{01140       post\_descriptor\_set[image\_index]\};}
+\DoxyCodeLine{01141   postStage.recordCommands(command\_buffers[image\_index], image\_index,}
+\DoxyCodeLine{01142                            descriptorSets);}
+\DoxyCodeLine{01143 }
+\DoxyCodeLine{01144   vulkanImage.transitionImageLayout(}
+\DoxyCodeLine{01145       command\_buffers[image\_index], VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL,}
+\DoxyCodeLine{01146       VK\_IMAGE\_LAYOUT\_GENERAL, 1, VK\_IMAGE\_ASPECT\_COLOR\_BIT);}
+\DoxyCodeLine{01147 \}}
+\DoxyCodeLine{01148 }
+\DoxyCodeLine{01149 \textcolor{keywordtype}{bool} VulkanRenderer::checkChangedFramebufferSize() \{}
+\DoxyCodeLine{01150   \textcolor{keywordflow}{if} (window-\/>framebuffer\_size\_has\_changed()) \{}
+\DoxyCodeLine{01151     vkDeviceWaitIdle(device-\/>getLogicalDevice());}
+\DoxyCodeLine{01152     vkQueueWaitIdle(device-\/>getGraphicsQueue());}
+\DoxyCodeLine{01153 }
+\DoxyCodeLine{01154     vulkanSwapChain.cleanUp();}
+\DoxyCodeLine{01155     vulkanSwapChain.initVulkanContext(device.get(), window, surface);}
+\DoxyCodeLine{01156 }
+\DoxyCodeLine{01157     std::vector<VkDescriptorSetLayout> descriptor\_set\_layouts = \{}
+\DoxyCodeLine{01158         sharedRenderDescriptorSetLayout\};}
+\DoxyCodeLine{01159     rasterizer.cleanUp();}
+\DoxyCodeLine{01160     rasterizer.init(device.get(), \&vulkanSwapChain, descriptor\_set\_layouts,}
+\DoxyCodeLine{01161                     graphics\_command\_pool);}
+\DoxyCodeLine{01162 }
+\DoxyCodeLine{01163     \textcolor{comment}{// all post}}
+\DoxyCodeLine{01164     std::vector<VkDescriptorSetLayout> descriptorSets = \{}
+\DoxyCodeLine{01165         post\_descriptor\_set\_layout\};}
+\DoxyCodeLine{01166     postStage.cleanUp();}
+\DoxyCodeLine{01167     postStage.init(device.get(), \&vulkanSwapChain, descriptorSets);}
+\DoxyCodeLine{01168 }
+\DoxyCodeLine{01169     gui-\/>cleanUp();}
+\DoxyCodeLine{01170     gui-\/>initializeVulkanContext(device.get(), instance.getVulkanInstance(),}
+\DoxyCodeLine{01171                                  postStage.getRenderPass(),}
+\DoxyCodeLine{01172                                  graphics\_command\_pool);}
+\DoxyCodeLine{01173 }
+\DoxyCodeLine{01174     current\_frame = 0;}
+\DoxyCodeLine{01175 }
+\DoxyCodeLine{01176     updatePostDescriptorSets();}
+\DoxyCodeLine{01177     updateRaytracingDescriptorSets();}
+\DoxyCodeLine{01178 }
+\DoxyCodeLine{01179     window-\/>reset\_framebuffer\_has\_changed();}
+\DoxyCodeLine{01180 }
+\DoxyCodeLine{01181     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{01182   \}}
+\DoxyCodeLine{01183 }
+\DoxyCodeLine{01184   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{01185 \}}
+\DoxyCodeLine{01186 }
+\DoxyCodeLine{01187 \textcolor{keywordtype}{void} VulkanRenderer::cleanUp() \{}
+\DoxyCodeLine{01188   cleanUpUBOs();}
+\DoxyCodeLine{01189 }
+\DoxyCodeLine{01190   rasterizer.cleanUp();}
+\DoxyCodeLine{01191   raytracingStage.cleanUp();}
+\DoxyCodeLine{01192   postStage.cleanUp();}
+\DoxyCodeLine{01193   pathTracing.cleanUp();}
+\DoxyCodeLine{01194 }
+\DoxyCodeLine{01195   objectDescriptionBuffer.cleanUp();}
+\DoxyCodeLine{01196   asManager.cleanUp();}
+\DoxyCodeLine{01197 }
+\DoxyCodeLine{01198   vkDestroyDescriptorSetLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{01199                                raytracingDescriptorSetLayout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01200   vkDestroyDescriptorSetLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{01201                                post\_descriptor\_set\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01202   vkDestroyDescriptorSetLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{01203                                sharedRenderDescriptorSetLayout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01204   vkDestroyDescriptorPool(device-\/>getLogicalDevice(), post\_descriptor\_pool,}
+\DoxyCodeLine{01205                           \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01206   vkDestroyDescriptorPool(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{01207                           descriptorPoolSharedRenderStages, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01208   vkDestroyDescriptorPool(device-\/>getLogicalDevice(), raytracingDescriptorPool,}
+\DoxyCodeLine{01209                           \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01210 }
+\DoxyCodeLine{01211   vkFreeCommandBuffers(device-\/>getLogicalDevice(), graphics\_command\_pool,}
+\DoxyCodeLine{01212                        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(command\_buffers.size()),}
+\DoxyCodeLine{01213                        command\_buffers.data());}
+\DoxyCodeLine{01214 }
+\DoxyCodeLine{01215   cleanUpCommandPools();}
+\DoxyCodeLine{01216 }
+\DoxyCodeLine{01217   cleanUpSync();}
+\DoxyCodeLine{01218 }
+\DoxyCodeLine{01219   vulkanSwapChain.cleanUp();}
+\DoxyCodeLine{01220   vkDestroySurfaceKHR(instance.getVulkanInstance(), surface, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01221   allocator.cleanUp();}
+\DoxyCodeLine{01222   device-\/>cleanUp();}
+\DoxyCodeLine{01223   debug::freeDebugCallback(instance.getVulkanInstance());}
+\DoxyCodeLine{01224   instance.cleanUp();}
+\DoxyCodeLine{01225 \}}
+\DoxyCodeLine{01226 }
+\DoxyCodeLine{01227 VulkanRenderer::\string~VulkanRenderer() \{\}}
+
+\end{DoxyCode}

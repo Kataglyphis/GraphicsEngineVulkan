@@ -1,17 +1,4 @@
 # Format Style Options - Created with Clang Power Tools
 ---
-BasedOnStyle: WebKit
-AllowShortIfStatementsOnASingleLine: WithoutElse
-BinPackArguments: false
-BreakBeforeBinaryOperators: None
-BreakConstructorInitializers: AfterColon
-ColumnLimit: 160
-ContinuationIndentWidth: 2
-IndentPPDirectives: AfterHash
-IndentWidth: 2
-MaxEmptyLinesToKeep: 2
-ReflowComments: false
-SortIncludes: false
-SpaceBeforeCpp11BracedList: false
-TabWidth: 50
+BasedOnStyle: Google
 ...

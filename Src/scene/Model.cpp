@@ -1,40 +1,39 @@
 #include "Model.h"
 
-Model::Model() { }
+Model::Model() {}
 
 Model::Model(VulkanDevice* device) { this->device = device; }
 
-void Model::cleanUp()
-{
+void Model::cleanUp() {
   for (Texture texture : modelTextures) {
     texture.cleanUp();
   }
 
   for (VkSampler texture_sampler : modelTextureSamplers) {
-
     vkDestroySampler(device->getLogicalDevice(), texture_sampler, nullptr);
   }
 
   mesh.cleanUp();
 }
 
-void Model::add_new_mesh(VulkanDevice* device, VkQueue transfer_queue, VkCommandPool command_pool, std::vector<Vertex>& vertices,
-  std::vector<unsigned int>& indices, std::vector<unsigned int>& materialIndex, std::vector<ObjMaterial>& materials)
-{
-
-  this->mesh = Mesh(device, transfer_queue, command_pool, vertices, indices, materialIndex, materials);
+void Model::add_new_mesh(VulkanDevice* device, VkQueue transfer_queue,
+                         VkCommandPool command_pool,
+                         std::vector<Vertex>& vertices,
+                         std::vector<unsigned int>& indices,
+                         std::vector<unsigned int>& materialIndex,
+                         std::vector<ObjMaterial>& materials) {
+  this->mesh = Mesh(device, transfer_queue, command_pool, vertices, indices,
+                    materialIndex, materials);
 }
 
 void Model::set_model(glm::mat4 model) { this->model = model; }
 
-void Model::addTexture(Texture newTexture)
-{
+void Model::addTexture(Texture newTexture) {
   modelTextures.push_back(newTexture);
   addSampler(newTexture);
 }
 
-uint32_t Model::getPrimitiveCount()
-{
+uint32_t Model::getPrimitiveCount() {
   /*uint32_t number_of_indices = 0;
 
     for (Mesh mesh : meshes) {
@@ -47,11 +46,9 @@ uint32_t Model::getPrimitiveCount()
   return mesh.getIndexCount() / 3;
 }
 
-Model::~Model() { }
+Model::~Model() {}
 
-void Model::addSampler(Texture newTexture)
-{
-
+void Model::addSampler(Texture newTexture) {
   VkSampler newSampler;
   // sampler create info
   VkSamplerCreateInfo sampler_create_info{};
@@ -68,9 +65,10 @@ void Model::addSampler(Texture newTexture)
   sampler_create_info.minLod = 0.0f;
   sampler_create_info.maxLod = newTexture.getMipLevel();
   sampler_create_info.anisotropyEnable = VK_TRUE;
-  sampler_create_info.maxAnisotropy = 16; // max anisotropy sample level
+  sampler_create_info.maxAnisotropy = 16;  // max anisotropy sample level
 
-  VkResult result = vkCreateSampler(device->getLogicalDevice(), &sampler_create_info, nullptr, &newSampler);
+  VkResult result = vkCreateSampler(device->getLogicalDevice(),
+                                    &sampler_create_info, nullptr, &newSampler);
   ASSERT_VULKAN(result, "Failed to create a texture sampler!")
 
   modelTextureSamplers.push_back(newSampler);

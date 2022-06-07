@@ -110,6 +110,7 @@ started in own research topics.
 * [valgrind](https://valgrind.org/)
 * [clangtidy](https://github.com/llvm/llvm-project)
 * [visualstudio](https://visualstudio.microsoft.com/de/)
+* [ClangPowerTools](https://www.clangpowertools.com/)
 
 <!-- GETTING STARTED -->
 ## Getting Started

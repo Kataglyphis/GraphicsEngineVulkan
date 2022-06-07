@@ -1,0 +1,76 @@
+\doxysection{Vulkan\+Buffer.\+cpp}
+\label{_vulkan_buffer_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBuffer.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBuffer.cpp}}
+\mbox{\hyperlink{_vulkan_buffer_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanBuffer.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{00007 }
+\DoxyCodeLine{00008 VulkanBuffer::VulkanBuffer() \{\}}
+\DoxyCodeLine{00009 }
+\DoxyCodeLine{00010 \textcolor{keywordtype}{void} VulkanBuffer::create(VulkanDevice* device, VkDeviceSize buffer\_size,}
+\DoxyCodeLine{00011                           VkBufferUsageFlags buffer\_usage\_flags,}
+\DoxyCodeLine{00012                           VkMemoryPropertyFlags buffer\_propertiy\_flags) \{}
+\DoxyCodeLine{00013   this-\/>device = device;}
+\DoxyCodeLine{00014 }
+\DoxyCodeLine{00015   \textcolor{comment}{// information to create a buffer (doesn't include assigning memory)}}
+\DoxyCodeLine{00016   VkBufferCreateInfo buffer\_info\{\};}
+\DoxyCodeLine{00017   buffer\_info.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_CREATE\_INFO;}
+\DoxyCodeLine{00018   buffer\_info.size = buffer\_size;}
+\DoxyCodeLine{00019   \textcolor{comment}{// multiple types of buffer possible, e.g. vertex buffer}}
+\DoxyCodeLine{00020   buffer\_info.usage = buffer\_usage\_flags;}
+\DoxyCodeLine{00021   \textcolor{comment}{// similar to swap chain images, can share vertex buffers}}
+\DoxyCodeLine{00022   buffer\_info.sharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
+\DoxyCodeLine{00023 }
+\DoxyCodeLine{00024   VkResult result = vkCreateBuffer(device-\/>getLogicalDevice(), \&buffer\_info,}
+\DoxyCodeLine{00025                                    \textcolor{keyword}{nullptr}, \&buffer);}
+\DoxyCodeLine{00026   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a buffer!"{}});}
+\DoxyCodeLine{00027 }
+\DoxyCodeLine{00028   \textcolor{comment}{// get buffer memory requirements}}
+\DoxyCodeLine{00029   VkMemoryRequirements memory\_requirements\{\};}
+\DoxyCodeLine{00030   vkGetBufferMemoryRequirements(device-\/>getLogicalDevice(), buffer,}
+\DoxyCodeLine{00031                                 \&memory\_requirements);}
+\DoxyCodeLine{00032 }
+\DoxyCodeLine{00033   \textcolor{comment}{// allocate memory to buffer}}
+\DoxyCodeLine{00034   VkMemoryAllocateInfo memory\_alloc\_info\{\};}
+\DoxyCodeLine{00035   memory\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
+\DoxyCodeLine{00036   memory\_alloc\_info.allocationSize = memory\_requirements.size;}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038   uint32\_t memory\_type\_index = find\_memory\_type\_index(}
+\DoxyCodeLine{00039       device-\/>getPhysicalDevice(), memory\_requirements.memoryTypeBits,}
+\DoxyCodeLine{00040       buffer\_propertiy\_flags);}
+\DoxyCodeLine{00041 }
+\DoxyCodeLine{00042   \textcolor{comment}{// VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |              /* memory is visible to CPU}}
+\DoxyCodeLine{00043   \textcolor{comment}{// side}}
+\DoxyCodeLine{00044   \textcolor{comment}{// */ VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT    /* data is placed straight into}}
+\DoxyCodeLine{00045   \textcolor{comment}{// buffer */);}}
+\DoxyCodeLine{00046   \textcolor{keywordflow}{if} (memory\_type\_index < 0) \{}
+\DoxyCodeLine{00047     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Failed to find suitable memory type!"{}});}
+\DoxyCodeLine{00048   \}}
+\DoxyCodeLine{00049 }
+\DoxyCodeLine{00050   memory\_alloc\_info.memoryTypeIndex = memory\_type\_index;}
+\DoxyCodeLine{00051 }
+\DoxyCodeLine{00052   \textcolor{comment}{// allocate memory to VkDeviceMemory}}
+\DoxyCodeLine{00053   result = vkAllocateMemory(device-\/>getLogicalDevice(), \&memory\_alloc\_info,}
+\DoxyCodeLine{00054                             \textcolor{keyword}{nullptr}, \&bufferMemory);}
+\DoxyCodeLine{00055   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate memory for buffer!"{}});}
+\DoxyCodeLine{00056 }
+\DoxyCodeLine{00057   \textcolor{comment}{// allocate memory to given buffer}}
+\DoxyCodeLine{00058   vkBindBufferMemory(device-\/>getLogicalDevice(), buffer, bufferMemory, 0);}
+\DoxyCodeLine{00059 }
+\DoxyCodeLine{00060   created = \textcolor{keyword}{true};}
+\DoxyCodeLine{00061 \}}
+\DoxyCodeLine{00062 }
+\DoxyCodeLine{00063 \textcolor{keywordtype}{void} VulkanBuffer::cleanUp() \{}
+\DoxyCodeLine{00064   \textcolor{keywordflow}{if} (created) \{}
+\DoxyCodeLine{00065     vkDestroyBuffer(device-\/>getLogicalDevice(), buffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00066     vkFreeMemory(device-\/>getLogicalDevice(), bufferMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00067   \}}
+\DoxyCodeLine{00068 \}}
+\DoxyCodeLine{00069 }
+\DoxyCodeLine{00070 VulkanBuffer::\string~VulkanBuffer() \{\}}
+
+\end{DoxyCode}

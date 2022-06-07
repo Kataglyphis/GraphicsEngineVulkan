@@ -1,0 +1,371 @@
+\doxysection{Raytracing.\+cpp}
+\label{_raytracing_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Raytracing.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Raytracing.cpp}}
+\mbox{\hyperlink{_raytracing_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Raytracing.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{00005 }
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{00007 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
+\DoxyCodeLine{00008 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
+\DoxyCodeLine{00009 }
+\DoxyCodeLine{00010 Raytracing::Raytracing() \{\}}
+\DoxyCodeLine{00011 }
+\DoxyCodeLine{00012 \textcolor{keywordtype}{void} Raytracing::init(}
+\DoxyCodeLine{00013     VulkanDevice* device,}
+\DoxyCodeLine{00014     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{00015   this-\/>device = device;}
+\DoxyCodeLine{00016 }
+\DoxyCodeLine{00017   createPCRange();}
+\DoxyCodeLine{00018   createGraphicsPipeline(descriptorSetLayouts);}
+\DoxyCodeLine{00019   createSBT();}
+\DoxyCodeLine{00020 \}}
+\DoxyCodeLine{00021 }
+\DoxyCodeLine{00022 \textcolor{keywordtype}{void} Raytracing::shaderHotReload(}
+\DoxyCodeLine{00023     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
+\DoxyCodeLine{00024   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00025   createGraphicsPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{00026 \}}
+\DoxyCodeLine{00027 }
+\DoxyCodeLine{00028 \textcolor{keywordtype}{void} Raytracing::recordCommands(}
+\DoxyCodeLine{00029     VkCommandBuffer\& commandBuffer, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{00030     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
+\DoxyCodeLine{00031   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
+\DoxyCodeLine{00032   uint32\_t handle\_size\_aligned =}
+\DoxyCodeLine{00033       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
+\DoxyCodeLine{00034 }
+\DoxyCodeLine{00035   PFN\_vkGetBufferDeviceAddressKHR vkGetBufferDeviceAddressKHR =}
+\DoxyCodeLine{00036       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkGetBufferDeviceAddressKHR\textcolor{keyword}{>}(vkGetDeviceProcAddr(}
+\DoxyCodeLine{00037           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddressKHR"{}}));}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039   PFN\_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR =}
+\DoxyCodeLine{00040       (PFN\_vkCmdTraceRaysKHR)vkGetDeviceProcAddr(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00041                                                  \textcolor{stringliteral}{"{}vkCmdTraceRaysKHR"{}});}
+\DoxyCodeLine{00042 }
+\DoxyCodeLine{00043   VkBufferDeviceAddressInfoKHR bufferDeviceAI\{\};}
+\DoxyCodeLine{00044   bufferDeviceAI.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{00045   bufferDeviceAI.buffer = raygenShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{00046 }
+\DoxyCodeLine{00047   rgen\_region.deviceAddress =}
+\DoxyCodeLine{00048       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
+\DoxyCodeLine{00049   rgen\_region.stride = handle\_size\_aligned;}
+\DoxyCodeLine{00050   rgen\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{00051 }
+\DoxyCodeLine{00052   bufferDeviceAI.buffer = missShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{00053   miss\_region.deviceAddress =}
+\DoxyCodeLine{00054       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
+\DoxyCodeLine{00055   miss\_region.stride = handle\_size\_aligned;}
+\DoxyCodeLine{00056   miss\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{00057 }
+\DoxyCodeLine{00058   bufferDeviceAI.buffer = hitShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{00059   hit\_region.deviceAddress =}
+\DoxyCodeLine{00060       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
+\DoxyCodeLine{00061   hit\_region.stride = handle\_size\_aligned;}
+\DoxyCodeLine{00062   hit\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{00063 }
+\DoxyCodeLine{00064   \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
+\DoxyCodeLine{00065   pc.clear\_color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
+\DoxyCodeLine{00066   \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
+\DoxyCodeLine{00067   vkCmdPushConstants(commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{00068                      VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
+\DoxyCodeLine{00069                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00070                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR,}
+\DoxyCodeLine{00071                      0, \textcolor{keyword}{sizeof}(PushConstantRaytracing), \&pc);}
+\DoxyCodeLine{00072 }
+\DoxyCodeLine{00073   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
+\DoxyCodeLine{00074                     graphicsPipeline);}
+\DoxyCodeLine{00075 }
+\DoxyCodeLine{00076   vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
+\DoxyCodeLine{00077                           pipeline\_layout, 0,}
+\DoxyCodeLine{00078                           \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
+\DoxyCodeLine{00079                           descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00080 }
+\DoxyCodeLine{00081   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{00082   pvkCmdTraceRaysKHR(commandBuffer, \&rgen\_region, \&miss\_region, \&hit\_region,}
+\DoxyCodeLine{00083                      \&call\_region, swap\_chain\_extent.width,}
+\DoxyCodeLine{00084                      swap\_chain\_extent.height, 1);}
+\DoxyCodeLine{00085 \}}
+\DoxyCodeLine{00086 }
+\DoxyCodeLine{00087 \textcolor{keywordtype}{void} Raytracing::cleanUp() \{}
+\DoxyCodeLine{00088   shaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{00089   raygenShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{00090   missShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{00091   hitShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{00092 }
+\DoxyCodeLine{00093   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00094   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00095 \}}
+\DoxyCodeLine{00096 }
+\DoxyCodeLine{00097 Raytracing::\string~Raytracing() \{\}}
+\DoxyCodeLine{00098 }
+\DoxyCodeLine{00099 \textcolor{keywordtype}{void} Raytracing::createPCRange() \{}
+\DoxyCodeLine{00100   \textcolor{comment}{// define push constant values (no 'create' needed)}}
+\DoxyCodeLine{00101   pc\_ranges.stageFlags = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
+\DoxyCodeLine{00102                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{00103                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
+\DoxyCodeLine{00104   pc\_ranges.offset = 0;}
+\DoxyCodeLine{00105   pc\_ranges.size = \textcolor{keyword}{sizeof}(PushConstantRaytracing);  \textcolor{comment}{// size of data being passed}}
+\DoxyCodeLine{00106 \}}
+\DoxyCodeLine{00107 }
+\DoxyCodeLine{00108 \textcolor{keywordtype}{void} Raytracing::createGraphicsPipeline(}
+\DoxyCodeLine{00109     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{00110   PFN\_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =}
+\DoxyCodeLine{00111       (PFN\_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00112           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateRayTracingPipelinesKHR"{}});}
+\DoxyCodeLine{00113 }
+\DoxyCodeLine{00114   std::stringstream raytracing\_shader\_dir;}
+\DoxyCodeLine{00115   raytracing\_shader\_dir << CMAKELISTS\_DIR;}
+\DoxyCodeLine{00116   raytracing\_shader\_dir << \textcolor{stringliteral}{"{}/Resources/Shader/raytracing/"{}};}
+\DoxyCodeLine{00117 }
+\DoxyCodeLine{00118   std::string raygen\_shader = \textcolor{stringliteral}{"{}raytrace.rgen"{}};}
+\DoxyCodeLine{00119   std::string chit\_shader = \textcolor{stringliteral}{"{}raytrace.rchit"{}};}
+\DoxyCodeLine{00120   std::string miss\_shader = \textcolor{stringliteral}{"{}raytrace.rmiss"{}};}
+\DoxyCodeLine{00121   std::string shadow\_shader = \textcolor{stringliteral}{"{}shadow.rmiss"{}};}
+\DoxyCodeLine{00122 }
+\DoxyCodeLine{00123   ShaderHelper shaderHelper;}
+\DoxyCodeLine{00124   shaderHelper.compileShader(raytracing\_shader\_dir.str(), raygen\_shader);}
+\DoxyCodeLine{00125   shaderHelper.compileShader(raytracing\_shader\_dir.str(), chit\_shader);}
+\DoxyCodeLine{00126   shaderHelper.compileShader(raytracing\_shader\_dir.str(), miss\_shader);}
+\DoxyCodeLine{00127   shaderHelper.compileShader(raytracing\_shader\_dir.str(), shadow\_shader);}
+\DoxyCodeLine{00128 }
+\DoxyCodeLine{00129   File raygenFile(}
+\DoxyCodeLine{00130       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), raygen\_shader));}
+\DoxyCodeLine{00131   File raychitFile(}
+\DoxyCodeLine{00132       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), chit\_shader));}
+\DoxyCodeLine{00133   File raymissFile(}
+\DoxyCodeLine{00134       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), miss\_shader));}
+\DoxyCodeLine{00135   File shadowFile(}
+\DoxyCodeLine{00136       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), shadow\_shader));}
+\DoxyCodeLine{00137 }
+\DoxyCodeLine{00138   std::vector<char> raygen\_shader\_code = raygenFile.readCharSequence();}
+\DoxyCodeLine{00139   std::vector<char> raychit\_shader\_code = raychitFile.readCharSequence();}
+\DoxyCodeLine{00140   std::vector<char> raymiss\_shader\_code = raymissFile.readCharSequence();}
+\DoxyCodeLine{00141   std::vector<char> shadow\_shader\_code = shadowFile.readCharSequence();}
+\DoxyCodeLine{00142 }
+\DoxyCodeLine{00143   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
+\DoxyCodeLine{00144   VkShaderModule raygen\_shader\_module =}
+\DoxyCodeLine{00145       shaderHelper.createShaderModule(device, raygen\_shader\_code);}
+\DoxyCodeLine{00146   VkShaderModule raychit\_shader\_module =}
+\DoxyCodeLine{00147       shaderHelper.createShaderModule(device, raychit\_shader\_code);}
+\DoxyCodeLine{00148   VkShaderModule raymiss\_shader\_module =}
+\DoxyCodeLine{00149       shaderHelper.createShaderModule(device, raymiss\_shader\_code);}
+\DoxyCodeLine{00150   VkShaderModule shadow\_shader\_module =}
+\DoxyCodeLine{00151       shaderHelper.createShaderModule(device, shadow\_shader\_code);}
+\DoxyCodeLine{00152 }
+\DoxyCodeLine{00153   \textcolor{comment}{// create all shader stage infos for creating a group}}
+\DoxyCodeLine{00154   VkPipelineShaderStageCreateInfo rgen\_shader\_stage\_info\{\};}
+\DoxyCodeLine{00155   rgen\_shader\_stage\_info.sType =}
+\DoxyCodeLine{00156       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00157   rgen\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR;}
+\DoxyCodeLine{00158   rgen\_shader\_stage\_info.module = raygen\_shader\_module;}
+\DoxyCodeLine{00159   rgen\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00160 }
+\DoxyCodeLine{00161   VkPipelineShaderStageCreateInfo rmiss\_shader\_stage\_info\{\};}
+\DoxyCodeLine{00162   rmiss\_shader\_stage\_info.sType =}
+\DoxyCodeLine{00163       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00164   rmiss\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
+\DoxyCodeLine{00165   rmiss\_shader\_stage\_info.module = raymiss\_shader\_module;}
+\DoxyCodeLine{00166   rmiss\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00167 }
+\DoxyCodeLine{00168   VkPipelineShaderStageCreateInfo shadow\_shader\_stage\_info\{\};}
+\DoxyCodeLine{00169   shadow\_shader\_stage\_info.sType =}
+\DoxyCodeLine{00170       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00171   shadow\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
+\DoxyCodeLine{00172   shadow\_shader\_stage\_info.module = shadow\_shader\_module;}
+\DoxyCodeLine{00173   shadow\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00174 }
+\DoxyCodeLine{00175   VkPipelineShaderStageCreateInfo rchit\_shader\_stage\_info\{\};}
+\DoxyCodeLine{00176   rchit\_shader\_stage\_info.sType =}
+\DoxyCodeLine{00177       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{00178   rchit\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR;}
+\DoxyCodeLine{00179   rchit\_shader\_stage\_info.module = raychit\_shader\_module;}
+\DoxyCodeLine{00180   rchit\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00181 }
+\DoxyCodeLine{00182   \textcolor{comment}{// we have all shader stages together}}
+\DoxyCodeLine{00183   std::array<VkPipelineShaderStageCreateInfo, 4> shader\_stages = \{}
+\DoxyCodeLine{00184       rgen\_shader\_stage\_info, rmiss\_shader\_stage\_info, shadow\_shader\_stage\_info,}
+\DoxyCodeLine{00185       rchit\_shader\_stage\_info\};}
+\DoxyCodeLine{00186 }
+\DoxyCodeLine{00187   \textcolor{keyword}{enum} StageIndices \{ eRaygen, eMiss, eMiss2, eClosestHit, eShaderGroupCount \};}
+\DoxyCodeLine{00188 }
+\DoxyCodeLine{00189   shader\_groups.reserve(4);}
+\DoxyCodeLine{00190   VkRayTracingShaderGroupCreateInfoKHR shader\_group\_create\_infos[4];}
+\DoxyCodeLine{00191 }
+\DoxyCodeLine{00192   shader\_group\_create\_infos[0].sType =}
+\DoxyCodeLine{00193       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00194   shader\_group\_create\_infos[0].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00195   shader\_group\_create\_infos[0].type =}
+\DoxyCodeLine{00196       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
+\DoxyCodeLine{00197   shader\_group\_create\_infos[0].generalShader = eRaygen;}
+\DoxyCodeLine{00198   shader\_group\_create\_infos[0].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00199   shader\_group\_create\_infos[0].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00200   shader\_group\_create\_infos[0].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00201   shader\_group\_create\_infos[0].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00202 }
+\DoxyCodeLine{00203   shader\_groups.push\_back(shader\_group\_create\_infos[0]);}
+\DoxyCodeLine{00204 }
+\DoxyCodeLine{00205   shader\_group\_create\_infos[1].sType =}
+\DoxyCodeLine{00206       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00207   shader\_group\_create\_infos[1].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00208   shader\_group\_create\_infos[1].type =}
+\DoxyCodeLine{00209       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
+\DoxyCodeLine{00210   shader\_group\_create\_infos[1].generalShader = eMiss;}
+\DoxyCodeLine{00211   shader\_group\_create\_infos[1].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00212   shader\_group\_create\_infos[1].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00213   shader\_group\_create\_infos[1].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00214   shader\_group\_create\_infos[1].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00215 }
+\DoxyCodeLine{00216   shader\_groups.push\_back(shader\_group\_create\_infos[1]);}
+\DoxyCodeLine{00217 }
+\DoxyCodeLine{00218   shader\_group\_create\_infos[2].sType =}
+\DoxyCodeLine{00219       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00220   shader\_group\_create\_infos[2].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00221   shader\_group\_create\_infos[2].type =}
+\DoxyCodeLine{00222       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
+\DoxyCodeLine{00223   shader\_group\_create\_infos[2].generalShader = eMiss2;}
+\DoxyCodeLine{00224   shader\_group\_create\_infos[2].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00225   shader\_group\_create\_infos[2].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00226   shader\_group\_create\_infos[2].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00227   shader\_group\_create\_infos[2].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00228 }
+\DoxyCodeLine{00229   shader\_groups.push\_back(shader\_group\_create\_infos[2]);}
+\DoxyCodeLine{00230 }
+\DoxyCodeLine{00231   shader\_group\_create\_infos[3].sType =}
+\DoxyCodeLine{00232       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00233   shader\_group\_create\_infos[3].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00234   shader\_group\_create\_infos[3].type =}
+\DoxyCodeLine{00235       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_TRIANGLES\_HIT\_GROUP\_KHR;}
+\DoxyCodeLine{00236   shader\_group\_create\_infos[3].generalShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00237   shader\_group\_create\_infos[3].closestHitShader = eClosestHit;}
+\DoxyCodeLine{00238   shader\_group\_create\_infos[3].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00239   shader\_group\_create\_infos[3].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{00240   shader\_group\_create\_infos[3].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00241 }
+\DoxyCodeLine{00242   shader\_groups.push\_back(shader\_group\_create\_infos[3]);}
+\DoxyCodeLine{00243 }
+\DoxyCodeLine{00244   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
+\DoxyCodeLine{00245   pipeline\_layout\_create\_info.sType =}
+\DoxyCodeLine{00246       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{00247   pipeline\_layout\_create\_info.setLayoutCount =}
+\DoxyCodeLine{00248       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
+\DoxyCodeLine{00249   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
+\DoxyCodeLine{00250   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
+\DoxyCodeLine{00251   pipeline\_layout\_create\_info.pPushConstantRanges = \&pc\_ranges;}
+\DoxyCodeLine{00252 }
+\DoxyCodeLine{00253   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00254                                            \&pipeline\_layout\_create\_info,}
+\DoxyCodeLine{00255                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
+\DoxyCodeLine{00256   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline layout!"{}})}
+\DoxyCodeLine{00257 }
+\DoxyCodeLine{00258   VkPipelineLibraryCreateInfoKHR pipeline\_library\_create\_info\{\};}
+\DoxyCodeLine{00259   pipeline\_library\_create\_info.sType =}
+\DoxyCodeLine{00260       VK\_STRUCTURE\_TYPE\_PIPELINE\_LIBRARY\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00261   pipeline\_library\_create\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00262   pipeline\_library\_create\_info.libraryCount = 0;}
+\DoxyCodeLine{00263   pipeline\_library\_create\_info.pLibraries = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00264 }
+\DoxyCodeLine{00265   VkRayTracingPipelineCreateInfoKHR raytracing\_pipeline\_create\_info\{\};}
+\DoxyCodeLine{00266   raytracing\_pipeline\_create\_info.sType =}
+\DoxyCodeLine{00267       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_PIPELINE\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{00268   raytracing\_pipeline\_create\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00269   raytracing\_pipeline\_create\_info.flags = 0;}
+\DoxyCodeLine{00270   raytracing\_pipeline\_create\_info.stageCount =}
+\DoxyCodeLine{00271       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
+\DoxyCodeLine{00272   raytracing\_pipeline\_create\_info.pStages = shader\_stages.data();}
+\DoxyCodeLine{00273   raytracing\_pipeline\_create\_info.groupCount =}
+\DoxyCodeLine{00274       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
+\DoxyCodeLine{00275   raytracing\_pipeline\_create\_info.pGroups = shader\_groups.data();}
+\DoxyCodeLine{00276   \textcolor{comment}{/*raytracing\_pipeline\_create\_info.pLibraryInfo =}}
+\DoxyCodeLine{00277 \textcolor{comment}{     \&pipeline\_library\_create\_info;}}
+\DoxyCodeLine{00278 \textcolor{comment}{        raytracing\_pipeline\_create\_info.pLibraryInterface = NULL;*/}}
+\DoxyCodeLine{00279   \textcolor{comment}{// TODO: HARDCODED FOR NOW;}}
+\DoxyCodeLine{00280   raytracing\_pipeline\_create\_info.maxPipelineRayRecursionDepth = 2;}
+\DoxyCodeLine{00281   raytracing\_pipeline\_create\_info.layout = pipeline\_layout;}
+\DoxyCodeLine{00282 }
+\DoxyCodeLine{00283   result = pvkCreateRayTracingPipelinesKHR(}
+\DoxyCodeLine{00284       device-\/>getLogicalDevice(), VK\_NULL\_HANDLE, VK\_NULL\_HANDLE, 1,}
+\DoxyCodeLine{00285       \&raytracing\_pipeline\_create\_info, \textcolor{keyword}{nullptr}, \&graphicsPipeline);}
+\DoxyCodeLine{00286 }
+\DoxyCodeLine{00287   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline!"{}})}
+\DoxyCodeLine{00288 }
+\DoxyCodeLine{00289   vkDestroyShaderModule(device-\/>getLogicalDevice(), raygen\_shader\_module,}
+\DoxyCodeLine{00290                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{00291   vkDestroyShaderModule(device-\/>getLogicalDevice(), raymiss\_shader\_module,}
+\DoxyCodeLine{00292                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{00293   vkDestroyShaderModule(device-\/>getLogicalDevice(), raychit\_shader\_module,}
+\DoxyCodeLine{00294                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{00295   vkDestroyShaderModule(device-\/>getLogicalDevice(), shadow\_shader\_module,}
+\DoxyCodeLine{00296                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{00297 \}}
+\DoxyCodeLine{00298 }
+\DoxyCodeLine{00299 \textcolor{keywordtype}{void} Raytracing::createSBT() \{}
+\DoxyCodeLine{00300   \textcolor{comment}{// load in functionality for raytracing shader group handles}}
+\DoxyCodeLine{00301   PFN\_vkGetRayTracingShaderGroupHandlesKHR}
+\DoxyCodeLine{00302       pvkGetRayTracingShaderGroupHandlesKHR =}
+\DoxyCodeLine{00303           (PFN\_vkGetRayTracingShaderGroupHandlesKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{00304               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00305               \textcolor{stringliteral}{"{}vkGetRayTracingShaderGroupHandlesKHR"{}});}
+\DoxyCodeLine{00306 }
+\DoxyCodeLine{00307   raytracing\_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR\{\};}
+\DoxyCodeLine{00308   raytracing\_properties.sType =}
+\DoxyCodeLine{00309       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_RAY\_TRACING\_PIPELINE\_PROPERTIES\_KHR;}
+\DoxyCodeLine{00310 }
+\DoxyCodeLine{00311   VkPhysicalDeviceProperties2 properties\{\};}
+\DoxyCodeLine{00312   properties.sType = VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_PROPERTIES\_2;}
+\DoxyCodeLine{00313   properties.pNext = \&raytracing\_properties;}
+\DoxyCodeLine{00314 }
+\DoxyCodeLine{00315   vkGetPhysicalDeviceProperties2(device-\/>getPhysicalDevice(), \&properties);}
+\DoxyCodeLine{00316 }
+\DoxyCodeLine{00317   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
+\DoxyCodeLine{00318   uint32\_t handle\_size\_aligned =}
+\DoxyCodeLine{00319       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
+\DoxyCodeLine{00320 }
+\DoxyCodeLine{00321   uint32\_t group\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
+\DoxyCodeLine{00322   uint32\_t sbt\_size = group\_count * handle\_size\_aligned;}
+\DoxyCodeLine{00323 }
+\DoxyCodeLine{00324   std::vector<uint8\_t> handles(sbt\_size);}
+\DoxyCodeLine{00325 }
+\DoxyCodeLine{00326   VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(}
+\DoxyCodeLine{00327       device-\/>getLogicalDevice(), graphicsPipeline, 0, group\_count, sbt\_size,}
+\DoxyCodeLine{00328       handles.data());}
+\DoxyCodeLine{00329   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to get ray tracing shader group handles!"{}})}
+\DoxyCodeLine{00330 }
+\DoxyCodeLine{00331   const VkBufferUsageFlags bufferUsageFlags =}
+\DoxyCodeLine{00332       VK\_BUFFER\_USAGE\_SHADER\_BINDING\_TABLE\_BIT\_KHR |}
+\DoxyCodeLine{00333       VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT;}
+\DoxyCodeLine{00334   const VkMemoryPropertyFlags memoryUsageFlags =}
+\DoxyCodeLine{00335       VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
+\DoxyCodeLine{00336       VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT;}
+\DoxyCodeLine{00337 }
+\DoxyCodeLine{00338   raygenShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{00339                                         memoryUsageFlags);}
+\DoxyCodeLine{00340 }
+\DoxyCodeLine{00341   missShaderBindingTableBuffer.create(device, 2 * handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{00342                                       memoryUsageFlags);}
+\DoxyCodeLine{00343 }
+\DoxyCodeLine{00344   hitShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{00345                                      memoryUsageFlags);}
+\DoxyCodeLine{00346 }
+\DoxyCodeLine{00347   \textcolor{keywordtype}{void}* mapped\_raygen = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{00348   vkMapMemory(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00349               raygenShaderBindingTableBuffer.getBufferMemory(), 0,}
+\DoxyCodeLine{00350               VK\_WHOLE\_SIZE, 0, \&mapped\_raygen);}
+\DoxyCodeLine{00351 }
+\DoxyCodeLine{00352   \textcolor{keywordtype}{void}* mapped\_miss = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{00353   vkMapMemory(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00354               missShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
+\DoxyCodeLine{00355               0, \&mapped\_miss);}
+\DoxyCodeLine{00356 }
+\DoxyCodeLine{00357   \textcolor{keywordtype}{void}* mapped\_rchit = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{00358   vkMapMemory(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{00359               hitShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
+\DoxyCodeLine{00360               0, \&mapped\_rchit);}
+\DoxyCodeLine{00361 }
+\DoxyCodeLine{00362   memcpy(mapped\_raygen, handles.data(), handle\_size);}
+\DoxyCodeLine{00363   memcpy(mapped\_miss, handles.data() + handle\_size\_aligned, handle\_size * 2);}
+\DoxyCodeLine{00364   memcpy(mapped\_rchit, handles.data() + handle\_size\_aligned * 3, handle\_size);}
+\DoxyCodeLine{00365 \}}
+
+\end{DoxyCode}

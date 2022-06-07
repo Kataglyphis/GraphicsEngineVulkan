@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.18)
 
 # specify the C/C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -35,6 +35,8 @@ set(MSVC_WARNINGS
 
 # CLANG
 set(CLANG_WARNINGS
+          #enable sanitizer
+          -fsanitize=thread,memory,address,undefined
           -pedantic -Warn # on language extensions
           -Wall -Wextra # reasonable and standard
           -Wshadow # warn the user if a variable declaration shadows one from a parent context
@@ -65,6 +67,14 @@ endif()
 # GCC 
 set(GCC_WARNINGS ${CLANG_WARNINGS})
 
+if(MSVC)
+  set(PROJECT_WARNINGS ${MSVC_WARNINGS})
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set(PROJECT_WARNINGS ${CLANG_WARNINGS})
+else()
+  set(PROJECT_WARNINGS ${GCC_WARNINGS})
+endif()
+
 # set the project name
 project(GraphicsEngine VERSION 1.3
                        DESCRIPTION "Epic Graphics"
@@ -75,10 +85,11 @@ include(FetchContent)
 # include google test to project
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/f079775276a99fd4373569bf5761052a01844270.zip
+  URL https://github.com/google/googletest/archive/e2239ee6043f73722e7aa812a459f54a28552929.zip
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#set(GTEST_OUTPUT )
 FetchContent_MakeAvailable(googletest)
 
 #include gsl
@@ -214,81 +225,81 @@ file(GLOB GUI_HEADERS
 
 # add filters to the solution explorer for the shaders :))
 file(GLOB RASTER_SHADER_FILTER   
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.vert
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.frag
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.glsl
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.comp
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.geom
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rgen
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rchit
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rahit
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.rmiss
-            ${PROJECT_BINARY_DIR}/../Resources/Shader/rasterizer/*.glsl
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.vert
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.frag
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.glsl
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.comp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.geom
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.rgen
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.rchit
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.rahit
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.rmiss
+            ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/rasterizer/*.glsl
       )
 
 file(GLOB RAYTRACING_SHADER_FILTER   
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.vert
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.frag
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.glsl
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.comp
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.geom
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rgen
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rchit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rahit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.rmiss
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/raytracing/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.vert
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.frag
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.comp
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.geom
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.rgen
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.rchit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.rahit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.rmiss
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/raytracing/*.glsl
 )
 
 file(GLOB COMMON_SHADER_FILTER   
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.vert
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.frag
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.glsl
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.comp
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.geom
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rgen
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rchit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rahit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.rmiss
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/common/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.vert
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.frag
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.comp
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.geom
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.rgen
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.rchit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.rahit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.rmiss
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/common/*.glsl
 )
 
 file(GLOB POST_SHADER_FILTER   
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.vert
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.frag
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.glsl
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.comp
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.geom
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rgen
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rchit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rahit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.rmiss
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/post/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.vert
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.frag
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.comp
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.geom
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.rgen
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.rchit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.rahit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.rmiss
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/post/*.glsl
 )
 
 file(GLOB BRDF_SHADER_FILTER   
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.vert
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.frag
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.glsl
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.comp
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.geom
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rgen
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rchit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rahit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.rmiss
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/brdf/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.vert
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.frag
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.comp
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.geom
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.rgen
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.rchit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.rahit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.rmiss
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/brdf/*.glsl
 )
 
 file(GLOB PATH_TRACING_SHADER_FILTER   
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.vert
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.frag
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.glsl
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.comp
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.geom
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rgen
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rchit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rahit
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.rmiss
-      ${PROJECT_BINARY_DIR}/../Resources/Shader/path_tracing/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.vert
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.frag
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.glsl
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.comp
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.geom
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.rgen
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.rchit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.rahit
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.rmiss
+      ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.glsl
 )
 
 source_group("shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
@@ -319,6 +330,8 @@ ${IMGUI_FILTER}
 ${UTIL_FILTER}
 ${VULKAN_BASE_FILTER}
 )
+
+target_compile_options(${PROJECT_NAME} INTERFACE ${PROJECT_WARNINGS})
 
 foreach(Shader ${POST_SHADER_FILTER})
   add_shader(${PROJECT_NAME} ${Shader})
@@ -363,11 +376,6 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(ExternalLib/GLFW)
 
-# add tests 
-# include(CTest)
-
-# add_test(test1 ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
-
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_VERSION_MAJOR "${GraphicsEngine_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${GraphicsEngine_VERSION_MINOR}")
@@ -396,38 +404,90 @@ target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 option(BUILD_DOC "Build documentation" ON)
 
 # check if Doxygen is installed
-# find_package(Doxygen)
-# if (DOXYGEN_FOUND)
-#     # set input and output files
-#     set(DOXYGEN_IN ${CMAKE_CURRENT_BINARY_DIR}/../Documents/Doxyfile.in)
-#     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # set input and output files
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")    # note the option ALL which allows to build the docs together with the application
+    add_custom_target( doc_doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM )
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)
 
-#     # request to configure the file
-#     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-#     message("Doxygen build started")
+find_program(CPPCHECK cppcheck)
+if(CPPCHECK)
+  set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --suppress=missingInclude --enable=all --suppressions-list=Documents/cppcheck/suppressions.txt)
+endif(CPPCHECK)
 
-#     # note the option ALL which allows to build the docs together with the application
-#     add_custom_target( doc_doxygen ALL
-#         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-#         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#         COMMENT "Generating API documentation with Doxygen"
-#         VERBATIM )
-# else (DOXYGEN_FOUND)
-#   message("Doxygen need to be installed to generate the doxygen documentation")
-# endif (DOXYGEN_FOUND)
+find_program(CLANGTIDY clang-tidy)
+if(CLANGTIDY)
+  set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY})
+endif(CLANGTIDY)
 
 enable_testing()
 
-add_executable(
-  hello_test
-  Test/hello_test.cc
-)
-target_link_libraries(
-  hello_test
-  gtest_main
+include(GoogleTest)
+
+add_executable( vulkanRendererTester
+                # all test specific files -- start
+                "Test/vulkanRendererTest.cpp"
+                # all test specific files -- end
+                ${RASTER_SHADER_FILTER}
+                ${RAYTRACING_SHADER_FILTER}
+                ${COMMON_SHADER_FILTER}
+                ${POST_SHADER_FILTER}
+                ${BRDF_SHADER_FILTER}
+                ${PATH_TRACING_SHADER_FILTER}
+                ${RENDERER_FILTER}
+                ${PC_FILTER}
+                ${AS_FILTER}
+                ${SCENE_FILTER}
+                ${WINDOW_FILTER}
+                ${MEMORY_FILTER}
+                ${COMMON_FILTER}
+                ${GUI_FILTER}
+                ${IMGUI_FILTER}
+                ${UTIL_FILTER}
+                ${VULKAN_BASE_FILTER}
 )
 
-include(GoogleTest)
-gtest_discover_tests(hello_test)
+target_link_libraries( vulkanRendererTester PUBLIC ${CMAKE_DL_LIBS}
+                                                    Threads::Threads
+                                                    Vulkan::Vulkan
+                                                    glfw 
+                                                    imgui 
+                                                    stb
+                                                    glm
+                                                    tinyobjloader
+                                                    vma
+                                                    ktx
+                                                    gtest_main
+
+)
+
+target_link_libraries(vulkanRendererTester PRIVATE GSL)
+
+target_include_directories(  vulkanRendererTester PUBLIC    ./include/renderer
+                                                            ./include/renderer/pushConstants
+                                                            ./include/renderer/accelerationStructures
+                                                            ./include/vulkan_base
+                                                            ./include/gui
+                                                            ./include/common
+                                                            ./include/scene
+                                                            ./include/window
+                                                            ./include/memory
+                                                            ./include/util
+                                                            ./include/
+)
+
+target_include_directories(  vulkanRendererTester PRIVATE ${Vulkan_INCLUDE_DIRS})
+
+gtest_discover_tests(   vulkanRendererTester )
 
 # include(CPack)

@@ -3,8 +3,7 @@
 #include <vector>
 
 class File {
-
-  public:
+ public:
   explicit File(const std::string& file_location);
 
   std::string read();
@@ -13,6 +12,6 @@ class File {
 
   ~File();
 
-  private:
+ private:
   std::string file_location;
 };

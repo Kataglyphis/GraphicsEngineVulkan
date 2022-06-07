@@ -1,0 +1,196 @@
+\doxysection{debug Namespace Reference}
+\label{namespacedebug}\index{debug@{debug}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+VKAPI\+\_\+\+ATTR Vk\+Bool32 VKAPI\+\_\+\+CALL \mbox{\hyperlink{namespacedebug_a2c211b70c4398422cdff97189048fe44}{debug\+Utils\+Messenger\+Callback}} (Vk\+Debug\+Utils\+Message\+Severity\+Flag\+Bits\+EXT message\+Severity, Vk\+Debug\+Utils\+Message\+Type\+Flags\+EXT message\+Type, const Vk\+Debug\+Utils\+Messenger\+Callback\+Data\+EXT $\ast$p\+Callback\+Data, void $\ast$p\+User\+Data)
+\item 
+void \mbox{\hyperlink{namespacedebug_a2d3861f9b449521a13975f6f21342c43}{setup\+Debugging}} (Vk\+Instance instance, Vk\+Debug\+Report\+Flags\+EXT flags, Vk\+Debug\+Report\+Callback\+EXT call\+Back)
+\item 
+void \mbox{\hyperlink{namespacedebug_a0090a7de5456794069c8360a0780ed52}{free\+Debug\+Callback}} (Vk\+Instance instance)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+PFN\+\_\+vk\+Create\+Debug\+Utils\+Messenger\+EXT \mbox{\hyperlink{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}{vk\+Create\+Debug\+Utils\+Messenger\+EXT}}
+\item 
+PFN\+\_\+vk\+Destroy\+Debug\+Utils\+Messenger\+EXT \mbox{\hyperlink{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}{vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}}
+\item 
+Vk\+Debug\+Utils\+Messenger\+EXT \mbox{\hyperlink{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}{debug\+Utils\+Messenger}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\label{namespacedebug_a2c211b70c4398422cdff97189048fe44}} 
+\index{debug@{debug}!debugUtilsMessengerCallback@{debugUtilsMessengerCallback}}
+\index{debugUtilsMessengerCallback@{debugUtilsMessengerCallback}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{debugUtilsMessengerCallback()}{debugUtilsMessengerCallback()}}
+{\footnotesize\ttfamily VKAPI\+\_\+\+ATTR Vk\+Bool32 VKAPI\+\_\+\+CALL debug\+::debug\+Utils\+Messenger\+Callback (\begin{DoxyParamCaption}\item[{Vk\+Debug\+Utils\+Message\+Severity\+Flag\+Bits\+EXT}]{message\+Severity,  }\item[{Vk\+Debug\+Utils\+Message\+Type\+Flags\+EXT}]{message\+Type,  }\item[{const Vk\+Debug\+Utils\+Messenger\+Callback\+Data\+EXT $\ast$}]{p\+Callback\+Data,  }\item[{void $\ast$}]{p\+User\+Data }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00010}{10}} of file \mbox{\hyperlink{_vulkan_debug_8cpp_source}{Vulkan\+Debug.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00014                      \{}
+\DoxyCodeLine{00015   \textcolor{comment}{// Select prefix depending on flags passed to the callback}}
+\DoxyCodeLine{00016   std::string prefix(\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00017 }
+\DoxyCodeLine{00018   \textcolor{keywordflow}{if} (messageSeverity \& VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_VERBOSE\_BIT\_EXT) \{}
+\DoxyCodeLine{00019     prefix = \textcolor{stringliteral}{"{}VERBOSE: "{}};}
+\DoxyCodeLine{00020   \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (messageSeverity \& VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_INFO\_BIT\_EXT) \{}
+\DoxyCodeLine{00021     prefix = \textcolor{stringliteral}{"{}INFO: "{}};}
+\DoxyCodeLine{00022   \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (messageSeverity \&}
+\DoxyCodeLine{00023              VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_WARNING\_BIT\_EXT) \{}
+\DoxyCodeLine{00024     prefix = \textcolor{stringliteral}{"{}WARNING: "{}};}
+\DoxyCodeLine{00025   \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (messageSeverity \& VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_ERROR\_BIT\_EXT) \{}
+\DoxyCodeLine{00026     prefix = \textcolor{stringliteral}{"{}ERROR: "{}};}
+\DoxyCodeLine{00027   \}}
+\DoxyCodeLine{00028 }
+\DoxyCodeLine{00029   \textcolor{comment}{// Display message to default output (console/logcat)}}
+\DoxyCodeLine{00030   std::stringstream debugMessage;}
+\DoxyCodeLine{00031   debugMessage << prefix << \textcolor{stringliteral}{"{}["{}} << pCallbackData-\/>messageIdNumber << \textcolor{stringliteral}{"{}]["{}}}
+\DoxyCodeLine{00032                << pCallbackData-\/>pMessageIdName}
+\DoxyCodeLine{00033                << \textcolor{stringliteral}{"{}] : "{}} << pCallbackData-\/>pMessage;}
+\DoxyCodeLine{00034 }
+\DoxyCodeLine{00035 \textcolor{preprocessor}{\#if defined(\_\_ANDROID\_\_)}}
+\DoxyCodeLine{00036   \textcolor{keywordflow}{if} (messageSeverity >= VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_ERROR\_BIT\_EXT) \{}
+\DoxyCodeLine{00037     LOGE(\textcolor{stringliteral}{"{}\%s"{}}, debugMessage.str().c\_str());}
+\DoxyCodeLine{00038   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{00039     LOGD(\textcolor{stringliteral}{"{}\%s"{}}, debugMessage.str().c\_str());}
+\DoxyCodeLine{00040   \}}
+\DoxyCodeLine{00041 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00042   \textcolor{keywordflow}{if} (messageSeverity >= VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_ERROR\_BIT\_EXT) \{}
+\DoxyCodeLine{00043     std::cerr << debugMessage.str() << \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{00044   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{00045     std::cout << debugMessage.str() << \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{00046   \}}
+\DoxyCodeLine{00047   fflush(stdout);}
+\DoxyCodeLine{00048 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00049 }
+\DoxyCodeLine{00050   \textcolor{comment}{// The return value of this callback controls whether the Vulkan call that}}
+\DoxyCodeLine{00051   \textcolor{comment}{// caused the validation message will be aborted or not We return VK\_FALSE as}}
+\DoxyCodeLine{00052   \textcolor{comment}{// we DON'T want Vulkan calls that cause a validation message to abort If you}}
+\DoxyCodeLine{00053   \textcolor{comment}{// instead want to have calls abort, pass in VK\_TRUE and the function will}}
+\DoxyCodeLine{00054   \textcolor{comment}{// return VK\_ERROR\_VALIDATION\_FAILED\_EXT}}
+\DoxyCodeLine{00055   \textcolor{keywordflow}{return} VK\_FALSE;}
+\DoxyCodeLine{00056 \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
+
+Here is the caller graph for this function\+:
+% FIG 0
+\mbox{\label{namespacedebug_a0090a7de5456794069c8360a0780ed52}} 
+\index{debug@{debug}!freeDebugCallback@{freeDebugCallback}}
+\index{freeDebugCallback@{freeDebugCallback}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{freeDebugCallback()}{freeDebugCallback()}}
+{\footnotesize\ttfamily void debug\+::free\+Debug\+Callback (\begin{DoxyParamCaption}\item[{Vk\+Instance}]{instance }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{82}} of file \mbox{\hyperlink{_vulkan_debug_8cpp_source}{Vulkan\+Debug.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00082                                             \{}
+\DoxyCodeLine{00083   \textcolor{keywordflow}{if} (debugUtilsMessenger != VK\_NULL\_HANDLE) \{}
+\DoxyCodeLine{00084     vkDestroyDebugUtilsMessengerEXT(instance, debugUtilsMessenger, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00085   \}}
+\DoxyCodeLine{00086 \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{debug\+Utils\+Messenger}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00007}{vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}}.
+
+\mbox{\label{namespacedebug_a2d3861f9b449521a13975f6f21342c43}} 
+\index{debug@{debug}!setupDebugging@{setupDebugging}}
+\index{setupDebugging@{setupDebugging}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{setupDebugging()}{setupDebugging()}}
+{\footnotesize\ttfamily void debug\+::setup\+Debugging (\begin{DoxyParamCaption}\item[{Vk\+Instance}]{instance,  }\item[{Vk\+Debug\+Report\+Flags\+EXT}]{flags,  }\item[{Vk\+Debug\+Report\+Callback\+EXT}]{call\+Back }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{58}} of file \mbox{\hyperlink{_vulkan_debug_8cpp_source}{Vulkan\+Debug.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00059                                                        \{}
+\DoxyCodeLine{00060   vkCreateDebugUtilsMessengerEXT =}
+\DoxyCodeLine{00061       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkCreateDebugUtilsMessengerEXT\textcolor{keyword}{>}(}
+\DoxyCodeLine{00062           vkGetInstanceProcAddr(instance, \textcolor{stringliteral}{"{}vkCreateDebugUtilsMessengerEXT"{}}));}
+\DoxyCodeLine{00063   vkDestroyDebugUtilsMessengerEXT =}
+\DoxyCodeLine{00064       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkDestroyDebugUtilsMessengerEXT\textcolor{keyword}{>}(}
+\DoxyCodeLine{00065           vkGetInstanceProcAddr(instance, \textcolor{stringliteral}{"{}vkDestroyDebugUtilsMessengerEXT"{}}));}
+\DoxyCodeLine{00066 }
+\DoxyCodeLine{00067   VkDebugUtilsMessengerCreateInfoEXT debugUtilsMessengerCI\{\};}
+\DoxyCodeLine{00068   debugUtilsMessengerCI.sType =}
+\DoxyCodeLine{00069       VK\_STRUCTURE\_TYPE\_DEBUG\_UTILS\_MESSENGER\_CREATE\_INFO\_EXT;}
+\DoxyCodeLine{00070   debugUtilsMessengerCI.messageSeverity =}
+\DoxyCodeLine{00071       VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_WARNING\_BIT\_EXT |}
+\DoxyCodeLine{00072       VK\_DEBUG\_UTILS\_MESSAGE\_SEVERITY\_ERROR\_BIT\_EXT;}
+\DoxyCodeLine{00073   debugUtilsMessengerCI.messageType =}
+\DoxyCodeLine{00074       VK\_DEBUG\_UTILS\_MESSAGE\_TYPE\_GENERAL\_BIT\_EXT |}
+\DoxyCodeLine{00075       VK\_DEBUG\_UTILS\_MESSAGE\_TYPE\_VALIDATION\_BIT\_EXT;}
+\DoxyCodeLine{00076   debugUtilsMessengerCI.pfnUserCallback = debugUtilsMessengerCallback;}
+\DoxyCodeLine{00077   ASSERT\_VULKAN(vkCreateDebugUtilsMessengerEXT(instance, \&debugUtilsMessengerCI,}
+\DoxyCodeLine{00078                                                \textcolor{keyword}{nullptr}, \&debugUtilsMessenger),}
+\DoxyCodeLine{00079                 \textcolor{stringliteral}{"{}Failed to create debug messenger"{}})}
+\DoxyCodeLine{00080 \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{debug\+Utils\+Messenger}}, \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00010}{debug\+Utils\+Messenger\+Callback()}}, \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00006}{vk\+Create\+Debug\+Utils\+Messenger\+EXT}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00007}{vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\label{namespacedebug_a9f1286c41f0bc07d0558b13fe031eda3}} 
+\index{debug@{debug}!debugUtilsMessenger@{debugUtilsMessenger}}
+\index{debugUtilsMessenger@{debugUtilsMessenger}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{debugUtilsMessenger}{debugUtilsMessenger}}
+{\footnotesize\ttfamily Vk\+Debug\+Utils\+Messenger\+EXT debug\+::debug\+Utils\+Messenger}
+
+
+
+Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{8}} of file \mbox{\hyperlink{_vulkan_debug_8cpp_source}{Vulkan\+Debug.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{free\+Debug\+Callback()}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
+
+\mbox{\label{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}} 
+\index{debug@{debug}!vkCreateDebugUtilsMessengerEXT@{vkCreateDebugUtilsMessengerEXT}}
+\index{vkCreateDebugUtilsMessengerEXT@{vkCreateDebugUtilsMessengerEXT}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{vkCreateDebugUtilsMessengerEXT}{vkCreateDebugUtilsMessengerEXT}}
+{\footnotesize\ttfamily PFN\+\_\+vk\+Create\+Debug\+Utils\+Messenger\+EXT debug\+::vk\+Create\+Debug\+Utils\+Messenger\+EXT}
+
+
+
+Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00006}{6}} of file \mbox{\hyperlink{_vulkan_debug_8cpp_source}{Vulkan\+Debug.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
+
+\mbox{\label{namespacedebug_a2f5a6dfd28afbfc30436972d7cebb1e4}} 
+\index{debug@{debug}!vkDestroyDebugUtilsMessengerEXT@{vkDestroyDebugUtilsMessengerEXT}}
+\index{vkDestroyDebugUtilsMessengerEXT@{vkDestroyDebugUtilsMessengerEXT}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{vkDestroyDebugUtilsMessengerEXT}{vkDestroyDebugUtilsMessengerEXT}}
+{\footnotesize\ttfamily PFN\+\_\+vk\+Destroy\+Debug\+Utils\+Messenger\+EXT debug\+::vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}
+
+
+
+Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00007}{7}} of file \mbox{\hyperlink{_vulkan_debug_8cpp_source}{Vulkan\+Debug.\+cpp}}.
+
+
+
+Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{free\+Debug\+Callback()}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
+

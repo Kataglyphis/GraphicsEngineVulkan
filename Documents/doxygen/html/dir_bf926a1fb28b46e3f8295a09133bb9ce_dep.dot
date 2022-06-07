@@ -1,0 +1,13 @@
+digraph "C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_110bf15beb781d7cd423359a55b6cfac {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", style="filled,dashed,", label="renderer", fontname="Helvetica", fontsize="10", URL="dir_110bf15beb781d7cd423359a55b6cfac.html"]
+  dir_bf926a1fb28b46e3f8295a09133bb9ce [shape=box, label="accelerationStructures", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_bf926a1fb28b46e3f8295a09133bb9ce.html"];
+  }
+}

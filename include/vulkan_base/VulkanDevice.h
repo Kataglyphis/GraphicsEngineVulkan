@@ -1,17 +1,19 @@
 #pragma once
 #include <vulkan/vulkan.h>
+
 #include <vector>
 
 #include "QueueFamilyIndices.h"
-#include "VulkanInstance.h"
 #include "SwapChainDetails.h"
+#include "VulkanInstance.h"
 
 class VulkanDevice {
-
-  public:
+ public:
   VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface);
 
-  VkPhysicalDeviceProperties getPhysicalDeviceProperties() { return device_properties; };
+  VkPhysicalDeviceProperties getPhysicalDeviceProperties() {
+    return device_properties;
+  };
   VkPhysicalDevice getPhysicalDevice() const { return physical_device; };
   VkDevice getLogicalDevice() const { return logical_device; };
   QueueFamilyIndices getQueueFamilies();
@@ -24,7 +26,7 @@ class VulkanDevice {
 
   ~VulkanDevice();
 
-  private:
+ private:
   VkPhysicalDevice physical_device;
   VkPhysicalDeviceProperties device_properties;
 
@@ -49,28 +51,28 @@ class VulkanDevice {
 
   const std::vector<const char*> device_extensions = {
 
-    VK_KHR_SWAPCHAIN_EXTENSION_NAME
+      VK_KHR_SWAPCHAIN_EXTENSION_NAME
 
   };
 
   // DEVICE EXTENSIONS FOR RAYTRACING
   const std::vector<const char*> device_extensions_for_raytracing = {
 
-    // raytracing related extensions
-    VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
-    VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
-    // required from VK_KHR_acceleration_structure
-    VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
-    VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
-    VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME,
-    // required for pipeline
-    VK_KHR_SPIRV_1_4_EXTENSION_NAME,
-    // required by VK_KHR_spirv_1_4
-    VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME,
-    //required for pipeline library
-    VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
-    // lets start ray queries
-    VK_KHR_RAY_QUERY_EXTENSION_NAME
+      // raytracing related extensions
+      VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
+      VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
+      // required from VK_KHR_acceleration_structure
+      VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
+      VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
+      VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME,
+      // required for pipeline
+      VK_KHR_SPIRV_1_4_EXTENSION_NAME,
+      // required by VK_KHR_spirv_1_4
+      VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME,
+      // required for pipeline library
+      VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
+      // lets start ray queries
+      VK_KHR_RAY_QUERY_EXTENSION_NAME
 
   };
 };

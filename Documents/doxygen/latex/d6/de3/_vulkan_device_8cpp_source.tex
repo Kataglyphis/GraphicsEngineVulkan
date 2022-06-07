@@ -1,0 +1,382 @@
+\doxysection{Vulkan\+Device.\+cpp}
+\label{_vulkan_device_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanDevice.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanDevice.cpp}}
+\mbox{\hyperlink{_vulkan_device_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanDevice.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{00007 }
+\DoxyCodeLine{00008 VulkanDevice::VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface) \{}
+\DoxyCodeLine{00009   this-\/>instance = instance;}
+\DoxyCodeLine{00010   this-\/>surface = surface;}
+\DoxyCodeLine{00011   get\_physical\_device();}
+\DoxyCodeLine{00012   create\_logical\_device();}
+\DoxyCodeLine{00013 \}}
+\DoxyCodeLine{00014 }
+\DoxyCodeLine{00015 SwapChainDetails VulkanDevice::getSwapchainDetails() \{}
+\DoxyCodeLine{00016   \textcolor{keywordflow}{return} getSwapchainDetails(physical\_device);}
+\DoxyCodeLine{00017 \}}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019 \textcolor{keywordtype}{void} VulkanDevice::cleanUp() \{ vkDestroyDevice(logical\_device, \textcolor{keyword}{nullptr}); \}}
+\DoxyCodeLine{00020 }
+\DoxyCodeLine{00021 VulkanDevice::\string~VulkanDevice() \{\}}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023 QueueFamilyIndices VulkanDevice::getQueueFamilies() \{}
+\DoxyCodeLine{00024   QueueFamilyIndices indices\{\};}
+\DoxyCodeLine{00025 }
+\DoxyCodeLine{00026   uint32\_t queue\_family\_count = 0;}
+\DoxyCodeLine{00027   vkGetPhysicalDeviceQueueFamilyProperties(physical\_device, \&queue\_family\_count,}
+\DoxyCodeLine{00028                                            \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00029 }
+\DoxyCodeLine{00030   std::vector<VkQueueFamilyProperties> queue\_family\_list(queue\_family\_count);}
+\DoxyCodeLine{00031   vkGetPhysicalDeviceQueueFamilyProperties(physical\_device, \&queue\_family\_count,}
+\DoxyCodeLine{00032                                            queue\_family\_list.data());}
+\DoxyCodeLine{00033 }
+\DoxyCodeLine{00034   \textcolor{comment}{// Go through each queue family and check if it has at least 1 of required}}
+\DoxyCodeLine{00035   \textcolor{comment}{// types we need to keep track th eindex by our own}}
+\DoxyCodeLine{00036   \textcolor{keywordtype}{int} index = 0;}
+\DoxyCodeLine{00037   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& queue\_family : queue\_family\_list) \{}
+\DoxyCodeLine{00038     \textcolor{comment}{// first check if queue family has at least 1 queue in that family}}
+\DoxyCodeLine{00039     \textcolor{comment}{// Queue can be multiple types defined through bitfield. Need to bitwise AND}}
+\DoxyCodeLine{00040     \textcolor{comment}{// with VK\_QUE\_*\_BIT to check if has required  type}}
+\DoxyCodeLine{00041     \textcolor{keywordflow}{if} (queue\_family.queueCount > 0 \&\&}
+\DoxyCodeLine{00042         queue\_family.queueFlags \& VK\_QUEUE\_GRAPHICS\_BIT) \{}
+\DoxyCodeLine{00043       indices.graphics\_family = index;  \textcolor{comment}{// if queue family valid, than get index}}
+\DoxyCodeLine{00044     \}}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046     \textcolor{keywordflow}{if} (queue\_family.queueCount > 0 \&\&}
+\DoxyCodeLine{00047         queue\_family.queueFlags \& VK\_QUEUE\_COMPUTE\_BIT) \{}
+\DoxyCodeLine{00048       indices.compute\_family = index;}
+\DoxyCodeLine{00049     \}}
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051     \textcolor{comment}{// check if queue family suppports presentation}}
+\DoxyCodeLine{00052     VkBool32 presentation\_support = \textcolor{keyword}{false};}
+\DoxyCodeLine{00053     vkGetPhysicalDeviceSurfaceSupportKHR(physical\_device, index, *surface,}
+\DoxyCodeLine{00054                                          \&presentation\_support);}
+\DoxyCodeLine{00055     \textcolor{comment}{// check if queue is presentation type (can be both graphics and}}
+\DoxyCodeLine{00056     \textcolor{comment}{// presentation)}}
+\DoxyCodeLine{00057     \textcolor{keywordflow}{if} (queue\_family.queueCount > 0 \&\& presentation\_support) \{}
+\DoxyCodeLine{00058       indices.presentation\_family = index;}
+\DoxyCodeLine{00059     \}}
+\DoxyCodeLine{00060 }
+\DoxyCodeLine{00061     \textcolor{comment}{// check if queue family indices are in a valid state}}
+\DoxyCodeLine{00062     \textcolor{keywordflow}{if} (indices.is\_valid()) \{}
+\DoxyCodeLine{00063       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00064     \}}
+\DoxyCodeLine{00065 }
+\DoxyCodeLine{00066     index++;}
+\DoxyCodeLine{00067   \}}
+\DoxyCodeLine{00068 }
+\DoxyCodeLine{00069   \textcolor{keywordflow}{return} indices;}
+\DoxyCodeLine{00070 \}}
+\DoxyCodeLine{00071 }
+\DoxyCodeLine{00072 \textcolor{keywordtype}{void} VulkanDevice::get\_physical\_device() \{}
+\DoxyCodeLine{00073   \textcolor{comment}{// Enumerate physical devices the vkInstance can access}}
+\DoxyCodeLine{00074   uint32\_t device\_count = 0;}
+\DoxyCodeLine{00075   vkEnumeratePhysicalDevices(instance-\/>getVulkanInstance(), \&device\_count,}
+\DoxyCodeLine{00076                              \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00077 }
+\DoxyCodeLine{00078   \textcolor{comment}{// if no devices available, then none support of Vulkan}}
+\DoxyCodeLine{00079   \textcolor{keywordflow}{if} (device\_count == 0) \{}
+\DoxyCodeLine{00080     \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{00081         \textcolor{stringliteral}{"{}Can not find GPU's that support Vulkan Instance!"{}});}
+\DoxyCodeLine{00082   \}}
+\DoxyCodeLine{00083 }
+\DoxyCodeLine{00084   \textcolor{comment}{// Get list of physical devices}}
+\DoxyCodeLine{00085   std::vector<VkPhysicalDevice> device\_list(device\_count);}
+\DoxyCodeLine{00086   vkEnumeratePhysicalDevices(instance-\/>getVulkanInstance(), \&device\_count,}
+\DoxyCodeLine{00087                              device\_list.data());}
+\DoxyCodeLine{00088 }
+\DoxyCodeLine{00089   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& device : device\_list) \{}
+\DoxyCodeLine{00090     \textcolor{keywordflow}{if} (check\_device\_suitable(device)) \{}
+\DoxyCodeLine{00091       physical\_device = device;}
+\DoxyCodeLine{00092       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00093     \}}
+\DoxyCodeLine{00094   \}}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096   \textcolor{comment}{// get properties of our new device}}
+\DoxyCodeLine{00097   vkGetPhysicalDeviceProperties(physical\_device, \&device\_properties);}
+\DoxyCodeLine{00098 \}}
+\DoxyCodeLine{00099 }
+\DoxyCodeLine{00100 \textcolor{keywordtype}{void} VulkanDevice::create\_logical\_device() \{}
+\DoxyCodeLine{00101   \textcolor{comment}{// get the queue family indices for the chosen physical device}}
+\DoxyCodeLine{00102   QueueFamilyIndices indices = getQueueFamilies();}
+\DoxyCodeLine{00103 }
+\DoxyCodeLine{00104   \textcolor{comment}{// vector for queue creation information and set for family indices}}
+\DoxyCodeLine{00105   std::vector<VkDeviceQueueCreateInfo> queue\_create\_infos;}
+\DoxyCodeLine{00106   std::set<int> queue\_family\_indices = \{indices.graphics\_family,}
+\DoxyCodeLine{00107                                         indices.presentation\_family,}
+\DoxyCodeLine{00108                                         indices.compute\_family\};}
+\DoxyCodeLine{00109 }
+\DoxyCodeLine{00110   \textcolor{comment}{// Queue the logical device needs to create and info to do so (only 1 for now,}}
+\DoxyCodeLine{00111   \textcolor{comment}{// will add more later!)}}
+\DoxyCodeLine{00112   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} queue\_family\_index : queue\_family\_indices) \{}
+\DoxyCodeLine{00113     VkDeviceQueueCreateInfo queue\_create\_info\{\};}
+\DoxyCodeLine{00114     queue\_create\_info.sType = VK\_STRUCTURE\_TYPE\_DEVICE\_QUEUE\_CREATE\_INFO;}
+\DoxyCodeLine{00115     queue\_create\_info.queueFamilyIndex =}
+\DoxyCodeLine{00116         queue\_family\_index;  \textcolor{comment}{// the index of the family to create a queue from}}
+\DoxyCodeLine{00117     queue\_create\_info.queueCount = 1;  \textcolor{comment}{// number of queues to create}}
+\DoxyCodeLine{00118     \textcolor{keywordtype}{float} priority = 1.0f;}
+\DoxyCodeLine{00119     queue\_create\_info.pQueuePriorities =}
+\DoxyCodeLine{00120         \&priority;  \textcolor{comment}{// Vulkan needs to know how to handle multiple queues, so}}
+\DoxyCodeLine{00121                     \textcolor{comment}{// decide priority (1 = highest)}}
+\DoxyCodeLine{00122 }
+\DoxyCodeLine{00123     queue\_create\_infos.push\_back(queue\_create\_info);}
+\DoxyCodeLine{00124   \}}
+\DoxyCodeLine{00125 }
+\DoxyCodeLine{00126   \textcolor{comment}{// -\/-\/ ALL EXTENSION WE NEED}}
+\DoxyCodeLine{00127   VkPhysicalDeviceDescriptorIndexingFeatures indexing\_features\{\};}
+\DoxyCodeLine{00128   indexing\_features.sType =}
+\DoxyCodeLine{00129       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_DESCRIPTOR\_INDEXING\_FEATURES;}
+\DoxyCodeLine{00130   indexing\_features.runtimeDescriptorArray = VK\_TRUE;}
+\DoxyCodeLine{00131   indexing\_features.shaderSampledImageArrayNonUniformIndexing = VK\_TRUE;}
+\DoxyCodeLine{00132   indexing\_features.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00133 }
+\DoxyCodeLine{00134   \textcolor{comment}{// -\/-\/ NEEDED FOR QUERING THE DEVICE ADDRESS WHEN CREATING ACCELERATION}}
+\DoxyCodeLine{00135   \textcolor{comment}{// STRUCTURES}}
+\DoxyCodeLine{00136   VkPhysicalDeviceBufferDeviceAddressFeaturesEXT}
+\DoxyCodeLine{00137       buffer\_device\_address\_features\{\};}
+\DoxyCodeLine{00138   buffer\_device\_address\_features.sType =}
+\DoxyCodeLine{00139       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_BUFFER\_DEVICE\_ADDRESS\_FEATURES\_EXT;}
+\DoxyCodeLine{00140   buffer\_device\_address\_features.pNext = \&indexing\_features;}
+\DoxyCodeLine{00141   buffer\_device\_address\_features.bufferDeviceAddress = VK\_TRUE;}
+\DoxyCodeLine{00142   buffer\_device\_address\_features.bufferDeviceAddressCaptureReplay = VK\_TRUE;}
+\DoxyCodeLine{00143   buffer\_device\_address\_features.bufferDeviceAddressMultiDevice = VK\_FALSE;}
+\DoxyCodeLine{00144 }
+\DoxyCodeLine{00145   \textcolor{comment}{// -\/-\/ENABLE RAY TRACING PIPELINE}}
+\DoxyCodeLine{00146   VkPhysicalDeviceRayTracingPipelineFeaturesKHR ray\_tracing\_pipeline\_features\{\};}
+\DoxyCodeLine{00147   ray\_tracing\_pipeline\_features.sType =}
+\DoxyCodeLine{00148       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_RAY\_TRACING\_PIPELINE\_FEATURES\_KHR;}
+\DoxyCodeLine{00149   ray\_tracing\_pipeline\_features.pNext = \&buffer\_device\_address\_features;}
+\DoxyCodeLine{00150   ray\_tracing\_pipeline\_features.rayTracingPipeline = VK\_TRUE;}
+\DoxyCodeLine{00151 }
+\DoxyCodeLine{00152   \textcolor{comment}{// -\/-\/ ENABLE ACCELERATION STRUCTURES}}
+\DoxyCodeLine{00153   VkPhysicalDeviceAccelerationStructureFeaturesKHR}
+\DoxyCodeLine{00154       acceleration\_structure\_features\{\};}
+\DoxyCodeLine{00155   acceleration\_structure\_features.sType =}
+\DoxyCodeLine{00156       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_ACCELERATION\_STRUCTURE\_FEATURES\_KHR;}
+\DoxyCodeLine{00157   acceleration\_structure\_features.pNext = \&ray\_tracing\_pipeline\_features;}
+\DoxyCodeLine{00158   acceleration\_structure\_features.accelerationStructure = VK\_TRUE;}
+\DoxyCodeLine{00159   acceleration\_structure\_features.accelerationStructureCaptureReplay = VK\_TRUE;}
+\DoxyCodeLine{00160   acceleration\_structure\_features.accelerationStructureIndirectBuild = VK\_FALSE;}
+\DoxyCodeLine{00161   acceleration\_structure\_features.accelerationStructureHostCommands = VK\_FALSE;}
+\DoxyCodeLine{00162   acceleration\_structure\_features}
+\DoxyCodeLine{00163       .descriptorBindingAccelerationStructureUpdateAfterBind = VK\_FALSE;}
+\DoxyCodeLine{00164 }
+\DoxyCodeLine{00165   VkPhysicalDeviceVulkan13Features features13\{\};}
+\DoxyCodeLine{00166   features13.sType = VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_VULKAN\_1\_3\_FEATURES;}
+\DoxyCodeLine{00167   features13.maintenance4 = VK\_TRUE;}
+\DoxyCodeLine{00168   features13.robustImageAccess = VK\_FALSE;}
+\DoxyCodeLine{00169   features13.inlineUniformBlock = VK\_FALSE;}
+\DoxyCodeLine{00170   features13.descriptorBindingInlineUniformBlockUpdateAfterBind = VK\_FALSE;}
+\DoxyCodeLine{00171   features13.pipelineCreationCacheControl = VK\_FALSE;}
+\DoxyCodeLine{00172   features13.privateData = VK\_FALSE;}
+\DoxyCodeLine{00173   features13.shaderDemoteToHelperInvocation = VK\_FALSE;}
+\DoxyCodeLine{00174   features13.shaderTerminateInvocation = VK\_FALSE;}
+\DoxyCodeLine{00175   features13.subgroupSizeControl = VK\_FALSE;}
+\DoxyCodeLine{00176   features13.computeFullSubgroups = VK\_FALSE;}
+\DoxyCodeLine{00177   features13.synchronization2 = VK\_FALSE;}
+\DoxyCodeLine{00178   features13.textureCompressionASTC\_HDR = VK\_FALSE;}
+\DoxyCodeLine{00179   features13.shaderZeroInitializeWorkgroupMemory = VK\_FALSE;}
+\DoxyCodeLine{00180   features13.dynamicRendering = VK\_FALSE;}
+\DoxyCodeLine{00181   features13.shaderIntegerDotProduct = VK\_FALSE;}
+\DoxyCodeLine{00182   features13.pNext = \&acceleration\_structure\_features;}
+\DoxyCodeLine{00183 }
+\DoxyCodeLine{00184   VkPhysicalDeviceRayQueryFeaturesKHR rayQueryFeature\{\};}
+\DoxyCodeLine{00185   rayQueryFeature.sType =}
+\DoxyCodeLine{00186       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_RAY\_QUERY\_FEATURES\_KHR;}
+\DoxyCodeLine{00187   rayQueryFeature.pNext = \&features13;}
+\DoxyCodeLine{00188   rayQueryFeature.rayQuery = VK\_TRUE;}
+\DoxyCodeLine{00189 }
+\DoxyCodeLine{00190   VkPhysicalDeviceFeatures2 features2\{\};}
+\DoxyCodeLine{00191   features2.pNext = \&rayQueryFeature;}
+\DoxyCodeLine{00192   features2.sType = VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_FEATURES\_2;}
+\DoxyCodeLine{00193   features2.features.samplerAnisotropy = VK\_TRUE;}
+\DoxyCodeLine{00194   features2.features.shaderInt64 = VK\_TRUE;}
+\DoxyCodeLine{00195   features2.features.geometryShader = VK\_TRUE;}
+\DoxyCodeLine{00196   features2.features.logicOp = VK\_TRUE;}
+\DoxyCodeLine{00197 }
+\DoxyCodeLine{00198   \textcolor{comment}{// -\/-\/ PREPARE FOR HAVING MORE EXTENSION BECAUSE WE NEED RAYTRACING}}
+\DoxyCodeLine{00199   \textcolor{comment}{// CAPABILITIES}}
+\DoxyCodeLine{00200   std::vector<const char*> extensions(device\_extensions);}
+\DoxyCodeLine{00201 }
+\DoxyCodeLine{00202   \textcolor{comment}{// COPY ALL NECESSARY EXTENSIONS FOR RAYTRACING TO THE EXTENSION}}
+\DoxyCodeLine{00203   extensions.insert(extensions.begin(),}
+\DoxyCodeLine{00204                     device\_extensions\_for\_raytracing.begin(),}
+\DoxyCodeLine{00205                     device\_extensions\_for\_raytracing.end());}
+\DoxyCodeLine{00206 }
+\DoxyCodeLine{00207   \textcolor{comment}{// information to create logical device (sometimes called "{}device"{})}}
+\DoxyCodeLine{00208   VkDeviceCreateInfo device\_create\_info\{\};}
+\DoxyCodeLine{00209   device\_create\_info.sType = VK\_STRUCTURE\_TYPE\_DEVICE\_CREATE\_INFO;}
+\DoxyCodeLine{00210   device\_create\_info.queueCreateInfoCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00211       queue\_create\_infos.size());  \textcolor{comment}{// number of queue create infos}}
+\DoxyCodeLine{00212   device\_create\_info.pQueueCreateInfos =}
+\DoxyCodeLine{00213       queue\_create\_infos.data();  \textcolor{comment}{// list of queue create infos so device can}}
+\DoxyCodeLine{00214                                   \textcolor{comment}{// create required queues}}
+\DoxyCodeLine{00215   device\_create\_info.enabledExtensionCount = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00216       extensions.size());  \textcolor{comment}{// number of enabled logical device extensions}}
+\DoxyCodeLine{00217   device\_create\_info.ppEnabledExtensionNames =}
+\DoxyCodeLine{00218       extensions.data();  \textcolor{comment}{// list of enabled logical device extensions}}
+\DoxyCodeLine{00219   device\_create\_info.flags = 0;}
+\DoxyCodeLine{00220   device\_create\_info.pEnabledFeatures = NULL;}
+\DoxyCodeLine{00221 }
+\DoxyCodeLine{00222   device\_create\_info.pNext = \&features2;}
+\DoxyCodeLine{00223 }
+\DoxyCodeLine{00224   \textcolor{comment}{// create logical device for the given physical device}}
+\DoxyCodeLine{00225   VkResult result = vkCreateDevice(physical\_device, \&device\_create\_info,}
+\DoxyCodeLine{00226                                    \textcolor{keyword}{nullptr}, \&logical\_device);}
+\DoxyCodeLine{00227   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a logical device!"{}});}
+\DoxyCodeLine{00228 }
+\DoxyCodeLine{00229   \textcolor{comment}{//  Queues are created at the same time as the device...}}
+\DoxyCodeLine{00230   \textcolor{comment}{// So we want handle to queues}}
+\DoxyCodeLine{00231   \textcolor{comment}{// From given logical device of given queue family, of given queue index (0}}
+\DoxyCodeLine{00232   \textcolor{comment}{// since only one queue), place reference in given VkQueue}}
+\DoxyCodeLine{00233   vkGetDeviceQueue(logical\_device, indices.graphics\_family, 0, \&graphics\_queue);}
+\DoxyCodeLine{00234   vkGetDeviceQueue(logical\_device, indices.presentation\_family, 0,}
+\DoxyCodeLine{00235                    \&presentation\_queue);}
+\DoxyCodeLine{00236   vkGetDeviceQueue(logical\_device, indices.compute\_family, 0, \&compute\_queue);}
+\DoxyCodeLine{00237 \}}
+\DoxyCodeLine{00238 }
+\DoxyCodeLine{00239 QueueFamilyIndices VulkanDevice::getQueueFamilies(}
+\DoxyCodeLine{00240     VkPhysicalDevice physical\_device) \{}
+\DoxyCodeLine{00241   QueueFamilyIndices indices\{\};}
+\DoxyCodeLine{00242 }
+\DoxyCodeLine{00243   uint32\_t queue\_family\_count = 0;}
+\DoxyCodeLine{00244   vkGetPhysicalDeviceQueueFamilyProperties(physical\_device, \&queue\_family\_count,}
+\DoxyCodeLine{00245                                            \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00246 }
+\DoxyCodeLine{00247   std::vector<VkQueueFamilyProperties> queue\_family\_list(queue\_family\_count);}
+\DoxyCodeLine{00248   vkGetPhysicalDeviceQueueFamilyProperties(physical\_device, \&queue\_family\_count,}
+\DoxyCodeLine{00249                                            queue\_family\_list.data());}
+\DoxyCodeLine{00250 }
+\DoxyCodeLine{00251   \textcolor{comment}{// Go through each queue family and check if it has at least 1 of required}}
+\DoxyCodeLine{00252   \textcolor{comment}{// types we need to keep track th eindex by our own}}
+\DoxyCodeLine{00253   \textcolor{keywordtype}{int} index = 0;}
+\DoxyCodeLine{00254   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& queue\_family : queue\_family\_list) \{}
+\DoxyCodeLine{00255     \textcolor{comment}{// first check if queue family has at least 1 queue in that family}}
+\DoxyCodeLine{00256     \textcolor{comment}{// Queue can be multiple types defined through bitfield. Need to bitwise AND}}
+\DoxyCodeLine{00257     \textcolor{comment}{// with VK\_QUE\_*\_BIT to check if has required  type}}
+\DoxyCodeLine{00258     \textcolor{keywordflow}{if} (queue\_family.queueCount > 0 \&\&}
+\DoxyCodeLine{00259         queue\_family.queueFlags \& VK\_QUEUE\_GRAPHICS\_BIT) \{}
+\DoxyCodeLine{00260       indices.graphics\_family = index;  \textcolor{comment}{// if queue family valid, than get index}}
+\DoxyCodeLine{00261     \}}
+\DoxyCodeLine{00262 }
+\DoxyCodeLine{00263     \textcolor{keywordflow}{if} (queue\_family.queueCount > 0 \&\&}
+\DoxyCodeLine{00264         queue\_family.queueFlags \& VK\_QUEUE\_COMPUTE\_BIT) \{}
+\DoxyCodeLine{00265       indices.compute\_family = index;}
+\DoxyCodeLine{00266     \}}
+\DoxyCodeLine{00267 }
+\DoxyCodeLine{00268     \textcolor{comment}{// check if queue family suppports presentation}}
+\DoxyCodeLine{00269     VkBool32 presentation\_support = \textcolor{keyword}{false};}
+\DoxyCodeLine{00270     vkGetPhysicalDeviceSurfaceSupportKHR(physical\_device, index, *surface,}
+\DoxyCodeLine{00271                                          \&presentation\_support);}
+\DoxyCodeLine{00272     \textcolor{comment}{// check if queue is presentation type (can be both graphics and}}
+\DoxyCodeLine{00273     \textcolor{comment}{// presentation)}}
+\DoxyCodeLine{00274     \textcolor{keywordflow}{if} (queue\_family.queueCount > 0 \&\& presentation\_support) \{}
+\DoxyCodeLine{00275       indices.presentation\_family = index;}
+\DoxyCodeLine{00276     \}}
+\DoxyCodeLine{00277 }
+\DoxyCodeLine{00278     \textcolor{comment}{// check if queue family indices are in a valid state}}
+\DoxyCodeLine{00279     \textcolor{keywordflow}{if} (indices.is\_valid()) \{}
+\DoxyCodeLine{00280       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00281     \}}
+\DoxyCodeLine{00282 }
+\DoxyCodeLine{00283     index++;}
+\DoxyCodeLine{00284   \}}
+\DoxyCodeLine{00285 }
+\DoxyCodeLine{00286   \textcolor{keywordflow}{return} indices;}
+\DoxyCodeLine{00287 \}}
+\DoxyCodeLine{00288 }
+\DoxyCodeLine{00289 SwapChainDetails VulkanDevice::getSwapchainDetails(VkPhysicalDevice device) \{}
+\DoxyCodeLine{00290   SwapChainDetails swapchain\_details\{\};}
+\DoxyCodeLine{00291   \textcolor{comment}{// get the surface capabilities for the given surface on the given physical}}
+\DoxyCodeLine{00292   \textcolor{comment}{// device}}
+\DoxyCodeLine{00293   vkGetPhysicalDeviceSurfaceCapabilitiesKHR(}
+\DoxyCodeLine{00294       device, *surface, \&swapchain\_details.surface\_capabilities);}
+\DoxyCodeLine{00295 }
+\DoxyCodeLine{00296   uint32\_t format\_count = 0;}
+\DoxyCodeLine{00297   vkGetPhysicalDeviceSurfaceFormatsKHR(device, *surface, \&format\_count,}
+\DoxyCodeLine{00298                                        \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00299 }
+\DoxyCodeLine{00300   \textcolor{comment}{// if formats returned, get list of formats}}
+\DoxyCodeLine{00301   \textcolor{keywordflow}{if} (format\_count != 0) \{}
+\DoxyCodeLine{00302     swapchain\_details.formats.resize(format\_count);}
+\DoxyCodeLine{00303     vkGetPhysicalDeviceSurfaceFormatsKHR(device, *surface, \&format\_count,}
+\DoxyCodeLine{00304                                          swapchain\_details.formats.data());}
+\DoxyCodeLine{00305   \}}
+\DoxyCodeLine{00306 }
+\DoxyCodeLine{00307   uint32\_t presentation\_count = 0;}
+\DoxyCodeLine{00308   vkGetPhysicalDeviceSurfacePresentModesKHR(device, *surface,}
+\DoxyCodeLine{00309                                             \&presentation\_count, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00310 }
+\DoxyCodeLine{00311   \textcolor{comment}{// if presentation modes returned, get list of presentation modes}}
+\DoxyCodeLine{00312   \textcolor{keywordflow}{if} (presentation\_count > 0) \{}
+\DoxyCodeLine{00313     swapchain\_details.presentation\_mode.resize(presentation\_count);}
+\DoxyCodeLine{00314     vkGetPhysicalDeviceSurfacePresentModesKHR(}
+\DoxyCodeLine{00315         device, *surface, \&presentation\_count,}
+\DoxyCodeLine{00316         swapchain\_details.presentation\_mode.data());}
+\DoxyCodeLine{00317   \}}
+\DoxyCodeLine{00318 }
+\DoxyCodeLine{00319   \textcolor{keywordflow}{return} swapchain\_details;}
+\DoxyCodeLine{00320 \}}
+\DoxyCodeLine{00321 }
+\DoxyCodeLine{00322 \textcolor{keywordtype}{bool} VulkanDevice::check\_device\_suitable(VkPhysicalDevice device) \{}
+\DoxyCodeLine{00323   \textcolor{comment}{// Information about device itself (ID, name, type, vendor, etc)}}
+\DoxyCodeLine{00324   VkPhysicalDeviceProperties device\_properties;}
+\DoxyCodeLine{00325   vkGetPhysicalDeviceProperties(device, \&device\_properties);}
+\DoxyCodeLine{00326 }
+\DoxyCodeLine{00327   VkPhysicalDeviceFeatures device\_features;}
+\DoxyCodeLine{00328   vkGetPhysicalDeviceFeatures(device, \&device\_features);}
+\DoxyCodeLine{00329 }
+\DoxyCodeLine{00330   QueueFamilyIndices indices = getQueueFamilies(device);}
+\DoxyCodeLine{00331 }
+\DoxyCodeLine{00332   \textcolor{keywordtype}{bool} extensions\_supported = check\_device\_extension\_support(device);}
+\DoxyCodeLine{00333 }
+\DoxyCodeLine{00334   \textcolor{keywordtype}{bool} swap\_chain\_valid = \textcolor{keyword}{false};}
+\DoxyCodeLine{00335 }
+\DoxyCodeLine{00336   \textcolor{keywordflow}{if} (extensions\_supported) \{}
+\DoxyCodeLine{00337     SwapChainDetails swap\_chain\_details = getSwapchainDetails(device);}
+\DoxyCodeLine{00338     swap\_chain\_valid = !swap\_chain\_details.presentation\_mode.empty() \&\&}
+\DoxyCodeLine{00339                        !swap\_chain\_details.formats.empty();}
+\DoxyCodeLine{00340   \}}
+\DoxyCodeLine{00341 }
+\DoxyCodeLine{00342   \textcolor{keywordflow}{return} indices.is\_valid() \&\& extensions\_supported \&\& swap\_chain\_valid \&\&}
+\DoxyCodeLine{00343          device\_features.samplerAnisotropy;}
+\DoxyCodeLine{00344 \}}
+\DoxyCodeLine{00345 }
+\DoxyCodeLine{00346 \textcolor{keywordtype}{bool} VulkanDevice::check\_device\_extension\_support(VkPhysicalDevice device) \{}
+\DoxyCodeLine{00347   uint32\_t extension\_count = 0;}
+\DoxyCodeLine{00348   vkEnumerateDeviceExtensionProperties(device, \textcolor{keyword}{nullptr}, \&extension\_count,}
+\DoxyCodeLine{00349                                        \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00350 }
+\DoxyCodeLine{00351   \textcolor{keywordflow}{if} (extension\_count == 0) \{}
+\DoxyCodeLine{00352     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{00353   \}}
+\DoxyCodeLine{00354 }
+\DoxyCodeLine{00355   \textcolor{comment}{// populate list of extensions}}
+\DoxyCodeLine{00356   std::vector<VkExtensionProperties> extensions(extension\_count);}
+\DoxyCodeLine{00357   vkEnumerateDeviceExtensionProperties(device, \textcolor{keyword}{nullptr}, \&extension\_count,}
+\DoxyCodeLine{00358                                        extensions.data());}
+\DoxyCodeLine{00359 }
+\DoxyCodeLine{00360   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& device\_extension : device\_extensions) \{}
+\DoxyCodeLine{00361     \textcolor{keywordtype}{bool} has\_extension = \textcolor{keyword}{false};}
+\DoxyCodeLine{00362 }
+\DoxyCodeLine{00363     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& extension : extensions) \{}
+\DoxyCodeLine{00364       \textcolor{keywordflow}{if} (strcmp(device\_extension, extension.extensionName) == 0) \{}
+\DoxyCodeLine{00365         has\_extension = \textcolor{keyword}{true};}
+\DoxyCodeLine{00366         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00367       \}}
+\DoxyCodeLine{00368     \}}
+\DoxyCodeLine{00369 }
+\DoxyCodeLine{00370     \textcolor{keywordflow}{if} (!has\_extension) \{}
+\DoxyCodeLine{00371       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{00372     \}}
+\DoxyCodeLine{00373   \}}
+\DoxyCodeLine{00374 }
+\DoxyCodeLine{00375   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{00376 \}}
+
+\end{DoxyCode}

@@ -1,0 +1,68 @@
+\doxysection{Vertex.\+cpp}
+\label{_vertex_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Vertex.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Vertex.cpp}}
+\mbox{\hyperlink{_vertex_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}Vertex.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 Vertex::Vertex() \{}
+\DoxyCodeLine{00004   this-\/>pos = glm::vec3(-\/1.f);}
+\DoxyCodeLine{00005   this-\/>normal = glm::vec3(-\/1.f);}
+\DoxyCodeLine{00006   this-\/>color = glm::vec3(-\/1.f);}
+\DoxyCodeLine{00007   this-\/>texture\_coords = glm::vec3(-\/1.f);}
+\DoxyCodeLine{00008 \}}
+\DoxyCodeLine{00009 }
+\DoxyCodeLine{00010 Vertex::Vertex(glm::vec3 pos, glm::vec3 normal, glm::vec3 color,}
+\DoxyCodeLine{00011                glm::vec2 texture\_coords) \{}
+\DoxyCodeLine{00012   this-\/>pos = pos;}
+\DoxyCodeLine{00013   this-\/>normal = normal;}
+\DoxyCodeLine{00014   this-\/>color = color;}
+\DoxyCodeLine{00015   this-\/>texture\_coords = texture\_coords;}
+\DoxyCodeLine{00016 \}}
+\DoxyCodeLine{00017 }
+\DoxyCodeLine{00018 \textcolor{keyword}{namespace }vertex \{}
+\DoxyCodeLine{00019 }
+\DoxyCodeLine{00020 std::array<VkVertexInputAttributeDescription, 4> getVertexInputAttributeDesc() \{}
+\DoxyCodeLine{00021   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions;}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023   \textcolor{comment}{// Position attribute}}
+\DoxyCodeLine{00024   attribute\_describtions[0].binding = 0;}
+\DoxyCodeLine{00025   attribute\_describtions[0].location = 0;}
+\DoxyCodeLine{00026   attribute\_describtions[0].format =}
+\DoxyCodeLine{00027       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
+\DoxyCodeLine{00028                                    \textcolor{comment}{// size of data)}}
+\DoxyCodeLine{00029   attribute\_describtions[0].offset = offsetof(Vertex, pos);}
+\DoxyCodeLine{00030 }
+\DoxyCodeLine{00031   \textcolor{comment}{// normal coord attribute}}
+\DoxyCodeLine{00032   attribute\_describtions[1].binding = 0;}
+\DoxyCodeLine{00033   attribute\_describtions[1].location = 1;}
+\DoxyCodeLine{00034   attribute\_describtions[1].format =}
+\DoxyCodeLine{00035       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
+\DoxyCodeLine{00036                                    \textcolor{comment}{// size of data)}}
+\DoxyCodeLine{00037   attribute\_describtions[1].offset =}
+\DoxyCodeLine{00038       offsetof(Vertex, normal);  \textcolor{comment}{// where this attribute is defined in the data}}
+\DoxyCodeLine{00039                                  \textcolor{comment}{// for a single vertex}}
+\DoxyCodeLine{00040 }
+\DoxyCodeLine{00041   \textcolor{comment}{// normal coord attribute}}
+\DoxyCodeLine{00042   attribute\_describtions[2].binding = 0;}
+\DoxyCodeLine{00043   attribute\_describtions[2].location = 2;}
+\DoxyCodeLine{00044   attribute\_describtions[2].format =}
+\DoxyCodeLine{00045       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
+\DoxyCodeLine{00046                                    \textcolor{comment}{// size of data)}}
+\DoxyCodeLine{00047   attribute\_describtions[2].offset = offsetof(Vertex, color);}
+\DoxyCodeLine{00048 }
+\DoxyCodeLine{00049   attribute\_describtions[3].binding = 0;}
+\DoxyCodeLine{00050   \textcolor{comment}{// texture coord attribute}}
+\DoxyCodeLine{00051   attribute\_describtions[3].location = 3;}
+\DoxyCodeLine{00052   attribute\_describtions[3].format =}
+\DoxyCodeLine{00053       VK\_FORMAT\_R32G32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define size}}
+\DoxyCodeLine{00054                                 \textcolor{comment}{// of data)}}
+\DoxyCodeLine{00055   attribute\_describtions[3].offset =}
+\DoxyCodeLine{00056       offsetof(Vertex, texture\_coords);  \textcolor{comment}{// where this attribute is defined in}}
+\DoxyCodeLine{00057                                          \textcolor{comment}{// the data for a single vertex}}
+\DoxyCodeLine{00058 }
+\DoxyCodeLine{00059   \textcolor{keywordflow}{return} attribute\_describtions;}
+\DoxyCodeLine{00060 \}}
+\DoxyCodeLine{00061 }
+\DoxyCodeLine{00062 \}  \textcolor{comment}{// namespace vertex}}
+
+\end{DoxyCode}

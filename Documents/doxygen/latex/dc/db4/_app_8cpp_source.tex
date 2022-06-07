@@ -1,0 +1,82 @@
+\doxysection{App.\+cpp}
+\label{_app_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/App.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/App.cpp}}
+\mbox{\hyperlink{_app_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}App.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 \textcolor{preprocessor}{\#include <vulkan/vulkan.h>}}
+\DoxyCodeLine{00004 \textcolor{preprocessor}{\#define GLFW\_INCLUDE\_NONE}}
+\DoxyCodeLine{00005 \textcolor{preprocessor}{\#define GLFW\_INCLUDE\_VULKAN}}
+\DoxyCodeLine{00006 \textcolor{preprocessor}{\#include <GLFW/glfw3.h>}}
+\DoxyCodeLine{00007 }
+\DoxyCodeLine{00008 \textcolor{preprocessor}{\#define GLM\_FORCE\_RADIANS}}
+\DoxyCodeLine{00009 \textcolor{preprocessor}{\#define GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE}}
+\DoxyCodeLine{00010 }
+\DoxyCodeLine{00011 \textcolor{preprocessor}{\#include <glm/glm.hpp>}}
+\DoxyCodeLine{00012 \textcolor{preprocessor}{\#include <glm/mat4x4.hpp>}}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{00015 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{00016 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{00017 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019 \textcolor{preprocessor}{\#include "{}Window.h"{}}}
+\DoxyCodeLine{00020 \textcolor{preprocessor}{\#include "{}VulkanRenderer.hpp"{}}}
+\DoxyCodeLine{00021 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023 App::App() \{ \}}
+\DoxyCodeLine{00024 }
+\DoxyCodeLine{00025 \textcolor{keywordtype}{int} App::run()}
+\DoxyCodeLine{00026 \{}
+\DoxyCodeLine{00027 }
+\DoxyCodeLine{00028   \textcolor{keywordtype}{int} window\_width = 1200;}
+\DoxyCodeLine{00029   \textcolor{keywordtype}{int} window\_height = 768;}
+\DoxyCodeLine{00030 }
+\DoxyCodeLine{00031   \textcolor{keywordtype}{float} delta\_time = 0.0f;}
+\DoxyCodeLine{00032   \textcolor{keywordtype}{float} last\_time = 0.0f;}
+\DoxyCodeLine{00033 }
+\DoxyCodeLine{00034   std::unique\_ptr<Window> window = std::make\_unique<Window>(window\_width, window\_height);}
+\DoxyCodeLine{00035   std::unique\_ptr<Scene> scene = std::make\_unique<Scene>();}
+\DoxyCodeLine{00036   std::unique\_ptr<GUI> gui = std::make\_unique<GUI>(window.get());}
+\DoxyCodeLine{00037   std::unique\_ptr<Camera> camera = std::make\_unique<Camera>();}
+\DoxyCodeLine{00038 }
+\DoxyCodeLine{00039   VulkanRenderer vulkan\_renderer\{ window.get(), scene.get(), gui.get(), camera.get() \};}
+\DoxyCodeLine{00040 }
+\DoxyCodeLine{00041   \textcolor{keywordflow}{while} (!window-\/>get\_should\_close()) \{}
+\DoxyCodeLine{00042 }
+\DoxyCodeLine{00043     \textcolor{comment}{//poll all events incoming from user}}
+\DoxyCodeLine{00044     glfwPollEvents();}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046     \textcolor{comment}{// handle events for the camera}}
+\DoxyCodeLine{00047     camera-\/>key\_control(window-\/>get\_keys(), delta\_time);}
+\DoxyCodeLine{00048     camera-\/>mouse\_control(window-\/>get\_x\_change(), window-\/>get\_y\_change());}
+\DoxyCodeLine{00049 }
+\DoxyCodeLine{00050 }
+\DoxyCodeLine{00051     \textcolor{keywordtype}{float} now = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(glfwGetTime());}
+\DoxyCodeLine{00052     delta\_time = now -\/ last\_time;}
+\DoxyCodeLine{00053     last\_time = now;}
+\DoxyCodeLine{00054 }
+\DoxyCodeLine{00055     scene-\/>update\_user\_input(gui.get());}
+\DoxyCodeLine{00056 }
+\DoxyCodeLine{00057     vulkan\_renderer.updateStateDueToUserInput(gui.get());}
+\DoxyCodeLine{00058     vulkan\_renderer.updateUniforms(scene.get(), camera.get(), window.get());}
+\DoxyCodeLine{00059 \textcolor{comment}{}}
+\DoxyCodeLine{00060 \textcolor{comment}{    //// retrieve updates from the UI}}
+\DoxyCodeLine{00061 \textcolor{comment}{}    gui-\/>render();}
+\DoxyCodeLine{00062 }
+\DoxyCodeLine{00063     vulkan\_renderer.drawFrame();}
+\DoxyCodeLine{00064   \}}
+\DoxyCodeLine{00065 }
+\DoxyCodeLine{00066   vulkan\_renderer.finishAllRenderCommands();}
+\DoxyCodeLine{00067 }
+\DoxyCodeLine{00068   scene-\/>cleanUp();}
+\DoxyCodeLine{00069   gui-\/>cleanUp();}
+\DoxyCodeLine{00070   window-\/>cleanUp();}
+\DoxyCodeLine{00071   vulkan\_renderer.cleanUp();}
+\DoxyCodeLine{00072 }
+\DoxyCodeLine{00073   \textcolor{keywordflow}{return} EXIT\_SUCCESS;}
+\DoxyCodeLine{00074 \}}
+\DoxyCodeLine{00075 }
+\DoxyCodeLine{00076 App::\string~App() \{ \}}
+
+\end{DoxyCode}

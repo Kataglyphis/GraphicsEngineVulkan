@@ -5,8 +5,8 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = GraphicsEngine
 PROJECT_NUMBER         = 1.1
 PROJECT_BRIEF          =
-PROJECT_LOGO           = ../images/Frostbite_3_Logo.svg
-OUTPUT_DIRECTORY       = doxygen_docs
+PROJECT_LOGO           = ../images/Engine_logo.png
+OUTPUT_DIRECTORY       = ../Documents/doxygen
 CREATE_SUBDIRS         = YES
 ALLOW_UNICODE_NAMES    = NO
 OUTPUT_LANGUAGE        = English
@@ -102,9 +102,10 @@ WARN_LOGFILE           = warnings.log
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../Src
-                         vhdlparser \
-                         libxml
+INPUT                  =    ../Src
+				            ../include
+                            vhdlparser \
+                            libxml
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.h \
                          *.hpp \
@@ -204,7 +205,7 @@ EXTRA_SEARCH_MAPPINGS  =
 #---------------------------------------------------------------------------
 # Configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 LATEX_OUTPUT           =
 LATEX_CMD_NAME         =
 MAKEINDEX_CMD_NAME     = makeindex
@@ -237,8 +238,8 @@ RTF_SOURCE_CODE        = NO
 #---------------------------------------------------------------------------
 # Configuration options related to the man page output
 #---------------------------------------------------------------------------
-GENERATE_MAN           = NO
-MAN_OUTPUT             =
+GENERATE_MAN           = YES
+MAN_OUTPUT             = pdf
 MAN_EXTENSION          = .3
 MAN_SUBDIR             =
 MAN_LINKS              = NO

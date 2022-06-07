@@ -1,0 +1,34 @@
+\doxysection{C\+:/\+Users/jonas/\+Desktop/\+Graphics\+Engine\+Vulkan/\+Src/window/\+Window.cpp File Reference}
+\label{_window_8cpp}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/window/Window.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/window/Window.cpp}}
+{\ttfamily \#include \char`\"{}Window.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$imgui.\+h$>$}\newline
+{\ttfamily \#include $<$imgui\+\_\+impl\+\_\+glfw.\+h$>$}\newline
+{\ttfamily \#include $<$imgui\+\_\+impl\+\_\+vulkan.\+h$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+Include dependency graph for Window.\+cpp\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{_window_8cpp_a946e3408b0f38d15a9c567a9d00c2c46}{on\+Error\+Callback}} (int error, const char $\ast$description)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\label{_window_8cpp_a946e3408b0f38d15a9c567a9d00c2c46}} 
+\index{Window.cpp@{Window.cpp}!onErrorCallback@{onErrorCallback}}
+\index{onErrorCallback@{onErrorCallback}!Window.cpp@{Window.cpp}}
+\doxysubsubsection{\texorpdfstring{onErrorCallback()}{onErrorCallback()}}
+{\footnotesize\ttfamily static void on\+Error\+Callback (\begin{DoxyParamCaption}\item[{int}]{error,  }\item[{const char $\ast$}]{description }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{_window_8cpp_source_l00010}{10}} of file \mbox{\hyperlink{_window_8cpp_source}{Window.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00010                                                                 \{}
+\DoxyCodeLine{00011   fprintf(stderr, \textcolor{stringliteral}{"{}GLFW Error \%d: \%s\(\backslash\)n"{}}, error, description);}
+\DoxyCodeLine{00012 \}}
+
+\end{DoxyCode}

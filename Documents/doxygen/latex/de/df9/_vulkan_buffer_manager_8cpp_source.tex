@@ -1,0 +1,65 @@
+\doxysection{Vulkan\+Buffer\+Manager.\+cpp}
+\label{_vulkan_buffer_manager_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBufferManager.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBufferManager.cpp}}
+\mbox{\hyperlink{_vulkan_buffer_manager_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001 \textcolor{preprocessor}{\#include "{}VulkanBufferManager.h"{}}}
+\DoxyCodeLine{00002 }
+\DoxyCodeLine{00003 VulkanBufferManager::VulkanBufferManager() \{\}}
+\DoxyCodeLine{00004 }
+\DoxyCodeLine{00005 \textcolor{keywordtype}{void} VulkanBufferManager::copyBuffer(VkDevice device, VkQueue transfer\_queue,}
+\DoxyCodeLine{00006                                      VkCommandPool transfer\_command\_pool,}
+\DoxyCodeLine{00007                                      VulkanBuffer src\_buffer,}
+\DoxyCodeLine{00008                                      VulkanBuffer dst\_buffer,}
+\DoxyCodeLine{00009                                      VkDeviceSize buffer\_size) \{}
+\DoxyCodeLine{00010   \textcolor{comment}{// create buffer}}
+\DoxyCodeLine{00011   VkCommandBuffer command\_buffer =}
+\DoxyCodeLine{00012       commandBufferManager.beginCommandBuffer(device, transfer\_command\_pool);}
+\DoxyCodeLine{00013 }
+\DoxyCodeLine{00014   \textcolor{comment}{// region of data to copy from and to}}
+\DoxyCodeLine{00015   VkBufferCopy buffer\_copy\_region\{\};}
+\DoxyCodeLine{00016   buffer\_copy\_region.srcOffset = 0;}
+\DoxyCodeLine{00017   buffer\_copy\_region.dstOffset = 0;}
+\DoxyCodeLine{00018   buffer\_copy\_region.size = buffer\_size;}
+\DoxyCodeLine{00019 }
+\DoxyCodeLine{00020   \textcolor{comment}{// command to copy src buffer to dst buffer}}
+\DoxyCodeLine{00021   vkCmdCopyBuffer(command\_buffer, src\_buffer.getBuffer(),}
+\DoxyCodeLine{00022                   dst\_buffer.getBuffer(), 1, \&buffer\_copy\_region);}
+\DoxyCodeLine{00023 }
+\DoxyCodeLine{00024   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{00025       device, transfer\_command\_pool, transfer\_queue, command\_buffer);}
+\DoxyCodeLine{00026 \}}
+\DoxyCodeLine{00027 }
+\DoxyCodeLine{00028 \textcolor{keywordtype}{void} VulkanBufferManager::copyImageBuffer(VkDevice device,}
+\DoxyCodeLine{00029                                           VkQueue transfer\_queue,}
+\DoxyCodeLine{00030                                           VkCommandPool transfer\_command\_pool,}
+\DoxyCodeLine{00031                                           VkBuffer src\_buffer, VkImage image,}
+\DoxyCodeLine{00032                                           uint32\_t width, uint32\_t height) \{}
+\DoxyCodeLine{00033   \textcolor{comment}{// create buffer}}
+\DoxyCodeLine{00034   VkCommandBuffer transfer\_command\_buffer =}
+\DoxyCodeLine{00035       commandBufferManager.beginCommandBuffer(device, transfer\_command\_pool);}
+\DoxyCodeLine{00036 }
+\DoxyCodeLine{00037   VkBufferImageCopy image\_region\{\};}
+\DoxyCodeLine{00038   image\_region.bufferOffset = 0;  \textcolor{comment}{// offset into data}}
+\DoxyCodeLine{00039   image\_region.bufferRowLength =}
+\DoxyCodeLine{00040       0;  \textcolor{comment}{// row length of data to calculate data spacing}}
+\DoxyCodeLine{00041   image\_region.bufferImageHeight = 0;  \textcolor{comment}{// image height to calculate data spacing}}
+\DoxyCodeLine{00042   image\_region.imageSubresource.aspectMask =}
+\DoxyCodeLine{00043       VK\_IMAGE\_ASPECT\_COLOR\_BIT;  \textcolor{comment}{// which aspect of image to copy}}
+\DoxyCodeLine{00044   image\_region.imageSubresource.mipLevel = 0;}
+\DoxyCodeLine{00045   image\_region.imageSubresource.baseArrayLayer = 0;}
+\DoxyCodeLine{00046   image\_region.imageSubresource.layerCount = 1;}
+\DoxyCodeLine{00047   image\_region.imageOffset = \{0, 0, 0\};  \textcolor{comment}{// offset into image}}
+\DoxyCodeLine{00048   image\_region.imageExtent = \{width, height, 1\};}
+\DoxyCodeLine{00049 }
+\DoxyCodeLine{00050   \textcolor{comment}{// copy buffer to given image}}
+\DoxyCodeLine{00051   vkCmdCopyBufferToImage(transfer\_command\_buffer, src\_buffer, image,}
+\DoxyCodeLine{00052                          VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL, 1,}
+\DoxyCodeLine{00053                          \&image\_region);}
+\DoxyCodeLine{00054 }
+\DoxyCodeLine{00055   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{00056       device, transfer\_command\_pool, transfer\_queue, transfer\_command\_buffer);}
+\DoxyCodeLine{00057 \}}
+\DoxyCodeLine{00058 }
+\DoxyCodeLine{00059 VulkanBufferManager::\string~VulkanBufferManager() \{\}}
+
+\end{DoxyCode}

@@ -1,9 +1,9 @@
 #include "CommandBufferManager.h"
 
-CommandBufferManager::CommandBufferManager() { }
+CommandBufferManager::CommandBufferManager() {}
 
-VkCommandBuffer CommandBufferManager::beginCommandBuffer(VkDevice device, VkCommandPool command_pool)
-{
+VkCommandBuffer CommandBufferManager::beginCommandBuffer(
+    VkDevice device, VkCommandPool command_pool) {
   // command buffer to hold transfer commands
   VkCommandBuffer command_buffer;
 
@@ -29,8 +29,9 @@ VkCommandBuffer CommandBufferManager::beginCommandBuffer(VkDevice device, VkComm
   return command_buffer;
 }
 
-void CommandBufferManager::endAndSubmitCommandBuffer(VkDevice device, VkCommandPool command_pool, VkQueue queue, VkCommandBuffer& command_buffer)
-{
+void CommandBufferManager::endAndSubmitCommandBuffer(
+    VkDevice device, VkCommandPool command_pool, VkQueue queue,
+    VkCommandBuffer& command_buffer) {
   // end commands
   VkResult result = vkEndCommandBuffer(command_buffer);
   ASSERT_VULKAN(result, "Failed to end command buffer!")
@@ -52,4 +53,4 @@ void CommandBufferManager::endAndSubmitCommandBuffer(VkDevice device, VkCommandP
   vkFreeCommandBuffers(device, command_pool, 1, &command_buffer);
 }
 
-CommandBufferManager::~CommandBufferManager() { }
+CommandBufferManager::~CommandBufferManager() {}
