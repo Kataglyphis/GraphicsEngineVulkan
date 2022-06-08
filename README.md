@@ -17,8 +17,9 @@
 
 [![Linux build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml)
 [![Windows build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml)
+[![TopLang](https://img.shields.io/github/languages/top/Kataglyphis/GraphicsEngineVulkan)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=BX9AVVES2P9LN)
-[![Donate](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
+[![Twitter](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -50,7 +51,7 @@
         <li><a href="#shaders">Shaders</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#tests">Tests</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -121,9 +122,11 @@ I only guarantee a successful build for windows hence it is frequently tested.
 
 ### Prerequisites
 
-If you want to build documantaries you will need [Doxygen] (https://www.doxygen.nl/index.html).
-C++17 or higher required.
-Check for prerequisites from the used libraries.
+If you want to build documantaries you will need [Doxygen] (https://www.doxygen.nl/index.html).<br />
+C++17 or higher required.<br />
+Check for prerequisites from the used libraries.<br />
+If detailed test docs are wanted you will need to set GTEST_OUTPUT 
+environment variable.(see [gtest](https://github.com/google/googletest))<br />
 
 ### Installation
 
@@ -132,12 +135,8 @@ Check for prerequisites from the used libraries.
    git clone --recurse-submodules git@github.com:Kataglyphis/GraphicsEngineVulkan.git
    ```
 
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-_For more examples, please refer to the [Documentation](https://jotrockenmitlocken.de/)_
-
+## Tests
+* [Watch test results here](Documents/googletest/test_detail.xml)
 
 <!-- ROADMAP -->
 ## Roadmap
