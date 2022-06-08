@@ -443,14 +443,22 @@ enable_testing()
 
 include(GoogleTest)
 
-FILE(GLOB RENDERER_TEST_FILTER                  "Test/*.h"                                               "Test/*.cpp"
-                                                "Test/*.hpp")
+FILE(GLOB RENDERER_COMPILE_TEST_FILTER          "Test/compile/*.h"                                               "Test/compile/*.cpp"
+                                                "Test/compile/*.hpp")
 
-source_group("TEST_FILES"                                   FILES ${RENDERER_TEST_FILTER})
+source_group("COMPILE_TEST_FILES"                                   FILES ${RENDERER_COMPILE_TEST_FILTER})
 
-add_executable( vulkanRendererTester
+FILE(GLOB RENDERER_COMMIT_TEST_FILTER           "Test/commit/*.h"                                               "Test/commit/*.cpp"
+                                                "Test/commit/*.hpp")
+
+source_group("COMMIT_TEST_FILES"                                   FILES ${RENDERER_COMMIT_TEST_FILTER})
+
+set (COMMIT_TEST_SUITE commitTestSuite)
+set (COMPILE_TEST_SUITE compileTestSuite)
+
+add_executable( ${COMMIT_TEST_SUITE}
                 # all test specific files -- start
-                ${RENDERER_TEST_FILTER}
+                ${RENDERER_COMMIT_TEST_FILTER}
                 # all test specific files -- end
                 ${RASTER_SHADER_FILTER}
                 ${RAYTRACING_SHADER_FILTER}
@@ -471,7 +479,30 @@ add_executable( vulkanRendererTester
                 ${VULKAN_BASE_FILTER}
 )
 
-target_link_libraries( vulkanRendererTester PUBLIC ${CMAKE_DL_LIBS}
+add_executable( ${COMPILE_TEST_SUITE}
+                # all test specific files -- start
+                ${RENDERER_COMPILE_TEST_FILTER}
+                # all test specific files -- end
+                ${RASTER_SHADER_FILTER}
+                ${RAYTRACING_SHADER_FILTER}
+                ${COMMON_SHADER_FILTER}
+                ${POST_SHADER_FILTER}
+                ${BRDF_SHADER_FILTER}
+                ${PATH_TRACING_SHADER_FILTER}
+                ${RENDERER_FILTER}
+                ${PC_FILTER}
+                ${AS_FILTER}
+                ${SCENE_FILTER}
+                ${WINDOW_FILTER}
+                ${MEMORY_FILTER}
+                ${COMMON_FILTER}
+                ${GUI_FILTER}
+                ${IMGUI_FILTER}
+                ${UTIL_FILTER}
+                ${VULKAN_BASE_FILTER}
+)
+
+target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC ${CMAKE_DL_LIBS}
                                                     Threads::Threads
                                                     Vulkan::Vulkan
                                                     glfw 
@@ -485,9 +516,37 @@ target_link_libraries( vulkanRendererTester PUBLIC ${CMAKE_DL_LIBS}
 
 )
 
-target_link_libraries(vulkanRendererTester PRIVATE GSL)
+target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC ${CMAKE_DL_LIBS}
+                                                      Threads::Threads
+                                                      Vulkan::Vulkan
+                                                      glfw 
+                                                      imgui 
+                                                      stb
+                                                      glm
+                                                      tinyobjloader
+                                                      vma
+                                                      ktx
+                                                      gtest_main
 
-target_include_directories(  vulkanRendererTester PUBLIC    ./include/renderer
+)
+
+target_link_libraries(${COMPILE_TEST_SUITE} PRIVATE GSL)
+target_link_libraries(${COMMIT_TEST_SUITE} PRIVATE GSL)
+
+target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC     ./include/renderer
+                                                              ./include/renderer/pushConstants
+                                                              ./include/renderer/accelerationStructures
+                                                              ./include/vulkan_base
+                                                              ./include/gui
+                                                              ./include/common
+                                                              ./include/scene
+                                                              ./include/window
+                                                              ./include/memory
+                                                              ./include/util
+                                                              ./include/
+)
+
+target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ./include/renderer
                                                             ./include/renderer/pushConstants
                                                             ./include/renderer/accelerationStructures
                                                             ./include/vulkan_base
@@ -500,8 +559,18 @@ target_include_directories(  vulkanRendererTester PUBLIC    ./include/renderer
                                                             ./include/
 )
 
-target_include_directories(  vulkanRendererTester PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(  ${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(  ${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-gtest_discover_tests(   vulkanRendererTester )
+gtest_discover_tests(   ${COMMIT_TEST_SUITE} ${COMPILE_TEST_SUITE})
+
+# add test after each build
+# src: https://quickturnstudio.com/running-test-in-compile-time/
+add_custom_target(${COMPILE_TEST_SUITE}_Runner
+                  COMMAND ${COMPILE_TEST_SUITE}
+                  COMMENT "Running tests after each compilation.")
+
+add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
+
 
 # include(CPack)
