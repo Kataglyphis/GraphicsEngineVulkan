@@ -4,7 +4,7 @@
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include <SceneConfig.h>}}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00003}00003 \textcolor{comment}{//\#define SULO\_MODE 0}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00003}\mbox{\hyperlink{_scene_config_8cpp_a161b6d691abc81be145e4a370b375b68}{00003}} \textcolor{preprocessor}{\#define SULO\_MODE 1}}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00004}00004 }
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00005}\mbox{\hyperlink{namespacescene_config}{00005}} \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacescene_config}{sceneConfig}} \{}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00006}00006 }
@@ -18,60 +18,61 @@
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00014}00014 \textcolor{preprocessor}{\#else}}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00015}00015 \textcolor{preprocessor}{\#ifdef SULO\_MODE}}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00016}00016   modelFile << \textcolor{stringliteral}{"{}/Resources/Model/Sulo/"{}};}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00017}00017   modelFile << \textcolor{stringliteral}{"{}SuloLongDongLampe\_v2.obj"{}};}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00018}00018 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00019}00019   modelFile << \textcolor{stringliteral}{"{}/Resources/Model/VikingRoom/"{}};}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00020}00020   modelFile << \textcolor{stringliteral}{"{}viking\_room.obj"{}};}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00021}00021 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00017}00017   modelFile << \textcolor{stringliteral}{"{}Weinglas\_vol.obj"{}};}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00018}00018   \textcolor{comment}{//modelFile << "{}SuloLongDongLampe\_v2.obj"{};}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00019}00019 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00020}00020   modelFile << \textcolor{stringliteral}{"{}/Resources/Model/VikingRoom/"{}};}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00021}00021   modelFile << \textcolor{stringliteral}{"{}viking\_room.obj"{}};}
 \DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00022}00022 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00023}00023 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00024}00024   \textcolor{keywordflow}{return} modelFile.str();}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00025}00025   \textcolor{comment}{// std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00026}00026   \textcolor{comment}{// "{}../Resources/Model/crytek-\/sponza/sponza\_triag.obj"{}; std::string modelFile}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00027}00027   \textcolor{comment}{// = "{}../Resources/Model/Dinosaurs/dinosaurs.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00028}00028   \textcolor{comment}{// "{}../Resources/Model/Pillum/PilumPainting\_export.obj"{}; std::string modelFile}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00029}00029   \textcolor{comment}{// = "{}../Resources/Model/sibenik/sibenik.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00030}00030   \textcolor{comment}{// "{}../Resources/Model/sportsCar/sportsCar.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00031}00031   \textcolor{comment}{// "{}../Resources/Model/StanfordDragon/dragon.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00032}00032   \textcolor{comment}{// "{}../Resources/Model/CornellBox/CornellBox-\/Sphere.obj"{}; std::string}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00033}00033   \textcolor{comment}{// modelFile = "{}../Resources/Model/bunny/bunny.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00034}00034   \textcolor{comment}{// "{}../Resources/Model/buddha/buddha.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00035}00035   \textcolor{comment}{// "{}../Resources/Model/bmw/bmw.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00036}00036   \textcolor{comment}{// "{}../Resources/Model/testScene.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00037}00037   \textcolor{comment}{// "{}../Resources/Model/San\_Miguel/san-\/miguel-\/low-\/poly.obj"{};}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00038}00038 \}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00039}00039 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00040}\mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446875c}{00040}} glm::mat4 \mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446875c}{getModelMatrix}}() \{}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00041}00041   glm::mat4 modelMatrix(1.0f);}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00042}00042 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00043}00043 \textcolor{preprocessor}{\#if NDEBUG}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00044}00044 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00045}00045   \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00046}00046   \textcolor{comment}{// -\/50.0f));}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00047}00047   modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00048}00048   \textcolor{comment}{/*dragon\_model = glm::rotate(dragon\_model, glm::radians(-\/90.f),}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00049}00049 \textcolor{comment}{     glm::vec3(1.0f, 0.0f, 0.0f)); dragon\_model = glm::rotate(dragon\_model,}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00050}00050 \textcolor{comment}{     glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00051}00051 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00052}00052 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00053}00053 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00054}00054 \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00055}00055 \textcolor{comment}{// -\/50.0f));}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00056}00056 \textcolor{preprocessor}{\#if SULO\_MODE}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00057}00057   modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00058}00058 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00059}00059   modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00060}00060   modelMatrix = glm::rotate(modelMatrix, glm::radians(-\/90.f),}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00061}00061                             glm::vec3(1.0f, 0.0f, 0.0f));}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00062}00062   modelMatrix =}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00063}00063       glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00064}00064 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00065}00065 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00066}00066 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00067}00067 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00068}00068   \textcolor{keywordflow}{return} modelMatrix;}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00069}00069 \}}
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00070}00070 }
-\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00071}00071 \}  \textcolor{comment}{// namespace sceneConfig}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00023}00023 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00025}00025   \textcolor{keywordflow}{return} modelFile.str();}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00026}00026   \textcolor{comment}{// std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00027}00027   \textcolor{comment}{// "{}../Resources/Model/crytek-\/sponza/sponza\_triag.obj"{}; std::string modelFile}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00028}00028   \textcolor{comment}{// = "{}../Resources/Model/Dinosaurs/dinosaurs.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00029}00029   \textcolor{comment}{// "{}../Resources/Model/Pillum/PilumPainting\_export.obj"{}; std::string modelFile}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00030}00030   \textcolor{comment}{// = "{}../Resources/Model/sibenik/sibenik.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00031}00031   \textcolor{comment}{// "{}../Resources/Model/sportsCar/sportsCar.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00032}00032   \textcolor{comment}{// "{}../Resources/Model/StanfordDragon/dragon.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00033}00033   \textcolor{comment}{// "{}../Resources/Model/CornellBox/CornellBox-\/Sphere.obj"{}; std::string}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00034}00034   \textcolor{comment}{// modelFile = "{}../Resources/Model/bunny/bunny.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00035}00035   \textcolor{comment}{// "{}../Resources/Model/buddha/buddha.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00036}00036   \textcolor{comment}{// "{}../Resources/Model/bmw/bmw.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00037}00037   \textcolor{comment}{// "{}../Resources/Model/testScene.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00038}00038   \textcolor{comment}{// "{}../Resources/Model/San\_Miguel/san-\/miguel-\/low-\/poly.obj"{};}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00039}00039 \}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00040}00040 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00041}\mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446875c}{00041}} glm::mat4 \mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446875c}{getModelMatrix}}() \{}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00042}00042   glm::mat4 modelMatrix(1.0f);}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00044}00044 \textcolor{preprocessor}{\#if NDEBUG}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00045}00045 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00046}00046   \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00047}00047   \textcolor{comment}{// -\/50.0f));}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00048}00048   modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00049}00049   \textcolor{comment}{/*dragon\_model = glm::rotate(dragon\_model, glm::radians(-\/90.f),}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00050}00050 \textcolor{comment}{     glm::vec3(1.0f, 0.0f, 0.0f)); dragon\_model = glm::rotate(dragon\_model,}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00051}00051 \textcolor{comment}{     glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00052}00052 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00053}00053 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00054}00054 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00055}00055 \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00056}00056 \textcolor{comment}{// -\/50.0f));}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00057}00057 \textcolor{preprocessor}{\#if SULO\_MODE}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00058}00058   modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00059}00059 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00060}00060   modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00061}00061   modelMatrix = glm::rotate(modelMatrix, glm::radians(-\/90.f),}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00062}00062                             glm::vec3(1.0f, 0.0f, 0.0f));}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00063}00063   modelMatrix =}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00064}00064       glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00065}00065 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00066}00066 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00067}00067 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00068}00068 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00069}00069   \textcolor{keywordflow}{return} modelMatrix;}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00070}00070 \}}
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00071}00071 }
+\DoxyCodeLine{\Hypertarget{_scene_config_8cpp_source_l00072}00072 \}  \textcolor{comment}{// namespace sceneConfig}}
 
 \end{DoxyCode}
