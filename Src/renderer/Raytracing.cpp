@@ -6,6 +6,7 @@
 #include "File.h"
 #include "MemoryHelper.h"
 #include "ShaderHelper.h"
+#include "VulkanRendererConfig.h"
 
 Raytracing::Raytracing() {}
 

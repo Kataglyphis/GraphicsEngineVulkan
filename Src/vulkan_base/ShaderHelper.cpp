@@ -1,4 +1,5 @@
 #include "ShaderHelper.h"
+#include "VulkanRendererConfig.h"
 
 #include <sstream>
 

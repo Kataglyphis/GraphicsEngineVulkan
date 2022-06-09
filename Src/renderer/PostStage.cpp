@@ -9,6 +9,8 @@
 #include "ShaderHelper.h"
 #include "Vertex.h"
 
+#include "VulkanRendererConfig.h"
+
 PostStage::PostStage() {}
 
 void PostStage::init(

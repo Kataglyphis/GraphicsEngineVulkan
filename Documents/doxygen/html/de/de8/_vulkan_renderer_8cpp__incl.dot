@@ -28,4 +28,6 @@ digraph "C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/VulkanRenderer
   Node11 [label="PushConstantPost.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 [label="ShaderHelper.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node1 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="VulkanRendererConfig.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

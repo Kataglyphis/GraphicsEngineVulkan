@@ -8,6 +8,8 @@
 #include "ShaderHelper.h"
 #include "Vertex.h"
 
+#include "VulkanRendererConfig.h"
+
 Rasterizer::Rasterizer() {}
 
 void Rasterizer::init(

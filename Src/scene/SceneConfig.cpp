@@ -1,6 +1,7 @@
 #include <SceneConfig.h>
+#include "VulkanRendererConfig.h"
 
-#define SULO_MODE 1
+//#define SULO_MODE 1
 
 namespace sceneConfig {
 
@@ -13,9 +14,9 @@ std::string getModelFile() {
 
 #else
 #ifdef SULO_MODE
-  modelFile << "/Resources/Model/Sulo/";
-  modelFile << "Weinglas_vol.obj";
-  //modelFile << "SuloLongDongLampe_v2.obj";
+  modelFile << "/Resources/Model/Sulo/WolfStahl/";
+  //modelFile << "Wolf-Stahl.obj";
+  modelFile << "SuloLongDongLampe_v2.obj";
 #else
   modelFile << "/Resources/Model/VikingRoom/";
   modelFile << "viking_room.obj";

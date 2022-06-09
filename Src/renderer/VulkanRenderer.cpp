@@ -19,6 +19,8 @@
 #include "PushConstantPost.h"
 #include "ShaderHelper.h"
 
+#include "VulkanRendererConfig.h"
+
 VulkanRenderer::VulkanRenderer(Window* window, Scene* scene, GUI* gui,
                                Camera* camera)
     :
@@ -78,7 +80,7 @@ VulkanRenderer::VulkanRenderer(Window* window, Scene* scene, GUI* gui,
     pathTracing.init(device.get(), layouts);
 
     scene->loadModel(device.get(), graphics_command_pool);
-    //updateTexturesInSharedRenderDescriptorSet();
+    updateTexturesInSharedRenderDescriptorSet();
 
     asManager.createASForScene(device.get(), graphics_command_pool, scene);
     create_object_description_buffer();

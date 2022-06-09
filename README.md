@@ -103,6 +103,7 @@ started in own research topics.
 * [gtest](https://github.com/google/googletest)
 * [cmake](https://cmake.org/)
 * [gsl](https://github.com/Microsoft/GSL)
+* [NSIS](https://nsis.sourceforge.io/Main_Page)
 
 ### Useful tools (you might also considering :) )
 
@@ -127,6 +128,7 @@ C++17 or higher required.<br />
 Check for prerequisites from the used libraries.<br />
 If detailed test docs are wanted you will need to set GTEST_OUTPUT 
 environment variable.(see [gtest](https://github.com/google/googletest))<br />
+For building an installer on windows you will need [NSIS](https://nsis.sourceforge.io/Main_Page)<br />
 
 ### Installation
 

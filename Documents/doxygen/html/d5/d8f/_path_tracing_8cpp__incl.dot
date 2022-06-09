@@ -16,4 +16,6 @@ digraph "C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/PathTracing.cp
   Node5 [label="File.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 [label="ShaderHelper.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="VulkanRendererConfig.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

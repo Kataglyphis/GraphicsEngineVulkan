@@ -101,40 +101,40 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html#l00007">7</a> of file <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html">SceneConfig.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    7</span>                         {</div>
-<div class="line"><span class="lineno">    8</span>  std::stringstream modelFile;</div>
-<div class="line"><span class="lineno">    9</span>  modelFile &lt;&lt; CMAKELISTS_DIR;</div>
-<div class="line"><span class="lineno">   10</span><span class="preprocessor">#if NDEBUG</span></div>
-<div class="line"><span class="lineno">   11</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/crytek-sponza/&quot;</span>;</div>
-<div class="line"><span class="lineno">   12</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;sponza_triag.obj&quot;</span>;</div>
-<div class="line"><span class="lineno">   13</span> </div>
-<div class="line"><span class="lineno">   14</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   15</span><span class="preprocessor">#ifdef SULO_MODE</span></div>
-<div class="line"><span class="lineno">   16</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/Sulo/&quot;</span>;</div>
-<div class="line"><span class="lineno">   17</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;Weinglas_vol.obj&quot;</span>;</div>
-<div class="line"><span class="lineno">   18</span>  <span class="comment">//modelFile &lt;&lt; &quot;SuloLongDongLampe_v2.obj&quot;;</span></div>
-<div class="line"><span class="lineno">   19</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   20</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/VikingRoom/&quot;</span>;</div>
-<div class="line"><span class="lineno">   21</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;viking_room.obj&quot;</span>;</div>
-<div class="line"><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
+<p class="definition">Definition at line <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html#l00008">8</a> of file <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html">SceneConfig.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span>                         {</div>
+<div class="line"><span class="lineno">    9</span>  std::stringstream modelFile;</div>
+<div class="line"><span class="lineno">   10</span>  modelFile &lt;&lt; CMAKELISTS_DIR;</div>
+<div class="line"><span class="lineno">   11</span><span class="preprocessor">#if NDEBUG</span></div>
+<div class="line"><span class="lineno">   12</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/crytek-sponza/&quot;</span>;</div>
+<div class="line"><span class="lineno">   13</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;sponza_triag.obj&quot;</span>;</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">   16</span><span class="preprocessor">#ifdef SULO_MODE</span></div>
+<div class="line"><span class="lineno">   17</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/Sulo/WolfStahl/&quot;</span>;</div>
+<div class="line"><span class="lineno">   18</span>  <span class="comment">//modelFile &lt;&lt; &quot;Wolf-Stahl.obj&quot;;</span></div>
+<div class="line"><span class="lineno">   19</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;SuloLongDongLampe_v2.obj&quot;</span>;</div>
+<div class="line"><span class="lineno">   20</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">   21</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;/Resources/Model/VikingRoom/&quot;</span>;</div>
+<div class="line"><span class="lineno">   22</span>  modelFile &lt;&lt; <span class="stringliteral">&quot;viking_room.obj&quot;</span>;</div>
 <div class="line"><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   24</span> </div>
-<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">return</span> modelFile.str();</div>
-<div class="line"><span class="lineno">   26</span>  <span class="comment">// std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   27</span>  <span class="comment">// &quot;../Resources/Model/crytek-sponza/sponza_triag.obj&quot;; std::string modelFile</span></div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// = &quot;../Resources/Model/Dinosaurs/dinosaurs.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   29</span>  <span class="comment">// &quot;../Resources/Model/Pillum/PilumPainting_export.obj&quot;; std::string modelFile</span></div>
-<div class="line"><span class="lineno">   30</span>  <span class="comment">// = &quot;../Resources/Model/sibenik/sibenik.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// &quot;../Resources/Model/sportsCar/sportsCar.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">// &quot;../Resources/Model/StanfordDragon/dragon.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// &quot;../Resources/Model/CornellBox/CornellBox-Sphere.obj&quot;; std::string</span></div>
-<div class="line"><span class="lineno">   34</span>  <span class="comment">// modelFile = &quot;../Resources/Model/bunny/bunny.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// &quot;../Resources/Model/buddha/buddha.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   36</span>  <span class="comment">// &quot;../Resources/Model/bmw/bmw.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   37</span>  <span class="comment">// &quot;../Resources/Model/testScene.obj&quot;; std::string modelFile =</span></div>
-<div class="line"><span class="lineno">   38</span>  <span class="comment">// &quot;../Resources/Model/San_Miguel/san-miguel-low-poly.obj&quot;;</span></div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<div class="line"><span class="lineno">   24</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">return</span> modelFile.str();</div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   28</span>  <span class="comment">// &quot;../Resources/Model/crytek-sponza/sponza_triag.obj&quot;; std::string modelFile</span></div>
+<div class="line"><span class="lineno">   29</span>  <span class="comment">// = &quot;../Resources/Model/Dinosaurs/dinosaurs.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   30</span>  <span class="comment">// &quot;../Resources/Model/Pillum/PilumPainting_export.obj&quot;; std::string modelFile</span></div>
+<div class="line"><span class="lineno">   31</span>  <span class="comment">// = &quot;../Resources/Model/sibenik/sibenik.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   32</span>  <span class="comment">// &quot;../Resources/Model/sportsCar/sportsCar.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   33</span>  <span class="comment">// &quot;../Resources/Model/StanfordDragon/dragon.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">// &quot;../Resources/Model/CornellBox/CornellBox-Sphere.obj&quot;; std::string</span></div>
+<div class="line"><span class="lineno">   35</span>  <span class="comment">// modelFile = &quot;../Resources/Model/bunny/bunny.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   36</span>  <span class="comment">// &quot;../Resources/Model/buddha/buddha.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   37</span>  <span class="comment">// &quot;../Resources/Model/bmw/bmw.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// &quot;../Resources/Model/testScene.obj&quot;; std::string modelFile =</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">// &quot;../Resources/Model/San_Miguel/san-miguel-low-poly.obj&quot;;</span></div>
+<div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -153,37 +153,37 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html#l00041">41</a> of file <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html">SceneConfig.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>                         {</div>
-<div class="line"><span class="lineno">   42</span>  glm::mat4 modelMatrix(1.0f);</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span><span class="preprocessor">#if NDEBUG</span></div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="comment">// dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f,</span></div>
-<div class="line"><span class="lineno">   47</span>  <span class="comment">// -50.0f));</span></div>
-<div class="line"><span class="lineno">   48</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));</div>
-<div class="line"><span class="lineno">   49</span>  <span class="comment">/*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f),</span></div>
-<div class="line"><span class="lineno">   50</span><span class="comment">     glm::vec3(1.0f, 0.0f, 0.0f)); dragon_model = glm::rotate(dragon_model,</span></div>
-<div class="line"><span class="lineno">   51</span><span class="comment">     glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/</span></div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span><span class="comment">// dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f,</span></div>
-<div class="line"><span class="lineno">   56</span><span class="comment">// -50.0f));</span></div>
-<div class="line"><span class="lineno">   57</span><span class="preprocessor">#if SULO_MODE</span></div>
-<div class="line"><span class="lineno">   58</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));</div>
-<div class="line"><span class="lineno">   59</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   60</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));</div>
-<div class="line"><span class="lineno">   61</span>  modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f),</div>
-<div class="line"><span class="lineno">   62</span>                            glm::vec3(1.0f, 0.0f, 0.0f));</div>
-<div class="line"><span class="lineno">   63</span>  modelMatrix =</div>
-<div class="line"><span class="lineno">   64</span>      glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));</div>
-<div class="line"><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">return</span> modelMatrix;</div>
-<div class="line"><span class="lineno">   70</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html#l00042">42</a> of file <a class="el" href="../../dc/d24/_scene_config_8cpp_source.html">SceneConfig.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>                         {</div>
+<div class="line"><span class="lineno">   43</span>  glm::mat4 modelMatrix(1.0f);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span><span class="preprocessor">#if NDEBUG</span></div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="comment">// dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f,</span></div>
+<div class="line"><span class="lineno">   48</span>  <span class="comment">// -50.0f));</span></div>
+<div class="line"><span class="lineno">   49</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));</div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">/*dragon_model = glm::rotate(dragon_model, glm::radians(-90.f),</span></div>
+<div class="line"><span class="lineno">   51</span><span class="comment">     glm::vec3(1.0f, 0.0f, 0.0f)); dragon_model = glm::rotate(dragon_model,</span></div>
+<div class="line"><span class="lineno">   52</span><span class="comment">     glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/</span></div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span><span class="comment">// dragon_model = glm::translate(dragon_model, glm::vec3(0.0f, -40.0f,</span></div>
+<div class="line"><span class="lineno">   57</span><span class="comment">// -50.0f));</span></div>
+<div class="line"><span class="lineno">   58</span><span class="preprocessor">#if SULO_MODE</span></div>
+<div class="line"><span class="lineno">   59</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));</div>
+<div class="line"><span class="lineno">   60</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">   61</span>  modelMatrix = glm::scale(modelMatrix, glm::vec3(60.0f, 60.0f, 60.0f));</div>
+<div class="line"><span class="lineno">   62</span>  modelMatrix = glm::rotate(modelMatrix, glm::radians(-90.f),</div>
+<div class="line"><span class="lineno">   63</span>                            glm::vec3(1.0f, 0.0f, 0.0f));</div>
+<div class="line"><span class="lineno">   64</span>  modelMatrix =</div>
+<div class="line"><span class="lineno">   65</span>      glm::rotate(modelMatrix, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));</div>
+<div class="line"><span class="lineno">   66</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> modelMatrix;</div>
+<div class="line"><span class="lineno">   71</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -193,7 +193,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../df/dcb/namespacescene_config.html">sceneConfig</a></li>
-    <li class="footer">Generated on Wed Jun 8 2022 13:49:41 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Jun 9 2022 17:18:04 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>
