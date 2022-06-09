@@ -6,6 +6,8 @@
 #include "File.h"
 #include "ShaderHelper.h"
 
+#include "VulkanRendererConfig.h"
+
 // Good source:
 // https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp
 

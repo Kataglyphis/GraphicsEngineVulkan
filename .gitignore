@@ -35,3 +35,7 @@
 build/*
 out/*
 .vs/*
+.vscode/*
+
+# doxygen
+Documents/doxygen/*

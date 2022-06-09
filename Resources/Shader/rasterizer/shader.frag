@@ -71,8 +71,8 @@ void main() {
 	vec3 ambient = vec3(0.f);
 
 	int texture_id	= materials.m[materialIDs.i[gl_PrimitiveID]].textureID;
-	//ambient			+= texture(sampler2D(tex[texture_id], texture_sampler[texture_id]), texture_coordinates).xyz;
-	ambient			+= materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
+	ambient			+= texture(sampler2D(tex[texture_id], texture_sampler[texture_id]), texture_coordinates).xyz;
+	//ambient			+= materials.m[materialIDs.i[gl_PrimitiveID]].diffuse;
 
 	float roughness = 0.9;
 	vec3 light_color = vec3(1.f);

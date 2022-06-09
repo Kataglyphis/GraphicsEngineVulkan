@@ -176,16 +176,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>SULO_MODE</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>macro</Type>
-    </TokenIdentifier>
-    <Path>dc/d24/_scene_config_8cpp.html</Path>
-    <Anchor>a161b6d691abc81be145e4a370b375b68</Anchor>
-    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>TINYOBJLOADER_IMPLEMENTATION</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>

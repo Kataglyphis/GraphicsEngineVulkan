@@ -22,4 +22,6 @@ digraph "C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/PostStage.cpp"
   Node8 [label="ShaderHelper.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
   Node9 [label="Vertex.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="VulkanRendererConfig.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

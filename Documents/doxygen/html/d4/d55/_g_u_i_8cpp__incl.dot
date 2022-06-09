@@ -14,4 +14,6 @@ digraph "C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp"
   Node4 [label="Utilities.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="VulkanDevice.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="VulkanRendererConfig.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

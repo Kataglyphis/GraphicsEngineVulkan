@@ -4,6 +4,8 @@
 #include "Utilities.h"
 #include "VulkanDevice.h"
 
+#include "VulkanRendererConfig.h"
+
 GUI::GUI(Window* window) { this->window = window; }
 
 void GUI::initializeVulkanContext(VulkanDevice* device,

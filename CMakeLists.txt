@@ -80,9 +80,9 @@ endif()
 
 # set the project name
 project(GraphicsEngine VERSION 1.3
-                       DESCRIPTION "Epic Graphics"
-                       LANGUAGES  CXX
-                                  C)
+        DESCRIPTION "Epic Graphics"
+        HOMEPAGE_URL "https://jotrockenmitlocken.de/"
+        LANGUAGES  CXX C)
 
 include(FetchContent)
 # include google test to project
@@ -134,11 +134,18 @@ endfunction(add_shader)
 # we depend on vulkan 
 find_package(Vulkan REQUIRED)
 
-# so we can compile our shaders on the fly later on 
-add_compile_definitions(GLSLC_EXE="${Vulkan_GLSLC_EXECUTABLE}" )
+# # so we can compile our shaders on the fly later on 
+# add_compile_definitions(GLSLC_EXE="${Vulkan_GLSLC_EXECUTABLE}" )
+# # remove dirty file directories ... 
+# add_compile_definitions(CMAKELISTS_DIR="${CMAKE_CURRENT_SOURCE_DIR}" )
 
-# remove dirty file directories ... 
-add_compile_definitions(CMAKELISTS_DIR="${CMAKE_CURRENT_SOURCE_DIR}" )
+# configure vulkan version
+set(VULKAN_VERSION_MAJOR 1)
+set(VULKAN_VERSION_MINOR 3)
+
+# we are using this dir strings for removing hard coded file locations
+# at c++ side
+configure_file(VulkanRendererConfig.h.in "${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/VulkanRendererConfig.h")
 
 add_subdirectory(ExternalLib)
 
@@ -149,12 +156,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
-
-# we are using this dir strings for removing hard coded file locations
-# at c++ side
-# add_compile_definitions(SHADER_SRC_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader")
-# add_compile_definitions(SHADER_SPV_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/spv")
-# add_compile_definitions(SHADER_LOG_DIR="${PROJECT_BINARY_DIR}/../Resources/Shader/log")
 
 FILE(GLOB RENDERER_FILTER               "include/renderer/*.h"                                       "Src/renderer/*.cpp"
                                         "include/renderer/*.hpp")
@@ -352,12 +353,6 @@ foreach(Shader ${PATH_TRACING_SHADER_FILTER})
   add_shader(${PROJECT_NAME} ${Shader})
 endforeach()
 
-if(UNIX)
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-else()
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-endif()
-
 target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
                                                     ./include/renderer/pushConstants
                                                     ./include/renderer/accelerationStructures
@@ -378,10 +373,6 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(ExternalLib/GLFW)
-
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-set(CPACK_PACKAGE_VERSION_MAJOR "${GraphicsEngine_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${GraphicsEngine_VERSION_MINOR}")
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY 
                        ${PROJECT_BINARY_DIR})
@@ -572,5 +563,39 @@ add_custom_target(${COMPILE_TEST_SUITE}_Runner
 
 add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
 
+# for correct library output needed
+if(UNIX)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+else()
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+endif()
 
-# include(CPack)
+set(CMAKE_INSTALL_DATADIR Resources/)
+install(DIRECTORY Resources/ DESTINATION ${CMAKE_INSTALL_DATADIR})
+
+include(InstallRequiredSystemLibraries)
+
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
+
+set(CPACK_SOURCE_IGNORE_FILES
+    /.git
+    /out
+    /.*build.*
+)
+
+if(MSVC)
+   set(CPACK_SOURCE_GENERATOR "NSIS")
+   set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_SOURCE_DIR}/images/faviconNew.ico)
+   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+   set(CPACK_NSIS_HELP_LINK https://jotrockenmitlocken.de/)
+   set(CPACK_NSIS_URL_INFO_ABOUT https://jotrockenmitlocken.de/)
+   set(CPACK_NSIS_CONTACT https://jotrockenmitlocken.de/)
+   set (CPACK_NSIS_MODIFY_PATH "ON")
+ else() 
+   set(CPACK_SOURCE_GENERATOR "TGZ")
+ endif()
+
+include(CPack)

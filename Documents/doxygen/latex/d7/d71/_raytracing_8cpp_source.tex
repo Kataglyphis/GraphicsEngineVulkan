@@ -10,362 +10,363 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}File.h"{}}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00009}00009 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00010}00010 Raytracing::Raytracing() \{\}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00011}00011 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00012}00012 \textcolor{keywordtype}{void} Raytracing::init(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00013}00013     VulkanDevice* device,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00014}00014     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00015}00015   this-\/>device = device;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00016}00016 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00017}00017   createPCRange();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00018}00018   createGraphicsPipeline(descriptorSetLayouts);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00019}00019   createSBT();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00020}00020 \}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00021}00021 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00022}00022 \textcolor{keywordtype}{void} Raytracing::shaderHotReload(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00023}00023     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00024}00024   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00025}00025   createGraphicsPipeline(descriptor\_set\_layouts);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00026}00026 \}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00027}00027 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00028}00028 \textcolor{keywordtype}{void} Raytracing::recordCommands(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00029}00029     VkCommandBuffer\& commandBuffer, VulkanSwapChain* vulkanSwapChain,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00030}00030     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00031}00031   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00032}00032   uint32\_t handle\_size\_aligned =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00033}00033       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00034}00034 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00035}00035   PFN\_vkGetBufferDeviceAddressKHR vkGetBufferDeviceAddressKHR =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00036}00036       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkGetBufferDeviceAddressKHR\textcolor{keyword}{>}(vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00037}00037           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddressKHR"{}}));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00038}00038 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00039}00039   PFN\_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00040}00040       (PFN\_vkCmdTraceRaysKHR)vkGetDeviceProcAddr(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00041}00041                                                  \textcolor{stringliteral}{"{}vkCmdTraceRaysKHR"{}});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00042}00042 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00043}00043   VkBufferDeviceAddressInfoKHR bufferDeviceAI\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00044}00044   bufferDeviceAI.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00045}00045   bufferDeviceAI.buffer = raygenShaderBindingTableBuffer.getBuffer();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00046}00046 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00047}00047   rgen\_region.deviceAddress =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00048}00048       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00049}00049   rgen\_region.stride = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00050}00050   rgen\_region.size = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00051}00051 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00052}00052   bufferDeviceAI.buffer = missShaderBindingTableBuffer.getBuffer();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00053}00053   miss\_region.deviceAddress =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00054}00054       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00055}00055   miss\_region.stride = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00056}00056   miss\_region.size = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00057}00057 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00058}00058   bufferDeviceAI.buffer = hitShaderBindingTableBuffer.getBuffer();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00059}00059   hit\_region.deviceAddress =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00060}00060       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00061}00061   hit\_region.stride = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00062}00062   hit\_region.size = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00063}00063 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00064}00064   \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00065}00065   pc.clear\_color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00066}00066   \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00067}00067   vkCmdPushConstants(commandBuffer, pipeline\_layout,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00068}00068                      VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00069}00069                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00070}00070                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00071}00071                      0, \textcolor{keyword}{sizeof}(PushConstantRaytracing), \&pc);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00072}00072 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00073}00073   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00074}00074                     graphicsPipeline);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00075}00075 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00076}00076   vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00077}00077                           pipeline\_layout, 0,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00078}00078                           \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00079}00079                           descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00080}00080 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00081}00081   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00082}00082   pvkCmdTraceRaysKHR(commandBuffer, \&rgen\_region, \&miss\_region, \&hit\_region,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00083}00083                      \&call\_region, swap\_chain\_extent.width,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00084}00084                      swap\_chain\_extent.height, 1);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00085}00085 \}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00086}00086 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00087}00087 \textcolor{keywordtype}{void} Raytracing::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00088}00088   shaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00089}00089   raygenShaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00090}00090   missShaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00091}00091   hitShaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00092}00092 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00093}00093   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00094}00094   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00095}00095 \}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00096}00096 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00097}00097 Raytracing::\string~Raytracing() \{\}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00098}00098 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00099}00099 \textcolor{keywordtype}{void} Raytracing::createPCRange() \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00100}00100   \textcolor{comment}{// define push constant values (no 'create' needed)}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00101}00101   pc\_ranges.stageFlags = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00102}00102                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00103}00103                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00104}00104   pc\_ranges.offset = 0;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00105}00105   pc\_ranges.size = \textcolor{keyword}{sizeof}(PushConstantRaytracing);  \textcolor{comment}{// size of data being passed}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00106}00106 \}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00107}00107 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00108}00108 \textcolor{keywordtype}{void} Raytracing::createGraphicsPipeline(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00109}00109     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00110}00110   PFN\_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00111}00111       (PFN\_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00112}00112           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateRayTracingPipelinesKHR"{}});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00113}00113 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00114}00114   std::stringstream raytracing\_shader\_dir;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00115}00115   raytracing\_shader\_dir << CMAKELISTS\_DIR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00116}00116   raytracing\_shader\_dir << \textcolor{stringliteral}{"{}/Resources/Shader/raytracing/"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00117}00117 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00118}00118   std::string raygen\_shader = \textcolor{stringliteral}{"{}raytrace.rgen"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00119}00119   std::string chit\_shader = \textcolor{stringliteral}{"{}raytrace.rchit"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00120}00120   std::string miss\_shader = \textcolor{stringliteral}{"{}raytrace.rmiss"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00121}00121   std::string shadow\_shader = \textcolor{stringliteral}{"{}shadow.rmiss"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00122}00122 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00123}00123   ShaderHelper shaderHelper;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00124}00124   shaderHelper.compileShader(raytracing\_shader\_dir.str(), raygen\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00125}00125   shaderHelper.compileShader(raytracing\_shader\_dir.str(), chit\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00126}00126   shaderHelper.compileShader(raytracing\_shader\_dir.str(), miss\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00127}00127   shaderHelper.compileShader(raytracing\_shader\_dir.str(), shadow\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00128}00128 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00129}00129   File raygenFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00130}00130       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), raygen\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00131}00131   File raychitFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00132}00132       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), chit\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00133}00133   File raymissFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00134}00134       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), miss\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00135}00135   File shadowFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00136}00136       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), shadow\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00137}00137 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00138}00138   std::vector<char> raygen\_shader\_code = raygenFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00139}00139   std::vector<char> raychit\_shader\_code = raychitFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00140}00140   std::vector<char> raymiss\_shader\_code = raymissFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00141}00141   std::vector<char> shadow\_shader\_code = shadowFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00142}00142 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00143}00143   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00144}00144   VkShaderModule raygen\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00145}00145       shaderHelper.createShaderModule(device, raygen\_shader\_code);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00146}00146   VkShaderModule raychit\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00147}00147       shaderHelper.createShaderModule(device, raychit\_shader\_code);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00148}00148   VkShaderModule raymiss\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00149}00149       shaderHelper.createShaderModule(device, raymiss\_shader\_code);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00150}00150   VkShaderModule shadow\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00151}00151       shaderHelper.createShaderModule(device, shadow\_shader\_code);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00152}00152 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00153}00153   \textcolor{comment}{// create all shader stage infos for creating a group}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00154}00154   VkPipelineShaderStageCreateInfo rgen\_shader\_stage\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00155}00155   rgen\_shader\_stage\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00156}00156       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00157}00157   rgen\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00158}00158   rgen\_shader\_stage\_info.module = raygen\_shader\_module;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00159}00159   rgen\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00160}00160 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00161}00161   VkPipelineShaderStageCreateInfo rmiss\_shader\_stage\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00162}00162   rmiss\_shader\_stage\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00163}00163       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00164}00164   rmiss\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00165}00165   rmiss\_shader\_stage\_info.module = raymiss\_shader\_module;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00166}00166   rmiss\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00167}00167 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00168}00168   VkPipelineShaderStageCreateInfo shadow\_shader\_stage\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00169}00169   shadow\_shader\_stage\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00170}00170       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00171}00171   shadow\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00172}00172   shadow\_shader\_stage\_info.module = shadow\_shader\_module;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00173}00173   shadow\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00174}00174 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00175}00175   VkPipelineShaderStageCreateInfo rchit\_shader\_stage\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00176}00176   rchit\_shader\_stage\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00177}00177       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00178}00178   rchit\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00179}00179   rchit\_shader\_stage\_info.module = raychit\_shader\_module;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00180}00180   rchit\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00181}00181 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00182}00182   \textcolor{comment}{// we have all shader stages together}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00183}00183   std::array<VkPipelineShaderStageCreateInfo, 4> shader\_stages = \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00184}00184       rgen\_shader\_stage\_info, rmiss\_shader\_stage\_info, shadow\_shader\_stage\_info,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00185}00185       rchit\_shader\_stage\_info\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00186}00186 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00187}00187   \textcolor{keyword}{enum} StageIndices \{ eRaygen, eMiss, eMiss2, eClosestHit, eShaderGroupCount \};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00188}00188 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00189}00189   shader\_groups.reserve(4);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00190}00190   VkRayTracingShaderGroupCreateInfoKHR shader\_group\_create\_infos[4];}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00191}00191 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00192}00192   shader\_group\_create\_infos[0].sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00193}00193       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00194}00194   shader\_group\_create\_infos[0].pNext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00195}00195   shader\_group\_create\_infos[0].type =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00196}00196       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00197}00197   shader\_group\_create\_infos[0].generalShader = eRaygen;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00198}00198   shader\_group\_create\_infos[0].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00199}00199   shader\_group\_create\_infos[0].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00200}00200   shader\_group\_create\_infos[0].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00201}00201   shader\_group\_create\_infos[0].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00202}00202 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00203}00203   shader\_groups.push\_back(shader\_group\_create\_infos[0]);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00204}00204 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00205}00205   shader\_group\_create\_infos[1].sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00206}00206       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00207}00207   shader\_group\_create\_infos[1].pNext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00208}00208   shader\_group\_create\_infos[1].type =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00209}00209       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00210}00210   shader\_group\_create\_infos[1].generalShader = eMiss;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00211}00211   shader\_group\_create\_infos[1].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00212}00212   shader\_group\_create\_infos[1].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00213}00213   shader\_group\_create\_infos[1].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00214}00214   shader\_group\_create\_infos[1].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00215}00215 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00216}00216   shader\_groups.push\_back(shader\_group\_create\_infos[1]);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00217}00217 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00218}00218   shader\_group\_create\_infos[2].sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00219}00219       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00220}00220   shader\_group\_create\_infos[2].pNext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00221}00221   shader\_group\_create\_infos[2].type =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00222}00222       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00223}00223   shader\_group\_create\_infos[2].generalShader = eMiss2;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00224}00224   shader\_group\_create\_infos[2].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00225}00225   shader\_group\_create\_infos[2].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00226}00226   shader\_group\_create\_infos[2].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00227}00227   shader\_group\_create\_infos[2].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00228}00228 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00229}00229   shader\_groups.push\_back(shader\_group\_create\_infos[2]);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00230}00230 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00231}00231   shader\_group\_create\_infos[3].sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00232}00232       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00233}00233   shader\_group\_create\_infos[3].pNext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00234}00234   shader\_group\_create\_infos[3].type =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00235}00235       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_TRIANGLES\_HIT\_GROUP\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00236}00236   shader\_group\_create\_infos[3].generalShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00237}00237   shader\_group\_create\_infos[3].closestHitShader = eClosestHit;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00238}00238   shader\_group\_create\_infos[3].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00239}00239   shader\_group\_create\_infos[3].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00240}00240   shader\_group\_create\_infos[3].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00241}00241 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00242}00242   shader\_groups.push\_back(shader\_group\_create\_infos[3]);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00243}00243 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00244}00244   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00245}00245   pipeline\_layout\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00246}00246       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00247}00247   pipeline\_layout\_create\_info.setLayoutCount =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00248}00248       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00249}00249   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00250}00250   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00251}00251   pipeline\_layout\_create\_info.pPushConstantRanges = \&pc\_ranges;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00252}00252 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00253}00253   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00254}00254                                            \&pipeline\_layout\_create\_info,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00255}00255                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00256}00256   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline layout!"{}})}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00257}00257 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00258}00258   VkPipelineLibraryCreateInfoKHR pipeline\_library\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00259}00259   pipeline\_library\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00260}00260       VK\_STRUCTURE\_TYPE\_PIPELINE\_LIBRARY\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00261}00261   pipeline\_library\_create\_info.pNext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00262}00262   pipeline\_library\_create\_info.libraryCount = 0;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00263}00263   pipeline\_library\_create\_info.pLibraries = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00264}00264 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00265}00265   VkRayTracingPipelineCreateInfoKHR raytracing\_pipeline\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00266}00266   raytracing\_pipeline\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00267}00267       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_PIPELINE\_CREATE\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00268}00268   raytracing\_pipeline\_create\_info.pNext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00269}00269   raytracing\_pipeline\_create\_info.flags = 0;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00270}00270   raytracing\_pipeline\_create\_info.stageCount =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00271}00271       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00272}00272   raytracing\_pipeline\_create\_info.pStages = shader\_stages.data();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00273}00273   raytracing\_pipeline\_create\_info.groupCount =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00274}00274       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00275}00275   raytracing\_pipeline\_create\_info.pGroups = shader\_groups.data();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00276}00276   \textcolor{comment}{/*raytracing\_pipeline\_create\_info.pLibraryInfo =}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00277}00277 \textcolor{comment}{     \&pipeline\_library\_create\_info;}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00278}00278 \textcolor{comment}{        raytracing\_pipeline\_create\_info.pLibraryInterface = NULL;*/}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00279}00279   \textcolor{comment}{// TODO: HARDCODED FOR NOW;}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00280}00280   raytracing\_pipeline\_create\_info.maxPipelineRayRecursionDepth = 2;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00281}00281   raytracing\_pipeline\_create\_info.layout = pipeline\_layout;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00282}00282 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00283}00283   result = pvkCreateRayTracingPipelinesKHR(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00284}00284       device-\/>getLogicalDevice(), VK\_NULL\_HANDLE, VK\_NULL\_HANDLE, 1,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00285}00285       \&raytracing\_pipeline\_create\_info, \textcolor{keyword}{nullptr}, \&graphicsPipeline);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00286}00286 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00287}00287   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline!"{}})}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00288}00288 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00289}00289   vkDestroyShaderModule(device-\/>getLogicalDevice(), raygen\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00290}00290                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00291}00291   vkDestroyShaderModule(device-\/>getLogicalDevice(), raymiss\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00292}00292                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00293}00293   vkDestroyShaderModule(device-\/>getLogicalDevice(), raychit\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00294}00294                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00295}00295   vkDestroyShaderModule(device-\/>getLogicalDevice(), shadow\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00296}00296                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00297}00297 \}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00298}00298 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00299}00299 \textcolor{keywordtype}{void} Raytracing::createSBT() \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00300}00300   \textcolor{comment}{// load in functionality for raytracing shader group handles}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00301}00301   PFN\_vkGetRayTracingShaderGroupHandlesKHR}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00302}00302       pvkGetRayTracingShaderGroupHandlesKHR =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00303}00303           (PFN\_vkGetRayTracingShaderGroupHandlesKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00304}00304               device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00305}00305               \textcolor{stringliteral}{"{}vkGetRayTracingShaderGroupHandlesKHR"{}});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00306}00306 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00307}00307   raytracing\_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00308}00308   raytracing\_properties.sType =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00309}00309       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_RAY\_TRACING\_PIPELINE\_PROPERTIES\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00310}00310 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00311}00311   VkPhysicalDeviceProperties2 properties\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00312}00312   properties.sType = VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_PROPERTIES\_2;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00313}00313   properties.pNext = \&raytracing\_properties;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00314}00314 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00315}00315   vkGetPhysicalDeviceProperties2(device-\/>getPhysicalDevice(), \&properties);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00316}00316 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00317}00317   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00318}00318   uint32\_t handle\_size\_aligned =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00319}00319       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00320}00320 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00321}00321   uint32\_t group\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00322}00322   uint32\_t sbt\_size = group\_count * handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00323}00323 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00324}00324   std::vector<uint8\_t> handles(sbt\_size);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00325}00325 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00326}00326   VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00327}00327       device-\/>getLogicalDevice(), graphicsPipeline, 0, group\_count, sbt\_size,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00328}00328       handles.data());}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00329}00329   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to get ray tracing shader group handles!"{}})}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00330}00330 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00331}00331   const VkBufferUsageFlags bufferUsageFlags =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00332}00332       VK\_BUFFER\_USAGE\_SHADER\_BINDING\_TABLE\_BIT\_KHR |}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00333}00333       VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00334}00334   const VkMemoryPropertyFlags memoryUsageFlags =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00335}00335       VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00336}00336       VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00337}00337 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00338}00338   raygenShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00339}00339                                         memoryUsageFlags);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00340}00340 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00341}00341   missShaderBindingTableBuffer.create(device, 2 * handle\_size, bufferUsageFlags,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00342}00342                                       memoryUsageFlags);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00343}00343 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00344}00344   hitShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00345}00345                                      memoryUsageFlags);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00346}00346 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00347}00347   \textcolor{keywordtype}{void}* mapped\_raygen = \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00348}00348   vkMapMemory(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00349}00349               raygenShaderBindingTableBuffer.getBufferMemory(), 0,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00350}00350               VK\_WHOLE\_SIZE, 0, \&mapped\_raygen);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00351}00351 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00352}00352   \textcolor{keywordtype}{void}* mapped\_miss = \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00353}00353   vkMapMemory(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00354}00354               missShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00355}00355               0, \&mapped\_miss);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00356}00356 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00357}00357   \textcolor{keywordtype}{void}* mapped\_rchit = \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00358}00358   vkMapMemory(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00359}00359               hitShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00360}00360               0, \&mapped\_rchit);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00361}00361 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00362}00362   memcpy(mapped\_raygen, handles.data(), handle\_size);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00363}00363   memcpy(mapped\_miss, handles.data() + handle\_size\_aligned, handle\_size * 2);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00364}00364   memcpy(mapped\_rchit, handles.data() + handle\_size\_aligned * 3, handle\_size);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00365}00365 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00011}00011 Raytracing::Raytracing() \{\}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00012}00012 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00013}00013 \textcolor{keywordtype}{void} Raytracing::init(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00014}00014     VulkanDevice* device,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00015}00015     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00016}00016   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00018}00018   createPCRange();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00019}00019   createGraphicsPipeline(descriptorSetLayouts);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00020}00020   createSBT();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00021}00021 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00023}00023 \textcolor{keywordtype}{void} Raytracing::shaderHotReload(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00024}00024     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00025}00025   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00026}00026   createGraphicsPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00027}00027 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00028}00028 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00029}00029 \textcolor{keywordtype}{void} Raytracing::recordCommands(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00030}00030     VkCommandBuffer\& commandBuffer, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00031}00031     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00032}00032   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00033}00033   uint32\_t handle\_size\_aligned =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00034}00034       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00036}00036   PFN\_vkGetBufferDeviceAddressKHR vkGetBufferDeviceAddressKHR =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00037}00037       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkGetBufferDeviceAddressKHR\textcolor{keyword}{>}(vkGetDeviceProcAddr(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00038}00038           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddressKHR"{}}));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00040}00040   PFN\_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00041}00041       (PFN\_vkCmdTraceRaysKHR)vkGetDeviceProcAddr(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00042}00042                                                  \textcolor{stringliteral}{"{}vkCmdTraceRaysKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00044}00044   VkBufferDeviceAddressInfoKHR bufferDeviceAI\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00045}00045   bufferDeviceAI.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00046}00046   bufferDeviceAI.buffer = raygenShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00047}00047 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00048}00048   rgen\_region.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00049}00049       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00050}00050   rgen\_region.stride = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00051}00051   rgen\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00052}00052 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00053}00053   bufferDeviceAI.buffer = missShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00054}00054   miss\_region.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00055}00055       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00056}00056   miss\_region.stride = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00057}00057   miss\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00058}00058 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00059}00059   bufferDeviceAI.buffer = hitShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00060}00060   hit\_region.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00061}00061       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00062}00062   hit\_region.stride = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00063}00063   hit\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00065}00065   \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00066}00066   pc.clear\_color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00067}00067   \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00068}00068   vkCmdPushConstants(commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00069}00069                      VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00070}00070                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00071}00071                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00072}00072                      0, \textcolor{keyword}{sizeof}(PushConstantRaytracing), \&pc);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00073}00073 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00074}00074   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00075}00075                     graphicsPipeline);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00076}00076 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00077}00077   vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00078}00078                           pipeline\_layout, 0,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00079}00079                           \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00080}00080                           descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00081}00081 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00082}00082   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00083}00083   pvkCmdTraceRaysKHR(commandBuffer, \&rgen\_region, \&miss\_region, \&hit\_region,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00084}00084                      \&call\_region, swap\_chain\_extent.width,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00085}00085                      swap\_chain\_extent.height, 1);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00086}00086 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00087}00087 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00088}00088 \textcolor{keywordtype}{void} Raytracing::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00089}00089   shaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00090}00090   raygenShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00091}00091   missShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00092}00092   hitShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00093}00093 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00094}00094   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00095}00095   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00096}00096 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00097}00097 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00098}00098 Raytracing::\string~Raytracing() \{\}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00099}00099 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00100}00100 \textcolor{keywordtype}{void} Raytracing::createPCRange() \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00101}00101   \textcolor{comment}{// define push constant values (no 'create' needed)}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00102}00102   pc\_ranges.stageFlags = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00103}00103                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00104}00104                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00105}00105   pc\_ranges.offset = 0;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00106}00106   pc\_ranges.size = \textcolor{keyword}{sizeof}(PushConstantRaytracing);  \textcolor{comment}{// size of data being passed}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00107}00107 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00108}00108 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00109}00109 \textcolor{keywordtype}{void} Raytracing::createGraphicsPipeline(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00110}00110     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00111}00111   PFN\_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00112}00112       (PFN\_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00113}00113           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateRayTracingPipelinesKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00114}00114 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00115}00115   std::stringstream raytracing\_shader\_dir;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00116}00116   raytracing\_shader\_dir << CMAKELISTS\_DIR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00117}00117   raytracing\_shader\_dir << \textcolor{stringliteral}{"{}/Resources/Shader/raytracing/"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00118}00118 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00119}00119   std::string raygen\_shader = \textcolor{stringliteral}{"{}raytrace.rgen"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00120}00120   std::string chit\_shader = \textcolor{stringliteral}{"{}raytrace.rchit"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00121}00121   std::string miss\_shader = \textcolor{stringliteral}{"{}raytrace.rmiss"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00122}00122   std::string shadow\_shader = \textcolor{stringliteral}{"{}shadow.rmiss"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00123}00123 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00124}00124   ShaderHelper shaderHelper;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00125}00125   shaderHelper.compileShader(raytracing\_shader\_dir.str(), raygen\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00126}00126   shaderHelper.compileShader(raytracing\_shader\_dir.str(), chit\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00127}00127   shaderHelper.compileShader(raytracing\_shader\_dir.str(), miss\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00128}00128   shaderHelper.compileShader(raytracing\_shader\_dir.str(), shadow\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00129}00129 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00130}00130   File raygenFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00131}00131       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), raygen\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00132}00132   File raychitFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00133}00133       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), chit\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00134}00134   File raymissFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00135}00135       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), miss\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00136}00136   File shadowFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00137}00137       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), shadow\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00138}00138 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00139}00139   std::vector<char> raygen\_shader\_code = raygenFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00140}00140   std::vector<char> raychit\_shader\_code = raychitFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00141}00141   std::vector<char> raymiss\_shader\_code = raymissFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00142}00142   std::vector<char> shadow\_shader\_code = shadowFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00143}00143 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00144}00144   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00145}00145   VkShaderModule raygen\_shader\_module =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00146}00146       shaderHelper.createShaderModule(device, raygen\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00147}00147   VkShaderModule raychit\_shader\_module =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00148}00148       shaderHelper.createShaderModule(device, raychit\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00149}00149   VkShaderModule raymiss\_shader\_module =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00150}00150       shaderHelper.createShaderModule(device, raymiss\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00151}00151   VkShaderModule shadow\_shader\_module =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00152}00152       shaderHelper.createShaderModule(device, shadow\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00153}00153 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00154}00154   \textcolor{comment}{// create all shader stage infos for creating a group}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00155}00155   VkPipelineShaderStageCreateInfo rgen\_shader\_stage\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00156}00156   rgen\_shader\_stage\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00157}00157       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00158}00158   rgen\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00159}00159   rgen\_shader\_stage\_info.module = raygen\_shader\_module;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00160}00160   rgen\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00161}00161 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00162}00162   VkPipelineShaderStageCreateInfo rmiss\_shader\_stage\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00163}00163   rmiss\_shader\_stage\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00164}00164       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00165}00165   rmiss\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00166}00166   rmiss\_shader\_stage\_info.module = raymiss\_shader\_module;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00167}00167   rmiss\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00168}00168 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00169}00169   VkPipelineShaderStageCreateInfo shadow\_shader\_stage\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00170}00170   shadow\_shader\_stage\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00171}00171       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00172}00172   shadow\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00173}00173   shadow\_shader\_stage\_info.module = shadow\_shader\_module;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00174}00174   shadow\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00175}00175 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00176}00176   VkPipelineShaderStageCreateInfo rchit\_shader\_stage\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00177}00177   rchit\_shader\_stage\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00178}00178       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00179}00179   rchit\_shader\_stage\_info.stage = VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00180}00180   rchit\_shader\_stage\_info.module = raychit\_shader\_module;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00181}00181   rchit\_shader\_stage\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00182}00182 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00183}00183   \textcolor{comment}{// we have all shader stages together}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00184}00184   std::array<VkPipelineShaderStageCreateInfo, 4> shader\_stages = \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00185}00185       rgen\_shader\_stage\_info, rmiss\_shader\_stage\_info, shadow\_shader\_stage\_info,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00186}00186       rchit\_shader\_stage\_info\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00187}00187 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00188}00188   \textcolor{keyword}{enum} StageIndices \{ eRaygen, eMiss, eMiss2, eClosestHit, eShaderGroupCount \};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00189}00189 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00190}00190   shader\_groups.reserve(4);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00191}00191   VkRayTracingShaderGroupCreateInfoKHR shader\_group\_create\_infos[4];}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00192}00192 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00193}00193   shader\_group\_create\_infos[0].sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00194}00194       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00195}00195   shader\_group\_create\_infos[0].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00196}00196   shader\_group\_create\_infos[0].type =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00197}00197       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00198}00198   shader\_group\_create\_infos[0].generalShader = eRaygen;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00199}00199   shader\_group\_create\_infos[0].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00200}00200   shader\_group\_create\_infos[0].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00201}00201   shader\_group\_create\_infos[0].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00202}00202   shader\_group\_create\_infos[0].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00203}00203 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00204}00204   shader\_groups.push\_back(shader\_group\_create\_infos[0]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00205}00205 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00206}00206   shader\_group\_create\_infos[1].sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00207}00207       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00208}00208   shader\_group\_create\_infos[1].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00209}00209   shader\_group\_create\_infos[1].type =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00210}00210       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00211}00211   shader\_group\_create\_infos[1].generalShader = eMiss;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00212}00212   shader\_group\_create\_infos[1].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00213}00213   shader\_group\_create\_infos[1].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00214}00214   shader\_group\_create\_infos[1].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00215}00215   shader\_group\_create\_infos[1].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00216}00216 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00217}00217   shader\_groups.push\_back(shader\_group\_create\_infos[1]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00218}00218 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00219}00219   shader\_group\_create\_infos[2].sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00220}00220       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00221}00221   shader\_group\_create\_infos[2].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00222}00222   shader\_group\_create\_infos[2].type =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00223}00223       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_GENERAL\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00224}00224   shader\_group\_create\_infos[2].generalShader = eMiss2;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00225}00225   shader\_group\_create\_infos[2].closestHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00226}00226   shader\_group\_create\_infos[2].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00227}00227   shader\_group\_create\_infos[2].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00228}00228   shader\_group\_create\_infos[2].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00229}00229 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00230}00230   shader\_groups.push\_back(shader\_group\_create\_infos[2]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00231}00231 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00232}00232   shader\_group\_create\_infos[3].sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00233}00233       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00234}00234   shader\_group\_create\_infos[3].pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00235}00235   shader\_group\_create\_infos[3].type =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00236}00236       VK\_RAY\_TRACING\_SHADER\_GROUP\_TYPE\_TRIANGLES\_HIT\_GROUP\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00237}00237   shader\_group\_create\_infos[3].generalShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00238}00238   shader\_group\_create\_infos[3].closestHitShader = eClosestHit;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00239}00239   shader\_group\_create\_infos[3].anyHitShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00240}00240   shader\_group\_create\_infos[3].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00241}00241   shader\_group\_create\_infos[3].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00242}00242 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00243}00243   shader\_groups.push\_back(shader\_group\_create\_infos[3]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00244}00244 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00245}00245   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00246}00246   pipeline\_layout\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00247}00247       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00248}00248   pipeline\_layout\_create\_info.setLayoutCount =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00249}00249       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00250}00250   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00251}00251   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00252}00252   pipeline\_layout\_create\_info.pPushConstantRanges = \&pc\_ranges;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00253}00253 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00254}00254   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00255}00255                                            \&pipeline\_layout\_create\_info,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00256}00256                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00257}00257   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline layout!"{}})}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00258}00258 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00259}00259   VkPipelineLibraryCreateInfoKHR pipeline\_library\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00260}00260   pipeline\_library\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00261}00261       VK\_STRUCTURE\_TYPE\_PIPELINE\_LIBRARY\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00262}00262   pipeline\_library\_create\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00263}00263   pipeline\_library\_create\_info.libraryCount = 0;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00264}00264   pipeline\_library\_create\_info.pLibraries = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00265}00265 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00266}00266   VkRayTracingPipelineCreateInfoKHR raytracing\_pipeline\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00267}00267   raytracing\_pipeline\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00268}00268       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_PIPELINE\_CREATE\_INFO\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00269}00269   raytracing\_pipeline\_create\_info.pNext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00270}00270   raytracing\_pipeline\_create\_info.flags = 0;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00271}00271   raytracing\_pipeline\_create\_info.stageCount =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00272}00272       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00273}00273   raytracing\_pipeline\_create\_info.pStages = shader\_stages.data();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00274}00274   raytracing\_pipeline\_create\_info.groupCount =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00275}00275       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00276}00276   raytracing\_pipeline\_create\_info.pGroups = shader\_groups.data();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00277}00277   \textcolor{comment}{/*raytracing\_pipeline\_create\_info.pLibraryInfo =}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00278}00278 \textcolor{comment}{     \&pipeline\_library\_create\_info;}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00279}00279 \textcolor{comment}{        raytracing\_pipeline\_create\_info.pLibraryInterface = NULL;*/}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00280}00280   \textcolor{comment}{// TODO: HARDCODED FOR NOW;}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00281}00281   raytracing\_pipeline\_create\_info.maxPipelineRayRecursionDepth = 2;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00282}00282   raytracing\_pipeline\_create\_info.layout = pipeline\_layout;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00283}00283 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00284}00284   result = pvkCreateRayTracingPipelinesKHR(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00285}00285       device-\/>getLogicalDevice(), VK\_NULL\_HANDLE, VK\_NULL\_HANDLE, 1,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00286}00286       \&raytracing\_pipeline\_create\_info, \textcolor{keyword}{nullptr}, \&graphicsPipeline);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00287}00287 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00288}00288   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline!"{}})}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00289}00289 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00290}00290   vkDestroyShaderModule(device-\/>getLogicalDevice(), raygen\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00291}00291                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00292}00292   vkDestroyShaderModule(device-\/>getLogicalDevice(), raymiss\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00293}00293                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00294}00294   vkDestroyShaderModule(device-\/>getLogicalDevice(), raychit\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00295}00295                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00296}00296   vkDestroyShaderModule(device-\/>getLogicalDevice(), shadow\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00297}00297                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00298}00298 \}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00299}00299 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00300}00300 \textcolor{keywordtype}{void} Raytracing::createSBT() \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00301}00301   \textcolor{comment}{// load in functionality for raytracing shader group handles}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00302}00302   PFN\_vkGetRayTracingShaderGroupHandlesKHR}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00303}00303       pvkGetRayTracingShaderGroupHandlesKHR =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00304}00304           (PFN\_vkGetRayTracingShaderGroupHandlesKHR)vkGetDeviceProcAddr(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00305}00305               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00306}00306               \textcolor{stringliteral}{"{}vkGetRayTracingShaderGroupHandlesKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00307}00307 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00308}00308   raytracing\_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00309}00309   raytracing\_properties.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00310}00310       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_RAY\_TRACING\_PIPELINE\_PROPERTIES\_KHR;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00311}00311 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00312}00312   VkPhysicalDeviceProperties2 properties\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00313}00313   properties.sType = VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_PROPERTIES\_2;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00314}00314   properties.pNext = \&raytracing\_properties;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00315}00315 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00316}00316   vkGetPhysicalDeviceProperties2(device-\/>getPhysicalDevice(), \&properties);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00317}00317 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00318}00318   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00319}00319   uint32\_t handle\_size\_aligned =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00320}00320       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00321}00321 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00322}00322   uint32\_t group\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00323}00323   uint32\_t sbt\_size = group\_count * handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00324}00324 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00325}00325   std::vector<uint8\_t> handles(sbt\_size);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00326}00326 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00327}00327   VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00328}00328       device-\/>getLogicalDevice(), graphicsPipeline, 0, group\_count, sbt\_size,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00329}00329       handles.data());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00330}00330   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to get ray tracing shader group handles!"{}})}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00331}00331 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00332}00332   const VkBufferUsageFlags bufferUsageFlags =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00333}00333       VK\_BUFFER\_USAGE\_SHADER\_BINDING\_TABLE\_BIT\_KHR |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00334}00334       VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00335}00335   const VkMemoryPropertyFlags memoryUsageFlags =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00336}00336       VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00337}00337       VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00338}00338 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00339}00339   raygenShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00340}00340                                         memoryUsageFlags);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00341}00341 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00342}00342   missShaderBindingTableBuffer.create(device, 2 * handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00343}00343                                       memoryUsageFlags);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00344}00344 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00345}00345   hitShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00346}00346                                      memoryUsageFlags);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00347}00347 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00348}00348   \textcolor{keywordtype}{void}* mapped\_raygen = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00349}00349   vkMapMemory(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00350}00350               raygenShaderBindingTableBuffer.getBufferMemory(), 0,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00351}00351               VK\_WHOLE\_SIZE, 0, \&mapped\_raygen);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00352}00352 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00353}00353   \textcolor{keywordtype}{void}* mapped\_miss = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00354}00354   vkMapMemory(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00355}00355               missShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00356}00356               0, \&mapped\_miss);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00357}00357 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00358}00358   \textcolor{keywordtype}{void}* mapped\_rchit = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00359}00359   vkMapMemory(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00360}00360               hitShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00361}00361               0, \&mapped\_rchit);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00362}00362 }
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00363}00363   memcpy(mapped\_raygen, handles.data(), handle\_size);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00364}00364   memcpy(mapped\_miss, handles.data() + handle\_size\_aligned, handle\_size * 2);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00365}00365   memcpy(mapped\_rchit, handles.data() + handle\_size\_aligned * 3, handle\_size);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00366}00366 \}}
 
 \end{DoxyCode}
