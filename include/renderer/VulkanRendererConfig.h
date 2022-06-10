@@ -10,6 +10,8 @@
 #define VULKAN_VERSION_MINOR "3"
 
 #define GLSLC_EXE "C:/VulkanSDK/1.3.204.1/Bin/glslc.exe"
-#define CMAKELISTS_DIR "C:/Users/jonas/Desktop/GraphicsEngineVulkan"
+
+#define CMAKELISTS_DIR "C:/Program Files (x86)/GraphicsEngine/Resources/"
+#define RESOURCE_PATH "C:/Users/jonas/Desktop/GraphicsEngineVulkan"
 
 #endif

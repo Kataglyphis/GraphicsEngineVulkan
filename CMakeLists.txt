@@ -143,10 +143,6 @@ find_package(Vulkan REQUIRED)
 set(VULKAN_VERSION_MAJOR 1)
 set(VULKAN_VERSION_MINOR 3)
 
-# we are using this dir strings for removing hard coded file locations
-# at c++ side
-configure_file(VulkanRendererConfig.h.in "${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/VulkanRendererConfig.h")
-
 add_subdirectory(ExternalLib)
 
 # control where the static and shared libraries are built so that on windows
@@ -564,14 +560,21 @@ add_custom_target(${COMPILE_TEST_SUITE}_Runner
 add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
 
 # for correct library output needed
-if(UNIX)
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-else()
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-endif()
+# if(UNIX)
+install(TARGETS ${PROJECT_NAME}
+        CONFIGURATIONS Release
+        RUNTIME DESTINATION bin)
+#else()
+#install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+#endif()
 
 set(CMAKE_INSTALL_DATADIR Resources/)
 install(DIRECTORY Resources/ DESTINATION ${CMAKE_INSTALL_DATADIR})
+
+# we are using this dir strings for removing hard coded file locations
+# at c++ side
+configure_file(VulkanRendererConfig.h.in "${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/VulkanRendererConfig.h")
+
 
 include(InstallRequiredSystemLibraries)
 
