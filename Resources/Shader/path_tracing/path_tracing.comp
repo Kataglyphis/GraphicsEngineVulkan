@@ -10,7 +10,7 @@
 
 #include "../common/raycommon.glsl"
 
-#include "../../../include/common/host_device_shared_vars.h"
+#include "../hostDevice/host_device_shared_vars.h"
 
 #include "../brdf/unreal4.glsl"
 #include "../brdf/disney.glsl"

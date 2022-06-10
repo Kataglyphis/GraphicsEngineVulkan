@@ -6,7 +6,7 @@
 
 #include "../common/raycommon.glsl"
 
-#include "../../../include/common/host_device_shared_vars.h"
+#include "../hostDevice/host_device_shared_vars.h"
 
 #include "../../../include/renderer/GlobalUBO.h"
 #include "../../../include/renderer/SceneUBO.h"

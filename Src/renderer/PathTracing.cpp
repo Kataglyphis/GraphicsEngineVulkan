@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <filesystem>
 
 #include "File.h"
 #include "ShaderHelper.h"
@@ -205,8 +206,10 @@ void PathTracing::createPipeline(
 
   // create pipeline
   std::stringstream pathTracing_shader_dir;
-  pathTracing_shader_dir << CMAKELISTS_DIR;
-  pathTracing_shader_dir << "/Resources/Shader/path_tracing/";
+  std::filesystem::path cwd = std::filesystem::current_path();
+  pathTracing_shader_dir << cwd.string();
+  pathTracing_shader_dir << RELATIVE_RESOURCE_PATH;
+  pathTracing_shader_dir << "Shader/path_tracing/";
 
   std::string pathTracing_shader = "path_tracing.comp";
 

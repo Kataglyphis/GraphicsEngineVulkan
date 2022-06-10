@@ -2,6 +2,7 @@
 
 #include <array>
 #include <vector>
+#include <filesystem>
 
 #include "File.h"
 #include "MemoryHelper.h"
@@ -113,8 +114,10 @@ void Raytracing::createGraphicsPipeline(
           device->getLogicalDevice(), "vkCreateRayTracingPipelinesKHR");
 
   std::stringstream raytracing_shader_dir;
-  raytracing_shader_dir << CMAKELISTS_DIR;
-  raytracing_shader_dir << "/Resources/Shader/raytracing/";
+  std::filesystem::path cwd = std::filesystem::current_path();
+  raytracing_shader_dir << cwd.string();
+  raytracing_shader_dir << RELATIVE_RESOURCE_PATH;
+  raytracing_shader_dir << "Shader/raytracing/";
 
   std::string raygen_shader = "raytrace.rgen";
   std::string chit_shader = "raytrace.rchit";
