@@ -1,42 +1,46 @@
 #include <SceneConfig.h>
 #include "VulkanRendererConfig.h"
 
+#include <filesystem>
 //#define SULO_MODE 1
 
 namespace sceneConfig {
 
 std::string getModelFile() {
   std::stringstream modelFile;
-  modelFile << CMAKELISTS_DIR;
+  std::filesystem::path cwd = std::filesystem::current_path();
+  modelFile << cwd.string();
+  modelFile << RELATIVE_RESOURCE_PATH;
+
 #if NDEBUG
-  modelFile << "/Resources/Model/crytek-sponza/";
+  modelFile << "Model/crytek-sponza/";
   modelFile << "sponza_triag.obj";
 
 #else
 #ifdef SULO_MODE
-  modelFile << "/Resources/Model/Sulo/WolfStahl/";
+  modelFile << "Model/Sulo/WolfStahl/";
   //modelFile << "Wolf-Stahl.obj";
   modelFile << "SuloLongDongLampe_v2.obj";
 #else
-  modelFile << "/Resources/Model/VikingRoom/";
+  modelFile << "Model/VikingRoom/";
   modelFile << "viking_room.obj";
 #endif
 #endif
 
   return modelFile.str();
   // std::string modelFile =
-  // "../Resources/Model/crytek-sponza/sponza_triag.obj"; std::string modelFile
-  // = "../Resources/Model/Dinosaurs/dinosaurs.obj"; std::string modelFile =
-  // "../Resources/Model/Pillum/PilumPainting_export.obj"; std::string modelFile
-  // = "../Resources/Model/sibenik/sibenik.obj"; std::string modelFile =
-  // "../Resources/Model/sportsCar/sportsCar.obj"; std::string modelFile =
-  // "../Resources/Model/StanfordDragon/dragon.obj"; std::string modelFile =
-  // "../Resources/Model/CornellBox/CornellBox-Sphere.obj"; std::string
-  // modelFile = "../Resources/Model/bunny/bunny.obj"; std::string modelFile =
-  // "../Resources/Model/buddha/buddha.obj"; std::string modelFile =
-  // "../Resources/Model/bmw/bmw.obj"; std::string modelFile =
-  // "../Resources/Model/testScene.obj"; std::string modelFile =
-  // "../Resources/Model/San_Miguel/san-miguel-low-poly.obj";
+  // "Model/crytek-sponza/sponza_triag.obj"; std::string modelFile
+  // = "Model/Dinosaurs/dinosaurs.obj"; std::string modelFile =
+  // "Model/Pillum/PilumPainting_export.obj"; std::string modelFile
+  // = "Model/sibenik/sibenik.obj"; std::string modelFile =
+  // "Model/sportsCar/sportsCar.obj"; std::string modelFile =
+  // "Model/StanfordDragon/dragon.obj"; std::string modelFile =
+  // "Model/CornellBox/CornellBox-Sphere.obj"; std::string
+  // "Model/bunny/bunny.obj"; std::string modelFile =
+  // "Model/buddha/buddha.obj"; std::string modelFile =
+  // "Model/bmw/bmw.obj"; std::string modelFile =
+  // "Model/testScene.obj"; std::string modelFile =
+  // "Model/San_Miguel/san-miguel-low-poly.obj";
 }
 
 glm::mat4 getModelMatrix() {

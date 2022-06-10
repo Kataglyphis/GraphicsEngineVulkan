@@ -1,553 +1,556 @@
 \hypertarget{_rasterizer_8cpp_source}{}\doxysection{Rasterizer.\+cpp}
-\label{_rasterizer_8cpp_source}\index{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp@{C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp}}
+\label{_rasterizer_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp}}
 \mbox{\hyperlink{_rasterizer_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Rasterizer.h"{}}}
 \DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00002}00002 }
 \DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <array>}}
 \DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include <vector>}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00005}00005 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}File.h"{}}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}FormatHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}Vertex.h"{}}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00010}00010 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00011}00011 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00012}00012 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00013}00013 Rasterizer::Rasterizer() \{\}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00014}00014 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00015}00015 \textcolor{keywordtype}{void} Rasterizer::init(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00016}00016     VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00017}00017     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00018}00018     VkCommandPool\& commandPool) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00019}00019   this-\/>device = device;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00020}00020   this-\/>vulkanSwapChain = vulkanSwapChain;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00021}00021 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00022}00022   createTextures(commandPool);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00023}00023   createRenderPass();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00024}00024   createPushConstantRange();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00025}00025   createGraphicsPipeline(descriptorSetLayouts);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00026}00026   createFramebuffer();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00027}00027 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00028}00028 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00029}00029 \textcolor{keywordtype}{void} Rasterizer::shaderHotReload(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00030}00030     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00031}00031   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00032}00032   createGraphicsPipeline(descriptor\_set\_layouts);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00033}00033 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00034}00034 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00035}00035 Texture\& Rasterizer::getOffscreenTexture(uint32\_t index) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00036}00036   \textcolor{keywordflow}{return} offscreenTextures[index];}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00037}00037 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00038}00038 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00039}00039 \textcolor{keywordtype}{void} Rasterizer::setPushConstant(PushConstantRasterizer pushConstant) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00040}00040   this-\/>pushConstant = pushConstant;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00041}00041 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00042}00042 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00043}00043 \textcolor{keywordtype}{void} Rasterizer::recordCommands(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00044}00044     VkCommandBuffer\& commandBuffer, uint32\_t image\_index, Scene* scene,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00045}00045     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00046}00046   \textcolor{comment}{// information about how to begin a render pass (only needed for graphical}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00047}00047   \textcolor{comment}{// applications)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00048}00048   VkRenderPassBeginInfo render\_pass\_begin\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00049}00049   render\_pass\_begin\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_BEGIN\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00050}00050   render\_pass\_begin\_info.renderPass = render\_pass;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00051}00051   render\_pass\_begin\_info.renderArea.offset = \{0, 0\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00052}00052   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00053}00053   render\_pass\_begin\_info.renderArea.extent = swap\_chain\_extent;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00054}00054 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00055}00055   \textcolor{comment}{// make sure the order you put the values into the array matches with the}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00056}00056   \textcolor{comment}{// attchment order you have defined previous}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00057}00057   std::array<VkClearValue, 2> clear\_values = \{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00058}00058   clear\_values[0].color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00059}00059   clear\_values[1].depthStencil = \{1.0f, 0\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00060}00060 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00061}00061   render\_pass\_begin\_info.pClearValues = clear\_values.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00062}00062   render\_pass\_begin\_info.clearValueCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00063}00063       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(clear\_values.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00064}00064   render\_pass\_begin\_info.framebuffer = framebuffer[image\_index];}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00065}00065 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00066}00066   \textcolor{comment}{// begin render pass}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00067}00067   vkCmdBeginRenderPass(commandBuffer, \&render\_pass\_begin\_info,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00068}00068                        VK\_SUBPASS\_CONTENTS\_INLINE);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00069}00069 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00070}00070   \textcolor{comment}{// bind pipeline to be used in render pass}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00071}00071   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00072}00072                     graphics\_pipeline);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00073}00073 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00074}00074   \textcolor{keywordflow}{for} (uint32\_t m = 0; m < static\_cast<uint32\_t>(scene-\/>getModelCount()); m++) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00075}00075     \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00076}00076     pushConstant.model = scene-\/>getModelMatrix(0);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00077}00077     \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00078}00078     vkCmdPushConstants(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00079}00079         commandBuffer, pipeline\_layout,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00080}00080         VK\_SHADER\_STAGE\_VERTEX\_BIT,      \textcolor{comment}{// stage to push constants to}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00081}00081         0,                               \textcolor{comment}{// offset to push constants to update}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00082}00082         \textcolor{keyword}{sizeof}(PushConstantRasterizer),  \textcolor{comment}{// size of data being pushed}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00083}00083         \&pushConstant);  \textcolor{comment}{// using model of current mesh (can be array)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00084}00084 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00085}00085     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k = 0; k < scene-\/>getMeshCount(m); k++) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00086}00086       \textcolor{comment}{// list of vertex buffers we want to draw}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00087}00087       VkBuffer vertex\_buffers[] = \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00088}00088           scene-\/>getVertexBuffer(m, k)\};  \textcolor{comment}{// buffers to bind}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00089}00089       VkDeviceSize offsets[] = \{0\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00090}00090       vkCmdBindVertexBuffers(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00091}00091           commandBuffer, 0, 1, vertex\_buffers,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00092}00092           offsets);  \textcolor{comment}{// command to bind vertex buffer before drawing with them}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00093}00093 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00094}00094       \textcolor{comment}{// bind mesh index buffer with 0 offset and using the uint32 type}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00095}00095       vkCmdBindIndexBuffer(commandBuffer, scene-\/>getIndexBuffer(m, k), 0,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00096}00096                            VK\_INDEX\_TYPE\_UINT32);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00097}00097 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00098}00098       \textcolor{comment}{// bind descriptor sets}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00099}00099       vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00100}00100                               pipeline\_layout, 0,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00101}00101                               \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00102}00102                               descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00103}00103 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00104}00104       \textcolor{comment}{// execute pipeline}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00105}00105       vkCmdDrawIndexed(commandBuffer,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00106}00106                        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(scene-\/>getIndexCount(m, k)), 1, 0,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00107}00107                        0, 0);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00108}00108     \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00109}00109   \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00110}00110 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00111}00111   \textcolor{comment}{// end render pass}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00112}00112   vkCmdEndRenderPass(commandBuffer);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00113}00113 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00114}00114 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00115}00115 \textcolor{keywordtype}{void} Rasterizer::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00116}00116   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} framebuffer : framebuffer) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00117}00117     vkDestroyFramebuffer(device-\/>getLogicalDevice(), framebuffer, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00118}00118   \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00119}00119 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00120}00120   \textcolor{keywordflow}{for} (Texture texture : offscreenTextures) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00121}00121     texture.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00122}00122   \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00123}00123 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00124}00124   depthBufferImage.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00125}00125 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00126}00126   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00127}00127   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00128}00128   vkDestroyRenderPass(device-\/>getLogicalDevice(), render\_pass, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00129}00129 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00130}00130 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00131}00131 Rasterizer::\string~Rasterizer() \{\}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00132}00132 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00133}00133 \textcolor{keywordtype}{void} Rasterizer::createRenderPass() \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00134}00134   \textcolor{comment}{// Color attachment of render pass}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00135}00135   VkAttachmentDescription color\_attachment\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00136}00136   \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00137}00137       vulkanSwapChain-\/>getSwapChainFormat();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00138}00138   color\_attachment.format =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00139}00139       swap\_chain\_image\_format;  \textcolor{comment}{// format to use for attachment}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00140}00140   color\_attachment.samples =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00141}00141       VK\_SAMPLE\_COUNT\_1\_BIT;  \textcolor{comment}{// number of samples to write for multisampling}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00142}00142   color\_attachment.loadOp =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00143}00143       VK\_ATTACHMENT\_LOAD\_OP\_CLEAR;  \textcolor{comment}{// describes what to do with attachment}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00144}00144                                     \textcolor{comment}{// before rendering}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00145}00145   color\_attachment.storeOp =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00146}00146       VK\_ATTACHMENT\_STORE\_OP\_STORE;  \textcolor{comment}{// describes what to do with attachment}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00147}00147                                      \textcolor{comment}{// after rendering}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00148}00148   color\_attachment.stencilLoadOp =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00149}00149       VK\_ATTACHMENT\_LOAD\_OP\_DONT\_CARE;  \textcolor{comment}{// describes what to do with stencil}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00150}00150                                         \textcolor{comment}{// before rendering}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00151}00151   color\_attachment.stencilStoreOp =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00152}00152       VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;  \textcolor{comment}{// describes what to do with stencil}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00153}00153                                          \textcolor{comment}{// after rendering}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00154}00154 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00155}00155   \textcolor{comment}{// framebuffer data will be stored as an image, but images can be given}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00156}00156   \textcolor{comment}{// different layouts to give optimal use for certain operations}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00157}00157   color\_attachment.initialLayout =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00158}00158       VK\_IMAGE\_LAYOUT\_GENERAL;  \textcolor{comment}{// image data layout before render pass starts}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00159}00159   color\_attachment.finalLayout =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00160}00160       VK\_IMAGE\_LAYOUT\_GENERAL;  \textcolor{comment}{// image data layout after render pass (to}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00161}00161                                 \textcolor{comment}{// change to)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00162}00162 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00163}00163   \textcolor{comment}{// depth attachment of render pass}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00164}00164   VkAttachmentDescription depth\_attachment\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00165}00165   depth\_attachment.format = choose\_supported\_format(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00166}00166       device-\/>getPhysicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00167}00167       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00168}00168        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00169}00169       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00170}00170 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00171}00171   depth\_attachment.samples = VK\_SAMPLE\_COUNT\_1\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00172}00172   depth\_attachment.loadOp = VK\_ATTACHMENT\_LOAD\_OP\_CLEAR;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00173}00173   depth\_attachment.storeOp = VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00174}00174   depth\_attachment.stencilLoadOp = VK\_ATTACHMENT\_LOAD\_OP\_DONT\_CARE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00175}00175   depth\_attachment.stencilStoreOp = VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00176}00176   depth\_attachment.initialLayout = VK\_IMAGE\_LAYOUT\_UNDEFINED;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00177}00177   depth\_attachment.finalLayout =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00178}00178       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00179}00179 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00180}00180   \textcolor{comment}{// attachment reference uses an attachment index that refers to index in the}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00181}00181   \textcolor{comment}{// attachment list passed to renderPassCreateInfo}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00182}00182   VkAttachmentReference color\_attachment\_reference\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00183}00183   color\_attachment\_reference.attachment = 0;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00184}00184   color\_attachment\_reference.layout = VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00185}00185 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00186}00186   \textcolor{comment}{// attachment reference}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00187}00187   VkAttachmentReference depth\_attachment\_reference\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00188}00188   depth\_attachment\_reference.attachment = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00189}00189   depth\_attachment\_reference.layout =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00190}00190       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00191}00191 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00192}00192   \textcolor{comment}{// information about a particular subpass the render pass is using}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00193}00193   VkSubpassDescription subpass\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00194}00194   subpass.pipelineBindPoint =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00195}00195       VK\_PIPELINE\_BIND\_POINT\_GRAPHICS;  \textcolor{comment}{// pipeline type subpass is to be bound}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00196}00196                                         \textcolor{comment}{// to}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00197}00197   subpass.colorAttachmentCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00198}00198   subpass.pColorAttachments = \&color\_attachment\_reference;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00199}00199   subpass.pDepthStencilAttachment = \&depth\_attachment\_reference;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00200}00200 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00201}00201   \textcolor{comment}{// need to determine when layout transitions occur using subpass dependencies}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00202}00202   std::array<VkSubpassDependency, 1> subpass\_dependencies;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00203}00203 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00204}00204   \textcolor{comment}{// conversion from VK\_IMAGE\_LAYOUT\_UNDEFINED to}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00205}00205   \textcolor{comment}{// VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL transition must happen after ....}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00206}00206   subpass\_dependencies[0].srcSubpass =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00207}00207       VK\_SUBPASS\_EXTERNAL;  \textcolor{comment}{// subpass index (VK\_SUBPASS\_EXTERNAL = Special}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00208}00208                             \textcolor{comment}{// value meaning outside of renderpass)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00209}00209   subpass\_dependencies[0].srcStageMask =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00210}00210       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;  \textcolor{comment}{// pipeline stage}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00211}00211   subpass\_dependencies[0].srcAccessMask =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00212}00212       0;  \textcolor{comment}{// stage access mask (memory access)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00213}00213 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00214}00214   \textcolor{comment}{// but must happen before ...}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00215}00215   subpass\_dependencies[0].dstSubpass = 0;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00216}00216   subpass\_dependencies[0].dstStageMask =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00217}00217       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00218}00218   subpass\_dependencies[0].dstAccessMask = VK\_ACCESS\_COLOR\_ATTACHMENT\_WRITE\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00219}00219   subpass\_dependencies[0].dependencyFlags = 0;  \textcolor{comment}{// VK\_DEPENDENCY\_BY\_REGION\_BIT;}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00220}00220 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00221}00221   std::array<VkAttachmentDescription, 2> render\_pass\_attachments = \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00222}00222       color\_attachment, depth\_attachment\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00223}00223 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00224}00224   \textcolor{comment}{// create info for render pass}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00225}00225   VkRenderPassCreateInfo render\_pass\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00226}00226   render\_pass\_create\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00227}00227   render\_pass\_create\_info.attachmentCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00228}00228       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(render\_pass\_attachments.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00229}00229   render\_pass\_create\_info.pAttachments = render\_pass\_attachments.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00230}00230   render\_pass\_create\_info.subpassCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00231}00231   render\_pass\_create\_info.pSubpasses = \&subpass;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00232}00232   render\_pass\_create\_info.dependencyCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00233}00233       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(subpass\_dependencies.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00234}00234   render\_pass\_create\_info.pDependencies = subpass\_dependencies.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00235}00235 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00236}00236   VkResult result =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00237}00237       vkCreateRenderPass(device-\/>getLogicalDevice(), \&render\_pass\_create\_info,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00238}00238                          \textcolor{keyword}{nullptr}, \&render\_pass);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00239}00239   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create render pass!"{}})}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00240}00240 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00241}00241 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00242}00242 \textcolor{keywordtype}{void} Rasterizer::createFramebuffer() \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00243}00243   framebuffer.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00244}00244 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00245}00245   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < framebuffer.size(); i++) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00246}00246     std::array<VkImageView, 2> attachments = \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00247}00247         offscreenTextures[i].getImageView(), depthBufferImage.getImageView()\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00248}00248 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00249}00249     VkFramebufferCreateInfo frame\_buffer\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00250}00250     frame\_buffer\_create\_info.sType = VK\_STRUCTURE\_TYPE\_FRAMEBUFFER\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00251}00251     frame\_buffer\_create\_info.renderPass = render\_pass;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00252}00252     frame\_buffer\_create\_info.attachmentCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00253}00253         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attachments.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00254}00254     frame\_buffer\_create\_info.pAttachments = attachments.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00255}00255     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00256}00256     frame\_buffer\_create\_info.width = swap\_chain\_extent.width;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00257}00257     frame\_buffer\_create\_info.height = swap\_chain\_extent.height;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00258}00258     frame\_buffer\_create\_info.layers = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00259}00259 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00260}00260     VkResult result = vkCreateFramebuffer(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00261}00261                                           \&frame\_buffer\_create\_info, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00262}00262                                           \&framebuffer[i]);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00263}00263     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create framebuffer!"{}});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00264}00264   \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00265}00265 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00266}00266 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00267}00267 \textcolor{keywordtype}{void} Rasterizer::createPushConstantRange() \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00268}00268   \textcolor{comment}{// define push constant values (no 'create' needed)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00269}00269   push\_constant\_range.stageFlags = VK\_SHADER\_STAGE\_VERTEX\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00270}00270   push\_constant\_range.offset = 0;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00271}00271   push\_constant\_range.size = \textcolor{keyword}{sizeof}(PushConstantRasterizer);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00272}00272 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00273}00273 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00274}00274 \textcolor{keywordtype}{void} Rasterizer::createTextures(VkCommandPool\& commandPool) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00275}00275   offscreenTextures.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00276}00276 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00277}00277   VkCommandBuffer cmdBuffer = commandBufferManager.beginCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00278}00278       device-\/>getLogicalDevice(), commandPool);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00279}00279 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00280}00280   \textcolor{keywordflow}{for} (uint32\_t index = 0;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00281}00281        index <}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00282}00282        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(vulkanSwapChain-\/>getNumberSwapChainImages());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00283}00283        index++) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00284}00284     Texture texture\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00285}00285     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00286}00286     \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00287}00287         vulkanSwapChain-\/>getSwapChainFormat();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00288}00288 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00289}00289     texture.createImage(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00290}00290         device, swap\_chain\_extent.width, swap\_chain\_extent.height, 1,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00291}00291         swap\_chain\_image\_format, VK\_IMAGE\_TILING\_OPTIMAL,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00292}00292         VK\_IMAGE\_USAGE\_COLOR\_ATTACHMENT\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT |}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00293}00293             VK\_IMAGE\_USAGE\_STORAGE\_BIT | VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00294}00294         VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00295}00295 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00296}00296     texture.createImageView(device, swap\_chain\_image\_format,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00297}00297                             VK\_IMAGE\_ASPECT\_COLOR\_BIT, 1);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00298}00298 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00299}00299     \textcolor{comment}{// -\/-\/-\/ WE NEED A DIFFERENT LAYOUT FOR USAGE}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00300}00300     VulkanImage\& image = texture.getVulkanImage();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00301}00301     image.transitionImageLayout(cmdBuffer, VK\_IMAGE\_LAYOUT\_UNDEFINED,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00302}00302                                 VK\_IMAGE\_LAYOUT\_GENERAL, 1,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00303}00303                                 VK\_IMAGE\_ASPECT\_COLOR\_BIT);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00304}00304 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00305}00305     offscreenTextures[index] = texture;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00306}00306   \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00307}00307 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00308}00308   VkFormat depth\_format = choose\_supported\_format(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00309}00309       device-\/>getPhysicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00310}00310       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00311}00311        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00312}00312       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00313}00313 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00314}00314   \textcolor{comment}{// create depth buffer image}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00315}00315   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00316}00316   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00317}00317   depthBufferImage.createImage(device, swap\_chain\_extent.width,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00318}00318                                swap\_chain\_extent.height, 1, depth\_format,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00319}00319                                VK\_IMAGE\_TILING\_OPTIMAL,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00320}00320                                VK\_IMAGE\_USAGE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00321}00321                                VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00322}00322 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00323}00323   \textcolor{comment}{// depth buffer image view}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00324}00324   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00325}00325   depthBufferImage.createImageView(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00326}00326       device, depth\_format,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00327}00327       VK\_IMAGE\_ASPECT\_DEPTH\_BIT | VK\_IMAGE\_ASPECT\_STENCIL\_BIT, 1);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00328}00328 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00329}00329   \textcolor{comment}{// -\/-\/-\/ WE NEED A DIFFERENT LAYOUT FOR USAGE}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00330}00330   VulkanImage\& vulkanImage = depthBufferImage.getVulkanImage();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00331}00331   vulkanImage.transitionImageLayout(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00332}00332       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00333}00333       VK\_IMAGE\_LAYOUT\_UNDEFINED,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00334}00334       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00335}00335       VK\_IMAGE\_ASPECT\_DEPTH\_BIT | VK\_IMAGE\_ASPECT\_STENCIL\_BIT, 1);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00336}00336 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00337}00337   commandBufferManager.endAndSubmitCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00338}00338       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00339}00339       cmdBuffer);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00340}00340 \}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00341}00341 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00342}00342 \textcolor{keywordtype}{void} Rasterizer::createGraphicsPipeline(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00343}00343     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00344}00344   std::stringstream rasterizer\_shader\_dir;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00345}00345   rasterizer\_shader\_dir << CMAKELISTS\_DIR;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00346}00346   rasterizer\_shader\_dir << \textcolor{stringliteral}{"{}/Resources/Shader/rasterizer/"{}};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00347}00347 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00348}00348   ShaderHelper shaderHelper;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00349}00349   shaderHelper.compileShader(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.vert"{}});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00350}00350   shaderHelper.compileShader(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.frag"{}});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00351}00351 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00352}00352   File vertexFile(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00353}00353       shaderHelper.getShaderSpvDir(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.vert"{}}));}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00354}00354   File fragmentFile(}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00355}00355       shaderHelper.getShaderSpvDir(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.frag"{}}));}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00356}00356   std::vector<char> vertex\_shader\_code = vertexFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00357}00357   std::vector<char> fragment\_shader\_code = fragmentFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00358}00358 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00359}00359   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00360}00360   VkShaderModule vertex\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00361}00361       shaderHelper.createShaderModule(device, vertex\_shader\_code);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00362}00362   VkShaderModule fragment\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00363}00363       shaderHelper.createShaderModule(device, fragment\_shader\_code);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00364}00364 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00365}00365   \textcolor{comment}{// shader stage creation information}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00366}00366   \textcolor{comment}{// vertex stage creation information}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00367}00367   VkPipelineShaderStageCreateInfo vertex\_shader\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00368}00368   vertex\_shader\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00369}00369       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00370}00370   vertex\_shader\_create\_info.stage = VK\_SHADER\_STAGE\_VERTEX\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00371}00371   vertex\_shader\_create\_info.module = vertex\_shader\_module;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00372}00372   vertex\_shader\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00373}00373 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00374}00374   \textcolor{comment}{// fragment stage creation information}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00375}00375   VkPipelineShaderStageCreateInfo fragment\_shader\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00376}00376   fragment\_shader\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00377}00377       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00378}00378   fragment\_shader\_create\_info.stage = VK\_SHADER\_STAGE\_FRAGMENT\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00379}00379   fragment\_shader\_create\_info.module = fragment\_shader\_module;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00380}00380   fragment\_shader\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00381}00381 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00382}00382   std::vector<VkPipelineShaderStageCreateInfo> shader\_stages = \{}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00383}00383       vertex\_shader\_create\_info, fragment\_shader\_create\_info\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include <filesystem>}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}File.h"{}}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}FormatHelper.h"{}}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00010}00010 \textcolor{preprocessor}{\#include "{}Vertex.h"{}}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00012}00012 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00014}00014 Rasterizer::Rasterizer() \{\}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00016}00016 \textcolor{keywordtype}{void} Rasterizer::init(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00017}00017     VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00018}00018     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00019}00019     VkCommandPool\& commandPool) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00020}00020   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00021}00021   this-\/>vulkanSwapChain = vulkanSwapChain;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00023}00023   createTextures(commandPool);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00024}00024   createRenderPass();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00025}00025   createPushConstantRange();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00026}00026   createGraphicsPipeline(descriptorSetLayouts);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00027}00027   createFramebuffer();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00028}00028 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00030}00030 \textcolor{keywordtype}{void} Rasterizer::shaderHotReload(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00031}00031     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00032}00032   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00033}00033   createGraphicsPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00034}00034 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00036}00036 Texture\& Rasterizer::getOffscreenTexture(uint32\_t index) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00037}00037   \textcolor{keywordflow}{return} offscreenTextures[index];}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00038}00038 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00040}00040 \textcolor{keywordtype}{void} Rasterizer::setPushConstant(PushConstantRasterizer pushConstant) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00041}00041   this-\/>pushConstant = pushConstant;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00042}00042 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00044}00044 \textcolor{keywordtype}{void} Rasterizer::recordCommands(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00045}00045     VkCommandBuffer\& commandBuffer, uint32\_t image\_index, Scene* scene,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00046}00046     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00047}00047   \textcolor{comment}{// information about how to begin a render pass (only needed for graphical}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00048}00048   \textcolor{comment}{// applications)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00049}00049   VkRenderPassBeginInfo render\_pass\_begin\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00050}00050   render\_pass\_begin\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_BEGIN\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00051}00051   render\_pass\_begin\_info.renderPass = render\_pass;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00052}00052   render\_pass\_begin\_info.renderArea.offset = \{0, 0\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00053}00053   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00054}00054   render\_pass\_begin\_info.renderArea.extent = swap\_chain\_extent;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00055}00055 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00056}00056   \textcolor{comment}{// make sure the order you put the values into the array matches with the}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00057}00057   \textcolor{comment}{// attchment order you have defined previous}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00058}00058   std::array<VkClearValue, 2> clear\_values = \{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00059}00059   clear\_values[0].color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00060}00060   clear\_values[1].depthStencil = \{1.0f, 0\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00061}00061 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00062}00062   render\_pass\_begin\_info.pClearValues = clear\_values.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00063}00063   render\_pass\_begin\_info.clearValueCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00064}00064       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(clear\_values.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00065}00065   render\_pass\_begin\_info.framebuffer = framebuffer[image\_index];}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00066}00066 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00067}00067   \textcolor{comment}{// begin render pass}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00068}00068   vkCmdBeginRenderPass(commandBuffer, \&render\_pass\_begin\_info,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00069}00069                        VK\_SUBPASS\_CONTENTS\_INLINE);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00070}00070 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00071}00071   \textcolor{comment}{// bind pipeline to be used in render pass}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00072}00072   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00073}00073                     graphics\_pipeline);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00074}00074 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00075}00075   \textcolor{keywordflow}{for} (uint32\_t m = 0; m < static\_cast<uint32\_t>(scene-\/>getModelCount()); m++) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00076}00076     \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00077}00077     pushConstant.model = scene-\/>getModelMatrix(0);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00078}00078     \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00079}00079     vkCmdPushConstants(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00080}00080         commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00081}00081         VK\_SHADER\_STAGE\_VERTEX\_BIT,      \textcolor{comment}{// stage to push constants to}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00082}00082         0,                               \textcolor{comment}{// offset to push constants to update}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00083}00083         \textcolor{keyword}{sizeof}(PushConstantRasterizer),  \textcolor{comment}{// size of data being pushed}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00084}00084         \&pushConstant);  \textcolor{comment}{// using model of current mesh (can be array)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00085}00085 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00086}00086     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k = 0; k < scene-\/>getMeshCount(m); k++) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00087}00087       \textcolor{comment}{// list of vertex buffers we want to draw}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00088}00088       VkBuffer vertex\_buffers[] = \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00089}00089           scene-\/>getVertexBuffer(m, k)\};  \textcolor{comment}{// buffers to bind}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00090}00090       VkDeviceSize offsets[] = \{0\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00091}00091       vkCmdBindVertexBuffers(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00092}00092           commandBuffer, 0, 1, vertex\_buffers,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00093}00093           offsets);  \textcolor{comment}{// command to bind vertex buffer before drawing with them}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00094}00094 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00095}00095       \textcolor{comment}{// bind mesh index buffer with 0 offset and using the uint32 type}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00096}00096       vkCmdBindIndexBuffer(commandBuffer, scene-\/>getIndexBuffer(m, k), 0,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00097}00097                            VK\_INDEX\_TYPE\_UINT32);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00098}00098 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00099}00099       \textcolor{comment}{// bind descriptor sets}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00100}00100       vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00101}00101                               pipeline\_layout, 0,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00102}00102                               \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00103}00103                               descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00104}00104 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00105}00105       \textcolor{comment}{// execute pipeline}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00106}00106       vkCmdDrawIndexed(commandBuffer,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00107}00107                        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(scene-\/>getIndexCount(m, k)), 1, 0,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00108}00108                        0, 0);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00109}00109     \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00110}00110   \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00111}00111 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00112}00112   \textcolor{comment}{// end render pass}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00113}00113   vkCmdEndRenderPass(commandBuffer);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00114}00114 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00115}00115 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00116}00116 \textcolor{keywordtype}{void} Rasterizer::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00117}00117   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} framebuffer : framebuffer) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00118}00118     vkDestroyFramebuffer(device-\/>getLogicalDevice(), framebuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00119}00119   \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00120}00120 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00121}00121   \textcolor{keywordflow}{for} (Texture texture : offscreenTextures) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00122}00122     texture.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00123}00123   \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00124}00124 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00125}00125   depthBufferImage.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00126}00126 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00127}00127   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00128}00128   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00129}00129   vkDestroyRenderPass(device-\/>getLogicalDevice(), render\_pass, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00130}00130 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00131}00131 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00132}00132 Rasterizer::\string~Rasterizer() \{\}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00133}00133 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00134}00134 \textcolor{keywordtype}{void} Rasterizer::createRenderPass() \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00135}00135   \textcolor{comment}{// Color attachment of render pass}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00136}00136   VkAttachmentDescription color\_attachment\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00137}00137   \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00138}00138       vulkanSwapChain-\/>getSwapChainFormat();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00139}00139   color\_attachment.format =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00140}00140       swap\_chain\_image\_format;  \textcolor{comment}{// format to use for attachment}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00141}00141   color\_attachment.samples =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00142}00142       VK\_SAMPLE\_COUNT\_1\_BIT;  \textcolor{comment}{// number of samples to write for multisampling}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00143}00143   color\_attachment.loadOp =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00144}00144       VK\_ATTACHMENT\_LOAD\_OP\_CLEAR;  \textcolor{comment}{// describes what to do with attachment}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00145}00145                                     \textcolor{comment}{// before rendering}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00146}00146   color\_attachment.storeOp =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00147}00147       VK\_ATTACHMENT\_STORE\_OP\_STORE;  \textcolor{comment}{// describes what to do with attachment}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00148}00148                                      \textcolor{comment}{// after rendering}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00149}00149   color\_attachment.stencilLoadOp =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00150}00150       VK\_ATTACHMENT\_LOAD\_OP\_DONT\_CARE;  \textcolor{comment}{// describes what to do with stencil}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00151}00151                                         \textcolor{comment}{// before rendering}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00152}00152   color\_attachment.stencilStoreOp =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00153}00153       VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;  \textcolor{comment}{// describes what to do with stencil}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00154}00154                                          \textcolor{comment}{// after rendering}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00155}00155 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00156}00156   \textcolor{comment}{// framebuffer data will be stored as an image, but images can be given}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00157}00157   \textcolor{comment}{// different layouts to give optimal use for certain operations}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00158}00158   color\_attachment.initialLayout =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00159}00159       VK\_IMAGE\_LAYOUT\_GENERAL;  \textcolor{comment}{// image data layout before render pass starts}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00160}00160   color\_attachment.finalLayout =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00161}00161       VK\_IMAGE\_LAYOUT\_GENERAL;  \textcolor{comment}{// image data layout after render pass (to}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00162}00162                                 \textcolor{comment}{// change to)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00163}00163 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00164}00164   \textcolor{comment}{// depth attachment of render pass}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00165}00165   VkAttachmentDescription depth\_attachment\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00166}00166   depth\_attachment.format = choose\_supported\_format(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00167}00167       device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00168}00168       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00169}00169        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00170}00170       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00171}00171 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00172}00172   depth\_attachment.samples = VK\_SAMPLE\_COUNT\_1\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00173}00173   depth\_attachment.loadOp = VK\_ATTACHMENT\_LOAD\_OP\_CLEAR;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00174}00174   depth\_attachment.storeOp = VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00175}00175   depth\_attachment.stencilLoadOp = VK\_ATTACHMENT\_LOAD\_OP\_DONT\_CARE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00176}00176   depth\_attachment.stencilStoreOp = VK\_ATTACHMENT\_STORE\_OP\_DONT\_CARE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00177}00177   depth\_attachment.initialLayout = VK\_IMAGE\_LAYOUT\_UNDEFINED;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00178}00178   depth\_attachment.finalLayout =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00179}00179       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00180}00180 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00181}00181   \textcolor{comment}{// attachment reference uses an attachment index that refers to index in the}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00182}00182   \textcolor{comment}{// attachment list passed to renderPassCreateInfo}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00183}00183   VkAttachmentReference color\_attachment\_reference\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00184}00184   color\_attachment\_reference.attachment = 0;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00185}00185   color\_attachment\_reference.layout = VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00186}00186 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00187}00187   \textcolor{comment}{// attachment reference}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00188}00188   VkAttachmentReference depth\_attachment\_reference\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00189}00189   depth\_attachment\_reference.attachment = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00190}00190   depth\_attachment\_reference.layout =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00191}00191       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00192}00192 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00193}00193   \textcolor{comment}{// information about a particular subpass the render pass is using}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00194}00194   VkSubpassDescription subpass\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00195}00195   subpass.pipelineBindPoint =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00196}00196       VK\_PIPELINE\_BIND\_POINT\_GRAPHICS;  \textcolor{comment}{// pipeline type subpass is to be bound}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00197}00197                                         \textcolor{comment}{// to}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00198}00198   subpass.colorAttachmentCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00199}00199   subpass.pColorAttachments = \&color\_attachment\_reference;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00200}00200   subpass.pDepthStencilAttachment = \&depth\_attachment\_reference;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00201}00201 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00202}00202   \textcolor{comment}{// need to determine when layout transitions occur using subpass dependencies}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00203}00203   std::array<VkSubpassDependency, 1> subpass\_dependencies;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00204}00204 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00205}00205   \textcolor{comment}{// conversion from VK\_IMAGE\_LAYOUT\_UNDEFINED to}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00206}00206   \textcolor{comment}{// VK\_IMAGE\_LAYOUT\_COLOR\_ATTACHMENT\_OPTIMAL transition must happen after ....}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00207}00207   subpass\_dependencies[0].srcSubpass =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00208}00208       VK\_SUBPASS\_EXTERNAL;  \textcolor{comment}{// subpass index (VK\_SUBPASS\_EXTERNAL = Special}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00209}00209                             \textcolor{comment}{// value meaning outside of renderpass)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00210}00210   subpass\_dependencies[0].srcStageMask =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00211}00211       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;  \textcolor{comment}{// pipeline stage}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00212}00212   subpass\_dependencies[0].srcAccessMask =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00213}00213       0;  \textcolor{comment}{// stage access mask (memory access)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00214}00214 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00215}00215   \textcolor{comment}{// but must happen before ...}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00216}00216   subpass\_dependencies[0].dstSubpass = 0;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00217}00217   subpass\_dependencies[0].dstStageMask =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00218}00218       VK\_PIPELINE\_STAGE\_COLOR\_ATTACHMENT\_OUTPUT\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00219}00219   subpass\_dependencies[0].dstAccessMask = VK\_ACCESS\_COLOR\_ATTACHMENT\_WRITE\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00220}00220   subpass\_dependencies[0].dependencyFlags = 0;  \textcolor{comment}{// VK\_DEPENDENCY\_BY\_REGION\_BIT;}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00221}00221 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00222}00222   std::array<VkAttachmentDescription, 2> render\_pass\_attachments = \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00223}00223       color\_attachment, depth\_attachment\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00224}00224 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00225}00225   \textcolor{comment}{// create info for render pass}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00226}00226   VkRenderPassCreateInfo render\_pass\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00227}00227   render\_pass\_create\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00228}00228   render\_pass\_create\_info.attachmentCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00229}00229       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(render\_pass\_attachments.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00230}00230   render\_pass\_create\_info.pAttachments = render\_pass\_attachments.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00231}00231   render\_pass\_create\_info.subpassCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00232}00232   render\_pass\_create\_info.pSubpasses = \&subpass;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00233}00233   render\_pass\_create\_info.dependencyCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00234}00234       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(subpass\_dependencies.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00235}00235   render\_pass\_create\_info.pDependencies = subpass\_dependencies.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00236}00236 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00237}00237   VkResult result =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00238}00238       vkCreateRenderPass(device-\/>getLogicalDevice(), \&render\_pass\_create\_info,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00239}00239                          \textcolor{keyword}{nullptr}, \&render\_pass);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00240}00240   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create render pass!"{}})}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00241}00241 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00242}00242 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00243}00243 \textcolor{keywordtype}{void} Rasterizer::createFramebuffer() \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00244}00244   framebuffer.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00245}00245 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00246}00246   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < framebuffer.size(); i++) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00247}00247     std::array<VkImageView, 2> attachments = \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00248}00248         offscreenTextures[i].getImageView(), depthBufferImage.getImageView()\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00249}00249 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00250}00250     VkFramebufferCreateInfo frame\_buffer\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00251}00251     frame\_buffer\_create\_info.sType = VK\_STRUCTURE\_TYPE\_FRAMEBUFFER\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00252}00252     frame\_buffer\_create\_info.renderPass = render\_pass;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00253}00253     frame\_buffer\_create\_info.attachmentCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00254}00254         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attachments.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00255}00255     frame\_buffer\_create\_info.pAttachments = attachments.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00256}00256     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00257}00257     frame\_buffer\_create\_info.width = swap\_chain\_extent.width;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00258}00258     frame\_buffer\_create\_info.height = swap\_chain\_extent.height;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00259}00259     frame\_buffer\_create\_info.layers = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00260}00260 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00261}00261     VkResult result = vkCreateFramebuffer(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00262}00262                                           \&frame\_buffer\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00263}00263                                           \&framebuffer[i]);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00264}00264     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create framebuffer!"{}});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00265}00265   \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00266}00266 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00267}00267 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00268}00268 \textcolor{keywordtype}{void} Rasterizer::createPushConstantRange() \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00269}00269   \textcolor{comment}{// define push constant values (no 'create' needed)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00270}00270   push\_constant\_range.stageFlags = VK\_SHADER\_STAGE\_VERTEX\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00271}00271   push\_constant\_range.offset = 0;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00272}00272   push\_constant\_range.size = \textcolor{keyword}{sizeof}(PushConstantRasterizer);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00273}00273 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00274}00274 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00275}00275 \textcolor{keywordtype}{void} Rasterizer::createTextures(VkCommandPool\& commandPool) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00276}00276   offscreenTextures.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00277}00277 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00278}00278   VkCommandBuffer cmdBuffer = commandBufferManager.beginCommandBuffer(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00279}00279       device-\/>getLogicalDevice(), commandPool);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00280}00280 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00281}00281   \textcolor{keywordflow}{for} (uint32\_t index = 0;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00282}00282        index <}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00283}00283        \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00284}00284        index++) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00285}00285     Texture texture\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00286}00286     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00287}00287     \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00288}00288         vulkanSwapChain-\/>getSwapChainFormat();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00289}00289 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00290}00290     texture.createImage(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00291}00291         device, swap\_chain\_extent.width, swap\_chain\_extent.height, 1,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00292}00292         swap\_chain\_image\_format, VK\_IMAGE\_TILING\_OPTIMAL,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00293}00293         VK\_IMAGE\_USAGE\_COLOR\_ATTACHMENT\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT |}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00294}00294             VK\_IMAGE\_USAGE\_STORAGE\_BIT | VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00295}00295         VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00296}00296 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00297}00297     texture.createImageView(device, swap\_chain\_image\_format,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00298}00298                             VK\_IMAGE\_ASPECT\_COLOR\_BIT, 1);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00299}00299 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00300}00300     \textcolor{comment}{// -\/-\/-\/ WE NEED A DIFFERENT LAYOUT FOR USAGE}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00301}00301     VulkanImage\& image = texture.getVulkanImage();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00302}00302     image.transitionImageLayout(cmdBuffer, VK\_IMAGE\_LAYOUT\_UNDEFINED,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00303}00303                                 VK\_IMAGE\_LAYOUT\_GENERAL, 1,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00304}00304                                 VK\_IMAGE\_ASPECT\_COLOR\_BIT);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00305}00305 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00306}00306     offscreenTextures[index] = texture;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00307}00307   \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00308}00308 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00309}00309   VkFormat depth\_format = choose\_supported\_format(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00310}00310       device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00311}00311       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00312}00312        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00313}00313       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00314}00314 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00315}00315   \textcolor{comment}{// create depth buffer image}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00316}00316   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00317}00317   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00318}00318   depthBufferImage.createImage(device, swap\_chain\_extent.width,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00319}00319                                swap\_chain\_extent.height, 1, depth\_format,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00320}00320                                VK\_IMAGE\_TILING\_OPTIMAL,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00321}00321                                VK\_IMAGE\_USAGE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00322}00322                                VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00323}00323 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00324}00324   \textcolor{comment}{// depth buffer image view}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00325}00325   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00326}00326   depthBufferImage.createImageView(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00327}00327       device, depth\_format,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00328}00328       VK\_IMAGE\_ASPECT\_DEPTH\_BIT | VK\_IMAGE\_ASPECT\_STENCIL\_BIT, 1);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00329}00329 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00330}00330   \textcolor{comment}{// -\/-\/-\/ WE NEED A DIFFERENT LAYOUT FOR USAGE}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00331}00331   VulkanImage\& vulkanImage = depthBufferImage.getVulkanImage();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00332}00332   vulkanImage.transitionImageLayout(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00333}00333       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00334}00334       VK\_IMAGE\_LAYOUT\_UNDEFINED,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00335}00335       VK\_IMAGE\_LAYOUT\_DEPTH\_STENCIL\_ATTACHMENT\_OPTIMAL,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00336}00336       VK\_IMAGE\_ASPECT\_DEPTH\_BIT | VK\_IMAGE\_ASPECT\_STENCIL\_BIT, 1);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00337}00337 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00338}00338   commandBufferManager.endAndSubmitCommandBuffer(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00339}00339       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00340}00340       cmdBuffer);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00341}00341 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00342}00342 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00343}00343 \textcolor{keywordtype}{void} Rasterizer::createGraphicsPipeline(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00344}00344     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00345}00345   std::stringstream rasterizer\_shader\_dir;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00346}00346   std::filesystem::path cwd = std::filesystem::current\_path();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00347}00347   rasterizer\_shader\_dir << cwd.string();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00348}00348   rasterizer\_shader\_dir << RELATIVE\_RESOURCE\_PATH;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00349}00349   rasterizer\_shader\_dir << \textcolor{stringliteral}{"{}Shader/rasterizer/"{}};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00350}00350 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00351}00351   ShaderHelper shaderHelper;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00352}00352   shaderHelper.compileShader(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.vert"{}});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00353}00353   shaderHelper.compileShader(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.frag"{}});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00354}00354 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00355}00355   File vertexFile(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00356}00356       shaderHelper.getShaderSpvDir(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.vert"{}}));}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00357}00357   File fragmentFile(}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00358}00358       shaderHelper.getShaderSpvDir(rasterizer\_shader\_dir.str(), \textcolor{stringliteral}{"{}shader.frag"{}}));}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00359}00359   std::vector<char> vertex\_shader\_code = vertexFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00360}00360   std::vector<char> fragment\_shader\_code = fragmentFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00361}00361 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00362}00362   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00363}00363   VkShaderModule vertex\_shader\_module =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00364}00364       shaderHelper.createShaderModule(device, vertex\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00365}00365   VkShaderModule fragment\_shader\_module =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00366}00366       shaderHelper.createShaderModule(device, fragment\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00367}00367 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00368}00368   \textcolor{comment}{// shader stage creation information}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00369}00369   \textcolor{comment}{// vertex stage creation information}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00370}00370   VkPipelineShaderStageCreateInfo vertex\_shader\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00371}00371   vertex\_shader\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00372}00372       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00373}00373   vertex\_shader\_create\_info.stage = VK\_SHADER\_STAGE\_VERTEX\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00374}00374   vertex\_shader\_create\_info.module = vertex\_shader\_module;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00375}00375   vertex\_shader\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00376}00376 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00377}00377   \textcolor{comment}{// fragment stage creation information}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00378}00378   VkPipelineShaderStageCreateInfo fragment\_shader\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00379}00379   fragment\_shader\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00380}00380       VK\_STRUCTURE\_TYPE\_PIPELINE\_SHADER\_STAGE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00381}00381   fragment\_shader\_create\_info.stage = VK\_SHADER\_STAGE\_FRAGMENT\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00382}00382   fragment\_shader\_create\_info.module = fragment\_shader\_module;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00383}00383   fragment\_shader\_create\_info.pName = \textcolor{stringliteral}{"{}main"{}};}
 \DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00384}00384 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00385}00385   \textcolor{comment}{// how the data for a single vertex (including info such as position, color,}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00386}00386   \textcolor{comment}{// texture coords, normals, etc) is as a whole}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00387}00387   VkVertexInputBindingDescription binding\_description\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00388}00388   binding\_description.binding = 0;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00389}00389   binding\_description.stride = \textcolor{keyword}{sizeof}(Vertex);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00390}00390   binding\_description.inputRate =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00391}00391       VK\_VERTEX\_INPUT\_RATE\_VERTEX;  \textcolor{comment}{// how to move between data after each}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00392}00392                                     \textcolor{comment}{// vertex.}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00393}00393 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00394}00394   \textcolor{comment}{// how the data for an attribute is defined within a vertex}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00395}00395   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00396}00396       \mbox{\hyperlink{namespacevertex_a183ebeb3b6fde1df5bd8e204127514ba}{vertex::getVertexInputAttributeDesc}}();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00397}00397 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00398}00398   \textcolor{comment}{// CREATE PIPELINE}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00399}00399   \textcolor{comment}{// 1.) Vertex input}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00400}00400   VkPipelineVertexInputStateCreateInfo vertex\_input\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00401}00401   vertex\_input\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00402}00402       VK\_STRUCTURE\_TYPE\_PIPELINE\_VERTEX\_INPUT\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00403}00403   vertex\_input\_create\_info.vertexBindingDescriptionCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00404}00404   vertex\_input\_create\_info.pVertexBindingDescriptions = \&binding\_description;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00405}00405   vertex\_input\_create\_info.vertexAttributeDescriptionCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00406}00406       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attribute\_describtions.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00407}00407   vertex\_input\_create\_info.pVertexAttributeDescriptions =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00408}00408       attribute\_describtions.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00409}00409 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00410}00410   \textcolor{comment}{// input assembly}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00411}00411   VkPipelineInputAssemblyStateCreateInfo input\_assembly\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00412}00412   input\_assembly.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00413}00413       VK\_STRUCTURE\_TYPE\_PIPELINE\_INPUT\_ASSEMBLY\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00414}00414   input\_assembly.topology = VK\_PRIMITIVE\_TOPOLOGY\_TRIANGLE\_LIST;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00415}00415   input\_assembly.primitiveRestartEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00416}00416 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00417}00417   \textcolor{comment}{// viewport \& scissor}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00418}00418   \textcolor{comment}{// create a viewport info struct}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00419}00419   VkViewport viewport\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00420}00420   viewport.x = 0.0f;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00421}00421   viewport.y = 0.0f;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00422}00422   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00423}00423   viewport.width = (float)swap\_chain\_extent.width;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00424}00424   viewport.height = (\textcolor{keywordtype}{float})swap\_chain\_extent.height;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00425}00425   viewport.minDepth = 0.0f;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00426}00426   viewport.maxDepth = 1.0f;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00427}00427 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00428}00428   \textcolor{comment}{// create a scissor info struct}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00429}00429   VkRect2D scissor\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00430}00430   scissor.offset = \{0, 0\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00431}00431   scissor.extent = swap\_chain\_extent;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00432}00432 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00433}00433   VkPipelineViewportStateCreateInfo viewport\_state\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00434}00434   viewport\_state\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00435}00435       VK\_STRUCTURE\_TYPE\_PIPELINE\_VIEWPORT\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00436}00436   viewport\_state\_create\_info.viewportCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00437}00437   viewport\_state\_create\_info.pViewports = \&viewport;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00438}00438   viewport\_state\_create\_info.scissorCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00439}00439   viewport\_state\_create\_info.pScissors = \&scissor;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00440}00440 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00441}00441   \textcolor{comment}{// RASTERIZER}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00442}00442   VkPipelineRasterizationStateCreateInfo rasterizer\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00443}00443   rasterizer\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00444}00444       VK\_STRUCTURE\_TYPE\_PIPELINE\_RASTERIZATION\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00445}00445   rasterizer\_create\_info.depthClampEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00446}00446   rasterizer\_create\_info.rasterizerDiscardEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00447}00447   rasterizer\_create\_info.polygonMode = VK\_POLYGON\_MODE\_FILL;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00448}00448   rasterizer\_create\_info.lineWidth = 1.0f;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00449}00449   rasterizer\_create\_info.cullMode = VK\_CULL\_MODE\_BACK\_BIT;  \textcolor{comment}{//}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00450}00450   \textcolor{comment}{// winding to determine which side is front; y-\/coordinate is inverted in}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00451}00451   \textcolor{comment}{// comparison to OpenGL}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00452}00452   rasterizer\_create\_info.frontFace = VK\_FRONT\_FACE\_COUNTER\_CLOCKWISE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00453}00453   rasterizer\_create\_info.depthBiasClamp = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00454}00454 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00455}00455   \textcolor{comment}{// -\/-\/ MULTISAMPLING -\/-\/}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00456}00456   VkPipelineMultisampleStateCreateInfo multisample\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00457}00457   multisample\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00458}00458       VK\_STRUCTURE\_TYPE\_PIPELINE\_MULTISAMPLE\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00459}00459   multisample\_create\_info.sampleShadingEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00460}00460   multisample\_create\_info.rasterizationSamples = VK\_SAMPLE\_COUNT\_1\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00461}00461 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00462}00462   \textcolor{comment}{// -\/-\/ BLENDING -\/-\/}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00463}00463   \textcolor{comment}{// blend attachment state}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00464}00464   VkPipelineColorBlendAttachmentState color\_state\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00465}00465   color\_state.colorWriteMask =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00466}00466       VK\_COLOR\_COMPONENT\_R\_BIT | VK\_COLOR\_COMPONENT\_G\_BIT |}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00467}00467       VK\_COLOR\_COMPONENT\_B\_BIT | VK\_COLOR\_COMPONENT\_A\_BIT;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00468}00468 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00469}00469   color\_state.blendEnable = VK\_TRUE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00470}00470   \textcolor{comment}{// blending uses equation: (srcColorBlendFactor * new\_color) color\_blend\_op}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00471}00471   \textcolor{comment}{// (dstColorBlendFactor * old\_color)}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00472}00472   color\_state.srcColorBlendFactor = VK\_BLEND\_FACTOR\_SRC\_ALPHA;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00473}00473   color\_state.dstColorBlendFactor = VK\_BLEND\_FACTOR\_ONE\_MINUS\_SRC\_ALPHA;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00474}00474   color\_state.colorBlendOp = VK\_BLEND\_OP\_ADD;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00475}00475   color\_state.srcAlphaBlendFactor = VK\_BLEND\_FACTOR\_ONE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00476}00476   color\_state.dstAlphaBlendFactor = VK\_BLEND\_FACTOR\_ZERO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00477}00477   color\_state.alphaBlendOp = VK\_BLEND\_OP\_ADD;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00478}00478 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00479}00479   VkPipelineColorBlendStateCreateInfo color\_blending\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00480}00480   color\_blending\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00481}00481       VK\_STRUCTURE\_TYPE\_PIPELINE\_COLOR\_BLEND\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00482}00482   color\_blending\_create\_info.logicOpEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00483}00483   color\_blending\_create\_info.attachmentCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00484}00484   color\_blending\_create\_info.pAttachments = \&color\_state;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00485}00485 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00486}00486   \textcolor{comment}{// -\/-\/ PIPELINE LAYOUT -\/-\/}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00487}00487   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00488}00488   pipeline\_layout\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00489}00489       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00490}00490   pipeline\_layout\_create\_info.setLayoutCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00491}00491       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00492}00492   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00493}00493   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00494}00494   pipeline\_layout\_create\_info.pPushConstantRanges = \&push\_constant\_range;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00495}00495 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00496}00496   \textcolor{comment}{// create pipeline layout}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00497}00497   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00498}00498                                            \&pipeline\_layout\_create\_info,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00499}00499                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00500}00500   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create pipeline layout!"{}})}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00501}00501 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00502}00502   \textcolor{comment}{// -\/-\/ DEPTH STENCIL TESTING -\/-\/}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00503}00503   VkPipelineDepthStencilStateCreateInfo depth\_stencil\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00504}00504   depth\_stencil\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00505}00505       VK\_STRUCTURE\_TYPE\_PIPELINE\_DEPTH\_STENCIL\_STATE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00506}00506   depth\_stencil\_create\_info.depthTestEnable = VK\_TRUE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00507}00507   depth\_stencil\_create\_info.depthWriteEnable = VK\_TRUE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00508}00508   depth\_stencil\_create\_info.depthCompareOp = VK\_COMPARE\_OP\_LESS;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00509}00509   depth\_stencil\_create\_info.depthBoundsTestEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00510}00510   depth\_stencil\_create\_info.stencilTestEnable = VK\_FALSE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00511}00511 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00512}00512   \textcolor{comment}{// -\/-\/ GRAPHICS PIPELINE CREATION -\/-\/}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00513}00513   VkGraphicsPipelineCreateInfo graphics\_pipeline\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00514}00514   graphics\_pipeline\_create\_info.sType =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00515}00515       VK\_STRUCTURE\_TYPE\_GRAPHICS\_PIPELINE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00516}00516   graphics\_pipeline\_create\_info.stageCount =}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00517}00517       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00518}00518   graphics\_pipeline\_create\_info.pStages = shader\_stages.data();}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00519}00519   graphics\_pipeline\_create\_info.pVertexInputState = \&vertex\_input\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00520}00520   graphics\_pipeline\_create\_info.pInputAssemblyState = \&input\_assembly;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00521}00521   graphics\_pipeline\_create\_info.pViewportState = \&viewport\_state\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00522}00522   graphics\_pipeline\_create\_info.pDynamicState = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00523}00523   graphics\_pipeline\_create\_info.pRasterizationState = \&rasterizer\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00524}00524   graphics\_pipeline\_create\_info.pMultisampleState = \&multisample\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00525}00525   graphics\_pipeline\_create\_info.pColorBlendState = \&color\_blending\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00526}00526   graphics\_pipeline\_create\_info.pDepthStencilState = \&depth\_stencil\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00527}00527   graphics\_pipeline\_create\_info.layout = pipeline\_layout;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00528}00528   graphics\_pipeline\_create\_info.renderPass = render\_pass;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00529}00529   graphics\_pipeline\_create\_info.subpass = 0;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00530}00530 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00531}00531   \textcolor{comment}{// pipeline derivatives : can create multiple pipelines that derive from one}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00532}00532   \textcolor{comment}{// another for optimization}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00533}00533   graphics\_pipeline\_create\_info.basePipelineHandle = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00534}00534   graphics\_pipeline\_create\_info.basePipelineIndex = -\/1;}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00535}00535 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00536}00536   \textcolor{comment}{// create graphics pipeline}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00537}00537   result = vkCreateGraphicsPipelines(device-\/>getLogicalDevice(), VK\_NULL\_HANDLE,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00538}00538                                      1, \&graphics\_pipeline\_create\_info, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00539}00539                                      \&graphics\_pipeline);}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00540}00540   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a graphics pipeline!"{}})}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00541}00541 }
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00542}00542   \textcolor{comment}{// Destroy shader modules, no longer needed after pipeline created}}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00543}00543   vkDestroyShaderModule(device-\/>getLogicalDevice(), vertex\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00544}00544                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00545}00545   vkDestroyShaderModule(device-\/>getLogicalDevice(), fragment\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00546}00546                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00547}00547 \}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00385}00385   std::vector<VkPipelineShaderStageCreateInfo> shader\_stages = \{}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00386}00386       vertex\_shader\_create\_info, fragment\_shader\_create\_info\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00387}00387 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00388}00388   \textcolor{comment}{// how the data for a single vertex (including info such as position, color,}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00389}00389   \textcolor{comment}{// texture coords, normals, etc) is as a whole}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00390}00390   VkVertexInputBindingDescription binding\_description\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00391}00391   binding\_description.binding = 0;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00392}00392   binding\_description.stride = \textcolor{keyword}{sizeof}(Vertex);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00393}00393   binding\_description.inputRate =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00394}00394       VK\_VERTEX\_INPUT\_RATE\_VERTEX;  \textcolor{comment}{// how to move between data after each}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00395}00395                                     \textcolor{comment}{// vertex.}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00396}00396 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00397}00397   \textcolor{comment}{// how the data for an attribute is defined within a vertex}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00398}00398   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00399}00399       \mbox{\hyperlink{namespacevertex_a183ebeb3b6fde1df5bd8e204127514ba}{vertex::getVertexInputAttributeDesc}}();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00400}00400 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00401}00401   \textcolor{comment}{// CREATE PIPELINE}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00402}00402   \textcolor{comment}{// 1.) Vertex input}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00403}00403   VkPipelineVertexInputStateCreateInfo vertex\_input\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00404}00404   vertex\_input\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00405}00405       VK\_STRUCTURE\_TYPE\_PIPELINE\_VERTEX\_INPUT\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00406}00406   vertex\_input\_create\_info.vertexBindingDescriptionCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00407}00407   vertex\_input\_create\_info.pVertexBindingDescriptions = \&binding\_description;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00408}00408   vertex\_input\_create\_info.vertexAttributeDescriptionCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00409}00409       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attribute\_describtions.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00410}00410   vertex\_input\_create\_info.pVertexAttributeDescriptions =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00411}00411       attribute\_describtions.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00412}00412 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00413}00413   \textcolor{comment}{// input assembly}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00414}00414   VkPipelineInputAssemblyStateCreateInfo input\_assembly\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00415}00415   input\_assembly.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00416}00416       VK\_STRUCTURE\_TYPE\_PIPELINE\_INPUT\_ASSEMBLY\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00417}00417   input\_assembly.topology = VK\_PRIMITIVE\_TOPOLOGY\_TRIANGLE\_LIST;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00418}00418   input\_assembly.primitiveRestartEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00419}00419 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00420}00420   \textcolor{comment}{// viewport \& scissor}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00421}00421   \textcolor{comment}{// create a viewport info struct}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00422}00422   VkViewport viewport\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00423}00423   viewport.x = 0.0f;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00424}00424   viewport.y = 0.0f;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00425}00425   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00426}00426   viewport.width = (float)swap\_chain\_extent.width;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00427}00427   viewport.height = (\textcolor{keywordtype}{float})swap\_chain\_extent.height;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00428}00428   viewport.minDepth = 0.0f;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00429}00429   viewport.maxDepth = 1.0f;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00430}00430 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00431}00431   \textcolor{comment}{// create a scissor info struct}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00432}00432   VkRect2D scissor\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00433}00433   scissor.offset = \{0, 0\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00434}00434   scissor.extent = swap\_chain\_extent;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00435}00435 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00436}00436   VkPipelineViewportStateCreateInfo viewport\_state\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00437}00437   viewport\_state\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00438}00438       VK\_STRUCTURE\_TYPE\_PIPELINE\_VIEWPORT\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00439}00439   viewport\_state\_create\_info.viewportCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00440}00440   viewport\_state\_create\_info.pViewports = \&viewport;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00441}00441   viewport\_state\_create\_info.scissorCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00442}00442   viewport\_state\_create\_info.pScissors = \&scissor;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00443}00443 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00444}00444   \textcolor{comment}{// RASTERIZER}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00445}00445   VkPipelineRasterizationStateCreateInfo rasterizer\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00446}00446   rasterizer\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00447}00447       VK\_STRUCTURE\_TYPE\_PIPELINE\_RASTERIZATION\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00448}00448   rasterizer\_create\_info.depthClampEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00449}00449   rasterizer\_create\_info.rasterizerDiscardEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00450}00450   rasterizer\_create\_info.polygonMode = VK\_POLYGON\_MODE\_FILL;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00451}00451   rasterizer\_create\_info.lineWidth = 1.0f;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00452}00452   rasterizer\_create\_info.cullMode = VK\_CULL\_MODE\_BACK\_BIT;  \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00453}00453   \textcolor{comment}{// winding to determine which side is front; y-\/coordinate is inverted in}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00454}00454   \textcolor{comment}{// comparison to OpenGL}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00455}00455   rasterizer\_create\_info.frontFace = VK\_FRONT\_FACE\_COUNTER\_CLOCKWISE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00456}00456   rasterizer\_create\_info.depthBiasClamp = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00457}00457 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00458}00458   \textcolor{comment}{// -\/-\/ MULTISAMPLING -\/-\/}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00459}00459   VkPipelineMultisampleStateCreateInfo multisample\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00460}00460   multisample\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00461}00461       VK\_STRUCTURE\_TYPE\_PIPELINE\_MULTISAMPLE\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00462}00462   multisample\_create\_info.sampleShadingEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00463}00463   multisample\_create\_info.rasterizationSamples = VK\_SAMPLE\_COUNT\_1\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00464}00464 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00465}00465   \textcolor{comment}{// -\/-\/ BLENDING -\/-\/}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00466}00466   \textcolor{comment}{// blend attachment state}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00467}00467   VkPipelineColorBlendAttachmentState color\_state\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00468}00468   color\_state.colorWriteMask =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00469}00469       VK\_COLOR\_COMPONENT\_R\_BIT | VK\_COLOR\_COMPONENT\_G\_BIT |}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00470}00470       VK\_COLOR\_COMPONENT\_B\_BIT | VK\_COLOR\_COMPONENT\_A\_BIT;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00471}00471 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00472}00472   color\_state.blendEnable = VK\_TRUE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00473}00473   \textcolor{comment}{// blending uses equation: (srcColorBlendFactor * new\_color) color\_blend\_op}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00474}00474   \textcolor{comment}{// (dstColorBlendFactor * old\_color)}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00475}00475   color\_state.srcColorBlendFactor = VK\_BLEND\_FACTOR\_SRC\_ALPHA;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00476}00476   color\_state.dstColorBlendFactor = VK\_BLEND\_FACTOR\_ONE\_MINUS\_SRC\_ALPHA;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00477}00477   color\_state.colorBlendOp = VK\_BLEND\_OP\_ADD;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00478}00478   color\_state.srcAlphaBlendFactor = VK\_BLEND\_FACTOR\_ONE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00479}00479   color\_state.dstAlphaBlendFactor = VK\_BLEND\_FACTOR\_ZERO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00480}00480   color\_state.alphaBlendOp = VK\_BLEND\_OP\_ADD;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00481}00481 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00482}00482   VkPipelineColorBlendStateCreateInfo color\_blending\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00483}00483   color\_blending\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00484}00484       VK\_STRUCTURE\_TYPE\_PIPELINE\_COLOR\_BLEND\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00485}00485   color\_blending\_create\_info.logicOpEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00486}00486   color\_blending\_create\_info.attachmentCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00487}00487   color\_blending\_create\_info.pAttachments = \&color\_state;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00488}00488 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00489}00489   \textcolor{comment}{// -\/-\/ PIPELINE LAYOUT -\/-\/}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00490}00490   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00491}00491   pipeline\_layout\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00492}00492       VK\_STRUCTURE\_TYPE\_PIPELINE\_LAYOUT\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00493}00493   pipeline\_layout\_create\_info.setLayoutCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00494}00494       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00495}00495   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00496}00496   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00497}00497   pipeline\_layout\_create\_info.pPushConstantRanges = \&push\_constant\_range;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00498}00498 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00499}00499   \textcolor{comment}{// create pipeline layout}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00500}00500   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00501}00501                                            \&pipeline\_layout\_create\_info,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00502}00502                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00503}00503   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create pipeline layout!"{}})}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00504}00504 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00505}00505   \textcolor{comment}{// -\/-\/ DEPTH STENCIL TESTING -\/-\/}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00506}00506   VkPipelineDepthStencilStateCreateInfo depth\_stencil\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00507}00507   depth\_stencil\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00508}00508       VK\_STRUCTURE\_TYPE\_PIPELINE\_DEPTH\_STENCIL\_STATE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00509}00509   depth\_stencil\_create\_info.depthTestEnable = VK\_TRUE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00510}00510   depth\_stencil\_create\_info.depthWriteEnable = VK\_TRUE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00511}00511   depth\_stencil\_create\_info.depthCompareOp = VK\_COMPARE\_OP\_LESS;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00512}00512   depth\_stencil\_create\_info.depthBoundsTestEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00513}00513   depth\_stencil\_create\_info.stencilTestEnable = VK\_FALSE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00514}00514 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00515}00515   \textcolor{comment}{// -\/-\/ GRAPHICS PIPELINE CREATION -\/-\/}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00516}00516   VkGraphicsPipelineCreateInfo graphics\_pipeline\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00517}00517   graphics\_pipeline\_create\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00518}00518       VK\_STRUCTURE\_TYPE\_GRAPHICS\_PIPELINE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00519}00519   graphics\_pipeline\_create\_info.stageCount =}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00520}00520       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00521}00521   graphics\_pipeline\_create\_info.pStages = shader\_stages.data();}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00522}00522   graphics\_pipeline\_create\_info.pVertexInputState = \&vertex\_input\_create\_info;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00523}00523   graphics\_pipeline\_create\_info.pInputAssemblyState = \&input\_assembly;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00524}00524   graphics\_pipeline\_create\_info.pViewportState = \&viewport\_state\_create\_info;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00525}00525   graphics\_pipeline\_create\_info.pDynamicState = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00526}00526   graphics\_pipeline\_create\_info.pRasterizationState = \&rasterizer\_create\_info;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00527}00527   graphics\_pipeline\_create\_info.pMultisampleState = \&multisample\_create\_info;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00528}00528   graphics\_pipeline\_create\_info.pColorBlendState = \&color\_blending\_create\_info;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00529}00529   graphics\_pipeline\_create\_info.pDepthStencilState = \&depth\_stencil\_create\_info;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00530}00530   graphics\_pipeline\_create\_info.layout = pipeline\_layout;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00531}00531   graphics\_pipeline\_create\_info.renderPass = render\_pass;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00532}00532   graphics\_pipeline\_create\_info.subpass = 0;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00533}00533 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00534}00534   \textcolor{comment}{// pipeline derivatives : can create multiple pipelines that derive from one}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00535}00535   \textcolor{comment}{// another for optimization}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00536}00536   graphics\_pipeline\_create\_info.basePipelineHandle = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00537}00537   graphics\_pipeline\_create\_info.basePipelineIndex = -\/1;}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00538}00538 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00539}00539   \textcolor{comment}{// create graphics pipeline}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00540}00540   result = vkCreateGraphicsPipelines(device-\/>getLogicalDevice(), VK\_NULL\_HANDLE,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00541}00541                                      1, \&graphics\_pipeline\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00542}00542                                      \&graphics\_pipeline);}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00543}00543   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a graphics pipeline!"{}})}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00544}00544 }
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00545}00545   \textcolor{comment}{// Destroy shader modules, no longer needed after pipeline created}}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00546}00546   vkDestroyShaderModule(device-\/>getLogicalDevice(), vertex\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00547}00547                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00548}00548   vkDestroyShaderModule(device-\/>getLogicalDevice(), fragment\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00549}00549                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_rasterizer_8cpp_source_l00550}00550 \}}
 
 \end{DoxyCode}

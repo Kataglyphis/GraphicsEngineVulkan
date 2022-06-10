@@ -2,7 +2,7 @@
 #include "VulkanRendererConfig.h"
 
 #include <sstream>
-
+#include <iomanip>
 #include "Utilities.h"
 
 ShaderHelper::ShaderHelper() {}
@@ -16,6 +16,7 @@ void ShaderHelper::compileShader(const std::string& shader_src_dir,
   std::stringstream adminPriviliges;
   adminPriviliges << "runas /user:<admin-user> \"";
 
+  // with wrapping your path with quotation marks one can use paths with blanks ...
   shader_src_path << shader_src_dir << shader_name;
   std::string shader_spv_path = getShaderSpvDir(shader_src_dir, shader_name);
   shader_log_file << shader_src_dir << shader_name << ".log.txt";
@@ -24,13 +25,14 @@ void ShaderHelper::compileShader(const std::string& shader_src_dir,
                         << shader_log_file.str();
 
   cmdShaderCompile  //<< adminPriviliges.str()
-      << GLSLC_EXE << target << shader_src_path.str() << " -o "
-      << shader_spv_path;
+      << GLSLC_EXE << target << std::quoted(shader_src_path.str()) << " -o "
+      << std::quoted(shader_spv_path);
   //<< log_stdout_and_stderr.str();
 
   // std::cout << cmdShaderCompile.str().c_str();
 
   system(cmdShaderCompile.str().c_str());
+
 }
 
 std::string ShaderHelper::getShaderSpvDir(const std::string& shader_src_dir,

@@ -2,6 +2,7 @@
 
 #include <array>
 #include <vector>
+#include <filesystem>
 
 #include "File.h"
 #include "FormatHelper.h"
@@ -269,8 +270,10 @@ void PostStage::createRenderpass() {
 void PostStage::createGraphicsPipeline(
     const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts) {
   std::stringstream post_shader_dir;
-  post_shader_dir << CMAKELISTS_DIR;
-  post_shader_dir << "/Resources/Shader/post/";
+  std::filesystem::path cwd = std::filesystem::current_path();
+  post_shader_dir << cwd.string();
+  post_shader_dir << RELATIVE_RESOURCE_PATH;
+  post_shader_dir << "Shader/post/";
 
   std::string post_vert_shader = "post.vert";
   std::string post_frag_shader = "post.frag";

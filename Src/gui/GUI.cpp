@@ -6,6 +6,8 @@
 
 #include "VulkanRendererConfig.h"
 
+#include <filesystem>
+
 GUI::GUI(Window* window) { this->window = window; }
 
 void GUI::initializeVulkanContext(VulkanDevice* device,
@@ -135,8 +137,9 @@ void GUI::create_gui_context(Window* window, const VkInstance& instance,
   float size_pixels = 18;
 
   std::stringstream fontDir;
-  fontDir << CMAKELISTS_DIR;
-  fontDir << "/ExternalLib/IMGUI/misc/fonts/";
+  std::filesystem::path cwd = std::filesystem::current_path();
+  fontDir << cwd.string();
+  fontDir << RELATIVE_IMGUI_FONTS_PATH;
 
   std::stringstream robo_font;
   robo_font << fontDir.str() << "Roboto-Medium.ttf";

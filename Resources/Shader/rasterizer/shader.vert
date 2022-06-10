@@ -1,6 +1,6 @@
 // #extension GL_KHR_vulkan_glsl : enable
 
-#version 460																										// use GLSL 4.6
+#version 460
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_scalar_block_layout : enable
 #extension GL_GOOGLE_include_directive : enable
@@ -10,7 +10,7 @@
 
 #include "../common/raycommon.glsl"
 
-#include "../../../include/common/host_device_shared_vars.h"
+#include "../hostDevice/host_device_shared_vars.h"
 
 #include "../../../include/renderer/GlobalUBO.h"
 #include "../../../include/renderer/SceneUBO.h"

@@ -11,8 +11,6 @@
      <string>1.9</string>
      <key>DocSetFeedName</key>
      <string>Doxygen docs</string>
-     <key>DocSetFeedUrl</key>
-     <string>FeedUrl</string>
      <key>DocSetPublisherIdentifier</key>
      <string>org.doxygen.Publisher</string>
      <key>DocSetPublisherName</key>

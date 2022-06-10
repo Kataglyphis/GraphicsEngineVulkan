@@ -189,6 +189,9 @@ FILE(GLOB IMGUI_FILTER                  "ExternalLib/IMGUI/*.h"                 
                                         "ExternalLib/IMGUI/backends/imgui_impl_glfw.h"              "ExternalLib/IMGUI/backends/imgui_impl_glfw.cpp"
                                         "ExternalLib/IMGUI/backends/imgui_impl_vulkan.h"            "ExternalLib/IMGUI/backends/imgui_impl_vulkan.cpp")
 
+FILE(GLOB SHADER_HOST_DEVICE_FILTER     "Resources/Shader/hostDevice/*.h"                     "Resources/Shader/hostDevice/*.cpp"
+                                        "Resources/Shader/hostDevice/*.hpp")
+
 source_group("vulkan_base"                                  FILES ${VULKAN_BASE_FILTER})
 source_group("gui"                                          FILES ${GUI_FILTER})
 source_group("gui/imgui"                                    FILES ${IMGUI_FILTER})
@@ -302,6 +305,7 @@ file(GLOB PATH_TRACING_SHADER_FILTER
       ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shader/path_tracing/*.glsl
 )
 
+source_group("shaders/hostDevice/" FILES ${SHADER_HOST_DEVICE_FILTER})
 source_group("shaders/rasterizer/" FILES ${RASTER_SHADER_FILTER})
 source_group("shaders/raytracing/" FILES ${RAYTRACING_SHADER_FILTER})
 source_group("shaders/common/" FILES ${COMMON_SHADER_FILTER})
@@ -329,6 +333,7 @@ ${GUI_FILTER}
 ${IMGUI_FILTER}
 ${UTIL_FILTER}
 ${VULKAN_BASE_FILTER}
+${SHADER_HOST_DEVICE_FILTER}
 )
 
 target_compile_options(${PROJECT_NAME} INTERFACE ${PROJECT_WARNINGS})
@@ -359,6 +364,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
                                                     ./include/window
                                                     ./include/memory
                                                     ./include/util
+                                                    ./Resources/Shader/hostDevice
                                                     ./include/ )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
@@ -464,6 +470,7 @@ add_executable( ${COMMIT_TEST_SUITE}
                 ${IMGUI_FILTER}
                 ${UTIL_FILTER}
                 ${VULKAN_BASE_FILTER}
+                ${SHADER_HOST_DEVICE_FILTER}
 )
 
 add_executable( ${COMPILE_TEST_SUITE}
@@ -487,6 +494,7 @@ add_executable( ${COMPILE_TEST_SUITE}
                 ${IMGUI_FILTER}
                 ${UTIL_FILTER}
                 ${VULKAN_BASE_FILTER}
+                ${SHADER_HOST_DEVICE_FILTER}
 )
 
 target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC ${CMAKE_DL_LIBS}
@@ -530,6 +538,7 @@ target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC     ./include/renderer
                                                               ./include/window
                                                               ./include/memory
                                                               ./include/util
+                                                              ./Resources/Shader/hostDevice
                                                               ./include/
 )
 
@@ -543,14 +552,15 @@ target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ./include/renderer
                                                             ./include/window
                                                             ./include/memory
                                                             ./include/util
+                                                            ./Resources/Shader/hostDevice
                                                             ./include/
 )
 
 target_include_directories(  ${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 target_include_directories(  ${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-gtest_discover_tests(   ${COMMIT_TEST_SUITE} ${COMPILE_TEST_SUITE})
-
+gtest_discover_tests(   ${COMMIT_TEST_SUITE})
+gtest_discover_tests(   ${COMPILE_TEST_SUITE})
 # add test after each build
 # src: https://quickturnstudio.com/running-test-in-compile-time/
 add_custom_target(${COMPILE_TEST_SUITE}_Runner
@@ -560,21 +570,16 @@ add_custom_target(${COMPILE_TEST_SUITE}_Runner
 add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
 
 # for correct library output needed
-# if(UNIX)
 install(TARGETS ${PROJECT_NAME}
         CONFIGURATIONS Release
         RUNTIME DESTINATION bin)
-#else()
-#install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-#endif()
 
-set(CMAKE_INSTALL_DATADIR Resources/)
-install(DIRECTORY Resources/ DESTINATION ${CMAKE_INSTALL_DATADIR})
+install(DIRECTORY Resources/ DESTINATION Resources/)
+install(DIRECTORY ExternalLib/IMGUI/misc/fonts/ DESTINATION ExternalLib/IMGUI/misc/fonts/)
 
 # we are using this dir strings for removing hard coded file locations
 # at c++ side
 configure_file(VulkanRendererConfig.h.in "${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/VulkanRendererConfig.h")
-
 
 include(InstallRequiredSystemLibraries)
 

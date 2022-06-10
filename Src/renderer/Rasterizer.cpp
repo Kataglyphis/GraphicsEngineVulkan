@@ -2,6 +2,7 @@
 
 #include <array>
 #include <vector>
+#include <filesystem>
 
 #include "File.h"
 #include "FormatHelper.h"
@@ -342,8 +343,10 @@ void Rasterizer::createTextures(VkCommandPool& commandPool) {
 void Rasterizer::createGraphicsPipeline(
     const std::vector<VkDescriptorSetLayout>& descriptorSetLayouts) {
   std::stringstream rasterizer_shader_dir;
-  rasterizer_shader_dir << CMAKELISTS_DIR;
-  rasterizer_shader_dir << "/Resources/Shader/rasterizer/";
+  std::filesystem::path cwd = std::filesystem::current_path();
+  rasterizer_shader_dir << cwd.string();
+  rasterizer_shader_dir << RELATIVE_RESOURCE_PATH;
+  rasterizer_shader_dir << "Shader/rasterizer/";
 
   ShaderHelper shaderHelper;
   shaderHelper.compileShader(rasterizer_shader_dir.str(), "shader.vert");
