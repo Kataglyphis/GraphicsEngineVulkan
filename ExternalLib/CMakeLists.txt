@@ -17,3 +17,5 @@ target_include_directories(vma INTERFACE VULKAN_MEMORY_ALLOCATOR/include)
 add_library(ktx INTERFACE)
 target_include_directories(ktx INTERFACE KTX/include
                                         KTX/other_include/KHR)
+
+add_subdirectory(GLFW)
