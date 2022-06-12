@@ -119,7 +119,6 @@ started in own research topics.
 ## Getting Started
 
 You might only clone the repo, run cmake and you are good to go.
-I only guarantee a successful build for windows hence it is frequently tested.
 
 ### Prerequisites
 
@@ -136,6 +135,9 @@ For building an installer on windows you will need [NSIS](https://nsis.sourcefor
    ```sh
    git clone --recurse-submodules git@github.com:Kataglyphis/GraphicsEngineVulkan.git
    ```
+> **_NOTE:_**  With powershell in Windows git has currently a problem with cloning recursively. You might consider using
+the git bash.
+
 
 ## Tests
 * [Watch test results here](Documents/googletest/test_detail.xml)
