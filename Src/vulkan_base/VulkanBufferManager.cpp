@@ -1,4 +1,4 @@
-#include "VulkanBufferManager.h"
+#include "VulkanBufferManager.hpp"
 
 VulkanBufferManager::VulkanBufferManager() {}
 

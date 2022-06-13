@@ -2,19 +2,19 @@
 \label{_vulkan_buffer_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBuffer.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBuffer.cpp}}
 \mbox{\hyperlink{_vulkan_buffer_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}VulkanBuffer.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vulkan_buffer_8hpp}{VulkanBuffer.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00002}00002 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <stdexcept>}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00004}00004 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_memory_helper_8hpp}{MemoryHelper.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_utilities_8hpp}{Utilities.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00007}00007 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00008}00008 VulkanBuffer::VulkanBuffer() \{\}}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00008}\mbox{\hyperlink{class_vulkan_buffer_adb928dc586c1d75c01744ed2cbfb9ea6}{00008}} \mbox{\hyperlink{class_vulkan_buffer_adb928dc586c1d75c01744ed2cbfb9ea6}{VulkanBuffer::VulkanBuffer}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00009}00009 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00010}00010 \textcolor{keywordtype}{void} VulkanBuffer::create(VulkanDevice* device, VkDeviceSize buffer\_size,}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00010}\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{00010}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{VulkanBuffer::create}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkDeviceSize buffer\_size,}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00011}00011                           VkBufferUsageFlags buffer\_usage\_flags,}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00012}00012                           VkMemoryPropertyFlags buffer\_propertiy\_flags) \{}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00013}00013   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00013}00013   this-\/>device = \mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}};}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00014}00014 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00015}00015   \textcolor{comment}{// information to create a buffer (doesn't include assigning memory)}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00016}00016   VkBufferCreateInfo buffer\_info\{\};}
@@ -25,13 +25,13 @@
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00021}00021   \textcolor{comment}{// similar to swap chain images, can share vertex buffers}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00022}00022   buffer\_info.sharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00023}00023 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00024}00024   VkResult result = vkCreateBuffer(device-\/>getLogicalDevice(), \&buffer\_info,}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00025}00025                                    \textcolor{keyword}{nullptr}, \&buffer);}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00024}00024   VkResult result = vkCreateBuffer(\mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&buffer\_info,}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00025}00025                                    \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_vulkan_buffer_af37d66cfab5e0fc453b01a7df4e2aa2e}{buffer}});}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00026}00026   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a buffer!"{}});}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00027}00027 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00028}00028   \textcolor{comment}{// get buffer memory requirements}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00029}00029   VkMemoryRequirements memory\_requirements\{\};}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00030}00030   vkGetBufferMemoryRequirements(device-\/>getLogicalDevice(), buffer,}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00030}00030   vkGetBufferMemoryRequirements(\mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_vulkan_buffer_af37d66cfab5e0fc453b01a7df4e2aa2e}{buffer}},}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00031}00031                                 \&memory\_requirements);}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00032}00032 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00033}00033   \textcolor{comment}{// allocate memory to buffer}}
@@ -39,8 +39,8 @@
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00035}00035   memory\_alloc\_info.sType = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00036}00036   memory\_alloc\_info.allocationSize = memory\_requirements.size;}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00037}00037 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00038}00038   uint32\_t memory\_type\_index = find\_memory\_type\_index(}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00039}00039       device-\/>getPhysicalDevice(), memory\_requirements.memoryTypeBits,}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00038}00038   uint32\_t memory\_type\_index = \mbox{\hyperlink{_memory_helper_8hpp_aa24924ffe6a1a5472dfd21242688413b}{find\_memory\_type\_index}}(}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00039}00039       \mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac70529b6753bedb7cfddd11baa5c27eb}{getPhysicalDevice}}(), memory\_requirements.memoryTypeBits,}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00040}00040       buffer\_propertiy\_flags);}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00041}00041 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00042}00042   \textcolor{comment}{// VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |              /* memory is visible to}}
@@ -54,23 +54,23 @@
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00050}00050   memory\_alloc\_info.memoryTypeIndex = memory\_type\_index;}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00051}00051 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00052}00052   \textcolor{comment}{// allocate memory to VkDeviceMemory}}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00053}00053   result = vkAllocateMemory(device-\/>getLogicalDevice(), \&memory\_alloc\_info,}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00054}00054                             \textcolor{keyword}{nullptr}, \&bufferMemory);}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00053}00053   result = vkAllocateMemory(\mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&memory\_alloc\_info,}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00054}00054                             \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_vulkan_buffer_af4dc18fb2a86060addf80f81197c5973}{bufferMemory}});}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00055}00055   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to allocate memory for buffer!"{}});}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00056}00056 }
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00057}00057   \textcolor{comment}{// allocate memory to given buffer}}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00058}00058   vkBindBufferMemory(device-\/>getLogicalDevice(), buffer, bufferMemory, 0);}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00058}00058   vkBindBufferMemory(\mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_vulkan_buffer_af37d66cfab5e0fc453b01a7df4e2aa2e}{buffer}}, \mbox{\hyperlink{class_vulkan_buffer_af4dc18fb2a86060addf80f81197c5973}{bufferMemory}}, 0);}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00059}00059 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00060}00060   created = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00060}00060   \mbox{\hyperlink{class_vulkan_buffer_a447e95617ef2a0f15d79895fff9d86c4}{created}} = \textcolor{keyword}{true};}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00061}00061 \}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00062}00062 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00063}00063 \textcolor{keywordtype}{void} VulkanBuffer::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00064}00064   \textcolor{keywordflow}{if} (created) \{}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00065}00065     vkDestroyBuffer(device-\/>getLogicalDevice(), buffer, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00066}00066     vkFreeMemory(device-\/>getLogicalDevice(), bufferMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00063}\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{00063}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{VulkanBuffer::cleanUp}}() \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00064}00064   \textcolor{keywordflow}{if} (\mbox{\hyperlink{class_vulkan_buffer_a447e95617ef2a0f15d79895fff9d86c4}{created}}) \{}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00065}00065     vkDestroyBuffer(\mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_vulkan_buffer_af37d66cfab5e0fc453b01a7df4e2aa2e}{buffer}}, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00066}00066     vkFreeMemory(\mbox{\hyperlink{class_vulkan_buffer_a30f7022cde4cadb801c96e37c214fe35}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_vulkan_buffer_af4dc18fb2a86060addf80f81197c5973}{bufferMemory}}, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00067}00067   \}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00068}00068 \}}
 \DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00069}00069 }
-\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00070}00070 VulkanBuffer::\string~VulkanBuffer() \{\}}
+\DoxyCodeLine{\Hypertarget{_vulkan_buffer_8cpp_source_l00070}\mbox{\hyperlink{class_vulkan_buffer_a2df2fd8516f19cbfa0f655c8966ead10}{00070}} \mbox{\hyperlink{class_vulkan_buffer_a2df2fd8516f19cbfa0f655c8966ead10}{VulkanBuffer::\string~VulkanBuffer}}() \{\}}
 
 \end{DoxyCode}

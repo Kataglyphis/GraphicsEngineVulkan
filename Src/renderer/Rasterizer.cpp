@@ -1,15 +1,15 @@
-#include "Rasterizer.h"
+#include "Rasterizer.hpp"
 
 #include <array>
 #include <vector>
 #include <filesystem>
 
-#include "File.h"
-#include "FormatHelper.h"
-#include "ShaderHelper.h"
-#include "Vertex.h"
+#include "File.hpp"
+#include "FormatHelper.hpp"
+#include "ShaderHelper.hpp"
+#include "Vertex.hpp"
 
-#include "VulkanRendererConfig.h"
+#include "VulkanRendererConfig.hpp"
 
 Rasterizer::Rasterizer() {}
 
@@ -346,7 +346,7 @@ void Rasterizer::createGraphicsPipeline(
   std::filesystem::path cwd = std::filesystem::current_path();
   rasterizer_shader_dir << cwd.string();
   rasterizer_shader_dir << RELATIVE_RESOURCE_PATH;
-  rasterizer_shader_dir << "Shader/rasterizer/";
+  rasterizer_shader_dir << "Shaders/rasterizer/";
 
   ShaderHelper shaderHelper;
   shaderHelper.compileShader(rasterizer_shader_dir.str(), "shader.vert");

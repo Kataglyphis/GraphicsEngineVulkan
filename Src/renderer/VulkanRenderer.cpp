@@ -14,12 +14,12 @@
 
 #include <gsl/gsl>
 
-#include "File.h"
-#include "Globals.h"
-#include "PushConstantPost.h"
-#include "ShaderHelper.h"
+#include "File.hpp"
+#include "Globals.hpp"
+#include "PushConstantPost.hpp"
+#include "ShaderHelper.hpp"
 
-#include "VulkanRendererConfig.h"
+#include "VulkanRendererConfig.hpp"
 
 VulkanRenderer::VulkanRenderer(Window* window, Scene* scene, GUI* gui,
                                Camera* camera)

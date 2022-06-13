@@ -2,161 +2,161 @@
 \label{_raytracing_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Raytracing.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Raytracing.cpp}}
 \mbox{\hyperlink{_raytracing_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Raytracing.h"{}}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_raytracing_8hpp}{Raytracing.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00002}00002 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <array>}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include <vector>}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include <filesystem>}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00006}00006 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}File.h"{}}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}MemoryHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00010}00010 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_file_8hpp}{File.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_memory_helper_8hpp}{MemoryHelper.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_shader_helper_8hpp}{ShaderHelper.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00010}00010 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vulkan_renderer_config_8hpp}{VulkanRendererConfig.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00011}00011 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00012}00012 Raytracing::Raytracing() \{\}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00012}\mbox{\hyperlink{class_raytracing_acae041267968cafbcc6ea45df791039e}{00012}} \mbox{\hyperlink{class_raytracing_acae041267968cafbcc6ea45df791039e}{Raytracing::Raytracing}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00013}00013 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00014}00014 \textcolor{keywordtype}{void} Raytracing::init(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00015}00015     VulkanDevice* device,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00014}\mbox{\hyperlink{class_raytracing_aac0acb9739dff67316e6d359d22c1241}{00014}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_aac0acb9739dff67316e6d359d22c1241}{Raytracing::init}}(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00015}00015     \mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00016}00016     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00017}00017   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00017}00017   this-\/>device = \mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00018}00018 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00019}00019   createPCRange();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00020}00020   createGraphicsPipeline(descriptorSetLayouts);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00021}00021   createSBT();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00019}00019   \mbox{\hyperlink{class_raytracing_ab0133e7610061e3aa4eebd05bd2fc879}{createPCRange}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00020}00020   \mbox{\hyperlink{class_raytracing_a3c436169a3d8aac06d4a1cab32789b8c}{createGraphicsPipeline}}(descriptorSetLayouts);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00021}00021   \mbox{\hyperlink{class_raytracing_a98639c23ff52d8968b637c2498723a85}{createSBT}}();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00022}00022 \}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00023}00023 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00024}00024 \textcolor{keywordtype}{void} Raytracing::shaderHotReload(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00024}\mbox{\hyperlink{class_raytracing_a97a265664eadc2c21b7b32f9d94c8b28}{00024}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_a97a265664eadc2c21b7b32f9d94c8b28}{Raytracing::shaderHotReload}}(}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00025}00025     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00026}00026   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00027}00027   createGraphicsPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00026}00026   vkDestroyPipeline(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_raytracing_a6d6d310e4052d660eaa4318369e5b8eb}{graphicsPipeline}}, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00027}00027   \mbox{\hyperlink{class_raytracing_a3c436169a3d8aac06d4a1cab32789b8c}{createGraphicsPipeline}}(descriptor\_set\_layouts);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00028}00028 \}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00029}00029 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00030}00030 \textcolor{keywordtype}{void} Raytracing::recordCommands(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00031}00031     VkCommandBuffer\& commandBuffer, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00030}\mbox{\hyperlink{class_raytracing_a1af4367c75acdcfd901fa63c06fc20ab}{00030}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_a1af4367c75acdcfd901fa63c06fc20ab}{Raytracing::recordCommands}}(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00031}00031     VkCommandBuffer\& commandBuffer, \mbox{\hyperlink{class_vulkan_swap_chain}{VulkanSwapChain}}* vulkanSwapChain,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00032}00032     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00033}00033   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00033}00033   uint32\_t handle\_size = \mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}}.shaderGroupHandleSize;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00034}00034   uint32\_t handle\_size\_aligned =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00035}00035       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00035}00035       \mbox{\hyperlink{_memory_helper_8hpp_a6137df4e6770e0f3cf64fc33b393f1a6}{align\_up}}(handle\_size, \mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}}.shaderGroupHandleAlignment);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00036}00036 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00037}00037   PFN\_vkGetBufferDeviceAddressKHR vkGetBufferDeviceAddressKHR =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00038}00038       \textcolor{keyword}{reinterpret\_cast<}PFN\_vkGetBufferDeviceAddressKHR\textcolor{keyword}{>}(vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00039}00039           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddressKHR"{}}));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00039}00039           \mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddressKHR"{}}));}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00040}00040 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00041}00041   PFN\_vkCmdTraceRaysKHR pvkCmdTraceRaysKHR =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00042}00042       (PFN\_vkCmdTraceRaysKHR)vkGetDeviceProcAddr(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00042}00042       (PFN\_vkCmdTraceRaysKHR)vkGetDeviceProcAddr(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00043}00043                                                  \textcolor{stringliteral}{"{}vkCmdTraceRaysKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00044}00044 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00045}00045   VkBufferDeviceAddressInfoKHR bufferDeviceAI\{\};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00046}00046   bufferDeviceAI.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00047}00047   bufferDeviceAI.buffer = raygenShaderBindingTableBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00047}00047   bufferDeviceAI.buffer = \mbox{\hyperlink{class_raytracing_af3a0b358b3cdaed288eb9e29ddb18cd5}{raygenShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00048}00048 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00049}00049   rgen\_region.deviceAddress =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00050}00050       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00051}00051   rgen\_region.stride = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00052}00052   rgen\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00049}00049   \mbox{\hyperlink{class_raytracing_a33314571df1e09470567ad92424ec40e}{rgen\_region}}.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00050}00050       vkGetBufferDeviceAddressKHR(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&bufferDeviceAI);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00051}00051   \mbox{\hyperlink{class_raytracing_a33314571df1e09470567ad92424ec40e}{rgen\_region}}.stride = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00052}00052   \mbox{\hyperlink{class_raytracing_a33314571df1e09470567ad92424ec40e}{rgen\_region}}.size = handle\_size\_aligned;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00053}00053 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00054}00054   bufferDeviceAI.buffer = missShaderBindingTableBuffer.getBuffer();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00055}00055   miss\_region.deviceAddress =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00056}00056       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00057}00057   miss\_region.stride = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00058}00058   miss\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00054}00054   bufferDeviceAI.buffer = \mbox{\hyperlink{class_raytracing_ab733e702385ee07420340a5567e8a964}{missShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00055}00055   \mbox{\hyperlink{class_raytracing_a0db275660dd714ca06674b17401e25ed}{miss\_region}}.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00056}00056       vkGetBufferDeviceAddressKHR(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&bufferDeviceAI);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00057}00057   \mbox{\hyperlink{class_raytracing_a0db275660dd714ca06674b17401e25ed}{miss\_region}}.stride = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00058}00058   \mbox{\hyperlink{class_raytracing_a0db275660dd714ca06674b17401e25ed}{miss\_region}}.size = handle\_size\_aligned;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00059}00059 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00060}00060   bufferDeviceAI.buffer = hitShaderBindingTableBuffer.getBuffer();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00061}00061   hit\_region.deviceAddress =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00062}00062       vkGetBufferDeviceAddressKHR(device-\/>getLogicalDevice(), \&bufferDeviceAI);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00063}00063   hit\_region.stride = handle\_size\_aligned;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00064}00064   hit\_region.size = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00060}00060   bufferDeviceAI.buffer = \mbox{\hyperlink{class_raytracing_a99b9176276ae1e0490a6ad153210f0b8}{hitShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00061}00061   \mbox{\hyperlink{class_raytracing_a411f955dff2bf2eea1f0756c9ee5aa99}{hit\_region}}.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00062}00062       vkGetBufferDeviceAddressKHR(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&bufferDeviceAI);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00063}00063   \mbox{\hyperlink{class_raytracing_a411f955dff2bf2eea1f0756c9ee5aa99}{hit\_region}}.stride = handle\_size\_aligned;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00064}00064   \mbox{\hyperlink{class_raytracing_a411f955dff2bf2eea1f0756c9ee5aa99}{hit\_region}}.size = handle\_size\_aligned;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00065}00065 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00066}00066   \textcolor{comment}{// for GCC doen't allow references on rvalues go like that ...}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00067}00067   pc.clear\_color = \{0.2f, 0.65f, 0.4f, 1.0f\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00067}00067   \mbox{\hyperlink{class_raytracing_ab708bbe8802a5baec75d862e8d3d28ad}{pc}}.\mbox{\hyperlink{struct_push_constant_raytracing_a210d607bac6a30bffc6f3f5cfcb25f01}{clear\_color}} = \{0.2f, 0.65f, 0.4f, 1.0f\};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00068}00068   \textcolor{comment}{// just "{}Push"{} constants to given shader stage directly (no buffer)}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00069}00069   vkCmdPushConstants(commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00069}00069   vkCmdPushConstants(commandBuffer, \mbox{\hyperlink{class_raytracing_a369afd4390cf7aa50ec15f093dcc33ac}{pipeline\_layout}},}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00070}00070                      VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00071}00071                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00072}00072                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00073}00073                      0, \textcolor{keyword}{sizeof}(PushConstantRaytracing), \&pc);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00073}00073                      0, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{struct_push_constant_raytracing}{PushConstantRaytracing}}), \&\mbox{\hyperlink{class_raytracing_ab708bbe8802a5baec75d862e8d3d28ad}{pc}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00074}00074 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00075}00075   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00076}00076                     graphicsPipeline);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00076}00076                     \mbox{\hyperlink{class_raytracing_a6d6d310e4052d660eaa4318369e5b8eb}{graphicsPipeline}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00077}00077 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00078}00078   vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_RAY\_TRACING\_KHR,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00079}00079                           pipeline\_layout, 0,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00079}00079                           \mbox{\hyperlink{class_raytracing_a369afd4390cf7aa50ec15f093dcc33ac}{pipeline\_layout}}, 0,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00080}00080                           \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00081}00081                           descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00082}00082 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00083}00083   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00084}00084   pvkCmdTraceRaysKHR(commandBuffer, \&rgen\_region, \&miss\_region, \&hit\_region,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00085}00085                      \&call\_region, swap\_chain\_extent.width,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00083}00083   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = \mbox{\hyperlink{class_raytracing_ac5c00d2e9a4a869ee1ac1b28f54a20fd}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a011fed91d8c903437dd190177dbe0e15}{getSwapChainExtent}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00084}00084   pvkCmdTraceRaysKHR(commandBuffer, \&\mbox{\hyperlink{class_raytracing_a33314571df1e09470567ad92424ec40e}{rgen\_region}}, \&\mbox{\hyperlink{class_raytracing_a0db275660dd714ca06674b17401e25ed}{miss\_region}}, \&\mbox{\hyperlink{class_raytracing_a411f955dff2bf2eea1f0756c9ee5aa99}{hit\_region}},}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00085}00085                      \&\mbox{\hyperlink{class_raytracing_a593743694cb8330544c0496f14759ab6}{call\_region}}, swap\_chain\_extent.width,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00086}00086                      swap\_chain\_extent.height, 1);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00087}00087 \}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00088}00088 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00089}00089 \textcolor{keywordtype}{void} Raytracing::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00090}00090   shaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00091}00091   raygenShaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00092}00092   missShaderBindingTableBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00093}00093   hitShaderBindingTableBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00089}\mbox{\hyperlink{class_raytracing_a9cfd8a4e454e3c04f349c041661a96e4}{00089}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_a9cfd8a4e454e3c04f349c041661a96e4}{Raytracing::cleanUp}}() \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00090}00090   \mbox{\hyperlink{class_raytracing_a5ef8153331d99c8e0ccece54028d1c5a}{shaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00091}00091   \mbox{\hyperlink{class_raytracing_af3a0b358b3cdaed288eb9e29ddb18cd5}{raygenShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00092}00092   \mbox{\hyperlink{class_raytracing_ab733e702385ee07420340a5567e8a964}{missShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00093}00093   \mbox{\hyperlink{class_raytracing_a99b9176276ae1e0490a6ad153210f0b8}{hitShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00094}00094 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00095}00095   vkDestroyPipeline(device-\/>getLogicalDevice(), graphicsPipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00096}00096   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00095}00095   vkDestroyPipeline(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_raytracing_a6d6d310e4052d660eaa4318369e5b8eb}{graphicsPipeline}}, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00096}00096   vkDestroyPipelineLayout(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_raytracing_a369afd4390cf7aa50ec15f093dcc33ac}{pipeline\_layout}}, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00097}00097 \}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00098}00098 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00099}00099 Raytracing::\string~Raytracing() \{\}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00099}\mbox{\hyperlink{class_raytracing_aafd8ed982264e306e548bb3fdaca0bff}{00099}} \mbox{\hyperlink{class_raytracing_aafd8ed982264e306e548bb3fdaca0bff}{Raytracing::\string~Raytracing}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00100}00100 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00101}00101 \textcolor{keywordtype}{void} Raytracing::createPCRange() \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00101}\mbox{\hyperlink{class_raytracing_ab0133e7610061e3aa4eebd05bd2fc879}{00101}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_ab0133e7610061e3aa4eebd05bd2fc879}{Raytracing::createPCRange}}() \{}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00102}00102   \textcolor{comment}{// define push constant values (no 'create' needed)}}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00103}00103   pc\_ranges.stageFlags = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00103}00103   \mbox{\hyperlink{class_raytracing_ac9e6b9764438f0cfbf31610ba67c14f6}{pc\_ranges}}.stageFlags = VK\_SHADER\_STAGE\_RAYGEN\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00104}00104                          VK\_SHADER\_STAGE\_CLOSEST\_HIT\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00105}00105                          VK\_SHADER\_STAGE\_MISS\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00106}00106   pc\_ranges.offset = 0;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00107}00107   pc\_ranges.size = \textcolor{keyword}{sizeof}(PushConstantRaytracing);  \textcolor{comment}{// size of data being passed}}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00106}00106   \mbox{\hyperlink{class_raytracing_ac9e6b9764438f0cfbf31610ba67c14f6}{pc\_ranges}}.offset = 0;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00107}00107   \mbox{\hyperlink{class_raytracing_ac9e6b9764438f0cfbf31610ba67c14f6}{pc\_ranges}}.size = \textcolor{keyword}{sizeof}(\mbox{\hyperlink{struct_push_constant_raytracing}{PushConstantRaytracing}});  \textcolor{comment}{// size of data being passed}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00108}00108 \}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00109}00109 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00110}00110 \textcolor{keywordtype}{void} Raytracing::createGraphicsPipeline(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00110}\mbox{\hyperlink{class_raytracing_a3c436169a3d8aac06d4a1cab32789b8c}{00110}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_a3c436169a3d8aac06d4a1cab32789b8c}{Raytracing::createGraphicsPipeline}}(}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00111}00111     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00112}00112   PFN\_vkCreateRayTracingPipelinesKHR pvkCreateRayTracingPipelinesKHR =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00113}00113       (PFN\_vkCreateRayTracingPipelinesKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00114}00114           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateRayTracingPipelinesKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00114}00114           \mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkCreateRayTracingPipelinesKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00115}00115 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00116}00116   std::stringstream raytracing\_shader\_dir;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00117}00117   std::filesystem::path cwd = std::filesystem::current\_path();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00118}00118   raytracing\_shader\_dir << cwd.string();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00119}00119   raytracing\_shader\_dir << RELATIVE\_RESOURCE\_PATH;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00120}00120   raytracing\_shader\_dir << \textcolor{stringliteral}{"{}Shader/raytracing/"{}};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00120}00120   raytracing\_shader\_dir << \textcolor{stringliteral}{"{}Shaders/raytracing/"{}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00121}00121 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00122}00122   std::string raygen\_shader = \textcolor{stringliteral}{"{}raytrace.rgen"{}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00123}00123   std::string chit\_shader = \textcolor{stringliteral}{"{}raytrace.rchit"{}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00124}00124   std::string miss\_shader = \textcolor{stringliteral}{"{}raytrace.rmiss"{}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00125}00125   std::string shadow\_shader = \textcolor{stringliteral}{"{}shadow.rmiss"{}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00126}00126 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00127}00127   ShaderHelper shaderHelper;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00128}00128   shaderHelper.compileShader(raytracing\_shader\_dir.str(), raygen\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00129}00129   shaderHelper.compileShader(raytracing\_shader\_dir.str(), chit\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00130}00130   shaderHelper.compileShader(raytracing\_shader\_dir.str(), miss\_shader);}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00131}00131   shaderHelper.compileShader(raytracing\_shader\_dir.str(), shadow\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00127}00127   \mbox{\hyperlink{class_shader_helper}{ShaderHelper}} shaderHelper;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00128}00128   shaderHelper.\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{compileShader}}(raytracing\_shader\_dir.str(), raygen\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00129}00129   shaderHelper.\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{compileShader}}(raytracing\_shader\_dir.str(), chit\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00130}00130   shaderHelper.\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{compileShader}}(raytracing\_shader\_dir.str(), miss\_shader);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00131}00131   shaderHelper.\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{compileShader}}(raytracing\_shader\_dir.str(), shadow\_shader);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00132}00132 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00133}00133   File raygenFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00134}00134       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), raygen\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00135}00135   File raychitFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00136}00136       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), chit\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00137}00137   File raymissFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00138}00138       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), miss\_shader));}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00139}00139   File shadowFile(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00140}00140       shaderHelper.getShaderSpvDir(raytracing\_shader\_dir.str(), shadow\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00133}00133   \mbox{\hyperlink{class_file}{File}} raygenFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00134}00134       shaderHelper.\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(raytracing\_shader\_dir.str(), raygen\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00135}00135   \mbox{\hyperlink{class_file}{File}} raychitFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00136}00136       shaderHelper.\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(raytracing\_shader\_dir.str(), chit\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00137}00137   \mbox{\hyperlink{class_file}{File}} raymissFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00138}00138       shaderHelper.\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(raytracing\_shader\_dir.str(), miss\_shader));}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00139}00139   \mbox{\hyperlink{class_file}{File}} shadowFile(}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00140}00140       shaderHelper.\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(raytracing\_shader\_dir.str(), shadow\_shader));}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00141}00141 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00142}00142   std::vector<char> raygen\_shader\_code = raygenFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00143}00143   std::vector<char> raychit\_shader\_code = raychitFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00144}00144   std::vector<char> raymiss\_shader\_code = raymissFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00145}00145   std::vector<char> shadow\_shader\_code = shadowFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00142}00142   std::vector<char> raygen\_shader\_code = raygenFile.\mbox{\hyperlink{class_file_a7de1f16679f714425bf885ecfdd98bec}{readCharSequence}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00143}00143   std::vector<char> raychit\_shader\_code = raychitFile.\mbox{\hyperlink{class_file_a7de1f16679f714425bf885ecfdd98bec}{readCharSequence}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00144}00144   std::vector<char> raymiss\_shader\_code = raymissFile.\mbox{\hyperlink{class_file_a7de1f16679f714425bf885ecfdd98bec}{readCharSequence}}();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00145}00145   std::vector<char> shadow\_shader\_code = shadowFile.\mbox{\hyperlink{class_file_a7de1f16679f714425bf885ecfdd98bec}{readCharSequence}}();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00146}00146 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00147}00147   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00148}00148   VkShaderModule raygen\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00149}00149       shaderHelper.createShaderModule(device, raygen\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00149}00149       shaderHelper.\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{createShaderModule}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, raygen\_shader\_code);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00150}00150   VkShaderModule raychit\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00151}00151       shaderHelper.createShaderModule(device, raychit\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00151}00151       shaderHelper.\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{createShaderModule}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, raychit\_shader\_code);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00152}00152   VkShaderModule raymiss\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00153}00153       shaderHelper.createShaderModule(device, raymiss\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00153}00153       shaderHelper.\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{createShaderModule}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, raymiss\_shader\_code);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00154}00154   VkShaderModule shadow\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00155}00155       shaderHelper.createShaderModule(device, shadow\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00155}00155       shaderHelper.\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{createShaderModule}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, shadow\_shader\_code);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00156}00156 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00157}00157   \textcolor{comment}{// create all shader stage infos for creating a group}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00158}00158   VkPipelineShaderStageCreateInfo rgen\_shader\_stage\_info\{\};}
@@ -194,7 +194,7 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00190}00190 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00191}00191   \textcolor{keyword}{enum} StageIndices \{ eRaygen, eMiss, eMiss2, eClosestHit, eShaderGroupCount \};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00192}00192 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00193}00193   shader\_groups.reserve(4);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00193}00193   \mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.reserve(4);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00194}00194   VkRayTracingShaderGroupCreateInfoKHR shader\_group\_create\_infos[4];}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00195}00195 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00196}00196   shader\_group\_create\_infos[0].sType =}
@@ -208,7 +208,7 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00204}00204   shader\_group\_create\_infos[0].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00205}00205   shader\_group\_create\_infos[0].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00206}00206 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00207}00207   shader\_groups.push\_back(shader\_group\_create\_infos[0]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00207}00207   \mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.push\_back(shader\_group\_create\_infos[0]);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00208}00208 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00209}00209   shader\_group\_create\_infos[1].sType =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00210}00210       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
@@ -221,7 +221,7 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00217}00217   shader\_group\_create\_infos[1].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00218}00218   shader\_group\_create\_infos[1].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00219}00219 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00220}00220   shader\_groups.push\_back(shader\_group\_create\_infos[1]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00220}00220   \mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.push\_back(shader\_group\_create\_infos[1]);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00221}00221 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00222}00222   shader\_group\_create\_infos[2].sType =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00223}00223       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
@@ -234,7 +234,7 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00230}00230   shader\_group\_create\_infos[2].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00231}00231   shader\_group\_create\_infos[2].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00232}00232 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00233}00233   shader\_groups.push\_back(shader\_group\_create\_infos[2]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00233}00233   \mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.push\_back(shader\_group\_create\_infos[2]);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00234}00234 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00235}00235   shader\_group\_create\_infos[3].sType =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00236}00236       VK\_STRUCTURE\_TYPE\_RAY\_TRACING\_SHADER\_GROUP\_CREATE\_INFO\_KHR;}
@@ -247,7 +247,7 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00243}00243   shader\_group\_create\_infos[3].intersectionShader = VK\_SHADER\_UNUSED\_KHR;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00244}00244   shader\_group\_create\_infos[3].pShaderGroupCaptureReplayHandle = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00245}00245 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00246}00246   shader\_groups.push\_back(shader\_group\_create\_infos[3]);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00246}00246   \mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.push\_back(shader\_group\_create\_infos[3]);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00247}00247 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00248}00248   VkPipelineLayoutCreateInfo pipeline\_layout\_create\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00249}00249   pipeline\_layout\_create\_info.sType =}
@@ -256,11 +256,11 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00252}00252       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00253}00253   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00254}00254   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00255}00255   pipeline\_layout\_create\_info.pPushConstantRanges = \&pc\_ranges;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00255}00255   pipeline\_layout\_create\_info.pPushConstantRanges = \&\mbox{\hyperlink{class_raytracing_ac9e6b9764438f0cfbf31610ba67c14f6}{pc\_ranges}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00256}00256 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00257}00257   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00257}00257   VkResult result = vkCreatePipelineLayout(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00258}00258                                            \&pipeline\_layout\_create\_info,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00259}00259                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00259}00259                                            \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_raytracing_a369afd4390cf7aa50ec15f093dcc33ac}{pipeline\_layout}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00260}00260   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline layout!"{}})}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00261}00261 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00262}00262   VkPipelineLibraryCreateInfoKHR pipeline\_library\_create\_info\{\};}
@@ -279,92 +279,92 @@
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00275}00275       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_stages.size());}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00276}00276   raytracing\_pipeline\_create\_info.pStages = shader\_stages.data();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00277}00277   raytracing\_pipeline\_create\_info.groupCount =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00278}00278       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00279}00279   raytracing\_pipeline\_create\_info.pGroups = shader\_groups.data();}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00278}00278       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(\mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.size());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00279}00279   raytracing\_pipeline\_create\_info.pGroups = \mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.data();}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00280}00280   \textcolor{comment}{/*raytracing\_pipeline\_create\_info.pLibraryInfo =}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00281}00281 \textcolor{comment}{     \&pipeline\_library\_create\_info;}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00282}00282 \textcolor{comment}{        raytracing\_pipeline\_create\_info.pLibraryInterface = NULL;*/}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00283}00283   \textcolor{comment}{// TODO: HARDCODED FOR NOW;}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00284}00284   raytracing\_pipeline\_create\_info.maxPipelineRayRecursionDepth = 2;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00285}00285   raytracing\_pipeline\_create\_info.layout = pipeline\_layout;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00285}00285   raytracing\_pipeline\_create\_info.layout = \mbox{\hyperlink{class_raytracing_a369afd4390cf7aa50ec15f093dcc33ac}{pipeline\_layout}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00286}00286 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00287}00287   result = pvkCreateRayTracingPipelinesKHR(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00288}00288       device-\/>getLogicalDevice(), VK\_NULL\_HANDLE, VK\_NULL\_HANDLE, 1,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00289}00289       \&raytracing\_pipeline\_create\_info, \textcolor{keyword}{nullptr}, \&graphicsPipeline);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00288}00288       \mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), VK\_NULL\_HANDLE, VK\_NULL\_HANDLE, 1,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00289}00289       \&raytracing\_pipeline\_create\_info, \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_raytracing_a6d6d310e4052d660eaa4318369e5b8eb}{graphicsPipeline}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00290}00290 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00291}00291   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create raytracing pipeline!"{}})}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00292}00292 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00293}00293   vkDestroyShaderModule(device-\/>getLogicalDevice(), raygen\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00294}00294                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00295}00295   vkDestroyShaderModule(device-\/>getLogicalDevice(), raymiss\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00296}00296                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00297}00297   vkDestroyShaderModule(device-\/>getLogicalDevice(), raychit\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00298}00298                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00299}00299   vkDestroyShaderModule(device-\/>getLogicalDevice(), shadow\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00300}00300                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00293}00293   vkDestroyShaderModule(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), raygen\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00294}00294                         \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00295}00295   vkDestroyShaderModule(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), raymiss\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00296}00296                         \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00297}00297   vkDestroyShaderModule(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), raychit\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00298}00298                         \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00299}00299   vkDestroyShaderModule(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), shadow\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00300}00300                         \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00301}00301 \}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00302}00302 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00303}00303 \textcolor{keywordtype}{void} Raytracing::createSBT() \{}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00303}\mbox{\hyperlink{class_raytracing_a98639c23ff52d8968b637c2498723a85}{00303}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_raytracing_a98639c23ff52d8968b637c2498723a85}{Raytracing::createSBT}}() \{}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00304}00304   \textcolor{comment}{// load in functionality for raytracing shader group handles}}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00305}00305   PFN\_vkGetRayTracingShaderGroupHandlesKHR}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00306}00306       pvkGetRayTracingShaderGroupHandlesKHR =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00307}00307           (PFN\_vkGetRayTracingShaderGroupHandlesKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00308}00308               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00308}00308               \mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00309}00309               \textcolor{stringliteral}{"{}vkGetRayTracingShaderGroupHandlesKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00310}00310 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00311}00311   raytracing\_properties = VkPhysicalDeviceRayTracingPipelinePropertiesKHR\{\};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00312}00312   raytracing\_properties.sType =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00311}00311   \mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}} = VkPhysicalDeviceRayTracingPipelinePropertiesKHR\{\};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00312}00312   \mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}}.sType =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00313}00313       VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_RAY\_TRACING\_PIPELINE\_PROPERTIES\_KHR;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00314}00314 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00315}00315   VkPhysicalDeviceProperties2 properties\{\};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00316}00316   properties.sType = VK\_STRUCTURE\_TYPE\_PHYSICAL\_DEVICE\_PROPERTIES\_2;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00317}00317   properties.pNext = \&raytracing\_properties;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00317}00317   properties.pNext = \&\mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}};}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00318}00318 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00319}00319   vkGetPhysicalDeviceProperties2(device-\/>getPhysicalDevice(), \&properties);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00319}00319   vkGetPhysicalDeviceProperties2(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac70529b6753bedb7cfddd11baa5c27eb}{getPhysicalDevice}}(), \&properties);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00320}00320 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00321}00321   uint32\_t handle\_size = raytracing\_properties.shaderGroupHandleSize;}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00321}00321   uint32\_t handle\_size = \mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}}.shaderGroupHandleSize;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00322}00322   uint32\_t handle\_size\_aligned =}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00323}00323       align\_up(handle\_size, raytracing\_properties.shaderGroupHandleAlignment);}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00323}00323       \mbox{\hyperlink{_memory_helper_8hpp_a6137df4e6770e0f3cf64fc33b393f1a6}{align\_up}}(handle\_size, \mbox{\hyperlink{class_raytracing_a4f6ec8955e7f276fab1d9a5cc3e8d3f3}{raytracing\_properties}}.shaderGroupHandleAlignment);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00324}00324 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00325}00325   uint32\_t group\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(shader\_groups.size());}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00325}00325   uint32\_t group\_count = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(\mbox{\hyperlink{class_raytracing_a94d2f785093a5e2c4df981d2725feba9}{shader\_groups}}.size());}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00326}00326   uint32\_t sbt\_size = group\_count * handle\_size\_aligned;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00327}00327 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00328}00328   std::vector<uint8\_t> handles(sbt\_size);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00329}00329 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00330}00330   VkResult result = pvkGetRayTracingShaderGroupHandlesKHR(}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00331}00331       device-\/>getLogicalDevice(), graphicsPipeline, 0, group\_count, sbt\_size,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00331}00331       \mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_raytracing_a6d6d310e4052d660eaa4318369e5b8eb}{graphicsPipeline}}, 0, group\_count, sbt\_size,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00332}00332       handles.data());}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00333}00333   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to get ray tracing shader group handles!"{}})}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00334}00334 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00335}00335   const VkBufferUsageFlags bufferUsageFlags =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00335}00335   \textcolor{keyword}{const} VkBufferUsageFlags bufferUsageFlags =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00336}00336       VK\_BUFFER\_USAGE\_SHADER\_BINDING\_TABLE\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00337}00337       VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT;}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00338}00338   const VkMemoryPropertyFlags memoryUsageFlags =}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00338}00338   \textcolor{keyword}{const} VkMemoryPropertyFlags memoryUsageFlags =}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00339}00339       VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00340}00340       VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT;}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00341}00341 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00342}00342   raygenShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00342}00342   \mbox{\hyperlink{class_raytracing_af3a0b358b3cdaed288eb9e29ddb18cd5}{raygenShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, handle\_size, bufferUsageFlags,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00343}00343                                         memoryUsageFlags);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00344}00344 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00345}00345   missShaderBindingTableBuffer.create(device, 2 * handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00345}00345   \mbox{\hyperlink{class_raytracing_ab733e702385ee07420340a5567e8a964}{missShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, 2 * handle\_size, bufferUsageFlags,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00346}00346                                       memoryUsageFlags);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00347}00347 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00348}00348   hitShaderBindingTableBuffer.create(device, handle\_size, bufferUsageFlags,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00348}00348   \mbox{\hyperlink{class_raytracing_a99b9176276ae1e0490a6ad153210f0b8}{hitShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}, handle\_size, bufferUsageFlags,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00349}00349                                      memoryUsageFlags);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00350}00350 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00351}00351   \textcolor{keywordtype}{void}* mapped\_raygen = \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00352}00352   vkMapMemory(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00353}00353               raygenShaderBindingTableBuffer.getBufferMemory(), 0,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00351}00351   \textcolor{keywordtype}{void}* mapped\_raygen = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00352}00352   vkMapMemory(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00353}00353               \mbox{\hyperlink{class_raytracing_af3a0b358b3cdaed288eb9e29ddb18cd5}{raygenShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_ac4b9bddc80f281aefe6523fba5c3141d}{getBufferMemory}}(), 0,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00354}00354               VK\_WHOLE\_SIZE, 0, \&mapped\_raygen);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00355}00355 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00356}00356   \textcolor{keywordtype}{void}* mapped\_miss = \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00357}00357   vkMapMemory(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00358}00358               missShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00356}00356   \textcolor{keywordtype}{void}* mapped\_miss = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00357}00357   vkMapMemory(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00358}00358               \mbox{\hyperlink{class_raytracing_ab733e702385ee07420340a5567e8a964}{missShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_ac4b9bddc80f281aefe6523fba5c3141d}{getBufferMemory}}(), 0, VK\_WHOLE\_SIZE,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00359}00359               0, \&mapped\_miss);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00360}00360 }
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00361}00361   \textcolor{keywordtype}{void}* mapped\_rchit = \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00362}00362   vkMapMemory(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00363}00363               hitShaderBindingTableBuffer.getBufferMemory(), 0, VK\_WHOLE\_SIZE,}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00361}00361   \textcolor{keywordtype}{void}* mapped\_rchit = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00362}00362   vkMapMemory(\mbox{\hyperlink{class_raytracing_a3038eb4ac96c3445538ee43a8d180f5e}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00363}00363               \mbox{\hyperlink{class_raytracing_a99b9176276ae1e0490a6ad153210f0b8}{hitShaderBindingTableBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_ac4b9bddc80f281aefe6523fba5c3141d}{getBufferMemory}}(), 0, VK\_WHOLE\_SIZE,}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00364}00364               0, \&mapped\_rchit);}
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00365}00365 }
 \DoxyCodeLine{\Hypertarget{_raytracing_8cpp_source_l00366}00366   memcpy(mapped\_raygen, handles.data(), handle\_size);}

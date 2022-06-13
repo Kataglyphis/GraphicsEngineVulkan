@@ -26,9 +26,9 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../Engine_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.9</span>
+   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.3</span>
    </div>
-   <div id="projectbrief">Epic graphics from hell</div>
+   <div id="projectbrief">Epic Graphics</div>
   </td>
  </tr>
  </tbody>
@@ -75,18 +75,18 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
   <div class="headertitle"><div class="title">VulkanImage.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="../../d7/ddd/_vulkan_image_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;VulkanImage.h&quot;</span></div>
+<a href="../../d7/ddd/_vulkan_image_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="../../d8/d3d/_vulkan_image_8hpp.html">VulkanImage.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;MemoryHelper.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;Utilities.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="../../de/dc5/_memory_helper_8hpp.html">MemoryHelper.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d54/_utilities_8hpp.html">Utilities.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>VulkanImage::VulkanImage() {}</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#aaa625bb7cbad92de916c0d6877033a42">    6</a></span><a class="code hl_function" href="../../db/dee/class_vulkan_image.html#aaa625bb7cbad92de916c0d6877033a42">VulkanImage::VulkanImage</a>() {}</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordtype">void</span> VulkanImage::create(VulkanDevice* device, uint32_t width, uint32_t height,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#a23defcb94182863fcd2a5aa823092e70">    8</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a23defcb94182863fcd2a5aa823092e70">VulkanImage::create</a>(<a class="code hl_class" href="../../dd/df6/class_vulkan_device.html">VulkanDevice</a>* device, uint32_t width, uint32_t height,</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                         uint32_t mip_levels, VkFormat format,</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                         VkImageTiling tiling, VkImageUsageFlags use_flags,</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                         VkMemoryPropertyFlags prop_flags) {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  this-&gt;device = device;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  this-&gt;device = <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="comment">// CREATE image</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="comment">// image creation info</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  VkImageCreateInfo image_create_info{};</div>
@@ -109,14 +109,14 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  image_create_info.sharingMode =</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      VK_SHARING_MODE_EXCLUSIVE;  <span class="comment">// whether image can be shared between queues</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  VkResult result = vkCreateImage(device-&gt;getLogicalDevice(),</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                  &amp;image_create_info, <span class="keyword">nullptr</span>, &amp;image);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  VkResult result = vkCreateImage(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">getLogicalDevice</a>(),</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                  &amp;image_create_info, <span class="keyword">nullptr</span>, &amp;<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  ASSERT_VULKAN(result, <span class="stringliteral">&quot;Failed to create an image!&quot;</span>)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// CREATE memory for image</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// get memory requirements for a type of image</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  VkMemoryRequirements memory_requirements;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  vkGetImageMemoryRequirements(device-&gt;getLogicalDevice(), image,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  vkGetImageMemoryRequirements(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">getLogicalDevice</a>(), <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>,</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                               &amp;memory_requirements);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// allocate memory using image requirements and user defined properties</span></div>
@@ -124,25 +124,25 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  memory_alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  memory_alloc_info.allocationSize = memory_requirements.size;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  memory_alloc_info.memoryTypeIndex =</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      find_memory_type_index(device-&gt;getPhysicalDevice(),</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <a class="code hl_function" href="../../de/dc5/_memory_helper_8hpp.html#aa24924ffe6a1a5472dfd21242688413b">find_memory_type_index</a>(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#ac70529b6753bedb7cfddd11baa5c27eb">getPhysicalDevice</a>(),</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                             memory_requirements.memoryTypeBits, prop_flags);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  result = vkAllocateMemory(device-&gt;getLogicalDevice(), &amp;memory_alloc_info,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                            <span class="keyword">nullptr</span>, &amp;imageMemory);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  result = vkAllocateMemory(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">getLogicalDevice</a>(), &amp;memory_alloc_info,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                            <span class="keyword">nullptr</span>, &amp;<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ab2e5c58bdc69651ec3a32a277b11ba4c">imageMemory</a>);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  ASSERT_VULKAN(result, <span class="stringliteral">&quot;Failed to allocate memory!&quot;</span>)</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// connect memory to image</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  vkBindImageMemory(device-&gt;getLogicalDevice(), image, imageMemory, 0);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  vkBindImageMemory(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">getLogicalDevice</a>(), <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>, <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ab2e5c58bdc69651ec3a32a277b11ba4c">imageMemory</a>, 0);</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keywordtype">void</span> VulkanImage::transitionImageLayout(VkDevice device, VkQueue queue,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#a4c1e3d370432dbd38ec809ed7aa17ff0">   61</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a4c1e3d370432dbd38ec809ed7aa17ff0">VulkanImage::transitionImageLayout</a>(VkDevice device, VkQueue queue,</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                        VkCommandPool command_pool,</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                        VkImageLayout old_layout,</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                                        VkImageLayout new_layout,</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                                        VkImageAspectFlags aspectMask,</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                                        uint32_t mip_levels) {</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  VkCommandBuffer command_buffer =</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      commandBufferManager.beginCommandBuffer(device, command_pool);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ab778ffb16d5c794c82108d68b10512ea">commandBufferManager</a>.<a class="code hl_function" href="../../d5/d6d/class_command_buffer_manager.html#a341dd6bf1dab7f3eb0d378a6187dee6d">beginCommandBuffer</a>(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>, command_pool);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// VK_IMAGE_ASPECT_COLOR_BIT</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  VkImageMemoryBarrier memory_barrier{};</div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  memory_barrier.dstQueueFamilyIndex =</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      VK_QUEUE_FAMILY_IGNORED;  <span class="comment">// Queue family to transition to</span></div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  memory_barrier.image =</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      image;  <span class="comment">// image being accessed and modified as part of barrier</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>;  <span class="comment">// image being accessed and modified as part of barrier</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  memory_barrier.subresourceRange.aspectMask =</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      aspectMask;  <span class="comment">// aspect of image being altered</span></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  memory_barrier.subresourceRange.baseMipLevel =</div>
@@ -167,11 +167,11 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      1;  <span class="comment">// number of layers to alter starting from baseArrayLayer</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">// if transitioning from new image to image ready to receive data</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  memory_barrier.srcAccessMask = accessFlagsForImageLayout(old_layout);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  memory_barrier.dstAccessMask = accessFlagsForImageLayout(new_layout);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  memory_barrier.srcAccessMask = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">accessFlagsForImageLayout</a>(old_layout);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  memory_barrier.dstAccessMask = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">accessFlagsForImageLayout</a>(new_layout);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  VkPipelineStageFlags src_stage = pipelineStageForLayout(old_layout);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  VkPipelineStageFlags dst_stage = pipelineStageForLayout(new_layout);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  VkPipelineStageFlags src_stage = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">pipelineStageForLayout</a>(old_layout);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  VkPipelineStageFlags dst_stage = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">pipelineStageForLayout</a>(new_layout);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  vkCmdPipelineBarrier(</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
@@ -187,11 +187,11 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  );</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  commandBufferManager.endAndSubmitCommandBuffer(device, command_pool, queue,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ab778ffb16d5c794c82108d68b10512ea">commandBufferManager</a>.<a class="code hl_function" href="../../d5/d6d/class_command_buffer_manager.html#a77200b8fa3586015d1637ca5166debd9">endAndSubmitCommandBuffer</a>(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>, command_pool, queue,</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                                                 command_buffer);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keywordtype">void</span> VulkanImage::transitionImageLayout(VkCommandBuffer command_buffer,</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#aac97e2290dd509605ece490475b99e25">  117</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a4c1e3d370432dbd38ec809ed7aa17ff0">VulkanImage::transitionImageLayout</a>(VkCommandBuffer command_buffer,</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                                        VkImageLayout old_layout,</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                                        VkImageLayout new_layout,</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                                        uint32_t mip_levels,</div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  memory_barrier.dstQueueFamilyIndex =</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      VK_QUEUE_FAMILY_IGNORED;  <span class="comment">// Queue family to transition to</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  memory_barrier.image =</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      image;  <span class="comment">// image being accessed and modified as part of barrier</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>;  <span class="comment">// image being accessed and modified as part of barrier</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  memory_barrier.subresourceRange.aspectMask =</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      aspectMask;  <span class="comment">// aspect of image being altered</span></div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  memory_barrier.subresourceRange.baseMipLevel =</div>
@@ -217,11 +217,11 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  memory_barrier.subresourceRange.layerCount =</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      1;  <span class="comment">// number of layers to alter starting from baseArrayLayer</span></div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  memory_barrier.srcAccessMask = accessFlagsForImageLayout(old_layout);</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  memory_barrier.dstAccessMask = accessFlagsForImageLayout(new_layout);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  memory_barrier.srcAccessMask = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">accessFlagsForImageLayout</a>(old_layout);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  memory_barrier.dstAccessMask = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">accessFlagsForImageLayout</a>(new_layout);</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  VkPipelineStageFlags src_stage = pipelineStageForLayout(old_layout);</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  VkPipelineStageFlags dst_stage = pipelineStageForLayout(new_layout);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  VkPipelineStageFlags src_stage = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">pipelineStageForLayout</a>(old_layout);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  VkPipelineStageFlags dst_stage = <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">pipelineStageForLayout</a>(new_layout);</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// if transitioning from new image to image ready to receive data</span></div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
@@ -240,16 +240,16 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  );</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>}</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keywordtype">void</span> VulkanImage::setImage(VkImage image) { this-&gt;image = image; }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#a28c7366ec86626f5f97b33f38b19737c">  166</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a28c7366ec86626f5f97b33f38b19737c">VulkanImage::setImage</a>(VkImage image) { this-&gt;image = <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>; }</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keywordtype">void</span> VulkanImage::cleanUp() {</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  vkDestroyImage(device-&gt;getLogicalDevice(), image, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  vkFreeMemory(device-&gt;getLogicalDevice(), imageMemory, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#a5738bef258f83ad7a5593b6ff5fd365c">  168</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a5738bef258f83ad7a5593b6ff5fd365c">VulkanImage::cleanUp</a>() {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  vkDestroyImage(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">getLogicalDevice</a>(), <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">image</a>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  vkFreeMemory(<a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">device</a>-&gt;<a class="code hl_function" href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">getLogicalDevice</a>(), <a class="code hl_variable" href="../../db/dee/class_vulkan_image.html#ab2e5c58bdc69651ec3a32a277b11ba4c">imageMemory</a>, <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>}</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>VulkanImage::~VulkanImage() {}</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#a5ecc5083218acfe3151dce2ea30e142e">  173</a></span><a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a5ecc5083218acfe3151dce2ea30e142e">VulkanImage::~VulkanImage</a>() {}</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>VkAccessFlags VulkanImage::accessFlagsForImageLayout(VkImageLayout layout) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">  175</a></span>VkAccessFlags <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">VulkanImage::accessFlagsForImageLayout</a>(VkImageLayout layout) {</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="keywordflow">switch</span> (layout) {</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">case</span> VK_IMAGE_LAYOUT_PREINITIALIZED:</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      <span class="keywordflow">return</span> VK_ACCESS_HOST_WRITE_BIT;</div>
@@ -268,7 +268,7 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  }</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>}</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>VkPipelineStageFlags VulkanImage::pipelineStageForLayout(</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">  194</a></span>VkPipelineStageFlags <a class="code hl_function" href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">VulkanImage::pipelineStageForLayout</a>(</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    VkImageLayout oldImageLayout) {</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="keywordflow">switch</span> (oldImageLayout) {</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keywordflow">case</span> VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:</div>
@@ -292,13 +292,34 @@ $(document).ready(function(){initNavTree('d7/ddd/_vulkan_image_8cpp_source.html'
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="keywordflow">return</span> VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  }</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>}</div>
+<div class="ttc" id="a_memory_helper_8hpp_html"><div class="ttname"><a href="../../de/dc5/_memory_helper_8hpp.html">MemoryHelper.hpp</a></div></div>
+<div class="ttc" id="a_memory_helper_8hpp_html_aa24924ffe6a1a5472dfd21242688413b"><div class="ttname"><a href="../../de/dc5/_memory_helper_8hpp.html#aa24924ffe6a1a5472dfd21242688413b">find_memory_type_index</a></div><div class="ttdeci">static uint32_t find_memory_type_index(VkPhysicalDevice physical_device, uint32_t allowed_types, VkMemoryPropertyFlags properties)</div><div class="ttdef"><b>Definition:</b> <a href="../../de/dc5/_memory_helper_8hpp_source.html#l00009">MemoryHelper.hpp:9</a></div></div>
+<div class="ttc" id="a_utilities_8hpp_html"><div class="ttname"><a href="../../dc/d54/_utilities_8hpp.html">Utilities.hpp</a></div></div>
+<div class="ttc" id="a_vulkan_image_8hpp_html"><div class="ttname"><a href="../../d8/d3d/_vulkan_image_8hpp.html">VulkanImage.hpp</a></div></div>
+<div class="ttc" id="aclass_command_buffer_manager_html_a341dd6bf1dab7f3eb0d378a6187dee6d"><div class="ttname"><a href="../../d5/d6d/class_command_buffer_manager.html#a341dd6bf1dab7f3eb0d378a6187dee6d">CommandBufferManager::beginCommandBuffer</a></div><div class="ttdeci">VkCommandBuffer beginCommandBuffer(VkDevice device, VkCommandPool command_pool)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d74/_command_buffer_manager_8cpp_source.html#l00005">CommandBufferManager.cpp:5</a></div></div>
+<div class="ttc" id="aclass_command_buffer_manager_html_a77200b8fa3586015d1637ca5166debd9"><div class="ttname"><a href="../../d5/d6d/class_command_buffer_manager.html#a77200b8fa3586015d1637ca5166debd9">CommandBufferManager::endAndSubmitCommandBuffer</a></div><div class="ttdeci">void endAndSubmitCommandBuffer(VkDevice device, VkCommandPool command_pool, VkQueue queue, VkCommandBuffer &amp;command_buffer)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d74/_command_buffer_manager_8cpp_source.html#l00032">CommandBufferManager.cpp:32</a></div></div>
+<div class="ttc" id="aclass_vulkan_device_html"><div class="ttname"><a href="../../dd/df6/class_vulkan_device.html">VulkanDevice</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9f/_vulkan_device_8hpp_source.html#l00010">VulkanDevice.hpp:10</a></div></div>
+<div class="ttc" id="aclass_vulkan_device_html_a85c4132481de02046b8329cf698ac6d9"><div class="ttname"><a href="../../dd/df6/class_vulkan_device.html#a85c4132481de02046b8329cf698ac6d9">VulkanDevice::getLogicalDevice</a></div><div class="ttdeci">VkDevice getLogicalDevice() const</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9f/_vulkan_device_8hpp_source.html#l00018">VulkanDevice.hpp:18</a></div></div>
+<div class="ttc" id="aclass_vulkan_device_html_ac70529b6753bedb7cfddd11baa5c27eb"><div class="ttname"><a href="../../dd/df6/class_vulkan_device.html#ac70529b6753bedb7cfddd11baa5c27eb">VulkanDevice::getPhysicalDevice</a></div><div class="ttdeci">VkPhysicalDevice getPhysicalDevice() const</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9f/_vulkan_device_8hpp_source.html#l00017">VulkanDevice.hpp:17</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a23defcb94182863fcd2a5aa823092e70"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a23defcb94182863fcd2a5aa823092e70">VulkanImage::create</a></div><div class="ttdeci">void create(VulkanDevice *device, uint32_t width, uint32_t height, uint32_t mip_levels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags use_flags, VkMemoryPropertyFlags prop_flags)</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00008">VulkanImage.cpp:8</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a28c7366ec86626f5f97b33f38b19737c"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a28c7366ec86626f5f97b33f38b19737c">VulkanImage::setImage</a></div><div class="ttdeci">void setImage(VkImage image)</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00166">VulkanImage.cpp:166</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a4c1e3d370432dbd38ec809ed7aa17ff0"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a4c1e3d370432dbd38ec809ed7aa17ff0">VulkanImage::transitionImageLayout</a></div><div class="ttdeci">void transitionImageLayout(VkDevice device, VkQueue queue, VkCommandPool command_pool, VkImageLayout old_layout, VkImageLayout new_layout, VkImageAspectFlags aspectMask, uint32_t mip_levels)</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00061">VulkanImage.cpp:61</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a5738bef258f83ad7a5593b6ff5fd365c"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a5738bef258f83ad7a5593b6ff5fd365c">VulkanImage::cleanUp</a></div><div class="ttdeci">void cleanUp()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00168">VulkanImage.cpp:168</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a58da5d02f676bc76de4561a81b1b187c"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a58da5d02f676bc76de4561a81b1b187c">VulkanImage::accessFlagsForImageLayout</a></div><div class="ttdeci">VkAccessFlags accessFlagsForImageLayout(VkImageLayout layout)</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00175">VulkanImage.cpp:175</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a5ecc5083218acfe3151dce2ea30e142e"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a5ecc5083218acfe3151dce2ea30e142e">VulkanImage::~VulkanImage</a></div><div class="ttdeci">~VulkanImage()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00173">VulkanImage.cpp:173</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_a73eb40f50945b3a8606da06b52b89d1c"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#a73eb40f50945b3a8606da06b52b89d1c">VulkanImage::image</a></div><div class="ttdeci">VkImage image</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d3d/_vulkan_image_8hpp_source.html#l00037">VulkanImage.hpp:37</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_aaa625bb7cbad92de916c0d6877033a42"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#aaa625bb7cbad92de916c0d6877033a42">VulkanImage::VulkanImage</a></div><div class="ttdeci">VulkanImage()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00006">VulkanImage.cpp:6</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_ab2e5c58bdc69651ec3a32a277b11ba4c"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#ab2e5c58bdc69651ec3a32a277b11ba4c">VulkanImage::imageMemory</a></div><div class="ttdeci">VkDeviceMemory imageMemory</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d3d/_vulkan_image_8hpp_source.html#l00038">VulkanImage.hpp:38</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_ab778ffb16d5c794c82108d68b10512ea"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#ab778ffb16d5c794c82108d68b10512ea">VulkanImage::commandBufferManager</a></div><div class="ttdeci">CommandBufferManager commandBufferManager</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d3d/_vulkan_image_8hpp_source.html#l00035">VulkanImage.hpp:35</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_ae57bcc1afb2a039aa39d3717af280daf"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#ae57bcc1afb2a039aa39d3717af280daf">VulkanImage::device</a></div><div class="ttdeci">VulkanDevice * device</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d3d/_vulkan_image_8hpp_source.html#l00034">VulkanImage.hpp:34</a></div></div>
+<div class="ttc" id="aclass_vulkan_image_html_af36657be8f2cf7d5d66d8ee90ae0ef73"><div class="ttname"><a href="../../db/dee/class_vulkan_image.html#af36657be8f2cf7d5d66d8ee90ae0ef73">VulkanImage::pipelineStageForLayout</a></div><div class="ttdeci">VkPipelineStageFlags pipelineStageForLayout(VkImageLayout oldImageLayout)</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/ddd/_vulkan_image_8cpp_source.html#l00194">VulkanImage.cpp:194</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_413f4e031a85da0d68269c6fd2f76e1c.html">Src</a></li><li class="navelem"><a class="el" href="../../dir_cdd0af5f657023b33f56846bf3f89928.html">vulkan_base</a></li><li class="navelem"><a class="el" href="../../d7/ddd/_vulkan_image_8cpp.html">VulkanImage.cpp</a></li>
-    <li class="footer">Generated on Fri Jun 10 2022 19:42:12 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+    <li class="footer">Generated on Mon Jun 13 2022 18:09:46 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
 </body>

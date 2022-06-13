@@ -8,7 +8,7 @@
      <key>CFBundleIdentifier</key>
      <string>org.doxygen.Doxygen</string>
      <key>CFBundleVersion</key>
-     <string>1.9</string>
+     <string>1.3</string>
      <key>DocSetFeedName</key>
      <string>Doxygen docs</string>
      <key>DocSetPublisherIdentifier</key>

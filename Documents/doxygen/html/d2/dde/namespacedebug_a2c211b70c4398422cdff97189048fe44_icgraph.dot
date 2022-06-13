@@ -9,4 +9,6 @@ digraph "debug::debugUtilsMessengerCallback"
   Node1 [label="debug::debugUtilsMessenger\lCallback",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 [label="debug::setupDebugging",height=0.2,width=0.4,color="black",URL="$d2/dde/namespacedebug.html#a2d3861f9b449521a13975f6f21342c43",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="VulkanRenderer::VulkanRenderer",height=0.2,width=0.4,color="black",URL="$df/de3/class_vulkan_renderer.html#af6aba22c305d08a9264c395f9933cfd2",tooltip=" "];
 }

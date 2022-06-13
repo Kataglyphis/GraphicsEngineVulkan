@@ -1,5 +1,5 @@
-#include <SceneConfig.h>
-#include "VulkanRendererConfig.h"
+#include "SceneConfig.hpp"
+#include "VulkanRendererConfig.hpp"
 
 #include <filesystem>
 //#define SULO_MODE 1
@@ -13,7 +13,7 @@ std::string getModelFile() {
   modelFile << RELATIVE_RESOURCE_PATH;
 
 #if NDEBUG
-  modelFile << "Model/crytek-sponza/";
+  modelFile << "Models/crytek-sponza/";
   modelFile << "sponza_triag.obj";
 
 #else
@@ -22,25 +22,25 @@ std::string getModelFile() {
   //modelFile << "Wolf-Stahl.obj";
   modelFile << "SuloLongDongLampe_v2.obj";
 #else
-  modelFile << "Model/VikingRoom/";
+  modelFile << "Models/VikingRoom/";
   modelFile << "viking_room.obj";
 #endif
 #endif
 
   return modelFile.str();
   // std::string modelFile =
-  // "Model/crytek-sponza/sponza_triag.obj"; std::string modelFile
-  // = "Model/Dinosaurs/dinosaurs.obj"; std::string modelFile =
-  // "Model/Pillum/PilumPainting_export.obj"; std::string modelFile
-  // = "Model/sibenik/sibenik.obj"; std::string modelFile =
-  // "Model/sportsCar/sportsCar.obj"; std::string modelFile =
-  // "Model/StanfordDragon/dragon.obj"; std::string modelFile =
-  // "Model/CornellBox/CornellBox-Sphere.obj"; std::string
-  // "Model/bunny/bunny.obj"; std::string modelFile =
-  // "Model/buddha/buddha.obj"; std::string modelFile =
-  // "Model/bmw/bmw.obj"; std::string modelFile =
-  // "Model/testScene.obj"; std::string modelFile =
-  // "Model/San_Miguel/san-miguel-low-poly.obj";
+  // "Models/crytek-sponza/sponza_triag.obj"; std::string modelFile
+  // = "Models/Dinosaurs/dinosaurs.obj"; std::string modelFile =
+  // "Models/Pillum/PilumPainting_export.obj"; std::string modelFile
+  // = "Models/sibenik/sibenik.obj"; std::string modelFile =
+  // "Models/sportsCar/sportsCar.obj"; std::string modelFile =
+  // "Models/StanfordDragon/dragon.obj"; std::string modelFile =
+  // "Models/CornellBox/CornellBox-Sphere.obj"; std::string
+  // "Models/bunny/bunny.obj"; std::string modelFile =
+  // "Models/buddha/buddha.obj"; std::string modelFile =
+  // "Models/bmw/bmw.obj"; std::string modelFile =
+  // "Models/testScene.obj"; std::string modelFile =
+  // "Models/San_Miguel/san-miguel-low-poly.obj";
 }
 
 glm::mat4 getModelMatrix() {

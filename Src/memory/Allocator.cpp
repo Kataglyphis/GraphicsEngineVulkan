@@ -1,6 +1,6 @@
-#include "Allocator.h"
+#include "Allocator.hpp"
 
-#include "Utilities.h"
+#include "Utilities.hpp"
 
 Allocator::Allocator() {}
 

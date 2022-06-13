@@ -1,8 +1,8 @@
-#include "ObjLoader.h"
+#include "ObjLoader.hpp"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include "File.h"
+#include "File.hpp"
 
 ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer_queue,
                      VkCommandPool command_pool) {

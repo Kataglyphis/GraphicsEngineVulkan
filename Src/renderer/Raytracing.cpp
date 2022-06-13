@@ -1,13 +1,13 @@
-#include "Raytracing.h"
+#include "Raytracing.hpp"
 
 #include <array>
 #include <vector>
 #include <filesystem>
 
-#include "File.h"
-#include "MemoryHelper.h"
-#include "ShaderHelper.h"
-#include "VulkanRendererConfig.h"
+#include "File.hpp"
+#include "MemoryHelper.hpp"
+#include "ShaderHelper.hpp"
+#include "VulkanRendererConfig.hpp"
 
 Raytracing::Raytracing() {}
 
@@ -117,7 +117,7 @@ void Raytracing::createGraphicsPipeline(
   std::filesystem::path cwd = std::filesystem::current_path();
   raytracing_shader_dir << cwd.string();
   raytracing_shader_dir << RELATIVE_RESOURCE_PATH;
-  raytracing_shader_dir << "Shader/raytracing/";
+  raytracing_shader_dir << "Shaders/raytracing/";
 
   std::string raygen_shader = "raytrace.rgen";
   std::string chit_shader = "raytrace.rchit";

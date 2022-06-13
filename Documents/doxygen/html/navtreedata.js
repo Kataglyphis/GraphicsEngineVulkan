@@ -33,12 +33,22 @@ var NAVTREE =
         [ "Variables", "namespacemembers_vars.html", null ]
       ] ]
     ] ],
+    [ "Data Structures", "annotated.html", [
+      [ "Data Structures", "annotated.html", "annotated_dup" ],
+      [ "Data Structure Index", "classes.html", null ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", "functions_vars" ]
+      ] ]
+    ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Macros", "globals_defs.html", null ]
+        [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ]
       ] ]
     ] ]
   ] ]
@@ -46,7 +56,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"d0/d55/_allocator_8cpp.html"
+"annotated.html",
+"d4/df4/_vulkan_debug_8hpp.html",
+"da/d0b/class_vulkan_instance.html#adea12ebaf57c82b68d914ab430353e31",
+"dd/df6/class_vulkan_device.html#a5fe463c6704d7d213cd6ac91dab466a1",
+"functions_vars_s.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

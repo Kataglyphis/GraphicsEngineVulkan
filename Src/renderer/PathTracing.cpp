@@ -1,13 +1,13 @@
-#include "PathTracing.h"
+#include "PathTracing.hpp"
 
 #include <algorithm>
 #include <array>
 #include <filesystem>
 
-#include "File.h"
-#include "ShaderHelper.h"
+#include "File.hpp"
+#include "ShaderHelper.hpp"
 
-#include "VulkanRendererConfig.h"
+#include "VulkanRendererConfig.hpp"
 
 // Good source:
 // https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp
@@ -209,7 +209,7 @@ void PathTracing::createPipeline(
   std::filesystem::path cwd = std::filesystem::current_path();
   pathTracing_shader_dir << cwd.string();
   pathTracing_shader_dir << RELATIVE_RESOURCE_PATH;
-  pathTracing_shader_dir << "Shader/path_tracing/";
+  pathTracing_shader_dir << "Shaders/path_tracing/";
 
   std::string pathTracing_shader = "path_tracing.comp";
 

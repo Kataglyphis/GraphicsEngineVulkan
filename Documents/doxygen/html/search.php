@@ -26,9 +26,9 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="Engine_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.9</span>
+   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.3</span>
    </div>
-   <div id="projectbrief">Epic graphics from hell</div>
+   <div id="projectbrief">Epic Graphics</div>
   </td>
  </tr>
  </tbody>
@@ -62,7 +62,7 @@ main();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jun 10 2022 19:42:12 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+    <li class="footer">Generated on Mon Jun 13 2022 18:09:47 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
 </body>

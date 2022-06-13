@@ -2,60 +2,60 @@
 \label{_scene_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Scene.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Scene.cpp}}
 \mbox{\hyperlink{_scene_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Scene.h"{}}}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_scene_8hpp}{Scene.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00003}00003 Scene::Scene() \{\}}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00003}\mbox{\hyperlink{class_scene_ad10176d75a9cc0da56626f682d083507}{00003}} \mbox{\hyperlink{class_scene_ad10176d75a9cc0da56626f682d083507}{Scene::Scene}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00004}00004 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00005}00005 \textcolor{keywordtype}{void} Scene::update\_user\_input(GUI* gui) \{}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00006}00006   guiSceneSharedVars = gui-\/>getGuiSceneSharedVars();}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00005}\mbox{\hyperlink{class_scene_a65e3b1359357f297da5568bd710f4924}{00005}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_scene_a65e3b1359357f297da5568bd710f4924}{Scene::update\_user\_input}}(\mbox{\hyperlink{class_g_u_i}{GUI}}* gui) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00006}00006   \mbox{\hyperlink{class_scene_ade3c4cd1aaa5b2df581359a2648b32bf}{guiSceneSharedVars}} = gui-\/>\mbox{\hyperlink{class_g_u_i_aea198a2fae183cc7284f173e00300545}{getGuiSceneSharedVars}}();}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00007}00007 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00008}00008 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00009}00009 \textcolor{keywordtype}{void} Scene::loadModel(VulkanDevice* device, VkCommandPool commandPool) \{}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00010}00010   ObjLoader obj\_loader(device, device-\/>getGraphicsQueue(), commandPool);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00009}\mbox{\hyperlink{class_scene_ac95791159e60322fc7c044ed33b70688}{00009}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_scene_ac95791159e60322fc7c044ed33b70688}{Scene::loadModel}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkCommandPool commandPool) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00010}00010   \mbox{\hyperlink{class_obj_loader}{ObjLoader}} obj\_loader(device, device-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(), commandPool);}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00011}00011 }
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00012}00012   std::string modelFileName = \mbox{\hyperlink{namespacescene_config_a6c53371694e44e40c835e48f27def71f}{sceneConfig::getModelFile}}();}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00013}00013   std::shared\_ptr<Model> new\_model = obj\_loader.loadModel(modelFileName);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00013}00013   std::shared\_ptr<Model> new\_model = obj\_loader.\mbox{\hyperlink{class_obj_loader_ad82d1efe50e6b043d08deb56fdd758c2}{loadModel}}(modelFileName);}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00014}00014 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00015}00015   add\_model(new\_model);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00015}00015   \mbox{\hyperlink{class_scene_ac791ad12a63beaafb9d617d111932e3c}{add\_model}}(new\_model);}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00016}00016 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00017}00017   glm::mat4 modelMatrix = \mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446875c}{sceneConfig::getModelMatrix}}();}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00017}00017   \mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} modelMatrix = \mbox{\hyperlink{namespacescene_config_a71330a511f748716643e88a4d446875c}{sceneConfig::getModelMatrix}}();}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00018}00018 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00019}00019   update\_model\_matrix(modelMatrix, 0);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00019}00019   \mbox{\hyperlink{class_scene_a7e1b599ba7a34482bc709e54a133c281}{update\_model\_matrix}}(modelMatrix, 0);}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00020}00020 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00021}00021 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00022}00022 \textcolor{keywordtype}{void} Scene::add\_model(std::shared\_ptr<Model> model) \{}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00023}00023   model\_list.push\_back(model);}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00024}00024   object\_descriptions.push\_back(model-\/>getObjectDescription());}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00022}\mbox{\hyperlink{class_scene_ac791ad12a63beaafb9d617d111932e3c}{00022}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_scene_ac791ad12a63beaafb9d617d111932e3c}{Scene::add\_model}}(std::shared\_ptr<Model> model) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00023}00023   \mbox{\hyperlink{class_scene_a636100b68808cf943d0b17e105650eb9}{model\_list}}.push\_back(model);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00024}00024   \mbox{\hyperlink{class_scene_a305b4874f3001cf67d18f04c7bc5dc2e}{object\_descriptions}}.push\_back(model-\/>getObjectDescription());}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00025}00025 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00026}00026 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00027}00027 \textcolor{keywordtype}{void} Scene::add\_object\_description(ObjectDescription object\_description) \{}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00028}00028   object\_descriptions.push\_back(object\_description);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00027}\mbox{\hyperlink{class_scene_a32465b92c27dabb9889074fbd3d84148}{00027}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_scene_a32465b92c27dabb9889074fbd3d84148}{Scene::add\_object\_description}}(\mbox{\hyperlink{struct_object_description}{ObjectDescription}} object\_description) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00028}00028   \mbox{\hyperlink{class_scene_a305b4874f3001cf67d18f04c7bc5dc2e}{object\_descriptions}}.push\_back(object\_description);}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00029}00029 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00030}00030 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00031}00031 \textcolor{keywordtype}{void} Scene::update\_model\_matrix(glm::mat4 model\_matrix, \textcolor{keywordtype}{int} model\_id) \{}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00032}00032   \textcolor{keywordflow}{if} (model\_id >= \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(getModelCount()) || model\_id < 0) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00031}\mbox{\hyperlink{class_scene_a7e1b599ba7a34482bc709e54a133c281}{00031}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_scene_a7e1b599ba7a34482bc709e54a133c281}{Scene::update\_model\_matrix}}(\mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} model\_matrix, \textcolor{keywordtype}{int} model\_id) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00032}00032   \textcolor{keywordflow}{if} (model\_id >= \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}()) || model\_id < 0) \{}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00033}00033     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Wrong model id value!"{}});}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00034}00034   \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00035}00035 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00036}00036   model\_list[model\_id]-\/>set\_model(model\_matrix);}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00036}00036   \mbox{\hyperlink{class_scene_a636100b68808cf943d0b17e105650eb9}{model\_list}}[model\_id]-\/>set\_model(model\_matrix);}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00037}00037 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00038}00038 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00039}00039 \textcolor{keywordtype}{void} Scene::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00040}00040   \textcolor{keywordflow}{for} (std::shared\_ptr<Model> model : model\_list) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00039}\mbox{\hyperlink{class_scene_a372535c02360593147959d28da343192}{00039}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_scene_a372535c02360593147959d28da343192}{Scene::cleanUp}}() \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00040}00040   \textcolor{keywordflow}{for} (std::shared\_ptr<Model> model : \mbox{\hyperlink{class_scene_a636100b68808cf943d0b17e105650eb9}{model\_list}}) \{}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00041}00041     model-\/>cleanUp();}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00042}00042   \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00043}00043 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00044}00044 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00045}00045 uint32\_t Scene::getNumberMeshes() \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00045}\mbox{\hyperlink{class_scene_a2304edd91ec508b7aadab756f9f0a441}{00045}} uint32\_t \mbox{\hyperlink{class_scene_a2304edd91ec508b7aadab756f9f0a441}{Scene::getNumberMeshes}}() \{}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00046}00046   uint32\_t number\_of\_meshes = 0;}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00047}00047 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00048}00048   \textcolor{keywordflow}{for} (std::shared\_ptr<Model> mesh\_model : model\_list) \{}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00048}00048   \textcolor{keywordflow}{for} (std::shared\_ptr<Model> mesh\_model : \mbox{\hyperlink{class_scene_a636100b68808cf943d0b17e105650eb9}{model\_list}}) \{}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00049}00049     number\_of\_meshes += \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(mesh\_model-\/>getMeshCount());}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00050}00050   \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00051}00051 }
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00052}00052   \textcolor{keywordflow}{return} number\_of\_meshes;}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00053}00053 \}}
 \DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00054}00054 }
-\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00055}00055 Scene::\string~Scene() \{\}}
+\DoxyCodeLine{\Hypertarget{_scene_8cpp_source_l00055}\mbox{\hyperlink{class_scene_a3b8cec2e32546713915f8c6303c951f1}{00055}} \mbox{\hyperlink{class_scene_a3b8cec2e32546713915f8c6303c951f1}{Scene::\string~Scene}}() \{\}}
 
 \end{DoxyCode}

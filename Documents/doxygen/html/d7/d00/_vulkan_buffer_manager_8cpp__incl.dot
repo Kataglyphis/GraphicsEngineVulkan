@@ -7,5 +7,5 @@ digraph "C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan_base/Vulka
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node1 [label="C:/Users/jonas_l6e3q\l/Desktop/GraphicsEngineVulkan\l/Src/vulkan_base/VulkanBufferManager.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="VulkanBufferManager.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node2 [label="VulkanBufferManager.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

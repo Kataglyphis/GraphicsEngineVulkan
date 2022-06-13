@@ -2,39 +2,39 @@
 \label{_texture_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Texture.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Texture.cpp}}
 \mbox{\hyperlink{_texture_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Texture.h"{}}}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_texture_8hpp}{Texture.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00002}00002 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <cmath>}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include <stdexcept>}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00005}00005 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00006}00006 Texture::Texture() \{\}}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00006}\mbox{\hyperlink{class_texture_a6c275e3f186675ff6ed73ccf970e552f}{00006}} \mbox{\hyperlink{class_texture_a6c275e3f186675ff6ed73ccf970e552f}{Texture::Texture}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00007}00007 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00008}00008 \textcolor{keywordtype}{void} Texture::createFromFile(VulkanDevice* device, VkCommandPool commandPool,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00008}\mbox{\hyperlink{class_texture_a24494dde025ffd597f36d57489f2a10e}{00008}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_a24494dde025ffd597f36d57489f2a10e}{Texture::createFromFile}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkCommandPool commandPool,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00009}00009                              \textcolor{keyword}{const} std::string\& fileName) \{}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00010}00010   \textcolor{keywordtype}{int} width, height;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00011}00011   VkDeviceSize size;}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00012}00012   stbi\_uc* image\_data = loadTextureData(fileName, \&width, \&height, \&size);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00012}00012   stbi\_uc* image\_data = \mbox{\hyperlink{class_texture_ab1fced96418b50a89d6f926f8b0e18a6}{loadTextureData}}(fileName, \&width, \&height, \&size);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00013}00013 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00014}00014   mip\_levels =}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00014}00014   \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}} =}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00015}00015       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(std::floor(std::log2(std::max(width, height)))) + 1;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00016}00016 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00017}00017   \textcolor{comment}{// create staging buffer to hold loaded data, ready to copy to device}}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00018}00018   VulkanBuffer stagingBuffer;}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00019}00019   stagingBuffer.create(device, size, VK\_BUFFER\_USAGE\_TRANSFER\_SRC\_BIT,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00018}00018   \mbox{\hyperlink{class_vulkan_buffer}{VulkanBuffer}} stagingBuffer;}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00019}00019   stagingBuffer.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(device, size, VK\_BUFFER\_USAGE\_TRANSFER\_SRC\_BIT,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00020}00020                        VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00021}00021                            VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00022}00022 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00023}00023   \textcolor{comment}{// copy image data to staging buffer}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00024}00024   \textcolor{keywordtype}{void}* data;}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00025}00025   vkMapMemory(device-\/>getLogicalDevice(), stagingBuffer.getBufferMemory(), 0,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00025}00025   vkMapMemory(device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), stagingBuffer.\mbox{\hyperlink{class_vulkan_buffer_ac4b9bddc80f281aefe6523fba5c3141d}{getBufferMemory}}(), 0,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00026}00026               size, 0, \&data);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00027}00027   memcpy(data, image\_data, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(size));}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00028}00028   vkUnmapMemory(device-\/>getLogicalDevice(), stagingBuffer.getBufferMemory());}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00028}00028   vkUnmapMemory(device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), stagingBuffer.\mbox{\hyperlink{class_vulkan_buffer_ac4b9bddc80f281aefe6523fba5c3141d}{getBufferMemory}}());}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00029}00029 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00030}00030   \textcolor{comment}{// free original image data}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00031}00031   stbi\_image\_free(image\_data);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00032}00032 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00033}00033   createImage(device, width, height, mip\_levels, VK\_FORMAT\_R8G8B8A8\_UNORM,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00033}00033   \mbox{\hyperlink{class_texture_aaee208f1a10daa6336112e7611b0edd4}{createImage}}(device, width, height, \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}}, VK\_FORMAT\_R8G8B8A8\_UNORM,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00034}00034               VK\_IMAGE\_TILING\_OPTIMAL,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00035}00035               VK\_IMAGE\_USAGE\_TRANSFER\_SRC\_BIT |}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00036}00036                   VK\_IMAGE\_USAGE\_TRANSFER\_DST\_BIT | VK\_IMAGE\_USAGE\_SAMPLED\_BIT,}
@@ -42,57 +42,57 @@
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00038}00038 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00039}00039   \textcolor{comment}{// copy data to image}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00040}00040   \textcolor{comment}{// transition image to be DST for copy operation}}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00041}00041   vulkanImage.transitionImageLayout(}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00042}00042       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00041}00041   \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a4c1e3d370432dbd38ec809ed7aa17ff0}{transitionImageLayout}}(}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00042}00042       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), device-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(), commandPool,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00043}00043       VK\_IMAGE\_LAYOUT\_UNDEFINED, VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL,}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00044}00044       VK\_IMAGE\_ASPECT\_COLOR\_BIT, mip\_levels);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00044}00044       VK\_IMAGE\_ASPECT\_COLOR\_BIT, \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}});}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00045}00045 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00046}00046   \textcolor{comment}{// copy data to image}}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00047}00047   vulkanBufferManager.copyImageBuffer(}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00048}00048       device-\/>getLogicalDevice(), device-\/>getGraphicsQueue(), commandPool,}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00049}00049       stagingBuffer.getBuffer(), vulkanImage.getImage(), width, height);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00047}00047   \mbox{\hyperlink{class_texture_a4e9a970f4375b5384c353ef975e1ff0d}{vulkanBufferManager}}.\mbox{\hyperlink{class_vulkan_buffer_manager_a6e45dd5f358f33df85b6553c4dde9cd8}{copyImageBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00048}00048       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), device-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(), commandPool,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00049}00049       stagingBuffer.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}(), \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a4137ad29d19c3fa2517efb6bf46dde0e}{getImage}}(), width, height);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00050}00050 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00051}00051   \textcolor{comment}{// generate mipmaps}}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00052}00052   generateMipMaps(device-\/>getPhysicalDevice(), device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00053}00053                   commandPool, device-\/>getGraphicsQueue(),}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00054}00054                   vulkanImage.getImage(), VK\_FORMAT\_R8G8B8A8\_SRGB, width,}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00055}00055                   height, mip\_levels);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00052}00052   \mbox{\hyperlink{class_texture_a132e5e3ad2144e0d25c99ab0c31945f7}{generateMipMaps}}(device-\/>\mbox{\hyperlink{class_vulkan_device_ac70529b6753bedb7cfddd11baa5c27eb}{getPhysicalDevice}}(), device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00053}00053                   commandPool, device-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(),}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00054}00054                   \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a4137ad29d19c3fa2517efb6bf46dde0e}{getImage}}(), VK\_FORMAT\_R8G8B8A8\_SRGB, width,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00055}00055                   height, \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}});}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00056}00056 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00057}00057   stagingBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00057}00057   stagingBuffer.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00058}00058 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00059}00059   createImageView(device, VK\_FORMAT\_R8G8B8A8\_UNORM, VK\_IMAGE\_ASPECT\_COLOR\_BIT,}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00060}00060                   mip\_levels);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00059}00059   \mbox{\hyperlink{class_texture_ac2b41ec83a09b8a3cbe3be6effbde22c}{createImageView}}(device, VK\_FORMAT\_R8G8B8A8\_UNORM, VK\_IMAGE\_ASPECT\_COLOR\_BIT,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00060}00060                   \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}});}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00061}00061 \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00062}00062 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00063}00063 \textcolor{keywordtype}{void} Texture::setImage(VkImage image) \{ vulkanImage.setImage(image); \}}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00063}\mbox{\hyperlink{class_texture_a810b62f3d26d31efc6008886dff9e01e}{00063}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_a810b62f3d26d31efc6008886dff9e01e}{Texture::setImage}}(VkImage image) \{ \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a28c7366ec86626f5f97b33f38b19737c}{setImage}}(image); \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00064}00064 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00065}00065 \textcolor{keywordtype}{void} Texture::setImageView(VkImageView imageView) \{}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00066}00066   vulkanImageView.setImageView(imageView);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00065}\mbox{\hyperlink{class_texture_aedf2f9b5748a2a559c350b291e06b0c0}{00065}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_aedf2f9b5748a2a559c350b291e06b0c0}{Texture::setImageView}}(VkImageView imageView) \{}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00066}00066   \mbox{\hyperlink{class_texture_a4d8f3971f9667dfcb2297a6046546aa4}{vulkanImageView}}.\mbox{\hyperlink{class_vulkan_image_view_a90642e8606af1666ca66234d671ef584}{setImageView}}(imageView);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00067}00067 \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00068}00068 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00069}00069 \textcolor{keywordtype}{void} Texture::createImage(VulkanDevice* device, uint32\_t width, uint32\_t height,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00069}\mbox{\hyperlink{class_texture_aaee208f1a10daa6336112e7611b0edd4}{00069}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_aaee208f1a10daa6336112e7611b0edd4}{Texture::createImage}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, uint32\_t width, uint32\_t height,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00070}00070                           uint32\_t mip\_levels, VkFormat format,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00071}00071                           VkImageTiling tiling, VkImageUsageFlags use\_flags,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00072}00072                           VkMemoryPropertyFlags prop\_flags) \{}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00073}00073   vulkanImage.create(device, width, height, mip\_levels, format, tiling,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00073}00073   \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a23defcb94182863fcd2a5aa823092e70}{create}}(device, width, height, \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}}, format, tiling,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00074}00074                      use\_flags, prop\_flags);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00075}00075 \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00076}00076 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00077}00077 \textcolor{keywordtype}{void} Texture::createImageView(VulkanDevice* device, VkFormat format,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00077}\mbox{\hyperlink{class_texture_ac2b41ec83a09b8a3cbe3be6effbde22c}{00077}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_ac2b41ec83a09b8a3cbe3be6effbde22c}{Texture::createImageView}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkFormat format,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00078}00078                               VkImageAspectFlags aspect\_flags,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00079}00079                               uint32\_t mip\_levels) \{}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00080}00080   vulkanImageView.create(device, vulkanImage.getImage(), format, aspect\_flags,}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00081}00081                          mip\_levels);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00080}00080   \mbox{\hyperlink{class_texture_a4d8f3971f9667dfcb2297a6046546aa4}{vulkanImageView}}.\mbox{\hyperlink{class_vulkan_image_view_a9388092f23ed625ea85d22fae3f415fb}{create}}(device, \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a4137ad29d19c3fa2517efb6bf46dde0e}{getImage}}(), format, aspect\_flags,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00081}00081                          \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}});}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00082}00082 \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00083}00083 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00084}00084 \textcolor{keywordtype}{void} Texture::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00085}00085   vulkanImageView.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00086}00086   vulkanImage.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00084}\mbox{\hyperlink{class_texture_afdc94e97e6118d2e7b253f975ab90de1}{00084}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_afdc94e97e6118d2e7b253f975ab90de1}{Texture::cleanUp}}() \{}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00085}00085   \mbox{\hyperlink{class_texture_a4d8f3971f9667dfcb2297a6046546aa4}{vulkanImageView}}.\mbox{\hyperlink{class_vulkan_image_view_a14eb5b9a427361f5329c719ef5e134da}{cleanUp}}();}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00086}00086   \mbox{\hyperlink{class_texture_a4ed0505a2fab2380bdd4157c05909dbf}{vulkanImage}}.\mbox{\hyperlink{class_vulkan_image_a5738bef258f83ad7a5593b6ff5fd365c}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00087}00087 \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00088}00088 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00089}00089 Texture::\string~Texture() \{\}}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00089}\mbox{\hyperlink{class_texture_a09c4bcb7462f64c1d20fa69dba3cee8a}{00089}} \mbox{\hyperlink{class_texture_a09c4bcb7462f64c1d20fa69dba3cee8a}{Texture::\string~Texture}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00090}00090 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00091}00091 stbi\_uc* Texture::loadTextureData(\textcolor{keyword}{const} std::string\& file\_name, \textcolor{keywordtype}{int}* width,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00091}\mbox{\hyperlink{class_texture_ab1fced96418b50a89d6f926f8b0e18a6}{00091}} stbi\_uc* \mbox{\hyperlink{class_texture_ab1fced96418b50a89d6f926f8b0e18a6}{Texture::loadTextureData}}(\textcolor{keyword}{const} std::string\& file\_name, \textcolor{keywordtype}{int}* width,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00092}00092                                   \textcolor{keywordtype}{int}* height, VkDeviceSize* image\_size) \{}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00093}00093   \textcolor{comment}{// number of channels image uses}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00094}00094   \textcolor{keywordtype}{int} channels;}
@@ -112,7 +112,7 @@
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00108}00108   \textcolor{keywordflow}{return} image;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00109}00109 \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00110}00110 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00111}00111 \textcolor{keywordtype}{void} Texture::generateMipMaps(VkPhysicalDevice physical\_device, VkDevice device,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00111}\mbox{\hyperlink{class_texture_a132e5e3ad2144e0d25c99ab0c31945f7}{00111}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_texture_a132e5e3ad2144e0d25c99ab0c31945f7}{Texture::generateMipMaps}}(VkPhysicalDevice physical\_device, VkDevice device,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00112}00112                               VkCommandPool command\_pool, VkQueue queue,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00113}00113                               VkImage image, VkFormat image\_format,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00114}00114                               int32\_t width, int32\_t height,}
@@ -129,7 +129,7 @@
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00125}00125   \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00126}00126 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00127}00127   VkCommandBuffer command\_buffer =}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00128}00128       commandBufferManager.beginCommandBuffer(device, command\_pool);}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00128}00128       \mbox{\hyperlink{class_texture_a37e2682144e97ade0d05dca73100e3f0}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a341dd6bf1dab7f3eb0d378a6187dee6d}{beginCommandBuffer}}(device, command\_pool);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00129}00129 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00130}00130   VkImageMemoryBarrier barrier\{\};}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00131}00131   barrier.sType = VK\_STRUCTURE\_TYPE\_IMAGE\_MEMORY\_BARRIER;}
@@ -146,7 +146,7 @@
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00142}00142   int32\_t tmp\_height = height;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00143}00143 }
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00144}00144   \textcolor{comment}{// -\/-\/ WE START AT 1 !}}
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00145}00145   \textcolor{keywordflow}{for} (uint32\_t i = 1; i < mip\_levels; i++) \{}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00145}00145   \textcolor{keywordflow}{for} (uint32\_t i = 1; i < \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}}; i++) \{}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00146}00146     \textcolor{comment}{// WAIT for previous mip map level for being ready}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00147}00147     barrier.subresourceRange.baseMipLevel = i -\/ 1;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00148}00148     \textcolor{comment}{// HERE we TRANSITION for having a SRC format now}}
@@ -198,7 +198,7 @@
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00194}00194     \textcolor{keywordflow}{if} (tmp\_height > 1) tmp\_height /= 2;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00195}00195   \}}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00196}00196 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00197}00197   barrier.subresourceRange.baseMipLevel = mip\_levels -\/ 1;}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00197}00197   barrier.subresourceRange.baseMipLevel = \mbox{\hyperlink{class_texture_a84e566952e186e1306b20dd57c063e7a}{mip\_levels}} -\/ 1;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00198}00198   barrier.oldLayout = VK\_IMAGE\_LAYOUT\_TRANSFER\_DST\_OPTIMAL;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00199}00199   barrier.newLayout = VK\_IMAGE\_LAYOUT\_SHADER\_READ\_ONLY\_OPTIMAL;}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00200}00200   barrier.srcAccessMask = VK\_ACCESS\_TRANSFER\_WRITE\_BIT;}
@@ -208,7 +208,7 @@
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00204}00204                        VK\_PIPELINE\_STAGE\_FRAGMENT\_SHADER\_BIT, 0, 0, \textcolor{keyword}{nullptr}, 0,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00205}00205                        \textcolor{keyword}{nullptr}, 1, \&barrier);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00206}00206 }
-\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00207}00207   commandBufferManager.endAndSubmitCommandBuffer(device, command\_pool, queue,}
+\DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00207}00207   \mbox{\hyperlink{class_texture_a37e2682144e97ade0d05dca73100e3f0}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a77200b8fa3586015d1637ca5166debd9}{endAndSubmitCommandBuffer}}(device, command\_pool, queue,}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00208}00208                                                  command\_buffer);}
 \DoxyCodeLine{\Hypertarget{_texture_8cpp_source_l00209}00209 \}}
 

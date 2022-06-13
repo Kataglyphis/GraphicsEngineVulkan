@@ -7,7 +7,7 @@ digraph "C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Rasteriz
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node1 [label="C:/Users/jonas_l6e3q\l/Desktop/GraphicsEngineVulkan\l/Src/renderer/Rasterizer.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
-  Node2 [label="Rasterizer.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node2 [label="Rasterizer.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
   Node3 [label="array",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
@@ -15,13 +15,13 @@ digraph "C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Rasteriz
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
   Node5 [label="filesystem",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
-  Node6 [label="File.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node6 [label="File.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
-  Node7 [label="FormatHelper.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node7 [label="FormatHelper.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
-  Node8 [label="ShaderHelper.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node8 [label="ShaderHelper.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
-  Node9 [label="Vertex.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node9 [label="Vertex.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
-  Node10 [label="VulkanRendererConfig.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node10 [label="VulkanRendererConfig.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

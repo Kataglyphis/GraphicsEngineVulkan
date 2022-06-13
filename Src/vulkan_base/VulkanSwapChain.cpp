@@ -1,8 +1,8 @@
-#include "VulkanSwapChain.h"
+#include "VulkanSwapChain.hpp"
 
 #include <limits>
 
-#include "Utilities.h"
+#include "Utilities.hpp"
 
 VulkanSwapChain::VulkanSwapChain() {}
 

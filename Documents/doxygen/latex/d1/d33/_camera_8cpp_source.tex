@@ -2,14 +2,14 @@
 \label{_camera_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Camera.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Camera.cpp}}
 \mbox{\hyperlink{_camera_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Camera.h"{}}}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_camera_8hpp}{Camera.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00003}00003 Camera::Camera()}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00003}\mbox{\hyperlink{class_camera_a01f94c3543f56ede7af49dc778f19331}{00003}} \mbox{\hyperlink{class_camera_a01f94c3543f56ede7af49dc778f19331}{Camera::Camera}}()}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00004}00004     :}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00005}00005 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00006}00006       position(glm::vec3(0.0f, 100.0f, -\/80.0f)),}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00007}00007       front(glm::vec3(0.0f, 0.0f, -\/1.f)),}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00008}00008       world\_up(glm::vec3(0.0f, 1.0f, 0.0f)),}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00006}00006       position(glm::\mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{vec3}}(0.0f, 100.0f, -\/80.0f)),}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00007}00007       front(glm::\mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{vec3}}(0.0f, 0.0f, -\/1.f)),}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00008}00008       world\_up(glm::\mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{vec3}}(0.0f, 1.0f, 0.0f)),}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00009}00009       right(glm::normalize(glm::cross(front, world\_up))),}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00010}00010       up(glm::normalize(glm::cross(right, front))),}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00011}00011       yaw(80.f),}
@@ -22,91 +22,91 @@
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00018}00018 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00019}00019 \{\}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00020}00020 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00021}00021 \textcolor{keywordtype}{void} Camera::key\_control(\textcolor{keywordtype}{bool}* keys, \textcolor{keywordtype}{float} delta\_time) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00022}00022   \textcolor{keywordtype}{float} velocity = movement\_speed * delta\_time;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00021}\mbox{\hyperlink{class_camera_a446778b9c6073d456f2b19a7ab5476dd}{00021}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_a446778b9c6073d456f2b19a7ab5476dd}{Camera::key\_control}}(\textcolor{keywordtype}{bool}* keys, \textcolor{keywordtype}{float} delta\_time) \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00022}00022   \textcolor{keywordtype}{float} velocity = \mbox{\hyperlink{class_camera_ac357bed69095828f8ea9fdf64192f0e3}{movement\_speed}} * delta\_time;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00023}00023 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00024}00024   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_W]) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00025}00025     position += front * velocity;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00025}00025     \mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}} += \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}} * velocity;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00026}00026   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00027}00027 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00028}00028   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_D]) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00029}00029     position += right * velocity;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00029}00029     \mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}} += \mbox{\hyperlink{class_camera_aebffcc6289dd99df7554b18d00a81161}{right}} * velocity;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00030}00030   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00031}00031 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00032}00032   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_A]) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00033}00033     position += -\/right * velocity;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00033}00033     \mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}} += -\/\mbox{\hyperlink{class_camera_aebffcc6289dd99df7554b18d00a81161}{right}} * velocity;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00034}00034   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00035}00035 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00036}00036   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_S]) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00037}00037     position += -\/front * velocity;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00037}00037     \mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}} += -\/\mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}} * velocity;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00038}00038   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00039}00039 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00040}00040   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_Q]) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00041}00041     yaw += -\/velocity;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00041}00041     \mbox{\hyperlink{class_camera_ad76701b22630f2df28a0ae15f0497a3a}{yaw}} += -\/velocity;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00042}00042   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00043}00043 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00044}00044   \textcolor{keywordflow}{if} (keys[GLFW\_KEY\_E]) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00045}00045     yaw += velocity;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00045}00045     \mbox{\hyperlink{class_camera_ad76701b22630f2df28a0ae15f0497a3a}{yaw}} += velocity;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00046}00046   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00047}00047 \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00048}00048 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00049}00049 \textcolor{keywordtype}{void} Camera::mouse\_control(\textcolor{keywordtype}{float} x\_change, \textcolor{keywordtype}{float} y\_change) \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00049}\mbox{\hyperlink{class_camera_aa0a9cbeecb6395d212db44a2df1101a9}{00049}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_aa0a9cbeecb6395d212db44a2df1101a9}{Camera::mouse\_control}}(\textcolor{keywordtype}{float} x\_change, \textcolor{keywordtype}{float} y\_change) \{}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00050}00050   \textcolor{comment}{// here we only want to support views 90 degrees to each side}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00051}00051   \textcolor{comment}{// again choose turn speed well in respect to its ordinal scale}}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00052}00052   x\_change *= turn\_speed;}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00053}00053   y\_change *= turn\_speed;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00052}00052   x\_change *= \mbox{\hyperlink{class_camera_a497f84961c5b30e340d71a0097484466}{turn\_speed}};}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00053}00053   y\_change *= \mbox{\hyperlink{class_camera_a497f84961c5b30e340d71a0097484466}{turn\_speed}};}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00054}00054 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00055}00055   yaw += x\_change;}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00056}00056   pitch += y\_change;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00055}00055   \mbox{\hyperlink{class_camera_ad76701b22630f2df28a0ae15f0497a3a}{yaw}} += x\_change;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00056}00056   \mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}} += y\_change;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00057}00057 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00058}00058   \textcolor{keywordflow}{if} (pitch > 89.0f) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00059}00059     pitch = 89.0f;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00058}00058   \textcolor{keywordflow}{if} (\mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}} > 89.0f) \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00059}00059     \mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}} = 89.0f;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00060}00060   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00061}00061 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00062}00062   \textcolor{keywordflow}{if} (pitch < -\/89.0f) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00063}00063     pitch = -\/89.0f;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00062}00062   \textcolor{keywordflow}{if} (\mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}} < -\/89.0f) \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00063}00063     \mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}} = -\/89.0f;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00064}00064   \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00065}00065 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00066}00066   \textcolor{comment}{// by changing the rotations you need to update all parameters}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00067}00067   \textcolor{comment}{// for we retrieve them later for further calculations!}}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00068}00068   update();}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00068}00068   \mbox{\hyperlink{class_camera_a42cda7239981a5618660d04bd5893556}{update}}();}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00069}00069 \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00070}00070 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00071}00071 \textcolor{keywordtype}{void} Camera::set\_near\_plane(\textcolor{keywordtype}{float} near\_plane) \{ this-\/>near\_plane = near\_plane; \}}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00071}\mbox{\hyperlink{class_camera_ade0826ec58ba4f92201d909e0ce2436f}{00071}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_ade0826ec58ba4f92201d909e0ce2436f}{Camera::set\_near\_plane}}(\textcolor{keywordtype}{float} near\_plane) \{ this-\/>near\_plane = \mbox{\hyperlink{class_camera_a430f769a9227b6cd41fe336122fbb9dc}{near\_plane}}; \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00072}00072 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00073}00073 \textcolor{keywordtype}{void} Camera::set\_far\_plane(\textcolor{keywordtype}{float} far\_plane) \{ this-\/>far\_plane = far\_plane; \}}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00073}\mbox{\hyperlink{class_camera_aec54d57322c3a2c9a12d266a7cdc958c}{00073}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_aec54d57322c3a2c9a12d266a7cdc958c}{Camera::set\_far\_plane}}(\textcolor{keywordtype}{float} far\_plane) \{ this-\/>far\_plane = \mbox{\hyperlink{class_camera_a141934c2b78b48d9dd0042e8d7c87c32}{far\_plane}}; \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00074}00074 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00075}00075 \textcolor{keywordtype}{void} Camera::set\_fov(\textcolor{keywordtype}{float} fov) \{ this-\/>fov = fov; \}}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00075}\mbox{\hyperlink{class_camera_a64942bda057a1c162983df7ef11fd5b7}{00075}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_a64942bda057a1c162983df7ef11fd5b7}{Camera::set\_fov}}(\textcolor{keywordtype}{float} fov) \{ this-\/>fov = \mbox{\hyperlink{class_camera_aff7393c9cfbccd7e369091f00008da93}{fov}}; \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00076}00076 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00077}00077 \textcolor{keywordtype}{void} Camera::set\_camera\_position(glm::vec3 new\_camera\_position) \{}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00078}00078   this-\/>position = new\_camera\_position;}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00077}\mbox{\hyperlink{class_camera_ae3a95d4ca917f80a90ee81012acf3f1a}{00077}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_ae3a95d4ca917f80a90ee81012acf3f1a}{Camera::set\_camera\_position}}(\mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}} new\_camera\_position) \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00078}00078   this-\/>\mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}} = new\_camera\_position;}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00079}00079 \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00080}00080 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00081}00081 glm::mat4 Camera::calculate\_viewmatrix() \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00081}\mbox{\hyperlink{class_camera_a9c5b338d96e976543088eac23dc51800}{00081}} \mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} \mbox{\hyperlink{class_camera_a9c5b338d96e976543088eac23dc51800}{Camera::calculate\_viewmatrix}}() \{}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00082}00082   \textcolor{comment}{// very necessary for further calc}}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00083}00083   \textcolor{keywordflow}{return} glm::lookAt(position, position + front, up);}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00083}00083   \textcolor{keywordflow}{return} glm::lookAt(\mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}}, \mbox{\hyperlink{class_camera_a04b5db2c530d8630660e8cfb93a4b3b5}{position}} + \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}}, \mbox{\hyperlink{class_camera_a3fe5f351380fb118ffc600591769f049}{up}});}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00084}00084 \}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00085}00085 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00086}00086 Camera::\string~Camera() \{\}}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00086}\mbox{\hyperlink{class_camera_ad1897942d0ccf91052386388a497349f}{00086}} \mbox{\hyperlink{class_camera_ad1897942d0ccf91052386388a497349f}{Camera::\string~Camera}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00087}00087 }
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00088}00088 \textcolor{keywordtype}{void} Camera::update() \{}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00088}\mbox{\hyperlink{class_camera_a42cda7239981a5618660d04bd5893556}{00088}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_camera_a42cda7239981a5618660d04bd5893556}{Camera::update}}() \{}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00089}00089   \textcolor{comment}{// https://learnopengl.com/Getting-\/started/Camera?fbclid=IwAR1WEr4jt6IyWC52s\_WKYHtaFoeug37pG5YqbDPifgn5F1UXPbUjWbJWiqQ}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00090}00090   \textcolor{comment}{//  thats a bit tricky; have a look to link above if there a questions :)}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00091}00091   \textcolor{comment}{//  but simple geometrical analysis}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00092}00092   \textcolor{comment}{//  consider yaw you are turnig to the side; pich as you move the head forward}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00093}00093   \textcolor{comment}{//  and back; roll rotations around z-\/axis will make you dizzy :)) notice that}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00094}00094   \textcolor{comment}{//  to roll will not chnge my front vector}}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00095}00095   front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00096}00096   front.y = sin(glm::radians(pitch));}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00097}00097   front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00098}00098   front = glm::normalize(front);}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00095}00095   \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}}.x = cos(glm::radians(\mbox{\hyperlink{class_camera_ad76701b22630f2df28a0ae15f0497a3a}{yaw}})) * cos(glm::radians(\mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}}));}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00096}00096   \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}}.y = sin(glm::radians(\mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}}));}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00097}00097   \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}}.z = sin(glm::radians(\mbox{\hyperlink{class_camera_ad76701b22630f2df28a0ae15f0497a3a}{yaw}})) * cos(glm::radians(\mbox{\hyperlink{class_camera_ab56fcb39f580e8d2159cf2c9c6d9a65a}{pitch}}));}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00098}00098   \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}} = glm::normalize(\mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}});}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00099}00099 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00100}00100   \textcolor{comment}{// retrieve the right vector with some world\_up}}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00101}00101   right = glm::normalize(glm::cross(front, world\_up));}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00101}00101   \mbox{\hyperlink{class_camera_aebffcc6289dd99df7554b18d00a81161}{right}} = glm::normalize(glm::cross(\mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}}, \mbox{\hyperlink{class_camera_a6c577ae7b35ade655292bbe1f7c0b862}{world\_up}}));}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00102}00102 }
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00103}00103   \textcolor{comment}{// but this means the up vector must again be calculated with right vector}}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00104}00104   \textcolor{comment}{// calculated!!!}}
-\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00105}00105   up = glm::normalize(glm::cross(right, front));}
+\DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00105}00105   \mbox{\hyperlink{class_camera_a3fe5f351380fb118ffc600591769f049}{up}} = glm::normalize(glm::cross(\mbox{\hyperlink{class_camera_aebffcc6289dd99df7554b18d00a81161}{right}}, \mbox{\hyperlink{class_camera_a8847cf29c9c124906ad5d97ecb5c55d1}{front}}));}
 \DoxyCodeLine{\Hypertarget{_camera_8cpp_source_l00106}00106 \}}
 
 \end{DoxyCode}

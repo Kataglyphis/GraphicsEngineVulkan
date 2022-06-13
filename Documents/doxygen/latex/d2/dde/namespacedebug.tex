@@ -3,14 +3,20 @@
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-VKAPI\+\_\+\+ATTR Vk\+Bool32 VKAPI\+\_\+\+CALL \mbox{\hyperlink{namespacedebug_a2c211b70c4398422cdff97189048fe44}{debug\+Utils\+Messenger\+Callback}} (Vk\+Debug\+Utils\+Message\+Severity\+Flag\+Bits\+EXT message\+Severity, Vk\+Debug\+Utils\+Message\+Type\+Flags\+EXT message\+Type, const Vk\+Debug\+Utils\+Messenger\+Callback\+Data\+EXT $\ast$p\+Callback\+Data, void $\ast$p\+User\+Data)
+VKAPI\+\_\+\+ATTR Vk\+Bool32 VKAPI\+\_\+\+CALL \mbox{\hyperlink{namespacedebug_a840a095211f991961d5ca51d7b4f1032}{message\+Callback}} (Vk\+Debug\+Report\+Flags\+EXT flags, Vk\+Debug\+Report\+Object\+Type\+EXT obj\+Type, uint64\+\_\+t src\+Object, size\+\_\+t location, int32\+\_\+t msg\+Code, const char $\ast$p\+Layer\+Prefix, const char $\ast$p\+Msg, void $\ast$p\+User\+Data)
 \item 
 void \mbox{\hyperlink{namespacedebug_a2d3861f9b449521a13975f6f21342c43}{setup\+Debugging}} (Vk\+Instance instance, Vk\+Debug\+Report\+Flags\+EXT flags, Vk\+Debug\+Report\+Callback\+EXT call\+Back)
 \item 
 void \mbox{\hyperlink{namespacedebug_a0090a7de5456794069c8360a0780ed52}{free\+Debug\+Callback}} (Vk\+Instance instance)
+\item 
+VKAPI\+\_\+\+ATTR Vk\+Bool32 VKAPI\+\_\+\+CALL \mbox{\hyperlink{namespacedebug_a2c211b70c4398422cdff97189048fe44}{debug\+Utils\+Messenger\+Callback}} (Vk\+Debug\+Utils\+Message\+Severity\+Flag\+Bits\+EXT message\+Severity, Vk\+Debug\+Utils\+Message\+Type\+Flags\+EXT message\+Type, const Vk\+Debug\+Utils\+Messenger\+Callback\+Data\+EXT $\ast$p\+Callback\+Data, void $\ast$p\+User\+Data)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespacedebug_a8d85c11eed9767bcc118549eac481756}{validation\+Layer\+Count}}
+\item 
+const char $\ast$ \mbox{\hyperlink{namespacedebug_ad39b1b584636e9a6e4e1810a10352e88}{validation\+Layer\+Names}} \mbox{[}$\,$\mbox{]}
 \item 
 PFN\+\_\+vk\+Create\+Debug\+Utils\+Messenger\+EXT \mbox{\hyperlink{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}{vk\+Create\+Debug\+Utils\+Messenger\+EXT}}
 \item 
@@ -112,6 +118,23 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{82}} of fi
 
 References \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{debug\+Utils\+Messenger}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00007}{vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}}.
 
+
+
+Referenced by \mbox{\hyperlink{_vulkan_renderer_8cpp_source_l01189}{Vulkan\+Renderer\+::clean\+Up()}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d2/dde/namespacedebug_a0090a7de5456794069c8360a0780ed52_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacedebug_a840a095211f991961d5ca51d7b4f1032}\label{namespacedebug_a840a095211f991961d5ca51d7b4f1032}} 
+\index{debug@{debug}!messageCallback@{messageCallback}}
+\index{messageCallback@{messageCallback}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{messageCallback()}{messageCallback()}}
+{\footnotesize\ttfamily VKAPI\+\_\+\+ATTR Vk\+Bool32 VKAPI\+\_\+\+CALL debug\+::message\+Callback (\begin{DoxyParamCaption}\item[{Vk\+Debug\+Report\+Flags\+EXT}]{flags,  }\item[{Vk\+Debug\+Report\+Object\+Type\+EXT}]{obj\+Type,  }\item[{uint64\+\_\+t}]{src\+Object,  }\item[{size\+\_\+t}]{location,  }\item[{int32\+\_\+t}]{msg\+Code,  }\item[{const char $\ast$}]{p\+Layer\+Prefix,  }\item[{const char $\ast$}]{p\+Msg,  }\item[{void $\ast$}]{p\+User\+Data }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacedebug_a2d3861f9b449521a13975f6f21342c43}\label{namespacedebug_a2d3861f9b449521a13975f6f21342c43}} 
 \index{debug@{debug}!setupDebugging@{setupDebugging}}
 \index{setupDebugging@{setupDebugging}!debug@{debug}}
@@ -152,11 +175,22 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{58}} of fi
 
 References \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{debug\+Utils\+Messenger}}, \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00010}{debug\+Utils\+Messenger\+Callback()}}, \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00006}{vk\+Create\+Debug\+Utils\+Messenger\+EXT}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00007}{vk\+Destroy\+Debug\+Utils\+Messenger\+EXT}}.
 
+
+
+Referenced by \mbox{\hyperlink{_vulkan_renderer_8cpp_source_l00024}{Vulkan\+Renderer\+::\+Vulkan\+Renderer()}}.
+
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{d2/dde/namespacedebug_a2d3861f9b449521a13975f6f21342c43_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d2/dde/namespacedebug_a2d3861f9b449521a13975f6f21342c43_icgraph}
 \end{center}
 \end{figure}
 
@@ -175,6 +209,18 @@ Definition at line \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00008}{8}} of fil
 
 
 Referenced by \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00082}{free\+Debug\+Callback()}}, and \mbox{\hyperlink{_vulkan_debug_8cpp_source_l00058}{setup\+Debugging()}}.
+
+\mbox{\Hypertarget{namespacedebug_a8d85c11eed9767bcc118549eac481756}\label{namespacedebug_a8d85c11eed9767bcc118549eac481756}} 
+\index{debug@{debug}!validationLayerCount@{validationLayerCount}}
+\index{validationLayerCount@{validationLayerCount}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{validationLayerCount}{validationLayerCount}}
+{\footnotesize\ttfamily int debug\+::validation\+Layer\+Count\hspace{0.3cm}{\ttfamily [extern]}}
+
+\mbox{\Hypertarget{namespacedebug_ad39b1b584636e9a6e4e1810a10352e88}\label{namespacedebug_ad39b1b584636e9a6e4e1810a10352e88}} 
+\index{debug@{debug}!validationLayerNames@{validationLayerNames}}
+\index{validationLayerNames@{validationLayerNames}!debug@{debug}}
+\doxysubsubsection{\texorpdfstring{validationLayerNames}{validationLayerNames}}
+{\footnotesize\ttfamily const char$\ast$ debug\+::validation\+Layer\+Names\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
 
 \mbox{\Hypertarget{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}\label{namespacedebug_a3f65712a616783bbd6fe7e68429d4c44}} 
 \index{debug@{debug}!vkCreateDebugUtilsMessengerEXT@{vkCreateDebugUtilsMessengerEXT}}
