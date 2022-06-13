@@ -1,156 +1,1990 @@
 \begin{theindex}
 
-  \item {App.cpp}
-    \subitem {GLFW\_INCLUDE\_NONE}, \hyperpage{11}
-    \subitem {GLFW\_INCLUDE\_VULKAN}, \hyperpage{11}
-    \subitem {GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE}, \hyperpage{12}
-    \subitem {GLM\_FORCE\_RADIANS}, \hyperpage{12}
+  \item {$\sim$ASManager}
+    \subitem {ASManager}, \hyperpage{23}
+  \item {$\sim$Allocator}
+    \subitem {Allocator}, \hyperpage{18}
+  \item {$\sim$App}
+    \subitem {App}, \hyperpage{20}
+  \item {$\sim$Camera}
+    \subitem {Camera}, \hyperpage{45}
+  \item {$\sim$CommandBufferManager}
+    \subitem {CommandBufferManager}, \hyperpage{54}
+  \item {$\sim$File}
+    \subitem {File}, \hyperpage{58}
+  \item {$\sim$GUI}
+    \subitem {GUI}, \hyperpage{63}
+  \item {$\sim$Mesh}
+    \subitem {Mesh}, \hyperpage{80}
+  \item {$\sim$Model}
+    \subitem {Model}, \hyperpage{93}
+  \item {$\sim$PathTracing}
+    \subitem {PathTracing}, \hyperpage{114}
+  \item {$\sim$PostStage}
+    \subitem {PostStage}, \hyperpage{126}
+  \item {$\sim$Rasterizer}
+    \subitem {Rasterizer}, \hyperpage{151}
+  \item {$\sim$Raytracing}
+    \subitem {Raytracing}, \hyperpage{170}
+  \item {$\sim$Scene}
+    \subitem {Scene}, \hyperpage{185}
+  \item {$\sim$ShaderHelper}
+    \subitem {ShaderHelper}, \hyperpage{199}
+  \item {$\sim$Texture}
+    \subitem {Texture}, \hyperpage{207}
+  \item {$\sim$VulkanBuffer}
+    \subitem {VulkanBuffer}, \hyperpage{226}
+  \item {$\sim$VulkanBufferManager}
+    \subitem {VulkanBufferManager}, \hyperpage{233}
+  \item {$\sim$VulkanDevice}
+    \subitem {VulkanDevice}, \hyperpage{240}
+  \item {$\sim$VulkanImage}
+    \subitem {VulkanImage}, \hyperpage{257}
+  \item {$\sim$VulkanImageView}
+    \subitem {VulkanImageView}, \hyperpage{267}
+  \item {$\sim$VulkanInstance}
+    \subitem {VulkanInstance}, \hyperpage{273}
+  \item {$\sim$VulkanRenderer}
+    \subitem {VulkanRenderer}, \hyperpage{280}
+  \item {$\sim$VulkanSwapChain}
+    \subitem {VulkanSwapChain}, \hyperpage{325}
+  \item {$\sim$Window}
+    \subitem {Window}, \hyperpage{338}
 
   \indexspace
 
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/App.cpp}, 
-		\hyperpage{11, 12}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp}, 
-		\hyperpage{13}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/Main.cpp}, 
-		\hyperpage{16, 17}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/memory/Allocator.cpp}, 
-		\hyperpage{17}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures/ASManager.cpp}, 
-		\hyperpage{17, 18}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/CommandBufferManager.cpp}, 
-		\hyperpage{24}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/PathTracing.cpp}, 
-		\hyperpage{25}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/PostStage.cpp}, 
-		\hyperpage{28}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp}, 
-		\hyperpage{34, 35}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/Raytracing.cpp}, 
-		\hyperpage{41}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/renderer/VulkanRenderer.cpp}, 
-		\hyperpage{46, 47}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Camera.cpp}, 
-		\hyperpage{61}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Mesh.cpp}, 
-		\hyperpage{62}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Model.cpp}, 
-		\hyperpage{64}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/ObjLoader.cpp}, 
-		\hyperpage{65, 66}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Scene.cpp}, 
-		\hyperpage{68}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/SceneConfig.cpp}, 
-		\hyperpage{69, 70}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Texture.cpp}, 
-		\hyperpage{70, 71}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/scene/Vertex.cpp}, 
-		\hyperpage{73, 74}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/util/File.cpp}, 
-		\hyperpage{74, 75}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/ShaderHelper.cpp}, 
-		\hyperpage{75, 76}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBuffer.cpp}, 
-		\hyperpage{76, 77}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBufferManager.cpp}, 
-		\hyperpage{77, 78}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanDebug.cpp}, 
-		\hyperpage{78, 79}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanDevice.cpp}, 
-		\hyperpage{80}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImage.cpp}, 
-		\hyperpage{85}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImageView.cpp}, 
-		\hyperpage{87, 88}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanInstance.cpp}, 
-		\hyperpage{88}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanSwapChain.cpp}, 
-		\hyperpage{90}
-  \item {C:/Users/jonas/Desktop/GraphicsEngineVulkan/Src/window/Window.cpp}, 
-		\hyperpage{93}
+  \item {accessFlagsForImageLayout}
+    \subitem {VulkanImage}, \hyperpage{257}
+  \item {add\_model}
+    \subitem {Scene}, \hyperpage{186}
+  \item {add\_new\_mesh}
+    \subitem {Model}, \hyperpage{93}
+  \item {add\_object\_description}
+    \subitem {Scene}, \hyperpage{186}
+  \item {addSampler}
+    \subitem {Model}, \hyperpage{93}
+  \item {addTexture}
+    \subitem {Model}, \hyperpage{94}
+  \item {align\_up}
+    \subitem {MemoryHelper.hpp}, \hyperpage{361}
+  \item {Allocator}, \hyperpage{17}
+    \subitem {$\sim$Allocator}, \hyperpage{18}
+    \subitem {Allocator}, \hyperpage{18}
+    \subitem {cleanUp}, \hyperpage{19}
+    \subitem {vmaAllocator}, \hyperpage{19}
+  \item {allocator}
+    \subitem {VulkanRenderer}, \hyperpage{315}
+  \item {ambient}
+    \subitem {ObjMaterial}, \hyperpage{110}
+  \item {App}, \hyperpage{20}
+    \subitem {$\sim$App}, \hyperpage{20}
+    \subitem {App}, \hyperpage{20}
+    \subitem {run}, \hyperpage{21}
+  \item {as\_build\_offset\_info}
+    \subitem {BlasInput}, \hyperpage{38}
+  \item {as\_geometry}
+    \subitem {BlasInput}, \hyperpage{38}
+  \item {ASManager}, \hyperpage{22}
+    \subitem {$\sim$ASManager}, \hyperpage{23}
+    \subitem {ASManager}, \hyperpage{23}
+    \subitem {blas}, \hyperpage{36}
+    \subitem {cleanUp}, \hyperpage{23}
+    \subitem {commandBufferManager}, \hyperpage{36}
+    \subitem {createAccelerationStructureInfosBLAS}, \hyperpage{24}
+    \subitem {createASForScene}, \hyperpage{26}
+    \subitem {createBLAS}, \hyperpage{27}
+    \subitem {createSingleBlas}, \hyperpage{29}
+    \subitem {createTLAS}, \hyperpage{30}
+    \subitem {getTLAS}, \hyperpage{34}
+    \subitem {objectToVkGeometryKHR}, \hyperpage{34}
+    \subitem {tlas}, \hyperpage{36}
+    \subitem {vulkanBufferManager}, \hyperpage{37}
+    \subitem {vulkanDevice}, \hyperpage{37}
+  \item {asManager}
+    \subitem {VulkanRenderer}, \hyperpage{316}
+  \item {aspect\_ratio}
+    \subitem {PushConstantPost}, \hyperpage{145}
 
   \indexspace
 
-  \item {debug}, \hyperpage{5}
-    \subitem {debugUtilsMessenger}, \hyperpage{7}
-    \subitem {debugUtilsMessengerCallback}, \hyperpage{5}
-    \subitem {freeDebugCallback}, \hyperpage{6}
-    \subitem {setupDebugging}, \hyperpage{6}
-    \subitem {vkCreateDebugUtilsMessengerEXT}, \hyperpage{7}
-    \subitem {vkDestroyDebugUtilsMessengerEXT}, \hyperpage{7}
+  \item {beginCommandBuffer}
+    \subitem {CommandBufferManager}, \hyperpage{55}
+  \item {blas}
+    \subitem {ASManager}, \hyperpage{36}
+  \item {BlasInput}, \hyperpage{37}
+    \subitem {as\_build\_offset\_info}, \hyperpage{38}
+    \subitem {as\_geometry}, \hyperpage{38}
+  \item {BottomLevelAccelerationStructure}, \hyperpage{39}
+    \subitem {vulkanAS}, \hyperpage{40}
+    \subitem {vulkanBuffer}, \hyperpage{40}
+  \item {buffer}
+    \subitem {VulkanBuffer}, \hyperpage{230}
+  \item {bufferMemory}
+    \subitem {VulkanBuffer}, \hyperpage{230}
+  \item {build\_info}
+    \subitem {BuildAccelerationStructure}, \hyperpage{41}
+  \item {BuildAccelerationStructure}, \hyperpage{40}
+    \subitem {build\_info}, \hyperpage{41}
+    \subitem {range\_info}, \hyperpage{42}
+    \subitem {single\_blas}, \hyperpage{42}
+    \subitem {size\_info}, \hyperpage{42}
+
+  \indexspace
+
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/CompilerWarnings.cmake}, 
+		\hyperpage{351}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/CompileShadersToSPV.cmake}, 
+		\hyperpage{352}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/Doxygen.cmake}, 
+		\hyperpage{353}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/filters/SetExternalLibsFilters.cmake}, 
+		\hyperpage{353}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/filters/SetProjectFilters.cmake}, 
+		\hyperpage{354}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/filters/SetShaderFilters.cmake}, 
+		\hyperpage{356}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/Sanitizers.cmake}, 
+		\hyperpage{357}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/SetSourceGroups.cmake}, 
+		\hyperpage{357}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/cmake/StaticAnalyzers.cmake}, 
+		\hyperpage{358}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/app/App.hpp}, 
+		\hyperpage{358}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/common/FormatHelper.hpp}, 
+		\hyperpage{358, 359}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Globals.hpp}, 
+		\hyperpage{360}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/common/MemoryHelper.hpp}, 
+		\hyperpage{361, 362}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/common/Utilities.hpp}, 
+		\hyperpage{362, 363}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/gui/GUI.hpp}, 
+		\hyperpage{363}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/memory/Allocator.hpp}, 
+		\hyperpage{364}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/ASManager.hpp}, 
+		\hyperpage{365}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/BottomLevelAccelerationStructure.hpp}, 
+		\hyperpage{366}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/accelerationStructures/TopLevelAccelerationStructure.hpp}, 
+		\hyperpage{366}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/CommandBufferManager.hpp}, 
+		\hyperpage{366, 367}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/GlobalUBO.hpp}, 
+		\hyperpage{367, 368}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/GUIRendererSharedVars.hpp}, 
+		\hyperpage{368, 369}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/PathTracing.hpp}, 
+		\hyperpage{369}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/PostStage.hpp}, 
+		\hyperpage{370}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantPathTracing.hpp}, 
+		\hyperpage{371, 372}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantPost.hpp}, 
+		\hyperpage{372}, \hyperpage{374}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantRasterizer.hpp}, 
+		\hyperpage{374, 375}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/pushConstants/PushConstantRayTracing.hpp}, 
+		\hyperpage{376, 377}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/QueueFamilyIndices.hpp}, 
+		\hyperpage{377}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/Rasterizer.hpp}, 
+		\hyperpage{378}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/Raytracing.hpp}, 
+		\hyperpage{378, 379}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/SceneUBO.hpp}, 
+		\hyperpage{379}, \hyperpage{381}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/SwapChainDetails.hpp}, 
+		\hyperpage{381}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/VulkanRenderer.hpp}, 
+		\hyperpage{381, 382}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/VulkanRendererConfig.h}, 
+		\hyperpage{383}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/renderer/VulkanRendererConfig.hpp}, 
+		\hyperpage{384}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Camera.hpp}, 
+		\hyperpage{384}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/GUISceneSharedVars.hpp}, 
+		\hyperpage{385}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Mesh.hpp}, 
+		\hyperpage{385, 386}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Model.hpp}, 
+		\hyperpage{386, 387}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjectDescription.hpp}, 
+		\hyperpage{387}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjLoader.hpp}, 
+		\hyperpage{388}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/ObjMaterial.hpp}, 
+		\hyperpage{388}, \hyperpage{390}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Scene.hpp}, 
+		\hyperpage{390}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/SceneConfig.hpp}, 
+		\hyperpage{391, 392}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Texture.hpp}, 
+		\hyperpage{392}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/scene/Vertex.hpp}, 
+		\hyperpage{393}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/util/File.hpp}, 
+		\hyperpage{394}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/ShaderHelper.hpp}, 
+		\hyperpage{394, 395}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanBuffer.hpp}, 
+		\hyperpage{395}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanBufferManager.hpp}, 
+		\hyperpage{396}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanDebug.hpp}, 
+		\hyperpage{397}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanDevice.hpp}, 
+		\hyperpage{398}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanImage.hpp}, 
+		\hyperpage{399}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanImageView.hpp}, 
+		\hyperpage{399, 400}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanInstance.hpp}, 
+		\hyperpage{400}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/vulkan\_base/VulkanSwapChain.hpp}, 
+		\hyperpage{401}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/include/window/Window.hpp}, 
+		\hyperpage{401, 402}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/brdf/disney.glsl}, 
+		\hyperpage{402}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/brdf/frostbite.glsl}, 
+		\hyperpage{405}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/brdf/pbrBook.glsl}, 
+		\hyperpage{406}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/brdf/phong.glsl}, 
+		\hyperpage{407}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/brdf/unreal4.glsl}, 
+		\hyperpage{408}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/common/Matlib.glsl}, 
+		\hyperpage{409}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/common/microfacet.glsl}, 
+		\hyperpage{410}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/common/raycommon.glsl}, 
+		\hyperpage{410}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/common/ShadingLibrary.glsl}, 
+		\hyperpage{410}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/hostDevice/host\_device\_shared\_vars.hpp}, 
+		\hyperpage{411, 412}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/path\_tracing/path\_tracing.comp}, 
+		\hyperpage{412}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/post/post.frag}, 
+		\hyperpage{415}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/post/post.frag.log.txt}, 
+		\hyperpage{416}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/post/post.vert}, 
+		\hyperpage{416}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/post/post.vert.log.txt}, 
+		\hyperpage{416}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/rasterizer/shader.frag}, 
+		\hyperpage{416}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/rasterizer/shader.frag.log.txt}, 
+		\hyperpage{418}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/rasterizer/shader.vert}, 
+		\hyperpage{418}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/rasterizer/shader.vert.log.txt}, 
+		\hyperpage{419}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/raytrace.rchit}, 
+		\hyperpage{419}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/raytrace.rchit.log.txt}, 
+		\hyperpage{421}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/raytrace.rgen}, 
+		\hyperpage{421}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/raytrace.rgen.log.txt}, 
+		\hyperpage{422}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/raytrace.rmiss}, 
+		\hyperpage{422}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/raytrace.rmiss.log.txt}, 
+		\hyperpage{423}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/shadow.rmiss}, 
+		\hyperpage{423}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Resources/Shaders/raytracing/shadow.rmiss.log.txt}, 
+		\hyperpage{423}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/app/App.cpp}, 
+		\hyperpage{423}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp}, 
+		\hyperpage{424}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/Main.cpp}, 
+		\hyperpage{427, 428}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/memory/Allocator.cpp}, 
+		\hyperpage{428}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures/ASManager.cpp}, 
+		\hyperpage{428}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/CommandBufferManager.cpp}, 
+		\hyperpage{435}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/PathTracing.cpp}, 
+		\hyperpage{436}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/PostStage.cpp}, 
+		\hyperpage{439}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Rasterizer.cpp}, 
+		\hyperpage{445}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/Raytracing.cpp}, 
+		\hyperpage{452}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/VulkanRenderer.cpp}, 
+		\hyperpage{456}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Camera.cpp}, 
+		\hyperpage{470}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Mesh.cpp}, 
+		\hyperpage{472}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Model.cpp}, 
+		\hyperpage{473}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/ObjLoader.cpp}, 
+		\hyperpage{475}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Scene.cpp}, 
+		\hyperpage{477}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/SceneConfig.cpp}, 
+		\hyperpage{478}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Texture.cpp}, 
+		\hyperpage{479}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Vertex.cpp}, 
+		\hyperpage{482}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/util/File.cpp}, 
+		\hyperpage{483}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/ShaderHelper.cpp}, 
+		\hyperpage{484}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBuffer.cpp}, 
+		\hyperpage{485}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanBufferManager.cpp}, 
+		\hyperpage{486}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanDebug.cpp}, 
+		\hyperpage{487}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanDevice.cpp}, 
+		\hyperpage{488}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImage.cpp}, 
+		\hyperpage{493}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanImageView.cpp}, 
+		\hyperpage{496}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanInstance.cpp}, 
+		\hyperpage{496}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/VulkanSwapChain.cpp}, 
+		\hyperpage{498}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/window/Window.cpp}, 
+		\hyperpage{501}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Test/commit/cmake/SetTestFilters.cmake}, 
+		\hyperpage{504}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Test/commit/CMakeLists.txt}, 
+		\hyperpage{504}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Test/commit/commitSuite.cpp}, 
+		\hyperpage{506, 507}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Test/compile/cmake/SetTestFilters.cmake}, 
+		\hyperpage{504}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Test/compile/CMakeLists.txt}, 
+		\hyperpage{505}
+  \item {C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Test/compile/compileSuite.cpp}, 
+		\hyperpage{507, 508}
+  \item {calculate\_viewmatrix}
+    \subitem {Camera}, \hyperpage{45}
+  \item {call\_region}
+    \subitem {Raytracing}, \hyperpage{180}
+  \item {cam\_pos}
+    \subitem {SceneUBO}, \hyperpage{197}
+  \item {Camera}, \hyperpage{43}
+    \subitem {$\sim$Camera}, \hyperpage{45}
+    \subitem {calculate\_viewmatrix}, \hyperpage{45}
+    \subitem {Camera}, \hyperpage{44}
+    \subitem {far\_plane}, \hyperpage{51}
+    \subitem {fov}, \hyperpage{51}
+    \subitem {front}, \hyperpage{51}
+    \subitem {get\_camera\_direction}, \hyperpage{45}
+    \subitem {get\_camera\_position}, \hyperpage{46}
+    \subitem {get\_far\_plane}, \hyperpage{46}
+    \subitem {get\_fov}, \hyperpage{47}
+    \subitem {get\_near\_plane}, \hyperpage{47}
+    \subitem {get\_right\_axis}, \hyperpage{47}
+    \subitem {get\_up\_axis}, \hyperpage{48}
+    \subitem {get\_yaw}, \hyperpage{48}
+    \subitem {key\_control}, \hyperpage{48}
+    \subitem {mouse\_control}, \hyperpage{48}
+    \subitem {movement\_speed}, \hyperpage{51}
+    \subitem {near\_plane}, \hyperpage{52}
+    \subitem {pitch}, \hyperpage{52}
+    \subitem {position}, \hyperpage{52}
+    \subitem {right}, \hyperpage{52}
+    \subitem {set\_camera\_position}, \hyperpage{49}
+    \subitem {set\_far\_plane}, \hyperpage{49}
+    \subitem {set\_fov}, \hyperpage{50}
+    \subitem {set\_near\_plane}, \hyperpage{50}
+    \subitem {turn\_speed}, \hyperpage{52}
+    \subitem {up}, \hyperpage{53}
+    \subitem {update}, \hyperpage{50}
+    \subitem {world\_up}, \hyperpage{53}
+    \subitem {yaw}, \hyperpage{53}
+  \item {check\_device\_extension\_support}
+    \subitem {VulkanDevice}, \hyperpage{240}
+  \item {check\_device\_suitable}
+    \subitem {VulkanDevice}, \hyperpage{241}
+  \item {check\_instance\_extension\_support}
+    \subitem {VulkanInstance}, \hyperpage{273}
+  \item {check\_validation\_layer\_support}
+    \subitem {VulkanInstance}, \hyperpage{274}
+  \item {checkChangedFramebufferSize}
+    \subitem {VulkanRenderer}, \hyperpage{281}
+  \item {choose\_best\_presentation\_mode}
+    \subitem {VulkanSwapChain}, \hyperpage{325}
+  \item {choose\_best\_surface\_format}
+    \subitem {VulkanSwapChain}, \hyperpage{326}
+  \item {choose\_supported\_format}
+    \subitem {FormatHelper.hpp}, \hyperpage{359}
+  \item {choose\_swap\_extent}
+    \subitem {VulkanSwapChain}, \hyperpage{326}
+  \item {cleanUp}
+    \subitem {Allocator}, \hyperpage{19}
+    \subitem {ASManager}, \hyperpage{23}
+    \subitem {GUI}, \hyperpage{63}
+    \subitem {Mesh}, \hyperpage{80}
+    \subitem {Model}, \hyperpage{95}
+    \subitem {PathTracing}, \hyperpage{114}
+    \subitem {PostStage}, \hyperpage{126}
+    \subitem {Rasterizer}, \hyperpage{152}
+    \subitem {Raytracing}, \hyperpage{170}
+    \subitem {Scene}, \hyperpage{186}
+    \subitem {Texture}, \hyperpage{208}
+    \subitem {VulkanBuffer}, \hyperpage{226}
+    \subitem {VulkanDevice}, \hyperpage{242}
+    \subitem {VulkanImage}, \hyperpage{258}
+    \subitem {VulkanImageView}, \hyperpage{267}
+    \subitem {VulkanInstance}, \hyperpage{274}
+    \subitem {VulkanRenderer}, \hyperpage{283}
+    \subitem {VulkanSwapChain}, \hyperpage{327}
+    \subitem {Window}, \hyperpage{338}
+  \item {cleanUpCommandPools}
+    \subitem {VulkanRenderer}, \hyperpage{284}
+  \item {cleanUpSync}
+    \subitem {VulkanRenderer}, \hyperpage{284}
+  \item {cleanUpUBOs}
+    \subitem {VulkanRenderer}, \hyperpage{285}
+  \item {clear\_color}
+    \subitem {PushConstantRaytracing}, \hyperpage{147}
+  \item {clearColor}
+    \subitem {PushConstantPathTracing}, \hyperpage{144}
+  \item {CMakeLists.txt}
+    \subitem {include}, \hyperpage{504, 505}
+    \subitem {set}, \hyperpage{504--506}
+  \item {color}
+    \subitem {Vertex}, \hyperpage{223}
+  \item {command\_buffers}
+    \subitem {VulkanRenderer}, \hyperpage{316}
+  \item {command\_pool}
+    \subitem {ObjLoader}, \hyperpage{108}
+  \item {CommandBufferManager}, \hyperpage{54}
+    \subitem {$\sim$CommandBufferManager}, \hyperpage{54}
+    \subitem {beginCommandBuffer}, \hyperpage{55}
+    \subitem {CommandBufferManager}, \hyperpage{54}
+    \subitem {endAndSubmitCommandBuffer}, \hyperpage{55}
+  \item {commandBufferManager}
+    \subitem {ASManager}, \hyperpage{36}
+    \subitem {GUI}, \hyperpage{71}
+    \subitem {Rasterizer}, \hyperpage{166}
+    \subitem {Texture}, \hyperpage{218}
+    \subitem {VulkanBufferManager}, \hyperpage{237}
+    \subitem {VulkanImage}, \hyperpage{265}
+    \subitem {VulkanRenderer}, \hyperpage{316}
+  \item {commitSuite.cpp}
+    \subitem {TEST}, \hyperpage{506}
+  \item {compileShader}
+    \subitem {ShaderHelper}, \hyperpage{199}
+  \item {compileSuite.cpp}
+    \subitem {TEST}, \hyperpage{508}
+  \item {compute\_command\_pool}
+    \subitem {VulkanRenderer}, \hyperpage{316}
+  \item {compute\_family}
+    \subitem {QueueFamilyIndices}, \hyperpage{149}
+  \item {compute\_queue}
+    \subitem {VulkanDevice}, \hyperpage{253}
+  \item {computeLimits}
+    \subitem {PathTracing}, \hyperpage{121}
+  \item {copyBuffer}
+    \subitem {VulkanBufferManager}, \hyperpage{233}
+  \item {copyImageBuffer}
+    \subitem {VulkanBufferManager}, \hyperpage{235}
+  \item {create}
+    \subitem {VulkanBuffer}, \hyperpage{227}
+    \subitem {VulkanImage}, \hyperpage{259}
+    \subitem {VulkanImageView}, \hyperpage{268}
+  \item {create\_command\_buffers}
+    \subitem {VulkanRenderer}, \hyperpage{285}
+  \item {create\_command\_pool}
+    \subitem {VulkanRenderer}, \hyperpage{286}
+  \item {create\_fonts\_and\_upload}
+    \subitem {GUI}, \hyperpage{64}
+  \item {create\_gui\_context}
+    \subitem {GUI}, \hyperpage{65}
+  \item {create\_logical\_device}
+    \subitem {VulkanDevice}, \hyperpage{242}
+  \item {create\_object\_description\_buffer}
+    \subitem {VulkanRenderer}, \hyperpage{287}
+  \item {create\_post\_descriptor\_layout}
+    \subitem {VulkanRenderer}, \hyperpage{289}
+  \item {create\_surface}
+    \subitem {VulkanRenderer}, \hyperpage{291}
+  \item {create\_uniform\_buffers}
+    \subitem {VulkanRenderer}, \hyperpage{291}
+  \item {createAccelerationStructureInfosBLAS}
+    \subitem {ASManager}, \hyperpage{24}
+  \item {createASForScene}
+    \subitem {ASManager}, \hyperpage{26}
+  \item {createBLAS}
+    \subitem {ASManager}, \hyperpage{27}
+  \item {createBufferAndUploadVectorOnDevice}
+    \subitem {VulkanBufferManager}, \hyperpage{236}
+  \item {created}
+    \subitem {VulkanBuffer}, \hyperpage{230}
+  \item {createDepthbufferImage}
+    \subitem {PostStage}, \hyperpage{127}
+  \item {createDescriptorPoolSharedRenderStages}
+    \subitem {VulkanRenderer}, \hyperpage{292}
+  \item {createFramebuffer}
+    \subitem {PostStage}, \hyperpage{128}
+    \subitem {Rasterizer}, \hyperpage{152}
+  \item {createFromFile}
+    \subitem {Texture}, \hyperpage{208}
+  \item {createGraphicsPipeline}
+    \subitem {PostStage}, \hyperpage{129}
+    \subitem {Rasterizer}, \hyperpage{153}
+    \subitem {Raytracing}, \hyperpage{171}
+  \item {createImage}
+    \subitem {Texture}, \hyperpage{210}
+  \item {createImageView}
+    \subitem {Texture}, \hyperpage{211}
+  \item {createIndexBuffer}
+    \subitem {Mesh}, \hyperpage{81}
+  \item {createMaterialBuffer}
+    \subitem {Mesh}, \hyperpage{82}
+  \item {createMaterialIDBuffer}
+    \subitem {Mesh}, \hyperpage{83}
+  \item {createOffscreenTextureSampler}
+    \subitem {PostStage}, \hyperpage{133}
+  \item {createPCRange}
+    \subitem {Raytracing}, \hyperpage{174}
+  \item {createPipeline}
+    \subitem {PathTracing}, \hyperpage{114}
+  \item {createPushConstantRange}
+    \subitem {PostStage}, \hyperpage{134}
+    \subitem {Rasterizer}, \hyperpage{157}
+  \item {createQueryPool}
+    \subitem {PathTracing}, \hyperpage{116}
+  \item {createRaytracingDescriptorPool}
+    \subitem {VulkanRenderer}, \hyperpage{294}
+  \item {createRaytracingDescriptorSetLayouts}
+    \subitem {VulkanRenderer}, \hyperpage{295}
+  \item {createRaytracingDescriptorSets}
+    \subitem {VulkanRenderer}, \hyperpage{295}
+  \item {createRenderPass}
+    \subitem {Rasterizer}, \hyperpage{157}
+  \item {createRenderpass}
+    \subitem {PostStage}, \hyperpage{134}
+  \item {createSBT}
+    \subitem {Raytracing}, \hyperpage{175}
+  \item {createShaderModule}
+    \subitem {ShaderHelper}, \hyperpage{200}
+  \item {createSharedRenderDescriptorSet}
+    \subitem {VulkanRenderer}, \hyperpage{296}
+  \item {createSharedRenderDescriptorSetLayouts}
+    \subitem {VulkanRenderer}, \hyperpage{298}
+  \item {createSingleBlas}
+    \subitem {ASManager}, \hyperpage{29}
+  \item {createSynchronization}
+    \subitem {VulkanRenderer}, \hyperpage{299}
+  \item {createTextures}
+    \subitem {Rasterizer}, \hyperpage{159}
+  \item {createTLAS}
+    \subitem {ASManager}, \hyperpage{30}
+  \item {createVertexBuffer}
+    \subitem {Mesh}, \hyperpage{84}
+  \item {current\_frame}
+    \subitem {VulkanRenderer}, \hyperpage{316}
+
+  \indexspace
+
+  \item {debug}, \hyperpage{9}
+    \subitem {debugUtilsMessenger}, \hyperpage{12}
+    \subitem {debugUtilsMessengerCallback}, \hyperpage{9}
+    \subitem {freeDebugCallback}, \hyperpage{10}
+    \subitem {messageCallback}, \hyperpage{11}
+    \subitem {setupDebugging}, \hyperpage{11}
+    \subitem {validationLayerCount}, \hyperpage{12}
+    \subitem {validationLayerNames}, \hyperpage{13}
+    \subitem {vkCreateDebugUtilsMessengerEXT}, \hyperpage{13}
+    \subitem {vkDestroyDebugUtilsMessengerEXT}, \hyperpage{13}
   \item {debugUtilsMessenger}
-    \subitem {debug}, \hyperpage{7}
+    \subitem {debug}, \hyperpage{12}
   \item {debugUtilsMessengerCallback}
-    \subitem {debug}, \hyperpage{5}
+    \subitem {debug}, \hyperpage{9}
+  \item {depth\_format}
+    \subitem {PostStage}, \hyperpage{141}
+  \item {depthBufferImage}
+    \subitem {PostStage}, \hyperpage{141}
+    \subitem {Rasterizer}, \hyperpage{166}
+  \item {descriptorPoolSharedRenderStages}
+    \subitem {VulkanRenderer}, \hyperpage{317}
+  \item {device}
+    \subitem {GUI}, \hyperpage{71}
+    \subitem {Mesh}, \hyperpage{88}
+    \subitem {Model}, \hyperpage{99}
+    \subitem {ObjLoader}, \hyperpage{108}
+    \subitem {PathTracing}, \hyperpage{121}
+    \subitem {PostStage}, \hyperpage{141}
+    \subitem {Rasterizer}, \hyperpage{167}
+    \subitem {Raytracing}, \hyperpage{180}
+    \subitem {VulkanBuffer}, \hyperpage{231}
+    \subitem {VulkanImage}, \hyperpage{265}
+    \subitem {VulkanImageView}, \hyperpage{270}
+    \subitem {VulkanRenderer}, \hyperpage{317}
+    \subitem {VulkanSwapChain}, \hyperpage{333}
+  \item {device\_extensions}
+    \subitem {VulkanDevice}, \hyperpage{253}
+  \item {device\_extensions\_for\_raytracing}
+    \subitem {VulkanDevice}, \hyperpage{253}
+  \item {device\_properties}
+    \subitem {VulkanDevice}, \hyperpage{253}
+  \item {diffuse}
+    \subitem {ObjMaterial}, \hyperpage{111}
+  \item {direcional\_light\_radiance}
+    \subitem {GUISceneSharedVars}, \hyperpage{74}
+  \item {directional\_light\_color}
+    \subitem {GUISceneSharedVars}, \hyperpage{74}
+  \item {directional\_light\_direction}
+    \subitem {GUISceneSharedVars}, \hyperpage{75}
+  \item {dissolve}
+    \subitem {ObjMaterial}, \hyperpage{111}
+  \item {drawFrame}
+    \subitem {VulkanRenderer}, \hyperpage{300}
 
   \indexspace
 
+  \item {emission}
+    \subitem {ObjMaterial}, \hyperpage{111}
+  \item {ENABLE\_VALIDATION\_LAYERS}
+    \subitem {Utilities.hpp}, \hyperpage{363}
+  \item {endAndSubmitCommandBuffer}
+    \subitem {CommandBufferManager}, \hyperpage{55}
+
+  \indexspace
+
+  \item {far\_plane}
+    \subitem {Camera}, \hyperpage{51}
+  \item {File}, \hyperpage{57}
+    \subitem {$\sim$File}, \hyperpage{58}
+    \subitem {File}, \hyperpage{57}
+    \subitem {file\_location}, \hyperpage{60}
+    \subitem {getBaseDir}, \hyperpage{58}
+    \subitem {read}, \hyperpage{58}
+    \subitem {readCharSequence}, \hyperpage{59}
+  \item {file\_location}
+    \subitem {File}, \hyperpage{60}
+  \item {find\_memory\_type\_index}
+    \subitem {MemoryHelper.hpp}, \hyperpage{361}
+  \item {finishAllRenderCommands}
+    \subitem {VulkanRenderer}, \hyperpage{303}
+  \item {FormatHelper.hpp}
+    \subitem {choose\_supported\_format}, \hyperpage{359}
+  \item {formats}
+    \subitem {SwapChainDetails}, \hyperpage{205}
+  \item {fov}
+    \subitem {Camera}, \hyperpage{51}
+  \item {framebuffer}
+    \subitem {Rasterizer}, \hyperpage{167}
+  \item {framebuffer\_resized}
+    \subitem {Window}, \hyperpage{347}
+  \item {framebuffer\_size\_callback}
+    \subitem {Window}, \hyperpage{338}
+  \item {framebuffer\_size\_has\_changed}
+    \subitem {Window}, \hyperpage{339}
+  \item {framebuffers}
+    \subitem {PostStage}, \hyperpage{141}
   \item {freeDebugCallback}
-    \subitem {debug}, \hyperpage{6}
+    \subitem {debug}, \hyperpage{10}
+  \item {front}
+    \subitem {Camera}, \hyperpage{51}
 
   \indexspace
 
+  \item {generateMipMaps}
+    \subitem {Texture}, \hyperpage{212}
+  \item {get\_buffer\_height}
+    \subitem {Window}, \hyperpage{339}
+  \item {get\_buffer\_width}
+    \subitem {Window}, \hyperpage{339}
+  \item {get\_camera\_direction}
+    \subitem {Camera}, \hyperpage{45}
+  \item {get\_camera\_position}
+    \subitem {Camera}, \hyperpage{46}
+  \item {get\_far\_plane}
+    \subitem {Camera}, \hyperpage{46}
+  \item {get\_fov}
+    \subitem {Camera}, \hyperpage{47}
+  \item {get\_height}
+    \subitem {Window}, \hyperpage{340}
+  \item {get\_keys}
+    \subitem {Window}, \hyperpage{340}
+  \item {get\_model\_list}
+    \subitem {Scene}, \hyperpage{186}
+  \item {get\_near\_plane}
+    \subitem {Camera}, \hyperpage{47}
+  \item {get\_physical\_device}
+    \subitem {VulkanDevice}, \hyperpage{245}
+  \item {get\_right\_axis}
+    \subitem {Camera}, \hyperpage{47}
+  \item {get\_should\_close}
+    \subitem {Window}, \hyperpage{340}
+  \item {get\_up\_axis}
+    \subitem {Camera}, \hyperpage{48}
+  \item {get\_width}
+    \subitem {Window}, \hyperpage{340}
+  \item {get\_window}
+    \subitem {Window}, \hyperpage{341}
+  \item {get\_x\_change}
+    \subitem {Window}, \hyperpage{341}
+  \item {get\_y\_change}
+    \subitem {Window}, \hyperpage{341}
+  \item {get\_yaw}
+    \subitem {Camera}, \hyperpage{48}
+  \item {getBaseDir}
+    \subitem {File}, \hyperpage{58}
+  \item {getBuffer}
+    \subitem {VulkanBuffer}, \hyperpage{229}
+  \item {getBufferMemory}
+    \subitem {VulkanBuffer}, \hyperpage{229}
+  \item {getComputeQueue}
+    \subitem {VulkanDevice}, \hyperpage{246}
+  \item {getCustomInstanceIndex}
+    \subitem {Model}, \hyperpage{95}
+  \item {getGraphicsQueue}
+    \subitem {VulkanDevice}, \hyperpage{246}
+  \item {getGuiRendererSharedVars}
+    \subitem {GUI}, \hyperpage{67}
+  \item {getGuiSceneSharedVars}
+    \subitem {GUI}, \hyperpage{68}
+    \subitem {Scene}, \hyperpage{187}
+  \item {getImage}
+    \subitem {Texture}, \hyperpage{214}
+    \subitem {VulkanImage}, \hyperpage{260}
+  \item {getImageView}
+    \subitem {Texture}, \hyperpage{214}
+    \subitem {VulkanImageView}, \hyperpage{269}
+  \item {getIndexBuffer}
+    \subitem {Mesh}, \hyperpage{85}
+    \subitem {Scene}, \hyperpage{187}
+  \item {getIndexCount}
+    \subitem {Mesh}, \hyperpage{86}
+    \subitem {Scene}, \hyperpage{188}
+  \item {getLogicalDevice}
+    \subitem {VulkanDevice}, \hyperpage{246}
+  \item {getMaterialIDBuffer}
+    \subitem {Mesh}, \hyperpage{86}
+  \item {getMesh}
+    \subitem {Model}, \hyperpage{96}
+  \item {getMeshCount}
+    \subitem {Model}, \hyperpage{96}
+    \subitem {Scene}, \hyperpage{188}
+  \item {getMipLevel}
+    \subitem {Texture}, \hyperpage{215}
+  \item {getModel}
+    \subitem {Mesh}, \hyperpage{86}
+    \subitem {Model}, \hyperpage{96}
+  \item {getModelCount}
+    \subitem {Scene}, \hyperpage{189}
   \item {getModelFile}
-    \subitem {sceneConfig}, \hyperpage{8}
+    \subitem {sceneConfig}, \hyperpage{13}
   \item {getModelMatrix}
-    \subitem {sceneConfig}, \hyperpage{8}
+    \subitem {Scene}, \hyperpage{189}
+    \subitem {sceneConfig}, \hyperpage{14}
+  \item {getNumberMeshes}
+    \subitem {Scene}, \hyperpage{190}
+  \item {getNumberObjectDescriptions}
+    \subitem {Scene}, \hyperpage{190}
+  \item {getNumberSwapChainImages}
+    \subitem {VulkanSwapChain}, \hyperpage{328}
+  \item {getObjectDescription}
+    \subitem {Mesh}, \hyperpage{87}
+    \subitem {Model}, \hyperpage{96}
+  \item {getObjectDescriptions}
+    \subitem {Scene}, \hyperpage{190}
+  \item {getOffscreenSampler}
+    \subitem {PostStage}, \hyperpage{136}
+  \item {getOffscreenTexture}
+    \subitem {Rasterizer}, \hyperpage{161}
+  \item {getPhysicalDevice}
+    \subitem {VulkanDevice}, \hyperpage{248}
+  \item {getPhysicalDeviceProperties}
+    \subitem {VulkanDevice}, \hyperpage{249}
+  \item {getPresentationQueue}
+    \subitem {VulkanDevice}, \hyperpage{249}
+  \item {getPrimitiveCount}
+    \subitem {Model}, \hyperpage{97}
+  \item {getQueueFamilies}
+    \subitem {VulkanDevice}, \hyperpage{249, 250}
+  \item {getRenderPass}
+    \subitem {PostStage}, \hyperpage{137}
+  \item {getShaderSpvDir}
+    \subitem {ShaderHelper}, \hyperpage{201}
+  \item {getSwapChain}
+    \subitem {VulkanSwapChain}, \hyperpage{329}
+  \item {getSwapchainDetails}
+    \subitem {VulkanDevice}, \hyperpage{251, 252}
+  \item {getSwapChainExtent}
+    \subitem {VulkanSwapChain}, \hyperpage{329}
+  \item {getSwapChainFormat}
+    \subitem {VulkanSwapChain}, \hyperpage{330}
+  \item {getSwapChainImage}
+    \subitem {VulkanSwapChain}, \hyperpage{330}
+  \item {getTextureCount}
+    \subitem {Model}, \hyperpage{97}
+    \subitem {Scene}, \hyperpage{191}
+  \item {getTextureList}
+    \subitem {Model}, \hyperpage{98}
+  \item {getTextures}
+    \subitem {Model}, \hyperpage{98}
+    \subitem {Scene}, \hyperpage{191}
+  \item {getTextureSampler}
+    \subitem {Scene}, \hyperpage{192}
+  \item {getTextureSamplers}
+    \subitem {Model}, \hyperpage{98}
+  \item {getTLAS}
+    \subitem {ASManager}, \hyperpage{34}
+  \item {getVertexBuffer}
+    \subitem {Mesh}, \hyperpage{87}
+    \subitem {Scene}, \hyperpage{192}
+  \item {getVertexCount}
+    \subitem {Mesh}, \hyperpage{88}
   \item {getVertexInputAttributeDesc}
-    \subitem {vertex}, \hyperpage{9}
-  \item {GLFW\_INCLUDE\_NONE}
-    \subitem {App.cpp}, \hyperpage{11}
-  \item {GLFW\_INCLUDE\_VULKAN}
-    \subitem {App.cpp}, \hyperpage{11}
-  \item {GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE}
-    \subitem {App.cpp}, \hyperpage{12}
-  \item {GLM\_FORCE\_RADIANS}
-    \subitem {App.cpp}, \hyperpage{12}
+    \subitem {vertex}, \hyperpage{15}
+  \item {getVulkanImage}
+    \subitem {Texture}, \hyperpage{215}
+  \item {getVulkanImageView}
+    \subitem {Texture}, \hyperpage{215}
+  \item {getVulkanInstance}
+    \subitem {VulkanInstance}, \hyperpage{275}
+  \item {Globals.hpp}
+    \subitem {MAX\_FRAME\_DRAWS}, \hyperpage{360}
+    \subitem {MAX\_OBJECTS}, \hyperpage{360}
+  \item {GlobalUBO}, \hyperpage{60}
+    \subitem {projection}, \hyperpage{61}
+    \subitem {view}, \hyperpage{61}
+  \item {globalUBO}
+    \subitem {VulkanRenderer}, \hyperpage{317}
+  \item {GlobalUBO.hpp}
+    \subitem {mat4}, \hyperpage{367}
+    \subitem {uint}, \hyperpage{367}
+    \subitem {vec2}, \hyperpage{367}
+    \subitem {vec3}, \hyperpage{368}
+    \subitem {vec4}, \hyperpage{368}
+  \item {globalUBOBuffer}
+    \subitem {VulkanRenderer}, \hyperpage{317}
+  \item {graphics\_command\_pool}
+    \subitem {VulkanRenderer}, \hyperpage{318}
+  \item {graphics\_family}
+    \subitem {QueueFamilyIndices}, \hyperpage{149}
+  \item {graphics\_pipeline}
+    \subitem {PostStage}, \hyperpage{141}
+    \subitem {Rasterizer}, \hyperpage{167}
+  \item {graphics\_queue}
+    \subitem {VulkanDevice}, \hyperpage{254}
+  \item {graphicsPipeline}
+    \subitem {Raytracing}, \hyperpage{180}
+  \item {GUI}, \hyperpage{62}
+    \subitem {$\sim$GUI}, \hyperpage{63}
+    \subitem {cleanUp}, \hyperpage{63}
+    \subitem {commandBufferManager}, \hyperpage{71}
+    \subitem {create\_fonts\_and\_upload}, \hyperpage{64}
+    \subitem {create\_gui\_context}, \hyperpage{65}
+    \subitem {device}, \hyperpage{71}
+    \subitem {getGuiRendererSharedVars}, \hyperpage{67}
+    \subitem {getGuiSceneSharedVars}, \hyperpage{68}
+    \subitem {GUI}, \hyperpage{63}
+    \subitem {gui\_descriptor\_pool}, \hyperpage{71}
+    \subitem {guiRendererSharedVars}, \hyperpage{71}
+    \subitem {guiSceneSharedVars}, \hyperpage{71}
+    \subitem {initializeVulkanContext}, \hyperpage{68}
+    \subitem {render}, \hyperpage{69}
+    \subitem {window}, \hyperpage{72}
+  \item {gui}
+    \subitem {VulkanRenderer}, \hyperpage{318}
+  \item {gui\_descriptor\_pool}
+    \subitem {GUI}, \hyperpage{71}
+  \item {GUIRendererSharedVars}, \hyperpage{72}
+    \subitem {pathTracing}, \hyperpage{73}
+    \subitem {raytracing}, \hyperpage{73}
+    \subitem {shader\_hot\_reload\_triggered}, \hyperpage{73}
+  \item {guiRendererSharedVars}
+    \subitem {GUI}, \hyperpage{71}
+  \item {GUISceneSharedVars}, \hyperpage{74}
+    \subitem {direcional\_light\_radiance}, \hyperpage{74}
+    \subitem {directional\_light\_color}, \hyperpage{74}
+    \subitem {directional\_light\_direction}, \hyperpage{75}
+  \item {guiSceneSharedVars}
+    \subitem {GUI}, \hyperpage{71}
+    \subitem {Scene}, \hyperpage{195}
+
+  \indexspace
+
+  \item {height}
+    \subitem {PushConstantPathTracing}, \hyperpage{144}
+  \item {hit\_region}
+    \subitem {Raytracing}, \hyperpage{181}
+  \item {hitShaderBindingTableBuffer}
+    \subitem {Raytracing}, \hyperpage{181}
+  \item {host\_device\_shared\_vars.hpp}
+    \subitem {MAX\_TEXTURE\_COUNT}, \hyperpage{411}
+
+  \indexspace
+
+  \item {illum}
+    \subitem {ObjMaterial}, \hyperpage{111}
+  \item {image}
+    \subitem {VulkanImage}, \hyperpage{265}
+  \item {image\_available}
+    \subitem {VulkanRenderer}, \hyperpage{318}
+  \item {imageMemory}
+    \subitem {VulkanImage}, \hyperpage{265}
+  \item {images\_in\_flight\_fences}
+    \subitem {VulkanRenderer}, \hyperpage{318}
+  \item {imageView}
+    \subitem {VulkanImageView}, \hyperpage{270}
+  \item {in\_flight\_fences}
+    \subitem {VulkanRenderer}, \hyperpage{318}
+  \item {include}
+    \subitem {CMakeLists.txt}, \hyperpage{504, 505}
+  \item {index\_address}
+    \subitem {ObjectDescription}, \hyperpage{101}
+  \item {index\_count}
+    \subitem {Mesh}, \hyperpage{88}
+  \item {indexBuffer}
+    \subitem {Mesh}, \hyperpage{89}
+  \item {indices}
+    \subitem {ObjLoader}, \hyperpage{108}
+  \item {init}
+    \subitem {PathTracing}, \hyperpage{117}
+    \subitem {PostStage}, \hyperpage{137}
+    \subitem {Rasterizer}, \hyperpage{162}
+    \subitem {Raytracing}, \hyperpage{176}
+  \item {init\_callbacks}
+    \subitem {Window}, \hyperpage{342}
+  \item {initialize}
+    \subitem {Window}, \hyperpage{342}
+  \item {initializeVulkanContext}
+    \subitem {GUI}, \hyperpage{68}
+  \item {initVulkanContext}
+    \subitem {VulkanSwapChain}, \hyperpage{331}
+  \item {instance}
+    \subitem {VulkanDevice}, \hyperpage{254}
+    \subitem {VulkanInstance}, \hyperpage{276}
+    \subitem {VulkanRenderer}, \hyperpage{319}
+  \item {ior}
+    \subitem {ObjMaterial}, \hyperpage{111}
+  \item {is\_valid}
+    \subitem {QueueFamilyIndices}, \hyperpage{148}
+
+  \indexspace
+
+  \item {key\_callback}
+    \subitem {Window}, \hyperpage{343}
+  \item {key\_control}
+    \subitem {Camera}, \hyperpage{48}
+  \item {keys}
+    \subitem {Window}, \hyperpage{347}
+
+  \indexspace
+
+  \item {last\_x}
+    \subitem {Window}, \hyperpage{347}
+  \item {last\_y}
+    \subitem {Window}, \hyperpage{347}
+  \item {light\_dir}
+    \subitem {SceneUBO}, \hyperpage{197}
+  \item {loadModel}
+    \subitem {ObjLoader}, \hyperpage{103}
+    \subitem {Scene}, \hyperpage{193}
+  \item {loadTextureData}
+    \subitem {Texture}, \hyperpage{216}
+  \item {loadTexturesAndMaterials}
+    \subitem {ObjLoader}, \hyperpage{105}
+  \item {loadVertices}
+    \subitem {ObjLoader}, \hyperpage{106}
+  \item {logical\_device}
+    \subitem {VulkanDevice}, \hyperpage{254}
 
   \indexspace
 
   \item {main}
-    \subitem {Main.cpp}, \hyperpage{16}
+    \subitem {Main.cpp}, \hyperpage{427}
   \item {Main.cpp}
-    \subitem {main}, \hyperpage{16}
+    \subitem {main}, \hyperpage{427}
+  \item {main\_window}
+    \subitem {Window}, \hyperpage{348}
+  \item {mat4}
+    \subitem {GlobalUBO.hpp}, \hyperpage{367}
+    \subitem {ObjMaterial.hpp}, \hyperpage{389}
+    \subitem {PushConstantPathTracing.hpp}, \hyperpage{371}
+    \subitem {PushConstantPost.hpp}, \hyperpage{373}
+    \subitem {PushConstantRasterizer.hpp}, \hyperpage{374}
+    \subitem {PushConstantRayTracing.hpp}, \hyperpage{376}
+    \subitem {SceneUBO.hpp}, \hyperpage{380}
+  \item {material\_address}
+    \subitem {ObjectDescription}, \hyperpage{101}
+  \item {material\_index\_address}
+    \subitem {ObjectDescription}, \hyperpage{101}
+  \item {materialIdsBuffer}
+    \subitem {Mesh}, \hyperpage{89}
+  \item {materialIndex}
+    \subitem {ObjLoader}, \hyperpage{108}
+  \item {materials}
+    \subitem {ObjLoader}, \hyperpage{109}
+  \item {materialsBuffer}
+    \subitem {Mesh}, \hyperpage{89}
+  \item {MAX\_FRAME\_DRAWS}
+    \subitem {Globals.hpp}, \hyperpage{360}
+  \item {MAX\_OBJECTS}
+    \subitem {Globals.hpp}, \hyperpage{360}
+  \item {MAX\_TEXTURE\_COUNT}
+    \subitem {host\_device\_shared\_vars.hpp}, \hyperpage{411}
+  \item {maxComputeWorkGroupCount}
+    \subitem {PathTracing}, \hyperpage{121}
+  \item {maxComputeWorkGroupInvocations}
+    \subitem {PathTracing}, \hyperpage{122}
+  \item {maxComputeWorkGroupSize}
+    \subitem {PathTracing}, \hyperpage{122}
+  \item {MemoryHelper.hpp}
+    \subitem {align\_up}, \hyperpage{361}
+    \subitem {find\_memory\_type\_index}, \hyperpage{361}
+  \item {Mesh}, \hyperpage{76}
+    \subitem {$\sim$Mesh}, \hyperpage{80}
+    \subitem {cleanUp}, \hyperpage{80}
+    \subitem {createIndexBuffer}, \hyperpage{81}
+    \subitem {createMaterialBuffer}, \hyperpage{82}
+    \subitem {createMaterialIDBuffer}, \hyperpage{83}
+    \subitem {createVertexBuffer}, \hyperpage{84}
+    \subitem {device}, \hyperpage{88}
+    \subitem {getIndexBuffer}, \hyperpage{85}
+    \subitem {getIndexCount}, \hyperpage{86}
+    \subitem {getMaterialIDBuffer}, \hyperpage{86}
+    \subitem {getModel}, \hyperpage{86}
+    \subitem {getObjectDescription}, \hyperpage{87}
+    \subitem {getVertexBuffer}, \hyperpage{87}
+    \subitem {getVertexCount}, \hyperpage{88}
+    \subitem {index\_count}, \hyperpage{88}
+    \subitem {indexBuffer}, \hyperpage{89}
+    \subitem {materialIdsBuffer}, \hyperpage{89}
+    \subitem {materialsBuffer}, \hyperpage{89}
+    \subitem {Mesh}, \hyperpage{78}, \hyperpage{80}
+    \subitem {model}, \hyperpage{89}
+    \subitem {object\_description}, \hyperpage{89}
+    \subitem {objectDescriptionBuffer}, \hyperpage{90}
+    \subitem {setModel}, \hyperpage{88}
+    \subitem {vertex\_count}, \hyperpage{90}
+    \subitem {vertexBuffer}, \hyperpage{90}
+    \subitem {vulkanBufferManager}, \hyperpage{90}
+  \item {mesh}
+    \subitem {Model}, \hyperpage{99}
+  \item {mesh\_model\_index}
+    \subitem {Model}, \hyperpage{99}
+  \item {messageCallback}
+    \subitem {debug}, \hyperpage{11}
+  \item {mip\_levels}
+    \subitem {Texture}, \hyperpage{218}
+  \item {miss\_region}
+    \subitem {Raytracing}, \hyperpage{181}
+  \item {missShaderBindingTableBuffer}
+    \subitem {Raytracing}, \hyperpage{181}
+  \item {Model}, \hyperpage{91}
+    \subitem {$\sim$Model}, \hyperpage{93}
+    \subitem {add\_new\_mesh}, \hyperpage{93}
+    \subitem {addSampler}, \hyperpage{93}
+    \subitem {addTexture}, \hyperpage{94}
+    \subitem {cleanUp}, \hyperpage{95}
+    \subitem {device}, \hyperpage{99}
+    \subitem {getCustomInstanceIndex}, \hyperpage{95}
+    \subitem {getMesh}, \hyperpage{96}
+    \subitem {getMeshCount}, \hyperpage{96}
+    \subitem {getModel}, \hyperpage{96}
+    \subitem {getObjectDescription}, \hyperpage{96}
+    \subitem {getPrimitiveCount}, \hyperpage{97}
+    \subitem {getTextureCount}, \hyperpage{97}
+    \subitem {getTextureList}, \hyperpage{98}
+    \subitem {getTextures}, \hyperpage{98}
+    \subitem {getTextureSamplers}, \hyperpage{98}
+    \subitem {mesh}, \hyperpage{99}
+    \subitem {mesh\_model\_index}, \hyperpage{99}
+    \subitem {Model}, \hyperpage{92}
+    \subitem {model}, \hyperpage{99}
+    \subitem {modelTextures}, \hyperpage{99}
+    \subitem {modelTextureSamplers}, \hyperpage{99}
+    \subitem {set\_model}, \hyperpage{98}
+    \subitem {texture\_list}, \hyperpage{100}
+  \item {model}
+    \subitem {Mesh}, \hyperpage{89}
+    \subitem {Model}, \hyperpage{99}
+    \subitem {PushConstantRasterizer}, \hyperpage{146}
+  \item {model\_list}
+    \subitem {Scene}, \hyperpage{196}
+  \item {modelTextures}
+    \subitem {Model}, \hyperpage{99}
+  \item {modelTextureSamplers}
+    \subitem {Model}, \hyperpage{99}
+  \item {mouse\_button\_callback}
+    \subitem {Window}, \hyperpage{344}
+  \item {mouse\_callback}
+    \subitem {Window}, \hyperpage{345}
+  \item {mouse\_control}
+    \subitem {Camera}, \hyperpage{48}
+  \item {mouse\_first\_moved}
+    \subitem {Window}, \hyperpage{348}
+  \item {movement\_speed}
+    \subitem {Camera}, \hyperpage{51}
 
   \indexspace
 
-  \item {ObjLoader.cpp}
-    \subitem {TINYOBJLOADER\_IMPLEMENTATION}, \hyperpage{65}
+  \item {near\_plane}
+    \subitem {Camera}, \hyperpage{52}
+  \item {normal}
+    \subitem {Vertex}, \hyperpage{223}
+
+  \indexspace
+
+  \item {object\_description}
+    \subitem {Mesh}, \hyperpage{89}
+  \item {object\_descriptions}
+    \subitem {Scene}, \hyperpage{196}
+  \item {ObjectDescription}, \hyperpage{100}
+    \subitem {index\_address}, \hyperpage{101}
+    \subitem {material\_address}, \hyperpage{101}
+    \subitem {material\_index\_address}, \hyperpage{101}
+    \subitem {vertex\_address}, \hyperpage{101}
+  \item {objectDescriptionBuffer}
+    \subitem {Mesh}, \hyperpage{90}
+    \subitem {VulkanRenderer}, \hyperpage{319}
+  \item {objectToVkGeometryKHR}
+    \subitem {ASManager}, \hyperpage{34}
+  \item {ObjLoader}, \hyperpage{102}
+    \subitem {command\_pool}, \hyperpage{108}
+    \subitem {device}, \hyperpage{108}
+    \subitem {indices}, \hyperpage{108}
+    \subitem {loadModel}, \hyperpage{103}
+    \subitem {loadTexturesAndMaterials}, \hyperpage{105}
+    \subitem {loadVertices}, \hyperpage{106}
+    \subitem {materialIndex}, \hyperpage{108}
+    \subitem {materials}, \hyperpage{109}
+    \subitem {ObjLoader}, \hyperpage{103}
+    \subitem {textures}, \hyperpage{109}
+    \subitem {transfer\_queue}, \hyperpage{109}
+    \subitem {vertices}, \hyperpage{109}
+  \item {ObjMaterial}, \hyperpage{110}
+    \subitem {ambient}, \hyperpage{110}
+    \subitem {diffuse}, \hyperpage{111}
+    \subitem {dissolve}, \hyperpage{111}
+    \subitem {emission}, \hyperpage{111}
+    \subitem {illum}, \hyperpage{111}
+    \subitem {ior}, \hyperpage{111}
+    \subitem {shininess}, \hyperpage{111}
+    \subitem {specular}, \hyperpage{112}
+    \subitem {textureID}, \hyperpage{112}
+    \subitem {transmittance}, \hyperpage{112}
+  \item {ObjMaterial.hpp}
+    \subitem {mat4}, \hyperpage{389}
+    \subitem {uint}, \hyperpage{389}
+    \subitem {vec2}, \hyperpage{389}
+    \subitem {vec3}, \hyperpage{389}
+    \subitem {vec4}, \hyperpage{389}
+  \item {offscreenTextures}
+    \subitem {Rasterizer}, \hyperpage{167}
+  \item {offscreenTextureSampler}
+    \subitem {PostStage}, \hyperpage{142}
   \item {onErrorCallback}
-    \subitem {Window.cpp}, \hyperpage{93}
+    \subitem {Window.cpp}, \hyperpage{501}
+  \item {operator()}
+    \subitem {std::hash$<$ Vertex $>$}, \hyperpage{76}
+  \item {operator==}
+    \subitem {Vertex}, \hyperpage{222}
 
   \indexspace
 
-  \item {sceneConfig}, \hyperpage{8}
-    \subitem {getModelFile}, \hyperpage{8}
-    \subitem {getModelMatrix}, \hyperpage{8}
+  \item {PathTracing}, \hyperpage{112}
+    \subitem {$\sim$PathTracing}, \hyperpage{114}
+    \subitem {cleanUp}, \hyperpage{114}
+    \subitem {computeLimits}, \hyperpage{121}
+    \subitem {createPipeline}, \hyperpage{114}
+    \subitem {createQueryPool}, \hyperpage{116}
+    \subitem {device}, \hyperpage{121}
+    \subitem {init}, \hyperpage{117}
+    \subitem {maxComputeWorkGroupCount}, \hyperpage{121}
+    \subitem {maxComputeWorkGroupInvocations}, \hyperpage{122}
+    \subitem {maxComputeWorkGroupSize}, \hyperpage{122}
+    \subitem {PathTracing}, \hyperpage{113}
+    \subitem {pathTracingTiming}, \hyperpage{122}
+    \subitem {pc\_range}, \hyperpage{122}
+    \subitem {pipeline}, \hyperpage{122}
+    \subitem {pipeline\_layout}, \hyperpage{123}
+    \subitem {push\_constant}, \hyperpage{123}
+    \subitem {query\_count}, \hyperpage{123}
+    \subitem {queryPool}, \hyperpage{123}
+    \subitem {queryResults}, \hyperpage{123}
+    \subitem {recordCommands}, \hyperpage{118}
+    \subitem {shaderHotReload}, \hyperpage{120}
+    \subitem {specializationData}, \hyperpage{124}
+    \subitem {timeStampPeriod}, \hyperpage{124}
+  \item {pathTracing}
+    \subitem {GUIRendererSharedVars}, \hyperpage{73}
+    \subitem {VulkanRenderer}, \hyperpage{319}
+  \item {PathTracing::SpecializationData}, \hyperpage{203}
+    \subitem {specWorkGroupSizeX}, \hyperpage{203}
+    \subitem {specWorkGroupSizeY}, \hyperpage{203}
+    \subitem {specWorkGroupSizeZ}, \hyperpage{204}
+  \item {pathTracingTiming}
+    \subitem {PathTracing}, \hyperpage{122}
+  \item {pc}
+    \subitem {Raytracing}, \hyperpage{181}
+  \item {pc\_range}
+    \subitem {PathTracing}, \hyperpage{122}
+  \item {pc\_ranges}
+    \subitem {Raytracing}, \hyperpage{182}
+  \item {physical\_device}
+    \subitem {VulkanDevice}, \hyperpage{254}
+  \item {pipeline}
+    \subitem {PathTracing}, \hyperpage{122}
+  \item {pipeline\_layout}
+    \subitem {PathTracing}, \hyperpage{123}
+    \subitem {PostStage}, \hyperpage{142}
+    \subitem {Rasterizer}, \hyperpage{167}
+    \subitem {Raytracing}, \hyperpage{182}
+  \item {pipelineStageForLayout}
+    \subitem {VulkanImage}, \hyperpage{261}
+  \item {pitch}
+    \subitem {Camera}, \hyperpage{52}
+  \item {pos}
+    \subitem {Vertex}, \hyperpage{223}
+  \item {position}
+    \subitem {Camera}, \hyperpage{52}
+  \item {post\_descriptor\_pool}
+    \subitem {VulkanRenderer}, \hyperpage{319}
+  \item {post\_descriptor\_set}
+    \subitem {VulkanRenderer}, \hyperpage{319}
+  \item {post\_descriptor\_set\_layout}
+    \subitem {VulkanRenderer}, \hyperpage{320}
+  \item {PostStage}, \hyperpage{124}
+    \subitem {$\sim$PostStage}, \hyperpage{126}
+    \subitem {cleanUp}, \hyperpage{126}
+    \subitem {createDepthbufferImage}, \hyperpage{127}
+    \subitem {createFramebuffer}, \hyperpage{128}
+    \subitem {createGraphicsPipeline}, \hyperpage{129}
+    \subitem {createOffscreenTextureSampler}, \hyperpage{133}
+    \subitem {createPushConstantRange}, \hyperpage{134}
+    \subitem {createRenderpass}, \hyperpage{134}
+    \subitem {depth\_format}, \hyperpage{141}
+    \subitem {depthBufferImage}, \hyperpage{141}
+    \subitem {device}, \hyperpage{141}
+    \subitem {framebuffers}, \hyperpage{141}
+    \subitem {getOffscreenSampler}, \hyperpage{136}
+    \subitem {getRenderPass}, \hyperpage{137}
+    \subitem {graphics\_pipeline}, \hyperpage{141}
+    \subitem {init}, \hyperpage{137}
+    \subitem {offscreenTextureSampler}, \hyperpage{142}
+    \subitem {pipeline\_layout}, \hyperpage{142}
+    \subitem {PostStage}, \hyperpage{126}
+    \subitem {push\_constant\_range}, \hyperpage{142}
+    \subitem {recordCommands}, \hyperpage{138}
+    \subitem {render\_pass}, \hyperpage{142}
+    \subitem {shaderHotReload}, \hyperpage{140}
+    \subitem {vulkanSwapChain}, \hyperpage{142}
+  \item {postStage}
+    \subitem {VulkanRenderer}, \hyperpage{320}
+  \item {presentation\_family}
+    \subitem {QueueFamilyIndices}, \hyperpage{149}
+  \item {presentation\_mode}
+    \subitem {SwapChainDetails}, \hyperpage{205}
+  \item {presentation\_queue}
+    \subitem {VulkanDevice}, \hyperpage{254}
+  \item {projection}
+    \subitem {GlobalUBO}, \hyperpage{61}
+  \item {push\_constant}
+    \subitem {PathTracing}, \hyperpage{123}
+  \item {push\_constant\_range}
+    \subitem {PostStage}, \hyperpage{142}
+    \subitem {Rasterizer}, \hyperpage{168}
+  \item {pushConstant}
+    \subitem {Rasterizer}, \hyperpage{168}
+  \item {PushConstantPathTracing}, \hyperpage{143}
+    \subitem {clearColor}, \hyperpage{144}
+    \subitem {height}, \hyperpage{144}
+    \subitem {width}, \hyperpage{144}
+  \item {PushConstantPathTracing.hpp}
+    \subitem {mat4}, \hyperpage{371}
+    \subitem {uint}, \hyperpage{371}
+    \subitem {vec2}, \hyperpage{371}
+    \subitem {vec3}, \hyperpage{371}
+    \subitem {vec4}, \hyperpage{372}
+  \item {PushConstantPost}, \hyperpage{145}
+    \subitem {aspect\_ratio}, \hyperpage{145}
+  \item {PushConstantPost.hpp}
+    \subitem {mat4}, \hyperpage{373}
+    \subitem {uint}, \hyperpage{373}
+    \subitem {vec2}, \hyperpage{373}
+    \subitem {vec3}, \hyperpage{373}
+    \subitem {vec4}, \hyperpage{373}
+  \item {PushConstantRasterizer}, \hyperpage{146}
+    \subitem {model}, \hyperpage{146}
+  \item {PushConstantRasterizer.hpp}
+    \subitem {mat4}, \hyperpage{374}
+    \subitem {uint}, \hyperpage{374}
+    \subitem {vec2}, \hyperpage{375}
+    \subitem {vec3}, \hyperpage{375}
+    \subitem {vec4}, \hyperpage{375}
+  \item {PushConstantRaytracing}, \hyperpage{147}
+    \subitem {clear\_color}, \hyperpage{147}
+  \item {PushConstantRayTracing.hpp}
+    \subitem {mat4}, \hyperpage{376}
+    \subitem {uint}, \hyperpage{376}
+    \subitem {vec2}, \hyperpage{376}
+    \subitem {vec3}, \hyperpage{376}
+    \subitem {vec4}, \hyperpage{377}
+
+  \indexspace
+
+  \item {query\_count}
+    \subitem {PathTracing}, \hyperpage{123}
+  \item {queryPool}
+    \subitem {PathTracing}, \hyperpage{123}
+  \item {queryResults}
+    \subitem {PathTracing}, \hyperpage{123}
+  \item {QueueFamilyIndices}, \hyperpage{148}
+    \subitem {compute\_family}, \hyperpage{149}
+    \subitem {graphics\_family}, \hyperpage{149}
+    \subitem {is\_valid}, \hyperpage{148}
+    \subitem {presentation\_family}, \hyperpage{149}
+
+  \indexspace
+
+  \item {range\_info}
+    \subitem {BuildAccelerationStructure}, \hyperpage{42}
+  \item {Rasterizer}, \hyperpage{150}
+    \subitem {$\sim$Rasterizer}, \hyperpage{151}
+    \subitem {cleanUp}, \hyperpage{152}
+    \subitem {commandBufferManager}, \hyperpage{166}
+    \subitem {createFramebuffer}, \hyperpage{152}
+    \subitem {createGraphicsPipeline}, \hyperpage{153}
+    \subitem {createPushConstantRange}, \hyperpage{157}
+    \subitem {createRenderPass}, \hyperpage{157}
+    \subitem {createTextures}, \hyperpage{159}
+    \subitem {depthBufferImage}, \hyperpage{166}
+    \subitem {device}, \hyperpage{167}
+    \subitem {framebuffer}, \hyperpage{167}
+    \subitem {getOffscreenTexture}, \hyperpage{161}
+    \subitem {graphics\_pipeline}, \hyperpage{167}
+    \subitem {init}, \hyperpage{162}
+    \subitem {offscreenTextures}, \hyperpage{167}
+    \subitem {pipeline\_layout}, \hyperpage{167}
+    \subitem {push\_constant\_range}, \hyperpage{168}
+    \subitem {pushConstant}, \hyperpage{168}
+    \subitem {Rasterizer}, \hyperpage{151}
+    \subitem {recordCommands}, \hyperpage{163}
+    \subitem {render\_pass}, \hyperpage{168}
+    \subitem {setPushConstant}, \hyperpage{165}
+    \subitem {shaderHotReload}, \hyperpage{165}
+    \subitem {vulkanSwapChain}, \hyperpage{168}
+  \item {rasterizer}
+    \subitem {VulkanRenderer}, \hyperpage{320}
+  \item {raygenShaderBindingTableBuffer}
+    \subitem {Raytracing}, \hyperpage{182}
+  \item {Raytracing}, \hyperpage{169}
+    \subitem {$\sim$Raytracing}, \hyperpage{170}
+    \subitem {call\_region}, \hyperpage{180}
+    \subitem {cleanUp}, \hyperpage{170}
+    \subitem {createGraphicsPipeline}, \hyperpage{171}
+    \subitem {createPCRange}, \hyperpage{174}
+    \subitem {createSBT}, \hyperpage{175}
+    \subitem {device}, \hyperpage{180}
+    \subitem {graphicsPipeline}, \hyperpage{180}
+    \subitem {hit\_region}, \hyperpage{181}
+    \subitem {hitShaderBindingTableBuffer}, \hyperpage{181}
+    \subitem {init}, \hyperpage{176}
+    \subitem {miss\_region}, \hyperpage{181}
+    \subitem {missShaderBindingTableBuffer}, \hyperpage{181}
+    \subitem {pc}, \hyperpage{181}
+    \subitem {pc\_ranges}, \hyperpage{182}
+    \subitem {pipeline\_layout}, \hyperpage{182}
+    \subitem {raygenShaderBindingTableBuffer}, \hyperpage{182}
+    \subitem {Raytracing}, \hyperpage{170}
+    \subitem {raytracing\_properties}, \hyperpage{182}
+    \subitem {recordCommands}, \hyperpage{177}
+    \subitem {rgen\_region}, \hyperpage{182}
+    \subitem {shader\_groups}, \hyperpage{183}
+    \subitem {shaderBindingTableBuffer}, \hyperpage{183}
+    \subitem {shaderHotReload}, \hyperpage{179}
+    \subitem {vulkanSwapChain}, \hyperpage{183}
+  \item {raytracing}
+    \subitem {GUIRendererSharedVars}, \hyperpage{73}
+  \item {raytracing\_properties}
+    \subitem {Raytracing}, \hyperpage{182}
+  \item {raytracingDescriptorPool}
+    \subitem {VulkanRenderer}, \hyperpage{320}
+  \item {raytracingDescriptorSet}
+    \subitem {VulkanRenderer}, \hyperpage{320}
+  \item {raytracingDescriptorSetLayout}
+    \subitem {VulkanRenderer}, \hyperpage{321}
+  \item {raytracingStage}
+    \subitem {VulkanRenderer}, \hyperpage{321}
+  \item {read}
+    \subitem {File}, \hyperpage{58}
+  \item {readCharSequence}
+    \subitem {File}, \hyperpage{59}
+  \item {record\_commands}
+    \subitem {VulkanRenderer}, \hyperpage{304}
+  \item {recordCommands}
+    \subitem {PathTracing}, \hyperpage{118}
+    \subitem {PostStage}, \hyperpage{138}
+    \subitem {Rasterizer}, \hyperpage{163}
+    \subitem {Raytracing}, \hyperpage{177}
+  \item {render}
+    \subitem {GUI}, \hyperpage{69}
+  \item {render\_finished}
+    \subitem {VulkanRenderer}, \hyperpage{321}
+  \item {render\_pass}
+    \subitem {PostStage}, \hyperpage{142}
+    \subitem {Rasterizer}, \hyperpage{168}
+  \item {reset\_framebuffer\_has\_changed}
+    \subitem {Window}, \hyperpage{346}
+  \item {rgen\_region}
+    \subitem {Raytracing}, \hyperpage{182}
+  \item {right}
+    \subitem {Camera}, \hyperpage{52}
+  \item {run}
+    \subitem {App}, \hyperpage{21}
+
+  \indexspace
+
+  \item {Scene}, \hyperpage{184}
+    \subitem {$\sim$Scene}, \hyperpage{185}
+    \subitem {add\_model}, \hyperpage{186}
+    \subitem {add\_object\_description}, \hyperpage{186}
+    \subitem {cleanUp}, \hyperpage{186}
+    \subitem {get\_model\_list}, \hyperpage{186}
+    \subitem {getGuiSceneSharedVars}, \hyperpage{187}
+    \subitem {getIndexBuffer}, \hyperpage{187}
+    \subitem {getIndexCount}, \hyperpage{188}
+    \subitem {getMeshCount}, \hyperpage{188}
+    \subitem {getModelCount}, \hyperpage{189}
+    \subitem {getModelMatrix}, \hyperpage{189}
+    \subitem {getNumberMeshes}, \hyperpage{190}
+    \subitem {getNumberObjectDescriptions}, \hyperpage{190}
+    \subitem {getObjectDescriptions}, \hyperpage{190}
+    \subitem {getTextureCount}, \hyperpage{191}
+    \subitem {getTextures}, \hyperpage{191}
+    \subitem {getTextureSampler}, \hyperpage{192}
+    \subitem {getVertexBuffer}, \hyperpage{192}
+    \subitem {guiSceneSharedVars}, \hyperpage{195}
+    \subitem {loadModel}, \hyperpage{193}
+    \subitem {model\_list}, \hyperpage{196}
+    \subitem {object\_descriptions}, \hyperpage{196}
+    \subitem {Scene}, \hyperpage{185}
+    \subitem {update\_model\_matrix}, \hyperpage{194}
+    \subitem {update\_user\_input}, \hyperpage{195}
+  \item {scene}
+    \subitem {VulkanRenderer}, \hyperpage{321}
+  \item {sceneConfig}, \hyperpage{13}
+    \subitem {getModelFile}, \hyperpage{13}
+    \subitem {getModelMatrix}, \hyperpage{14}
+  \item {SceneUBO}, \hyperpage{196}
+    \subitem {cam\_pos}, \hyperpage{197}
+    \subitem {light\_dir}, \hyperpage{197}
+    \subitem {view\_dir}, \hyperpage{198}
+  \item {sceneUBO}
+    \subitem {VulkanRenderer}, \hyperpage{321}
+  \item {SceneUBO.hpp}
+    \subitem {mat4}, \hyperpage{380}
+    \subitem {uint}, \hyperpage{380}
+    \subitem {vec2}, \hyperpage{380}
+    \subitem {vec3}, \hyperpage{380}
+    \subitem {vec4}, \hyperpage{380}
+  \item {sceneUBOBuffer}
+    \subitem {VulkanRenderer}, \hyperpage{322}
+  \item {set}
+    \subitem {CMakeLists.txt}, \hyperpage{504--506}
+  \item {set\_buffer\_size}
+    \subitem {Window}, \hyperpage{346}
+  \item {set\_camera\_position}
+    \subitem {Camera}, \hyperpage{49}
+  \item {set\_far\_plane}
+    \subitem {Camera}, \hyperpage{49}
+  \item {set\_fov}
+    \subitem {Camera}, \hyperpage{50}
+  \item {set\_model}
+    \subitem {Model}, \hyperpage{98}
+  \item {set\_near\_plane}
+    \subitem {Camera}, \hyperpage{50}
+  \item {setImage}
+    \subitem {Texture}, \hyperpage{216}
+    \subitem {VulkanImage}, \hyperpage{261}
+  \item {setImageView}
+    \subitem {Texture}, \hyperpage{217}
+    \subitem {VulkanImageView}, \hyperpage{269}
+  \item {setModel}
+    \subitem {Mesh}, \hyperpage{88}
+  \item {setPushConstant}
+    \subitem {Rasterizer}, \hyperpage{165}
   \item {setupDebugging}
-    \subitem {debug}, \hyperpage{6}
-  \item {STB\_IMAGE\_IMPLEMENTATION}
-    \subitem {VulkanRenderer.cpp}, \hyperpage{46}
+    \subitem {debug}, \hyperpage{11}
+  \item {shader\_groups}
+    \subitem {Raytracing}, \hyperpage{183}
+  \item {shader\_hot\_reload\_triggered}
+    \subitem {GUIRendererSharedVars}, \hyperpage{73}
+  \item {shaderBindingTableBuffer}
+    \subitem {Raytracing}, \hyperpage{183}
+  \item {ShaderHelper}, \hyperpage{198}
+    \subitem {$\sim$ShaderHelper}, \hyperpage{199}
+    \subitem {compileShader}, \hyperpage{199}
+    \subitem {createShaderModule}, \hyperpage{200}
+    \subitem {getShaderSpvDir}, \hyperpage{201}
+    \subitem {ShaderHelper}, \hyperpage{199}
+    \subitem {target}, \hyperpage{202}
+  \item {shaderHotReload}
+    \subitem {PathTracing}, \hyperpage{120}
+    \subitem {PostStage}, \hyperpage{140}
+    \subitem {Rasterizer}, \hyperpage{165}
+    \subitem {Raytracing}, \hyperpage{179}
+    \subitem {VulkanRenderer}, \hyperpage{305}
+  \item {sharedRenderDescriptorSet}
+    \subitem {VulkanRenderer}, \hyperpage{322}
+  \item {sharedRenderDescriptorSetLayout}
+    \subitem {VulkanRenderer}, \hyperpage{322}
+  \item {shininess}
+    \subitem {ObjMaterial}, \hyperpage{111}
+  \item {single\_blas}
+    \subitem {BuildAccelerationStructure}, \hyperpage{42}
+  \item {size\_info}
+    \subitem {BuildAccelerationStructure}, \hyperpage{42}
+  \item {specializationData}
+    \subitem {PathTracing}, \hyperpage{124}
+  \item {specular}
+    \subitem {ObjMaterial}, \hyperpage{112}
+  \item {specWorkGroupSizeX}
+    \subitem {PathTracing::SpecializationData}, \hyperpage{203}
+  \item {specWorkGroupSizeY}
+    \subitem {PathTracing::SpecializationData}, \hyperpage{203}
+  \item {specWorkGroupSizeZ}
+    \subitem {PathTracing::SpecializationData}, \hyperpage{204}
+  \item {std}, \hyperpage{15}
+  \item {std::hash$<$ Vertex $>$}, \hyperpage{75}
+    \subitem {operator()}, \hyperpage{76}
+  \item {surface}
+    \subitem {VulkanDevice}, \hyperpage{255}
+    \subitem {VulkanRenderer}, \hyperpage{322}
+  \item {surface\_capabilities}
+    \subitem {SwapChainDetails}, \hyperpage{205}
+  \item {swap\_chain\_extent}
+    \subitem {VulkanSwapChain}, \hyperpage{333}
+  \item {swap\_chain\_image\_format}
+    \subitem {VulkanSwapChain}, \hyperpage{334}
+  \item {swap\_chain\_images}
+    \subitem {VulkanSwapChain}, \hyperpage{334}
+  \item {swapchain}
+    \subitem {VulkanSwapChain}, \hyperpage{334}
+  \item {SwapChainDetails}, \hyperpage{204}
+    \subitem {formats}, \hyperpage{205}
+    \subitem {presentation\_mode}, \hyperpage{205}
+    \subitem {surface\_capabilities}, \hyperpage{205}
 
   \indexspace
 
-  \item {TINYOBJLOADER\_IMPLEMENTATION}
-    \subitem {ObjLoader.cpp}, \hyperpage{65}
+  \item {target}
+    \subitem {ShaderHelper}, \hyperpage{202}
+  \item {TEST}
+    \subitem {commitSuite.cpp}, \hyperpage{506}
+    \subitem {compileSuite.cpp}, \hyperpage{508}
+  \item {Texture}, \hyperpage{206}
+    \subitem {$\sim$Texture}, \hyperpage{207}
+    \subitem {cleanUp}, \hyperpage{208}
+    \subitem {commandBufferManager}, \hyperpage{218}
+    \subitem {createFromFile}, \hyperpage{208}
+    \subitem {createImage}, \hyperpage{210}
+    \subitem {createImageView}, \hyperpage{211}
+    \subitem {generateMipMaps}, \hyperpage{212}
+    \subitem {getImage}, \hyperpage{214}
+    \subitem {getImageView}, \hyperpage{214}
+    \subitem {getMipLevel}, \hyperpage{215}
+    \subitem {getVulkanImage}, \hyperpage{215}
+    \subitem {getVulkanImageView}, \hyperpage{215}
+    \subitem {loadTextureData}, \hyperpage{216}
+    \subitem {mip\_levels}, \hyperpage{218}
+    \subitem {setImage}, \hyperpage{216}
+    \subitem {setImageView}, \hyperpage{217}
+    \subitem {Texture}, \hyperpage{207}
+    \subitem {vulkanBufferManager}, \hyperpage{218}
+    \subitem {vulkanImage}, \hyperpage{218}
+    \subitem {vulkanImageView}, \hyperpage{218}
+  \item {texture\_coords}
+    \subitem {Vertex}, \hyperpage{224}
+  \item {texture\_list}
+    \subitem {Model}, \hyperpage{100}
+  \item {textureID}
+    \subitem {ObjMaterial}, \hyperpage{112}
+  \item {textures}
+    \subitem {ObjLoader}, \hyperpage{109}
+  \item {timeStampPeriod}
+    \subitem {PathTracing}, \hyperpage{124}
+  \item {tlas}
+    \subitem {ASManager}, \hyperpage{36}
+  \item {TopLevelAccelerationStructure}, \hyperpage{219}
+    \subitem {vulkanAS}, \hyperpage{220}
+    \subitem {vulkanBuffer}, \hyperpage{220}
+  \item {transfer\_queue}
+    \subitem {ObjLoader}, \hyperpage{109}
+  \item {transitionImageLayout}
+    \subitem {VulkanImage}, \hyperpage{262, 263}
+  \item {transmittance}
+    \subitem {ObjMaterial}, \hyperpage{112}
+  \item {turn\_speed}
+    \subitem {Camera}, \hyperpage{52}
 
   \indexspace
 
-  \item {vertex}, \hyperpage{9}
-    \subitem {getVertexInputAttributeDesc}, \hyperpage{9}
+  \item {uint}
+    \subitem {GlobalUBO.hpp}, \hyperpage{367}
+    \subitem {ObjMaterial.hpp}, \hyperpage{389}
+    \subitem {PushConstantPathTracing.hpp}, \hyperpage{371}
+    \subitem {PushConstantPost.hpp}, \hyperpage{373}
+    \subitem {PushConstantRasterizer.hpp}, \hyperpage{374}
+    \subitem {PushConstantRayTracing.hpp}, \hyperpage{376}
+    \subitem {SceneUBO.hpp}, \hyperpage{380}
+  \item {up}
+    \subitem {Camera}, \hyperpage{53}
+  \item {update}
+    \subitem {Camera}, \hyperpage{50}
+  \item {update\_model\_matrix}
+    \subitem {Scene}, \hyperpage{194}
+  \item {update\_raytracing\_descriptor\_set}
+    \subitem {VulkanRenderer}, \hyperpage{307}
+  \item {update\_uniform\_buffers}
+    \subitem {VulkanRenderer}, \hyperpage{308}
+  \item {update\_user\_input}
+    \subitem {Scene}, \hyperpage{195}
+  \item {update\_viewport}
+    \subitem {Window}, \hyperpage{346}
+  \item {updatePostDescriptorSets}
+    \subitem {VulkanRenderer}, \hyperpage{309}
+  \item {updateRaytracingDescriptorSets}
+    \subitem {VulkanRenderer}, \hyperpage{310}
+  \item {updateStateDueToUserInput}
+    \subitem {VulkanRenderer}, \hyperpage{312}
+  \item {updateTexturesInSharedRenderDescriptorSet}
+    \subitem {VulkanRenderer}, \hyperpage{312}
+  \item {updateUniforms}
+    \subitem {VulkanRenderer}, \hyperpage{314}
+  \item {Utilities.hpp}
+    \subitem {ENABLE\_VALIDATION\_LAYERS}, \hyperpage{363}
+
+  \indexspace
+
+  \item {validationLayerCount}
+    \subitem {debug}, \hyperpage{12}
+  \item {validationLayerNames}
+    \subitem {debug}, \hyperpage{13}
+  \item {validationLayers}
+    \subitem {VulkanInstance}, \hyperpage{276}
+  \item {vec2}
+    \subitem {GlobalUBO.hpp}, \hyperpage{367}
+    \subitem {ObjMaterial.hpp}, \hyperpage{389}
+    \subitem {PushConstantPathTracing.hpp}, \hyperpage{371}
+    \subitem {PushConstantPost.hpp}, \hyperpage{373}
+    \subitem {PushConstantRasterizer.hpp}, \hyperpage{375}
+    \subitem {PushConstantRayTracing.hpp}, \hyperpage{376}
+    \subitem {SceneUBO.hpp}, \hyperpage{380}
+  \item {vec3}
+    \subitem {GlobalUBO.hpp}, \hyperpage{368}
+    \subitem {ObjMaterial.hpp}, \hyperpage{389}
+    \subitem {PushConstantPathTracing.hpp}, \hyperpage{371}
+    \subitem {PushConstantPost.hpp}, \hyperpage{373}
+    \subitem {PushConstantRasterizer.hpp}, \hyperpage{375}
+    \subitem {PushConstantRayTracing.hpp}, \hyperpage{376}
+    \subitem {SceneUBO.hpp}, \hyperpage{380}
+  \item {vec4}
+    \subitem {GlobalUBO.hpp}, \hyperpage{368}
+    \subitem {ObjMaterial.hpp}, \hyperpage{389}
+    \subitem {PushConstantPathTracing.hpp}, \hyperpage{372}
+    \subitem {PushConstantPost.hpp}, \hyperpage{373}
+    \subitem {PushConstantRasterizer.hpp}, \hyperpage{375}
+    \subitem {PushConstantRayTracing.hpp}, \hyperpage{377}
+    \subitem {SceneUBO.hpp}, \hyperpage{380}
+  \item {Vertex}, \hyperpage{221}
+    \subitem {color}, \hyperpage{223}
+    \subitem {normal}, \hyperpage{223}
+    \subitem {operator==}, \hyperpage{222}
+    \subitem {pos}, \hyperpage{223}
+    \subitem {texture\_coords}, \hyperpage{224}
+    \subitem {Vertex}, \hyperpage{222}
+  \item {vertex}, \hyperpage{15}
+    \subitem {getVertexInputAttributeDesc}, \hyperpage{15}
+  \item {vertex\_address}
+    \subitem {ObjectDescription}, \hyperpage{101}
+  \item {vertex\_count}
+    \subitem {Mesh}, \hyperpage{90}
+  \item {vertexBuffer}
+    \subitem {Mesh}, \hyperpage{90}
+  \item {vertices}
+    \subitem {ObjLoader}, \hyperpage{109}
+  \item {view}
+    \subitem {GlobalUBO}, \hyperpage{61}
+  \item {view\_dir}
+    \subitem {SceneUBO}, \hyperpage{198}
   \item {vkCreateDebugUtilsMessengerEXT}
-    \subitem {debug}, \hyperpage{7}
+    \subitem {debug}, \hyperpage{13}
   \item {vkDestroyDebugUtilsMessengerEXT}
-    \subitem {debug}, \hyperpage{7}
-  \item {VMA\_IMPLEMENTATION}
-    \subitem {VulkanRenderer.cpp}, \hyperpage{46}
-  \item {VulkanRenderer.cpp}
-    \subitem {STB\_IMAGE\_IMPLEMENTATION}, \hyperpage{46}
-    \subitem {VMA\_IMPLEMENTATION}, \hyperpage{46}
+    \subitem {debug}, \hyperpage{13}
+  \item {vmaAllocator}
+    \subitem {Allocator}, \hyperpage{19}
+  \item {vulkanAS}
+    \subitem {BottomLevelAccelerationStructure}, \hyperpage{40}
+    \subitem {TopLevelAccelerationStructure}, \hyperpage{220}
+  \item {VulkanBuffer}, \hyperpage{224}
+    \subitem {$\sim$VulkanBuffer}, \hyperpage{226}
+    \subitem {buffer}, \hyperpage{230}
+    \subitem {bufferMemory}, \hyperpage{230}
+    \subitem {cleanUp}, \hyperpage{226}
+    \subitem {create}, \hyperpage{227}
+    \subitem {created}, \hyperpage{230}
+    \subitem {device}, \hyperpage{231}
+    \subitem {getBuffer}, \hyperpage{229}
+    \subitem {getBufferMemory}, \hyperpage{229}
+    \subitem {VulkanBuffer}, \hyperpage{226}
+  \item {vulkanBuffer}
+    \subitem {BottomLevelAccelerationStructure}, \hyperpage{40}
+    \subitem {TopLevelAccelerationStructure}, \hyperpage{220}
+  \item {VulkanBufferManager}, \hyperpage{231}
+    \subitem {$\sim$VulkanBufferManager}, \hyperpage{233}
+    \subitem {commandBufferManager}, \hyperpage{237}
+    \subitem {copyBuffer}, \hyperpage{233}
+    \subitem {copyImageBuffer}, \hyperpage{235}
+    \subitem {createBufferAndUploadVectorOnDevice}, \hyperpage{236}
+    \subitem {VulkanBufferManager}, \hyperpage{233}
+  \item {vulkanBufferManager}
+    \subitem {ASManager}, \hyperpage{37}
+    \subitem {Mesh}, \hyperpage{90}
+    \subitem {Texture}, \hyperpage{218}
+    \subitem {VulkanRenderer}, \hyperpage{322}
+  \item {VulkanDevice}, \hyperpage{238}
+    \subitem {$\sim$VulkanDevice}, \hyperpage{240}
+    \subitem {check\_device\_extension\_support}, \hyperpage{240}
+    \subitem {check\_device\_suitable}, \hyperpage{241}
+    \subitem {cleanUp}, \hyperpage{242}
+    \subitem {compute\_queue}, \hyperpage{253}
+    \subitem {create\_logical\_device}, \hyperpage{242}
+    \subitem {device\_extensions}, \hyperpage{253}
+    \subitem {device\_extensions\_for\_raytracing}, \hyperpage{253}
+    \subitem {device\_properties}, \hyperpage{253}
+    \subitem {get\_physical\_device}, \hyperpage{245}
+    \subitem {getComputeQueue}, \hyperpage{246}
+    \subitem {getGraphicsQueue}, \hyperpage{246}
+    \subitem {getLogicalDevice}, \hyperpage{246}
+    \subitem {getPhysicalDevice}, \hyperpage{248}
+    \subitem {getPhysicalDeviceProperties}, \hyperpage{249}
+    \subitem {getPresentationQueue}, \hyperpage{249}
+    \subitem {getQueueFamilies}, \hyperpage{249, 250}
+    \subitem {getSwapchainDetails}, \hyperpage{251, 252}
+    \subitem {graphics\_queue}, \hyperpage{254}
+    \subitem {instance}, \hyperpage{254}
+    \subitem {logical\_device}, \hyperpage{254}
+    \subitem {physical\_device}, \hyperpage{254}
+    \subitem {presentation\_queue}, \hyperpage{254}
+    \subitem {surface}, \hyperpage{255}
+    \subitem {VulkanDevice}, \hyperpage{239}
+  \item {vulkanDevice}
+    \subitem {ASManager}, \hyperpage{37}
+  \item {VulkanImage}, \hyperpage{255}
+    \subitem {$\sim$VulkanImage}, \hyperpage{257}
+    \subitem {accessFlagsForImageLayout}, \hyperpage{257}
+    \subitem {cleanUp}, \hyperpage{258}
+    \subitem {commandBufferManager}, \hyperpage{265}
+    \subitem {create}, \hyperpage{259}
+    \subitem {device}, \hyperpage{265}
+    \subitem {getImage}, \hyperpage{260}
+    \subitem {image}, \hyperpage{265}
+    \subitem {imageMemory}, \hyperpage{265}
+    \subitem {pipelineStageForLayout}, \hyperpage{261}
+    \subitem {setImage}, \hyperpage{261}
+    \subitem {transitionImageLayout}, \hyperpage{262, 263}
+    \subitem {VulkanImage}, \hyperpage{257}
+  \item {vulkanImage}
+    \subitem {Texture}, \hyperpage{218}
+  \item {VulkanImageView}, \hyperpage{266}
+    \subitem {$\sim$VulkanImageView}, \hyperpage{267}
+    \subitem {cleanUp}, \hyperpage{267}
+    \subitem {create}, \hyperpage{268}
+    \subitem {device}, \hyperpage{270}
+    \subitem {getImageView}, \hyperpage{269}
+    \subitem {imageView}, \hyperpage{270}
+    \subitem {setImageView}, \hyperpage{269}
+    \subitem {VulkanImageView}, \hyperpage{267}
+  \item {vulkanImageView}
+    \subitem {Texture}, \hyperpage{218}
+  \item {VulkanInstance}, \hyperpage{270}
+    \subitem {$\sim$VulkanInstance}, \hyperpage{273}
+    \subitem {check\_instance\_extension\_support}, \hyperpage{273}
+    \subitem {check\_validation\_layer\_support}, \hyperpage{274}
+    \subitem {cleanUp}, \hyperpage{274}
+    \subitem {getVulkanInstance}, \hyperpage{275}
+    \subitem {instance}, \hyperpage{276}
+    \subitem {validationLayers}, \hyperpage{276}
+    \subitem {VulkanInstance}, \hyperpage{272}
+  \item {VulkanRenderer}, \hyperpage{276}
+    \subitem {$\sim$VulkanRenderer}, \hyperpage{280}
+    \subitem {allocator}, \hyperpage{315}
+    \subitem {asManager}, \hyperpage{316}
+    \subitem {checkChangedFramebufferSize}, \hyperpage{281}
+    \subitem {cleanUp}, \hyperpage{283}
+    \subitem {cleanUpCommandPools}, \hyperpage{284}
+    \subitem {cleanUpSync}, \hyperpage{284}
+    \subitem {cleanUpUBOs}, \hyperpage{285}
+    \subitem {command\_buffers}, \hyperpage{316}
+    \subitem {commandBufferManager}, \hyperpage{316}
+    \subitem {compute\_command\_pool}, \hyperpage{316}
+    \subitem {create\_command\_buffers}, \hyperpage{285}
+    \subitem {create\_command\_pool}, \hyperpage{286}
+    \subitem {create\_object\_description\_buffer}, \hyperpage{287}
+    \subitem {create\_post\_descriptor\_layout}, \hyperpage{289}
+    \subitem {create\_surface}, \hyperpage{291}
+    \subitem {create\_uniform\_buffers}, \hyperpage{291}
+    \subitem {createDescriptorPoolSharedRenderStages}, \hyperpage{292}
+    \subitem {createRaytracingDescriptorPool}, \hyperpage{294}
+    \subitem {createRaytracingDescriptorSetLayouts}, \hyperpage{295}
+    \subitem {createRaytracingDescriptorSets}, \hyperpage{295}
+    \subitem {createSharedRenderDescriptorSet}, \hyperpage{296}
+    \subitem {createSharedRenderDescriptorSetLayouts}, \hyperpage{298}
+    \subitem {createSynchronization}, \hyperpage{299}
+    \subitem {current\_frame}, \hyperpage{316}
+    \subitem {descriptorPoolSharedRenderStages}, \hyperpage{317}
+    \subitem {device}, \hyperpage{317}
+    \subitem {drawFrame}, \hyperpage{300}
+    \subitem {finishAllRenderCommands}, \hyperpage{303}
+    \subitem {globalUBO}, \hyperpage{317}
+    \subitem {globalUBOBuffer}, \hyperpage{317}
+    \subitem {graphics\_command\_pool}, \hyperpage{318}
+    \subitem {gui}, \hyperpage{318}
+    \subitem {image\_available}, \hyperpage{318}
+    \subitem {images\_in\_flight\_fences}, \hyperpage{318}
+    \subitem {in\_flight\_fences}, \hyperpage{318}
+    \subitem {instance}, \hyperpage{319}
+    \subitem {objectDescriptionBuffer}, \hyperpage{319}
+    \subitem {pathTracing}, \hyperpage{319}
+    \subitem {post\_descriptor\_pool}, \hyperpage{319}
+    \subitem {post\_descriptor\_set}, \hyperpage{319}
+    \subitem {post\_descriptor\_set\_layout}, \hyperpage{320}
+    \subitem {postStage}, \hyperpage{320}
+    \subitem {rasterizer}, \hyperpage{320}
+    \subitem {raytracingDescriptorPool}, \hyperpage{320}
+    \subitem {raytracingDescriptorSet}, \hyperpage{320}
+    \subitem {raytracingDescriptorSetLayout}, \hyperpage{321}
+    \subitem {raytracingStage}, \hyperpage{321}
+    \subitem {record\_commands}, \hyperpage{304}
+    \subitem {render\_finished}, \hyperpage{321}
+    \subitem {scene}, \hyperpage{321}
+    \subitem {sceneUBO}, \hyperpage{321}
+    \subitem {sceneUBOBuffer}, \hyperpage{322}
+    \subitem {shaderHotReload}, \hyperpage{305}
+    \subitem {sharedRenderDescriptorSet}, \hyperpage{322}
+    \subitem {sharedRenderDescriptorSetLayout}, \hyperpage{322}
+    \subitem {surface}, \hyperpage{322}
+    \subitem {update\_raytracing\_descriptor\_set}, \hyperpage{307}
+    \subitem {update\_uniform\_buffers}, \hyperpage{308}
+    \subitem {updatePostDescriptorSets}, \hyperpage{309}
+    \subitem {updateRaytracingDescriptorSets}, \hyperpage{310}
+    \subitem {updateStateDueToUserInput}, \hyperpage{312}
+    \subitem {updateTexturesInSharedRenderDescriptorSet}, 
+		\hyperpage{312}
+    \subitem {updateUniforms}, \hyperpage{314}
+    \subitem {vulkanBufferManager}, \hyperpage{322}
+    \subitem {VulkanRenderer}, \hyperpage{278}
+    \subitem {vulkanSwapChain}, \hyperpage{323}
+    \subitem {window}, \hyperpage{323}
+  \item {VulkanSwapChain}, \hyperpage{324}
+    \subitem {$\sim$VulkanSwapChain}, \hyperpage{325}
+    \subitem {choose\_best\_presentation\_mode}, \hyperpage{325}
+    \subitem {choose\_best\_surface\_format}, \hyperpage{326}
+    \subitem {choose\_swap\_extent}, \hyperpage{326}
+    \subitem {cleanUp}, \hyperpage{327}
+    \subitem {device}, \hyperpage{333}
+    \subitem {getNumberSwapChainImages}, \hyperpage{328}
+    \subitem {getSwapChain}, \hyperpage{329}
+    \subitem {getSwapChainExtent}, \hyperpage{329}
+    \subitem {getSwapChainFormat}, \hyperpage{330}
+    \subitem {getSwapChainImage}, \hyperpage{330}
+    \subitem {initVulkanContext}, \hyperpage{331}
+    \subitem {swap\_chain\_extent}, \hyperpage{333}
+    \subitem {swap\_chain\_image\_format}, \hyperpage{334}
+    \subitem {swap\_chain\_images}, \hyperpage{334}
+    \subitem {swapchain}, \hyperpage{334}
+    \subitem {VulkanSwapChain}, \hyperpage{325}
+    \subitem {window}, \hyperpage{334}
+  \item {vulkanSwapChain}
+    \subitem {PostStage}, \hyperpage{142}
+    \subitem {Rasterizer}, \hyperpage{168}
+    \subitem {Raytracing}, \hyperpage{183}
+    \subitem {VulkanRenderer}, \hyperpage{323}
 
   \indexspace
 
+  \item {width}
+    \subitem {PushConstantPathTracing}, \hyperpage{144}
+  \item {Window}, \hyperpage{335}
+    \subitem {$\sim$Window}, \hyperpage{338}
+    \subitem {cleanUp}, \hyperpage{338}
+    \subitem {framebuffer\_resized}, \hyperpage{347}
+    \subitem {framebuffer\_size\_callback}, \hyperpage{338}
+    \subitem {framebuffer\_size\_has\_changed}, \hyperpage{339}
+    \subitem {get\_buffer\_height}, \hyperpage{339}
+    \subitem {get\_buffer\_width}, \hyperpage{339}
+    \subitem {get\_height}, \hyperpage{340}
+    \subitem {get\_keys}, \hyperpage{340}
+    \subitem {get\_should\_close}, \hyperpage{340}
+    \subitem {get\_width}, \hyperpage{340}
+    \subitem {get\_window}, \hyperpage{341}
+    \subitem {get\_x\_change}, \hyperpage{341}
+    \subitem {get\_y\_change}, \hyperpage{341}
+    \subitem {init\_callbacks}, \hyperpage{342}
+    \subitem {initialize}, \hyperpage{342}
+    \subitem {key\_callback}, \hyperpage{343}
+    \subitem {keys}, \hyperpage{347}
+    \subitem {last\_x}, \hyperpage{347}
+    \subitem {last\_y}, \hyperpage{347}
+    \subitem {main\_window}, \hyperpage{348}
+    \subitem {mouse\_button\_callback}, \hyperpage{344}
+    \subitem {mouse\_callback}, \hyperpage{345}
+    \subitem {mouse\_first\_moved}, \hyperpage{348}
+    \subitem {reset\_framebuffer\_has\_changed}, \hyperpage{346}
+    \subitem {set\_buffer\_size}, \hyperpage{346}
+    \subitem {update\_viewport}, \hyperpage{346}
+    \subitem {Window}, \hyperpage{336, 337}
+    \subitem {window\_buffer\_height}, \hyperpage{348}
+    \subitem {window\_buffer\_width}, \hyperpage{348}
+    \subitem {window\_height}, \hyperpage{348}
+    \subitem {window\_width}, \hyperpage{349}
+    \subitem {x\_change}, \hyperpage{349}
+    \subitem {y\_change}, \hyperpage{349}
+  \item {window}
+    \subitem {GUI}, \hyperpage{72}
+    \subitem {VulkanRenderer}, \hyperpage{323}
+    \subitem {VulkanSwapChain}, \hyperpage{334}
   \item {Window.cpp}
-    \subitem {onErrorCallback}, \hyperpage{93}
+    \subitem {onErrorCallback}, \hyperpage{501}
+  \item {window\_buffer\_height}
+    \subitem {Window}, \hyperpage{348}
+  \item {window\_buffer\_width}
+    \subitem {Window}, \hyperpage{348}
+  \item {window\_height}
+    \subitem {Window}, \hyperpage{348}
+  \item {window\_width}
+    \subitem {Window}, \hyperpage{349}
+  \item {world\_up}
+    \subitem {Camera}, \hyperpage{53}
+
+  \indexspace
+
+  \item {x\_change}
+    \subitem {Window}, \hyperpage{349}
+
+  \indexspace
+
+  \item {y\_change}
+    \subitem {Window}, \hyperpage{349}
+  \item {yaw}
+    \subitem {Camera}, \hyperpage{53}
 
 \end{theindex}

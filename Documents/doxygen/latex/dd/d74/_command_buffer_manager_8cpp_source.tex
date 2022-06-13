@@ -2,11 +2,11 @@
 \label{_command_buffer_manager_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/CommandBufferManager.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/CommandBufferManager.cpp}}
 \mbox{\hyperlink{_command_buffer_manager_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}CommandBufferManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_command_buffer_manager_8hpp}{CommandBufferManager.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00003}00003 CommandBufferManager::CommandBufferManager() \{\}}
+\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00003}\mbox{\hyperlink{class_command_buffer_manager_af32c84e50b245aa13cb4b853e16cdf33}{00003}} \mbox{\hyperlink{class_command_buffer_manager_af32c84e50b245aa13cb4b853e16cdf33}{CommandBufferManager::CommandBufferManager}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00004}00004 }
-\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00005}00005 VkCommandBuffer CommandBufferManager::beginCommandBuffer(}
+\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00005}\mbox{\hyperlink{class_command_buffer_manager_a341dd6bf1dab7f3eb0d378a6187dee6d}{00005}} VkCommandBuffer \mbox{\hyperlink{class_command_buffer_manager_a341dd6bf1dab7f3eb0d378a6187dee6d}{CommandBufferManager::beginCommandBuffer}}(}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00006}00006     VkDevice device, VkCommandPool command\_pool) \{}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00007}00007   \textcolor{comment}{// command buffer to hold transfer commands}}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00008}00008   VkCommandBuffer command\_buffer;}
@@ -33,7 +33,7 @@
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00029}00029   \textcolor{keywordflow}{return} command\_buffer;}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00030}00030 \}}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00031}00031 }
-\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00032}00032 \textcolor{keywordtype}{void} CommandBufferManager::endAndSubmitCommandBuffer(}
+\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00032}\mbox{\hyperlink{class_command_buffer_manager_a77200b8fa3586015d1637ca5166debd9}{00032}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_command_buffer_manager_a77200b8fa3586015d1637ca5166debd9}{CommandBufferManager::endAndSubmitCommandBuffer}}(}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00033}00033     VkDevice device, VkCommandPool command\_pool, VkQueue queue,}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00034}00034     VkCommandBuffer\& command\_buffer) \{}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00035}00035   \textcolor{comment}{// end commands}}
@@ -51,12 +51,12 @@
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00047}00047   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to submit to queue!"{}})}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00048}00048 }
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00049}00049   result = vkQueueWaitIdle(queue);}
-\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00050}00050   ASSERT\_VULKAN(result, "{}Failed to wait Idle!"{})}
+\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00050}00050   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to wait Idle!"{}})}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00051}00051 }
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00052}00052   \textcolor{comment}{// free temporary command buffer back to pool}}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00053}00053   vkFreeCommandBuffers(device, command\_pool, 1, \&command\_buffer);}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00054}00054 \}}
 \DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00055}00055 }
-\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00056}00056 CommandBufferManager::\string~CommandBufferManager() \{\}}
+\DoxyCodeLine{\Hypertarget{_command_buffer_manager_8cpp_source_l00056}\mbox{\hyperlink{class_command_buffer_manager_ab24d1994df5f9218c11d82294a079358}{00056}} \mbox{\hyperlink{class_command_buffer_manager_ab24d1994df5f9218c11d82294a079358}{CommandBufferManager::\string~CommandBufferManager}}() \{\}}
 
 \end{DoxyCode}

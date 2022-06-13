@@ -2,19 +2,19 @@
 \label{_a_s_manager_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures/ASManager.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/accelerationStructures/ASManager.cpp}}
 \mbox{\hyperlink{_a_s_manager_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}ASManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_a_s_manager_8hpp}{ASManager.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00003}00003 ASManager::ASManager() \{\}}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00003}\mbox{\hyperlink{class_a_s_manager_a4badf8ed9ee38046f7445be2ce91af06}{00003}} \mbox{\hyperlink{class_a_s_manager_a4badf8ed9ee38046f7445be2ce91af06}{ASManager::ASManager}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00004}00004 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00005}00005 \textcolor{keywordtype}{void} ASManager::createASForScene(VulkanDevice* device,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00006}00006                                  VkCommandPool commandPool, Scene* scene) \{}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00007}00007   this-\/>vulkanDevice = device;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00008}00008   createBLAS(device, commandPool, scene);}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00009}00009   createTLAS(device, commandPool, scene);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00005}\mbox{\hyperlink{class_a_s_manager_a76b496de6f7e14e0558288be592bab67}{00005}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_a76b496de6f7e14e0558288be592bab67}{ASManager::createASForScene}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00006}00006                                  VkCommandPool commandPool, \mbox{\hyperlink{class_scene}{Scene}}* scene) \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00007}00007   this-\/>\mbox{\hyperlink{class_a_s_manager_a9d4d68cab118a29fb8b84fb666a8c9cf}{vulkanDevice}} = device;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00008}00008   \mbox{\hyperlink{class_a_s_manager_a485b22a6fd2de5412ede7d8d63540c36}{createBLAS}}(device, commandPool, scene);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00009}00009   \mbox{\hyperlink{class_a_s_manager_a434bbf0e3cac2e77b149cdce69654ea6}{createTLAS}}(device, commandPool, scene);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00010}00010 \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00011}00011 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00012}00012 \textcolor{keywordtype}{void} ASManager::createBLAS(VulkanDevice* device, VkCommandPool commandPool,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00013}00013                            Scene* scene) \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00012}\mbox{\hyperlink{class_a_s_manager_a485b22a6fd2de5412ede7d8d63540c36}{00012}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_a485b22a6fd2de5412ede7d8d63540c36}{ASManager::createBLAS}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkCommandPool commandPool,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00013}00013                            \mbox{\hyperlink{class_scene}{Scene}}* scene) \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00014}00014   \textcolor{comment}{// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00015}00015   \textcolor{comment}{// all functionality from extensions has to be loaded in the beginning}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00016}00016   \textcolor{comment}{// we need a reference to the device location of our geometry laying on the}}
@@ -23,14 +23,14 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00019}00019 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00020}00020   PFN\_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00021}00021       (PFN\_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00022}00022           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00022}00022           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00023}00023 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00024}00024   std::vector<BlasInput> blas\_input(scene-\/>getModelCount());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00024}00024   std::vector<BlasInput> blas\_input(scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00025}00025 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00026}00026   \textcolor{keywordflow}{for} (uint32\_t model\_index = 0;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00027}00027        model\_index < static\_cast<uint32\_t>(scene-\/>getModelCount());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00027}00027        model\_index < static\_cast<uint32\_t>(scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00028}00028        model\_index++) \{}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00029}00029     std::shared\_ptr<Model> mesh\_model = scene-\/>get\_model\_list()[model\_index];}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00029}00029     std::shared\_ptr<Model> mesh\_model = scene-\/>\mbox{\hyperlink{class_scene_a6e81688c37b003b0c5f0c1719e6e59a4}{get\_model\_list}}()[model\_index];}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00030}00030     \textcolor{comment}{// blas\_input.emplace\_back();}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00031}00031     blas\_input[model\_index].as\_geometry.reserve(mesh\_model-\/>getMeshCount());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00032}00032     blas\_input[model\_index].as\_build\_offset\_info.reserve(}
@@ -42,7 +42,7 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00038}00038       VkAccelerationStructureBuildRangeInfoKHR}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00039}00039           acceleration\_structure\_build\_range\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00040}00040 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00041}00041       objectToVkGeometryKHR(device, mesh\_model-\/>getMesh(mesh\_index),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00041}00041       \mbox{\hyperlink{class_a_s_manager_a4289908681fe251cdb20d1ef40d37a31}{objectToVkGeometryKHR}}(device, mesh\_model-\/>getMesh(mesh\_index),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00042}00042                             acceleration\_structure\_geometry,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00043}00043                             acceleration\_structure\_build\_range\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00044}00044       \textcolor{comment}{// this only specifies the acceleration structure}}
@@ -57,16 +57,16 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00053}00053   \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00054}00054 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00055}00055   std::vector<BuildAccelerationStructure> build\_as\_structures;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00056}00056   build\_as\_structures.resize(scene-\/>getModelCount());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00056}00056   build\_as\_structures.resize(scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00057}00057 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00058}00058   VkDeviceSize max\_scratch\_size = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00059}00059   VkDeviceSize total\_size\_all\_BLAS = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00060}00060 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00061}00061   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < scene-\/>getModelCount(); i++) \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00061}00061   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}(); i++) \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00062}00062     VkDeviceSize current\_scretch\_size = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00063}00063     VkDeviceSize current\_size = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00064}00064 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00065}00065     createAccelerationStructureInfosBLAS(device, build\_as\_structures[i],}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00065}00065     \mbox{\hyperlink{class_a_s_manager_a463afc971736582df4139611c93540cb}{createAccelerationStructureInfosBLAS}}(device, build\_as\_structures[i],}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00066}00066                                          blas\_input[i], current\_scretch\_size,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00067}00067                                          current\_size);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00068}00068 }
@@ -74,9 +74,9 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00070}00070     max\_scratch\_size = std::max(max\_scratch\_size, current\_scretch\_size);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00071}00071   \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00072}00072 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00073}00073   VulkanBuffer scratchBuffer;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00073}00073   \mbox{\hyperlink{class_vulkan_buffer}{VulkanBuffer}} scratchBuffer;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00074}00074 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00075}00075   scratchBuffer.create(device, max\_scratch\_size,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00075}00075   scratchBuffer.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(device, max\_scratch\_size,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00076}00076                        VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00077}00077                            VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00078}00078                            VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
@@ -86,19 +86,19 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00082}00082   VkBufferDeviceAddressInfo scratch\_buffer\_device\_address\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00083}00083   scratch\_buffer\_device\_address\_info.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00084}00084       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00085}00085   scratch\_buffer\_device\_address\_info.buffer = scratchBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00085}00085   scratch\_buffer\_device\_address\_info.buffer = scratchBuffer.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00086}00086 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00087}00087   VkDeviceAddress scratch\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00088}00088       device-\/>getLogicalDevice(), \&scratch\_buffer\_device\_address\_info);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00088}00088       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&scratch\_buffer\_device\_address\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00089}00089 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00090}00090   VkDeviceOrHostAddressKHR scratch\_device\_or\_host\_address\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00091}00091   scratch\_device\_or\_host\_address.deviceAddress = scratch\_buffer\_address;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00092}00092 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00093}00093   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00094}00094       device-\/>getLogicalDevice(), commandPool);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00093}00093   VkCommandBuffer command\_buffer = \mbox{\hyperlink{class_a_s_manager_a06ee655786cd63f466c8e5f9ed683e47}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a341dd6bf1dab7f3eb0d378a6187dee6d}{beginCommandBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00094}00094       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), commandPool);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00095}00095 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00096}00096   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < scene-\/>getModelCount(); i++) \{}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00097}00097     createSingleBlas(device, command\_buffer, build\_as\_structures[i],}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00096}00096   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}(); i++) \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00097}00097     \mbox{\hyperlink{class_a_s_manager_aea23c28766ae556ab37c1d3b7f49e4a1}{createSingleBlas}}(device, command\_buffer, build\_as\_structures[i],}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00098}00098                      scratch\_buffer\_address);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00099}00099 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00100}00100     VkMemoryBarrier barrier;}
@@ -113,19 +113,19 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00109}00109                          0, 1, \&barrier, 0, \textcolor{keyword}{nullptr}, 0, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00110}00110   \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00111}00111 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00112}00112   commandBufferManager.endAndSubmitCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00113}00113       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00112}00112   \mbox{\hyperlink{class_a_s_manager_a06ee655786cd63f466c8e5f9ed683e47}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a77200b8fa3586015d1637ca5166debd9}{endAndSubmitCommandBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00113}00113       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), commandPool, device-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00114}00114       command\_buffer);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00115}00115 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00116}00116   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& b : build\_as\_structures) \{}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00117}00117     blas.emplace\_back(b.single\_blas);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00117}00117     \mbox{\hyperlink{class_a_s_manager_a904163e3b3d8584c6a52c707a751374a}{blas}}.emplace\_back(b.single\_blas);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00118}00118   \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00119}00119 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00120}00120   scratchBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00120}00120   scratchBuffer.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00121}00121 \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00122}00122 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00123}00123 \textcolor{keywordtype}{void} ASManager::createTLAS(VulkanDevice* device, VkCommandPool commandPool,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00124}00124                            Scene* scene) \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00123}\mbox{\hyperlink{class_a_s_manager_a434bbf0e3cac2e77b149cdce69654ea6}{00123}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_a434bbf0e3cac2e77b149cdce69654ea6}{ASManager::createTLAS}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkCommandPool commandPool,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00124}00124                            \mbox{\hyperlink{class_scene}{Scene}}* scene) \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00125}00125   \textcolor{comment}{// LOAD ALL NECESSARY FUNCTIONS STRAIGHT IN THE BEGINNING}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00126}00126   \textcolor{comment}{// all functionality from extensions has to be loaded in the beginning}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00127}00127   \textcolor{comment}{// we need a reference to the device location of our geometry laying on the}}
@@ -134,36 +134,36 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00130}00130   PFN\_vkGetAccelerationStructureBuildSizesKHR}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00131}00131       pvkGetAccelerationStructureBuildSizesKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00132}00132           (PFN\_vkGetAccelerationStructureBuildSizesKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00133}00133               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00133}00133               device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00134}00134               \textcolor{stringliteral}{"{}vkGetAccelerationStructureBuildSizesKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00135}00135 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00136}00136   PFN\_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00137}00137       (PFN\_vkCreateAccelerationStructureKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00138}00138           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateAccelerationStructureKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00138}00138           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkCreateAccelerationStructureKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00139}00139 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00140}00140   PFN\_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00141}00141       (PFN\_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00142}00142           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00142}00142           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00143}00143 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00144}00144   PFN\_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00145}00145       (PFN\_vkCmdBuildAccelerationStructuresKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00146}00146           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCmdBuildAccelerationStructuresKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00146}00146           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkCmdBuildAccelerationStructuresKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00147}00147 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00148}00148   PFN\_vkGetAccelerationStructureDeviceAddressKHR}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00149}00149       pvkGetAccelerationStructureDeviceAddressKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00150}00150           (PFN\_vkGetAccelerationStructureDeviceAddressKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00151}00151               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00151}00151               device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00152}00152               \textcolor{stringliteral}{"{}vkGetAccelerationStructureDeviceAddressKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00153}00153 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00154}00154   std::vector<VkAccelerationStructureInstanceKHR> tlas\_instances;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00155}00155   tlas\_instances.reserve(scene-\/>getModelCount());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00155}00155   tlas\_instances.reserve(scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00156}00156 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00157}00157   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} model\_index = 0; model\_index < scene-\/>getModelCount();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00157}00157   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} model\_index = 0; model\_index < scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00158}00158        model\_index++) \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00159}00159     \textcolor{comment}{// glm uses column major matrices so transpose it for Vulkan want row major}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00160}00160     \textcolor{comment}{// here}}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00161}00161     glm::mat4 transpose\_transform =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00162}00162         glm::transpose(scene-\/>getModelMatrix(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(model\_index)));}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00161}00161     \mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} transpose\_transform =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00162}00162         glm::transpose(scene-\/>\mbox{\hyperlink{class_scene_ad4abe2669923cc0ac8f41760a41cf706}{getModelMatrix}}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(model\_index)));}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00163}00163     VkTransformMatrixKHR out\_matrix;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00164}00164     memcpy(\&out\_matrix, \&transpose\_transform, \textcolor{keyword}{sizeof}(VkTransformMatrixKHR));}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00165}00165 }
@@ -172,11 +172,11 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00168}00168     acceleration\_structure\_device\_address\_info.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00169}00169         VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_DEVICE\_ADDRESS\_INFO\_KHR;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00170}00170     acceleration\_structure\_device\_address\_info.accelerationStructure =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00171}00171         blas[model\_index].vulkanAS;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00171}00171         \mbox{\hyperlink{class_a_s_manager_a904163e3b3d8584c6a52c707a751374a}{blas}}[model\_index].vulkanAS;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00172}00172 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00173}00173     VkDeviceAddress acceleration\_structure\_device\_address =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00174}00174         pvkGetAccelerationStructureDeviceAddressKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00175}00175             device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00175}00175             device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00176}00176             \&acceleration\_structure\_device\_address\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00177}00177 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00178}00178     VkAccelerationStructureInstanceKHR geometry\_instance\{\};}
@@ -195,12 +195,12 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00191}00191     tlas\_instances.emplace\_back(geometry\_instance);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00192}00192   \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00193}00193 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00194}00194   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00195}00195       device-\/>getLogicalDevice(), commandPool);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00194}00194   VkCommandBuffer command\_buffer = \mbox{\hyperlink{class_a_s_manager_a06ee655786cd63f466c8e5f9ed683e47}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a341dd6bf1dab7f3eb0d378a6187dee6d}{beginCommandBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00195}00195       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), commandPool);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00196}00196 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00197}00197   VulkanBuffer geometryInstanceBuffer;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00197}00197   \mbox{\hyperlink{class_vulkan_buffer}{VulkanBuffer}} geometryInstanceBuffer;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00198}00198 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00199}00199   vulkanBufferManager.createBufferAndUploadVectorOnDevice(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00199}00199   \mbox{\hyperlink{class_a_s_manager_a48790f00d6b3f5af1c403cacf8421500}{vulkanBufferManager}}.\mbox{\hyperlink{class_vulkan_buffer_manager_aa79434989708b35e8cab30502bdf81c9}{createBufferAndUploadVectorOnDevice}}(}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00200}00200       device, commandPool, geometryInstanceBuffer,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00201}00201       VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00202}00202           VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_BUILD\_INPUT\_READ\_ONLY\_BIT\_KHR |}
@@ -213,11 +213,11 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00209}00209   geometry\_instance\_buffer\_device\_address\_info.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00210}00210       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00211}00211   geometry\_instance\_buffer\_device\_address\_info.buffer =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00212}00212       geometryInstanceBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00212}00212       geometryInstanceBuffer.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00213}00213 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00214}00214   VkDeviceAddress geometry\_instance\_buffer\_address =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00215}00215       pvkGetBufferDeviceAddressKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00216}00216           device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00216}00216           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00217}00217           \&geometry\_instance\_buffer\_device\_address\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00218}00218 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00219}00219   \textcolor{comment}{// Make sure the copy of the instance buffer are copied before triggering the}}
@@ -277,13 +277,13 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00273}00273 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00274}00274   uint32\_t count\_instance = \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(tlas\_instances.size());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00275}00275   pvkGetAccelerationStructureBuildSizesKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00276}00276       device-\/>getLogicalDevice(), VK\_ACCELERATION\_STRUCTURE\_BUILD\_TYPE\_HOST\_KHR,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00276}00276       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), VK\_ACCELERATION\_STRUCTURE\_BUILD\_TYPE\_HOST\_KHR,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00277}00277       \&acceleration\_structure\_build\_geometry\_info, \&count\_instance,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00278}00278       \&acceleration\_structure\_build\_sizes\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00279}00279 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00280}00280   \textcolor{comment}{// now we got the sizes}}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00281}00281   VulkanBuffer\& tlasVulkanBuffer = tlas.vulkanBuffer;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00282}00282   tlasVulkanBuffer.create(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00281}00281   \mbox{\hyperlink{class_vulkan_buffer}{VulkanBuffer}}\& tlasVulkanBuffer = \mbox{\hyperlink{class_a_s_manager_a29dd0318ba9e994a75283acf4551ae7b}{tlas}}.\mbox{\hyperlink{struct_top_level_acceleration_structure_a16d738a232d8e480f59dfeda7fa34ce6}{vulkanBuffer}};}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00282}00282   tlasVulkanBuffer.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00283}00283       device, acceleration\_structure\_build\_sizes\_info.accelerationStructureSize,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00284}00284       VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_STORAGE\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00285}00285           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
@@ -296,7 +296,7 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00292}00292       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_CREATE\_INFO\_KHR;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00293}00293   acceleration\_structure\_create\_info.pNext = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00294}00294   acceleration\_structure\_create\_info.createFlags = 0;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00295}00295   acceleration\_structure\_create\_info.buffer = tlasVulkanBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00295}00295   acceleration\_structure\_create\_info.buffer = tlasVulkanBuffer.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00296}00296   acceleration\_structure\_create\_info.offset = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00297}00297   acceleration\_structure\_create\_info.size =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00298}00298       acceleration\_structure\_build\_sizes\_info.accelerationStructureSize;}
@@ -304,14 +304,14 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00300}00300       VK\_ACCELERATION\_STRUCTURE\_TYPE\_TOP\_LEVEL\_KHR;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00301}00301   acceleration\_structure\_create\_info.deviceAddress = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00302}00302 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00303}00303   VkAccelerationStructureKHR\& tlAS = tlas.vulkanAS;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00304}00304   pvkCreateAccelerationStructureKHR(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00303}00303   VkAccelerationStructureKHR\& tlAS = \mbox{\hyperlink{class_a_s_manager_a29dd0318ba9e994a75283acf4551ae7b}{tlas}}.\mbox{\hyperlink{struct_top_level_acceleration_structure_a6e9e4b9f1c70d126678a08534630d3b5}{vulkanAS}};}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00304}00304   pvkCreateAccelerationStructureKHR(device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00305}00305                                     \&acceleration\_structure\_create\_info,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00306}00306                                     \textcolor{keyword}{nullptr}, \&tlAS);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00307}00307 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00308}00308   VulkanBuffer scratchBuffer;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00308}00308   \mbox{\hyperlink{class_vulkan_buffer}{VulkanBuffer}} scratchBuffer;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00309}00309 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00310}00310   scratchBuffer.create(device,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00310}00310   scratchBuffer.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(device,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00311}00311                        acceleration\_structure\_build\_sizes\_info.buildScratchSize,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00312}00312                        VK\_BUFFER\_USAGE\_STORAGE\_BUFFER\_BIT |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00313}00313                            VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
@@ -322,10 +322,10 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00318}00318   VkBufferDeviceAddressInfo scratch\_buffer\_device\_address\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00319}00319   scratch\_buffer\_device\_address\_info.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00320}00320       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00321}00321   scratch\_buffer\_device\_address\_info.buffer = scratchBuffer.getBuffer();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00321}00321   scratch\_buffer\_device\_address\_info.buffer = scratchBuffer.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00322}00322 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00323}00323   VkDeviceAddress scratch\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00324}00324       device-\/>getLogicalDevice(), \&scratch\_buffer\_device\_address\_info);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00324}00324       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&scratch\_buffer\_device\_address\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00325}00325 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00326}00326   \textcolor{comment}{// update build info}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00327}00327   acceleration\_structure\_build\_geometry\_info.scratchData.deviceAddress =}
@@ -337,7 +337,7 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00333}00333   VkAccelerationStructureBuildRangeInfoKHR}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00334}00334       acceleration\_structure\_build\_range\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00335}00335   acceleration\_structure\_build\_range\_info.primitiveCount =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00336}00336       scene-\/>getModelCount();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00336}00336       scene-\/>\mbox{\hyperlink{class_scene_aa7ca0fe779d0d62731b599f44c09b85b}{getModelCount}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00337}00337   acceleration\_structure\_build\_range\_info.primitiveOffset = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00338}00338   acceleration\_structure\_build\_range\_info.firstVertex = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00339}00339   acceleration\_structure\_build\_range\_info.transformOffset = 0;}
@@ -350,45 +350,45 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00346}00346       command\_buffer, 1, \&acceleration\_structure\_build\_geometry\_info,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00347}00347       \&acceleration\_structure\_build\_range\_infos);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00348}00348 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00349}00349   commandBufferManager.endAndSubmitCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00350}00350       device-\/>getLogicalDevice(), commandPool, device-\/>getGraphicsQueue(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00349}00349   \mbox{\hyperlink{class_a_s_manager_a06ee655786cd63f466c8e5f9ed683e47}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a77200b8fa3586015d1637ca5166debd9}{endAndSubmitCommandBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00350}00350       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), commandPool, device-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00351}00351       command\_buffer);}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00352}00352   scratchBuffer.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00353}00353   geometryInstanceBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00352}00352   scratchBuffer.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00353}00353   geometryInstanceBuffer.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00354}00354 \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00355}00355 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00356}00356 \textcolor{keywordtype}{void} ASManager::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00356}\mbox{\hyperlink{class_a_s_manager_a3e3b01dabeddfdd252faff47a79a4c9d}{00356}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_a3e3b01dabeddfdd252faff47a79a4c9d}{ASManager::cleanUp}}() \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00357}00357   PFN\_vkDestroyAccelerationStructureKHR pvkDestroyAccelerationStructureKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00358}00358       (PFN\_vkDestroyAccelerationStructureKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00359}00359           vulkanDevice-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00359}00359           \mbox{\hyperlink{class_a_s_manager_a9d4d68cab118a29fb8b84fb666a8c9cf}{vulkanDevice}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00360}00360           \textcolor{stringliteral}{"{}vkDestroyAccelerationStructureKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00361}00361 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00362}00362   pvkDestroyAccelerationStructureKHR(vulkanDevice-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00363}00363                                      tlas.vulkanAS, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00362}00362   pvkDestroyAccelerationStructureKHR(\mbox{\hyperlink{class_a_s_manager_a9d4d68cab118a29fb8b84fb666a8c9cf}{vulkanDevice}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00363}00363                                      \mbox{\hyperlink{class_a_s_manager_a29dd0318ba9e994a75283acf4551ae7b}{tlas}}.\mbox{\hyperlink{struct_top_level_acceleration_structure_a6e9e4b9f1c70d126678a08534630d3b5}{vulkanAS}}, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00364}00364 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00365}00365   tlas.vulkanBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00365}00365   \mbox{\hyperlink{class_a_s_manager_a29dd0318ba9e994a75283acf4551ae7b}{tlas}}.\mbox{\hyperlink{struct_top_level_acceleration_structure_a16d738a232d8e480f59dfeda7fa34ce6}{vulkanBuffer}}.\mbox{\hyperlink{class_vulkan_buffer_acc904fc0cdbcfe3620ef274def46355b}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00366}00366 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00367}00367   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} index = 0; index < blas.size(); index++) \{}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00368}00368     pvkDestroyAccelerationStructureKHR(vulkanDevice-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00369}00369                                        blas[index].vulkanAS, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00367}00367   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} index = 0; index < \mbox{\hyperlink{class_a_s_manager_a904163e3b3d8584c6a52c707a751374a}{blas}}.size(); index++) \{}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00368}00368     pvkDestroyAccelerationStructureKHR(\mbox{\hyperlink{class_a_s_manager_a9d4d68cab118a29fb8b84fb666a8c9cf}{vulkanDevice}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00369}00369                                        \mbox{\hyperlink{class_a_s_manager_a904163e3b3d8584c6a52c707a751374a}{blas}}[index].vulkanAS, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00370}00370 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00371}00371     blas[index].vulkanBuffer.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00371}00371     \mbox{\hyperlink{class_a_s_manager_a904163e3b3d8584c6a52c707a751374a}{blas}}[index].vulkanBuffer.cleanUp();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00372}00372   \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00373}00373 \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00374}00374 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00375}00375 ASManager::\string~ASManager() \{\}}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00375}\mbox{\hyperlink{class_a_s_manager_a2b3063a8043ba8b9f518cddc342d3032}{00375}} \mbox{\hyperlink{class_a_s_manager_a2b3063a8043ba8b9f518cddc342d3032}{ASManager::\string~ASManager}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00376}00376 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00377}00377 \textcolor{keywordtype}{void} ASManager::createSingleBlas(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00378}00378     VulkanDevice* device, VkCommandBuffer command\_buffer,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00379}00379     BuildAccelerationStructure\& build\_as\_structure,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00377}\mbox{\hyperlink{class_a_s_manager_aea23c28766ae556ab37c1d3b7f49e4a1}{00377}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_aea23c28766ae556ab37c1d3b7f49e4a1}{ASManager::createSingleBlas}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00378}00378     \mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkCommandBuffer command\_buffer,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00379}00379     \mbox{\hyperlink{struct_build_acceleration_structure}{BuildAccelerationStructure}}\& build\_as\_structure,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00380}00380     VkDeviceAddress scratch\_device\_or\_host\_address) \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00381}00381   PFN\_vkCreateAccelerationStructureKHR pvkCreateAccelerationStructureKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00382}00382       (PFN\_vkCreateAccelerationStructureKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00383}00383           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCreateAccelerationStructureKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00383}00383           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkCreateAccelerationStructureKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00384}00384 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00385}00385   PFN\_vkCmdBuildAccelerationStructuresKHR pvkCmdBuildAccelerationStructuresKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00386}00386       (PFN\_vkCmdBuildAccelerationStructuresKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00387}00387           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkCmdBuildAccelerationStructuresKHR"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00387}00387           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkCmdBuildAccelerationStructuresKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00388}00388 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00389}00389   VkAccelerationStructureCreateInfoKHR acceleration\_structure\_create\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00390}00390   acceleration\_structure\_create\_info.sType =}
@@ -396,79 +396,79 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00392}00392   acceleration\_structure\_create\_info.type =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00393}00393       VK\_ACCELERATION\_STRUCTURE\_TYPE\_BOTTOM\_LEVEL\_KHR;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00394}00394   acceleration\_structure\_create\_info.size =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00395}00395       build\_as\_structure.size\_info.accelerationStructureSize;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00396}00396   VulkanBuffer\& blasVulkanBuffer = build\_as\_structure.single\_blas.vulkanBuffer;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00397}00397   blasVulkanBuffer.create(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00398}00398       device, build\_as\_structure.size\_info.accelerationStructureSize,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00395}00395       build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a7a9c76223f33e68716a62d1e266f5bb2}{size\_info}}.accelerationStructureSize;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00396}00396   \mbox{\hyperlink{class_vulkan_buffer}{VulkanBuffer}}\& blasVulkanBuffer = build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_ac9e9dfa26bc0c776eb2122e5741a4109}{single\_blas}}.\mbox{\hyperlink{struct_bottom_level_acceleration_structure_a08ec812be7a11592fbd98e3fe6307f8a}{vulkanBuffer}};}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00397}00397   blasVulkanBuffer.\mbox{\hyperlink{class_vulkan_buffer_acf70bd77d69553f9c9f30d51827bd855}{create}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00398}00398       device, build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a7a9c76223f33e68716a62d1e266f5bb2}{size\_info}}.accelerationStructureSize,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00399}00399       VK\_BUFFER\_USAGE\_ACCELERATION\_STRUCTURE\_STORAGE\_BIT\_KHR |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00400}00400           VK\_BUFFER\_USAGE\_SHADER\_DEVICE\_ADDRESS\_BIT |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00401}00401           VK\_BUFFER\_USAGE\_TRANSFER\_DST\_BIT,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00402}00402       VK\_MEMORY\_ALLOCATE\_DEVICE\_ADDRESS\_BIT |}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00403}00403           VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00404}00404 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00405}00405   acceleration\_structure\_create\_info.buffer = blasVulkanBuffer.getBuffer();}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00406}00406   VkAccelerationStructureKHR\& blas\_as = build\_as\_structure.single\_blas.vulkanAS;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00407}00407   pvkCreateAccelerationStructureKHR(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00405}00405   acceleration\_structure\_create\_info.buffer = blasVulkanBuffer.\mbox{\hyperlink{class_vulkan_buffer_a4095c3a6ebcfcb7f90c5535d8e6056bc}{getBuffer}}();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00406}00406   VkAccelerationStructureKHR\& blas\_as = build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_ac9e9dfa26bc0c776eb2122e5741a4109}{single\_blas}}.\mbox{\hyperlink{struct_bottom_level_acceleration_structure_af990a71bfcab633fa487465c0da4ead4}{vulkanAS}};}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00407}00407   pvkCreateAccelerationStructureKHR(device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00408}00408                                     \&acceleration\_structure\_create\_info,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00409}00409                                     \textcolor{keyword}{nullptr}, \&blas\_as);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00410}00410 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00411}00411   build\_as\_structure.build\_info.dstAccelerationStructure = blas\_as;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00412}00412   build\_as\_structure.build\_info.scratchData.deviceAddress =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00411}00411   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.dstAccelerationStructure = blas\_as;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00412}00412   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.scratchData.deviceAddress =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00413}00413       scratch\_device\_or\_host\_address;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00414}00414 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00415}00415   pvkCmdBuildAccelerationStructuresKHR(command\_buffer, 1,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00416}00416                                        \&build\_as\_structure.build\_info,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00417}00417                                        \&build\_as\_structure.range\_info);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00416}00416                                        \&build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}},}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00417}00417                                        \&build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a580d07fc0d359ee3f8c5f06e26fa5f6b}{range\_info}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00418}00418 \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00419}00419 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00420}00420 \textcolor{keywordtype}{void} ASManager::createAccelerationStructureInfosBLAS(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00421}00421     VulkanDevice* device, BuildAccelerationStructure\& build\_as\_structure,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00422}00422     BlasInput\& blas\_input, VkDeviceSize\& current\_scretch\_size,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00420}\mbox{\hyperlink{class_a_s_manager_a463afc971736582df4139611c93540cb}{00420}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_a463afc971736582df4139611c93540cb}{ASManager::createAccelerationStructureInfosBLAS}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00421}00421     \mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, \mbox{\hyperlink{struct_build_acceleration_structure}{BuildAccelerationStructure}}\& build\_as\_structure,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00422}00422     \mbox{\hyperlink{struct_blas_input}{BlasInput}}\& blas\_input, VkDeviceSize\& current\_scretch\_size,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00423}00423     VkDeviceSize\& current\_size) \{}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00424}00424   PFN\_vkGetAccelerationStructureBuildSizesKHR}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00425}00425       pvkGetAccelerationStructureBuildSizesKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00426}00426           (PFN\_vkGetAccelerationStructureBuildSizesKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00427}00427               device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00427}00427               device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00428}00428               \textcolor{stringliteral}{"{}vkGetAccelerationStructureBuildSizesKHR"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00429}00429 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00430}00430   build\_as\_structure.build\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00430}00430   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00431}00431       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_BUILD\_GEOMETRY\_INFO\_KHR;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00432}00432   build\_as\_structure.build\_info.type =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00432}00432   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.type =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00433}00433       VK\_ACCELERATION\_STRUCTURE\_TYPE\_BOTTOM\_LEVEL\_KHR;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00434}00434   build\_as\_structure.build\_info.flags =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00434}00434   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.flags =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00435}00435       VK\_BUILD\_ACCELERATION\_STRUCTURE\_PREFER\_FAST\_TRACE\_BIT\_KHR;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00436}00436   build\_as\_structure.build\_info.mode =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00436}00436   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.mode =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00437}00437       VK\_BUILD\_ACCELERATION\_STRUCTURE\_MODE\_BUILD\_KHR;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00438}00438   build\_as\_structure.build\_info.geometryCount =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00439}00439       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(blas\_input.as\_geometry.size());}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00440}00440   build\_as\_structure.build\_info.pGeometries = blas\_input.as\_geometry.data();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00438}00438   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.geometryCount =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00439}00439       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(blas\_input.\mbox{\hyperlink{struct_blas_input_a0d107f3062d34b20767e764d49701942}{as\_geometry}}.size());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00440}00440   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}.pGeometries = blas\_input.\mbox{\hyperlink{struct_blas_input_a0d107f3062d34b20767e764d49701942}{as\_geometry}}.data();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00441}00441 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00442}00442   build\_as\_structure.range\_info = blas\_input.as\_build\_offset\_info.data();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00442}00442   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a580d07fc0d359ee3f8c5f06e26fa5f6b}{range\_info}} = blas\_input.\mbox{\hyperlink{struct_blas_input_a43e18dea1f91b0fad99daab7ee988be7}{as\_build\_offset\_info}}.data();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00443}00443 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00444}00444   build\_as\_structure.size\_info.sType =}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00444}00444   build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a7a9c76223f33e68716a62d1e266f5bb2}{size\_info}}.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00445}00445       VK\_STRUCTURE\_TYPE\_ACCELERATION\_STRUCTURE\_BUILD\_SIZES\_INFO\_KHR;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00446}00446 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00447}00447   std::vector<uint32\_t> max\_primitive\_cnt(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00448}00448       blas\_input.as\_build\_offset\_info.size());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00448}00448       blas\_input.\mbox{\hyperlink{struct_blas_input_a43e18dea1f91b0fad99daab7ee988be7}{as\_build\_offset\_info}}.size());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00449}00449 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00450}00450   \textcolor{keywordflow}{for} (uint32\_t temp = 0;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00451}00451        temp < static\_cast<uint32\_t>(blas\_input.as\_build\_offset\_info.size());}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00451}00451        temp < static\_cast<uint32\_t>(blas\_input.\mbox{\hyperlink{struct_blas_input_a43e18dea1f91b0fad99daab7ee988be7}{as\_build\_offset\_info}}.size());}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00452}00452        temp++)}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00453}00453     max\_primitive\_cnt[temp] =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00454}00454         blas\_input.as\_build\_offset\_info[temp].primitiveCount;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00454}00454         blas\_input.\mbox{\hyperlink{struct_blas_input_a43e18dea1f91b0fad99daab7ee988be7}{as\_build\_offset\_info}}[temp].primitiveCount;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00455}00455 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00456}00456   pvkGetAccelerationStructureBuildSizesKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00457}00457       device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00457}00457       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00458}00458       VK\_ACCELERATION\_STRUCTURE\_BUILD\_TYPE\_DEVICE\_KHR,}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00459}00459       \&build\_as\_structure.build\_info, max\_primitive\_cnt.data(),}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00460}00460       \&build\_as\_structure.size\_info);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00459}00459       \&build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a9d77e88068dc0e11f65422d134ce3405}{build\_info}}, max\_primitive\_cnt.data(),}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00460}00460       \&build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a7a9c76223f33e68716a62d1e266f5bb2}{size\_info}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00461}00461 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00462}00462   current\_size = build\_as\_structure.size\_info.accelerationStructureSize;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00463}00463   current\_scretch\_size = build\_as\_structure.size\_info.buildScratchSize;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00462}00462   current\_size = build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a7a9c76223f33e68716a62d1e266f5bb2}{size\_info}}.accelerationStructureSize;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00463}00463   current\_scretch\_size = build\_as\_structure.\mbox{\hyperlink{struct_build_acceleration_structure_a7a9c76223f33e68716a62d1e266f5bb2}{size\_info}}.buildScratchSize;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00464}00464 \}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00465}00465 }
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00466}00466 \textcolor{keywordtype}{void} ASManager::objectToVkGeometryKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00467}00467     VulkanDevice* device, Mesh* mesh,}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00466}\mbox{\hyperlink{class_a_s_manager_a4289908681fe251cdb20d1ef40d37a31}{00466}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_s_manager_a4289908681fe251cdb20d1ef40d37a31}{ASManager::objectToVkGeometryKHR}}(}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00467}00467     \mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, \mbox{\hyperlink{class_mesh}{Mesh}}* mesh,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00468}00468     VkAccelerationStructureGeometryKHR\& acceleration\_structure\_geometry,}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00469}00469     VkAccelerationStructureBuildRangeInfoKHR\&}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00470}00470         acceleration\_structure\_build\_range\_info) \{}
@@ -479,27 +479,27 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00475}00475   \textcolor{comment}{// buffers respectively}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00476}00476   PFN\_vkGetBufferDeviceAddressKHR pvkGetBufferDeviceAddressKHR =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00477}00477       (PFN\_vkGetBufferDeviceAddressKHR)vkGetDeviceProcAddr(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00478}00478           device-\/>getLogicalDevice(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00478}00478           device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \textcolor{stringliteral}{"{}vkGetBufferDeviceAddress"{}});}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00479}00479 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00480}00480   \textcolor{comment}{// all starts with the address of our vertex and index data we already}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00481}00481   \textcolor{comment}{// uploaded in buffers earlier when loading the meshes/models}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00482}00482   VkBufferDeviceAddressInfo vertex\_buffer\_device\_address\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00483}00483   vertex\_buffer\_device\_address\_info.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00484}00484       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00485}00485   vertex\_buffer\_device\_address\_info.buffer = mesh-\/>getVertexBuffer();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00485}00485   vertex\_buffer\_device\_address\_info.buffer = mesh-\/>\mbox{\hyperlink{class_mesh_aa66016d680eb8b9a86eb0bf73ab4e2dd}{getVertexBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00486}00486   vertex\_buffer\_device\_address\_info.pNext = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00487}00487 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00488}00488   VkBufferDeviceAddressInfo index\_buffer\_device\_address\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00489}00489   index\_buffer\_device\_address\_info.sType =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00490}00490       VK\_STRUCTURE\_TYPE\_BUFFER\_DEVICE\_ADDRESS\_INFO;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00491}00491   index\_buffer\_device\_address\_info.buffer = mesh-\/>getIndexBuffer();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00491}00491   index\_buffer\_device\_address\_info.buffer = mesh-\/>\mbox{\hyperlink{class_mesh_a942fcec367820168b4e7c18d025a3517}{getIndexBuffer}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00492}00492   index\_buffer\_device\_address\_info.pNext = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00493}00493 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00494}00494   \textcolor{comment}{// receiving address to move on}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00495}00495   VkDeviceAddress vertex\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00496}00496       device-\/>getLogicalDevice(), \&vertex\_buffer\_device\_address\_info);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00496}00496       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&vertex\_buffer\_device\_address\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00497}00497   VkDeviceAddress index\_buffer\_address = pvkGetBufferDeviceAddressKHR(}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00498}00498       device-\/>getLogicalDevice(), \&index\_buffer\_device\_address\_info);}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00498}00498       device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&index\_buffer\_device\_address\_info);}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00499}00499 }
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00500}00500   \textcolor{comment}{// convert to const address for further processing}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00501}00501   VkDeviceOrHostAddressConstKHR vertex\_device\_or\_host\_address\_const\{\};}
@@ -517,8 +517,8 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00513}00513       VK\_FORMAT\_R32G32B32\_SFLOAT;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00514}00514   acceleration\_structure\_triangles\_data.vertexData =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00515}00515       vertex\_device\_or\_host\_address\_const;}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00516}00516   acceleration\_structure\_triangles\_data.vertexStride = \textcolor{keyword}{sizeof}(Vertex);}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00517}00517   acceleration\_structure\_triangles\_data.maxVertex = mesh-\/>getVertexCount();}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00516}00516   acceleration\_structure\_triangles\_data.vertexStride = \textcolor{keyword}{sizeof}(\mbox{\hyperlink{class_vertex}{Vertex}});}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00517}00517   acceleration\_structure\_triangles\_data.maxVertex = mesh-\/>\mbox{\hyperlink{class_mesh_a0c0e3fecb67b76b809c199b620bb8c4a}{getVertexCount}}();}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00518}00518   acceleration\_structure\_triangles\_data.indexType = VK\_INDEX\_TYPE\_UINT32;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00519}00519   acceleration\_structure\_triangles\_data.indexData =}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00520}00520       index\_device\_or\_host\_address\_const;}
@@ -542,7 +542,7 @@
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00538}00538   \textcolor{comment}{// take entire data to build BLAS}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00539}00539   \textcolor{comment}{// number of indices is truly the stick point here}}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00540}00540   acceleration\_structure\_build\_range\_info.primitiveCount =}
-\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00541}00541       mesh-\/>getIndexCount() / 3;}
+\DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00541}00541       mesh-\/>\mbox{\hyperlink{class_mesh_a6dde20eaf4e25eba5cd13918e269445a}{getIndexCount}}() / 3;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00542}00542   acceleration\_structure\_build\_range\_info.primitiveOffset = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00543}00543   acceleration\_structure\_build\_range\_info.firstVertex = 0;}
 \DoxyCodeLine{\Hypertarget{_a_s_manager_8cpp_source_l00544}00544   acceleration\_structure\_build\_range\_info.transformOffset = 0;}

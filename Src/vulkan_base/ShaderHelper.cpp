@@ -1,9 +1,9 @@
-#include "ShaderHelper.h"
-#include "VulkanRendererConfig.h"
-
 #include <sstream>
 #include <iomanip>
-#include "Utilities.h"
+
+#include "ShaderHelper.hpp"
+#include "VulkanRendererConfig.hpp"
+#include "Utilities.hpp"
 
 ShaderHelper::ShaderHelper() {}
 

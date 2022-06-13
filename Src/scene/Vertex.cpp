@@ -1,4 +1,4 @@
-#include "Vertex.h"
+#include "Vertex.hpp"
 
 Vertex::Vertex() {
   this->pos = glm::vec3(-1.f);

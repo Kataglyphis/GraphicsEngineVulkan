@@ -26,9 +26,9 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../Engine_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.9</span>
+   <div id="projectname">GraphicsEngine<span id="projectnumber">&#160;1.3</span>
    </div>
-   <div id="projectbrief">Epic graphics from hell</div>
+   <div id="projectbrief">Epic Graphics</div>
   </td>
  </tr>
  </tbody>
@@ -81,15 +81,21 @@ $(document).ready(function(){initNavTree('d2/dde/namespacedebug.html','../../');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2c211b70c4398422cdff97189048fe44"><td class="memItemLeft" align="right" valign="top">VKAPI_ATTR VkBool32 VKAPI_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a2c211b70c4398422cdff97189048fe44">debugUtilsMessengerCallback</a> (VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)</td></tr>
-<tr class="separator:a2c211b70c4398422cdff97189048fe44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a840a095211f991961d5ca51d7b4f1032"><td class="memItemLeft" align="right" valign="top">VKAPI_ATTR VkBool32 VKAPI_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a840a095211f991961d5ca51d7b4f1032">messageCallback</a> (VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t srcObject, size_t location, int32_t msgCode, const char *pLayerPrefix, const char *pMsg, void *pUserData)</td></tr>
+<tr class="separator:a840a095211f991961d5ca51d7b4f1032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d3861f9b449521a13975f6f21342c43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a2d3861f9b449521a13975f6f21342c43">setupDebugging</a> (VkInstance instance, VkDebugReportFlagsEXT flags, VkDebugReportCallbackEXT callBack)</td></tr>
 <tr class="separator:a2d3861f9b449521a13975f6f21342c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0090a7de5456794069c8360a0780ed52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a0090a7de5456794069c8360a0780ed52">freeDebugCallback</a> (VkInstance instance)</td></tr>
 <tr class="separator:a0090a7de5456794069c8360a0780ed52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c211b70c4398422cdff97189048fe44"><td class="memItemLeft" align="right" valign="top">VKAPI_ATTR VkBool32 VKAPI_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a2c211b70c4398422cdff97189048fe44">debugUtilsMessengerCallback</a> (VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)</td></tr>
+<tr class="separator:a2c211b70c4398422cdff97189048fe44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a8d85c11eed9767bcc118549eac481756"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a8d85c11eed9767bcc118549eac481756">validationLayerCount</a></td></tr>
+<tr class="separator:a8d85c11eed9767bcc118549eac481756"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad39b1b584636e9a6e4e1810a10352e88"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#ad39b1b584636e9a6e4e1810a10352e88">validationLayerNames</a> []</td></tr>
+<tr class="separator:ad39b1b584636e9a6e4e1810a10352e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f65712a616783bbd6fe7e68429d4c44"><td class="memItemLeft" align="right" valign="top">PFN_vkCreateDebugUtilsMessengerEXT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a3f65712a616783bbd6fe7e68429d4c44">vkCreateDebugUtilsMessengerEXT</a></td></tr>
 <tr class="separator:a3f65712a616783bbd6fe7e68429d4c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f5a6dfd28afbfc30436972d7cebb1e4"><td class="memItemLeft" align="right" valign="top">PFN_vkDestroyDebugUtilsMessengerEXT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dde/namespacedebug.html#a2f5a6dfd28afbfc30436972d7cebb1e4">vkDestroyDebugUtilsMessengerEXT</a></td></tr>
@@ -187,7 +193,7 @@ Variables</h2></td></tr>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="../../d2/dde/namespacedebug_a2c211b70c4398422cdff97189048fe44_icgraph.svg" width="408" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="../../d2/dde/namespacedebug_a2c211b70c4398422cdff97189048fe44_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -218,6 +224,79 @@ Variables</h2></td></tr>
 <div class="ttc" id="anamespacedebug_html_a9f1286c41f0bc07d0558b13fe031eda3"><div class="ttname"><a href="../../d2/dde/namespacedebug.html#a9f1286c41f0bc07d0558b13fe031eda3">debug::debugUtilsMessenger</a></div><div class="ttdeci">VkDebugUtilsMessengerEXT debugUtilsMessenger</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00008">VulkanDebug.cpp:8</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00008">debugUtilsMessenger</a>, and <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00007">vkDestroyDebugUtilsMessengerEXT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../d9/df1/_vulkan_renderer_8cpp_source.html#l01189">VulkanRenderer::cleanUp()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="../../closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="../../d2/dde/namespacedebug_a0090a7de5456794069c8360a0780ed52_icgraph.svg" width="402" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a840a095211f991961d5ca51d7b4f1032" name="a840a095211f991961d5ca51d7b4f1032"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a840a095211f991961d5ca51d7b4f1032">&#9670;&nbsp;</a></span>messageCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VKAPI_ATTR VkBool32 VKAPI_CALL debug::messageCallback </td>
+          <td>(</td>
+          <td class="paramtype">VkDebugReportFlagsEXT&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VkDebugReportObjectTypeEXT&#160;</td>
+          <td class="paramname"><em>objType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>srcObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>msgCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>pLayerPrefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>pMsg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pUserData</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -280,12 +359,21 @@ Variables</h2></td></tr>
 <div class="ttc" id="anamespacedebug_html_a3f65712a616783bbd6fe7e68429d4c44"><div class="ttname"><a href="../../d2/dde/namespacedebug.html#a3f65712a616783bbd6fe7e68429d4c44">debug::vkCreateDebugUtilsMessengerEXT</a></div><div class="ttdeci">PFN_vkCreateDebugUtilsMessengerEXT vkCreateDebugUtilsMessengerEXT</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00006">VulkanDebug.cpp:6</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00008">debugUtilsMessenger</a>, <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00010">debugUtilsMessengerCallback()</a>, <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00006">vkCreateDebugUtilsMessengerEXT</a>, and <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00007">vkDestroyDebugUtilsMessengerEXT</a>.</p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="../../closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+
+<p class="reference">Referenced by <a class="el" href="../../d9/df1/_vulkan_renderer_8cpp_source.html#l00024">VulkanRenderer::VulkanRenderer()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="../../closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" frameborder="0" src="../../d2/dde/namespacedebug_a2d3861f9b449521a13975f6f21342c43_cgraph.svg" width="408" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="../../closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="../../d2/dde/namespacedebug_a2d3861f9b449521a13975f6f21342c43_icgraph.svg" width="432" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -306,6 +394,50 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00008">8</a> of file <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html">VulkanDebug.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00082">freeDebugCallback()</a>, and <a class="el" href="../../d7/d9e/_vulkan_debug_8cpp_source.html#l00058">setupDebugging()</a>.</p>
+
+</div>
+</div>
+<a id="a8d85c11eed9767bcc118549eac481756" name="a8d85c11eed9767bcc118549eac481756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d85c11eed9767bcc118549eac481756">&#9670;&nbsp;</a></span>validationLayerCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int debug::validationLayerCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad39b1b584636e9a6e4e1810a10352e88" name="ad39b1b584636e9a6e4e1810a10352e88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad39b1b584636e9a6e4e1810a10352e88">&#9670;&nbsp;</a></span>validationLayerNames</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* debug::validationLayerNames[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -351,7 +483,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/dde/namespacedebug.html">debug</a></li>
-    <li class="footer">Generated on Fri Jun 10 2022 19:42:12 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+    <li class="footer">Generated on Mon Jun 13 2022 18:09:47 for GraphicsEngine by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
 </body>

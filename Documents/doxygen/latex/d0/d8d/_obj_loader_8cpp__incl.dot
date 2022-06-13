@@ -7,9 +7,9 @@ digraph "C:/Users/jonas_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/ObjLoader.c
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node1 [label="C:/Users/jonas_l6e3q\l/Desktop/GraphicsEngineVulkan\l/Src/scene/ObjLoader.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
-  Node2 [label="ObjLoader.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node2 [label="ObjLoader.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
   Node3 [label="tiny_obj_loader.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
   Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
-  Node4 [label="File.h",height=0.2,width=0.4,color="grey75",tooltip=" "];
+  Node4 [label="File.hpp",height=0.2,width=0.4,color="grey75",tooltip=" "];
 }

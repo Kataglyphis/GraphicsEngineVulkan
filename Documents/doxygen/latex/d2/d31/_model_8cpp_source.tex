@@ -2,42 +2,42 @@
 \label{_model_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Model.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/scene/Model.cpp}}
 \mbox{\hyperlink{_model_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}Model.h"{}}}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_model_8hpp}{Model.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00003}00003 Model::Model() \{\}}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00003}\mbox{\hyperlink{class_model_ae3b375de5f6df4faf74a95d64748e048}{00003}} \mbox{\hyperlink{class_model_ae3b375de5f6df4faf74a95d64748e048}{Model::Model}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00004}00004 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00005}00005 Model::Model(VulkanDevice* device) \{ this-\/>device = device; \}}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00005}\mbox{\hyperlink{class_model_a1e6f64c641b45db4fa78ad19e265b9ef}{00005}} \mbox{\hyperlink{class_model_ae3b375de5f6df4faf74a95d64748e048}{Model::Model}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device) \{ this-\/>device = \mbox{\hyperlink{class_model_a1a569f679719e0aa7916d8dba4ff6cb9}{device}}; \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00006}00006 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00007}00007 \textcolor{keywordtype}{void} Model::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00008}00008   \textcolor{keywordflow}{for} (Texture texture : modelTextures) \{}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00007}\mbox{\hyperlink{class_model_a4dfce0884ad5cfd0c9ee298fb95eb575}{00007}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_model_a4dfce0884ad5cfd0c9ee298fb95eb575}{Model::cleanUp}}() \{}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00008}00008   \textcolor{keywordflow}{for} (\mbox{\hyperlink{class_texture}{Texture}} texture : \mbox{\hyperlink{class_model_a812a9a653ba5d099123ca7a4cea92dcb}{modelTextures}}) \{}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00009}00009     texture.cleanUp();}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00010}00010   \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00011}00011 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00012}00012   \textcolor{keywordflow}{for} (VkSampler texture\_sampler : modelTextureSamplers) \{}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00013}00013     vkDestroySampler(device-\/>getLogicalDevice(), texture\_sampler, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00012}00012   \textcolor{keywordflow}{for} (VkSampler texture\_sampler : \mbox{\hyperlink{class_model_a0ec17e8d8f4faa46bd9e91706bd0053a}{modelTextureSamplers}}) \{}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00013}00013     vkDestroySampler(\mbox{\hyperlink{class_model_a1a569f679719e0aa7916d8dba4ff6cb9}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), texture\_sampler, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00014}00014   \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00015}00015 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00016}00016   mesh.cleanUp();}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00016}00016   \mbox{\hyperlink{class_model_a3d4bb8dadc8b8fa5513cd052ccc2276e}{mesh}}.\mbox{\hyperlink{class_mesh_a54793e3eab375ecb8736c49821a9b3d6}{cleanUp}}();}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00017}00017 \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00018}00018 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00019}00019 \textcolor{keywordtype}{void} Model::add\_new\_mesh(VulkanDevice* device, VkQueue transfer\_queue,}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00019}\mbox{\hyperlink{class_model_ad97215de4635b0e58bbaf054a549e9b4}{00019}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_model_ad97215de4635b0e58bbaf054a549e9b4}{Model::add\_new\_mesh}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, VkQueue transfer\_queue,}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00020}00020                          VkCommandPool command\_pool,}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00021}00021                          std::vector<Vertex>\& vertices,}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00022}00022                          std::vector<unsigned int>\& indices,}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00023}00023                          std::vector<unsigned int>\& materialIndex,}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00024}00024                          std::vector<ObjMaterial>\& materials) \{}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00025}00025   this-\/>mesh = Mesh(device, transfer\_queue, command\_pool, vertices, indices,}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00025}00025   this-\/>\mbox{\hyperlink{class_model_a3d4bb8dadc8b8fa5513cd052ccc2276e}{mesh}} = \mbox{\hyperlink{class_mesh}{Mesh}}(\mbox{\hyperlink{class_model_a1a569f679719e0aa7916d8dba4ff6cb9}{device}}, transfer\_queue, command\_pool, vertices, indices,}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00026}00026                     materialIndex, materials);}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00027}00027 \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00028}00028 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00029}00029 \textcolor{keywordtype}{void} Model::set\_model(glm::mat4 model) \{ this-\/>model = model; \}}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00029}\mbox{\hyperlink{class_model_ac8834761a74d56a65840f076f3d1bb49}{00029}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_model_ac8834761a74d56a65840f076f3d1bb49}{Model::set\_model}}(\mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} model) \{ this-\/>model = \mbox{\hyperlink{class_model_ab700d3ab458a1846371c3ad19c276e13}{model}}; \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00030}00030 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00031}00031 \textcolor{keywordtype}{void} Model::addTexture(Texture newTexture) \{}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00032}00032   modelTextures.push\_back(newTexture);}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00033}00033   addSampler(newTexture);}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00031}\mbox{\hyperlink{class_model_a00571e6f5a86c0e400f983a4d846fec6}{00031}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_model_a00571e6f5a86c0e400f983a4d846fec6}{Model::addTexture}}(\mbox{\hyperlink{class_texture}{Texture}} newTexture) \{}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00032}00032   \mbox{\hyperlink{class_model_a812a9a653ba5d099123ca7a4cea92dcb}{modelTextures}}.push\_back(newTexture);}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00033}00033   \mbox{\hyperlink{class_model_a64b4d0730ec012749592417844804128}{addSampler}}(newTexture);}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00034}00034 \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00035}00035 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00036}00036 uint32\_t Model::getPrimitiveCount() \{}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00036}\mbox{\hyperlink{class_model_aa8c101ece00e9a363f4372ddd1166f75}{00036}} uint32\_t \mbox{\hyperlink{class_model_aa8c101ece00e9a363f4372ddd1166f75}{Model::getPrimitiveCount}}() \{}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00037}00037   \textcolor{comment}{/*uint32\_t number\_of\_indices = 0;}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00038}00038 \textcolor{comment}{}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00039}00039 \textcolor{comment}{    for (Mesh mesh : meshes) \{}}
@@ -47,12 +47,12 @@
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00043}00043 \textcolor{comment}{    \}}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00044}00044 \textcolor{comment}{}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00045}00045 \textcolor{comment}{    return number\_of\_indices / 3;*/}}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00046}00046   \textcolor{keywordflow}{return} mesh.getIndexCount() / 3;}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00046}00046   \textcolor{keywordflow}{return} \mbox{\hyperlink{class_model_a3d4bb8dadc8b8fa5513cd052ccc2276e}{mesh}}.\mbox{\hyperlink{class_mesh_a6dde20eaf4e25eba5cd13918e269445a}{getIndexCount}}() / 3;}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00047}00047 \}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00048}00048 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00049}00049 Model::\string~Model() \{\}}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00049}\mbox{\hyperlink{class_model_ad6ebd2062a0b823db841a0b88baac4c0}{00049}} \mbox{\hyperlink{class_model_ad6ebd2062a0b823db841a0b88baac4c0}{Model::\string~Model}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00050}00050 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00051}00051 \textcolor{keywordtype}{void} Model::addSampler(Texture newTexture) \{}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00051}\mbox{\hyperlink{class_model_a64b4d0730ec012749592417844804128}{00051}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_model_a64b4d0730ec012749592417844804128}{Model::addSampler}}(\mbox{\hyperlink{class_texture}{Texture}} newTexture) \{}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00052}00052   VkSampler newSampler;}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00053}00053   \textcolor{comment}{// sampler create info}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00054}00054   VkSamplerCreateInfo sampler\_create\_info\{\};}
@@ -67,15 +67,15 @@
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00063}00063   sampler\_create\_info.mipmapMode = VK\_SAMPLER\_MIPMAP\_MODE\_LINEAR;}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00064}00064   sampler\_create\_info.mipLodBias = 0.0f;}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00065}00065   sampler\_create\_info.minLod = 0.0f;}
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00066}00066   sampler\_create\_info.maxLod = newTexture.getMipLevel();}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00066}00066   sampler\_create\_info.maxLod = newTexture.\mbox{\hyperlink{class_texture_a1299b32d229dba2eb7322e39eae06d21}{getMipLevel}}();}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00067}00067   sampler\_create\_info.anisotropyEnable = VK\_TRUE;}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00068}00068   sampler\_create\_info.maxAnisotropy = 16;  \textcolor{comment}{// max anisotropy sample level}}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00069}00069 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00070}00070   VkResult result = vkCreateSampler(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00070}00070   VkResult result = vkCreateSampler(\mbox{\hyperlink{class_model_a1a569f679719e0aa7916d8dba4ff6cb9}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00071}00071                                     \&sampler\_create\_info, \textcolor{keyword}{nullptr}, \&newSampler);}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00072}00072   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a texture sampler!"{}})}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00073}00073 }
-\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00074}00074   modelTextureSamplers.push\_back(newSampler);}
+\DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00074}00074   \mbox{\hyperlink{class_model_a0ec17e8d8f4faa46bd9e91706bd0053a}{modelTextureSamplers}}.push\_back(newSampler);}
 \DoxyCodeLine{\Hypertarget{_model_8cpp_source_l00075}00075 \}}
 
 \end{DoxyCode}

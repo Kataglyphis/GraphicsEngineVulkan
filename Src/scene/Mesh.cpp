@@ -1,9 +1,9 @@
-#include "Mesh.h"
+#include "Mesh.hpp"
 
 #include <cstring>
 #include <memory>
 
-#include "VulkanBuffer.h"
+#include "VulkanBuffer.hpp"
 
 Mesh::Mesh() {}
 

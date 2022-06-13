@@ -2,16 +2,16 @@
 \label{_shader_helper_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/ShaderHelper.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/vulkan\_base/ShaderHelper.cpp}}
 \mbox{\hyperlink{_shader_helper_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00002}00002 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00002}00002 \textcolor{preprocessor}{\#include <iomanip>}}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00003}00003 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include <sstream>}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00005}00005 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_shader_helper_8hpp}{ShaderHelper.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vulkan_renderer_config_8hpp}{VulkanRendererConfig.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_utilities_8hpp}{Utilities.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00007}00007 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00008}00008 ShaderHelper::ShaderHelper() \{\}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00008}\mbox{\hyperlink{class_shader_helper_a3ed0efa88a32a331c70d62d2165bfc19}{00008}} \mbox{\hyperlink{class_shader_helper_a3ed0efa88a32a331c70d62d2165bfc19}{ShaderHelper::ShaderHelper}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00009}00009 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00010}00010 \textcolor{keywordtype}{void} ShaderHelper::compileShader(\textcolor{keyword}{const} std::string\& shader\_src\_dir,}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00010}\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{00010}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{ShaderHelper::compileShader}}(\textcolor{keyword}{const} std::string\& shader\_src\_dir,}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00011}00011                                  \textcolor{keyword}{const} std::string\& shader\_name) \{}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00012}00012   \textcolor{comment}{// GLSLC\_EXE is set by cmake to the location of the vulkan glslc}}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00013}00013   std::stringstream shader\_src\_path;}
@@ -20,52 +20,54 @@
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00016}00016   std::stringstream adminPriviliges;}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00017}00017   adminPriviliges << \textcolor{stringliteral}{"{}runas /user:<admin-\/user> \(\backslash\)"{}"{}};}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00018}00018 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00019}00019   shader\_src\_path << shader\_src\_dir << shader\_name;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00020}00020   std::string shader\_spv\_path = getShaderSpvDir(shader\_src\_dir, shader\_name);}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00021}00021   shader\_log\_file << shader\_src\_dir << shader\_name << \textcolor{stringliteral}{"{}.log.txt"{}};}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00022}00022   std::stringstream log\_stdout\_and\_stderr;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00023}00023   log\_stdout\_and\_stderr << \textcolor{stringliteral}{"{} > "{}} << shader\_log\_file.str() << \textcolor{stringliteral}{"{} 2> "{}}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00024}00024                         << shader\_log\_file.str();}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00025}00025 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00026}00026   cmdShaderCompile  \textcolor{comment}{//<< adminPriviliges.str()}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00027}00027       << GLSLC\_EXE << target << shader\_src\_path.str() << \textcolor{stringliteral}{"{} -\/o "{}}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00028}00028       << shader\_spv\_path;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00029}00029   \textcolor{comment}{//<< log\_stdout\_and\_stderr.str();}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00030}00030 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00031}00031   \textcolor{comment}{// std::cout << cmdShaderCompile.str().c\_str();}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00032}00032 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00033}00033   system(cmdShaderCompile.str().c\_str());}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00034}00034 \}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00019}00019   \textcolor{comment}{// with wrapping your path with quotation marks one can use paths with blanks ...}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00020}00020   shader\_src\_path << shader\_src\_dir << shader\_name;}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00021}00021   std::string shader\_spv\_path = \mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(shader\_src\_dir, shader\_name);}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00022}00022   shader\_log\_file << shader\_src\_dir << shader\_name << \textcolor{stringliteral}{"{}.log.txt"{}};}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00023}00023   std::stringstream log\_stdout\_and\_stderr;}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00024}00024   log\_stdout\_and\_stderr << \textcolor{stringliteral}{"{} > "{}} << shader\_log\_file.str() << \textcolor{stringliteral}{"{} 2> "{}}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00025}00025                         << shader\_log\_file.str();}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00026}00026 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00027}00027   cmdShaderCompile  \textcolor{comment}{//<< adminPriviliges.str()}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00028}00028       << GLSLC\_EXE << \mbox{\hyperlink{class_shader_helper_a803bcc068b15da90a7ae83eb415ced09}{target}} << std::quoted(shader\_src\_path.str()) << \textcolor{stringliteral}{"{} -\/o "{}}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00029}00029       << std::quoted(shader\_spv\_path);}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00030}00030   \textcolor{comment}{//<< log\_stdout\_and\_stderr.str();}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00031}00031 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00032}00032   \textcolor{comment}{// std::cout << cmdShaderCompile.str().c\_str();}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00034}00034   system(cmdShaderCompile.str().c\_str());}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00035}00035 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00036}00036 std::string ShaderHelper::getShaderSpvDir(\textcolor{keyword}{const} std::string\& shader\_src\_dir,}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00037}00037                                           \textcolor{keyword}{const} std::string\& shader\_name) \{}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00038}00038   std::string shader\_spv\_dir = \textcolor{stringliteral}{"{}spv/"{}};}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00039}00039 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00040}00040   std::stringstream vertShaderSpv;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00041}00041   vertShaderSpv << shader\_src\_dir << shader\_spv\_dir << shader\_name << \textcolor{stringliteral}{"{}.spv"{}};}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00042}00042 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00043}00043   \textcolor{keywordflow}{return} vertShaderSpv.str();}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00044}00044 \}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00045}00045 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00046}00046 VkShaderModule ShaderHelper::createShaderModule(VulkanDevice* device,}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00047}00047                                                 \textcolor{keyword}{const} std::vector<char>\& code) \{}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00048}00048   \textcolor{comment}{// shader module create info}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00049}00049   VkShaderModuleCreateInfo shader\_module\_create\_info\{\};}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00050}00050   shader\_module\_create\_info.sType = VK\_STRUCTURE\_TYPE\_SHADER\_MODULE\_CREATE\_INFO;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00051}00051   shader\_module\_create\_info.codeSize = code.size();  \textcolor{comment}{// size of code}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00052}00052   shader\_module\_create\_info.pCode =}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00053}00053       \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const }uint32\_t*\textcolor{keyword}{>}(code.data());  \textcolor{comment}{// pointer to code}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00054}00054 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00055}00055   VkShaderModule shader\_module;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00056}00056   VkResult result =}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00057}00057       vkCreateShaderModule(device-\/>getLogicalDevice(),}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00058}00058                            \&shader\_module\_create\_info, \textcolor{keyword}{nullptr}, \&shader\_module);}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00059}00059 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00060}00060   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a shader module!"{}})}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00036}00036 \}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00038}\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{00038}} std::string \mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{ShaderHelper::getShaderSpvDir}}(\textcolor{keyword}{const} std::string\& shader\_src\_dir,}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00039}00039                                           \textcolor{keyword}{const} std::string\& shader\_name) \{}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00040}00040   std::string shader\_spv\_dir = \textcolor{stringliteral}{"{}spv/"{}};}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00041}00041 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00042}00042   std::stringstream vertShaderSpv;}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00043}00043   vertShaderSpv << shader\_src\_dir << shader\_spv\_dir << shader\_name << \textcolor{stringliteral}{"{}.spv"{}};}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00044}00044 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00045}00045   \textcolor{keywordflow}{return} vertShaderSpv.str();}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00046}00046 \}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00047}00047 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00048}\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{00048}} VkShaderModule \mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{ShaderHelper::createShaderModule}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device,}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00049}00049                                                 \textcolor{keyword}{const} std::vector<char>\& code) \{}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00050}00050   \textcolor{comment}{// shader module create info}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00051}00051   VkShaderModuleCreateInfo shader\_module\_create\_info\{\};}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00052}00052   shader\_module\_create\_info.sType = VK\_STRUCTURE\_TYPE\_SHADER\_MODULE\_CREATE\_INFO;}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00053}00053   shader\_module\_create\_info.codeSize = code.size();  \textcolor{comment}{// size of code}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00054}00054   shader\_module\_create\_info.pCode =}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00055}00055       \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const }uint32\_t*\textcolor{keyword}{>}(code.data());  \textcolor{comment}{// pointer to code}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00056}00056 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00057}00057   VkShaderModule shader\_module;}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00058}00058   VkResult result =}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00059}00059       vkCreateShaderModule(device-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00060}00060                            \&shader\_module\_create\_info, \textcolor{keyword}{nullptr}, \&shader\_module);}
 \DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00061}00061 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00062}00062   return shader\_module;}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00063}00063 \}}
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00064}00064 }
-\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00065}00065 ShaderHelper::\string~ShaderHelper() \{\}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00062}00062   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a shader module!"{}})}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00063}00063 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00064}00064   \textcolor{keywordflow}{return} shader\_module;}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00065}00065 \}}
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00066}00066 }
+\DoxyCodeLine{\Hypertarget{_shader_helper_8cpp_source_l00067}\mbox{\hyperlink{class_shader_helper_ae3d2ec345536e3f9acd519dffdff4723}{00067}} \mbox{\hyperlink{class_shader_helper_ae3d2ec345536e3f9acd519dffdff4723}{ShaderHelper::\string~ShaderHelper}}() \{\}}
 
 \end{DoxyCode}

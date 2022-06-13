@@ -1,16 +1,16 @@
-#include "PostStage.h"
+#include "PostStage.hpp"
 
 #include <array>
 #include <vector>
 #include <filesystem>
 
-#include "File.h"
-#include "FormatHelper.h"
-#include "GUI.h"
-#include "ShaderHelper.h"
-#include "Vertex.h"
+#include "File.hpp"
+#include "FormatHelper.hpp"
+#include "GUI.hpp"
+#include "ShaderHelper.hpp"
+#include "Vertex.hpp"
 
-#include "VulkanRendererConfig.h"
+#include "VulkanRendererConfig.hpp"
 
 PostStage::PostStage() {}
 
@@ -273,7 +273,7 @@ void PostStage::createGraphicsPipeline(
   std::filesystem::path cwd = std::filesystem::current_path();
   post_shader_dir << cwd.string();
   post_shader_dir << RELATIVE_RESOURCE_PATH;
-  post_shader_dir << "Shader/post/";
+  post_shader_dir << "Shaders/post/";
 
   std::string post_vert_shader = "post.vert";
   std::string post_frag_shader = "post.frag";

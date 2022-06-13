@@ -2,54 +2,54 @@
 \label{_post_stage_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/PostStage.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/renderer/PostStage.cpp}}
 \mbox{\hyperlink{_post_stage_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}PostStage.h"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_post_stage_8hpp}{PostStage.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00002}00002 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include <array>}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include <vector>}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include <filesystem>}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00006}00006 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}File.h"{}}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}FormatHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00010}00010 \textcolor{preprocessor}{\#include "{}ShaderHelper.h"{}}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00011}00011 \textcolor{preprocessor}{\#include "{}Vertex.h"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_file_8hpp}{File.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_format_helper_8hpp}{FormatHelper.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_g_u_i_8hpp}{GUI.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00010}00010 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_shader_helper_8hpp}{ShaderHelper.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00011}00011 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vertex_8hpp}{Vertex.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00012}00012 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00013}00013 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00013}00013 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vulkan_renderer_config_8hpp}{VulkanRendererConfig.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00014}00014 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00015}00015 PostStage::PostStage() \{\}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00015}\mbox{\hyperlink{class_post_stage_a97ef1224fa4a36a985b11426ab2f07b4}{00015}} \mbox{\hyperlink{class_post_stage_a97ef1224fa4a36a985b11426ab2f07b4}{PostStage::PostStage}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00016}00016 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00017}00017 \textcolor{keywordtype}{void} PostStage::init(}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00018}00018     VulkanDevice* device, VulkanSwapChain* vulkanSwapChain,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00017}\mbox{\hyperlink{class_post_stage_aaaf5f57556cae64c078edde2497adbd6}{00017}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_aaaf5f57556cae64c078edde2497adbd6}{PostStage::init}}(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00018}00018     \mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device, \mbox{\hyperlink{class_vulkan_swap_chain}{VulkanSwapChain}}* vulkanSwapChain,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00019}00019     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00020}00020   this-\/>device = device;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00021}00021   this-\/>vulkanSwapChain = vulkanSwapChain;}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00020}00020   this-\/>device = \mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}};}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00021}00021   this-\/>vulkanSwapChain = \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00022}00022 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00023}00023   createOffscreenTextureSampler();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00023}00023   \mbox{\hyperlink{class_post_stage_a83e5be2b7d1dc1dd645a9bbf03b7282b}{createOffscreenTextureSampler}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00024}00024 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00025}00025   createPushConstantRange();}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00026}00026   createDepthbufferImage();}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00027}00027   createRenderpass();}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00028}00028   createGraphicsPipeline(descriptorSetLayouts);}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00029}00029   createFramebuffer();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00025}00025   \mbox{\hyperlink{class_post_stage_a0b29ac5cd302c9242f2f07e9b872d4a8}{createPushConstantRange}}();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00026}00026   \mbox{\hyperlink{class_post_stage_a36f71bc5ae8190d8e4033acd851a892f}{createDepthbufferImage}}();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00027}00027   \mbox{\hyperlink{class_post_stage_a02d788e3a1fb47979d72a840ff1130cd}{createRenderpass}}();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00028}00028   \mbox{\hyperlink{class_post_stage_a505fc6f5a6c1a52b2066cb74b4f5662c}{createGraphicsPipeline}}(descriptorSetLayouts);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00029}00029   \mbox{\hyperlink{class_post_stage_ad467e0d87b7af3c01155921ffeffe194}{createFramebuffer}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00030}00030 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00031}00031 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00032}00032 \textcolor{keywordtype}{void} PostStage::shaderHotReload(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00032}\mbox{\hyperlink{class_post_stage_a2df347c19c3190d78302a59f7fc49468}{00032}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_a2df347c19c3190d78302a59f7fc49468}{PostStage::shaderHotReload}}(}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00033}00033     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptor\_set\_layouts) \{}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00034}00034   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00035}00035   createGraphicsPipeline(descriptor\_set\_layouts);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00034}00034   vkDestroyPipeline(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_post_stage_a9b3bd5faf0ffb7f7a0d48263676e7712}{graphics\_pipeline}}, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00035}00035   \mbox{\hyperlink{class_post_stage_a505fc6f5a6c1a52b2066cb74b4f5662c}{createGraphicsPipeline}}(descriptor\_set\_layouts);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00036}00036 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00037}00037 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00038}00038 \textcolor{keywordtype}{void} PostStage::recordCommands(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00038}\mbox{\hyperlink{class_post_stage_aaaf07c6c4034d0da019cf7d1d56976ad}{00038}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_aaaf07c6c4034d0da019cf7d1d56976ad}{PostStage::recordCommands}}(}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00039}00039     VkCommandBuffer\& commandBuffer, uint32\_t image\_index,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00040}00040     \textcolor{keyword}{const} std::vector<VkDescriptorSet>\& descriptorSets) \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00041}00041   \textcolor{comment}{// information about how to begin a render pass (only needed for graphical}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00042}00042   \textcolor{comment}{// applications)}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00043}00043   VkRenderPassBeginInfo render\_pass\_begin\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00044}00044   render\_pass\_begin\_info.sType = VK\_STRUCTURE\_TYPE\_RENDER\_PASS\_BEGIN\_INFO;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00045}00045   render\_pass\_begin\_info.renderPass = render\_pass;  \textcolor{comment}{// render pass to begin}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00045}00045   render\_pass\_begin\_info.renderPass = \mbox{\hyperlink{class_post_stage_a99663812172c3ad8f6e0b0ca2bf8a59e}{render\_pass}};  \textcolor{comment}{// render pass to begin}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00046}00046   render\_pass\_begin\_info.renderArea.offset = \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00047}00047       0, 0\};  \textcolor{comment}{// start point of render pass in pixels}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00048}00048   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00048}00048   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a011fed91d8c903437dd190177dbe0e15}{getSwapChainExtent}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00049}00049   render\_pass\_begin\_info.renderArea.extent =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00050}00050       swap\_chain\_extent;  \textcolor{comment}{// size of region to run render pass on (starting at}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00051}00051                           \textcolor{comment}{// offset)}}
@@ -66,22 +66,22 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00062}00062 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00063}00063   \textcolor{comment}{// used framebuffer depends on the swap chain and therefore is changing for}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00064}00064   \textcolor{comment}{// each command buffer}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00065}00065   render\_pass\_begin\_info.framebuffer = framebuffers[image\_index];}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00065}00065   render\_pass\_begin\_info.framebuffer = \mbox{\hyperlink{class_post_stage_aedbbe9436e1969da6bc0102cb5a536cc}{framebuffers}}[image\_index];}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00066}00066 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00067}00067   \textcolor{comment}{// begin render pass}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00068}00068   vkCmdBeginRenderPass(commandBuffer, \&render\_pass\_begin\_info,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00069}00069                        VK\_SUBPASS\_CONTENTS\_INLINE);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00070}00070   \textcolor{keyword}{auto} aspectRatio = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(swap\_chain\_extent.width) /}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00071}00071                      \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(swap\_chain\_extent.height);}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00072}00072   PushConstantPost pc\_post\{\};}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00073}00073   pc\_post.aspect\_ratio = aspectRatio;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00074}00074   vkCmdPushConstants(commandBuffer, pipeline\_layout,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00072}00072   \mbox{\hyperlink{struct_push_constant_post}{PushConstantPost}} pc\_post\{\};}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00073}00073   pc\_post.\mbox{\hyperlink{struct_push_constant_post_afa4acebc9eb3795fc71a2db7fcea2cc9}{aspect\_ratio}} = aspectRatio;}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00074}00074   vkCmdPushConstants(commandBuffer, \mbox{\hyperlink{class_post_stage_a8e5647b19b2521401a65a43747e6e069}{pipeline\_layout}},}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00075}00075                      VK\_SHADER\_STAGE\_VERTEX\_BIT | VK\_SHADER\_STAGE\_FRAGMENT\_BIT,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00076}00076                      0, \textcolor{keyword}{sizeof}(PushConstantPost), \&pc\_post);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00076}00076                      0, \textcolor{keyword}{sizeof}(\mbox{\hyperlink{struct_push_constant_post}{PushConstantPost}}), \&pc\_post);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00077}00077   vkCmdBindPipeline(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00078}00078                     graphics\_pipeline);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00078}00078                     \mbox{\hyperlink{class_post_stage_a9b3bd5faf0ffb7f7a0d48263676e7712}{graphics\_pipeline}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00079}00079   vkCmdBindDescriptorSets(commandBuffer, VK\_PIPELINE\_BIND\_POINT\_GRAPHICS,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00080}00080                           pipeline\_layout, 0,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00080}00080                           \mbox{\hyperlink{class_post_stage_a8e5647b19b2521401a65a43747e6e069}{pipeline\_layout}}, 0,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00081}00081                           \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSets.size()),}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00082}00082                           descriptorSets.data(), 0, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00083}00083   vkCmdDraw(commandBuffer, 3, 1, 0, 0);}
@@ -94,46 +94,46 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00090}00090   vkCmdEndRenderPass(commandBuffer);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00091}00091 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00092}00092 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00093}00093 \textcolor{keywordtype}{void} PostStage::cleanUp() \{}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00094}00094   depthBufferImage.cleanUp();}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00095}00095   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} framebuffer : framebuffers) \{}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00096}00096     vkDestroyFramebuffer(device-\/>getLogicalDevice(), framebuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00093}\mbox{\hyperlink{class_post_stage_accfbdfe5dede42eed39932900f901e83}{00093}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_accfbdfe5dede42eed39932900f901e83}{PostStage::cleanUp}}() \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00094}00094   \mbox{\hyperlink{class_post_stage_ab93d9e2a94e013d7697357990232180c}{depthBufferImage}}.\mbox{\hyperlink{class_texture_afdc94e97e6118d2e7b253f975ab90de1}{cleanUp}}();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00095}00095   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} framebuffer : \mbox{\hyperlink{class_post_stage_aedbbe9436e1969da6bc0102cb5a536cc}{framebuffers}}) \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00096}00096     vkDestroyFramebuffer(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), framebuffer, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00097}00097   \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00098}00098 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00099}00099   vkDestroySampler(device-\/>getLogicalDevice(), offscreenTextureSampler,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00099}00099   vkDestroySampler(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_post_stage_ac3f4bddb00e140d7e969333afc9e49aa}{offscreenTextureSampler}},}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00100}00100                    \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00101}00101 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00102}00102   vkDestroyRenderPass(device-\/>getLogicalDevice(), render\_pass, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00103}00103   vkDestroyPipeline(device-\/>getLogicalDevice(), graphics\_pipeline, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00104}00104   vkDestroyPipelineLayout(device-\/>getLogicalDevice(), pipeline\_layout, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00102}00102   vkDestroyRenderPass(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_post_stage_a99663812172c3ad8f6e0b0ca2bf8a59e}{render\_pass}}, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00103}00103   vkDestroyPipeline(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_post_stage_a9b3bd5faf0ffb7f7a0d48263676e7712}{graphics\_pipeline}}, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00104}00104   vkDestroyPipelineLayout(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_post_stage_a8e5647b19b2521401a65a43747e6e069}{pipeline\_layout}}, \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00105}00105 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00106}00106 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00107}00107 PostStage::\string~PostStage() \{\}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00107}\mbox{\hyperlink{class_post_stage_a13f0bab1d972c8c984b26142fefa74cc}{00107}} \mbox{\hyperlink{class_post_stage_a13f0bab1d972c8c984b26142fefa74cc}{PostStage::\string~PostStage}}() \{\}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00108}00108 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00109}00109 \textcolor{keywordtype}{void} PostStage::createDepthbufferImage() \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00109}\mbox{\hyperlink{class_post_stage_a36f71bc5ae8190d8e4033acd851a892f}{00109}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_a36f71bc5ae8190d8e4033acd851a892f}{PostStage::createDepthbufferImage}}() \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00110}00110   \textcolor{comment}{// get supported format for depth buffer}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00111}00111   depth\_format = choose\_supported\_format(}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00112}00112       device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00111}00111   \mbox{\hyperlink{class_post_stage_ac59eafcf822fa4225996eff3c40133b1}{depth\_format}} = \mbox{\hyperlink{_format_helper_8hpp_a6d609124858fffeb7e0ed1ebdce2d30d}{choose\_supported\_format}}(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00112}00112       \mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac70529b6753bedb7cfddd11baa5c27eb}{getPhysicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00113}00113       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00114}00114        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00115}00115       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00116}00116 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00117}00117   \textcolor{comment}{// create depth buffer image}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00118}00118   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00119}00119   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00120}00120   depthBufferImage.createImage(device, swap\_chain\_extent.width,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00121}00121                                swap\_chain\_extent.height, 1, depth\_format,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00119}00119   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a011fed91d8c903437dd190177dbe0e15}{getSwapChainExtent}}();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00120}00120   \mbox{\hyperlink{class_post_stage_ab93d9e2a94e013d7697357990232180c}{depthBufferImage}}.\mbox{\hyperlink{class_texture_aaee208f1a10daa6336112e7611b0edd4}{createImage}}(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}, swap\_chain\_extent.width,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00121}00121                                swap\_chain\_extent.height, 1, \mbox{\hyperlink{class_post_stage_ac59eafcf822fa4225996eff3c40133b1}{depth\_format}},}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00122}00122                                VK\_IMAGE\_TILING\_OPTIMAL,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00123}00123                                VK\_IMAGE\_USAGE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00124}00124                                VK\_MEMORY\_PROPERTY\_DEVICE\_LOCAL\_BIT);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00125}00125 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00126}00126   \textcolor{comment}{// depth buffer image view}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00127}00127   \textcolor{comment}{// MIP LEVELS: for depth texture we only want 1 level :)}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00128}00128   depthBufferImage.createImageView(device, depth\_format,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00128}00128   \mbox{\hyperlink{class_post_stage_ab93d9e2a94e013d7697357990232180c}{depthBufferImage}}.\mbox{\hyperlink{class_texture_ac2b41ec83a09b8a3cbe3be6effbde22c}{createImageView}}(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}, \mbox{\hyperlink{class_post_stage_ac59eafcf822fa4225996eff3c40133b1}{depth\_format}},}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00129}00129                                    VK\_IMAGE\_ASPECT\_DEPTH\_BIT, 1);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00130}00130 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00131}00131 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00132}00132 \textcolor{keywordtype}{void} PostStage::createOffscreenTextureSampler() \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00132}\mbox{\hyperlink{class_post_stage_a83e5be2b7d1dc1dd645a9bbf03b7282b}{00132}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_a83e5be2b7d1dc1dd645a9bbf03b7282b}{PostStage::createOffscreenTextureSampler}}() \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00133}00133   \textcolor{comment}{// sampler create info}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00134}00134   VkSamplerCreateInfo sampler\_create\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00135}00135   sampler\_create\_info.sType = VK\_STRUCTURE\_TYPE\_SAMPLER\_CREATE\_INFO;}
@@ -152,23 +152,23 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00148}00148   sampler\_create\_info.maxAnisotropy = 16;  \textcolor{comment}{// max anisotropy sample level}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00149}00149 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00150}00150   VkResult result =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00151}00151       vkCreateSampler(device-\/>getLogicalDevice(), \&sampler\_create\_info, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00152}00152                       \&offscreenTextureSampler);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00151}00151       vkCreateSampler(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&sampler\_create\_info, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00152}00152                       \&\mbox{\hyperlink{class_post_stage_ac3f4bddb00e140d7e969333afc9e49aa}{offscreenTextureSampler}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00153}00153   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a texture sampler!"{}})}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00154}00154 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00155}00155 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00156}00156 \textcolor{keywordtype}{void} PostStage::createPushConstantRange() \{}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00157}00157   push\_constant\_range.stageFlags =}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00156}\mbox{\hyperlink{class_post_stage_a0b29ac5cd302c9242f2f07e9b872d4a8}{00156}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_a0b29ac5cd302c9242f2f07e9b872d4a8}{PostStage::createPushConstantRange}}() \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00157}00157   \mbox{\hyperlink{class_post_stage_a58ed8aae1cf88044d7736ea04a3abb99}{push\_constant\_range}}.stageFlags =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00158}00158       VK\_SHADER\_STAGE\_VERTEX\_BIT | VK\_SHADER\_STAGE\_FRAGMENT\_BIT;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00159}00159   push\_constant\_range.offset = 0;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00160}00160   push\_constant\_range.size = \textcolor{keyword}{sizeof}(PushConstantPost);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00159}00159   \mbox{\hyperlink{class_post_stage_a58ed8aae1cf88044d7736ea04a3abb99}{push\_constant\_range}}.offset = 0;}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00160}00160   \mbox{\hyperlink{class_post_stage_a58ed8aae1cf88044d7736ea04a3abb99}{push\_constant\_range}}.size = \textcolor{keyword}{sizeof}(\mbox{\hyperlink{struct_push_constant_post}{PushConstantPost}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00161}00161 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00162}00162 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00163}00163 \textcolor{keywordtype}{void} PostStage::createRenderpass() \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00163}\mbox{\hyperlink{class_post_stage_a02d788e3a1fb47979d72a840ff1130cd}{00163}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_a02d788e3a1fb47979d72a840ff1130cd}{PostStage::createRenderpass}}() \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00164}00164   \textcolor{comment}{// Color attachment of render pass}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00165}00165   VkAttachmentDescription color\_attachment\{\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00166}00166   \textcolor{keyword}{const} VkFormat\& swap\_chain\_image\_format =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00167}00167       vulkanSwapChain-\/>getSwapChainFormat();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00167}00167       \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a987ff941c88ce0782b1695f747d185c9}{getSwapChainFormat}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00168}00168   color\_attachment.format =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00169}00169       swap\_chain\_image\_format;  \textcolor{comment}{// format to use for attachment}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00170}00170   color\_attachment.samples =}
@@ -196,8 +196,8 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00192}00192 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00193}00193   \textcolor{comment}{// depth attachment of render pass}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00194}00194   VkAttachmentDescription depth\_attachment\{\};}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00195}00195   depth\_attachment.format = choose\_supported\_format(}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00196}00196       device-\/>getPhysicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00195}00195   depth\_attachment.format = \mbox{\hyperlink{_format_helper_8hpp_a6d609124858fffeb7e0ed1ebdce2d30d}{choose\_supported\_format}}(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00196}00196       \mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac70529b6753bedb7cfddd11baa5c27eb}{getPhysicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00197}00197       \{VK\_FORMAT\_D32\_SFLOAT\_S8\_UINT, VK\_FORMAT\_D32\_SFLOAT,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00198}00198        VK\_FORMAT\_D24\_UNORM\_S8\_UINT\},}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00199}00199       VK\_IMAGE\_TILING\_OPTIMAL, VK\_FORMAT\_FEATURE\_DEPTH\_STENCIL\_ATTACHMENT\_BIT);}
@@ -266,39 +266,39 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00262}00262   render\_pass\_create\_info.pDependencies = subpass\_dependencies.data();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00263}00263 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00264}00264   VkResult result =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00265}00265       vkCreateRenderPass(device-\/>getLogicalDevice(), \&render\_pass\_create\_info,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00266}00266                          \textcolor{keyword}{nullptr}, \&render\_pass);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00265}00265       vkCreateRenderPass(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&render\_pass\_create\_info,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00266}00266                          \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_post_stage_a99663812172c3ad8f6e0b0ca2bf8a59e}{render\_pass}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00267}00267   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create render pass!"{}})}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00268}00268 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00269}00269 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00270}00270 \textcolor{keywordtype}{void} PostStage::createGraphicsPipeline(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00270}\mbox{\hyperlink{class_post_stage_a505fc6f5a6c1a52b2066cb74b4f5662c}{00270}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_a505fc6f5a6c1a52b2066cb74b4f5662c}{PostStage::createGraphicsPipeline}}(}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00271}00271     \textcolor{keyword}{const} std::vector<VkDescriptorSetLayout>\& descriptorSetLayouts) \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00272}00272   std::stringstream post\_shader\_dir;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00273}00273   std::filesystem::path cwd = std::filesystem::current\_path();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00274}00274   post\_shader\_dir << cwd.string();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00275}00275   post\_shader\_dir << RELATIVE\_RESOURCE\_PATH;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00276}00276   post\_shader\_dir << \textcolor{stringliteral}{"{}Shader/post/"{}};}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00276}00276   post\_shader\_dir << \textcolor{stringliteral}{"{}Shaders/post/"{}};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00277}00277 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00278}00278   std::string post\_vert\_shader = \textcolor{stringliteral}{"{}post.vert"{}};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00279}00279   std::string post\_frag\_shader = \textcolor{stringliteral}{"{}post.frag"{}};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00280}00280 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00281}00281   ShaderHelper shaderHelper;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00282}00282   File vertexShaderFile(}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00283}00283       shaderHelper.getShaderSpvDir(post\_shader\_dir.str(), post\_vert\_shader));}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00284}00284   std::vector<char> vertex\_shader\_code = vertexShaderFile.readCharSequence();}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00285}00285   File fragmentShaderFile(}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00286}00286       shaderHelper.getShaderSpvDir(post\_shader\_dir.str(), post\_frag\_shader));}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00281}00281   \mbox{\hyperlink{class_shader_helper}{ShaderHelper}} shaderHelper;}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00282}00282   \mbox{\hyperlink{class_file}{File}} vertexShaderFile(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00283}00283       shaderHelper.\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(post\_shader\_dir.str(), post\_vert\_shader));}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00284}00284   std::vector<char> vertex\_shader\_code = vertexShaderFile.\mbox{\hyperlink{class_file_a7de1f16679f714425bf885ecfdd98bec}{readCharSequence}}();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00285}00285   \mbox{\hyperlink{class_file}{File}} fragmentShaderFile(}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00286}00286       shaderHelper.\mbox{\hyperlink{class_shader_helper_acec26b0353445c635468a6986c2b2fdf}{getShaderSpvDir}}(post\_shader\_dir.str(), post\_frag\_shader));}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00287}00287   std::vector<char> fragment\_shader\_code =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00288}00288       fragmentShaderFile.readCharSequence();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00288}00288       fragmentShaderFile.\mbox{\hyperlink{class_file_a7de1f16679f714425bf885ecfdd98bec}{readCharSequence}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00289}00289 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00290}00290   shaderHelper.compileShader(post\_shader\_dir.str(), post\_vert\_shader);}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00291}00291   shaderHelper.compileShader(post\_shader\_dir.str(), post\_frag\_shader);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00290}00290   shaderHelper.\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{compileShader}}(post\_shader\_dir.str(), post\_vert\_shader);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00291}00291   shaderHelper.\mbox{\hyperlink{class_shader_helper_a6a369c1edd1cb99f1e748014715c099e}{compileShader}}(post\_shader\_dir.str(), post\_frag\_shader);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00292}00292 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00293}00293   \textcolor{comment}{// build shader modules to link to graphics pipeline}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00294}00294   VkShaderModule vertex\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00295}00295       shaderHelper.createShaderModule(device, vertex\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00295}00295       shaderHelper.\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{createShaderModule}}(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}, vertex\_shader\_code);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00296}00296   VkShaderModule fragment\_shader\_module =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00297}00297       shaderHelper.createShaderModule(device, fragment\_shader\_code);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00297}00297       shaderHelper.\mbox{\hyperlink{class_shader_helper_a4c6d3be1ec52369f59413ee2ab352d47}{createShaderModule}}(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}, fragment\_shader\_code);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00298}00298 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00299}00299   \textcolor{comment}{// shader stage creation information}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00300}00300   \textcolor{comment}{// vertex stage creation information}}
@@ -324,7 +324,7 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00320}00320   \textcolor{comment}{// texture coords, normals, etc) is as a whole}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00321}00321   VkVertexInputBindingDescription binding\_description\{\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00322}00322   binding\_description.binding = 0;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00323}00323   binding\_description.stride = \textcolor{keyword}{sizeof}(Vertex);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00323}00323   binding\_description.stride = \textcolor{keyword}{sizeof}(\mbox{\hyperlink{class_vertex}{Vertex}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00324}00324   binding\_description.inputRate = VK\_VERTEX\_INPUT\_RATE\_VERTEX;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00325}00325 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00326}00326   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions =}
@@ -352,7 +352,7 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00348}00348   VkViewport viewport\{\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00349}00349   viewport.x = 0.0f;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00350}00350   viewport.y = 0.0f;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00351}00351   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00351}00351   \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a011fed91d8c903437dd190177dbe0e15}{getSwapChainExtent}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00352}00352   viewport.width = (float)swap\_chain\_extent.width;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00353}00353   viewport.height = (\textcolor{keywordtype}{float})swap\_chain\_extent.height;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00354}00354   viewport.minDepth = 0.0f;}
@@ -428,12 +428,12 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00424}00424       \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(descriptorSetLayouts.size());}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00425}00425   pipeline\_layout\_create\_info.pSetLayouts = descriptorSetLayouts.data();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00426}00426   pipeline\_layout\_create\_info.pushConstantRangeCount = 1;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00427}00427   pipeline\_layout\_create\_info.pPushConstantRanges = \&push\_constant\_range;}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00427}00427   pipeline\_layout\_create\_info.pPushConstantRanges = \&\mbox{\hyperlink{class_post_stage_a58ed8aae1cf88044d7736ea04a3abb99}{push\_constant\_range}};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00428}00428 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00429}00429   \textcolor{comment}{// create pipeline layout}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00430}00430   VkResult result = vkCreatePipelineLayout(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00430}00430   VkResult result = vkCreatePipelineLayout(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00431}00431                                            \&pipeline\_layout\_create\_info,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00432}00432                                            \textcolor{keyword}{nullptr}, \&pipeline\_layout);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00432}00432                                            \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_post_stage_a8e5647b19b2521401a65a43747e6e069}{pipeline\_layout}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00433}00433   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create pipeline layout!"{}})}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00434}00434 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00435}00435   \textcolor{comment}{// -\/-\/ DEPTH STENCIL TESTING -\/-\/}}
@@ -461,8 +461,8 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00457}00457   graphics\_pipeline\_create\_info.pMultisampleState = \&multisample\_create\_info;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00458}00458   graphics\_pipeline\_create\_info.pColorBlendState = \&color\_blending\_create\_info;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00459}00459   graphics\_pipeline\_create\_info.pDepthStencilState = \&depth\_stencil\_create\_info;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00460}00460   graphics\_pipeline\_create\_info.layout = pipeline\_layout;}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00461}00461   graphics\_pipeline\_create\_info.renderPass = render\_pass;}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00460}00460   graphics\_pipeline\_create\_info.layout = \mbox{\hyperlink{class_post_stage_a8e5647b19b2521401a65a43747e6e069}{pipeline\_layout}};}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00461}00461   graphics\_pipeline\_create\_info.renderPass = \mbox{\hyperlink{class_post_stage_a99663812172c3ad8f6e0b0ca2bf8a59e}{render\_pass}};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00462}00462   graphics\_pipeline\_create\_info.subpass = 0;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00463}00463 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00464}00464   \textcolor{comment}{// pipeline derivatives : can create multiple pipelines that derive from one}}
@@ -471,46 +471,46 @@
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00467}00467   graphics\_pipeline\_create\_info.basePipelineIndex = -\/1;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00468}00468 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00469}00469   \textcolor{comment}{// create graphics pipeline}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00470}00470   result = vkCreateGraphicsPipelines(device-\/>getLogicalDevice(), VK\_NULL\_HANDLE,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00470}00470   result = vkCreateGraphicsPipelines(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), VK\_NULL\_HANDLE,}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00471}00471                                      1, \&graphics\_pipeline\_create\_info, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00472}00472                                      \&graphics\_pipeline);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00472}00472                                      \&\mbox{\hyperlink{class_post_stage_a9b3bd5faf0ffb7f7a0d48263676e7712}{graphics\_pipeline}});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00473}00473   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a graphics pipeline!"{}})}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00474}00474 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00475}00475   \textcolor{comment}{// Destroy shader modules, no longer needed after pipeline created}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00476}00476   vkDestroyShaderModule(device-\/>getLogicalDevice(), vertex\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00477}00477                         \textcolor{keywordtype}{nullptr});}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00478}00478   vkDestroyShaderModule(device-\/>getLogicalDevice(), fragment\_shader\_module,}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00479}00479                         \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00476}00476   vkDestroyShaderModule(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), vertex\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00477}00477                         \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00478}00478   vkDestroyShaderModule(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), fragment\_shader\_module,}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00479}00479                         \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00480}00480 \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00481}00481 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00482}00482 \textcolor{keywordtype}{void} PostStage::createFramebuffer() \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00482}\mbox{\hyperlink{class_post_stage_ad467e0d87b7af3c01155921ffeffe194}{00482}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_post_stage_ad467e0d87b7af3c01155921ffeffe194}{PostStage::createFramebuffer}}() \{}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00483}00483   \textcolor{comment}{// resize framebuffer size to equal swap chain image count}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00484}00484   framebuffers.resize(vulkanSwapChain-\/>getNumberSwapChainImages());}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00484}00484   \mbox{\hyperlink{class_post_stage_aedbbe9436e1969da6bc0102cb5a536cc}{framebuffers}}.resize(\mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a08ecb4a7e50622137984cbb6e3be0e74}{getNumberSwapChainImages}}());}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00485}00485 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00486}00486   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < vulkanSwapChain-\/>getNumberSwapChainImages(); i++) \{}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00487}00487     Texture\& swap\_chain\_image = vulkanSwapChain-\/>getSwapChainImage(i);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00486}00486   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a08ecb4a7e50622137984cbb6e3be0e74}{getNumberSwapChainImages}}(); i++) \{}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00487}00487     \mbox{\hyperlink{class_texture}{Texture}}\& swap\_chain\_image = \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a44adda1a704b3b4c14888329f2a9a407}{getSwapChainImage}}(i);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00488}00488 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00489}00489     std::array<VkImageView, 2> attachments = \{swap\_chain\_image.getImageView(),}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00490}00490                                               depthBufferImage.getImageView()\};}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00489}00489     std::array<VkImageView, 2> attachments = \{swap\_chain\_image.\mbox{\hyperlink{class_texture_a3b20cfab8997b45f161e04c3a7b865ae}{getImageView}}(),}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00490}00490                                               \mbox{\hyperlink{class_post_stage_ab93d9e2a94e013d7697357990232180c}{depthBufferImage}}.\mbox{\hyperlink{class_texture_a3b20cfab8997b45f161e04c3a7b865ae}{getImageView}}()\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00491}00491 }
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00492}00492     VkFramebufferCreateInfo frame\_buffer\_create\_info\{\};}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00493}00493     frame\_buffer\_create\_info.sType = VK\_STRUCTURE\_TYPE\_FRAMEBUFFER\_CREATE\_INFO;}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00494}00494     frame\_buffer\_create\_info.renderPass =}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00495}00495         render\_pass;  \textcolor{comment}{// render pass layout the framebuffer will be used with}}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00495}00495         \mbox{\hyperlink{class_post_stage_a99663812172c3ad8f6e0b0ca2bf8a59e}{render\_pass}};  \textcolor{comment}{// render pass layout the framebuffer will be used with}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00496}00496     frame\_buffer\_create\_info.attachmentCount =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00497}00497         \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(attachments.size());}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00498}00498     frame\_buffer\_create\_info.pAttachments =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00499}00499         attachments.data();  \textcolor{comment}{// list of attachments (1:1 with render pass)}}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00500}00500     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = vulkanSwapChain-\/>getSwapChainExtent();}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00500}00500     \textcolor{keyword}{const} VkExtent2D\& swap\_chain\_extent = \mbox{\hyperlink{class_post_stage_a4b24fac5f875747a5702a8406f321668}{vulkanSwapChain}}-\/>\mbox{\hyperlink{class_vulkan_swap_chain_a011fed91d8c903437dd190177dbe0e15}{getSwapChainExtent}}();}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00501}00501     frame\_buffer\_create\_info.width =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00502}00502         swap\_chain\_extent.width;  \textcolor{comment}{// framebuffer width}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00503}00503     frame\_buffer\_create\_info.height =}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00504}00504         swap\_chain\_extent.height;         \textcolor{comment}{// framebuffer height}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00505}00505     frame\_buffer\_create\_info.layers = 1;  \textcolor{comment}{// framebuffer layer}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00506}00506 }
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00507}00507     VkResult result = vkCreateFramebuffer(device-\/>getLogicalDevice(),}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00507}00507     VkResult result = vkCreateFramebuffer(\mbox{\hyperlink{class_post_stage_afa75cd632c612599490e33ed2355fd84}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(),}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00508}00508                                           \&frame\_buffer\_create\_info, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00509}00509                                           \&framebuffers[i]);}
+\DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00509}00509                                           \&\mbox{\hyperlink{class_post_stage_aedbbe9436e1969da6bc0102cb5a536cc}{framebuffers}}[i]);}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00510}00510     ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create framebuffer!"{}})}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00511}00511   \}}
 \DoxyCodeLine{\Hypertarget{_post_stage_8cpp_source_l00512}00512 \}}

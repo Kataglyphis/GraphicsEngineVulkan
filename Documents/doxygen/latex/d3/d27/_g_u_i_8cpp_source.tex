@@ -2,29 +2,29 @@
 \label{_g_u_i_8cpp_source}\index{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp@{C:/Users/jonas\_l6e3q/Desktop/GraphicsEngineVulkan/Src/gui/GUI.cpp}}
 \mbox{\hyperlink{_g_u_i_8cpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}GUI.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_g_u_i_8hpp}{GUI.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00002}00002 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}QueueFamilyIndices.h"{}}}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Utilities.h"{}}}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}VulkanDevice.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_queue_family_indices_8hpp}{QueueFamilyIndices.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_utilities_8hpp}{Utilities.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vulkan_device_8hpp}{VulkanDevice.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00006}00006 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}VulkanRendererConfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vulkan_renderer_config_8hpp}{VulkanRendererConfig.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00008}00008 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include <filesystem>}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00010}00010 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00011}00011 GUI::GUI(Window* window) \{ this-\/>window = window; \}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00011}\mbox{\hyperlink{class_g_u_i_a97e44fe13f40ff79da5dd4f82149d65e}{00011}} \mbox{\hyperlink{class_g_u_i_a97e44fe13f40ff79da5dd4f82149d65e}{GUI::GUI}}(\mbox{\hyperlink{class_window}{Window}}* window) \{ this-\/>window = \mbox{\hyperlink{class_g_u_i_af3dfde8a4c4cbdd8e3d99b51849865a8}{window}}; \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00012}00012 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00013}00013 \textcolor{keywordtype}{void} GUI::initializeVulkanContext(VulkanDevice* device,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00013}\mbox{\hyperlink{class_g_u_i_ad0f98124685f5bdce472705527bbd0dd}{00013}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_g_u_i_ad0f98124685f5bdce472705527bbd0dd}{GUI::initializeVulkanContext}}(\mbox{\hyperlink{class_vulkan_device}{VulkanDevice}}* device,}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00014}00014                                   \textcolor{keyword}{const} VkInstance\& instance,}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00015}00015                                   \textcolor{keyword}{const} VkRenderPass\& post\_render\_pass,}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00016}00016                                   \textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00017}00017   this-\/>device = device;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00017}00017   this-\/>device = \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00018}00018 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00019}00019   create\_gui\_context(window, instance, post\_render\_pass);}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00020}00020   create\_fonts\_and\_upload(graphics\_command\_pool);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00019}00019   \mbox{\hyperlink{class_g_u_i_a346cf3f581ef5fa50eeef4f301392b0a}{create\_gui\_context}}(\mbox{\hyperlink{class_g_u_i_af3dfde8a4c4cbdd8e3d99b51849865a8}{window}}, instance, post\_render\_pass);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00020}00020   \mbox{\hyperlink{class_g_u_i_aadc3ba69307bcac05abed92ff3ec4e01}{create\_fonts\_and\_upload}}(graphics\_command\_pool);}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00021}00021 \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00022}00022 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00023}00023 \textcolor{keywordtype}{void} GUI::render() \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00023}\mbox{\hyperlink{class_g_u_i_ae63efaa6d38814299c42540a5d4ea00b}{00023}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_g_u_i_ae63efaa6d38814299c42540a5d4ea00b}{GUI::render}}() \{}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00024}00024   \textcolor{comment}{// Start the Dear ImGui frame}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00025}00025   ImGui\_ImplVulkan\_NewFrame();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00026}00026   ImGui\_ImplGlfw\_NewFrame();}
@@ -37,7 +37,7 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00033}00033 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00034}00034   \textcolor{keywordflow}{if} (ImGui::CollapsingHeader(\textcolor{stringliteral}{"{}Hot shader reload"{}})) \{}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00035}00035     \textcolor{keywordflow}{if} (ImGui::Button(\textcolor{stringliteral}{"{}All shader!"{}})) \{}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00036}00036       guiRendererSharedVars.shader\_hot\_reload\_triggered = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00036}00036       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a6d6ef112a3eecdb0ae44b59bd03f4d65}{shader\_hot\_reload\_triggered}} = \textcolor{keyword}{true};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00037}00037     \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00038}00038   \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00039}00039 }
@@ -52,16 +52,16 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00048}00048 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00049}00049   \textcolor{keywordflow}{switch} (e) \{}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00050}00050     \textcolor{keywordflow}{case} 0:}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00051}00051       guiRendererSharedVars.raytracing = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00052}00052       guiRendererSharedVars.pathTracing = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00051}00051       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a7f5f89b2824836042732de523691fae1}{raytracing}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00052}00052       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a6efe5c67a2bd386bccb1378b0e3bd38b}{pathTracing}} = \textcolor{keyword}{false};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00053}00053       \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00054}00054     \textcolor{keywordflow}{case} 1:}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00055}00055       guiRendererSharedVars.raytracing = \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00056}00056       guiRendererSharedVars.pathTracing = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00055}00055       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a7f5f89b2824836042732de523691fae1}{raytracing}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00056}00056       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a6efe5c67a2bd386bccb1378b0e3bd38b}{pathTracing}} = \textcolor{keyword}{false};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00057}00057       \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00058}00058     \textcolor{keywordflow}{case} 2:}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00059}00059       guiRendererSharedVars.raytracing = \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00060}00060       guiRendererSharedVars.pathTracing = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00059}00059       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a7f5f89b2824836042732de523691fae1}{raytracing}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00060}00060       \mbox{\hyperlink{class_g_u_i_a9ea490be3739a9666320f9d692dbb254}{guiRendererSharedVars}}.\mbox{\hyperlink{struct_g_u_i_renderer_shared_vars_a6efe5c67a2bd386bccb1378b0e3bd38b}{pathTracing}} = \textcolor{keyword}{true};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00061}00061       \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00062}00062   \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00063}00063   \textcolor{comment}{// ImGui::Checkbox("{}Ray tracing"{}, \&guiRendererSharedVars.raytracing);}}
@@ -72,15 +72,15 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00068}00068     \textcolor{keywordflow}{if} (ImGui::TreeNode(\textcolor{stringliteral}{"{}Directional Light"{}})) \{}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00069}00069       ImGui::Separator();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00070}00070       ImGui::SliderFloat(\textcolor{stringliteral}{"{}Ambient intensity"{}},}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00071}00071                          \&guiSceneSharedVars.direcional\_light\_radiance, 0.0f,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00071}00071                          \&\mbox{\hyperlink{class_g_u_i_afc35ef4fb815212657dbec278bb37e6e}{guiSceneSharedVars}}.\mbox{\hyperlink{struct_g_u_i_scene_shared_vars_ad1dde491407c811fb1fdb54b661090a7}{direcional\_light\_radiance}}, 0.0f,}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00072}00072                          50.0f);}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00073}00073       ImGui::Separator();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00074}00074       \textcolor{comment}{// Edit a color (stored as \string~4 floats)}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00075}00075       ImGui::ColorEdit3(\textcolor{stringliteral}{"{}Directional Light Color"{}},}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00076}00076                         guiSceneSharedVars.directional\_light\_color);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00076}00076                         \mbox{\hyperlink{class_g_u_i_afc35ef4fb815212657dbec278bb37e6e}{guiSceneSharedVars}}.\mbox{\hyperlink{struct_g_u_i_scene_shared_vars_ae52c18faf49a8c4a40ea1fdce6c5d766}{directional\_light\_color}});}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00077}00077       ImGui::Separator();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00078}00078       ImGui::SliderFloat3(\textcolor{stringliteral}{"{}Light Direction"{}},}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00079}00079                           guiSceneSharedVars.directional\_light\_direction, -\/1.f,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00079}00079                           \mbox{\hyperlink{class_g_u_i_afc35ef4fb815212657dbec278bb37e6e}{guiSceneSharedVars}}.\mbox{\hyperlink{struct_g_u_i_scene_shared_vars_a3f274c997450fc90f3b0941fcbc92112}{directional\_light\_direction}}, -\/1.f,}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00080}00080                           1.0f);}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00081}00081 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00082}00082       ImGui::TreePop();}
@@ -122,16 +122,16 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00118}00118   ImGui::End();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00119}00119 \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00120}00120 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00121}00121 \textcolor{keywordtype}{void} GUI::cleanUp() \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00121}\mbox{\hyperlink{class_g_u_i_a1430e862293524beead3c14db02fcf8c}{00121}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_g_u_i_a1430e862293524beead3c14db02fcf8c}{GUI::cleanUp}}() \{}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00122}00122   \textcolor{comment}{// clean up of GUI stuff}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00123}00123   ImGui\_ImplVulkan\_Shutdown();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00124}00124   ImGui\_ImplGlfw\_Shutdown();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00125}00125   ImGui::DestroyContext();}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00126}00126   vkDestroyDescriptorPool(device-\/>getLogicalDevice(), gui\_descriptor\_pool,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00126}00126   vkDestroyDescriptorPool(\mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \mbox{\hyperlink{class_g_u_i_a5e88765348ac60bf86912a0477d0c633}{gui\_descriptor\_pool}},}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00127}00127                           \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00128}00128 \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00129}00129 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00130}00130 \textcolor{keywordtype}{void} GUI::create\_gui\_context(Window* window, \textcolor{keyword}{const} VkInstance\& instance,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00130}\mbox{\hyperlink{class_g_u_i_a346cf3f581ef5fa50eeef4f301392b0a}{00130}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_g_u_i_a346cf3f581ef5fa50eeef4f301392b0a}{GUI::create\_gui\_context}}(\mbox{\hyperlink{class_window}{Window}}* window, \textcolor{keyword}{const} VkInstance\& instance,}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00131}00131                              \textcolor{keyword}{const} VkRenderPass\& post\_render\_pass) \{}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00132}00132   IMGUI\_CHECKVERSION();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00133}00133   ImGui::CreateContext();}
@@ -179,7 +179,7 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00175}00175   ImGui::StyleColorsDark();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00176}00176   \textcolor{comment}{// ImGui::StyleColorsClassic();}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00177}00177 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00178}00178   ImGui\_ImplGlfw\_InitForVulkan(window-\/>get\_window(), \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00178}00178   ImGui\_ImplGlfw\_InitForVulkan(\mbox{\hyperlink{class_g_u_i_af3dfde8a4c4cbdd8e3d99b51849865a8}{window}}-\/>\mbox{\hyperlink{class_window_a6a86e2d9de3bd06e4b3d8eb34c44aead}{get\_window}}(), \textcolor{keyword}{false});}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00179}00179 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00180}00180   \textcolor{comment}{// Create Descriptor Pool}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00181}00181   VkDescriptorPoolSize gui\_pool\_sizes[] = \{}
@@ -203,22 +203,22 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00199}00199   gui\_pool\_info.pPoolSizes = gui\_pool\_sizes;}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00200}00200 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00201}00201   VkResult result =}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00202}00202       vkCreateDescriptorPool(device-\/>getLogicalDevice(), \&gui\_pool\_info,}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00203}00203                              \textcolor{keyword}{nullptr}, \&gui\_descriptor\_pool);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00202}00202       vkCreateDescriptorPool(\mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), \&gui\_pool\_info,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00203}00203                              \textcolor{keyword}{nullptr}, \&\mbox{\hyperlink{class_g_u_i_a5e88765348ac60bf86912a0477d0c633}{gui\_descriptor\_pool}});}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00204}00204   ASSERT\_VULKAN(result, \textcolor{stringliteral}{"{}Failed to create a gui descriptor pool!"{}})}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00205}00205 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00206}00206   QueueFamilyIndices indices = device-\/>getQueueFamilies();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00206}00206   \mbox{\hyperlink{struct_queue_family_indices}{QueueFamilyIndices}} indices = \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a789fa1fd7fd18f0b2711126284f77ccb}{getQueueFamilies}}();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00207}00207 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00208}00208   ImGui\_ImplVulkan\_InitInfo init\_info = \{\};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00209}00209   init\_info.Instance = instance;}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00210}00210   init\_info.PhysicalDevice = device-\/>getPhysicalDevice();}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00211}00211   init\_info.Device = device-\/>getLogicalDevice();}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00212}00212   init\_info.QueueFamily = indices.graphics\_family;}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00213}00213   init\_info.Queue = device-\/>getGraphicsQueue();}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00214}00214   init\_info.DescriptorPool = gui\_descriptor\_pool;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00210}00210   init\_info.PhysicalDevice = \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac70529b6753bedb7cfddd11baa5c27eb}{getPhysicalDevice}}();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00211}00211   init\_info.Device = \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00212}00212   init\_info.QueueFamily = indices.\mbox{\hyperlink{struct_queue_family_indices_a3416a9d74a792f7f93c90d4724718847}{graphics\_family}};}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00213}00213   init\_info.Queue = \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}();}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00214}00214   init\_info.DescriptorPool = \mbox{\hyperlink{class_g_u_i_a5e88765348ac60bf86912a0477d0c633}{gui\_descriptor\_pool}};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00215}00215   init\_info.PipelineCache = VK\_NULL\_HANDLE;}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00216}00216   init\_info.MinImageCount = 2;}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00217}00217   init\_info.ImageCount = MAX\_FRAME\_DRAWS;}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00217}00217   init\_info.ImageCount = \mbox{\hyperlink{_globals_8hpp_a80f3c46f057a73866aaf58ebe862ce11}{MAX\_FRAME\_DRAWS}};}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00218}00218   init\_info.Allocator = VK\_NULL\_HANDLE;}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00219}00219   init\_info.CheckVkResultFn = VK\_NULL\_HANDLE;}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00220}00220   init\_info.Subpass = 0;}
@@ -227,20 +227,20 @@
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00223}00223   ImGui\_ImplVulkan\_Init(\&init\_info, post\_render\_pass);}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00224}00224 \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00225}00225 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00226}00226 \textcolor{keywordtype}{void} GUI::create\_fonts\_and\_upload(\textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00227}00227   VkCommandBuffer command\_buffer = commandBufferManager.beginCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00228}00228       device-\/>getLogicalDevice(), graphics\_command\_pool);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00226}\mbox{\hyperlink{class_g_u_i_aadc3ba69307bcac05abed92ff3ec4e01}{00226}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_g_u_i_aadc3ba69307bcac05abed92ff3ec4e01}{GUI::create\_fonts\_and\_upload}}(\textcolor{keyword}{const} VkCommandPool\& graphics\_command\_pool) \{}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00227}00227   VkCommandBuffer command\_buffer = \mbox{\hyperlink{class_g_u_i_a89142a955105a06091dbe0af6bb3bcf5}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a341dd6bf1dab7f3eb0d378a6187dee6d}{beginCommandBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00228}00228       \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), graphics\_command\_pool);}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00229}00229   ImGui\_ImplVulkan\_CreateFontsTexture(command\_buffer);}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00230}00230   commandBufferManager.endAndSubmitCommandBuffer(}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00231}00231       device-\/>getLogicalDevice(), graphics\_command\_pool,}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00232}00232       device-\/>getGraphicsQueue(), command\_buffer);}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00230}00230   \mbox{\hyperlink{class_g_u_i_a89142a955105a06091dbe0af6bb3bcf5}{commandBufferManager}}.\mbox{\hyperlink{class_command_buffer_manager_a77200b8fa3586015d1637ca5166debd9}{endAndSubmitCommandBuffer}}(}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00231}00231       \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}(), graphics\_command\_pool,}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00232}00232       \mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_ac0319bac875a47723c78b7361195209a}{getGraphicsQueue}}(), command\_buffer);}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00233}00233 }
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00234}00234   \textcolor{comment}{// wait until no actions being run on device before destroying}}
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00235}00235   vkDeviceWaitIdle(device-\/>getLogicalDevice());}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00235}00235   vkDeviceWaitIdle(\mbox{\hyperlink{class_g_u_i_a343e8d8aa652d83cd5db18a3f0d1c489}{device}}-\/>\mbox{\hyperlink{class_vulkan_device_a85c4132481de02046b8329cf698ac6d9}{getLogicalDevice}}());}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00236}00236   \textcolor{comment}{// clear font textures from cpu data}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00237}00237   ImGui\_ImplVulkan\_DestroyFontUploadObjects();}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00238}00238 \}}
 \DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00239}00239 }
-\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00240}00240 GUI::\string~GUI() \{\}}
+\DoxyCodeLine{\Hypertarget{_g_u_i_8cpp_source_l00240}\mbox{\hyperlink{class_g_u_i_ac9cae2328dcb5d83bdfaeca49a2eb695}{00240}} \mbox{\hyperlink{class_g_u_i_ac9cae2328dcb5d83bdfaeca49a2eb695}{GUI::\string~GUI}}() \{\}}
 
 \end{DoxyCode}
