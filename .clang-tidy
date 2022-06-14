@@ -1,5 +1,6 @@
 ---
-Checks: "*,
+Checks: "
+        -*,
         -abseil-*,
         -altera-*,
         -android-*,
@@ -24,8 +25,7 @@ Checks: "*,
         performance-*,	
         portability-*,
         readability-*,
-        -zircon-*,
+        -zircon-*
         "
-WarningsAsErrors: '1'
-HeaderFilterRegex: "'^((?!/ExternalLib/).)*$'"
+WarningsAsErrors: ''
 FormatStyle:     none

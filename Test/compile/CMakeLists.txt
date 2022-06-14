@@ -33,10 +33,10 @@ add_executable( ${COMPILE_TEST_SUITE}
                 ${COMMON_FILTER}
                 ${GUI_FILTER}
                 ${APP_FILTER}
-                ${IMGUI_FILTER}
                 ${UTIL_FILTER}
                 ${VULKAN_BASE_FILTER}
                 ${SHADER_HOST_DEVICE_FILTER}
+                $<TARGET_OBJECTS:IMGUI>
 )
 
 target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC     ${WORKING_DIRECTORY}include/renderer
@@ -71,6 +71,17 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    ${CMAKE_DL_LIBS}
   )
 
 target_link_libraries(${COMPILE_TEST_SUITE}      PRIVATE GSL)
+
+
+# disable all warnings for our test suite
+if(MSVC)
+  target_compile_options(${COMPILE_TEST_SUITE} INTERFACE /w)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
+else()
+  target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
+endif()
+
 
 include(GoogleTest)
 gtest_discover_tests(   ${COMPILE_TEST_SUITE})

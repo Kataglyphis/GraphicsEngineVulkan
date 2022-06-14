@@ -419,7 +419,7 @@
     </TokenIdentifier>
     <Path>df/dcb/namespacescene_config.html</Path>
     <Anchor>a6c53371694e44e40c835e48f27def71f</Anchor>
-    <DeclaredIn>SceneConfig.hpp</DeclaredIn>
+    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -430,7 +430,7 @@
     </TokenIdentifier>
     <Path>df/dcb/namespacescene_config.html</Path>
     <Anchor>a71330a511f748716643e88a4d446875c</Anchor>
-    <DeclaredIn>SceneConfig.hpp</DeclaredIn>
+    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -441,7 +441,7 @@
     </TokenIdentifier>
     <Path>d1/d25/namespacevertex.html</Path>
     <Anchor>a183ebeb3b6fde1df5bd8e204127514ba</Anchor>
-    <DeclaredIn>Vertex.hpp</DeclaredIn>
+    <DeclaredIn>Vertex.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -463,7 +463,7 @@
     </TokenIdentifier>
     <Path>d2/dde/namespacedebug.html</Path>
     <Anchor>a2d3861f9b449521a13975f6f21342c43</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+    <DeclaredIn>VulkanDebug.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -474,7 +474,7 @@
     </TokenIdentifier>
     <Path>d2/dde/namespacedebug.html</Path>
     <Anchor>a0090a7de5456794069c8360a0780ed52</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+    <DeclaredIn>VulkanDebug.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -527,7 +527,7 @@
     </TokenIdentifier>
     <Path>df/dcb/namespacescene_config.html</Path>
     <Anchor>a6c53371694e44e40c835e48f27def71f</Anchor>
-    <DeclaredIn>SceneConfig.hpp</DeclaredIn>
+    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -538,7 +538,7 @@
     </TokenIdentifier>
     <Path>df/dcb/namespacescene_config.html</Path>
     <Anchor>a71330a511f748716643e88a4d446875c</Anchor>
-    <DeclaredIn>SceneConfig.hpp</DeclaredIn>
+    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -549,7 +549,7 @@
     </TokenIdentifier>
     <Path>d1/d25/namespacevertex.html</Path>
     <Anchor>a183ebeb3b6fde1df5bd8e204127514ba</Anchor>
-    <DeclaredIn>Vertex.hpp</DeclaredIn>
+    <DeclaredIn>Vertex.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -571,7 +571,7 @@
     </TokenIdentifier>
     <Path>d2/dde/namespacedebug.html</Path>
     <Anchor>a2d3861f9b449521a13975f6f21342c43</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+    <DeclaredIn>VulkanDebug.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -582,7 +582,7 @@
     </TokenIdentifier>
     <Path>d2/dde/namespacedebug.html</Path>
     <Anchor>a0090a7de5456794069c8360a0780ed52</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+    <DeclaredIn>VulkanDebug.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -903,7 +903,7 @@
       <Scope>ASManager</Scope>
     </TokenIdentifier>
     <Path>d7/db7/class_a_s_manager.html</Path>
-    <Anchor>aff437db226e7e1cc042c75602aa2efb7</Anchor>
+    <Anchor>ad58600899f5d991a9eb458ed2d380b98</Anchor>
     <DeclaredIn>ASManager.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -1692,7 +1692,7 @@
       <Scope>GUI</Scope>
     </TokenIdentifier>
     <Path>d3/d57/class_g_u_i.html</Path>
-    <Anchor>a4939aef9c7e3f0829046b7c3843de4d3</Anchor>
+    <Anchor>ade0fc6987a37474da0879fd8419b7ee5</Anchor>
     <DeclaredIn>GUI.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -1941,7 +1941,7 @@
       <Scope>Mesh</Scope>
     </TokenIdentifier>
     <Path>dc/dbe/class_mesh.html</Path>
-    <Anchor>a2e96ee726cef1bcd0a530df88df652d6</Anchor>
+    <Anchor>ae6f034171fdd2cc95d1a8a18fbbc20af</Anchor>
     <DeclaredIn>Mesh.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -1985,7 +1985,7 @@
       <Scope>Mesh</Scope>
     </TokenIdentifier>
     <Path>dc/dbe/class_mesh.html</Path>
-    <Anchor>aa66016d680eb8b9a86eb0bf73ab4e2dd</Anchor>
+    <Anchor>a55a8358815f4b0e8b02360af062c8562</Anchor>
     <DeclaredIn>Mesh.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -1996,7 +1996,7 @@
       <Scope>Mesh</Scope>
     </TokenIdentifier>
     <Path>dc/dbe/class_mesh.html</Path>
-    <Anchor>a010469c8c05e17d450c399b89cb9f4d6</Anchor>
+    <Anchor>a28cdd26086df3c8a8badd35c8ac27f2a</Anchor>
     <DeclaredIn>Mesh.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -2007,7 +2007,7 @@
       <Scope>Mesh</Scope>
     </TokenIdentifier>
     <Path>dc/dbe/class_mesh.html</Path>
-    <Anchor>a942fcec367820168b4e7c18d025a3517</Anchor>
+    <Anchor>a3dc607c037d2dd61c761b51ecb6fa5e3</Anchor>
     <DeclaredIn>Mesh.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -2259,7 +2259,7 @@
       <Scope>Model</Scope>
     </TokenIdentifier>
     <Path>d0/de3/class_model.html</Path>
-    <Anchor>af37f66fb978a618cce9fa57356986a42</Anchor>
+    <Anchor>afe3a028a37d9fad3029de42645f191dd</Anchor>
     <DeclaredIn>Model.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -2270,7 +2270,7 @@
       <Scope>Model</Scope>
     </TokenIdentifier>
     <Path>d0/de3/class_model.html</Path>
-    <Anchor>aa97cc6b1182cc341b432a5bb1c7d5237</Anchor>
+    <Anchor>a26a8a839a9bad64c51c59e1638e55204</Anchor>
     <DeclaredIn>Model.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -2281,7 +2281,7 @@
       <Scope>Model</Scope>
     </TokenIdentifier>
     <Path>d0/de3/class_model.html</Path>
-    <Anchor>a32bf806cc82c9158635344e078c6fd5d</Anchor>
+    <Anchor>a4a54d52b16cb5db4eaae6e6c567a4c1d</Anchor>
     <DeclaredIn>Model.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -2303,7 +2303,7 @@
       <Scope>Model</Scope>
     </TokenIdentifier>
     <Path>d0/de3/class_model.html</Path>
-    <Anchor>a3b02b9b0c3ac988c90db03a4fd8a9a56</Anchor>
+    <Anchor>ad3a27ce4d8941c0b0cf6d6f6f0670c13</Anchor>
     <DeclaredIn>Model.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -3066,7 +3066,7 @@
       <Scope>PostStage</Scope>
     </TokenIdentifier>
     <Path>dd/dad/class_post_stage.html</Path>
-    <Anchor>a7a0b428818ae81a68c6f69283eb55bfc</Anchor>
+    <Anchor>ae6aef0731e0fc0dd9dc64f5d6a465bff</Anchor>
     <DeclaredIn>PostStage.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -3077,7 +3077,7 @@
       <Scope>PostStage</Scope>
     </TokenIdentifier>
     <Path>dd/dad/class_post_stage.html</Path>
-    <Anchor>a10376f6656edbecd3f505bae604ada12</Anchor>
+    <Anchor>a55ffe0182dc8bd2dd478d1ba07ef1242</Anchor>
     <DeclaredIn>PostStage.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4013,7 +4013,7 @@
       <Scope>Scene</Scope>
     </TokenIdentifier>
     <Path>d6/db5/class_scene.html</Path>
-    <Anchor>a6dbeefe3bba088089bd4f7b74340fc53</Anchor>
+    <Anchor>a871098b38291276276e25d1489ccbdbd</Anchor>
     <DeclaredIn>Scene.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4024,7 +4024,7 @@
       <Scope>Scene</Scope>
     </TokenIdentifier>
     <Path>d6/db5/class_scene.html</Path>
-    <Anchor>ac176f96c6874eabb0b662d80accb0323</Anchor>
+    <Anchor>a6308dbdb2b627b8677f6a2e255ac1101</Anchor>
     <DeclaredIn>Scene.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4035,7 +4035,7 @@
       <Scope>Scene</Scope>
     </TokenIdentifier>
     <Path>d6/db5/class_scene.html</Path>
-    <Anchor>acf4d5a5092acf5039a09d01b35dc51ce</Anchor>
+    <Anchor>adb57fd4cc999649267662bffa536536e</Anchor>
     <DeclaredIn>Scene.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4145,7 +4145,7 @@
       <Scope>Scene</Scope>
     </TokenIdentifier>
     <Path>d6/db5/class_scene.html</Path>
-    <Anchor>aacc125652dc2d7c90190431156fc9fa6</Anchor>
+    <Anchor>abf71f8a99f0dc2bc7261c38d88c5d290</Anchor>
     <DeclaredIn>Scene.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4156,7 +4156,7 @@
       <Scope>Scene</Scope>
     </TokenIdentifier>
     <Path>d6/db5/class_scene.html</Path>
-    <Anchor>a6e81688c37b003b0c5f0c1719e6e59a4</Anchor>
+    <Anchor>a66105c7929ad6a395f542fadbe840b3a</Anchor>
     <DeclaredIn>Scene.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4472,7 +4472,7 @@
       <Scope>Texture</Scope>
     </TokenIdentifier>
     <Path>d2/d7f/class_texture.html</Path>
-    <Anchor>ae3adbefaebb03c89eb97697cfdcd6042</Anchor>
+    <Anchor>a14b3c837437ec028e313e56a6f641996</Anchor>
     <DeclaredIn>Texture.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4483,7 +4483,7 @@
       <Scope>Texture</Scope>
     </TokenIdentifier>
     <Path>d2/d7f/class_texture.html</Path>
-    <Anchor>a152413411e8f814aa59ddcb2182b6fe9</Anchor>
+    <Anchor>ab3a6629cc910d3857fa2052e2d3d076a</Anchor>
     <DeclaredIn>Texture.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4494,7 +4494,7 @@
       <Scope>Texture</Scope>
     </TokenIdentifier>
     <Path>d2/d7f/class_texture.html</Path>
-    <Anchor>a0246e35fe300b0ae9a9d71bfaecd8f1c</Anchor>
+    <Anchor>ada01adafd1a7dc5deeed5cb67b8ef2b8</Anchor>
     <DeclaredIn>Texture.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4505,7 +4505,7 @@
       <Scope>Texture</Scope>
     </TokenIdentifier>
     <Path>d2/d7f/class_texture.html</Path>
-    <Anchor>a3b20cfab8997b45f161e04c3a7b865ae</Anchor>
+    <Anchor>a10af1fc2f8877326bdb205a379b163f3</Anchor>
     <DeclaredIn>Texture.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4828,7 +4828,7 @@
       <Scope>VulkanBuffer</Scope>
     </TokenIdentifier>
     <Path>da/d7d/class_vulkan_buffer.html</Path>
-    <Anchor>a4095c3a6ebcfcb7f90c5535d8e6056bc</Anchor>
+    <Anchor>a6d73b54a7dcf03a0b79a04e6f7c7e70d</Anchor>
     <DeclaredIn>VulkanBuffer.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -4839,7 +4839,7 @@
       <Scope>VulkanBuffer</Scope>
     </TokenIdentifier>
     <Path>da/d7d/class_vulkan_buffer.html</Path>
-    <Anchor>ac4b9bddc80f281aefe6523fba5c3141d</Anchor>
+    <Anchor>a7b8f965890b6bc6828613f3c3016625e</Anchor>
     <DeclaredIn>VulkanBuffer.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -5338,7 +5338,7 @@
       <Scope>VulkanImage</Scope>
     </TokenIdentifier>
     <Path>db/dee/class_vulkan_image.html</Path>
-    <Anchor>a4137ad29d19c3fa2517efb6bf46dde0e</Anchor>
+    <Anchor>a2cfd2cee48ca61ec57b05a71169ac884</Anchor>
     <DeclaredIn>VulkanImage.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -5465,7 +5465,7 @@
       <Scope>VulkanImageView</Scope>
     </TokenIdentifier>
     <Path>da/d1d/class_vulkan_image_view.html</Path>
-    <Anchor>a0fd28df6d6be5d351808e81d3e7ddb15</Anchor>
+    <Anchor>a55053184c89f1a3077b0efdff28ff8ac</Anchor>
     <DeclaredIn>VulkanImageView.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -5550,7 +5550,7 @@
       <Scope>VulkanInstance</Scope>
     </TokenIdentifier>
     <Path>da/d0b/class_vulkan_instance.html</Path>
-    <Anchor>adea12ebaf57c82b68d914ab430353e31</Anchor>
+    <Anchor>a22e2975c41d276731bfef0de3323d46d</Anchor>
     <DeclaredIn>VulkanInstance.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6378,7 +6378,7 @@
       <Scope>VulkanSwapChain</Scope>
     </TokenIdentifier>
     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-    <Anchor>a5e44c1e5b3ac698654923fcb53a9af7b</Anchor>
+    <Anchor>a0f2f24ec46dc32409f4ab33186069c79</Anchor>
     <DeclaredIn>VulkanSwapChain.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6400,7 +6400,7 @@
       <Scope>VulkanSwapChain</Scope>
     </TokenIdentifier>
     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-    <Anchor>a011fed91d8c903437dd190177dbe0e15</Anchor>
+    <Anchor>ab620c64c793013d35d5d714e89f6fb16</Anchor>
     <DeclaredIn>VulkanSwapChain.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6411,7 +6411,7 @@
       <Scope>VulkanSwapChain</Scope>
     </TokenIdentifier>
     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-    <Anchor>a987ff941c88ce0782b1695f747d185c9</Anchor>
+    <Anchor>ac13148f5801cf140407535f84852255d</Anchor>
     <DeclaredIn>VulkanSwapChain.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6422,7 +6422,7 @@
       <Scope>VulkanSwapChain</Scope>
     </TokenIdentifier>
     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-    <Anchor>a44adda1a704b3b4c14888329f2a9a407</Anchor>
+    <Anchor>af00b0c830a718ec4013eaa9208dc3825</Anchor>
     <DeclaredIn>VulkanSwapChain.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6657,7 +6657,7 @@
       <Scope>Window</Scope>
     </TokenIdentifier>
     <Path>d9/dbf/class_window.html</Path>
-    <Anchor>a6a86e2d9de3bd06e4b3d8eb34c44aead</Anchor>
+    <Anchor>aca3a8c2e012d1914be291b8a0a3bf78c</Anchor>
     <DeclaredIn>Window.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6690,7 +6690,7 @@
       <Scope>Window</Scope>
     </TokenIdentifier>
     <Path>d9/dbf/class_window.html</Path>
-    <Anchor>a6c7b650a2b6e6334aa80fab2dd8de913</Anchor>
+    <Anchor>ae5f03505423e84a448b95c56a94417ba</Anchor>
     <DeclaredIn>Window.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -6934,39 +6934,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>messageCallback</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>debug</Scope>
-    </TokenIdentifier>
-    <Path>d2/dde/namespacedebug.html</Path>
-    <Anchor>a840a095211f991961d5ca51d7b4f1032</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setupDebugging</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>debug</Scope>
-    </TokenIdentifier>
-    <Path>d2/dde/namespacedebug.html</Path>
-    <Anchor>a2d3861f9b449521a13975f6f21342c43</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>freeDebugCallback</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>debug</Scope>
-    </TokenIdentifier>
-    <Path>d2/dde/namespacedebug.html</Path>
-    <Anchor>a0090a7de5456794069c8360a0780ed52</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>debugUtilsMessengerCallback</Name>
       <APILanguage>cpp</APILanguage>
       <Type>func</Type>
@@ -6978,24 +6945,35 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>validationLayerCount</Name>
+      <Name>setupDebugging</Name>
       <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
+      <Type>func</Type>
       <Scope>debug</Scope>
     </TokenIdentifier>
     <Path>d2/dde/namespacedebug.html</Path>
-    <Anchor>a8d85c11eed9767bcc118549eac481756</Anchor>
-    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+    <Anchor>a2d3861f9b449521a13975f6f21342c43</Anchor>
+    <DeclaredIn>VulkanDebug.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>validationLayerNames</Name>
+      <Name>freeDebugCallback</Name>
       <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
+      <Type>func</Type>
       <Scope>debug</Scope>
     </TokenIdentifier>
     <Path>d2/dde/namespacedebug.html</Path>
-    <Anchor>ad39b1b584636e9a6e4e1810a10352e88</Anchor>
+    <Anchor>a0090a7de5456794069c8360a0780ed52</Anchor>
+    <DeclaredIn>VulkanDebug.cpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>messageCallback</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>func</Type>
+      <Scope>debug</Scope>
+    </TokenIdentifier>
+    <Path>d2/dde/namespacedebug.html</Path>
+    <Anchor>a840a095211f991961d5ca51d7b4f1032</Anchor>
     <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -7033,6 +7011,28 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>validationLayerCount</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>debug</Scope>
+    </TokenIdentifier>
+    <Path>d2/dde/namespacedebug.html</Path>
+    <Anchor>a8d85c11eed9767bcc118549eac481756</Anchor>
+    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>validationLayerNames</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>debug</Scope>
+    </TokenIdentifier>
+    <Path>d2/dde/namespacedebug.html</Path>
+    <Anchor>ad39b1b584636e9a6e4e1810a10352e88</Anchor>
+    <DeclaredIn>VulkanDebug.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>sceneConfig</Name>
       <APILanguage>c</APILanguage>
       <Type>ns</Type>
@@ -7049,7 +7049,7 @@
     </TokenIdentifier>
     <Path>df/dcb/namespacescene_config.html</Path>
     <Anchor>a6c53371694e44e40c835e48f27def71f</Anchor>
-    <DeclaredIn>SceneConfig.hpp</DeclaredIn>
+    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7060,7 +7060,7 @@
     </TokenIdentifier>
     <Path>df/dcb/namespacescene_config.html</Path>
     <Anchor>a71330a511f748716643e88a4d446875c</Anchor>
-    <DeclaredIn>SceneConfig.hpp</DeclaredIn>
+    <DeclaredIn>SceneConfig.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7110,6 +7110,6 @@
     </TokenIdentifier>
     <Path>d1/d25/namespacevertex.html</Path>
     <Anchor>a183ebeb3b6fde1df5bd8e204127514ba</Anchor>
-    <DeclaredIn>Vertex.hpp</DeclaredIn>
+    <DeclaredIn>Vertex.cpp</DeclaredIn>
   </Token>
 </Tokens>

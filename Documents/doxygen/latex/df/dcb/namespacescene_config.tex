@@ -18,51 +18,51 @@ std\+::string \mbox{\hyperlink{namespacescene_config_a6c53371694e44e40c835e48f27
 
 
 
-Definition at line \mbox{\hyperlink{_scene_config_8cpp_source_l00009}{9}} of file \mbox{\hyperlink{_scene_config_8cpp_source}{Scene\+Config.\+cpp}}.
+Definition at line 9 of file Scene\+Config.\+cpp.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00009}00009                          \{}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00010}00010   std::stringstream modelFile;}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00011}00011   std::filesystem::path cwd = std::filesystem::current\_path();}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00012}00012   modelFile << cwd.string();}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00013}00013   modelFile << RELATIVE\_RESOURCE\_PATH;}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00014}00014 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00015}00015 \textcolor{preprocessor}{\#if NDEBUG}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00016}00016   modelFile << \textcolor{stringliteral}{"{}Models/crytek-\/sponza/"{}};}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00017}00017   modelFile << \textcolor{stringliteral}{"{}sponza\_triag.obj"{}};}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00018}00018 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00019}00019 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00020}00020 \textcolor{preprocessor}{\#ifdef SULO\_MODE}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00021}00021   modelFile << \textcolor{stringliteral}{"{}Model/Sulo/WolfStahl/"{}};}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00022}00022   \textcolor{comment}{//modelFile << "{}Wolf-\/Stahl.obj"{};}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00023}00023   modelFile << \textcolor{stringliteral}{"{}SuloLongDongLampe\_v2.obj"{}};}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00024}00024 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00025}00025   modelFile << \textcolor{stringliteral}{"{}Models/VikingRoom/"{}};}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00026}00026   modelFile << \textcolor{stringliteral}{"{}viking\_room.obj"{}};}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00027}00027 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00028}00028 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00029}00029 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00030}00030   \textcolor{keywordflow}{return} modelFile.str();}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00031}00031   \textcolor{comment}{// std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00032}00032   \textcolor{comment}{// "{}Models/crytek-\/sponza/sponza\_triag.obj"{}; std::string modelFile}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00033}00033   \textcolor{comment}{// = "{}Models/Dinosaurs/dinosaurs.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00034}00034   \textcolor{comment}{// "{}Models/Pillum/PilumPainting\_export.obj"{}; std::string modelFile}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00035}00035   \textcolor{comment}{// = "{}Models/sibenik/sibenik.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00036}00036   \textcolor{comment}{// "{}Models/sportsCar/sportsCar.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00037}00037   \textcolor{comment}{// "{}Models/StanfordDragon/dragon.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00038}00038   \textcolor{comment}{// "{}Models/CornellBox/CornellBox-\/Sphere.obj"{}; std::string}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00039}00039   \textcolor{comment}{// "{}Models/bunny/bunny.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00040}00040   \textcolor{comment}{// "{}Models/buddha/buddha.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00041}00041   \textcolor{comment}{// "{}Models/bmw/bmw.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00042}00042   \textcolor{comment}{// "{}Models/testScene.obj"{}; std::string modelFile =}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00043}00043   \textcolor{comment}{// "{}Models/San\_Miguel/san-\/miguel-\/low-\/poly.obj"{};}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00044}00044 \}}
+\DoxyCodeLine{9                          \{}
+\DoxyCodeLine{10   std::stringstream modelFile;}
+\DoxyCodeLine{11   std::filesystem::path cwd = std::filesystem::current\_path();}
+\DoxyCodeLine{12   modelFile << cwd.string();}
+\DoxyCodeLine{13   modelFile << RELATIVE\_RESOURCE\_PATH;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#if NDEBUG}}
+\DoxyCodeLine{16   modelFile << \textcolor{stringliteral}{"{}Models/crytek-\/sponza/"{}};}
+\DoxyCodeLine{17   modelFile << \textcolor{stringliteral}{"{}sponza\_triag.obj"{}};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#ifdef SULO\_MODE}}
+\DoxyCodeLine{21   modelFile << \textcolor{stringliteral}{"{}Model/Sulo/WolfStahl/"{}};}
+\DoxyCodeLine{22   \textcolor{comment}{//modelFile << "{}Wolf-\/Stahl.obj"{};}}
+\DoxyCodeLine{23   modelFile << \textcolor{stringliteral}{"{}SuloLongDongLampe\_v2.obj"{}};}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{25   modelFile << \textcolor{stringliteral}{"{}Models/VikingRoom/"{}};}
+\DoxyCodeLine{26   modelFile << \textcolor{stringliteral}{"{}viking\_room.obj"{}};}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keywordflow}{return} modelFile.str();}
+\DoxyCodeLine{31   \textcolor{comment}{// std::string modelFile =}}
+\DoxyCodeLine{32   \textcolor{comment}{// "{}Models/crytek-\/sponza/sponza\_triag.obj"{}; std::string modelFile}}
+\DoxyCodeLine{33   \textcolor{comment}{// = "{}Models/Dinosaurs/dinosaurs.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{34   \textcolor{comment}{// "{}Models/Pillum/PilumPainting\_export.obj"{}; std::string modelFile}}
+\DoxyCodeLine{35   \textcolor{comment}{// = "{}Models/sibenik/sibenik.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{36   \textcolor{comment}{// "{}Models/sportsCar/sportsCar.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{37   \textcolor{comment}{// "{}Models/StanfordDragon/dragon.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{38   \textcolor{comment}{// "{}Models/CornellBox/CornellBox-\/Sphere.obj"{}; std::string}}
+\DoxyCodeLine{39   \textcolor{comment}{// "{}Models/bunny/bunny.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{40   \textcolor{comment}{// "{}Models/buddha/buddha.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{41   \textcolor{comment}{// "{}Models/bmw/bmw.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{42   \textcolor{comment}{// "{}Models/testScene.obj"{}; std::string modelFile =}}
+\DoxyCodeLine{43   \textcolor{comment}{// "{}Models/San\_Miguel/san-\/miguel-\/low-\/poly.obj"{};}}
+\DoxyCodeLine{44 \}}
 
 \end{DoxyCode}
 
 
-Referenced by \mbox{\hyperlink{_scene_8cpp_source_l00009}{Scene\+::load\+Model()}}.
+Referenced by Scene\+::load\+Model().
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -79,45 +79,45 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line \mbox{\hyperlink{_scene_config_8cpp_source_l00046}{46}} of file \mbox{\hyperlink{_scene_config_8cpp_source}{Scene\+Config.\+cpp}}.
+Definition at line 46 of file Scene\+Config.\+cpp.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00046}00046                          \{}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00047}00047   \mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} modelMatrix(1.0f);}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00048}00048 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00049}00049 \textcolor{preprocessor}{\#if NDEBUG}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00050}00050 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00051}00051   \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00052}00052   \textcolor{comment}{// -\/50.0f));}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00053}00053   modelMatrix = glm::scale(modelMatrix, \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(1.0f, 1.0f, 1.0f));}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00054}00054   \textcolor{comment}{/*dragon\_model = glm::rotate(dragon\_model, glm::radians(-\/90.f),}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00055}00055 \textcolor{comment}{     glm::vec3(1.0f, 0.0f, 0.0f)); dragon\_model = glm::rotate(dragon\_model,}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00056}00056 \textcolor{comment}{     glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00057}00057 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00058}00058 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00059}00059 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00060}00060 \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00061}00061 \textcolor{comment}{// -\/50.0f));}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00062}00062 \textcolor{preprocessor}{\#if SULO\_MODE}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00063}00063   modelMatrix = glm::scale(modelMatrix, \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(60.0f, 60.0f, 60.0f));}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00064}00064 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00065}00065   modelMatrix = glm::scale(modelMatrix, \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(60.0f, 60.0f, 60.0f));}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00066}00066   modelMatrix = glm::rotate(modelMatrix, glm::radians(-\/90.f),}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00067}00067                             \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(1.0f, 0.0f, 0.0f));}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00068}00068   modelMatrix =}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00069}00069       glm::rotate(modelMatrix, glm::radians(90.f), \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(0.0f, 0.0f, 1.0f));}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00070}00070 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00071}00071 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00072}00072 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00073}00073 }
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00074}00074   \textcolor{keywordflow}{return} modelMatrix;}
-\DoxyCodeLine{\Hypertarget{namespacescene_config_l00075}00075 \}}
+\DoxyCodeLine{46                          \{}
+\DoxyCodeLine{47   \mbox{\hyperlink{_global_u_b_o_8hpp_a5879d2bf8852061cc069e7607b1aafd5}{glm::mat4}} modelMatrix(1.0f);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#if NDEBUG}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
+\DoxyCodeLine{52   \textcolor{comment}{// -\/50.0f));}}
+\DoxyCodeLine{53   modelMatrix = glm::scale(modelMatrix, \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(1.0f, 1.0f, 1.0f));}
+\DoxyCodeLine{54   \textcolor{comment}{/*dragon\_model = glm::rotate(dragon\_model, glm::radians(-\/90.f),}}
+\DoxyCodeLine{55 \textcolor{comment}{     glm::vec3(1.0f, 0.0f, 0.0f)); dragon\_model = glm::rotate(dragon\_model,}}
+\DoxyCodeLine{56 \textcolor{comment}{     glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));*/}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{comment}{// dragon\_model = glm::translate(dragon\_model, glm::vec3(0.0f, -\/40.0f,}}
+\DoxyCodeLine{61 \textcolor{comment}{// -\/50.0f));}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#if SULO\_MODE}}
+\DoxyCodeLine{63   modelMatrix = glm::scale(modelMatrix, \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(60.0f, 60.0f, 60.0f));}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{65   modelMatrix = glm::scale(modelMatrix, \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(60.0f, 60.0f, 60.0f));}
+\DoxyCodeLine{66   modelMatrix = glm::rotate(modelMatrix, glm::radians(-\/90.f),}
+\DoxyCodeLine{67                             \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(1.0f, 0.0f, 0.0f));}
+\DoxyCodeLine{68   modelMatrix =}
+\DoxyCodeLine{69       glm::rotate(modelMatrix, glm::radians(90.f), \mbox{\hyperlink{_global_u_b_o_8hpp_a7274656e89c300ce226b118ab53fa84d}{glm::vec3}}(0.0f, 0.0f, 1.0f));}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \textcolor{keywordflow}{return} modelMatrix;}
+\DoxyCodeLine{75 \}}
 
 \end{DoxyCode}
 
 
-Referenced by \mbox{\hyperlink{_scene_8cpp_source_l00009}{Scene\+::load\+Model()}}.
+Referenced by Scene\+::load\+Model().
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
