@@ -1,6 +1,5 @@
 ---
-Checks: "
-        -*,
+Checks: -*,
         -abseil-*,
         -altera-*,
         -android-*,
@@ -26,6 +25,4 @@ Checks: "
         portability-*,
         readability-*,
         -zircon-*
-        "
-WarningsAsErrors: ''
 FormatStyle:     none

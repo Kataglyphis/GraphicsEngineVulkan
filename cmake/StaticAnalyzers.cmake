@@ -12,9 +12,7 @@ option(ENABLE_CLANGTIDY "Enable clangtidy" ON) #OFF
 if(ENABLE_CLANGTIDY)
         find_program(CLANGTIDY clang-tidy)
         if(CLANGTIDY)
-            set(CMAKE_CXX_CLANG_TIDY    ${CLANGTIDY} 
-                                        --config=""
-                                        --config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy                                      
+            set(CMAKE_CXX_CLANG_TIDY    ${CLANGTIDY}                                     
                 )
         endif(CLANGTIDY)
 endif()
