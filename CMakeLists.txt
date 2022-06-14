@@ -92,6 +92,26 @@ include(cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetSourceGroups.cmake)
 
+# how to exclude files from static code analysis
+# https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check/49591908#49591908
+add_library(
+    IMGUI
+    OBJECT
+    ${IMGUI_FILTER}
+)
+
+target_link_libraries(IMGUI   PRIVATE glfw 
+                                      imgui
+
+)
+
+set_target_properties(
+    IMGUI
+    PROPERTIES
+    CXX_CLANG_TIDY ""
+    CXX_CPPCHECK ""
+)
+
 # add the executable
 add_executable(${PROJECT_NAME}
 ${RASTER_SHADER_FILTER}
@@ -109,7 +129,7 @@ ${MEMORY_FILTER}
 ${COMMON_FILTER}
 ${APP_FILTER}
 ${GUI_FILTER}
-${IMGUI_FILTER}
+$<TARGET_OBJECTS:IMGUI>
 ${UTIL_FILTER}
 ${VULKAN_BASE_FILTER}
 ${MAIN_FILTER}

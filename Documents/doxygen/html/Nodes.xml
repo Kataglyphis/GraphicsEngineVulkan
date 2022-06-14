@@ -8,15 +8,15 @@
        <Node>
         <Name>Namespaces</Name>
         <Path>namespaces.html</Path>
-      <Subnodes>
+        <Subnodes>
          <Node>
           <Name>Namespace List</Name>
           <Path>namespaces.html</Path>
-        <Subnodes>
+          <Subnodes>
            <Node>
             <Name>debug</Name>
             <Path>d2/dde/namespacedebug.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>debugUtilsMessengerCallback</Name>
               <Path>d2/dde/namespacedebug.html</Path>
@@ -67,7 +67,7 @@
            <Node>
             <Name>sceneConfig</Name>
             <Path>df/dcb/namespacescene_config.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>getModelFile</Name>
               <Path>df/dcb/namespacescene_config.html</Path>
@@ -83,11 +83,11 @@
            <Node>
             <Name>std</Name>
             <Path>d8/dcc/namespacestd.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>hash&lt; Vertex &gt;</Name>
               <Path>d3/d62/structstd_1_1hash_3_01_vertex_01_4.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>operator()</Name>
                 <Path>d3/d62/structstd_1_1hash_3_01_vertex_01_4.html</Path>
@@ -100,7 +100,7 @@
            <Node>
             <Name>vertex</Name>
             <Path>d1/d25/namespacevertex.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>getVertexInputAttributeDesc</Name>
               <Path>d1/d25/namespacevertex.html</Path>
@@ -113,7 +113,7 @@
          <Node>
           <Name>Namespace Members</Name>
           <Path>namespacemembers.html</Path>
-        <Subnodes>
+          <Subnodes>
            <Node>
             <Name>All</Name>
             <Path>namespacemembers.html</Path>
@@ -133,19 +133,19 @@
        <Node>
         <Name>Data Structures</Name>
         <Path>annotated.html</Path>
-      <Subnodes>
+        <Subnodes>
          <Node>
           <Name>Data Structures</Name>
           <Path>annotated.html</Path>
-        <Subnodes>
+          <Subnodes>
            <Node>
             <Name>std</Name>
             <Path>d8/dcc/namespacestd.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>hash&lt; Vertex &gt;</Name>
               <Path>d3/d62/structstd_1_1hash_3_01_vertex_01_4.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>operator()</Name>
                 <Path>d3/d62/structstd_1_1hash_3_01_vertex_01_4.html</Path>
@@ -158,7 +158,7 @@
            <Node>
             <Name>Allocator</Name>
             <Path>d0/dc1/class_allocator.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Allocator</Name>
               <Path>d0/dc1/class_allocator.html</Path>
@@ -189,7 +189,7 @@
            <Node>
             <Name>App</Name>
             <Path>d8/d97/class_app.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>App</Name>
               <Path>d8/d97/class_app.html</Path>
@@ -210,7 +210,7 @@
            <Node>
             <Name>ASManager</Name>
             <Path>d7/db7/class_a_s_manager.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>ASManager</Name>
               <Path>d7/db7/class_a_s_manager.html</Path>
@@ -254,7 +254,7 @@
              <Node>
               <Name>getTLAS</Name>
               <Path>d7/db7/class_a_s_manager.html</Path>
-              <Anchor>aff437db226e7e1cc042c75602aa2efb7</Anchor>
+              <Anchor>ad58600899f5d991a9eb458ed2d380b98</Anchor>
              </Node>
              <Node>
               <Name>objectToVkGeometryKHR</Name>
@@ -291,7 +291,7 @@
            <Node>
             <Name>BlasInput</Name>
             <Path>db/d69/struct_blas_input.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>as_build_offset_info</Name>
               <Path>db/d69/struct_blas_input.html</Path>
@@ -307,7 +307,7 @@
            <Node>
             <Name>BottomLevelAccelerationStructure</Name>
             <Path>dd/d89/struct_bottom_level_acceleration_structure.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>vulkanAS</Name>
               <Path>dd/d89/struct_bottom_level_acceleration_structure.html</Path>
@@ -323,7 +323,7 @@
            <Node>
             <Name>BuildAccelerationStructure</Name>
             <Path>dd/d31/struct_build_acceleration_structure.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>build_info</Name>
               <Path>dd/d31/struct_build_acceleration_structure.html</Path>
@@ -349,7 +349,7 @@
            <Node>
             <Name>Camera</Name>
             <Path>da/dbb/class_camera.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Camera</Name>
               <Path>da/dbb/class_camera.html</Path>
@@ -505,7 +505,7 @@
            <Node>
             <Name>CommandBufferManager</Name>
             <Path>d5/d6d/class_command_buffer_manager.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>CommandBufferManager</Name>
               <Path>d5/d6d/class_command_buffer_manager.html</Path>
@@ -531,7 +531,7 @@
            <Node>
             <Name>File</Name>
             <Path>d1/d31/class_file.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>File</Name>
               <Path>d1/d31/class_file.html</Path>
@@ -567,7 +567,7 @@
            <Node>
             <Name>GlobalUBO</Name>
             <Path>de/dd3/struct_global_u_b_o.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>projection</Name>
               <Path>de/dd3/struct_global_u_b_o.html</Path>
@@ -583,7 +583,7 @@
            <Node>
             <Name>GUI</Name>
             <Path>d3/d57/class_g_u_i.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>GUI</Name>
               <Path>d3/d57/class_g_u_i.html</Path>
@@ -612,7 +612,7 @@
              <Node>
               <Name>getGuiRendererSharedVars</Name>
               <Path>d3/d57/class_g_u_i.html</Path>
-              <Anchor>a4939aef9c7e3f0829046b7c3843de4d3</Anchor>
+              <Anchor>ade0fc6987a37474da0879fd8419b7ee5</Anchor>
              </Node>
              <Node>
               <Name>getGuiSceneSharedVars</Name>
@@ -664,7 +664,7 @@
            <Node>
             <Name>GUIRendererSharedVars</Name>
             <Path>dd/dbf/struct_g_u_i_renderer_shared_vars.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>pathTracing</Name>
               <Path>dd/dbf/struct_g_u_i_renderer_shared_vars.html</Path>
@@ -685,7 +685,7 @@
            <Node>
             <Name>GUISceneSharedVars</Name>
             <Path>d9/d2b/struct_g_u_i_scene_shared_vars.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>direcional_light_radiance</Name>
               <Path>d9/d2b/struct_g_u_i_scene_shared_vars.html</Path>
@@ -706,7 +706,7 @@
            <Node>
             <Name>Mesh</Name>
             <Path>dc/dbe/class_mesh.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Mesh</Name>
               <Path>dc/dbe/class_mesh.html</Path>
@@ -750,7 +750,7 @@
              <Node>
               <Name>getIndexBuffer</Name>
               <Path>dc/dbe/class_mesh.html</Path>
-              <Anchor>a942fcec367820168b4e7c18d025a3517</Anchor>
+              <Anchor>a3dc607c037d2dd61c761b51ecb6fa5e3</Anchor>
              </Node>
              <Node>
               <Name>getIndexCount</Name>
@@ -760,7 +760,7 @@
              <Node>
               <Name>getMaterialIDBuffer</Name>
               <Path>dc/dbe/class_mesh.html</Path>
-              <Anchor>a010469c8c05e17d450c399b89cb9f4d6</Anchor>
+              <Anchor>a28cdd26086df3c8a8badd35c8ac27f2a</Anchor>
              </Node>
              <Node>
               <Name>getModel</Name>
@@ -770,12 +770,12 @@
              <Node>
               <Name>getObjectDescription</Name>
               <Path>dc/dbe/class_mesh.html</Path>
-              <Anchor>a2e96ee726cef1bcd0a530df88df652d6</Anchor>
+              <Anchor>ae6f034171fdd2cc95d1a8a18fbbc20af</Anchor>
              </Node>
              <Node>
               <Name>getVertexBuffer</Name>
               <Path>dc/dbe/class_mesh.html</Path>
-              <Anchor>aa66016d680eb8b9a86eb0bf73ab4e2dd</Anchor>
+              <Anchor>a55a8358815f4b0e8b02360af062c8562</Anchor>
              </Node>
              <Node>
               <Name>getVertexCount</Name>
@@ -847,7 +847,7 @@
            <Node>
             <Name>Model</Name>
             <Path>d0/de3/class_model.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Model</Name>
               <Path>d0/de3/class_model.html</Path>
@@ -891,7 +891,7 @@
              <Node>
               <Name>getMesh</Name>
               <Path>d0/de3/class_model.html</Path>
-              <Anchor>a3b02b9b0c3ac988c90db03a4fd8a9a56</Anchor>
+              <Anchor>ad3a27ce4d8941c0b0cf6d6f6f0670c13</Anchor>
              </Node>
              <Node>
               <Name>getMeshCount</Name>
@@ -921,17 +921,17 @@
              <Node>
               <Name>getTextureList</Name>
               <Path>d0/de3/class_model.html</Path>
-              <Anchor>a32bf806cc82c9158635344e078c6fd5d</Anchor>
+              <Anchor>a4a54d52b16cb5db4eaae6e6c567a4c1d</Anchor>
              </Node>
              <Node>
               <Name>getTextures</Name>
               <Path>d0/de3/class_model.html</Path>
-              <Anchor>af37f66fb978a618cce9fa57356986a42</Anchor>
+              <Anchor>afe3a028a37d9fad3029de42645f191dd</Anchor>
              </Node>
              <Node>
               <Name>getTextureSamplers</Name>
               <Path>d0/de3/class_model.html</Path>
-              <Anchor>aa97cc6b1182cc341b432a5bb1c7d5237</Anchor>
+              <Anchor>a26a8a839a9bad64c51c59e1638e55204</Anchor>
              </Node>
              <Node>
               <Name>set_model</Name>
@@ -978,7 +978,7 @@
            <Node>
             <Name>ObjectDescription</Name>
             <Path>d3/dbb/struct_object_description.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>index_address</Name>
               <Path>d3/dbb/struct_object_description.html</Path>
@@ -1004,7 +1004,7 @@
            <Node>
             <Name>ObjLoader</Name>
             <Path>d5/dd8/class_obj_loader.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>ObjLoader</Name>
               <Path>d5/dd8/class_obj_loader.html</Path>
@@ -1070,7 +1070,7 @@
            <Node>
             <Name>ObjMaterial</Name>
             <Path>da/df9/struct_obj_material.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>ambient</Name>
               <Path>da/df9/struct_obj_material.html</Path>
@@ -1126,11 +1126,11 @@
            <Node>
             <Name>PathTracing</Name>
             <Path>dc/d81/class_path_tracing.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>SpecializationData</Name>
               <Path>de/d8d/struct_path_tracing_1_1_specialization_data.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>specWorkGroupSizeX</Name>
                 <Path>de/d8d/struct_path_tracing_1_1_specialization_data.html</Path>
@@ -1268,7 +1268,7 @@
            <Node>
             <Name>PostStage</Name>
             <Path>dd/dad/class_post_stage.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>PostStage</Name>
               <Path>dd/dad/class_post_stage.html</Path>
@@ -1317,12 +1317,12 @@
              <Node>
               <Name>getOffscreenSampler</Name>
               <Path>dd/dad/class_post_stage.html</Path>
-              <Anchor>a10376f6656edbecd3f505bae604ada12</Anchor>
+              <Anchor>a55ffe0182dc8bd2dd478d1ba07ef1242</Anchor>
              </Node>
              <Node>
               <Name>getRenderPass</Name>
               <Path>dd/dad/class_post_stage.html</Path>
-              <Anchor>a7a0b428818ae81a68c6f69283eb55bfc</Anchor>
+              <Anchor>ae6aef0731e0fc0dd9dc64f5d6a465bff</Anchor>
              </Node>
              <Node>
               <Name>init</Name>
@@ -1394,7 +1394,7 @@
            <Node>
             <Name>PushConstantPathTracing</Name>
             <Path>d1/dc7/struct_push_constant_path_tracing.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>clearColor</Name>
               <Path>d1/dc7/struct_push_constant_path_tracing.html</Path>
@@ -1415,7 +1415,7 @@
            <Node>
             <Name>PushConstantPost</Name>
             <Path>dc/dec/struct_push_constant_post.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>aspect_ratio</Name>
               <Path>dc/dec/struct_push_constant_post.html</Path>
@@ -1426,7 +1426,7 @@
            <Node>
             <Name>PushConstantRasterizer</Name>
             <Path>d8/de9/struct_push_constant_rasterizer.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>model</Name>
               <Path>d8/de9/struct_push_constant_rasterizer.html</Path>
@@ -1437,7 +1437,7 @@
            <Node>
             <Name>PushConstantRaytracing</Name>
             <Path>da/d08/struct_push_constant_raytracing.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>clear_color</Name>
               <Path>da/d08/struct_push_constant_raytracing.html</Path>
@@ -1448,7 +1448,7 @@
            <Node>
             <Name>QueueFamilyIndices</Name>
             <Path>d6/d81/struct_queue_family_indices.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>is_valid</Name>
               <Path>d6/d81/struct_queue_family_indices.html</Path>
@@ -1474,7 +1474,7 @@
            <Node>
             <Name>Rasterizer</Name>
             <Path>d7/d18/class_rasterizer.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Rasterizer</Name>
               <Path>d7/d18/class_rasterizer.html</Path>
@@ -1600,7 +1600,7 @@
            <Node>
             <Name>Raytracing</Name>
             <Path>d4/d74/class_raytracing.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Raytracing</Name>
               <Path>d4/d74/class_raytracing.html</Path>
@@ -1731,7 +1731,7 @@
            <Node>
             <Name>Scene</Name>
             <Path>d6/db5/class_scene.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Scene</Name>
               <Path>d6/db5/class_scene.html</Path>
@@ -1760,12 +1760,12 @@
              <Node>
               <Name>get_model_list</Name>
               <Path>d6/db5/class_scene.html</Path>
-              <Anchor>a6e81688c37b003b0c5f0c1719e6e59a4</Anchor>
+              <Anchor>a66105c7929ad6a395f542fadbe840b3a</Anchor>
              </Node>
              <Node>
               <Name>getGuiSceneSharedVars</Name>
               <Path>d6/db5/class_scene.html</Path>
-              <Anchor>a6dbeefe3bba088089bd4f7b74340fc53</Anchor>
+              <Anchor>a871098b38291276276e25d1489ccbdbd</Anchor>
              </Node>
              <Node>
               <Name>getIndexBuffer</Name>
@@ -1805,7 +1805,7 @@
              <Node>
               <Name>getObjectDescriptions</Name>
               <Path>d6/db5/class_scene.html</Path>
-              <Anchor>aacc125652dc2d7c90190431156fc9fa6</Anchor>
+              <Anchor>abf71f8a99f0dc2bc7261c38d88c5d290</Anchor>
              </Node>
              <Node>
               <Name>getTextureCount</Name>
@@ -1815,12 +1815,12 @@
              <Node>
               <Name>getTextures</Name>
               <Path>d6/db5/class_scene.html</Path>
-              <Anchor>ac176f96c6874eabb0b662d80accb0323</Anchor>
+              <Anchor>a6308dbdb2b627b8677f6a2e255ac1101</Anchor>
              </Node>
              <Node>
               <Name>getTextureSampler</Name>
               <Path>d6/db5/class_scene.html</Path>
-              <Anchor>acf4d5a5092acf5039a09d01b35dc51ce</Anchor>
+              <Anchor>adb57fd4cc999649267662bffa536536e</Anchor>
              </Node>
              <Node>
               <Name>getVertexBuffer</Name>
@@ -1862,7 +1862,7 @@
            <Node>
             <Name>SceneUBO</Name>
             <Path>d4/de7/struct_scene_u_b_o.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>cam_pos</Name>
               <Path>d4/de7/struct_scene_u_b_o.html</Path>
@@ -1883,7 +1883,7 @@
            <Node>
             <Name>ShaderHelper</Name>
             <Path>df/dc6/class_shader_helper.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>ShaderHelper</Name>
               <Path>df/dc6/class_shader_helper.html</Path>
@@ -1919,7 +1919,7 @@
            <Node>
             <Name>SwapChainDetails</Name>
             <Path>da/db7/struct_swap_chain_details.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>formats</Name>
               <Path>da/db7/struct_swap_chain_details.html</Path>
@@ -1940,7 +1940,7 @@
            <Node>
             <Name>Texture</Name>
             <Path>d2/d7f/class_texture.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Texture</Name>
               <Path>d2/d7f/class_texture.html</Path>
@@ -1979,12 +1979,12 @@
              <Node>
               <Name>getImage</Name>
               <Path>d2/d7f/class_texture.html</Path>
-              <Anchor>a0246e35fe300b0ae9a9d71bfaecd8f1c</Anchor>
+              <Anchor>ada01adafd1a7dc5deeed5cb67b8ef2b8</Anchor>
              </Node>
              <Node>
               <Name>getImageView</Name>
               <Path>d2/d7f/class_texture.html</Path>
-              <Anchor>a3b20cfab8997b45f161e04c3a7b865ae</Anchor>
+              <Anchor>a10af1fc2f8877326bdb205a379b163f3</Anchor>
              </Node>
              <Node>
               <Name>getMipLevel</Name>
@@ -1994,12 +1994,12 @@
              <Node>
               <Name>getVulkanImage</Name>
               <Path>d2/d7f/class_texture.html</Path>
-              <Anchor>ae3adbefaebb03c89eb97697cfdcd6042</Anchor>
+              <Anchor>a14b3c837437ec028e313e56a6f641996</Anchor>
              </Node>
              <Node>
               <Name>getVulkanImageView</Name>
               <Path>d2/d7f/class_texture.html</Path>
-              <Anchor>a152413411e8f814aa59ddcb2182b6fe9</Anchor>
+              <Anchor>ab3a6629cc910d3857fa2052e2d3d076a</Anchor>
              </Node>
              <Node>
               <Name>loadTextureData</Name>
@@ -2046,7 +2046,7 @@
            <Node>
             <Name>TopLevelAccelerationStructure</Name>
             <Path>d2/d2d/struct_top_level_acceleration_structure.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>vulkanAS</Name>
               <Path>d2/d2d/struct_top_level_acceleration_structure.html</Path>
@@ -2062,7 +2062,7 @@
            <Node>
             <Name>Vertex</Name>
             <Path>d0/d72/class_vertex.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Vertex</Name>
               <Path>d0/d72/class_vertex.html</Path>
@@ -2123,7 +2123,7 @@
            <Node>
             <Name>VulkanBuffer</Name>
             <Path>da/d7d/class_vulkan_buffer.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanBuffer</Name>
               <Path>da/d7d/class_vulkan_buffer.html</Path>
@@ -2147,12 +2147,12 @@
              <Node>
               <Name>getBuffer</Name>
               <Path>da/d7d/class_vulkan_buffer.html</Path>
-              <Anchor>a4095c3a6ebcfcb7f90c5535d8e6056bc</Anchor>
+              <Anchor>a6d73b54a7dcf03a0b79a04e6f7c7e70d</Anchor>
              </Node>
              <Node>
               <Name>getBufferMemory</Name>
               <Path>da/d7d/class_vulkan_buffer.html</Path>
-              <Anchor>ac4b9bddc80f281aefe6523fba5c3141d</Anchor>
+              <Anchor>a7b8f965890b6bc6828613f3c3016625e</Anchor>
              </Node>
              <Node>
               <Name>buffer</Name>
@@ -2179,7 +2179,7 @@
            <Node>
             <Name>VulkanBufferManager</Name>
             <Path>d2/db6/class_vulkan_buffer_manager.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanBufferManager</Name>
               <Path>d2/db6/class_vulkan_buffer_manager.html</Path>
@@ -2215,7 +2215,7 @@
            <Node>
             <Name>VulkanDevice</Name>
             <Path>dd/df6/class_vulkan_device.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanDevice</Name>
               <Path>dd/df6/class_vulkan_device.html</Path>
@@ -2356,7 +2356,7 @@
            <Node>
             <Name>VulkanImage</Name>
             <Path>db/dee/class_vulkan_image.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanImage</Name>
               <Path>db/dee/class_vulkan_image.html</Path>
@@ -2385,7 +2385,7 @@
              <Node>
               <Name>getImage</Name>
               <Path>db/dee/class_vulkan_image.html</Path>
-              <Anchor>a4137ad29d19c3fa2517efb6bf46dde0e</Anchor>
+              <Anchor>a2cfd2cee48ca61ec57b05a71169ac884</Anchor>
              </Node>
              <Node>
               <Name>pipelineStageForLayout</Name>
@@ -2432,7 +2432,7 @@
            <Node>
             <Name>VulkanImageView</Name>
             <Path>da/d1d/class_vulkan_image_view.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanImageView</Name>
               <Path>da/d1d/class_vulkan_image_view.html</Path>
@@ -2456,7 +2456,7 @@
              <Node>
               <Name>getImageView</Name>
               <Path>da/d1d/class_vulkan_image_view.html</Path>
-              <Anchor>a0fd28df6d6be5d351808e81d3e7ddb15</Anchor>
+              <Anchor>a55053184c89f1a3077b0efdff28ff8ac</Anchor>
              </Node>
              <Node>
               <Name>setImageView</Name>
@@ -2478,7 +2478,7 @@
            <Node>
             <Name>VulkanInstance</Name>
             <Path>da/d0b/class_vulkan_instance.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanInstance</Name>
               <Path>da/d0b/class_vulkan_instance.html</Path>
@@ -2507,7 +2507,7 @@
              <Node>
               <Name>getVulkanInstance</Name>
               <Path>da/d0b/class_vulkan_instance.html</Path>
-              <Anchor>adea12ebaf57c82b68d914ab430353e31</Anchor>
+              <Anchor>a22e2975c41d276731bfef0de3323d46d</Anchor>
              </Node>
              <Node>
               <Name>instance</Name>
@@ -2524,7 +2524,7 @@
            <Node>
             <Name>VulkanRenderer</Name>
             <Path>df/de3/class_vulkan_renderer.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanRenderer</Name>
               <Path>df/de3/class_vulkan_renderer.html</Path>
@@ -2870,7 +2870,7 @@
            <Node>
             <Name>VulkanSwapChain</Name>
             <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>VulkanSwapChain</Name>
               <Path>d7/db2/class_vulkan_swap_chain.html</Path>
@@ -2909,22 +2909,22 @@
              <Node>
               <Name>getSwapChain</Name>
               <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-              <Anchor>a5e44c1e5b3ac698654923fcb53a9af7b</Anchor>
+              <Anchor>a0f2f24ec46dc32409f4ab33186069c79</Anchor>
              </Node>
              <Node>
               <Name>getSwapChainExtent</Name>
               <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-              <Anchor>a011fed91d8c903437dd190177dbe0e15</Anchor>
+              <Anchor>ab620c64c793013d35d5d714e89f6fb16</Anchor>
              </Node>
              <Node>
               <Name>getSwapChainFormat</Name>
               <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-              <Anchor>a987ff941c88ce0782b1695f747d185c9</Anchor>
+              <Anchor>ac13148f5801cf140407535f84852255d</Anchor>
              </Node>
              <Node>
               <Name>getSwapChainImage</Name>
               <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-              <Anchor>a44adda1a704b3b4c14888329f2a9a407</Anchor>
+              <Anchor>af00b0c830a718ec4013eaa9208dc3825</Anchor>
              </Node>
              <Node>
               <Name>initVulkanContext</Name>
@@ -2966,7 +2966,7 @@
            <Node>
             <Name>Window</Name>
             <Path>d9/dbf/class_window.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Window</Name>
               <Path>d9/dbf/class_window.html</Path>
@@ -3015,7 +3015,7 @@
              <Node>
               <Name>get_keys</Name>
               <Path>d9/dbf/class_window.html</Path>
-              <Anchor>a6c7b650a2b6e6334aa80fab2dd8de913</Anchor>
+              <Anchor>ae5f03505423e84a448b95c56a94417ba</Anchor>
              </Node>
              <Node>
               <Name>get_should_close</Name>
@@ -3030,7 +3030,7 @@
              <Node>
               <Name>get_window</Name>
               <Path>d9/dbf/class_window.html</Path>
-              <Anchor>a6a86e2d9de3bd06e4b3d8eb34c44aead</Anchor>
+              <Anchor>aca3a8c2e012d1914be291b8a0a3bf78c</Anchor>
              </Node>
              <Node>
               <Name>get_x_change</Name>
@@ -3153,11 +3153,11 @@
          <Node>
           <Name>Data Fields</Name>
           <Path>functions.html</Path>
-        <Subnodes>
+          <Subnodes>
            <Node>
             <Name>All</Name>
             <Path>functions.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>a</Name>
               <Path>functions.html</Path>
@@ -3263,7 +3263,7 @@
            <Node>
             <Name>Functions</Name>
             <Path>functions_func.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>a</Name>
               <Path>functions_func.html</Path>
@@ -3349,7 +3349,7 @@
            <Node>
             <Name>Variables</Name>
             <Path>functions_vars.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>a</Name>
               <Path>functions_vars.html</Path>
@@ -3455,19 +3455,19 @@
        <Node>
         <Name>Files</Name>
         <Path>files.html</Path>
-      <Subnodes>
+        <Subnodes>
          <Node>
           <Name>File List</Name>
           <Path>files.html</Path>
-        <Subnodes>
+          <Subnodes>
            <Node>
             <Name>cmake</Name>
             <Path>dir_a5bdbfbbaa7895161d62825676df7980.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>filters</Name>
               <Path>dir_ecf2958f4bb4cebf6381cf2e8b6ed100.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>SetExternalLibsFilters.cmake</Name>
                 <Path>df/d1c/_set_external_libs_filters_8cmake.html</Path>
@@ -3515,19 +3515,19 @@
            <Node>
             <Name>include</Name>
             <Path>dir_d44c64559bbebec7f509842c48db8b23.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>app</Name>
               <Path>dir_98ff7954eb3842da01d2ae02361edfa5.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>App.hpp</Name>
                 <Path>d6/dad/_app_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>App</Name>
                   <Path>d8/d97/class_app.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>App</Name>
                     <Path>d8/d97/class_app.html</Path>
@@ -3552,11 +3552,11 @@
              <Node>
               <Name>common</Name>
               <Path>dir_0966d06610f72609fd9aa4979c2b5a92.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>FormatHelper.hpp</Name>
                 <Path>d9/d9a/_format_helper_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>choose_supported_format</Name>
                   <Path>d9/d9a/_format_helper_8hpp.html</Path>
@@ -3567,7 +3567,7 @@
                <Node>
                 <Name>Globals.hpp</Name>
                 <Path>d4/d9c/_globals_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>MAX_FRAME_DRAWS</Name>
                   <Path>d4/d9c/_globals_8hpp.html</Path>
@@ -3583,7 +3583,7 @@
                <Node>
                 <Name>MemoryHelper.hpp</Name>
                 <Path>de/dc5/_memory_helper_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>align_up</Name>
                   <Path>de/dc5/_memory_helper_8hpp.html</Path>
@@ -3599,7 +3599,7 @@
                <Node>
                 <Name>Utilities.hpp</Name>
                 <Path>dc/d54/_utilities_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ENABLE_VALIDATION_LAYERS</Name>
                   <Path>dc/d54/_utilities_8hpp.html</Path>
@@ -3612,15 +3612,15 @@
              <Node>
               <Name>gui</Name>
               <Path>dir_48c1f94cd2ae07e13fa9a9f16a1d541c.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>GUI.hpp</Name>
                 <Path>d3/d92/_g_u_i_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>GUI</Name>
                   <Path>d3/d57/class_g_u_i.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>GUI</Name>
                     <Path>d3/d57/class_g_u_i.html</Path>
@@ -3649,7 +3649,7 @@
                    <Node>
                     <Name>getGuiRendererSharedVars</Name>
                     <Path>d3/d57/class_g_u_i.html</Path>
-                    <Anchor>a4939aef9c7e3f0829046b7c3843de4d3</Anchor>
+                    <Anchor>ade0fc6987a37474da0879fd8419b7ee5</Anchor>
                    </Node>
                    <Node>
                     <Name>getGuiSceneSharedVars</Name>
@@ -3705,15 +3705,15 @@
              <Node>
               <Name>memory</Name>
               <Path>dir_1d52781e224d924275d803a20aa4cb0e.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>Allocator.hpp</Name>
                 <Path>d5/d22/_allocator_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Allocator</Name>
                   <Path>d0/dc1/class_allocator.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Allocator</Name>
                     <Path>d0/dc1/class_allocator.html</Path>
@@ -3748,19 +3748,19 @@
              <Node>
               <Name>renderer</Name>
               <Path>dir_2559567b361f07c773f9d9dac257f09a.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>accelerationStructures</Name>
                 <Path>dir_2f911760812209b369d4327a5897046b.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ASManager.hpp</Name>
                   <Path>d9/d2a/_a_s_manager_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>BuildAccelerationStructure</Name>
                     <Path>dd/d31/struct_build_acceleration_structure.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>build_info</Name>
                       <Path>dd/d31/struct_build_acceleration_structure.html</Path>
@@ -3786,7 +3786,7 @@
                    <Node>
                     <Name>BlasInput</Name>
                     <Path>db/d69/struct_blas_input.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>as_build_offset_info</Name>
                       <Path>db/d69/struct_blas_input.html</Path>
@@ -3802,7 +3802,7 @@
                    <Node>
                     <Name>ASManager</Name>
                     <Path>d7/db7/class_a_s_manager.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>ASManager</Name>
                       <Path>d7/db7/class_a_s_manager.html</Path>
@@ -3846,7 +3846,7 @@
                      <Node>
                       <Name>getTLAS</Name>
                       <Path>d7/db7/class_a_s_manager.html</Path>
-                      <Anchor>aff437db226e7e1cc042c75602aa2efb7</Anchor>
+                      <Anchor>ad58600899f5d991a9eb458ed2d380b98</Anchor>
                      </Node>
                      <Node>
                       <Name>objectToVkGeometryKHR</Name>
@@ -3885,11 +3885,11 @@
                  <Node>
                   <Name>BottomLevelAccelerationStructure.hpp</Name>
                   <Path>d3/d68/_bottom_level_acceleration_structure_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>BottomLevelAccelerationStructure</Name>
                     <Path>dd/d89/struct_bottom_level_acceleration_structure.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>vulkanAS</Name>
                       <Path>dd/d89/struct_bottom_level_acceleration_structure.html</Path>
@@ -3907,11 +3907,11 @@
                  <Node>
                   <Name>TopLevelAccelerationStructure.hpp</Name>
                   <Path>d7/db1/_top_level_acceleration_structure_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>TopLevelAccelerationStructure</Name>
                     <Path>d2/d2d/struct_top_level_acceleration_structure.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>vulkanAS</Name>
                       <Path>d2/d2d/struct_top_level_acceleration_structure.html</Path>
@@ -3931,15 +3931,15 @@
                <Node>
                 <Name>pushConstants</Name>
                 <Path>dir_65a3b54fa5b613035e7843e0f9080759.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>PushConstantPathTracing.hpp</Name>
                   <Path>dd/d44/_push_constant_path_tracing_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>PushConstantPathTracing</Name>
                     <Path>d1/dc7/struct_push_constant_path_tracing.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>clearColor</Name>
                       <Path>d1/dc7/struct_push_constant_path_tracing.html</Path>
@@ -3987,11 +3987,11 @@
                  <Node>
                   <Name>PushConstantPost.hpp</Name>
                   <Path>d1/d72/_push_constant_post_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>PushConstantPost</Name>
                     <Path>dc/dec/struct_push_constant_post.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>aspect_ratio</Name>
                       <Path>dc/dec/struct_push_constant_post.html</Path>
@@ -4029,11 +4029,11 @@
                  <Node>
                   <Name>PushConstantRasterizer.hpp</Name>
                   <Path>d2/d82/_push_constant_rasterizer_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>PushConstantRasterizer</Name>
                     <Path>d8/de9/struct_push_constant_rasterizer.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>model</Name>
                       <Path>d8/de9/struct_push_constant_rasterizer.html</Path>
@@ -4071,11 +4071,11 @@
                  <Node>
                   <Name>PushConstantRayTracing.hpp</Name>
                   <Path>d0/d39/_push_constant_ray_tracing_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>PushConstantRaytracing</Name>
                     <Path>da/d08/struct_push_constant_raytracing.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>clear_color</Name>
                       <Path>da/d08/struct_push_constant_raytracing.html</Path>
@@ -4115,11 +4115,11 @@
                <Node>
                 <Name>CommandBufferManager.hpp</Name>
                 <Path>d6/d43/_command_buffer_manager_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>CommandBufferManager</Name>
                   <Path>d5/d6d/class_command_buffer_manager.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>CommandBufferManager</Name>
                     <Path>d5/d6d/class_command_buffer_manager.html</Path>
@@ -4147,11 +4147,11 @@
                <Node>
                 <Name>GlobalUBO.hpp</Name>
                 <Path>d5/d1c/_global_u_b_o_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>GlobalUBO</Name>
                   <Path>de/dd3/struct_global_u_b_o.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>projection</Name>
                     <Path>de/dd3/struct_global_u_b_o.html</Path>
@@ -4194,11 +4194,11 @@
                <Node>
                 <Name>GUIRendererSharedVars.hpp</Name>
                 <Path>d0/d5f/_g_u_i_renderer_shared_vars_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>GUIRendererSharedVars</Name>
                   <Path>dd/dbf/struct_g_u_i_renderer_shared_vars.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>pathTracing</Name>
                     <Path>dd/dbf/struct_g_u_i_renderer_shared_vars.html</Path>
@@ -4221,15 +4221,15 @@
                <Node>
                 <Name>PathTracing.hpp</Name>
                 <Path>d8/d18/_path_tracing_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>PathTracing</Name>
                   <Path>dc/d81/class_path_tracing.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>SpecializationData</Name>
                     <Path>de/d8d/struct_path_tracing_1_1_specialization_data.html</Path>
-                  <Subnodes>
+                    <Subnodes>
                      <Node>
                       <Name>specWorkGroupSizeX</Name>
                       <Path>de/d8d/struct_path_tracing_1_1_specialization_data.html</Path>
@@ -4365,9 +4365,9 @@
                   </Subnodes>
                  </Node>
                  <Node>
-                  <Name>PathTracing::SpecializationData</Name>
+                  <Name>SpecializationData</Name>
                   <Path>de/d8d/struct_path_tracing_1_1_specialization_data.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>specWorkGroupSizeX</Name>
                     <Path>de/d8d/struct_path_tracing_1_1_specialization_data.html</Path>
@@ -4390,11 +4390,11 @@
                <Node>
                 <Name>PostStage.hpp</Name>
                 <Path>da/d4e/_post_stage_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>PostStage</Name>
                   <Path>dd/dad/class_post_stage.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>PostStage</Name>
                     <Path>dd/dad/class_post_stage.html</Path>
@@ -4443,12 +4443,12 @@
                    <Node>
                     <Name>getOffscreenSampler</Name>
                     <Path>dd/dad/class_post_stage.html</Path>
-                    <Anchor>a10376f6656edbecd3f505bae604ada12</Anchor>
+                    <Anchor>a55ffe0182dc8bd2dd478d1ba07ef1242</Anchor>
                    </Node>
                    <Node>
                     <Name>getRenderPass</Name>
                     <Path>dd/dad/class_post_stage.html</Path>
-                    <Anchor>a7a0b428818ae81a68c6f69283eb55bfc</Anchor>
+                    <Anchor>ae6aef0731e0fc0dd9dc64f5d6a465bff</Anchor>
                    </Node>
                    <Node>
                     <Name>init</Name>
@@ -4522,11 +4522,11 @@
                <Node>
                 <Name>QueueFamilyIndices.hpp</Name>
                 <Path>d0/d54/_queue_family_indices_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>QueueFamilyIndices</Name>
                   <Path>d6/d81/struct_queue_family_indices.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>is_valid</Name>
                     <Path>d6/d81/struct_queue_family_indices.html</Path>
@@ -4554,11 +4554,11 @@
                <Node>
                 <Name>Rasterizer.hpp</Name>
                 <Path>df/db3/_rasterizer_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Rasterizer</Name>
                   <Path>d7/d18/class_rasterizer.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Rasterizer</Name>
                     <Path>d7/d18/class_rasterizer.html</Path>
@@ -4686,11 +4686,11 @@
                <Node>
                 <Name>Raytracing.hpp</Name>
                 <Path>d3/d87/_raytracing_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Raytracing</Name>
                   <Path>d4/d74/class_raytracing.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Raytracing</Name>
                     <Path>d4/d74/class_raytracing.html</Path>
@@ -4823,11 +4823,11 @@
                <Node>
                 <Name>SceneUBO.hpp</Name>
                 <Path>df/d97/_scene_u_b_o_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>SceneUBO</Name>
                   <Path>d4/de7/struct_scene_u_b_o.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>cam_pos</Name>
                     <Path>d4/de7/struct_scene_u_b_o.html</Path>
@@ -4875,11 +4875,11 @@
                <Node>
                 <Name>SwapChainDetails.hpp</Name>
                 <Path>d4/dc1/_swap_chain_details_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>SwapChainDetails</Name>
                   <Path>da/db7/struct_swap_chain_details.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>formats</Name>
                     <Path>da/db7/struct_swap_chain_details.html</Path>
@@ -4902,11 +4902,11 @@
                <Node>
                 <Name>VulkanRenderer.hpp</Name>
                 <Path>d0/d3f/_vulkan_renderer_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanRenderer</Name>
                   <Path>df/de3/class_vulkan_renderer.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanRenderer</Name>
                     <Path>df/de3/class_vulkan_renderer.html</Path>
@@ -5264,15 +5264,15 @@
              <Node>
               <Name>scene</Name>
               <Path>dir_cb6e897cb5cd097a761323417c742ef8.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>Camera.hpp</Name>
                 <Path>d4/d6a/_camera_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Camera</Name>
                   <Path>da/dbb/class_camera.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Camera</Name>
                     <Path>da/dbb/class_camera.html</Path>
@@ -5430,11 +5430,11 @@
                <Node>
                 <Name>GUISceneSharedVars.hpp</Name>
                 <Path>de/d0b/_g_u_i_scene_shared_vars_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>GUISceneSharedVars</Name>
                   <Path>d9/d2b/struct_g_u_i_scene_shared_vars.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>direcional_light_radiance</Name>
                     <Path>d9/d2b/struct_g_u_i_scene_shared_vars.html</Path>
@@ -5457,11 +5457,11 @@
                <Node>
                 <Name>Mesh.hpp</Name>
                 <Path>d6/d4a/_mesh_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Mesh</Name>
                   <Path>dc/dbe/class_mesh.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Mesh</Name>
                     <Path>dc/dbe/class_mesh.html</Path>
@@ -5505,7 +5505,7 @@
                    <Node>
                     <Name>getIndexBuffer</Name>
                     <Path>dc/dbe/class_mesh.html</Path>
-                    <Anchor>a942fcec367820168b4e7c18d025a3517</Anchor>
+                    <Anchor>a3dc607c037d2dd61c761b51ecb6fa5e3</Anchor>
                    </Node>
                    <Node>
                     <Name>getIndexCount</Name>
@@ -5515,7 +5515,7 @@
                    <Node>
                     <Name>getMaterialIDBuffer</Name>
                     <Path>dc/dbe/class_mesh.html</Path>
-                    <Anchor>a010469c8c05e17d450c399b89cb9f4d6</Anchor>
+                    <Anchor>a28cdd26086df3c8a8badd35c8ac27f2a</Anchor>
                    </Node>
                    <Node>
                     <Name>getModel</Name>
@@ -5525,12 +5525,12 @@
                    <Node>
                     <Name>getObjectDescription</Name>
                     <Path>dc/dbe/class_mesh.html</Path>
-                    <Anchor>a2e96ee726cef1bcd0a530df88df652d6</Anchor>
+                    <Anchor>ae6f034171fdd2cc95d1a8a18fbbc20af</Anchor>
                    </Node>
                    <Node>
                     <Name>getVertexBuffer</Name>
                     <Path>dc/dbe/class_mesh.html</Path>
-                    <Anchor>aa66016d680eb8b9a86eb0bf73ab4e2dd</Anchor>
+                    <Anchor>a55a8358815f4b0e8b02360af062c8562</Anchor>
                    </Node>
                    <Node>
                     <Name>getVertexCount</Name>
@@ -5604,11 +5604,11 @@
                <Node>
                 <Name>Model.hpp</Name>
                 <Path>db/df5/_model_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Model</Name>
                   <Path>d0/de3/class_model.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Model</Name>
                     <Path>d0/de3/class_model.html</Path>
@@ -5652,7 +5652,7 @@
                    <Node>
                     <Name>getMesh</Name>
                     <Path>d0/de3/class_model.html</Path>
-                    <Anchor>a3b02b9b0c3ac988c90db03a4fd8a9a56</Anchor>
+                    <Anchor>ad3a27ce4d8941c0b0cf6d6f6f0670c13</Anchor>
                    </Node>
                    <Node>
                     <Name>getMeshCount</Name>
@@ -5682,17 +5682,17 @@
                    <Node>
                     <Name>getTextureList</Name>
                     <Path>d0/de3/class_model.html</Path>
-                    <Anchor>a32bf806cc82c9158635344e078c6fd5d</Anchor>
+                    <Anchor>a4a54d52b16cb5db4eaae6e6c567a4c1d</Anchor>
                    </Node>
                    <Node>
                     <Name>getTextures</Name>
                     <Path>d0/de3/class_model.html</Path>
-                    <Anchor>af37f66fb978a618cce9fa57356986a42</Anchor>
+                    <Anchor>afe3a028a37d9fad3029de42645f191dd</Anchor>
                    </Node>
                    <Node>
                     <Name>getTextureSamplers</Name>
                     <Path>d0/de3/class_model.html</Path>
-                    <Anchor>aa97cc6b1182cc341b432a5bb1c7d5237</Anchor>
+                    <Anchor>a26a8a839a9bad64c51c59e1638e55204</Anchor>
                    </Node>
                    <Node>
                     <Name>set_model</Name>
@@ -5741,11 +5741,11 @@
                <Node>
                 <Name>ObjectDescription.hpp</Name>
                 <Path>de/de4/_object_description_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ObjectDescription</Name>
                   <Path>d3/dbb/struct_object_description.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>index_address</Name>
                     <Path>d3/dbb/struct_object_description.html</Path>
@@ -5773,11 +5773,11 @@
                <Node>
                 <Name>ObjLoader.hpp</Name>
                 <Path>d9/d11/_obj_loader_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ObjLoader</Name>
                   <Path>d5/dd8/class_obj_loader.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>ObjLoader</Name>
                     <Path>d5/dd8/class_obj_loader.html</Path>
@@ -5845,11 +5845,11 @@
                <Node>
                 <Name>ObjMaterial.hpp</Name>
                 <Path>d0/d9d/_obj_material_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ObjMaterial</Name>
                   <Path>da/df9/struct_obj_material.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>ambient</Name>
                     <Path>da/df9/struct_obj_material.html</Path>
@@ -5932,11 +5932,11 @@
                <Node>
                 <Name>Scene.hpp</Name>
                 <Path>d0/d8f/_scene_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Scene</Name>
                   <Path>d6/db5/class_scene.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Scene</Name>
                     <Path>d6/db5/class_scene.html</Path>
@@ -5965,12 +5965,12 @@
                    <Node>
                     <Name>get_model_list</Name>
                     <Path>d6/db5/class_scene.html</Path>
-                    <Anchor>a6e81688c37b003b0c5f0c1719e6e59a4</Anchor>
+                    <Anchor>a66105c7929ad6a395f542fadbe840b3a</Anchor>
                    </Node>
                    <Node>
                     <Name>getGuiSceneSharedVars</Name>
                     <Path>d6/db5/class_scene.html</Path>
-                    <Anchor>a6dbeefe3bba088089bd4f7b74340fc53</Anchor>
+                    <Anchor>a871098b38291276276e25d1489ccbdbd</Anchor>
                    </Node>
                    <Node>
                     <Name>getIndexBuffer</Name>
@@ -6010,7 +6010,7 @@
                    <Node>
                     <Name>getObjectDescriptions</Name>
                     <Path>d6/db5/class_scene.html</Path>
-                    <Anchor>aacc125652dc2d7c90190431156fc9fa6</Anchor>
+                    <Anchor>abf71f8a99f0dc2bc7261c38d88c5d290</Anchor>
                    </Node>
                    <Node>
                     <Name>getTextureCount</Name>
@@ -6020,12 +6020,12 @@
                    <Node>
                     <Name>getTextures</Name>
                     <Path>d6/db5/class_scene.html</Path>
-                    <Anchor>ac176f96c6874eabb0b662d80accb0323</Anchor>
+                    <Anchor>a6308dbdb2b627b8677f6a2e255ac1101</Anchor>
                    </Node>
                    <Node>
                     <Name>getTextureSampler</Name>
                     <Path>d6/db5/class_scene.html</Path>
-                    <Anchor>acf4d5a5092acf5039a09d01b35dc51ce</Anchor>
+                    <Anchor>adb57fd4cc999649267662bffa536536e</Anchor>
                    </Node>
                    <Node>
                     <Name>getVertexBuffer</Name>
@@ -6069,7 +6069,7 @@
                <Node>
                 <Name>SceneConfig.hpp</Name>
                 <Path>dc/d54/_scene_config_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>getModelFile</Name>
                   <Path>dc/d54/_scene_config_8hpp.html</Path>
@@ -6085,11 +6085,11 @@
                <Node>
                 <Name>Texture.hpp</Name>
                 <Path>d2/d4b/_texture_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Texture</Name>
                   <Path>d2/d7f/class_texture.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Texture</Name>
                     <Path>d2/d7f/class_texture.html</Path>
@@ -6128,12 +6128,12 @@
                    <Node>
                     <Name>getImage</Name>
                     <Path>d2/d7f/class_texture.html</Path>
-                    <Anchor>a0246e35fe300b0ae9a9d71bfaecd8f1c</Anchor>
+                    <Anchor>ada01adafd1a7dc5deeed5cb67b8ef2b8</Anchor>
                    </Node>
                    <Node>
                     <Name>getImageView</Name>
                     <Path>d2/d7f/class_texture.html</Path>
-                    <Anchor>a3b20cfab8997b45f161e04c3a7b865ae</Anchor>
+                    <Anchor>a10af1fc2f8877326bdb205a379b163f3</Anchor>
                    </Node>
                    <Node>
                     <Name>getMipLevel</Name>
@@ -6143,12 +6143,12 @@
                    <Node>
                     <Name>getVulkanImage</Name>
                     <Path>d2/d7f/class_texture.html</Path>
-                    <Anchor>ae3adbefaebb03c89eb97697cfdcd6042</Anchor>
+                    <Anchor>a14b3c837437ec028e313e56a6f641996</Anchor>
                    </Node>
                    <Node>
                     <Name>getVulkanImageView</Name>
                     <Path>d2/d7f/class_texture.html</Path>
-                    <Anchor>a152413411e8f814aa59ddcb2182b6fe9</Anchor>
+                    <Anchor>ab3a6629cc910d3857fa2052e2d3d076a</Anchor>
                    </Node>
                    <Node>
                     <Name>loadTextureData</Name>
@@ -6197,11 +6197,11 @@
                <Node>
                 <Name>Vertex.hpp</Name>
                 <Path>df/da9/_vertex_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Vertex</Name>
                   <Path>d0/d72/class_vertex.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Vertex</Name>
                     <Path>d0/d72/class_vertex.html</Path>
@@ -6260,9 +6260,9 @@
                   </Subnodes>
                  </Node>
                  <Node>
-                  <Name>std::hash&lt; Vertex &gt;</Name>
+                  <Name>hash&lt; Vertex &gt;</Name>
                   <Path>d3/d62/structstd_1_1hash_3_01_vertex_01_4.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>operator()</Name>
                     <Path>d3/d62/structstd_1_1hash_3_01_vertex_01_4.html</Path>
@@ -6282,15 +6282,15 @@
              <Node>
               <Name>util</Name>
               <Path>dir_586ad3c2f85d776b984733890d824e3e.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>File.hpp</Name>
                 <Path>dc/da4/_file_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>File</Name>
                   <Path>d1/d31/class_file.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>File</Name>
                     <Path>d1/d31/class_file.html</Path>
@@ -6330,15 +6330,15 @@
              <Node>
               <Name>vulkan_base</Name>
               <Path>dir_1ac37fd623d4a07ec6c257c1a7e9e014.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>ShaderHelper.hpp</Name>
                 <Path>d6/dcb/_shader_helper_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ShaderHelper</Name>
                   <Path>df/dc6/class_shader_helper.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>ShaderHelper</Name>
                     <Path>df/dc6/class_shader_helper.html</Path>
@@ -6376,11 +6376,11 @@
                <Node>
                 <Name>VulkanBuffer.hpp</Name>
                 <Path>dd/df1/_vulkan_buffer_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanBuffer</Name>
                   <Path>da/d7d/class_vulkan_buffer.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanBuffer</Name>
                     <Path>da/d7d/class_vulkan_buffer.html</Path>
@@ -6404,12 +6404,12 @@
                    <Node>
                     <Name>getBuffer</Name>
                     <Path>da/d7d/class_vulkan_buffer.html</Path>
-                    <Anchor>a4095c3a6ebcfcb7f90c5535d8e6056bc</Anchor>
+                    <Anchor>a6d73b54a7dcf03a0b79a04e6f7c7e70d</Anchor>
                    </Node>
                    <Node>
                     <Name>getBufferMemory</Name>
                     <Path>da/d7d/class_vulkan_buffer.html</Path>
-                    <Anchor>ac4b9bddc80f281aefe6523fba5c3141d</Anchor>
+                    <Anchor>a7b8f965890b6bc6828613f3c3016625e</Anchor>
                    </Node>
                    <Node>
                     <Name>buffer</Name>
@@ -6438,11 +6438,11 @@
                <Node>
                 <Name>VulkanBufferManager.hpp</Name>
                 <Path>d2/da3/_vulkan_buffer_manager_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanBufferManager</Name>
                   <Path>d2/db6/class_vulkan_buffer_manager.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanBufferManager</Name>
                     <Path>d2/db6/class_vulkan_buffer_manager.html</Path>
@@ -6480,7 +6480,7 @@
                <Node>
                 <Name>VulkanDebug.hpp</Name>
                 <Path>d4/df4/_vulkan_debug_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>freeDebugCallback</Name>
                   <Path>d4/df4/_vulkan_debug_8hpp.html</Path>
@@ -6511,11 +6511,11 @@
                <Node>
                 <Name>VulkanDevice.hpp</Name>
                 <Path>da/d9f/_vulkan_device_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanDevice</Name>
                   <Path>dd/df6/class_vulkan_device.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanDevice</Name>
                     <Path>dd/df6/class_vulkan_device.html</Path>
@@ -6658,11 +6658,11 @@
                <Node>
                 <Name>VulkanImage.hpp</Name>
                 <Path>d8/d3d/_vulkan_image_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanImage</Name>
                   <Path>db/dee/class_vulkan_image.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanImage</Name>
                     <Path>db/dee/class_vulkan_image.html</Path>
@@ -6691,7 +6691,7 @@
                    <Node>
                     <Name>getImage</Name>
                     <Path>db/dee/class_vulkan_image.html</Path>
-                    <Anchor>a4137ad29d19c3fa2517efb6bf46dde0e</Anchor>
+                    <Anchor>a2cfd2cee48ca61ec57b05a71169ac884</Anchor>
                    </Node>
                    <Node>
                     <Name>pipelineStageForLayout</Name>
@@ -6740,11 +6740,11 @@
                <Node>
                 <Name>VulkanImageView.hpp</Name>
                 <Path>df/d70/_vulkan_image_view_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanImageView</Name>
                   <Path>da/d1d/class_vulkan_image_view.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanImageView</Name>
                     <Path>da/d1d/class_vulkan_image_view.html</Path>
@@ -6768,7 +6768,7 @@
                    <Node>
                     <Name>getImageView</Name>
                     <Path>da/d1d/class_vulkan_image_view.html</Path>
-                    <Anchor>a0fd28df6d6be5d351808e81d3e7ddb15</Anchor>
+                    <Anchor>a55053184c89f1a3077b0efdff28ff8ac</Anchor>
                    </Node>
                    <Node>
                     <Name>setImageView</Name>
@@ -6792,11 +6792,11 @@
                <Node>
                 <Name>VulkanInstance.hpp</Name>
                 <Path>da/d4d/_vulkan_instance_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanInstance</Name>
                   <Path>da/d0b/class_vulkan_instance.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanInstance</Name>
                     <Path>da/d0b/class_vulkan_instance.html</Path>
@@ -6825,7 +6825,7 @@
                    <Node>
                     <Name>getVulkanInstance</Name>
                     <Path>da/d0b/class_vulkan_instance.html</Path>
-                    <Anchor>adea12ebaf57c82b68d914ab430353e31</Anchor>
+                    <Anchor>a22e2975c41d276731bfef0de3323d46d</Anchor>
                    </Node>
                    <Node>
                     <Name>instance</Name>
@@ -6844,11 +6844,11 @@
                <Node>
                 <Name>VulkanSwapChain.hpp</Name>
                 <Path>d3/d83/_vulkan_swap_chain_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>VulkanSwapChain</Name>
                   <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>VulkanSwapChain</Name>
                     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
@@ -6887,22 +6887,22 @@
                    <Node>
                     <Name>getSwapChain</Name>
                     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-                    <Anchor>a5e44c1e5b3ac698654923fcb53a9af7b</Anchor>
+                    <Anchor>a0f2f24ec46dc32409f4ab33186069c79</Anchor>
                    </Node>
                    <Node>
                     <Name>getSwapChainExtent</Name>
                     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-                    <Anchor>a011fed91d8c903437dd190177dbe0e15</Anchor>
+                    <Anchor>ab620c64c793013d35d5d714e89f6fb16</Anchor>
                    </Node>
                    <Node>
                     <Name>getSwapChainFormat</Name>
                     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-                    <Anchor>a987ff941c88ce0782b1695f747d185c9</Anchor>
+                    <Anchor>ac13148f5801cf140407535f84852255d</Anchor>
                    </Node>
                    <Node>
                     <Name>getSwapChainImage</Name>
                     <Path>d7/db2/class_vulkan_swap_chain.html</Path>
-                    <Anchor>a44adda1a704b3b4c14888329f2a9a407</Anchor>
+                    <Anchor>af00b0c830a718ec4013eaa9208dc3825</Anchor>
                    </Node>
                    <Node>
                     <Name>initVulkanContext</Name>
@@ -6948,15 +6948,15 @@
              <Node>
               <Name>window</Name>
               <Path>dir_ba370b27de90820d1ea164f96e61d5b5.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>Window.hpp</Name>
                 <Path>de/d0b/_window_8hpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Window</Name>
                   <Path>d9/dbf/class_window.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>Window</Name>
                     <Path>d9/dbf/class_window.html</Path>
@@ -7005,7 +7005,7 @@
                    <Node>
                     <Name>get_keys</Name>
                     <Path>d9/dbf/class_window.html</Path>
-                    <Anchor>a6c7b650a2b6e6334aa80fab2dd8de913</Anchor>
+                    <Anchor>ae5f03505423e84a448b95c56a94417ba</Anchor>
                    </Node>
                    <Node>
                     <Name>get_should_close</Name>
@@ -7020,7 +7020,7 @@
                    <Node>
                     <Name>get_window</Name>
                     <Path>d9/dbf/class_window.html</Path>
-                    <Anchor>a6a86e2d9de3bd06e4b3d8eb34c44aead</Anchor>
+                    <Anchor>aca3a8c2e012d1914be291b8a0a3bf78c</Anchor>
                    </Node>
                    <Node>
                     <Name>get_x_change</Name>
@@ -7143,15 +7143,15 @@
            <Node>
             <Name>Resources</Name>
             <Path>dir_bde32bf976401edbce144c1ca78437b0.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>Shaders</Name>
               <Path>dir_218a513a531196ba887183a21fe017e3.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>brdf</Name>
                 <Path>dir_57be24e093313ed61da4220c6b21d844.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>disney.glsl</Name>
                   <Path>de/dbe/disney_8glsl.html</Path>
@@ -7177,7 +7177,7 @@
                <Node>
                 <Name>common</Name>
                 <Path>dir_5da348708179eb2a066453ce444d28b6.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>Matlib.glsl</Name>
                   <Path>d4/d95/_matlib_8glsl.html</Path>
@@ -7199,11 +7199,11 @@
                <Node>
                 <Name>hostDevice</Name>
                 <Path>dir_cf3801119acacb8d85367351fe38ce5c.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>host_device_shared_vars.hpp</Name>
                   <Path>d6/dce/host__device__shared__vars_8hpp.html</Path>
-                <Subnodes>
+                  <Subnodes>
                    <Node>
                     <Name>MAX_TEXTURE_COUNT</Name>
                     <Path>d6/dce/host__device__shared__vars_8hpp.html</Path>
@@ -7216,7 +7216,7 @@
                <Node>
                 <Name>path_tracing</Name>
                 <Path>dir_bdc15313f6d9f6df28138cb62df704f2.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>path_tracing.comp</Name>
                   <Path>db/daf/path__tracing_8comp.html</Path>
@@ -7226,7 +7226,7 @@
                <Node>
                 <Name>post</Name>
                 <Path>dir_b6c2c1d16258f0f5edbeff791e2c9460.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>post.frag</Name>
                   <Path>d7/da2/post_8frag.html</Path>
@@ -7240,7 +7240,7 @@
                <Node>
                 <Name>rasterizer</Name>
                 <Path>dir_8ba61237f1679b6ae89611f3f3aed45a.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>shader.frag</Name>
                   <Path>de/de8/shader_8frag.html</Path>
@@ -7254,7 +7254,7 @@
                <Node>
                 <Name>raytracing</Name>
                 <Path>dir_1205acfb6db53a661d15fa8619c6aadd.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>raytrace.rchit</Name>
                   <Path>d9/dff/raytrace_8rchit.html</Path>
@@ -7280,11 +7280,11 @@
            <Node>
             <Name>Src</Name>
             <Path>dir_413f4e031a85da0d68269c6fd2f76e1c.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>app</Name>
               <Path>dir_5123417f73da5dbc495f157eccbde8a2.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>App.cpp</Name>
                 <Path>dc/db4/_app_8cpp.html</Path>
@@ -7294,7 +7294,7 @@
              <Node>
               <Name>gui</Name>
               <Path>dir_2eaa9e6ba6f0a1ca0fca3b83b5058ae7.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>GUI.cpp</Name>
                 <Path>d3/d27/_g_u_i_8cpp.html</Path>
@@ -7304,7 +7304,7 @@
              <Node>
               <Name>memory</Name>
               <Path>dir_1674e710f0f665612179ff5d217549ad.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>Allocator.cpp</Name>
                 <Path>d0/d55/_allocator_8cpp.html</Path>
@@ -7314,11 +7314,11 @@
              <Node>
               <Name>renderer</Name>
               <Path>dir_110bf15beb781d7cd423359a55b6cfac.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>accelerationStructures</Name>
                 <Path>dir_bf926a1fb28b46e3f8295a09133bb9ce.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>ASManager.cpp</Name>
                   <Path>d7/dc2/_a_s_manager_8cpp.html</Path>
@@ -7354,7 +7354,7 @@
              <Node>
               <Name>scene</Name>
               <Path>dir_bd4132eaf25bc91ffa6e489ae31851f6.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>Camera.cpp</Name>
                 <Path>d1/d33/_camera_8cpp.html</Path>
@@ -7378,7 +7378,7 @@
                <Node>
                 <Name>SceneConfig.cpp</Name>
                 <Path>dc/d24/_scene_config_8cpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>getModelFile</Name>
                   <Path>dc/d24/_scene_config_8cpp.html</Path>
@@ -7398,7 +7398,7 @@
                <Node>
                 <Name>Vertex.cpp</Name>
                 <Path>dd/d6f/_vertex_8cpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>getVertexInputAttributeDesc</Name>
                   <Path>dd/d6f/_vertex_8cpp.html</Path>
@@ -7411,7 +7411,7 @@
              <Node>
               <Name>util</Name>
               <Path>dir_517feb0deace64d74c1e186f0ef34274.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>File.cpp</Name>
                 <Path>de/d7b/_file_8cpp.html</Path>
@@ -7421,7 +7421,7 @@
              <Node>
               <Name>vulkan_base</Name>
               <Path>dir_cdd0af5f657023b33f56846bf3f89928.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>ShaderHelper.cpp</Name>
                 <Path>d0/da3/_shader_helper_8cpp.html</Path>
@@ -7437,7 +7437,7 @@
                <Node>
                 <Name>VulkanDebug.cpp</Name>
                 <Path>d7/d9e/_vulkan_debug_8cpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>debugUtilsMessengerCallback</Name>
                   <Path>d7/d9e/_vulkan_debug_8cpp.html</Path>
@@ -7495,11 +7495,11 @@
              <Node>
               <Name>window</Name>
               <Path>dir_6b7c82ac0387e0a7563fc456991bd83c.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>Window.cpp</Name>
                 <Path>d3/db8/_window_8cpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>onErrorCallback</Name>
                   <Path>d3/db8/_window_8cpp.html</Path>
@@ -7512,7 +7512,7 @@
              <Node>
               <Name>Main.cpp</Name>
               <Path>d5/d12/_main_8cpp.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>main</Name>
                 <Path>d5/d12/_main_8cpp.html</Path>
@@ -7525,15 +7525,15 @@
            <Node>
             <Name>Test</Name>
             <Path>dir_37618a71d99bdfed5979e976980d5eec.html</Path>
-          <Subnodes>
+            <Subnodes>
              <Node>
               <Name>commit</Name>
               <Path>dir_18c74580d5ef62931af17c33fa9238e2.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>cmake</Name>
                 <Path>dir_280cc671d7db23be82eb652ec55a4391.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>SetTestFilters.cmake</Name>
                   <Path>d1/d2a/commit_2cmake_2_set_test_filters_8cmake.html</Path>
@@ -7543,7 +7543,7 @@
                <Node>
                 <Name>commitSuite.cpp</Name>
                 <Path>d0/d62/commit_suite_8cpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>TEST</Name>
                   <Path>d0/d62/commit_suite_8cpp.html</Path>
@@ -7561,11 +7561,11 @@
              <Node>
               <Name>compile</Name>
               <Path>dir_b6173b2a283a42c932f71ac0c240e52f.html</Path>
-            <Subnodes>
+              <Subnodes>
                <Node>
                 <Name>cmake</Name>
                 <Path>dir_090520dc1298e977795be50ce9464130.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>SetTestFilters.cmake</Name>
                   <Path>d3/d0a/compile_2cmake_2_set_test_filters_8cmake.html</Path>
@@ -7575,7 +7575,7 @@
                <Node>
                 <Name>compileSuite.cpp</Name>
                 <Path>dd/d26/compile_suite_8cpp.html</Path>
-              <Subnodes>
+                <Subnodes>
                  <Node>
                   <Name>TEST</Name>
                   <Path>dd/d26/compile_suite_8cpp.html</Path>
@@ -7597,7 +7597,7 @@
          <Node>
           <Name>Globals</Name>
           <Path>globals.html</Path>
-        <Subnodes>
+          <Subnodes>
            <Node>
             <Name>All</Name>
             <Path>globals.html</Path>

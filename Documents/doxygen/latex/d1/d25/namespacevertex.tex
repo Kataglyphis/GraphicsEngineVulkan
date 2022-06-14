@@ -16,56 +16,56 @@ std\+::array$<$ Vk\+Vertex\+Input\+Attribute\+Description, 4 $>$ \mbox{\hyperlin
 
 
 
-Definition at line \mbox{\hyperlink{_vertex_8cpp_source_l00020}{20}} of file \mbox{\hyperlink{_vertex_8cpp_source}{Vertex.\+cpp}}.
+Definition at line 20 of file Vertex.\+cpp.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00020}00020                                                                              \{}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00021}00021   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00022}00022 }
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00023}00023   \textcolor{comment}{// Position attribute}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00024}00024   attribute\_describtions[0].binding = 0;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00025}00025   attribute\_describtions[0].location = 0;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00026}00026   attribute\_describtions[0].format =}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00027}00027       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00028}00028                                    \textcolor{comment}{// size of data)}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00029}00029   attribute\_describtions[0].offset = offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, pos);}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00030}00030 }
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00031}00031   \textcolor{comment}{// normal coord attribute}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00032}00032   attribute\_describtions[1].binding = 0;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00033}00033   attribute\_describtions[1].location = 1;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00034}00034   attribute\_describtions[1].format =}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00035}00035       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00036}00036                                    \textcolor{comment}{// size of data)}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00037}00037   attribute\_describtions[1].offset =}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00038}00038       offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, normal);  \textcolor{comment}{// where this attribute is defined in the data}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00039}00039                                  \textcolor{comment}{// for a single vertex}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00040}00040 }
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00041}00041   \textcolor{comment}{// normal coord attribute}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00042}00042   attribute\_describtions[2].binding = 0;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00043}00043   attribute\_describtions[2].location = 2;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00044}00044   attribute\_describtions[2].format =}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00045}00045       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00046}00046                                    \textcolor{comment}{// size of data)}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00047}00047   attribute\_describtions[2].offset = offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, color);}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00048}00048 }
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00049}00049   attribute\_describtions[3].binding = 0;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00050}00050   \textcolor{comment}{// texture coord attribute}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00051}00051   attribute\_describtions[3].location = 3;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00052}00052   attribute\_describtions[3].format =}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00053}00053       VK\_FORMAT\_R32G32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define size}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00054}00054                                 \textcolor{comment}{// of data)}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00055}00055   attribute\_describtions[3].offset =}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00056}00056       offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, texture\_coords);  \textcolor{comment}{// where this attribute is defined in}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00057}00057                                          \textcolor{comment}{// the data for a single vertex}}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00058}00058 }
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00059}00059   \textcolor{keywordflow}{return} attribute\_describtions;}
-\DoxyCodeLine{\Hypertarget{namespacevertex_l00060}00060 \}}
+\DoxyCodeLine{20                                                                              \{}
+\DoxyCodeLine{21   std::array<VkVertexInputAttributeDescription, 4> attribute\_describtions;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23   \textcolor{comment}{// Position attribute}}
+\DoxyCodeLine{24   attribute\_describtions[0].binding = 0;}
+\DoxyCodeLine{25   attribute\_describtions[0].location = 0;}
+\DoxyCodeLine{26   attribute\_describtions[0].format =}
+\DoxyCodeLine{27       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
+\DoxyCodeLine{28                                    \textcolor{comment}{// size of data)}}
+\DoxyCodeLine{29   attribute\_describtions[0].offset = offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, pos);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{comment}{// normal coord attribute}}
+\DoxyCodeLine{32   attribute\_describtions[1].binding = 0;}
+\DoxyCodeLine{33   attribute\_describtions[1].location = 1;}
+\DoxyCodeLine{34   attribute\_describtions[1].format =}
+\DoxyCodeLine{35       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
+\DoxyCodeLine{36                                    \textcolor{comment}{// size of data)}}
+\DoxyCodeLine{37   attribute\_describtions[1].offset =}
+\DoxyCodeLine{38       offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, normal);  \textcolor{comment}{// where this attribute is defined in the data}}
+\DoxyCodeLine{39                                  \textcolor{comment}{// for a single vertex}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{comment}{// normal coord attribute}}
+\DoxyCodeLine{42   attribute\_describtions[2].binding = 0;}
+\DoxyCodeLine{43   attribute\_describtions[2].location = 2;}
+\DoxyCodeLine{44   attribute\_describtions[2].format =}
+\DoxyCodeLine{45       VK\_FORMAT\_R32G32B32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define}}
+\DoxyCodeLine{46                                    \textcolor{comment}{// size of data)}}
+\DoxyCodeLine{47   attribute\_describtions[2].offset = offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, color);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   attribute\_describtions[3].binding = 0;}
+\DoxyCodeLine{50   \textcolor{comment}{// texture coord attribute}}
+\DoxyCodeLine{51   attribute\_describtions[3].location = 3;}
+\DoxyCodeLine{52   attribute\_describtions[3].format =}
+\DoxyCodeLine{53       VK\_FORMAT\_R32G32\_SFLOAT;  \textcolor{comment}{// format data will take (also helps define size}}
+\DoxyCodeLine{54                                 \textcolor{comment}{// of data)}}
+\DoxyCodeLine{55   attribute\_describtions[3].offset =}
+\DoxyCodeLine{56       offsetof(\mbox{\hyperlink{class_vertex}{Vertex}}, texture\_coords);  \textcolor{comment}{// where this attribute is defined in}}
+\DoxyCodeLine{57                                          \textcolor{comment}{// the data for a single vertex}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{keywordflow}{return} attribute\_describtions;}
+\DoxyCodeLine{60 \}}
 
 \end{DoxyCode}
 
 
-Referenced by \mbox{\hyperlink{_post_stage_8cpp_source_l00270}{Post\+Stage\+::create\+Graphics\+Pipeline()}}, and \mbox{\hyperlink{_rasterizer_8cpp_source_l00343}{Rasterizer\+::create\+Graphics\+Pipeline()}}.
+Referenced by Post\+Stage\+::create\+Graphics\+Pipeline(), and Rasterizer\+::create\+Graphics\+Pipeline().
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
