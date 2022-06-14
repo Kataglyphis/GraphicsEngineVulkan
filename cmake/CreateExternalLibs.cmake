@@ -4,10 +4,13 @@ add_library(
     ${IMGUI_FILTER}
 )
 
-target_link_libraries(IMGUI   PRIVATE glfw 
-                                      imgui
+target_link_libraries(IMGUI         PRIVATE Vulkan::Vulkan
+                                            glfw 
+                                            imgui
 
 )
+
+target_include_directories(IMGUI    PRIVATE ${Vulkan_INCLUDE_DIRS})
 
 set_target_properties(
     IMGUI
