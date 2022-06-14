@@ -20,25 +20,8 @@ add_executable( ${COMMIT_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_COMMIT_TEST_FILTER}
                 # all test specific files -- end
-                ${RASTER_SHADER_FILTER}
-                ${RAYTRACING_SHADER_FILTER}
-                ${COMMON_SHADER_FILTER}
-                ${POST_SHADER_FILTER}
-                ${BRDF_SHADER_FILTER}
-                ${PATH_TRACING_SHADER_FILTER}
-                ${RENDERER_FILTER}
-                ${PC_FILTER}
-                ${AS_FILTER}
-                ${SCENE_FILTER}
-                ${APP_FILTER}
-                ${WINDOW_FILTER}
-                ${MEMORY_FILTER}
-                ${COMMON_FILTER}
-                ${GUI_FILTER}
+                $<TARGET_OBJECTS:PROJECT_FILES_TO_TEST>
                 $<TARGET_OBJECTS:IMGUI>
-                ${UTIL_FILTER}
-                ${VULKAN_BASE_FILTER}
-                ${SHADER_HOST_DEVICE_FILTER}
 )
 
 target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ${WORKING_DIRECTORY}include/renderer
@@ -58,7 +41,8 @@ target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ${WORKING_DIRECTORY}
 
 target_include_directories(  ${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC ${CMAKE_DL_LIBS}
+target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
+                                                    ${CMAKE_DL_LIBS}   
                                                     Threads::Threads
                                                     Vulkan::Vulkan
                                                     glfw 
@@ -68,10 +52,7 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC ${CMAKE_DL_LIBS}
                                                     tinyobjloader
                                                     vma
                                                     ktx
-                                                    gtest_main   
 )
-
-target_link_libraries(${COMMIT_TEST_SUITE}      PRIVATE GSL)
 
 # disable all warnings for our test suite
 if(MSVC)
