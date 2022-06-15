@@ -9,7 +9,7 @@
 #define VULKAN_VERSION_MAJOR "1"
 #define VULKAN_VERSION_MINOR "3"
 
-#define GLSLC_EXE "C:/VulkanSDK/1.3.211.0/Bin/glslc.exe"
+#define GLSLC_EXE "/bin/glslc"
 // change this path when install
 #define RELATIVE_RESOURCE_PATH "/../Resources/" // /..
 #define RELATIVE_IMGUI_FONTS_PATH "/../ExternalLib/IMGUI/misc/fonts/" // /..

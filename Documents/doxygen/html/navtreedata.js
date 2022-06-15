@@ -57,10 +57,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d4/df4/_vulkan_debug_8hpp.html",
-"da/d0b/class_vulkan_instance.html#adea12ebaf57c82b68d914ab430353e31",
-"dd/df6/class_vulkan_device.html#a5fe463c6704d7d213cd6ac91dab466a1",
-"functions_vars_s.html"
+"d4/df4/_vulkan_debug_8hpp.html#a2d3861f9b449521a13975f6f21342c43",
+"da/d18/_vulkan_renderer_config_8hpp.html",
+"dd/df6/class_vulkan_device.html#a6d5b3fc207e1744fe0904fbc82cec708",
+"functions_vars_u.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

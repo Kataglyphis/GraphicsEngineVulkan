@@ -92,28 +92,35 @@ include(cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetSourceGroups.cmake)
 
+# https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check/49591908#49591908
+# with this trick IMGUI will be excluded from time consuming static code analysis
+# we do not want to analyze imgui ...
+include(cmake/CreateProjectFilesToTestLib.cmake)
+# and we will not to all this for our testing executable again :)
+include(cmake/CreateExternalLibs.cmake)
+
 # add the executable
-add_executable(${PROJECT_NAME}
-${RASTER_SHADER_FILTER}
-${RAYTRACING_SHADER_FILTER}
-${COMMON_SHADER_FILTER}
-${POST_SHADER_FILTER}
-${BRDF_SHADER_FILTER}
-${PATH_TRACING_SHADER_FILTER}
-${RENDERER_FILTER}
-${PC_FILTER}
-${AS_FILTER}
-${SCENE_FILTER}
-${WINDOW_FILTER}
-${MEMORY_FILTER}
-${COMMON_FILTER}
-${APP_FILTER}
-${GUI_FILTER}
-${IMGUI_FILTER}
-${UTIL_FILTER}
-${VULKAN_BASE_FILTER}
-${MAIN_FILTER}
-${SHADER_HOST_DEVICE_FILTER}
+add_executable(${PROJECT_NAME}  ${RASTER_SHADER_FILTER}
+                                ${RAYTRACING_SHADER_FILTER}
+                                ${COMMON_SHADER_FILTER}
+                                ${POST_SHADER_FILTER}
+                                ${BRDF_SHADER_FILTER}
+                                ${PATH_TRACING_SHADER_FILTER}
+                                ${RENDERER_FILTER}
+                                ${PC_FILTER}
+                                ${AS_FILTER}
+                                ${SCENE_FILTER}
+                                ${WINDOW_FILTER}
+                                ${MEMORY_FILTER}
+                                ${COMMON_FILTER}
+                                ${APP_FILTER}
+                                ${GUI_FILTER}
+                                ${UTIL_FILTER}
+                                ${VULKAN_BASE_FILTER}
+                                ${MAIN_FILTER}
+                                ${SHADER_HOST_DEVICE_FILTER}
+                                # this is great; no CPPCHECK,CLANG_TIDY here
+                                $<TARGET_OBJECTS:IMGUI>
 )
 
 include(cmake/CompileShadersToSPV.cmake)
