@@ -24,8 +24,8 @@ function(enable_sanitizers project_name)
             list(APPEND SANITIZERS "thread")
         endif()
 
-        option(ENABLE_SANITIZER_THREAD "Enable memory sanitizer for gcc/clang" ON)#OFF
-        if(ENABLE_SANITIZER_THREAD)
+        option(ENABLE_SANITIZER_MEMORY "Enable memory sanitizer for gcc/clang" OFF)#OFF
+        if(ENABLE_SANITIZER_MEMORY)
             list(APPEND SANITIZERS "memory")
         endif()
 
