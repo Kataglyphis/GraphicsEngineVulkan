@@ -3,16 +3,17 @@
 	url = https://github.com/tinyobjloader/tinyobjloader
 [submodule "ExternalLib/GLM"]
 	path = ExternalLib/GLM
-	url = git@github.com:g-truc/glm.git
+	url = https://github.com/g-truc/glm
 [submodule "ExternalLib/IMGUI"]
 	path = ExternalLib/IMGUI
-	url = git@github.com:ocornut/imgui.git
+	url = https://github.com/ocornut/imgui
 [submodule "ExternalLib/STB"]
 	path = ExternalLib/STB
-	url = git@github.com:nothings/stb.git
+	url = https://github.com/nothings/stb
 [submodule "ExternalLib/GLFW"]
 	path = ExternalLib/GLFW
 	url = https://github.com/glfw/glfw
 [submodule "ExternalLib/VULKAN_MEMORY_ALLOCATOR"]
 	path = ExternalLib/VULKAN_MEMORY_ALLOCATOR
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
+
