@@ -1,5 +1,4 @@
 # all testing related stuff
-
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
