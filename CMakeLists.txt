@@ -7,6 +7,7 @@ project(GraphicsEngine VERSION 1.3
         LANGUAGES  CXX C)
 
 set(AUTHOR "Jotrockenmitlocken")
+set(CMAKE_BUILD_TYPE Debug)
 
 # specify the C/C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -24,6 +25,10 @@ set_project_warnings(project_warnings)
 add_library(project_sanitizers INTERFACE)
 include(cmake/Sanitizers.cmake)
 enable_sanitizers(project_sanitizers)
+
+add_library(ipo INTERFACE)
+include(cmake/Optimizations.cmake)
+enable_ipo_for_target(ipo)
 
 include(cmake/Doxygen.cmake)
 enable_doxygen()
@@ -123,6 +128,9 @@ add_executable(${PROJECT_NAME}  ${RASTER_SHADER_FILTER}
                                 $<TARGET_OBJECTS:IMGUI>
 )
 
+enable_cppcheck(${PROJECT_NAME})
+enable_clangtidy(${PROJECT_NAME})
+
 include(cmake/CompileShadersToSPV.cmake)
 
 foreach(Shader ${POST_SHADER_FILTER})
@@ -170,7 +178,9 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 # enable compiler warnings
                                                 project_warnings
                                                 # enable sanitizers
-                                                project_sanitizers)
+                                                project_sanitizers
+                                                # enable ipo
+                                                ipo)
 
 target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 
@@ -183,7 +193,9 @@ add_subdirectory(Test/compile)
 install(TARGETS ${PROJECT_NAME}
         CONFIGURATIONS Release
         RUNTIME DESTINATION bin)
-
+        
+# we keep the relative paths in the install dir
+# keep in mind that install dir will be in front of this relative path ... 
 install(DIRECTORY Resources/ DESTINATION Resources/)
 install(DIRECTORY ExternalLib/IMGUI/misc/fonts/ DESTINATION ExternalLib/IMGUI/misc/fonts/)
 
