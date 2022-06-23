@@ -1,0 +1,22 @@
+find_program(CCACHE ccache)
+if(CCACHE)
+    message("using ccache")
+    set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
+else()
+    message("ccache not found")
+endif()
+
+option(ENABLE_IPO "Enable Iterprocedural Optimization, aka Link Time Optimization (LTO)" ON)
+
+function(enable_ipo_for_target target_name)
+    if(ENABLE_IPO)
+        include(CheckIPOSupported)
+        check_ipo_supported(RESULT result OUTPUT output)
+        if(result)
+        set_property(TARGET ${target_name}
+                    PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+        else()
+            message(SEND_ERROR "IPO is not supported: ${output}")
+        endif()
+    endif()
+endfunction()
