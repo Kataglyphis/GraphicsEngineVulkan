@@ -10,11 +10,16 @@ set(AUTHOR "Jotrockenmitlocken")
 
 # set build type specific flags
 if(MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG /DEBUG /Od)
-  set(CMAKE_CXX_FLAGS_RELEASE /O2)
-else()
-  set(CMAKE_CXX_FLAGS_DEBUG -g -O0)
-  set(CMAKE_CXX_FLAGS_RELEASE -O3 -DNDEBUG)
+  set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
+  set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
+  set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+  # https://clang.llvm.org/docs/UsersManual.html
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS_DEBUG "/Od /O0")
+  set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG")
 endif()
 
 # if no build type passed via command line go with debug mode
