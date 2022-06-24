@@ -125,7 +125,7 @@ void main() {
 
     }
 
-    float roughness = 0.4;
+    float roughness = 0.9;
     vec3 light_color = vec3(1.f);
     float light_intensity = 1.f;
 

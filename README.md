@@ -21,6 +21,7 @@
 [![TopLang](https://img.shields.io/github/languages/top/Kataglyphis/GraphicsEngineVulkan)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=BX9AVVES2P9LN)
 [![Twitter](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
+[![YouTube](https://img.shields.io/youtube/channel/subscribers/UC3LZiH4sZzzaVBCUV8knYeg?style=social)](https://www.youtube.com/channel/UC3LZiH4sZzzaVBCUV8knYeg)
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -78,6 +79,9 @@
 This project provides me a solid Vulkan renderer starting point
 for implementing modern established rendering techniques and getting quickly
 started in own research topics. 
+Frequently tested under <br /> 
+* [latest windows and ubuntu version]
+* [GCC/CLANG/MSVC] 
 
 ### Key Features
 
@@ -125,7 +129,10 @@ started in own research topics.
 Dependencies to libraries are stated above.<br />
 C++20 or higher required.<br />
 C17 or higher required.<br />
-> **_NOTE:_** This project relies on the new hardware capabilities for RRT.
+CMake 3.20 or higher required.<br />
+> **_NOTE:_** This project relies on the new hardware capabilities for RRT. <br />
+
+
 
 ### Installation
 
@@ -136,7 +143,16 @@ C17 or higher required.<br />
 > **_NOTE:_**  With powershell in Windows git has currently a problem with cloning recursively. You might consider using
 the git bash.
 
-2. Then build your solution with [CMAKE] (https://cmake.org/)
+2. Then build your solution with [CMAKE] (https://cmake.org/) <br />
+  Here the recommended way over command line after cloning the repo:<br />
+  (for clarity: Assumption you are in the dir you have cloned the repo into)
+  ```sh
+  $ mkdir build ; cd build
+  $ cmake ../
+  $ cmake --build .
+  # necessary for making Resources available to test framework
+  $ cmake -E copy_directory ../Resources/ Test/Resources/
+  ```
 
 
 # Tests

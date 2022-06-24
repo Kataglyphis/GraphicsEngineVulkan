@@ -7,7 +7,20 @@ project(GraphicsEngine VERSION 1.3
         LANGUAGES  CXX C)
 
 set(AUTHOR "Jotrockenmitlocken")
-set(CMAKE_BUILD_TYPE Debug)
+
+# set build type specific flags
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_DEBUG /DEBUG /Od)
+  set(CMAKE_CXX_FLAGS_RELEASE /O2)
+else()
+  set(CMAKE_CXX_FLAGS_DEBUG -g -O0)
+  set(CMAKE_CXX_FLAGS_RELEASE -O3 -DNDEBUG)
+endif()
+
+# if no build type passed via command line go with debug mode
+if(NOT CMAKE_BUILD_TYPE)
+     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)   
+endif()
 
 # specify the C/C++ standard
 set(CMAKE_CXX_STANDARD 20)
