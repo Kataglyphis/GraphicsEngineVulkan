@@ -30,6 +30,13 @@ function(enable_sanitizers project_name)
         endif()
 
         list(JOIN SANITIZERS "," LIST_OF_SANITIZERS)
+        
+    elseif(MSVC)
+
+        option(ENABLE_SANITIZER_ADDRESS_MSVC "Enable address sanitizer for msvc" OFF)#
+        if(ENABLE_SANITIZER_ADDRESS_MSVC)
+            target_compile_options(${project_name} INTERFACE /fsanitize=address)
+        endif()   
     endif()
 
     if(LIST_OF_SANITIZERS)

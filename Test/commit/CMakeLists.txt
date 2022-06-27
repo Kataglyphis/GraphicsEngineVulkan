@@ -19,7 +19,24 @@ add_executable( ${COMMIT_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_COMMIT_TEST_FILTER}
                 # all test specific files -- end
-                $<TARGET_OBJECTS:PROJECT_FILES_TO_TEST>
+                ${RASTER_SHADER_FILTER}
+                ${RAYTRACING_SHADER_FILTER}
+                ${COMMON_SHADER_FILTER}
+                ${POST_SHADER_FILTER}
+                ${BRDF_SHADER_FILTER}
+                ${PATH_TRACING_SHADER_FILTER}
+                ${RENDERER_FILTER}
+                ${PC_FILTER}
+                ${AS_FILTER}
+                ${SCENE_FILTER}
+                ${WINDOW_FILTER}
+                ${MEMORY_FILTER}
+                ${COMMON_FILTER}
+                ${GUI_FILTER}
+                ${APP_FILTER}
+                ${UTIL_FILTER}
+                ${VULKAN_BASE_FILTER}
+                ${SHADER_HOST_DEVICE_FILTER}
                 $<TARGET_OBJECTS:IMGUI>
 )
 
@@ -52,6 +69,8 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
                                                     vma
                                                     ktx
 )
+
+target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
 # good source: https://stackoverflow.com/questions/52255589/code-coverage-analysis-using-codecoverage-cmake-with-multiple-targets
 option(COVERAGE "Enable Code Coverage" ON)

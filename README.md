@@ -145,11 +145,16 @@ the git bash.
 
 2. Then build your solution with [CMAKE] (https://cmake.org/) <br />
   Here the recommended way over command line after cloning the repo:<br />
+  > **_NOTE:_** Here we use CmakePresets to simplify things. Consider using it too
+  or just build on a common way ... 
+  
   (for clarity: Assumption you are in the dir you have cloned the repo into)
   ```sh
   $ mkdir build ; cd build
-  $ cmake ../
-  $ cmake --build .
+  # enlisting all available presets
+  $ cmake --list-presets=all ../
+  $ cmake --preset <configurePreset-name> ../
+  $ cmake --build --preset <buildPreset-name> .
   # necessary for making Resources available to test framework
   $ cmake -E copy_directory ../Resources/ Test/Resources/
   ```
