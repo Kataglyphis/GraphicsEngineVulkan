@@ -74,7 +74,7 @@ target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
 # good source: https://stackoverflow.com/questions/52255589/code-coverage-analysis-using-codecoverage-cmake-with-multiple-targets
 option(COVERAGE "Enable Code Coverage" ON)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   if(COVERAGE)
   include(cmake/CodeCoverage.cmake)
   append_coverage_compiler_flags()

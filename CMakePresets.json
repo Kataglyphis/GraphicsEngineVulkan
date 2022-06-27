@@ -61,9 +61,10 @@
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-c1",
-        "CMAKE_CXX_COMPILER": "clang-c1"
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
       },
+      "toolset": "ClangCL",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
