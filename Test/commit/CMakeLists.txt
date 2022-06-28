@@ -1,5 +1,5 @@
 # all testing related stuff
-set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
+set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/) # /../../
 
 # update current positions
 set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/)
@@ -11,7 +11,7 @@ include(${WORKING_DIRECTORY}cmake/filters/SetShaderFilters.cmake)
 include(${WORKING_DIRECTORY}cmake/filters/SetProjectFilters.cmake)
 include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
 
-include(cmake/SetTestFilters.cmake)
+include(Test/commit/cmake/SetTestFilters.cmake)
 
 set (COMMIT_TEST_SUITE commitTestSuite)
 
@@ -72,8 +72,7 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
-include(GoogleTest)
-gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
+gtest_discover_tests(   ${COMMIT_TEST_SUITE}
                         DISCOVERY_TIMEOUT 30
                         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 

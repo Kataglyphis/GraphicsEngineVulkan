@@ -71,8 +71,7 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
 
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
 
-include(GoogleTest)
-gtest_discover_tests(   ${COMPILE_TEST_SUITE} 
+gtest_discover_tests(   ${COMPILE_TEST_SUITE}
                         DISCOVERY_TIMEOUT 30
                         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 
