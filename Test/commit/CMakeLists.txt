@@ -126,4 +126,4 @@ else()
 endif()
 
 include(GoogleTest)
-gtest_discover_tests(   ${COMMIT_TEST_SUITE} PROPERTIES TIMEOUT 600)
+gtest_discover_tests(   ${COMMIT_TEST_SUITE} DISCOVERY_TIMEOUT TIMEOUT 600)
