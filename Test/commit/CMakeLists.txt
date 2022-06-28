@@ -72,6 +72,7 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
+include(GoogleTest)
 gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
                         DISCOVERY_TIMEOUT 300)
 
