@@ -73,8 +73,8 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
 gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
-                        DISCOVERY_TIMEOUT 30)
-                        # WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
+                        DISCOVERY_TIMEOUT 300
+                        WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 
 # good source: https://stackoverflow.com/questions/52255589/code-coverage-analysis-using-codecoverage-cmake-with-multiple-targets
 option(COVERAGE "Enable Code Coverage" ON)
