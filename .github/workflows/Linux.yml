@@ -41,12 +41,12 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Test
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}/build/Test/commit
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
     - name: Build Code Coverage 
-      run: make coverage_xml -C ${{github.workspace}}/build/
+      run: make coverage_xml -C ${{github.workspace}}/build/Test/commit
     - name: Codecov
       uses: codecov/codecov-action@v3.1.0
       with:
