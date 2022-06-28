@@ -72,6 +72,9 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
+include(GoogleTest)
+gtest_discover_tests(   ${COMMIT_TEST_SUITE} DISCOVERY_TIMEOUT 30)
+
 # good source: https://stackoverflow.com/questions/52255589/code-coverage-analysis-using-codecoverage-cmake-with-multiple-targets
 option(COVERAGE "Enable Code Coverage" ON)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -124,6 +127,3 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 else()
   target_compile_options(${COMMIT_TEST_SUITE}  INTERFACE -w)
 endif()
-
-include(GoogleTest)
-gtest_discover_tests(   ${COMMIT_TEST_SUITE} DISCOVERY_TIMEOUT 30)
