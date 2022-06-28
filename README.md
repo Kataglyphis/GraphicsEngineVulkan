@@ -50,9 +50,9 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
-        <li><a href="#shaders">Shaders</a></li>
       </ul>
     </li>
+    <li><a href="#shaders">Shaders</a></li>
     <li><a href="#tests">Tests</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -156,6 +156,14 @@ the git bash.
   $ cmake --preset <configurePreset-name> ../
   $ cmake --build --preset <buildPreset-name> .
   ```
+
+# Shaders
+I provide two ways for compiling shaders with. Hence if you want to add new
+files as `#include` in your shaders you have to modify the files: (should be self-explanatory)<br/>
+* [`include/vulkan_base/ShaderIncludes.hpp`] 
+* [`cmake/CompileShadersToSPV.cmake`]
+
+appropriately.</br>
 
 
 # Tests
