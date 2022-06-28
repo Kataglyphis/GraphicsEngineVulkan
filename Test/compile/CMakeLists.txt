@@ -101,7 +101,7 @@ add_custom_target(resourcefilesForCompileTestSuite ALL
 add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
 
 include(GoogleTest)
-gtest_discover_tests(   ${COMPILE_TEST_SUITE} DISCOVERY_TIMEOUT 600)
+gtest_discover_tests(   ${COMPILE_TEST_SUITE} DISCOVERY_TIMEOUT 30)
 
 # add test after each build
 # src: https://quickturnstudio.com/running-test-in-compile-time/
