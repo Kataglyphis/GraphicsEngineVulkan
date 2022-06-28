@@ -14,6 +14,8 @@ include(cmake/SetTestFilters.cmake)
 
 set (COMPILE_TEST_SUITE compileTestSuite)
 
+enable_testing()
+
 add_executable( ${COMPILE_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_COMPILE_TEST_FILTER}
@@ -71,6 +73,7 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
 
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
 
+include(GoogleTest)
 gtest_discover_tests(   ${COMPILE_TEST_SUITE}
                         DISCOVERY_TIMEOUT 300
                         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

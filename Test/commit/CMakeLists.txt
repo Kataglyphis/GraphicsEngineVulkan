@@ -15,6 +15,8 @@ include(cmake/SetTestFilters.cmake)
 
 set (COMMIT_TEST_SUITE commitTestSuite)
 
+enable_testing()
+
 add_executable( ${COMMIT_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_COMMIT_TEST_FILTER}
@@ -72,6 +74,7 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
+include(GoogleTest)
 gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
                         DISCOVERY_TIMEOUT 300
                         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
