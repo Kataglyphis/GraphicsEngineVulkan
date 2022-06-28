@@ -53,6 +53,8 @@ enable_doxygen()
 
 include(cmake/StaticAnalyzers.cmake)
 
+include(cmake/Speedup.cmake)
+
 include(FetchContent)
 # include google test to project
 FetchContent_Declare(
