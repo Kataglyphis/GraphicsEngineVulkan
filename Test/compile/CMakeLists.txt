@@ -72,7 +72,7 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
 
 gtest_discover_tests(   ${COMPILE_TEST_SUITE}
-                        DISCOVERY_TIMEOUT 30
+                        DISCOVERY_TIMEOUT 300
                         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 
 # disable all warnings for our test suite
