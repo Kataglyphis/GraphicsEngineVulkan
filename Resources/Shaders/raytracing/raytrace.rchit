@@ -8,21 +8,21 @@
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 #extension GL_EXT_buffer_reference2 : require
 
-#include "../common/raycommon.glsl"
+#include "raycommon.glsl"
 
-#include "../hostDevice/host_device_shared_vars.hpp"
+#include "host_device_shared_vars.hpp"
 
-#include "../brdf/unreal4.glsl"
-#include "../brdf/disney.glsl"
-#include "../brdf/pbrBook.glsl"
-#include "../brdf/phong.glsl"
-#include "../brdf/frostbite.glsl"
+#include "unreal4.glsl"
+#include "disney.glsl"
+#include "pbrBook.glsl"
+#include "phong.glsl"
+#include "frostbite.glsl"
 
-#include "../../../include/renderer/SceneUBO.hpp"
-#include "../../../include/renderer/pushConstants/PushConstantRayTracing.hpp"
-#include "../../../include/scene/ObjMaterial.hpp"
-#include "../../../include/scene/Vertex.hpp"
-#include "../../../include/scene/ObjectDescription.hpp"
+#include "SceneUBO.hpp"
+#include "PushConstantRayTracing.hpp"
+#include "ObjMaterial.hpp"
+#include "Vertex.hpp"
+#include "ObjectDescription.hpp"
 
 hitAttributeEXT vec2 attribs;
 

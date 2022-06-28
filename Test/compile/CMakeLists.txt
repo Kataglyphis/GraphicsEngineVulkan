@@ -80,6 +80,25 @@ else()
   target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
 endif()
 
+# make our sources available to testing framework
+add_custom_target(resourcefilesForCompileTestSuite ALL
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${CMAKE_SOURCE_DIR}/Resources 
+                    ${CMAKE_BINARY_DIR}/Test/Resources
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
+                    ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${CMAKE_SOURCE_DIR}/include/renderer/ 
+                    ${CMAKE_BINARY_DIR}/Test/include/renderer
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
+                    ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${CMAKE_SOURCE_DIR}/include/scene/ 
+                    ${CMAKE_BINARY_DIR}/Test/include/scene)
+
+add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
 
 include(GoogleTest)
 gtest_discover_tests(   ${COMPILE_TEST_SUITE})

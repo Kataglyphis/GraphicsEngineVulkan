@@ -155,8 +155,6 @@ the git bash.
   $ cmake --list-presets=all ../
   $ cmake --preset <configurePreset-name> ../
   $ cmake --build --preset <buildPreset-name> .
-  # necessary for making Resources available to test framework
-  $ cmake -E copy_directory ../Resources/ Test/Resources/
   ```
 
 

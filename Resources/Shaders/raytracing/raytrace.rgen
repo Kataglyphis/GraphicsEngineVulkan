@@ -4,13 +4,13 @@
 #extension GL_GOOGLE_include_directive : enable
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 
-#include "../common/raycommon.glsl"
+#include "raycommon.glsl"
 
-#include "../hostDevice/host_device_shared_vars.hpp"
+#include "host_device_shared_vars.hpp"
 
-#include "../../../include/renderer/GlobalUBO.hpp"
-#include "../../../include/renderer/SceneUBO.hpp"
-#include "../../../include/renderer/pushConstants/PushConstantRayTracing.hpp"
+#include "GlobalUBO.hpp"
+#include "SceneUBO.hpp"
+#include "PushConstantRayTracing.hpp"
 
 layout(location = 0) rayPayloadEXT HitPayload payload;
 
