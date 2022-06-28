@@ -40,10 +40,6 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    # make resources available to the google testing suite
-    - name: Copy Resources for Testing framework
-      run: cmake -E copy_directory ${{github.workspace}}/Resources/ ${{github.workspace}}/build/Test/Resources/
-
     - name: Test
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
