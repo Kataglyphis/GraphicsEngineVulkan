@@ -5,7 +5,7 @@
 #include <VulkanRenderer.hpp>
 
 // Demonstrate some basic assertions.
-TEST(HelloTest1, BasicAssertions) {
+TEST(HelloTestCommit, BasicAssertions) {
 
 	// Expect two strings not to be equal.
 	EXPECT_STRNE("hello", "world");

@@ -2,7 +2,7 @@
 #include "VulkanBuffer.hpp"
 
 // Demonstrate some basic assertions.
-TEST(HelloTest2, BasicAssertions) {
+TEST(HelloTestCompile, BasicAssertions) {
 
 	// Expect two strings not to be equal.
 	EXPECT_STRNE("hello", "world");
@@ -11,7 +11,7 @@ TEST(HelloTest2, BasicAssertions) {
 
 }
 
-TEST(VulkanBuffer2, blob)
+TEST(VulkanBuffer, blob)
 {
 
 	VulkanBuffer vulkanBuffer;
