@@ -207,9 +207,8 @@ target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 enable_testing()
 include(GoogleTest)
 
-include(Test/commit/CMakeLists.txt)
-# add_subdirectory(Test/commit)
-# add_subdirectory(Test/compile)
+add_subdirectory(Test/commit)
+add_subdirectory(Test/compile)
 
 # for correct library output needed
 install(TARGETS ${PROJECT_NAME}
