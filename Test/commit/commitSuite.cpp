@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 #include "VulkanBuffer.hpp"
+#include <Window.hpp>
+#include <Scene.hpp>
+#include <VulkanRenderer.hpp>
 
 // Demonstrate some basic assertions.
 TEST(HelloTest1, BasicAssertions) {
@@ -11,22 +14,21 @@ TEST(HelloTest1, BasicAssertions) {
 
 }
 
-TEST(VulkanBuffer1, blob)
+TEST(SetUp, blob)
 {
 
-	VulkanBuffer vulkanBuffer;
-	
-	int c = 0;
+	int window_width = 1200;
+  int window_height = 768;
 
-	// Test that counter 0 returns 0
-	EXPECT_EQ(0, c);
+  float delta_time = 0.0f;
+  float last_time = 0.0f;
 
-	// EXPECT_EQ() evaluates its arguments exactly once, so they
-	// can have side effects.
+  std::unique_ptr<Window> window =
+      std::make_unique<Window>(window_width, window_height);
+  std::unique_ptr<Scene> scene = std::make_unique<Scene>();
+  std::unique_ptr<GUI> gui = std::make_unique<GUI>(window.get());
+  std::unique_ptr<Camera> camera = std::make_unique<Camera>();
 
-	EXPECT_EQ(0, c++);
-	EXPECT_EQ(1, c++);
-	EXPECT_EQ(2, c++);
-
-	EXPECT_EQ(3, c++);
+  VulkanRenderer vulkan_renderer{window.get(), scene.get(), gui.get(),
+                                 camera.get()};
 }

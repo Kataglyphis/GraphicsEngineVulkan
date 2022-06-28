@@ -1,8 +1,8 @@
-#include "../common/ShadingLibrary.glsl"
+#include "ShadingLibrary.glsl"
 
-//source: “Models of Light Reflection for Computer Synthesized Pictures
+//source: ï¿½Models of Light Reflection for Computer Synthesized Pictures
 // https://dl.acm.org/doi/pdf/10.1145/563858.563893
-// take normalization term from Akine Möller RealTimeRenderingThirdEdition page 111
+// take normalization term from Akine Mï¿½ller RealTimeRenderingThirdEdition page 111
 
 vec3 evaluatePhong(vec3 ambient, vec3 N, vec3 L, vec3 V, vec3 light_color, float light_intensity) {
 

@@ -4,6 +4,7 @@
 #include "ShaderHelper.hpp"
 #include "VulkanRendererConfig.hpp"
 #include "Utilities.hpp"
+#include "ShaderIncludes.hpp"
 
 ShaderHelper::ShaderHelper() {}
 
@@ -25,8 +26,10 @@ void ShaderHelper::compileShader(const std::string& shader_src_dir,
                         << shader_log_file.str();
 
   cmdShaderCompile  //<< adminPriviliges.str()
-      << GLSLC_EXE << target << std::quoted(shader_src_path.str()) << " -o "
-      << std::quoted(shader_spv_path);
+      << GLSLC_EXE << target
+      << std::quoted(shader_src_path.str()) << " -o "
+      << std::quoted(shader_spv_path)
+      << ShaderIncludes::getShaderIncludes();
   //<< log_stdout_and_stderr.str();
 
   // std::cout << cmdShaderCompile.str().c_str();

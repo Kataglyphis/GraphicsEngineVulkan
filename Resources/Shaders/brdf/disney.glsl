@@ -1,4 +1,4 @@
-#include "../common/ShadingLibrary.glsl"
+#include "ShadingLibrary.glsl"
 
 // the famous disney principled brdf model
 // based on their paper (https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
@@ -102,13 +102,13 @@ vec3 evaluateDisneysPBR(vec3 ambient, vec3 N, vec3 L, vec3 V, float roughness, v
     // a concession for artistic control that tints incident specular towards the base color.
     // Grazing specular is still achromatic.
     float specularTint = 0.7;
-    // an additional grazing(abschürfen) component, primarily intended for cloth; Glanz
+    // an additional grazing(abschï¿½rfen) component, primarily intended for cloth; Glanz
     float sheen = 0.0;
     // amount to tint sheen towards base color.
     float sheenTint = 0.4;
     // a second, special-purpose specular lobe
     float clearcoat = 0.1f;
-    // clearcoatGloss: controls clearcoat glossiness (0 = a “satin” appearance, 1 = a “gloss” appearance)
+    // clearcoatGloss: controls clearcoat glossiness (0 = a ï¿½satinï¿½ appearance, 1 = a ï¿½glossï¿½ appearance)
     float clearcoatGloss = 0.5;
 
     // ambient term brought to linear space for calculations

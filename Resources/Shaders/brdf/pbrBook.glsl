@@ -1,4 +1,4 @@
-#include "../common/ShadingLibrary.glsl"
+#include "ShadingLibrary.glsl"
 
 //(https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
 
@@ -18,7 +18,7 @@ vec3 F_PBRT(vec3 wi, vec3 wh) {
         cosThetaI = abs(cosThetaI);
     }*/
 
-    //<< Compute cosThetaT using Snell’s law >>
+    //<< Compute cosThetaT using Snellï¿½s law >>
     float sinThetaI = sqrt(max(0.f, 1.f - cosThetaI * cosThetaI));
     float sinThetaT = etaI / etaT * sinThetaI;
     //<< Handle total internal reflection >>
