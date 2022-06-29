@@ -56,7 +56,9 @@ target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ${WORKING_DIRECTORY}
 
 target_include_directories(  ${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
+target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest 
+                                                    gmock
+                                                    gtest_main
                                                     ${CMAKE_DL_LIBS}   
                                                     Threads::Threads
                                                     Vulkan::Vulkan
