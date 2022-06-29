@@ -108,8 +108,8 @@ add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
 
 # add test after each build
 # src: https://quickturnstudio.com/running-test-in-compile-time/
-add_custom_target(${COMPILE_TEST_SUITE}_Runner
-                  COMMAND ${COMPILE_TEST_SUITE}
-                  COMMENT "Running tests after each compilation.")
+# add_custom_target(${COMPILE_TEST_SUITE}_Runner
+#                   COMMAND ${COMPILE_TEST_SUITE}
+#                   COMMENT "Running tests after each compilation.")
 
-add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
+# add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
