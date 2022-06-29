@@ -34,7 +34,6 @@ add_executable( ${COMPILE_TEST_SUITE}
                 ${MEMORY_FILTER}
                 ${COMMON_FILTER}
                 ${GUI_FILTER}
-                ${APP_FILTER}
                 ${UTIL_FILTER}
                 ${VULKAN_BASE_FILTER}
                 ${SHADER_HOST_DEVICE_FILTER}
