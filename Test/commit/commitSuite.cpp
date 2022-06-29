@@ -44,6 +44,6 @@ TEST(SetUp, blob)
   std::unique_ptr<GUI> gui = std::make_unique<GUI>(window.get());
   std::unique_ptr<Camera> camera = std::make_unique<Camera>();
 
-  //VulkanRenderer vulkan_renderer{window.get(), scene.get(), gui.get(),
-  //                                camera.get()};
+  VulkanRenderer vulkan_renderer{window.get(), scene.get(), gui.get(),
+                                  camera.get()};
 }
