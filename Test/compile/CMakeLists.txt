@@ -14,7 +14,7 @@ include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetTestFilters.cmake)
 
-set (COMPILE_TEST_SUITE compileTestSuite)
+set(COMPILE_TEST_SUITE compileTestSuite)
 
 add_executable( ${COMPILE_TEST_SUITE}
                 # all test specific files -- start
@@ -87,29 +87,29 @@ else()
 endif()
 
 # make our sources available to testing framework
-add_custom_target(resourcefilesForCompileTestSuite ALL
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/Resources 
-                    ${CMAKE_BINARY_DIR}/Test/Resources
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
-                    ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/include/renderer/ 
-                    ${CMAKE_BINARY_DIR}/Test/include/renderer
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
-                    ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/include/scene/ 
-                    ${CMAKE_BINARY_DIR}/Test/include/scene)
+# add_custom_target(resourcefilesForCompileTestSuite ALL
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory 
+#                     ${CMAKE_SOURCE_DIR}/Resources 
+#                     ${CMAKE_BINARY_DIR}/Test/Resources
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory 
+#                     ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
+#                     ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory 
+#                     ${CMAKE_SOURCE_DIR}/include/renderer/ 
+#                     ${CMAKE_BINARY_DIR}/Test/include/renderer
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory 
+#                     ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
+#                     ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory 
+#                     ${CMAKE_SOURCE_DIR}/include/scene/ 
+#                     ${CMAKE_BINARY_DIR}/Test/include/scene)
 
-add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
+# add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
 
 # add test after each build
 # src: https://quickturnstudio.com/running-test-in-compile-time/
-# add_custom_target(${COMPILE_TEST_SUITE}_Runner
-#                   COMMAND ${COMPILE_TEST_SUITE}
-#                   COMMENT "Running tests after each compilation.")
+add_custom_target(${COMPILE_TEST_SUITE}_Runner
+                  COMMAND ${COMPILE_TEST_SUITE}
+                  COMMENT "Running tests after each compilation.")
 
-# add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
+add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
