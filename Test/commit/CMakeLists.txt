@@ -1,9 +1,3 @@
-# control where the static and shared libraries are built so that on windows
-# we don't need to tinker with the path to run the executable
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-
 # all testing related stuff
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
@@ -20,8 +14,6 @@ include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
 include(cmake/SetTestFilters.cmake)
 
 set (COMMIT_TEST_SUITE commitTestSuite)
-
-enable_testing()
 
 add_executable( ${COMMIT_TEST_SUITE}
                 # all test specific files -- start
@@ -65,6 +57,8 @@ target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ${WORKING_DIRECTORY}
 
 target_include_directories(  ${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
+target_link_directories(${COMMIT_TEST_SUITE} PRIVATE ${googletest_BINARY_DIR})
+
 target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
                                                     ${CMAKE_DL_LIBS}   
                                                     Threads::Threads
@@ -79,9 +73,6 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 )
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
-
-include(GoogleTest)
-
 
 gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
                         DISCOVERY_TIMEOUT 300)

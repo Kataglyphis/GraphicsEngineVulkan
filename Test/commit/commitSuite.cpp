@@ -1,8 +1,23 @@
 #include <gtest/gtest.h>
-#include "VulkanBuffer.hpp"
-#include <Window.hpp>
-#include <Scene.hpp>
-#include <VulkanRenderer.hpp>
+#include <vulkan/vulkan.h>
+#define GLFW_INCLUDE_NONE
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
+#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <vector>
+
+#include "GUI.hpp"
+#include "VulkanRenderer.hpp"
+#include "Window.hpp"
+
 
 // Demonstrate some basic assertions.
 TEST(HelloTestCommit, BasicAssertions) {
@@ -30,5 +45,5 @@ TEST(SetUp, blob)
   std::unique_ptr<Camera> camera = std::make_unique<Camera>();
 
   VulkanRenderer vulkan_renderer{window.get(), scene.get(), gui.get(),
-                                 camera.get()};
+                                  camera.get()};
 }

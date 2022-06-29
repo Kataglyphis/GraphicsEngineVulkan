@@ -65,6 +65,13 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# control where the static and shared libraries are built so that on windows
+# we don't need to tinker with the path to run the executable
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.
@@ -74,13 +81,6 @@ FetchContent_Declare(GSL
 )
 FetchContent_MakeAvailable(GSL)
 
-# control where the static and shared libraries are built so that on windows
-# we don't need to tinker with the path to run the executable
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 # set all glfw dependencies
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -203,6 +203,9 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 ipo)
 
 target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
+
+enable_testing()
+include(GoogleTest)
 
 add_subdirectory(Test/commit)
 add_subdirectory(Test/compile)
