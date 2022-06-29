@@ -10,7 +10,7 @@
       "name": "linux-debug",
       "displayName": "Linux Debug",
       "description": "Go with Linux",
-      "generator": "Unix Makefile",
+      "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" },
