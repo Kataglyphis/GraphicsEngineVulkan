@@ -11,7 +11,7 @@ TEST(HelloTestCompile, BasicAssertions) {
 
 }
 
-TEST(VulkanBuffer, blob)
+TEST(HelloTestCompile, blob)
 {
 
 	VulkanBuffer vulkanBuffer;
