@@ -65,6 +65,12 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+FetchContent_GetProperties(
+  googletest
+  SOURCE_DIR source_dir_googletest
+  BINARY_DIR binary_dir_googletest
+)
+
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.
