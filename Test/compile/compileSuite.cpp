@@ -13,8 +13,6 @@ TEST(HelloTestCompile, BasicAssertions) {
 
 TEST(VulkanBuffer, blob)
 {
-
-	VulkanBuffer vulkanBuffer;
 	
 	int c = 0;
 
