@@ -33,7 +33,7 @@ jobs:
           echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     # https://docs.microsoft.com/de-de/windows-hardware/manufacture/desktop/deploy-net-framework-35-by-using-deployment-image-servicing-and-management--dism?view=windows-11
     - name: Update path
-      run: set PATH=%PATH%;${{github.workspace}}/build
+      run: set PATH=%PATH%;${{github.workspace}}/build/
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
