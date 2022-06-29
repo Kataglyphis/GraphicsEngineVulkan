@@ -156,6 +156,12 @@ the git bash.
   $ cmake --preset <configurePreset-name> ../
   $ cmake --build --preset <buildPreset-name> .
   ```
+  Alternatively you can use the build scripts I use for my standard configuration: <br/>
+  * [`buildEngine.sh`] 
+  * [`buildEngine.bat`]
+  ```sh
+  $ {WORKING_DIR}/GraphicsEngineVulkan/buildEngine[.sh/.bat]
+  ```
 
 # Shaders
 I provide two ways for compiling shaders with. Hence if you want to add new
