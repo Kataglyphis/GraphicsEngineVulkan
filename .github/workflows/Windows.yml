@@ -24,7 +24,7 @@ jobs:
         submodules: recursive
     - name: Admin rights
       run: |
-        New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name 'C:\Program Files\CMake\bin\cmake.exe' -Value "~ RUNASADMIN"
+        New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name 'C:\Program Files\CMake\bin\cmake.exe' -PropertyType String -Value "~ RUNASADMIN"
     - name: Setup Vulkan
       run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
