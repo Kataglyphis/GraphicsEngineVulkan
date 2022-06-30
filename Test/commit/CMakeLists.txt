@@ -71,10 +71,6 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
-if(WIN32)
-  SET_TARGET_PROPERTIES(${COMMIT_TEST_SUITE} PROPERTIES LINK_FLAGS "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\" /SUBSYSTEM:WINDOWS")
-endif()
-
 gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
                         DISCOVERY_TIMEOUT 300)
 
