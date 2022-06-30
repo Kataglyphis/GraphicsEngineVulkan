@@ -23,6 +23,10 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+    - name: Admin rights
+      run: |
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0"
+        shutdown -r -t 0
     - name: Setup Vulkan
       run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
@@ -32,8 +36,6 @@ jobs:
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
           echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    - name: Admin rights
-      run: ./adminRights.bat
     - name: Cmake Build
       run: | 
           cd ${{github.workspace}}
