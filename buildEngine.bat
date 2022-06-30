@@ -1,3 +1,4 @@
-$ mkdir build ; cd build
+mkdir build
+cd build
 cmake --preset x64-MSVC-Windows ../
-cmake --build . --clean-first 
+cmake --build . --clean-first --verbose
