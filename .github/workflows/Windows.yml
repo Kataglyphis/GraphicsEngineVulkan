@@ -24,6 +24,7 @@ jobs:
         submodules: recursive
     - name: Admin rights
       run: |
+        Get-PSDrive
         New-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers' -Name 'C:\Program Files\CMake\bin\cmake.exe' -PropertyType String -Value "~ RUNASADMIN"
     - name: Setup Vulkan
       run: |
