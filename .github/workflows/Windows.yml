@@ -32,8 +32,8 @@ jobs:
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
           echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    - name: Powershell as Admin
-      run: powershell Start-Process powershell -Verb runAs
+    - name: Cmake as Admin
+      run: runas /profile /user:AAA “C:/Program Files/CMake/bin/cmake.exe” 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
