@@ -25,8 +25,7 @@ jobs:
         submodules: recursive
     - name: Admin rights
       run: |
-        Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0"
-        shutdown -r -t 0
+        New-ItemProperty -Path "Computer\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags" -Name "C:\Program Files\CMake\bin\cmake.exe" -Value "~ RUNASADMIN"
     - name: Setup Vulkan
       run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows

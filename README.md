@@ -59,6 +59,8 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <li><a href="#acknowledgements">Literature</a></li>
+    <li><a href="#acknowledgements">Common issues</a></li>
   </ol>
 </details>
 
@@ -249,6 +251,12 @@ Physically Based Shading
 Path tracing
 * [NVIDIA Path tracing Tutorial](https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp)
 
+## Common issues
+When building over windows command line you might get some error MSB3073: <br/>
+```sh
+  C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(157,5): error MSB3073: The command "setlocal [D:\a\GraphicsEngineVulkan\GraphicsEngineVulkan\build\Test\compile\compileTestSuite.vcxproj]
+```
+Resolve this issue by check the box "Run as administrator" on  C:/Program Files/CMake/bin.cmake.exe (or where ever it is installed)
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
