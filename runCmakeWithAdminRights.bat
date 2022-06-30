@@ -15,7 +15,7 @@ if '%errorlevel%' NEQ '0' (
 :UACPrompt
     echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
     set params = %*:"=""
-    echo UAC.ShellExecute “C:/Program Files/CMake/bin/cmake.exe” , "", "", "runas", 1 >> "%temp%\getadmin.vbs"
+    echo UAC.ShellExecute "C:/Program Files/CMake/bin/cmake.exe” , "", "", "runas", 1 >> "%temp%\getadmin.vbs"
 
     "%temp%\getadmin.vbs"
     del "%temp%\getadmin.vbs"
