@@ -25,7 +25,7 @@ jobs:
         submodules: recursive
     - name: Admin rights
       run: |
-        powershell.exe -Command "& {$wd = Get-Location; Start-Process powershell.exe -Verb RunAs -ArgumentList \"-ExecutionPolicy ByPass -NoExit -Command Set-Location $wd; ${{github.workspace}}\buildEngine.ps1\"}"
+        powershell.exe -Command "& {$wd = Get-Location; Start-Process powershell.exe -Verb RunAs -ArgumentList \"-ExecutionPolicy ByPass -NoExit -Command Set-Location $wd; ${{github.workspace}}\buildEngine.ps1"}"
     - name: Setup Vulkan
       run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
