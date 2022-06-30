@@ -23,6 +23,9 @@
 [![Twitter](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UC3LZiH4sZzzaVBCUV8knYeg?style=social)](https://www.youtube.com/channel/UC3LZiH4sZzzaVBCUV8knYeg)
 
+> **_NOTE:_** CI on windows fails due to an bug in the MSB. Use the cmake-gui rather than the command line. With the GUI there is no problem. Or have a look into the Issue section where I provide a fix.<br />
+
+
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
