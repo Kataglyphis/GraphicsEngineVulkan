@@ -210,6 +210,7 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
 target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 
 enable_testing()
+include(GoogleTest)
 
 add_subdirectory(Test/commit)
 add_subdirectory(Test/compile)
