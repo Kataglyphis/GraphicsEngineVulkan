@@ -23,9 +23,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: Admin rights
-      run: |
-        powershell.exe -Command "& {$wd = Get-Location; Start-Process powershell.exe -Verb RunAs -ArgumentList \"-ExecutionPolicy ByPass -NoExit -Command Set-Location $wd; ${{github.workspace}}\buildEngine.ps1"}"
     - name: Setup Vulkan
       run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
@@ -36,12 +33,13 @@ jobs:
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
           echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Cmake Build
-      run: | 
-          cd ${{github.workspace}}
-          mkdir build
-          cd build
-          cmake --preset x64-MSVC-Windows ../
-          cmake --build . --clean-first --verbose
+      run: ${{github.workspace}}/buildEngine.bat
+      # run: | 
+      #     cd ${{github.workspace}}
+      #     mkdir build
+      #     cd build
+      #     cmake --preset x64-MSVC-Windows ../
+      #     cmake --build . --clean-first --verbose
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
     #   # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
