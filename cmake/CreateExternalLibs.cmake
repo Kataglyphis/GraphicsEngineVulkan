@@ -4,7 +4,8 @@ add_library(
     ${IMGUI_FILTER}
 )
 
-target_link_libraries(IMGUI         PRIVATE Vulkan::Vulkan
+target_link_libraries(IMGUI         PRIVATE ${CMAKE_DL_LIBS}
+                                            Vulkan::Vulkan
                                             glfw 
                                             imgui
 

@@ -13,13 +13,18 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
   set(CMAKE_CXX_FLAGS_RELEASE "/O2")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
   # https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
-  set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -ggdb")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
   # https://clang.llvm.org/docs/UsersManual.html
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "/Od /O0")
   set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG")
+  # https://clang.llvm.org/docs/ClangCommandLineReference.html
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -ggdb")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 endif()
 
 # if no build type passed via command line go with debug mode
