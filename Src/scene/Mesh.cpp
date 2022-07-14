@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "VulkanBuffer.hpp"
+#include "Utilities.hpp"
 
 Mesh::Mesh() {}
 

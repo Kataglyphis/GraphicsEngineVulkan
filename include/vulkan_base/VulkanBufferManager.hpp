@@ -1,11 +1,10 @@
 #pragma once
 #include <vulkan/vulkan.h>
 
-#include <cstring>
 #include <vector>
 
 #include "CommandBufferManager.hpp"
-#include "Utilities.hpp"
+
 #include "VulkanBuffer.hpp"
 
 class VulkanBufferManager {

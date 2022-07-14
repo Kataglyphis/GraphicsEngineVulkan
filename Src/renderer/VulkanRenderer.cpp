@@ -1,7 +1,30 @@
 #include "VulkanRenderer.hpp"
 
-#include <algorithm>
+#include "GUISceneSharedVars.hpp"
+#include "PushConstantRasterizer.hpp"
+#include "PushConstantRayTracing.hpp"
+#include "QueueFamilyIndices.hpp"
+#include "Utilities.hpp"
+
+#define GLFW_INCLUDE_NONE
+#define GLFW_INCLUDE_VULKAN
+
+#include <GLFW/glfw3.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <array>
+#include <cstring>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <memory>
+#include <set>
+#include <sstream>
+#include <stdexcept>
+#include <vector>
+#include <algorithm>
 #include <vector>
 
 #ifndef VMA_IMPLEMENTATION
@@ -20,6 +43,7 @@
 #include "ShaderHelper.hpp"
 
 #include "VulkanRendererConfig.hpp"
+#include <VulkanDebug.hpp>
 
 VulkanRenderer::VulkanRenderer(Window* window, Scene* scene, GUI* gui,
                                Camera* camera)

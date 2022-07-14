@@ -1,4 +1,5 @@
 #include "VulkanImageView.hpp"
+#include <Utilities.hpp>
 
 VulkanImageView::VulkanImageView() {}
 

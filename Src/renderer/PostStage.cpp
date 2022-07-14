@@ -9,8 +9,14 @@
 #include "GUI.hpp"
 #include "ShaderHelper.hpp"
 #include "Vertex.hpp"
+#include "PushConstantPost.hpp"
 
 #include "VulkanRendererConfig.hpp"
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
+#include <Utilities.hpp>
 
 PostStage::PostStage() {}
 

@@ -1,47 +1,26 @@
 #pragma once
 
-#define GLFW_INCLUDE_NONE
-#define GLFW_INCLUDE_VULKAN
-
-#include <GLFW/glfw3.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <algorithm>
-#include <array>
-#include <cstring>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
-#include <memory>
-#include <set>
-#include <sstream>
-#include <stdexcept>
-#include <vector>
-
 #include "ASManager.hpp"
 #include "Allocator.hpp"
 #include "CommandBufferManager.hpp"
 #include "GUI.hpp"
-#include "GUISceneSharedVars.hpp"
 #include "GlobalUBO.hpp"
 #include "PathTracing.hpp"
 #include "PostStage.hpp"
-#include "PushConstantRasterizer.hpp"
-#include "PushConstantRayTracing.hpp"
-#include "QueueFamilyIndices.hpp"
+
 #include "Rasterizer.hpp"
 #include "Raytracing.hpp"
 #include "Scene.hpp"
 #include "SceneUBO.hpp"
 #include "Texture.hpp"
-#include "Utilities.hpp"
+
 #include "VulkanBuffer.hpp"
 #include "VulkanBufferManager.hpp"
 #include "VulkanDevice.hpp"
 #include "VulkanInstance.hpp"
 #include "VulkanSwapChain.hpp"
 #include "Window.hpp"
+#include "Camera.hpp"
 
 class VulkanRenderer {
  public:

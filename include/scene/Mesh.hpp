@@ -4,7 +4,6 @@
 
 #include "ObjMaterial.hpp"
 #include "ObjectDescription.hpp"
-#include "Utilities.hpp"
 #include "Vertex.hpp"
 #include "VulkanBufferManager.hpp"
 

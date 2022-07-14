@@ -8,6 +8,10 @@
 
 #include <filesystem>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
+
 GUI::GUI(Window* window) { this->window = window; }
 
 void GUI::initializeVulkanContext(VulkanDevice* device,

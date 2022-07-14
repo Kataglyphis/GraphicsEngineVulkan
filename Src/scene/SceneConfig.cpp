@@ -2,6 +2,7 @@
 #include "VulkanRendererConfig.hpp"
 
 #include <filesystem>
+#include <sstream>
 //#define SULO_MODE 1
 
 namespace sceneConfig {

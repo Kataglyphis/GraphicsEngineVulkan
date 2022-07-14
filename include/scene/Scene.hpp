@@ -1,31 +1,24 @@
 #pragma once
-#define GLFW_INCLUDE_NONE
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <algorithm>
-#include <array>
-#include <cstring>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 #include <iostream>
 #include <memory>
 #include <set>
 #include <stdexcept>
-#include <string>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-#include "Camera.hpp"
 #include "GUI.hpp"
 #include "GUISceneSharedVars.hpp"
 #include "Mesh.hpp"
 #include "Model.hpp"
-#include "ObjLoader.hpp"
+
 #include "SceneConfig.hpp"
-#include "Utilities.hpp"
-#include "Window.hpp"
 
 class Scene {
  public:

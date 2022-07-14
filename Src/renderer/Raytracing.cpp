@@ -3,11 +3,13 @@
 #include <array>
 #include <vector>
 #include <filesystem>
+#include <sstream>
 
 #include "File.hpp"
 #include "MemoryHelper.hpp"
 #include "ShaderHelper.hpp"
 #include "VulkanRendererConfig.hpp"
+#include <Utilities.hpp>
 
 Raytracing::Raytracing() {}
 

@@ -10,6 +10,7 @@
 #include "Vertex.hpp"
 
 #include "VulkanRendererConfig.hpp"
+#include <Utilities.hpp>
 
 Rasterizer::Rasterizer() {}
 
