@@ -4,6 +4,8 @@
 
 #include <set>
 #include <string>
+#include <stdexcept>
+#include <Utilities.hpp>
 
 VulkanDevice::VulkanDevice(VulkanInstance* instance, VkSurfaceKHR* surface) {
   this->instance = instance;

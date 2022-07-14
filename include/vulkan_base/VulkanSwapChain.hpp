@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Texture.hpp"
-#include "Utilities.hpp"
+
 #include "VulkanDevice.hpp"
 #include "Window.hpp"
 

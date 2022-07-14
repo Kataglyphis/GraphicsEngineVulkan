@@ -4,7 +4,6 @@
 
 #include <string>
 
-#include "Utilities.hpp"
 #include "VulkanBuffer.hpp"
 #include "VulkanBufferManager.hpp"
 #include "VulkanImage.hpp"

@@ -1,4 +1,6 @@
 #include "Scene.hpp"
+#include "ObjLoader.hpp"
+#include "Utilities.hpp"
 
 Scene::Scene() {}
 

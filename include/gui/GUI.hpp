@@ -1,12 +1,9 @@
 #pragma once
 
 #include <memory>
-#define GLFW_INCLUDE_NONE
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_vulkan.h>
+//#define GLFW_INCLUDE_NONE
+//#define GLFW_INCLUDE_VULKAN
+//#include <GLFW/glfw3.h>
 
 #include "CommandBufferManager.hpp"
 #include "GUIRendererSharedVars.hpp"

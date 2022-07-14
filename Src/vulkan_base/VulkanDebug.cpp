@@ -1,5 +1,9 @@
 #include "VulkanDebug.hpp"
 
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include "Utilities.hpp"
 
 namespace debug {

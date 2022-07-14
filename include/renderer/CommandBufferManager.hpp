@@ -1,8 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
 
-#include "Utilities.hpp"
-
 class CommandBufferManager {
  public:
   CommandBufferManager();

@@ -1,8 +1,10 @@
 #include "VulkanInstance.hpp"
+#include "VulkanDebug.hpp"
 
 #include <string.h>
-
 #include <string>
+#include <Utilities.hpp>
+#include "VulkanDebug.hpp"
 
 VulkanInstance::VulkanInstance() {
   if (ENABLE_VALIDATION_LAYERS && !check_validation_layer_support()) {

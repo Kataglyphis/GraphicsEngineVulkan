@@ -6,8 +6,6 @@
 
 #include <vector>
 
-#include "VulkanDebug.hpp"
-
 class VulkanInstance {
  public:
   VulkanInstance();

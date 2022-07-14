@@ -3,6 +3,8 @@
 #include <tiny_obj_loader.h>
 
 #include "File.hpp"
+#include <iostream>
+#include <unordered_map>
 
 ObjLoader::ObjLoader(VulkanDevice* device, VkQueue transfer_queue,
                      VkCommandPool command_pool) {

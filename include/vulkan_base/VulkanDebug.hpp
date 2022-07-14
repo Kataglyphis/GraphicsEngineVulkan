@@ -1,12 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
 
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include "Utilities.hpp"
-
 namespace debug {
 // Default validation layers
 extern int validationLayerCount;

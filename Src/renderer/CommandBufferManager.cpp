@@ -1,5 +1,7 @@
 #include "CommandBufferManager.hpp"
 
+#include "Utilities.hpp"
+
 CommandBufferManager::CommandBufferManager() {}
 
 VkCommandBuffer CommandBufferManager::beginCommandBuffer(
