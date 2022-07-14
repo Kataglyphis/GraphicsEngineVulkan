@@ -7,13 +7,16 @@
   },
   "configurePresets": [
     {
-      "name": "linux-debug",
-      "displayName": "Linux Debug",
+      "name": "linux-debug-clang",
+      "displayName": "Linux Debug Clang",
       "description": "Go with Linux",
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" },
+      "cacheVariables": { 
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++" },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -21,13 +24,51 @@
       }
     },
     {
-      "name": "linux-release",
-      "displayName": "Linux Release",
+      "name": "linux-release-clang",
+      "displayName": "Linux Release Clang",
       "description": "Go with Linux",
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" },
+      "cacheVariables": { 
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++" },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-debug-GNU",
+      "displayName": "Linux Debug GNU",
+      "description": "Go with Linux",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/",
+      "installDir": "${sourceDir}/build/",
+      "cacheVariables": { 
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+       },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-release-GNU",
+      "displayName": "Linux Release GNU",
+      "description": "Go with Linux",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/",
+      "installDir": "${sourceDir}/build/",
+      "cacheVariables": { 
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++" },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
