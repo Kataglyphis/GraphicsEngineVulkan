@@ -7,6 +7,8 @@
 
 #include "VulkanBuffer.hpp"
 
+#include <cstring>
+
 class VulkanBufferManager {
  public:
   VulkanBufferManager();
