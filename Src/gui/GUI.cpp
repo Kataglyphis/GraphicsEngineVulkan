@@ -215,6 +215,7 @@ void GUI::create_gui_context(Window* window, const VkInstance& instance,
   init_info.Device = device->getLogicalDevice();
   init_info.QueueFamily = indices.graphics_family;
   init_info.Queue = device->getGraphicsQueue();
+  init_info.RenderPass = post_render_pass;
   init_info.DescriptorPool = gui_descriptor_pool;
   init_info.PipelineCache = VK_NULL_HANDLE;
   init_info.MinImageCount = 2;
@@ -224,13 +225,13 @@ void GUI::create_gui_context(Window* window, const VkInstance& instance,
   init_info.Subpass = 0;
   init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
 
-  ImGui_ImplVulkan_Init(&init_info, post_render_pass);
+  ImGui_ImplVulkan_Init(&init_info); //post_render_pass
 }
 
 void GUI::create_fonts_and_upload(const VkCommandPool& graphics_command_pool) {
   VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(
       device->getLogicalDevice(), graphics_command_pool);
-  ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
+  ImGui_ImplVulkan_CreateFontsTexture(); //command_buffer
   commandBufferManager.endAndSubmitCommandBuffer(
       device->getLogicalDevice(), graphics_command_pool,
       device->getGraphicsQueue(), command_buffer);
@@ -238,7 +239,7 @@ void GUI::create_fonts_and_upload(const VkCommandPool& graphics_command_pool) {
   // wait until no actions being run on device before destroying
   vkDeviceWaitIdle(device->getLogicalDevice());
   // clear font textures from cpu data
-  ImGui_ImplVulkan_DestroyFontUploadObjects();
+  //ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
 GUI::~GUI() {}
