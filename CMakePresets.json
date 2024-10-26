@@ -10,7 +10,7 @@
       "name": "linux-debug-clang",
       "displayName": "Linux Debug Clang",
       "description": "Go with Linux",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": { 
@@ -27,7 +27,7 @@
       "name": "linux-release-clang",
       "displayName": "Linux Release Clang",
       "description": "Go with Linux",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": { 
@@ -44,7 +44,7 @@
       "name": "linux-debug-GNU",
       "displayName": "Linux Debug GNU",
       "description": "Go with Linux",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": { 
@@ -62,7 +62,7 @@
       "name": "linux-release-GNU",
       "displayName": "Linux Release GNU",
       "description": "Go with Linux",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": { 
