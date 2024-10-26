@@ -24,6 +24,9 @@ jobs:
           submodules: recursive
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v2
+      - name: Setup VS Installer
+        run: | 
+          vs_installer.exe install --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
