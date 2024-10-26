@@ -24,13 +24,6 @@ jobs:
           submodules: recursive
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v2
-      - name: Install Visual Studio Dependencies
-        run: |
-          # Install Visual Studio components for your project
-          choco install visualstudio2022buildtools --include-optional
-          vs_installer.exe install --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive 
-          vs_installer.exe install --add Microsoft.VisualStudio.Component.VC.CMake.Project --includeRecommended --passive
-          vs_imstaller.exe install --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --includeRecommended --passsive
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
@@ -43,7 +36,12 @@ jobs:
           echo "C:\VulkanSDK\Lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "C:\VulkanSDK\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Cmake Build
-        run: ${{github.workspace}}\buildEngine.bat
+        run: |
+          mkdir build
+          cd build
+          cmake --preset x64-MSVC-Windows ../
+          cmake --build . --target GraphicsEngine --verbose
+       # run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
     #   # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
