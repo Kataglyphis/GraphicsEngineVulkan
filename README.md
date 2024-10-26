@@ -132,9 +132,9 @@ Frequently tested under <br />
 ### Prerequisites
 
 Dependencies to libraries are stated above.<br />
-C++20 or higher required.<br />
+C++23 or higher required.<br />
 C17 or higher required.<br />
-CMake 3.20 or higher required.<br />
+CMake 3.28.3 or higher required.<br />
 > **_NOTE:_** This project relies on the new hardware capabilities for RRT. <br />
 
 
