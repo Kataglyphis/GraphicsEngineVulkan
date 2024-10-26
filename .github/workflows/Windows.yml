@@ -24,9 +24,12 @@ jobs:
           submodules: recursive
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v2
-      - name: Setup VS Installer
-        run: | 
-          vs_installer.exe install --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive
+      - name: Install Visual Studio Dependencies
+        run: |
+          # Install Visual Studio components for your project
+          choco install visualstudio2022buildtools --include-optional
+          choco install visualstudio-installer
+          vs_installer.exe modify --add Microsoft.VisualStudio.Workload.VCTools --quiet --wait
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
