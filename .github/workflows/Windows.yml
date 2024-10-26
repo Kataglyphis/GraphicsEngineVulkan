@@ -2,9 +2,9 @@ name: Windows build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -19,11 +19,11 @@ jobs:
     env:
       VULKAN_SDK: C:\VulkanSDK\
     steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: recursive
-    - name: Setup Vulkan
-      run: |
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Vulkan
+        run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
           echo Version $ver
           $ProgressPreference = 'SilentlyContinue'
@@ -31,14 +31,13 @@ jobs:
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
           echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    - name: Cmake Build
-      run: ${{github.workspace}}\buildEngine.bat
+      - name: Cmake Build
+        run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
     #   # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-    #   run: cmake -B "${{github.workspace}}\build" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} 
+    #   run: cmake -B "${{github.workspace}}\build" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     # - name: Build
     #   # Build your program with the given configuration
     #   run: cmake --build "${{github.workspace}}\build" --config ${{env.BUILD_TYPE}} # --target ${{env.MAIN_TARGET}}
-      
