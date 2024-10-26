@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Install Vulkan
@@ -28,7 +28,16 @@ jobs:
           sudo apt update
           sudo apt install vulkan-sdk
       - name: Install GLFW dependencies
-        run: sudo apt-get install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev wayland-protocols
+        run: sudo apt-get install \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libglu1-mesa-dev \
+          freeglut3-dev \
+          mesa-common-dev \
+          wayland-protocols \
+          libwayland-dev
       - name: Install Code Coverage dependencies
         run: sudo apt-get install -y gcovr
       - name: Install clang
