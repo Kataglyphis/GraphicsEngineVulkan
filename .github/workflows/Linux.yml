@@ -28,12 +28,6 @@ jobs:
           sudo apt upgrade
           sudo apt dist-upgrade
           sudo apt install libc6
-      - name: Install Vulkan
-        run: |
-          wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
-          sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-noble.list http://packages.lunarg.com/vulkan/lunarg-vulkan-noble.list
-          sudo apt update
-          sudo apt install vulkan-sdk
       - name: Install GLFW dependencies
         run: sudo apt-get install -y \
           libxrandr-dev \
@@ -45,6 +39,12 @@ jobs:
           mesa-common-dev \
           wayland-protocols \
           libwayland-dev
+      - name: Install Vulkan
+        run: |
+          wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
+          sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-noble.list http://packages.lunarg.com/vulkan/lunarg-vulkan-noble.list
+          sudo apt update
+          sudo apt install vulkan-sdk
       - name: Install Code Coverage dependencies
         run: sudo apt-get install -y gcovr
       - name: Install clang
