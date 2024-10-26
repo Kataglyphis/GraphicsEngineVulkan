@@ -39,7 +39,8 @@ jobs:
           freeglut3-dev \
           mesa-common-dev \
           wayland-protocols \
-          libwayland-dev
+          libwayland-dev \
+          libxkbcommon-dev
       - name: Install Vulkan
         run: |
           wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
