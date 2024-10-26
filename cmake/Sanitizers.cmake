@@ -2,13 +2,13 @@ function(enable_sanitizers project_name)
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT MSVC)
         
-        option(ENABLE_SANITIZER_ADDRESS "Enable address sanitizer for gcc/clang" ON)#
+        option(ENABLE_SANITIZER_ADDRESS "Enable address sanitizer for gcc/clang" OFF)#
         set(SANITIZERS "")
         if(ENABLE_SANITIZER_ADDRESS)
             list(APPEND SANITIZERS "address")
         endif()
 
-        option(ENABLE_SANITIZER_UNDEFINED_BEHAVIOUR "Enable undefined behaviour sanitizer for gcc/clang" ON)#OFF
+        option(ENABLE_SANITIZER_UNDEFINED_BEHAVIOUR "Enable undefined behaviour sanitizer for gcc/clang" OFF)#OFF
         if(ENABLE_SANITIZER_UNDEFINED_BEHAVIOUR)
             list(APPEND SANITIZERS "undefined")
         endif()
