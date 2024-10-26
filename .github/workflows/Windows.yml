@@ -28,9 +28,9 @@ jobs:
         run: |
           # Install Visual Studio components for your project
           choco install visualstudio2022buildtools --include-optional
-          visualstudio-installer install --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive 
-          visualstudio-installer install --add Microsoft.VisualStudio.Component.VC.CMake.Project --includeRecommended --passive
-          visualstudio-installer install --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --includeRecommended --passsive
+          vs_installer.exe install --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive 
+          vs_installer.exe install --add Microsoft.VisualStudio.Component.VC.CMake.Project --includeRecommended --passive
+          vs_imstaller.exe install --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --includeRecommended --passsive
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
