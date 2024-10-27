@@ -42,7 +42,7 @@ jobs:
           cmake --build . --target compileTestSuite --verbose
       - name: Run .exe file and capture logs
         run: |
-          .\build\Debug\compileTimeSuite.exe > error.log 2>&1
+          .\build\Debug\compileTestSuite.exe > error.log 2>&1
 
       - name: Upload log file as artifact
         uses: actions/upload-artifact@v3
