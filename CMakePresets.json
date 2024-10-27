@@ -78,7 +78,7 @@
     {
       "name": "x64-MSVC-Windows",
       "description": "Windows and standard MSVC",
-      "generator": "Visual Studio 17 2022",
+      "generator": "Visual Studio 16 2019",
       "binaryDir": "${sourceDir}/build/",
       "installDir": "${sourceDir}/build/",
       "cacheVariables": {
