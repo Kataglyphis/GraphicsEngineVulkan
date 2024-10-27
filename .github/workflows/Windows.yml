@@ -40,7 +40,9 @@ jobs:
           cd build
           cmake --preset x64-MSVC-Windows ../
           cmake --build . --target compileTestSuite --verbose
-          cd Debug
+      - name: Run tests
+        run: |
+          cd build\Debug
           .\compileTestSuite.exe
         # run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
