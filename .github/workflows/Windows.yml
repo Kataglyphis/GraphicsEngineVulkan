@@ -43,6 +43,7 @@ jobs:
       - name: Run tests
         run: |
           cd build\Debug
+          ls
           .\compileTestSuite.exe
         # run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
