@@ -43,7 +43,8 @@ jobs:
       - name: Run .exe file and capture logs
         continue-on-error: true
         run: |
-          .\build\Debug\compileTestSuite.exe > error.log 2>&1
+          cd build\Debug
+          .\compileTestSuite.exe > error.log 2>&1
 
       - name: Upload log file as artifact
         uses: actions/upload-artifact@v3
