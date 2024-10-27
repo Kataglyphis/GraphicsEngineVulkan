@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake --preset x64-MSVC-Windows ../
+          cmake -DBUILD_SHARED_LIBS=OFF --preset x64-MSVC-Windows ../
           cmake --build . --target GraphicsEngine --verbose
        # run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
