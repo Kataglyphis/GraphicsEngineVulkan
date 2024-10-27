@@ -23,8 +23,8 @@ jobs:
         with:
           submodules: recursive
       - name: Setup MSBuild Dependencies
-	  	# Set the path to the Visual Studio Installer
-		# Install Visual Studio components (modify the components as needed)
+        # Set the path to the Visual Studio Installer
+        # Install Visual Studio components (modify the components as needed)
         run: |
         $vsInstallerPath = "$Env:ProgramFiles\Microsoft Visual Studio\Installer\vs_installer.exe"
         $vsInstallerPath install --quiet --wait --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
