@@ -22,13 +22,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Setup MSBuild Dependencies
-        # Set the path to the Visual Studio Installer
-        # Install Visual Studio components (modify the components as needed)
-        run: |
-          $vsInstallerPath = "$Env:ProgramFiles\Microsoft Visual Studio\Installer\vs_installer.exe"
-          $vsInstallerPath install --quiet --wait --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
@@ -37,10 +30,9 @@ jobs:
           Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
-          echo "C:\VulkanSDK\Bin" >> $GITHUB_PATH
-          $env:Path += ";C:\VulkanSDK\Bin"
-          $env:Path += ";C:\VulkanSDK\Lib"
-          $env:Path += ";C:\VulkanSDK\Include"
+		  echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+		  echo "C:\VulkanSDK\Lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+		  echo "C:\VulkanSDK\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Cmake Build
         #run: |
         #   mkdir build
