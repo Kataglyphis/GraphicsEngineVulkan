@@ -22,8 +22,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Setup MSBuild Dependencies
+        run: |
+		# Set the path to the Visual Studio Installer
+        $vsInstallerPath = "$Env:ProgramFiles\Microsoft Visual Studio\Installer\vs_installer.exe"
+        # Install Visual Studio components (modify the components as needed)
+        $vsInstallerPath install --quiet --wait --norestart --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
