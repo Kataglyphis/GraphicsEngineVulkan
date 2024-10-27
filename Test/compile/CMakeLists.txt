@@ -104,16 +104,26 @@ add_custom_target(resourcefilesForCompileTestSuite ALL
                     ${CMAKE_SOURCE_DIR}/include/scene/ 
                     ${CMAKE_BINARY_DIR}/Test/include/scene)
 
-add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
+add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite ) # ${PROJECT_NAME}
 
-# add test after each build
-# src: https://quickturnstudio.com/running-test-in-compile-time/
-# if POST_BUILD not specified: RIP for windows Builds!!!!!!
-# https://cmake.org/cmake/help/latest/command/add_custom_command.html
-# https://discourse.cmake.org/t/cmake-build-and-test-with-qt-and-google-test/4729
-add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE})
+# Create a custom target to run tests after the main program
+add_custom_target(RunTests
+    COMMAND ${COMPILE_TEST_SUITE}  # Replace with the path to your test executable if needed
+    DEPENDS ${COMPILE_TEST_SUITE}
+    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+)
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                  COMMAND ${CMAKE_COMMAND} -E env 
-                  "$<TARGET_FILE:${COMPILE_TEST_SUITE}>"
-                  COMMENT "Running tests after each compilation.")
+# Optionally, you can set RunTests to run automatically after the build
+add_dependencies(${PROJECT_NAME} RunTests)
+
+
+# # add test after each build
+# # src: https://quickturnstudio.com/running-test-in-compile-time/
+# # if POST_BUILD not specified: RIP for windows Builds!!!!!!
+# # https://cmake.org/cmake/help/latest/command/add_custom_command.html
+# # https://discourse.cmake.org/t/cmake-build-and-test-with-qt-and-google-test/4729
+# add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE})
+
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#                   COMMAND $<TARGET_FILE:${COMPILE_TEST_SUITE}>
+#                   COMMENT "Running tests after each compilation.")
