@@ -32,9 +32,10 @@ jobs:
           Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
-          echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\VulkanSDK\Lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\VulkanSDK\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          set PATH=%PATH%;C:\VulkanSDK\<version>\Bin
+          echo "C:\VulkanSDK\$ver\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\VulkanSDK\$ver\Lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\VulkanSDK\$ver\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Cmake Build
         run: |
           mkdir build
