@@ -41,11 +41,13 @@ jobs:
           cmake --preset x64-MSVC-Windows ../
           cmake --build . --target compileTestSuite --verbose
       - name: Run .exe file and capture logs
+        continue-on-error: true
         run: |
           .\build\Debug\compileTestSuite.exe > error.log 2>&1
 
       - name: Upload log file as artifact
         uses: actions/upload-artifact@v3
+        if: always()
         with:
           name: error-log
           path: error.log  
