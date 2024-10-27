@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-// #include "VulkanBuffer.hpp"
+#include "VulkanBuffer.hpp"
 
 // Demonstrate some basic assertions.
 TEST(HelloTestCompile, BasicAssertions) {
@@ -14,7 +14,7 @@ TEST(HelloTestCompile, BasicAssertions) {
 TEST(HelloTestCompile, blob)
 {
 
-	// VulkanBuffer vulkanBuffer;
+	VulkanBuffer vulkanBuffer;
 	
 	int c = 0;
 
