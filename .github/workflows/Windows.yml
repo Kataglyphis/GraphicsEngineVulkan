@@ -32,6 +32,7 @@ jobs:
           Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+          echo "C:\VulkanSDK\Bin" >> $GITHUB_PATH
           $env:Path += ";C:\VulkanSDK\Bin"
           $env:Path += ";C:\VulkanSDK\Lib"
           $env:Path += ";C:\VulkanSDK\Include"
