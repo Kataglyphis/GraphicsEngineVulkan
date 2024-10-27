@@ -106,15 +106,15 @@ add_custom_target(resourcefilesForCompileTestSuite ALL
 
 add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite ) # ${PROJECT_NAME}
 
-# Create a custom target to run tests after the main program
-add_custom_target(RunTests
-    COMMAND ${COMPILE_TEST_SUITE}  # Replace with the path to your test executable if needed
-    DEPENDS ${COMPILE_TEST_SUITE}
-    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
-)
+# # Create a custom target to run tests after the main program
+# add_custom_target(RunTests
+#     COMMAND ${COMPILE_TEST_SUITE}  # Replace with the path to your test executable if needed
+#     DEPENDS ${COMPILE_TEST_SUITE}
+#     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+# )
 
-# Optionally, you can set RunTests to run automatically after the build
-add_dependencies(${PROJECT_NAME} RunTests)
+# # Optionally, you can set RunTests to run automatically after the build
+# add_dependencies(${PROJECT_NAME} RunTests)
 
 
 # # add test after each build
