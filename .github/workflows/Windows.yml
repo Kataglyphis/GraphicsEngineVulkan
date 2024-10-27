@@ -43,14 +43,14 @@ jobs:
       - name: Run compileTestSuite.exe
         run: |
          cd build\Debug
-          try {
-              $process = Start-Process -FilePath ".\compileTestSuite.exe" -PassThru -Wait
-              Write-Host "Process exited with code $($process.ExitCode)"
-           } catch {
-              Write-Host "Error running compileTestSuite.exe:"
-              Write-Host $_
-              exit 1
-           }
+         try {
+           $process = Start-Process -FilePath ".\compileTestSuite.exe" -PassThru -Wait
+           Write-Host "Process exited with code $($process.ExitCode)"
+          } catch {
+            Write-Host "Error running compileTestSuite.exe:"
+            Write-Host $_
+            exit 1
+          }
         shell: pwsh
 
       - name: Upload Logs (Optional)
