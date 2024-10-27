@@ -33,13 +33,17 @@ jobs:
           echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "C:\VulkanSDK\Lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "C:\VulkanSDK\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo $env:GITHUB_PATH
       - name: Cmake Build
-        #run: |
-        #   mkdir build
-        #   cd build
-        #   cmake -DBUILD_SHARED_LIBS=OFF --preset x64-MSVC-Windows ../
-        #   cmake --build . --target GraphicsEngine --verbose
-        run: ${{github.workspace}}\buildEngine.bat
+        run: |
+          mkdir build
+          cd build
+          cmake --preset x64-MSVC-Windows ../
+          cmake --build . --target compileTestSuite --verbose
+          cd Debug
+          ./compileTestSuite
+
+        # run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
     #   # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
