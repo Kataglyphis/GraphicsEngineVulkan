@@ -40,16 +40,25 @@ jobs:
           cd build
           cmake --preset x64-MSVC-Windows ../
           cmake --build . --target compileTestSuite --verbose
-      - name: Run tests
+      - name: Run compileTestSuite.exe
         run: |
-          cd build\Debug
-          ls
+         cd build\Debug
           try {
-            .\compileTestSuite.exe
-          } catch {
-            Write-Host "Error running compileTestSuite.exe:"
-            Write-Host $_
-          }
+              $process = Start-Process -FilePath ".\compileTestSuite.exe" -PassThru -Wait
+              Write-Host "Process exited with code $($process.ExitCode)"
+           } catch {
+              Write-Host "Error running compileTestSuite.exe:"
+              Write-Host $_
+              exit 1
+           }
+        shell: pwsh
+
+      - name: Upload Logs (Optional)
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: build\Debug # Upload the build folder to inspect logs or outputs if the test fails
         # run: ${{github.workspace}}\buildEngine.bat
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
