@@ -111,8 +111,8 @@ add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite)
 # if POST_BUILD not specified: RIP for windows Builds!!!!!!
 # https://cmake.org/cmake/help/latest/command/add_custom_command.html
 # https://discourse.cmake.org/t/cmake-build-and-test-with-qt-and-google-test/4729
-add_custom_target(TARGET ${COMPILE_TEST_SUITE}_Runner POST_BUILD
+add_custom_target(TARGET ${COMPILE_TEST_SUITE} POST_BUILD
                   COMMAND ${COMPILE_TEST_SUITE}
                   COMMENT "Running tests after each compilation.")
 
-add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE}_Runner)
+add_dependencies(${PROJECT_NAME} ${COMPILE_TEST_SUITE})
