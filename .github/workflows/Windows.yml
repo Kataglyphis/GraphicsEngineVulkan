@@ -44,6 +44,7 @@ jobs:
         continue-on-error: true
         run: |
           cd build\Debug
+          ls
           .\compileTestSuite.exe > error.log 2>&1
 
       - name: Upload log file as artifact
