@@ -35,6 +35,18 @@ jobs:
           echo "C:\VulkanSDK\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           ls
           echo $Env:PATH
+
+      - name: Show content of VulkanSDK.exe
+        run: dir C:\VulkanSDK
+        shell: cmd
+
+      - name: Print full PATH
+        run: |
+          $path = $Env:PATH
+          $path | Out-File -FilePath path.txt
+          Get-Content path.txt
+        shell: pwsh
+
       - name: Cmake Build
         run: |
           mkdir build
