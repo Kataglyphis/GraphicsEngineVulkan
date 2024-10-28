@@ -70,7 +70,7 @@ jobs:
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug
       - name: Build Code Coverage
-        run: make coverage_xml -C ${{github.workspace}}/build/
+        run: make coverage_xml -C ${{github.workspace}}/build/Debug
       - name: Codecov
         uses: codecov/codecov-action@v4.6.0
         with:

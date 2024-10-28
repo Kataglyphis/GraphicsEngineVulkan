@@ -86,7 +86,8 @@
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "cl",
-				"CMAKE_CXX_COMPILER": "cl"
+				"CMAKE_CXX_COMPILER": "cl",
+				"BUILD_SHARED_LIBS": "OFF"
 			},
 			"condition": {
 				"type": "equals",
