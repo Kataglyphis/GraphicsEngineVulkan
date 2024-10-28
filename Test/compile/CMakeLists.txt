@@ -1,4 +1,6 @@
-FetchContent_MakeAvailable(googletest)
+# include(GoogleTest)
+
+#FetchContent_MakeAvailable(googletest)
 
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
@@ -73,7 +75,7 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
 
 gtest_discover_tests(   ${COMPILE_TEST_SUITE}
-						DISCOVERY_MODE PRE_TEST
+												# DISCOVERY_MODE PRE_TEST
                         DISCOVERY_TIMEOUT 300)
 
 
@@ -88,23 +90,26 @@ endif()
 
 # make our sources available to testing framework
 add_custom_target(resourcefilesForCompileTestSuite ALL
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+										COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources 
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
                     ${CMAKE_SOURCE_DIR}/Resources 
                     ${CMAKE_BINARY_DIR}/Test/Resources
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
                     ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
                     ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
                     ${CMAKE_SOURCE_DIR}/include/renderer/ 
                     ${CMAKE_BINARY_DIR}/Test/include/renderer
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
                     ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
                     ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
                     ${CMAKE_SOURCE_DIR}/include/scene/ 
                     ${CMAKE_BINARY_DIR}/Test/include/scene)
 
-add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite ) # ${PROJECT_NAME}
+add_dependencies(resourcefilesForCompileTestSuite ${PROJECT_NAME})
+
+add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME}) # ${PROJECT_NAME}
 
 # # Create a custom target to run tests after the main program
 # add_custom_target(RunTests
