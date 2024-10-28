@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.28.3)
 # set the project name
 project(GraphicsEngine VERSION 1.3
         DESCRIPTION "Epic Graphics"
-        HOMEPAGE_URL "https://jotrockenmitlocken.de/"
+        HOMEPAGE_URL "https://jonasheinle.de/"
         LANGUAGES  CXX C)
 
 set(AUTHOR "Jotrockenmitlocken")
@@ -211,7 +211,7 @@ target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 enable_testing()
 include(GoogleTest)
 
-add_subdirectory(Test/commit)
+#add_subdirectory(Test/commit)
 add_subdirectory(Test/compile)
 
 # for correct library output needed

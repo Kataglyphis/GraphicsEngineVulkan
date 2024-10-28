@@ -60,20 +60,20 @@ jobs:
         # Build your program with the given configuration
         run: cd build |
           cmake --preset linux-debug-clang |
-          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target ALL_BUILD
       - name: Test
         working-directory: ${{github.workspace}}/build/
-        # Execute tests defined by the CMake configuration.  
+        # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug
-      - name: Build Code Coverage 
+      - name: Build Code Coverage
         run: make coverage_xml -C ${{github.workspace}}/build/
       - name: Codecov
         uses: codecov/codecov-action@v4.6.0
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-            files: coverage_xml.xml # optional
-            #flags: unittests # optional
-            name: codecov-umbrella # optional
-            fail_ci_if_error: false # optional (default = false)
-            verbose: false # optional (default = false)
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: coverage_xml.xml # optional
+          #flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: false # optional (default = false)
+          verbose: false # optional (default = false)

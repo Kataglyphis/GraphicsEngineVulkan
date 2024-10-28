@@ -1,3 +1,5 @@
+include(GoogleTest)
+
 # all testing related stuff
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
@@ -72,6 +74,7 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
 
 gtest_discover_tests(   ${COMMIT_TEST_SUITE} 
+												# DISCOVERY_MODE PRE_TEST
                         DISCOVERY_TIMEOUT 300)
 
 
@@ -100,24 +103,27 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 # make all resources available to our testing framework properly 
-add_custom_target(resourcefilesForCommitTestSuite ALL
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/Resources 
-                    ${CMAKE_BINARY_DIR}/Test/Resources
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
-                    ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/include/renderer/ 
-                    ${CMAKE_BINARY_DIR}/Test/include/renderer
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
-                    ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
-                    ${CMAKE_SOURCE_DIR}/include/scene/ 
-                    ${CMAKE_BINARY_DIR}/Test/include/scene)
+# add_custom_target(resourcefilesForCommitTestSuite ALL
+# 										COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
+#                     ${CMAKE_SOURCE_DIR}/Resources 
+#                     ${CMAKE_BINARY_DIR}/Test/Resources
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
+#                     ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
+#                     ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
+#                     ${CMAKE_SOURCE_DIR}/include/renderer/ 
+#                     ${CMAKE_BINARY_DIR}/Test/include/renderer
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
+#                     ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
+#                     ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
+#                     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
+#                     ${CMAKE_SOURCE_DIR}/include/scene/ 
+#                     ${CMAKE_BINARY_DIR}/Test/include/scene)
 
-add_dependencies(${COMMIT_TEST_SUITE} resourcefilesForCommitTestSuite)
+# add_dependencies(resourcefilesForCommitTestSuite ${PROJECT_NAME})
+
+add_dependencies(${COMMIT_TEST_SUITE}  ${PROJECT_NAME}) # resourcefilesForCommitTestSuite
 
 # disable all warnings for our test suite
 if(MSVC)
