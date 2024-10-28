@@ -30,7 +30,7 @@ jobs:
           echo "${{ github.workspace }}/${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Install Visual Studio Build Tools with C++ Native Desktop tools
         run: |
-          choco install visualstudio2022buildtools --params "'/IncludeRecommended /Add Microsoft.VisualStudio.Workload.NativeDesktop'"
+          choco install visualstudio2022buildtools --params "'/install /Add Microsoft.VisualStudio.Workload.NativeDesktop'"
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
