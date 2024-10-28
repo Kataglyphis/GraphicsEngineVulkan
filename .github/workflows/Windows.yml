@@ -36,6 +36,7 @@ jobs:
           echo $env:GITHUB_PATH
       - name: Cmake Build
         run: |
+          Remove-Item -Path "path\to\directory" -Recurse -Force
           mkdir build
           cd build
           cmake --preset x64-MSVC-Windows ../
