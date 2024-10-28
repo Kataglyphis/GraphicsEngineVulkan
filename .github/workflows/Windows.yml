@@ -54,9 +54,15 @@ jobs:
           cmake --preset x64-MSVC-Windows ../
           cmake --build . --target ALL_BUILD --verbose
           # Run your executable using an absolute path without .\
-          Start-Process -FilePath "D:\a\GraphicsEngineVulkan\GraphicsEngineVulkan\build\Debug\compileTestSuite.exe" -NoNewWindow -Wait -RedirectStandardOutput output.log -RedirectStandardError output.log
+          # Run your executable using an absolute path and redirect outputs to separate files
+          Start-Process -FilePath "D:\a\GraphicsEngineVulkan\GraphicsEngineVulkan\build\Debug\compileTestSuite.exe" -NoNewWindow -Wait -RedirectStandardOutput output.log -RedirectStandardError error.log
+          # Display standard output
           echo "=== Executable Output ==="
           Get-Content output.log
+          echo "========================="
+          # Display standard error
+          echo "=== Executable Errors ==="
+          Get-Content error.log
           echo "========================="
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
