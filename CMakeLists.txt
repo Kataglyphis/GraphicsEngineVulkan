@@ -8,7 +8,9 @@ project(GraphicsEngine VERSION 1.3
 
 set(AUTHOR "Jotrockenmitlocken")
 
-set(WINDOWS_CI OFF)
+# Set WINDOWS_CI to OFF by default
+# WINDOWS CI is only able to verify successful compiling ... Windows ... lel
+set(WINDOWS_CI OFF CACHE BOOL "Enable Windows CI build options")
 
 # set build type specific flags
 if(MSVC)
