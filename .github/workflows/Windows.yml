@@ -59,6 +59,8 @@ jobs:
         run: |
           mkdir build
           cd build
+          mkdir Debug
+          Copy-Item -Path "C:\VulkanSDK\vulkan-1.lib" -Destination "Debug" -Force
           cmake --preset x64-MSVC-Windows ../
           cmake --build . --target ALL_BUILD --verbose
           # Run your executable using an absolute path without .\
