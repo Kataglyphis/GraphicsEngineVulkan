@@ -45,7 +45,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake --preset x64-Clang-Windows ../
+          cmake --preset x64-Clang-Windows-CI ../
           cmake --build . --target ALL_BUILD --verbose
           ctest
     # - name: Configure CMake
