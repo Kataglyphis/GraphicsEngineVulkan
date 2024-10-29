@@ -8,6 +8,8 @@ project(GraphicsEngine VERSION 1.3
 
 set(AUTHOR "Jotrockenmitlocken")
 
+set(WINDOWS_CI OFF)
+
 # set build type specific flags
 if(MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
@@ -211,7 +213,7 @@ target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 enable_testing()
 include(GoogleTest)
 
-#add_subdirectory(Test/commit)
+add_subdirectory(Test/commit)
 add_subdirectory(Test/compile)
 
 # for correct library output needed
