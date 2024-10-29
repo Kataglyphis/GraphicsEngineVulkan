@@ -12,6 +12,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
   BUILD_DIR: build
+  VK_SDK_PATH: C:\VulkanSDK
 
 jobs:
   build:
@@ -59,11 +60,6 @@ jobs:
         run: |
           mkdir build
           cd build
-          mkdir Debug
-          mkdir Test/compile
-          Copy-Item -Path "C:\VulkanSDK\Lib\vulkan-1.lib" -Destination "Debug" -Force
-          Copy-Item -Path "C:\VulkanSDK\Lib\vulkan-1.lib" -Destination "./" -Force
-          Copy-Item -Path "C:\VulkanSDK\Lib\vulkan-1.lib" -Destination "Test/compile" -Force
           cmake --preset x64-MSVC-Windows ../
           cmake --build . --target ALL_BUILD --verbose
           # Run your executable using an absolute path without .\
