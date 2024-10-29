@@ -17,3 +17,6 @@
 	path = ExternalLib/VULKAN_MEMORY_ALLOCATOR
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
 
+[submodule "ExternalLib/spdlog"]
+	path = ExternalLib/spdlog
+	url = git@github.com:gabime/spdlog.git

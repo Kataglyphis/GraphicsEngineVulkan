@@ -32,3 +32,5 @@ target_include_directories(ktx  SYSTEM
                                 KTX/include KTX/other_include/KHR)
 
 add_subdirectory(GLFW)
+
+add_subdirectory(spdlog)
