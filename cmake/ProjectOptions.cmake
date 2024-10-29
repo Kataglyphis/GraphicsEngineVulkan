@@ -214,4 +214,9 @@ macro(myproject_local_options)
     myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 
+	include(cmake/Doxygen.cmake)
+	enable_doxygen()
+
+	include(cmake/Speedup.cmake)
+
 endmacro()
