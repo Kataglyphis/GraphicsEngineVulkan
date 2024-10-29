@@ -43,7 +43,7 @@ macro(myproject_setup_options)
     option(myproject_ENABLE_CACHE "Enable ccache" OFF)
   else()
     option(myproject_ENABLE_IPO "Enable IPO/LTO" ON)
-    option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
+    option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
     option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN})
     option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
     option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" ${SUPPORTS_UBSAN})
@@ -103,6 +103,13 @@ macro(myproject_global_options)
 		set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 	endif()
 
+	# control where the static and shared libraries are built so that on windows
+	# we don't need to tinker with the path to run the executable
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+	option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
   if(myproject_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
     myproject_enable_ipo()
@@ -133,6 +140,8 @@ macro(myproject_local_options)
 
   add_library(myproject_warnings INTERFACE)
   add_library(myproject_options INTERFACE)
+
+	target_compile_features(myproject_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})
 
   include(cmake/CompilerWarnings.cmake)
   myproject_set_project_warnings(
