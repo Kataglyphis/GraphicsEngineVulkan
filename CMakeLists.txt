@@ -21,21 +21,6 @@ myproject_global_options()
 
 myproject_local_options()
 
-add_library(GraphicsEngine::myproject_options ALIAS myproject_options)
-add_library(GraphicsEngine::myproject_warnings ALIAS myproject_warnings)
-
-# if no build type passed via command line go with debug mode
-if(NOT CMAKE_BUILD_TYPE)
-     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)   
-endif()
-
-# specify the C/C++ standard
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED True)
-
 include(cmake/Doxygen.cmake)
 enable_doxygen()
 
@@ -178,9 +163,9 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 vma
                                                 ktx
                                                 # enable compiler warnings
-                                                project_warnings
+                                                myproject_warnings
                                                 # enable sanitizers
-                                                project_sanitizers
+                                                myproject_sanitizers
                                                 # enable ipo
                                                 ipo)
 
