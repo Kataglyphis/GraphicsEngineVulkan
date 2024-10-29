@@ -45,8 +45,8 @@ jobs:
           echo --- PATH contains the following values: -----
           echo $Env:PATH
           echo ---------------------------------------------
-          echo --- PATH contains the following values: -----
-          echo vulkaninfo
+          echo --- vulkaninfo gives following output: -----
+          vulkaninfo
           echo ---------------------------------------------
       - name: Show content of VulkanSDK.exe
         run: dir C:\VulkanSDK
