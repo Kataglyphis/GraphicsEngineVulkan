@@ -21,13 +21,6 @@ myproject_global_options()
 
 myproject_local_options()
 
-include(cmake/Doxygen.cmake)
-enable_doxygen()
-
-include(cmake/Speedup.cmake)
-
-add_subdirectory(ExternalLib)
-
 # we depend on vulkan 
 find_package(Vulkan REQUIRED)
 # configure vulkan version
@@ -35,14 +28,7 @@ set(VULKAN_VERSION_MAJOR 1)
 set(VULKAN_VERSION_MINOR 3)
 find_package(Threads REQUIRED)
 
-# # so we can compile our shaders on the fly later on 
-# add_compile_definitions(GLSLC_EXE="${Vulkan_GLSLC_EXECUTABLE}" )
-# # remove dirty file directories ... 
-# add_compile_definitions(CMAKELISTS_DIR="${CMAKE_CURRENT_SOURCE_DIR}" )
-
-# https://stackoverflow.com/questions/1027247/is-it-better-to-specify-source-files-with-glob-or-each-file-individually-in-cmak
-# https://stackoverflow.com/questions/45090926/cmake-generate-list-of-source-files-without-glob
-# lets remove the FILE GLOB ... it is bad (as stated in the docs ... https://cmake.org/cmake/help/latest/command/file.html)
+add_subdirectory(ExternalLib)
 
 # update current positions
 set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src/)
