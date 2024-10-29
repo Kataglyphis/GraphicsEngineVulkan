@@ -134,9 +134,8 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 # enable compiler warnings
                                                 myproject_warnings
                                                 # enable sanitizers
-                                                myproject_sanitizers
-                                                # enable ipo
-                                                ipo)
+                                                myproject_options
+)
 
 target_link_libraries(${PROJECT_NAME}   PRIVATE GSL
 																								spdlog::spdlog)
@@ -175,7 +174,7 @@ include(cmake/CPackOptions.cmake)
 # out potential ABI related issues before they start, while helping you
 # track a build to a specific GIT SHA
 set(CPACK_PACKAGE_FILE_NAME
-    "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${GIT_SHORT_SHA}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}"
+    "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}"
 )
 
 include(CPack)
