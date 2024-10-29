@@ -65,12 +65,12 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
                                                         Threads::Threads
                                                         # Vulkan::Vulkan
                                                         glfw 
-                                                        # imgui 
-                                                        # stb
-                                                        # glm
-                                                        # tinyobjloader
-                                                        # vma
-                                                        # ktx
+                                                        imgui 
+                                                        stb
+                                                        glm
+                                                        tinyobjloader
+                                                        vma
+                                                        ktx
 )
 
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
