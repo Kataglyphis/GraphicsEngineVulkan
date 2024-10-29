@@ -59,7 +59,6 @@ jobs:
 
       - name: Cmake Build
         run: |
-          setx LIB "C:\VulkanSDK\Lib;%LIB%"
           mkdir build
           cd build
           cmake --preset x64-MSVC-Windows ../
