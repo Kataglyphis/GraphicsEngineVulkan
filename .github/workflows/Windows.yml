@@ -26,12 +26,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Set up PATH
-        run: |
-          echo "${{ github.workspace }}/${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\VulkanSDK\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\VulkanSDK\Lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\VulkanSDK\Include" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Setup Vulkan
         run: |
           $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
@@ -40,40 +34,9 @@ jobs:
           Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
           echo Downloaded
           .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
-          ls
-          echo --- PATH contains the following values: -----
-          echo $Env:PATH
-          echo ---------------------------------------------
-          echo --- vulkaninfo gives following output: -----
-          vulkaninfoSDK
-          echo ---------------------------------------------
-      - name: Show content of VulkanSDK.exe
-        run: dir C:\VulkanSDK
-        shell: cmd
-
-      - name: Print full PATH
-        run: |
-          $path = $Env:PATH
-          $path | Out-File -FilePath path.txt
-          Get-Content path.txt
-        shell: pwsh
-
       - name: Cmake Build
         run: |
-          [System.Environment]::SetEnvironmentVariable("VULKAN_SDK", "C:\VulkanSDK\", [System.EnvironmentVariableTarget]::Machine)
-          [System.Environment]::SetEnvironmentVariable("PATH", "$($env:VULKAN_SDK)\Bin;$($env:VULKAN_SDK)\Lib;$env:PATH", [System.EnvironmentVariableTarget]::Machine)
-          [System.Environment]::SetEnvironmentVariable("LIB", "$($env:VULKAN_SDK)\Lib;$env:LIB", [System.EnvironmentVariableTarget]::Machine)
-          [System.Environment]::SetEnvironmentVariable("INCLUDE", "$($env:VULKAN_SDK)\Include;$env:INCLUDE", [System.EnvironmentVariableTarget]::Machine)
           mkdir build
           cd build
-          cmake --preset x64-Clang-Windows ../
+          cmake --preset x64-Clang-Windows-CI ../
           cmake --build . --target ALL_BUILD --verbose
-          ctest
-    # - name: Configure CMake
-    #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-    #   # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-    #   run: cmake -B "${{github.workspace}}\build" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-    # - name: Build
-    #   # Build your program with the given configuration
-    #   run: cmake --build "${{github.workspace}}\build" --config ${{env.BUILD_TYPE}} # --target ${{env.MAIN_TARGET}}
