@@ -1,7 +1,3 @@
-# include(GoogleTest)
-
-#FetchContent_MakeAvailable(googletest)
-
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
@@ -22,48 +18,48 @@ add_executable( ${COMPILE_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_COMPILE_TEST_FILTER}
                 # # all test specific files -- end
-                # ${RASTER_SHADER_FILTER}
-                # ${RAYTRACING_SHADER_FILTER}
-                # ${COMMON_SHADER_FILTER}
-                # ${POST_SHADER_FILTER}
-                # ${BRDF_SHADER_FILTER}
-                # ${PATH_TRACING_SHADER_FILTER}
-                # ${RENDERER_FILTER}
-                # ${PC_FILTER}
-                # ${AS_FILTER}
-                # ${SCENE_FILTER}
-                # ${WINDOW_FILTER}
-                # ${MEMORY_FILTER}
-                # ${COMMON_FILTER}
-                # ${GUI_FILTER}
-                # ${UTIL_FILTER}
-                # ${VULKAN_BASE_FILTER}
-                # ${SHADER_HOST_DEVICE_FILTER}
-                # $<TARGET_OBJECTS:IMGUI>
+                ${RASTER_SHADER_FILTER}
+                ${RAYTRACING_SHADER_FILTER}
+                ${COMMON_SHADER_FILTER}
+                ${POST_SHADER_FILTER}
+                ${BRDF_SHADER_FILTER}
+                ${PATH_TRACING_SHADER_FILTER}
+                ${RENDERER_FILTER}
+                ${PC_FILTER}
+                ${AS_FILTER}
+                ${SCENE_FILTER}
+                ${WINDOW_FILTER}
+                ${MEMORY_FILTER}
+                ${COMMON_FILTER}
+                ${GUI_FILTER}
+                ${UTIL_FILTER}
+                ${VULKAN_BASE_FILTER}
+                ${SHADER_HOST_DEVICE_FILTER}
+                $<TARGET_OBJECTS:IMGUI>
 )
 
-#target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC   
-																														# ${WORKING_DIRECTORY}include/renderer
-                                                            # ${WORKING_DIRECTORY}include/renderer/pushConstants
-                                                            # ${WORKING_DIRECTORY}include/renderer/accelerationStructures
-                                                            # ${WORKING_DIRECTORY}include/vulkan_base
-                                                            # ${WORKING_DIRECTORY}include/gui
-                                                            # ${WORKING_DIRECTORY}include/common
-                                                            # ${WORKING_DIRECTORY}include/scene
-                                                            # ${WORKING_DIRECTORY}include/window
-                                                            # ${WORKING_DIRECTORY}include/memory
-                                                            # ${WORKING_DIRECTORY}include/util
-                                                            # ${WORKING_DIRECTORY}include/app
-                                                            # ${WORKING_DIRECTORY}Resources/Shaders/hostDevice
-                                                            # ${WORKING_DIRECTORY}include/
-#)
+target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC   
+																														${WORKING_DIRECTORY}include/renderer
+                                                            ${WORKING_DIRECTORY}include/renderer/pushConstants
+                                                            ${WORKING_DIRECTORY}include/renderer/accelerationStructures
+                                                            ${WORKING_DIRECTORY}include/vulkan_base
+                                                            ${WORKING_DIRECTORY}include/gui
+                                                            ${WORKING_DIRECTORY}include/common
+                                                            ${WORKING_DIRECTORY}include/scene
+                                                            ${WORKING_DIRECTORY}include/window
+                                                            ${WORKING_DIRECTORY}include/memory
+                                                            ${WORKING_DIRECTORY}include/util
+                                                            ${WORKING_DIRECTORY}include/app
+                                                            ${WORKING_DIRECTORY}Resources/Shaders/hostDevice
+                                                            ${WORKING_DIRECTORY}include/
+)
 
-#target_include_directories(  ${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(  ${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
 target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
                                                         ${CMAKE_DL_LIBS}
                                                         Threads::Threads
-                                                        # Vulkan::Vulkan
+                                                        Vulkan::Vulkan
                                                         glfw 
                                                         imgui 
                                                         stb
@@ -76,8 +72,8 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
 
 gtest_discover_tests(   ${COMPILE_TEST_SUITE}
-			# DISCOVERY_MODE PRE_TEST
-                        DISCOVERY_TIMEOUT 300)
+                        DISCOVERY_TIMEOUT 300
+)
 
 
 # disable all warnings for our test suite
