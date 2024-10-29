@@ -45,7 +45,7 @@ jobs:
           echo $Env:PATH
           echo ---------------------------------------------
           echo --- vulkaninfo gives following output: -----
-          vulkaninfo
+          vulkaninfoSDK
           echo ---------------------------------------------
       - name: Show content of VulkanSDK.exe
         run: dir C:\VulkanSDK
