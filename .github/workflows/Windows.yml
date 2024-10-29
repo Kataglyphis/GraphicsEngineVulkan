@@ -59,6 +59,10 @@ jobs:
 
       - name: Cmake Build
         run: |
+          [System.Environment]::SetEnvironmentVariable("VULKAN_SDK", "C:\VulkanSDK\", [System.EnvironmentVariableTarget]::Machine)
+          [System.Environment]::SetEnvironmentVariable("PATH", "$($env:VULKAN_SDK)\Bin;$($env:VULKAN_SDK)\Lib;$env:PATH", [System.EnvironmentVariableTarget]::Machine)
+          [System.Environment]::SetEnvironmentVariable("LIB", "$($env:VULKAN_SDK)\Lib;$env:LIB", [System.EnvironmentVariableTarget]::Machine)
+          [System.Environment]::SetEnvironmentVariable("INCLUDE", "$($env:VULKAN_SDK)\Include;$env:INCLUDE", [System.EnvironmentVariableTarget]::Machine)
           mkdir build
           cd build
           cmake --preset x64-MSVC-Windows ../
