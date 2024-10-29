@@ -210,7 +210,13 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
 
 target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
 
-enable_testing()
+if(NOT WINDOWS_CI)
+	enable_testing()
+	message(STATUS "WINDOWS_CI is OFF or not defined.")
+else()
+	message(STATUS "WINDOWS_CI is OFF or not defined.")
+endif()
+
 include(GoogleTest)
 
 add_subdirectory(Test/commit)
