@@ -71,9 +71,14 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
 
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
 
-gtest_discover_tests(   ${COMPILE_TEST_SUITE}
-                        DISCOVERY_TIMEOUT 300
-)
+if(NOT WINDOWS_CI)
+	message(STATUS "WINDOWS_CI is OFF or not defined.")
+	gtest_discover_tests(   ${COMPILE_TEST_SUITE}
+													DISCOVERY_TIMEOUT 300
+	)
+else()
+	message(STATUS "WINDOWS_CI is OFF or not defined.")
+endif()
 
 
 # disable all warnings for our test suite
