@@ -65,7 +65,7 @@ jobs:
           [System.Environment]::SetEnvironmentVariable("INCLUDE", "$($env:VULKAN_SDK)\Include;$env:INCLUDE", [System.EnvironmentVariableTarget]::Machine)
           mkdir build
           cd build
-          cmake --preset x64-MSVC-Windows ../
+          cmake --preset x64-Clang-Windows ../
           cmake --build . --target ALL_BUILD --verbose
           ctest
     # - name: Configure CMake
