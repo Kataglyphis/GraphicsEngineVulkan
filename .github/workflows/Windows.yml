@@ -52,9 +52,6 @@ jobs:
           echo --- PATH contains the following values: -----
           echo $Env:PATH
           echo ---------------------------------------------
-      - name: Add Vulkan SDK to PATH
-        run: |
-          echo "::add-path::C:\VulkanSDK\Bin"
       - name: Show content of VulkanSDK.exe
         run: dir C:\VulkanSDK
         shell: cmd
