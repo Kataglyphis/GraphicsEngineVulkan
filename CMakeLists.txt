@@ -12,24 +12,17 @@ set(AUTHOR "Jotrockenmitlocken")
 # WINDOWS CI is only able to verify successful compiling ... Windows ... lel
 set(WINDOWS_CI OFF CACHE BOOL "Enable Windows CI build options")
 
-# set build type specific flags
-if(MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
-  set(CMAKE_CXX_FLAGS_RELEASE "/O2")
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  # https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
-  # https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
-  set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -ggdb")
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-  # https://clang.llvm.org/docs/UsersManual.html
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG "/Od /O0")
-  set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG")
-  # https://clang.llvm.org/docs/ClangCommandLineReference.html
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -ggdb")
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-endif()
+include(cmake/PreventInSourceBuilds.cmake)
+include(cmake/ProjectOptions.cmake)
+
+myproject_setup_options()
+
+myproject_global_options()
+
+myproject_local_options()
+
+add_library(GraphicsEngine::myproject_options ALIAS myproject_options)
+add_library(GraphicsEngine::myproject_warnings ALIAS myproject_warnings)
 
 # if no build type passed via command line go with debug mode
 if(NOT CMAKE_BUILD_TYPE)
@@ -43,24 +36,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
-# link this library for using warnings specified in cmake/CmakeWarnings.cmake
-add_library(project_warnings INTERFACE)
-include(cmake/CompilerWarnings.cmake)
-set_project_warnings(project_warnings)
-
-# add sanitizers if GCC/CLANG
-add_library(project_sanitizers INTERFACE)
-include(cmake/Sanitizers.cmake)
-enable_sanitizers(project_sanitizers)
-
-add_library(ipo INTERFACE)
-include(cmake/Optimizations.cmake)
-enable_ipo_for_target(ipo)
-
 include(cmake/Doxygen.cmake)
 enable_doxygen()
-
-include(cmake/StaticAnalyzers.cmake)
 
 include(cmake/Speedup.cmake)
 
@@ -156,9 +133,6 @@ add_executable(${PROJECT_NAME}  ${RASTER_SHADER_FILTER}
                                 $<TARGET_OBJECTS:IMGUI>
 )
 
-enable_cppcheck(${PROJECT_NAME})
-enable_clangtidy(${PROJECT_NAME})
-
 include(cmake/CompileShadersToSPV.cmake)
 
 foreach(Shader ${POST_SHADER_FILTER})
@@ -210,7 +184,8 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 # enable ipo
                                                 ipo)
 
-target_link_libraries(${PROJECT_NAME}   PRIVATE GSL)
+target_link_libraries(${PROJECT_NAME}   PRIVATE GSL
+																								spdlog::spdlog)
 
 if(NOT WINDOWS_CI)
 	enable_testing()
