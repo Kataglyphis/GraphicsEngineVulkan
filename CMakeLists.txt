@@ -10,6 +10,7 @@ set(AUTHOR "Jotrockenmitlocken")
 
 # Set WINDOWS_CI to OFF by default
 # WINDOWS CI is only able to verify successful compiling ... Windows ... lel
+# i will stay on linux ...
 set(WINDOWS_CI OFF CACHE BOOL "Enable Windows CI build options")
 
 include(cmake/PreventInSourceBuilds.cmake)
@@ -26,7 +27,7 @@ include(cmake/filters/SetExternalLibsFilters.cmake)
 add_subdirectory(ExternalLib)
 
 # update current positions
-set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src/)
+set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/)
 set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/)
 set(EXTERNAL_LIB_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ExternalLib/)
 set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/)
@@ -36,30 +37,9 @@ include(cmake/filters/SetProjectFilters.cmake)
 
 include(cmake/SetSourceGroups.cmake)
 
-# add the executable
-add_executable(${PROJECT_NAME}  ${RASTER_SHADER_FILTER}
-                                ${RAYTRACING_SHADER_FILTER}
-                                ${COMMON_SHADER_FILTER}
-                                ${POST_SHADER_FILTER}
-                                ${BRDF_SHADER_FILTER}
-                                ${PATH_TRACING_SHADER_FILTER}
-                                ${RENDERER_FILTER}
-                                ${PC_FILTER}
-                                ${AS_FILTER}
-                                ${SCENE_FILTER}
-                                ${WINDOW_FILTER}
-                                ${MEMORY_FILTER}
-                                ${COMMON_FILTER}
-                                ${APP_FILTER}
-                                ${GUI_FILTER}
-                                ${UTIL_FILTER}
-                                ${VULKAN_BASE_FILTER}
-                                ${MAIN_FILTER}
-                                ${SHADER_HOST_DEVICE_FILTER}
-                                # this is great; no CPPCHECK,CLANG_TIDY here
-                                $<TARGET_OBJECTS:IMGUI>
-)
+add_subdirectory(Src)
 
+# compile shaders as part of my cmake routine right away :)
 include(cmake/CompileShadersToSPV.cmake)
 
 foreach(Shader ${POST_SHADER_FILTER})
@@ -77,41 +57,6 @@ endforeach()
 foreach(Shader ${PATH_TRACING_SHADER_FILTER})
   add_shader(${PROJECT_NAME} ${Shader})
 endforeach()
-
-target_include_directories(${PROJECT_NAME} PUBLIC   ./include/renderer
-                                                    ./include/renderer/pushConstants
-                                                    ./include/renderer/accelerationStructures
-                                                    ./include/vulkan_base
-                                                    ./include/gui
-                                                    ./include/common
-                                                    ./include/scene
-                                                    ./include/window
-                                                    ./include/memory
-                                                    ./include/util
-                                                    ./include/app
-                                                    ./Resources/Shaders/hostDevice
-                                                    ./include/ )
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
-
-target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
-                                                Threads::Threads
-                                                Vulkan::Vulkan
-                                                glfw 
-                                                imgui 
-                                                stb
-                                                glm
-                                                tinyobjloader
-                                                vma
-                                                ktx
-                                                # enable compiler warnings
-                                                myproject_warnings
-                                                # enable sanitizers
-                                                myproject_options
-)
-
-target_link_libraries(${PROJECT_NAME}   PRIVATE GSL
-																								spdlog::spdlog)
 
 if(NOT WINDOWS_CI)
 	enable_testing()
