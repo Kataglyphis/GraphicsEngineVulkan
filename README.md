@@ -15,15 +15,13 @@
 
 <h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrockenmitlocken.de" target="_blank"></a>.</h4>
 
-[![Linux build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml)
+[![Linux build + tests + code coverage](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml)
 [![Windows build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml)
 [![codecov](https://codecov.io/gh/Kataglyphis/GraphicsEngineVulkan/branch/main/graph/badge.svg?token=JTQFXPWWJH)](https://codecov.io/gh/Kataglyphis/GraphicsEngineVulkan)
 [![TopLang](https://img.shields.io/github/languages/top/Kataglyphis/GraphicsEngineVulkan)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=BX9AVVES2P9LN)
 [![Twitter](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UC3LZiH4sZzzaVBCUV8knYeg?style=social)](https://www.youtube.com/channel/UC3LZiH4sZzzaVBCUV8knYeg)
-
-> **_NOTE:_** CI on windows fails due to an bug in the MSB. Use the cmake-gui rather than the command line.<br />
 
 
 <p align="center">
