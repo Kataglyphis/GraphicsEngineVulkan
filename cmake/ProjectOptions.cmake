@@ -108,7 +108,6 @@ macro(myproject_global_options)
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-	option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
   if(myproject_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
@@ -214,9 +213,9 @@ macro(myproject_local_options)
     myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 
-	include(cmake/Doxygen.cmake)
-	enable_doxygen()
+	# include(cmake/Doxygen.cmake)
+	# enable_doxygen()
 
-	include(cmake/Speedup.cmake)
+	# include(cmake/Speedup.cmake)
 
 endmacro()

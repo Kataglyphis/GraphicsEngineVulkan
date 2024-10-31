@@ -21,13 +21,8 @@ myproject_global_options()
 
 myproject_local_options()
 
-# we depend on vulkan 
-find_package(Vulkan REQUIRED)
-# configure vulkan version
-set(VULKAN_VERSION_MAJOR 1)
-set(VULKAN_VERSION_MINOR 3)
-find_package(Threads REQUIRED)
-
+include(cmake/SystemLibDependencies.cmake)
+include(cmake/filters/SetExternalLibsFilters.cmake)
 add_subdirectory(ExternalLib)
 
 # update current positions
@@ -38,16 +33,8 @@ set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/)
 
 include(cmake/filters/SetShaderFilters.cmake)
 include(cmake/filters/SetProjectFilters.cmake)
-include(cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetSourceGroups.cmake)
-
-# https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check/49591908#49591908
-# with this trick IMGUI will be excluded from time consuming static code analysis
-# we do not want to analyze imgui ...
-# include(cmake/CreateProjectFilesToTestLib.cmake)
-# and we will not to all this for our testing executable again :)
-include(cmake/CreateExternalLibs.cmake)
 
 # add the executable
 add_executable(${PROJECT_NAME}  ${RASTER_SHADER_FILTER}
@@ -132,8 +119,6 @@ if(NOT WINDOWS_CI)
 else()
 	message(STATUS "WINDOWS_CI is OFF or not defined.")
 endif()
-
-include(GoogleTest)
 
 add_subdirectory(Test/commit)
 add_subdirectory(Test/compile)

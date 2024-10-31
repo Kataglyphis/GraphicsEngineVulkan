@@ -1,3 +1,5 @@
+include(GoogleTest)
+
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
@@ -17,7 +19,7 @@ set(COMPILE_TEST_SUITE compileTestSuite)
 add_executable( ${COMPILE_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_COMPILE_TEST_FILTER}
-                # # all test specific files -- end
+                # all test specific files -- end
                 ${RASTER_SHADER_FILTER}
                 ${RAYTRACING_SHADER_FILTER}
                 ${COMMON_SHADER_FILTER}
@@ -39,24 +41,25 @@ add_executable( ${COMPILE_TEST_SUITE}
 )
 
 target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC   
-																														${WORKING_DIRECTORY}include/renderer
-                                                            ${WORKING_DIRECTORY}include/renderer/pushConstants
-                                                            ${WORKING_DIRECTORY}include/renderer/accelerationStructures
-                                                            ${WORKING_DIRECTORY}include/vulkan_base
-                                                            ${WORKING_DIRECTORY}include/gui
-                                                            ${WORKING_DIRECTORY}include/common
-                                                            ${WORKING_DIRECTORY}include/scene
-                                                            ${WORKING_DIRECTORY}include/window
-                                                            ${WORKING_DIRECTORY}include/memory
-                                                            ${WORKING_DIRECTORY}include/util
-                                                            ${WORKING_DIRECTORY}include/app
-                                                            ${WORKING_DIRECTORY}Resources/Shaders/hostDevice
-                                                            ${WORKING_DIRECTORY}include/
+																									${WORKING_DIRECTORY}include/renderer
+																									${WORKING_DIRECTORY}include/renderer/pushConstants
+																									${WORKING_DIRECTORY}include/renderer/accelerationStructures
+																									${WORKING_DIRECTORY}include/vulkan_base
+																									${WORKING_DIRECTORY}include/gui
+																									${WORKING_DIRECTORY}include/common
+																									${WORKING_DIRECTORY}include/scene
+																									${WORKING_DIRECTORY}include/window
+																									${WORKING_DIRECTORY}include/memory
+																									${WORKING_DIRECTORY}include/util
+																									${WORKING_DIRECTORY}include/app
+																									${WORKING_DIRECTORY}Resources/Shaders/hostDevice
+																									${WORKING_DIRECTORY}include/
 )
 
 target_include_directories(  ${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
+target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    GTest::gtest_main
+																												GTest::gtest
                                                         ${CMAKE_DL_LIBS}
                                                         Threads::Threads
                                                         Vulkan::Vulkan

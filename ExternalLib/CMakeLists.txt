@@ -23,6 +23,7 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
+
 add_library(tinyobjloader INTERFACE)
 # this helps us so no error messages for third party will be generated:
 # https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check
@@ -59,3 +60,31 @@ target_include_directories(ktx  SYSTEM
 add_subdirectory(GLFW)
 
 add_subdirectory(spdlog)
+
+# https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check/49591908#49591908
+# with this trick IMGUI will be excluded from time consuming static code analysis
+# we do not want to analyze imgui ...
+# include(cmake/CreateProjectFilesToTestLib.cmake)
+# and we will not to all this for our testing executable again :)
+add_library(
+    IMGUI
+    OBJECT
+    ${IMGUI_FILTER}
+)
+
+target_link_libraries(IMGUI         PRIVATE 
+																						${CMAKE_DL_LIBS}
+                                            Vulkan::Vulkan
+                                            glfw 
+                                            imgui
+
+)
+
+target_include_directories(IMGUI    PRIVATE ${Vulkan_INCLUDE_DIRS})
+
+set_target_properties(
+    IMGUI
+    PROPERTIES
+    CXX_CLANG_TIDY ""
+    CXX_CPPCHECK ""
+)
