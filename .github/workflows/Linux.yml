@@ -40,7 +40,8 @@ jobs:
           mesa-common-dev \
           wayland-protocols \
           libwayland-dev \
-          libxkbcommon-dev
+          libxkbcommon-dev \
+          ninja-build
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
       - name: Install Vulkan
