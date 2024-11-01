@@ -41,6 +41,8 @@ jobs:
           wayland-protocols \
           libwayland-dev \
           libxkbcommon-dev
+      - name: Install for Offscreen Rendering on GLFW
+        run: sudo apt-get install libosmesa6-dev
       - name: Install Vulkan
         run: |
           wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
@@ -51,18 +53,18 @@ jobs:
         run: sudo apt-get install -y gcovr
       - name: Install clang
         run: sudo apt-get install clang llvm
-      - name: Configure CMake
+      - name: Make directory
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        # cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DGLFW_USE_OSMESA=ON
         run: |
           rm -rf build
           mkdir build
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build
         # Build your program with the given configuration
         run: cd build |
-          cmake --preset linux-debug-clang |
+          cmake --preset linux-debug-clang -DGLFW_USE_OSMESA=ON |
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
       - name: Test
         working-directory: ${{github.workspace}}/build/
