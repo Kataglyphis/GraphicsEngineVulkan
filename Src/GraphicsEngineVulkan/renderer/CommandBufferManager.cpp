@@ -1,5 +1,6 @@
 #include "CommandBufferManager.hpp"
 
+#include <vulkan/vulkan.h>
 #include "Utilities.hpp"
 
 CommandBufferManager::CommandBufferManager() {}

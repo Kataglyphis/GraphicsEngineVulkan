@@ -1,5 +1,7 @@
 #include "VulkanRenderer.hpp"
 
+#include <vulkan/vulkan.h>
+
 #include "GUISceneSharedVars.hpp"
 #include "PushConstantRasterizer.hpp"
 #include "PushConstantRayTracing.hpp"

@@ -1,5 +1,6 @@
 #include "PathTracing.hpp"
 
+#include <vulkan/vulkan.h>
 #include <algorithm>
 #include <array>
 #include <filesystem>
