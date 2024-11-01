@@ -1,19 +1,19 @@
 include(GoogleTest)
 
 # all testing related stuff
-set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
+# set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
-# update current positions
-set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
-set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
-set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
-set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
+# # update current positions
+# set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
+# set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
+# set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
+# set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
-include(${WORKING_DIRECTORY}cmake/filters/SetShaderFilters.cmake)
-include(${WORKING_DIRECTORY}cmake/filters/SetProjectFilters.cmake)
-include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
+# include(${WORKING_DIRECTORY}cmake/filters/SetShaderFilters.cmake)
+# include(${WORKING_DIRECTORY}cmake/filters/SetProjectFilters.cmake)
+# include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
 
-include(cmake/SetTestFilters.cmake)
+# include(cmake/SetTestFilters.cmake)
 
 set(COMMIT_TEST_SUITE commitTestSuite)
 
@@ -41,25 +41,26 @@ add_executable( ${COMMIT_TEST_SUITE}
                 $<TARGET_OBJECTS:IMGUI>
 )
 
-target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ${WORKING_DIRECTORY}include/renderer
-                                                            ${WORKING_DIRECTORY}include/renderer/pushConstants
-                                                            ${WORKING_DIRECTORY}include/renderer/accelerationStructures
-                                                            ${WORKING_DIRECTORY}include/vulkan_base
-                                                            ${WORKING_DIRECTORY}include/gui
-                                                            ${WORKING_DIRECTORY}include/common
-                                                            ${WORKING_DIRECTORY}include/scene
-                                                            ${WORKING_DIRECTORY}include/window
-                                                            ${WORKING_DIRECTORY}include/memory
-                                                            ${WORKING_DIRECTORY}include/util
-                                                            ${WORKING_DIRECTORY}include/app
-                                                            ${WORKING_DIRECTORY}Resources/Shaders/hostDevice
-                                                            ${WORKING_DIRECTORY}include/
+target_include_directories(  ${COMMIT_TEST_SUITE} PUBLIC    ${PROJECT_INCLUDE_DIR}renderer
+                                                            ${PROJECT_INCLUDE_DIR}renderer/pushConstants
+                                                            ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
+                                                            ${PROJECT_INCLUDE_DIR}vulkan_base
+                                                            ${PROJECT_INCLUDE_DIR}gui
+                                                            ${PROJECT_INCLUDE_DIR}common
+                                                            ${PROJECT_INCLUDE_DIR}scene
+                                                            ${PROJECT_INCLUDE_DIR}window
+                                                            ${PROJECT_INCLUDE_DIR}memory
+                                                            ${PROJECT_INCLUDE_DIR}util
+                                                            ${PROJECT_INCLUDE_DIR}app
+                                                            ${PROJECT_INCLUDE_DIR}
+                                                            ${SHADER_SRC_DIR}hostDevice
 )
 
 target_include_directories(  ${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  gtest_main
-                                                    ${CMAKE_DL_LIBS}   
+target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  ${CMAKE_DL_LIBS}
+																										gtest
+																										gtest_main
                                                     Threads::Threads
                                                     Vulkan::Vulkan
                                                     glfw 
