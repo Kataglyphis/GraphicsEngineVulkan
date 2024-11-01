@@ -64,6 +64,7 @@ int Window::initialize() {
   glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
   glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+  glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_NULL);
   glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_OSMESA_CONTEXT_API);
   // retrieve new window
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
