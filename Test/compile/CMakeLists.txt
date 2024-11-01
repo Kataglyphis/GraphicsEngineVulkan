@@ -40,7 +40,7 @@ add_executable( ${COMPILE_TEST_SUITE}
                 $<TARGET_OBJECTS:IMGUI>
 )
 
-target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC    ${PROJECT_INCLUDE_DIR}renderer
+target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC   ${PROJECT_INCLUDE_DIR}renderer
                                                             ${PROJECT_INCLUDE_DIR}renderer/pushConstants
                                                             ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
                                                             ${PROJECT_INCLUDE_DIR}vulkan_base
