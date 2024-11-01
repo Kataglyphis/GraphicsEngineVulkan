@@ -30,17 +30,6 @@ include(cmake/SystemLibDependencies.cmake)
 include(cmake/filters/SetExternalLibsFilters.cmake)
 add_subdirectory(ExternalLib)
 
-# update current positions
-set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/)
-set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/)
-set(EXTERNAL_LIB_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ExternalLib/)
-set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/)
-
-include(cmake/filters/SetShaderFilters.cmake)
-include(cmake/filters/SetProjectFilters.cmake)
-
-include(cmake/SetSourceGroups.cmake)
-
 add_subdirectory(Src)
 
 # compile shaders as part of my cmake routine right away :)

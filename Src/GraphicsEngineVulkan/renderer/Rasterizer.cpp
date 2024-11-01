@@ -1,6 +1,5 @@
 #include "Rasterizer.hpp"
 
-#include <vulkan/vulkan.h>
 #include <array>
 #include <vector>
 #include <filesystem>
