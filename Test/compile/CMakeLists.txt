@@ -1,18 +1,18 @@
 include(GoogleTest)
 
-# set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
+set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
-# # update current positions
-# set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
-# set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
-# set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
-# set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
+# update current positions
+set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
+set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
+set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
+set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
-# include(${WORKING_DIRECTORY}cmake/filters/SetShaderFilters.cmake)
-# include(${WORKING_DIRECTORY}cmake/filters/SetProjectFilters.cmake)
-# include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
+include(${WORKING_DIRECTORY}cmake/filters/SetShaderFilters.cmake)
+include(${WORKING_DIRECTORY}cmake/filters/SetProjectFilters.cmake)
+include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
 
-# include(cmake/SetTestFilters.cmake)
+include(cmake/SetTestFilters.cmake)
 
 set(COMPILE_TEST_SUITE compileTestSuite)
 
