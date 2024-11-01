@@ -28,7 +28,7 @@ jobs:
       #     sudo apt upgrade
       #     sudo apt dist-upgrade
       #     sudo apt install libc6
-      - name: Install GLFW dependencies
+      - name: Install GLFW + build system dependencies
         run: |
           sudo apt-get install -y \
           libxrandr-dev \
@@ -41,7 +41,8 @@ jobs:
           wayland-protocols \
           libwayland-dev \
           libxkbcommon-dev \
-          ninja-build
+          ninja-build \
+          ccache
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
       - name: Install Vulkan
