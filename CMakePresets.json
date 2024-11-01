@@ -99,14 +99,42 @@
 			}
 		},
 		{
-			"name": "x64-Clang-Windows",
+			"name": "x64-Clang-Windows-Debug",
 			"description": "Windows and Clang",
 			"generator": "Visual Studio 17 2022",
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "clang-cl",
-				"CMAKE_CXX_COMPILER": "clang-cl"
+				"CMAKE_CXX_COMPILER": "clang-cl",
+				"CMAKE_BUILD_TYPE": "Debug"
+			},
+			"toolset": "ClangCL",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			},
+			"architecture": {
+				"value": "x64",
+				"strategy": "set"
+			},
+			"vendor": {
+				"microsoft.com/VisualStudioSettings/CMake/1.0": {
+					"intelliSenseMode": "windows-clang-x64"
+				}
+			}
+		},
+		{
+			"name": "x64-Clang-Windows-Release",
+			"description": "Windows and Clang",
+			"generator": "Visual Studio 17 2022",
+			"binaryDir": "${sourceDir}/build/",
+			"installDir": "${sourceDir}/build/",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang-cl",
+				"CMAKE_CXX_COMPILER": "clang-cl",
+				"CMAKE_BUILD_TYPE": "Release"
 			},
 			"toolset": "ClangCL",
 			"condition": {
