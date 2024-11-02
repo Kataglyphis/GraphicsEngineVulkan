@@ -42,6 +42,8 @@ jobs:
           wayland-protocols \
           libwayland-dev \
           libxkbcommon-dev \
+          libgl1-mesa-glx \
+          libglx-mesa0 \
           ninja-build \
           ccache
       - name: Start Xvfb
