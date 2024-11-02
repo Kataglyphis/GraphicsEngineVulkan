@@ -87,38 +87,6 @@ else()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
 endif()
 
-# good source: https://stackoverflow.com/questions/52255589/code-coverage-analysis-using-codecoverage-cmake-with-multiple-targets
-option(COVERAGE "Enable Code Coverage" ON)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU|Clang")
-  if(COVERAGE)
-    include(cmake/CodeCoverage.cmake)
-    append_coverage_compiler_flags()
-    setup_target_for_coverage_gcovr_xml(
-      NAME
-      coverage_xml
-      EXECUTABLE
-      ctest
-      -j
-      ${n_cores} # Executable in PROJECT_BINARY_DIR
-      EXCLUDE
-      "ExternalLib/*"
-      "build/*"
-      "Documents/*")
-    setup_target_for_coverage_gcovr_html(
-      NAME
-      coverage_html
-      EXECUTABLE
-      ctest
-      -j
-      ${n_cores} # Executable in PROJECT_BINARY_DIR
-      EXCLUDE
-      "ExternalLib/*"
-      "build/*"
-      "Documents/*")
-
-  endif()
-endif()
-
 # disable all warnings for our test suite
 if(MSVC)
   target_compile_options(${COMMIT_TEST_SUITE} INTERFACE /w)
