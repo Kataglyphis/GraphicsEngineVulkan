@@ -1,7 +1,6 @@
 include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 
-
 macro(myproject_supports_sanitizers)
   if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
     set(SUPPORTS_UBSAN ON)
@@ -18,7 +17,7 @@ endmacro()
 
 macro(myproject_setup_options)
   option(myproject_ENABLE_HARDENING "Enable hardening" ON)
-  option(myproject_ENABLE_COVERAGE "Enable coverage reporting" OFF)
+  option(myproject_ENABLE_COVERAGE "Enable coverage reporting" ON)
   cmake_dependent_option(
     myproject_ENABLE_GLOBAL_HARDENING
     "Attempt to push hardening options to built dependencies"
@@ -44,9 +43,9 @@ macro(myproject_setup_options)
   else()
     option(myproject_ENABLE_IPO "Enable IPO/LTO" ON)
     option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
-    option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN}) 
+    option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN})
     option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" ${SUPPORTS_UBSAN}) 
+    option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" ${SUPPORTS_UBSAN})
     option(myproject_ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
     option(myproject_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
     option(myproject_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
@@ -77,37 +76,37 @@ endmacro()
 
 macro(myproject_global_options)
 
-	# specify the C/C++ standard
-	set(CMAKE_CXX_STANDARD 23)
-	set(CMAKE_CXX_STANDARD_REQUIRED True)
+  # specify the C/C++ standard
+  set(CMAKE_CXX_STANDARD 23)
+  set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-	set(CMAKE_C_STANDARD 17)
-	set(CMAKE_C_STANDARD_REQUIRED True)
+  set(CMAKE_C_STANDARD 17)
+  set(CMAKE_C_STANDARD_REQUIRED True)
 
-	# set build type specific flags
-	if(MSVC)
-		set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
-		set(CMAKE_CXX_FLAGS_RELEASE "/O2")
-	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-		# https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
-		# https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
-		set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -ggdb")
-		set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-		# https://clang.llvm.org/docs/UsersManual.html
-	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
-		set(CMAKE_CXX_FLAGS_DEBUG "/Od /O0")
-		set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG")
-		# https://clang.llvm.org/docs/ClangCommandLineReference.html
-	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -ggdb")
-		set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-	endif()
+  # set build type specific flags
+  if(MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
+    # https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -ggdb")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+    # https://clang.llvm.org/docs/UsersManual.html
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "/Od /O0")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG")
+    # https://clang.llvm.org/docs/ClangCommandLineReference.html
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -ggdb") #
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+  endif()
 
-	# control where the static and shared libraries are built so that on windows
-	# we don't need to tinker with the path to run the executable
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  # control where the static and shared libraries are built so that on windows
+  # we don't need to tinker with the path to run the executable
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
   if(myproject_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
@@ -118,7 +117,7 @@ macro(myproject_global_options)
 
   if(myproject_ENABLE_HARDENING AND myproject_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
-    if(NOT SUPPORTS_UBSAN 
+    if(NOT SUPPORTS_UBSAN
        OR myproject_ENABLE_SANITIZER_UNDEFINED
        OR myproject_ENABLE_SANITIZER_ADDRESS
        OR myproject_ENABLE_SANITIZER_THREAD
@@ -134,13 +133,13 @@ endmacro()
 
 macro(myproject_local_options)
   if(PROJECT_IS_TOP_LEVEL)
-  	include(cmake/StandardProjectSettings.cmake)
+    include(cmake/StandardProjectSettings.cmake)
   endif()
 
   add_library(myproject_warnings INTERFACE)
   add_library(myproject_options INTERFACE)
 
-	target_compile_features(myproject_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})
+  target_compile_features(myproject_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})
 
   include(cmake/CompilerWarnings.cmake)
   myproject_set_project_warnings(
@@ -201,7 +200,7 @@ macro(myproject_local_options)
 
   if(myproject_ENABLE_HARDENING AND NOT myproject_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
-    if(NOT SUPPORTS_UBSAN 
+    if(NOT SUPPORTS_UBSAN
        OR myproject_ENABLE_SANITIZER_UNDEFINED
        OR myproject_ENABLE_SANITIZER_ADDRESS
        OR myproject_ENABLE_SANITIZER_THREAD
@@ -213,9 +212,9 @@ macro(myproject_local_options)
     myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 
-	# include(cmake/Doxygen.cmake)
-	# enable_doxygen()
+  # include(cmake/Doxygen.cmake)
+  # enable_doxygen()
 
-	# include(cmake/Speedup.cmake)
+  # include(cmake/Speedup.cmake)
 
 endmacro()

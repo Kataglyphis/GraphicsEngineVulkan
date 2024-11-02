@@ -189,7 +189,7 @@ appropriately.</br>
 conda create -n cmake_formating python=3.10
 pip install pyyaml
 pip install cmake-format
-cmake-format -c ./.cmake-format.yaml -i CMakeLists.txt
+cmake-format -c ./.cmake-format.yaml -i $(find cmake -name '*.cmake' -o -name 'CMakeLists.txt')
 ```
 
 <!-- ROADMAP -->

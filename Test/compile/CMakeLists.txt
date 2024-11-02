@@ -69,6 +69,10 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    gtest_main
                                                         tinyobjloader
                                                         vma
                                                         ktx
+																												# enable compiler warnings
+																												myproject_warnings
+																												# enable sanitizers
+																												myproject_options
 )
 
 target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
