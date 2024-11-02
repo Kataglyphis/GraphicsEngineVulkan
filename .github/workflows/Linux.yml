@@ -90,7 +90,7 @@ jobs:
         uses: codecov/codecov-action@v4.6.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: build/coverage.json # optional
+          files: ${{github.workspace}}/build/coverage.json # optional
           #flags: unittests # optional
           name: codecov-umbrella # optional
           fail_ci_if_error: false # optional (default = false)
