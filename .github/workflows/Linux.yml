@@ -46,9 +46,8 @@ jobs:
           ccache
       - name: Setup headless env for CICD
         run: |
-          sudo apt-get install xvfb
-          Xvfb :99 
-          export DISPLAY=:99
+          Xvfb :1 -screen 0 1024x768x24
+          export DISPLAY=:1
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
       - name: Install Vulkan
