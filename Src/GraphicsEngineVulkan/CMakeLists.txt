@@ -6,7 +6,7 @@ set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Resources/Shaders/)
 
 include(../../cmake/filters/SetShaderFilters.cmake)
 include(../../cmake/filters/SetProjectFilters.cmake)
-
+include(../../cmake/filters/SetExternalLibsFilters.cmake)
 include(../../cmake/SetSourceGroups.cmake)
 
 # add the executable
