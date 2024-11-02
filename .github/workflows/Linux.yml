@@ -44,9 +44,9 @@ jobs:
           libxkbcommon-dev \
           ninja-build \
           ccache
-      - name: Setup headless env for CICD
+      - name: Start Xvfb
         run: |
-          Xvfb :1 -screen 0 1024x768x24
+          Xvfb :1 -screen 0 1024x768x24 > /dev/null 2>&1 &
           export DISPLAY=:1
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
