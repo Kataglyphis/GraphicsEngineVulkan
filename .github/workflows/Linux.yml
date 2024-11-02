@@ -79,7 +79,7 @@ jobs:
         working-directory: ${{github.workspace}}/build/
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug
+        run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug -T test --output-on-failure -j14 -E SetUp.blob
       - name: Build Code Coverage
         run: make coverage_xml -C ${{github.workspace}}/build/Debug
       - name: Codecov
