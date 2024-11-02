@@ -1,4 +1,4 @@
-# we depend on vulkan 
+# we depend on vulkan
 find_package(Vulkan REQUIRED)
 # configure vulkan version
 set(VULKAN_VERSION_MAJOR 1)

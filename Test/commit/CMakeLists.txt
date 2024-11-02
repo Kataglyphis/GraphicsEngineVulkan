@@ -70,6 +70,10 @@ target_link_libraries( ${COMMIT_TEST_SUITE} PUBLIC  ${CMAKE_DL_LIBS}
                                                     tinyobjloader
                                                     vma
                                                     ktx
+																										# enable compiler warnings
+																										myproject_warnings
+																										# enable sanitizers
+																										myproject_options
 )
 
 target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)

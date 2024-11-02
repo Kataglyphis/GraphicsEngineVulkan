@@ -3,7 +3,8 @@
 
 # ---- GUI FILTER  --- BEGIN
 set(EXTERNAL_LIB_GUI_SRC_DIR ${EXTERNAL_LIB_SRC_DIR}IMGUI/)
-set(IMGUI_FILTER ${IMGUI_FILTER}
+set(IMGUI_FILTER
+    ${IMGUI_FILTER}
     ${EXTERNAL_LIB_GUI_SRC_DIR}imconfig.h
     ${EXTERNAL_LIB_GUI_SRC_DIR}imgui.cpp
     ${EXTERNAL_LIB_GUI_SRC_DIR}imgui.h
@@ -18,6 +19,5 @@ set(IMGUI_FILTER ${IMGUI_FILTER}
     ${EXTERNAL_LIB_GUI_SRC_DIR}backends/imgui_impl_glfw.h
     ${EXTERNAL_LIB_GUI_SRC_DIR}backends/imgui_impl_glfw.cpp
     ${EXTERNAL_LIB_GUI_SRC_DIR}backends/imgui_impl_vulkan.h
-    ${EXTERNAL_LIB_GUI_SRC_DIR}backends/imgui_impl_vulkan.cpp
-)
+    ${EXTERNAL_LIB_GUI_SRC_DIR}backends/imgui_impl_vulkan.cpp)
 # ---- GUI FILTER  --- END
