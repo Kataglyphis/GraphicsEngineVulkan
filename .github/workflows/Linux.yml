@@ -83,13 +83,9 @@ jobs:
         run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug -T test --output-on-failure -j14 -E SetUp.blob
       - name: Build Code Coverage
         run: |
-          llvm-profdata merge -sparse ${{github.workspace}}/build/Test/compile/default.profraw \
-          -o ${{github.workspace}}/build/compileTestSuite.profdata
-          llvm-cov report ${{github.workspace}}/build/compileTestSuite \
-          -instr-profile=${{github.workspace}}/build/compileTestSuite.profdata
-          llvm-cov export ${{github.workspace}}/build/compileTestSuite \ 
-          -format=text \
-          -instr-profile=${{github.workspace}}/build/compileTestSuite.profdata > ${{github.workspace}}/build/coverage.json
+          llvm-profdata merge -sparse ${{github.workspace}}/build/Test/compile/default.profraw -o ${{github.workspace}}/build/compileTestSuite.profdata
+          llvm-cov report ${{github.workspace}}/build/compileTestSuite -instr-profile=${{github.workspace}}/build/compileTestSuite.profdata
+          llvm-cov export ${{github.workspace}}/build/compileTestSuite -format=text -instr-profile=${{github.workspace}}/build/compileTestSuite.profdata > ${{github.workspace}}/build/coverage.json
       - name: Codecov
         uses: codecov/codecov-action@v4.6.0
         with:
