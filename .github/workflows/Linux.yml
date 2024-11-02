@@ -44,7 +44,8 @@ jobs:
           libxkbcommon-dev \
           libglx-mesa0 \
           ninja-build \
-          ccache
+          ccache \
+          lcov
       - name: Start Xvfb
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
