@@ -44,6 +44,11 @@ jobs:
           libxkbcommon-dev \
           ninja-build \
           ccache
+      - name: Setup headless env for CICD
+        run: |
+          sudo apt-get install xvfb
+          Xvfb :99 
+          export DISPLAY=:99
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
       - name: Install Vulkan
