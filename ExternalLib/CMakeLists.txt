@@ -69,6 +69,8 @@ add_subdirectory(GLFW)
 
 add_subdirectory(spdlog)
 
+add_subdirectory(NLOHMANN_JSON)
+
 # https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check/49591908#49591908
 # with this trick IMGUI will be excluded from time consuming static code analysis
 # we do not want to analyze imgui ...
