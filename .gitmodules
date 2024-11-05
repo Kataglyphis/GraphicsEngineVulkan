@@ -20,3 +20,6 @@
 [submodule "ExternalLib/spdlog"]
 	path = ExternalLib/spdlog
 	url = git@github.com:gabime/spdlog.git
+[submodule "ExternalLib/NLOHMANN_JSON"]
+	path = ExternalLib/NLOHMANN_JSON
+	url = https://github.com/nlohmann/json
