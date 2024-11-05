@@ -1,32 +1,20 @@
-#include <gtest/gtest.h>
+#include <benchmark/benchmark.h>
 #include "VulkanBuffer.hpp"
 
-// Demonstrate some basic assertions.
-TEST(HelloTestCompile, BasicAssertions) {
 
-	// Expect two strings not to be equal.
-	EXPECT_STRNE("hello", "world");
-	// Expect equality.
-	EXPECT_EQ(7 * 6, 42);
-
+static void BM_StringCreation(benchmark::State& state) {
+  for (auto _ : state)
+    std::string empty_string;
 }
+// Register the function as a benchmark
+BENCHMARK(BM_StringCreation);
 
-TEST(HelloTestCompile, blob)
-{
-
-	//VulkanBuffer vulkanBuffer;
-	
-	int c = 0;
-
-	// Test that counter 0 returns 0
-	EXPECT_EQ(0, c);
-
-	// EXPECT_EQ() evaluates its arguments exactly once, so they
-	// can have side effects.
-
-	EXPECT_EQ(0, c++);
-	EXPECT_EQ(1, c++);
-	EXPECT_EQ(2, c++);
-
-	EXPECT_EQ(3, c++);
+// Define another benchmark
+static void BM_StringCopy(benchmark::State& state) {
+  std::string x = "hello";
+  for (auto _ : state)
+    std::string copy(x);
 }
+BENCHMARK(BM_StringCopy);
+
+BENCHMARK_MAIN();

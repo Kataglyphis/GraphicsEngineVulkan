@@ -60,6 +60,7 @@ endif()
 
 add_subdirectory(Test/commit)
 add_subdirectory(Test/compile)
+add_subdirectory(Test/perf)
 
 # for correct library output needed
 install(

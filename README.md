@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://jotrockenmitlocken.de"><img src="images/logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jonasheinle.de"><img src="images/logo.png" alt="VulkanEngine" width="200"></a>
   <br>
   Cataglyphis Renderer 
   <br>
@@ -8,16 +8,15 @@
 
 <h1 align="center">
   <br>
-  <a href="https://jotrockenmitlocken.de"><img src="images/vulkan-logo.png" alt="VulkanEngine" width="200"></a>
-  <a href="https://jotrockenmitlocken.de"><img src="images/Engine_logo.png" alt="VulkanEngine" width="200"></a>
-  <a href="https://jotrockenmitlocken.de"><img src="images/glm_logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jonasheinle.de"><img src="images/vulkan-logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jonasheinle.de"><img src="images/Engine_logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jonasheinle.de"><img src="images/glm_logo.png" alt="VulkanEngine" width="200"></a>
 </h1>
 
-<h4 align="center">A graphics engine built on top of Vulkan <a href="https://jotrockenmitlocken.de" target="_blank"></a>.</h4>
+<h4 align="center">A graphics engine built on top of Vulkan <a href="https://jonasheinle.de" target="_blank"></a>.</h4>
 
 [![Linux build + tests + code coverage](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml)
 [![Windows build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml)
-[![codecov](https://codecov.io/gh/Kataglyphis/GraphicsEngineVulkan/branch/main/graph/badge.svg?token=JTQFXPWWJH)](https://codecov.io/gh/Kataglyphis/GraphicsEngineVulkan)
 [![TopLang](https://img.shields.io/github/languages/top/Kataglyphis/GraphicsEngineVulkan)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=BX9AVVES2P9LN)
 [![Twitter](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
@@ -70,9 +69,9 @@
 
 <h1 align="center">
   <br>
-  <a href="https://jotrockenmitlocken.de"><img src="images/Screenshot1.png" alt="VulkanEngine" width="400"></a>
-  <a href="https://jotrockenmitlocken.de"><img src="images/Screenshot2.png" alt="VulkanEngine" width="400"></a>
-  <a href="https://jotrockenmitlocken.de"><img src="images/Screenshot3.png" alt="VulkanEngine" width="700"></a>
+  <a href="https://jonasheinle.de"><img src="images/Screenshot1.png" alt="VulkanEngine" width="400"></a>
+  <a href="https://jonasheinle.de"><img src="images/Screenshot2.png" alt="VulkanEngine" width="400"></a>
+  <a href="https://jonasheinle.de"><img src="images/Screenshot3.png" alt="VulkanEngine" width="700"></a>
 </h1>
 
 <!-- [![Kataglyphis Engine][product-screenshot1]](https://jotrockenmitlocken.de)
@@ -113,7 +112,7 @@ Frequently tested under <br />
 * [cmake](https://cmake.org/)
 * [gsl](https://github.com/Microsoft/GSL)
 * [NSIS](https://nsis.sourceforge.io/Main_Page)
-
+* [SPDLOG](https://github.com/gabime/spdlog)
 ### Useful tools (you might also considering :) )
 
 * [cppcheck](https://cppcheck.sourceforge.io/)
@@ -134,8 +133,7 @@ Dependencies to libraries are stated above.<br />
 C++23 or higher required.<br />
 C17 or higher required.<br />
 CMake 3.28.3 or higher required.<br />
-> **_NOTE:_** This project relies on the new hardware capabilities for RRT. <br />
-
+> **_NOTE:_** This project relies on the new hardware capabilities for RRT.
 
 
 ### Installation
@@ -144,8 +142,6 @@ CMake 3.28.3 or higher required.<br />
    ```sh
    git clone --recurse-submodules git@github.com:Kataglyphis/GraphicsEngineVulkan.git
    ```
-> **_NOTE:_**  With powershell in Windows git has currently a problem with cloning recursively. You might consider using
-the git bash.
 
 2. Then build your solution with [CMAKE] (https://cmake.org/) <br />
   Here the recommended way over command line after cloning the repo:<br />
@@ -177,12 +173,11 @@ appropriately.</br>
 
 
 # Tests
-* [Watch test results here](Documents/googletest/test_detail.xml)
-<h3>Code coverage results</h3>
-<h1 align="center">
-  <a href="https://jotrockenmitlocken.de"><img src="https://codecov.io/gh/Kataglyphis/GraphicsEngineVulkan/branch/main/graphs/sunburst.svg?token=JTQFXPWWJH" alt="VulkanEngine" width="350"></a>
-  <a href="https://jotrockenmitlocken.de"><img src="https://codecov.io/gh/Kataglyphis/GraphicsEngineVulkan/branch/main/graphs/tree.svg?token=JTQFXPWWJH" alt="VulkanEngine" width="350"></a>
-</h1>
+I have two tests suites.
+
+1. Compilation Test Suite: This suite gets executed every compilation step. This ensures the very most important functionality is correct before every compilation.
+
+2. Commit Test Suite: This gets executed on every push. More expensive tests are allowed :) 
 
 # Format cmake files
 
@@ -190,7 +185,7 @@ appropriately.</br>
 conda create -n cmake_formating python=3.10
 pip install pyyaml
 pip install cmake-format
-cmake-format -c ./.cmake-format.yaml -i CMakeLists.txt
+cmake-format -c ./.cmake-format.yaml -i $(find cmake -name '*.cmake' -o -name 'CMakeLists.txt')
 ```
 
 <!-- ROADMAP -->
