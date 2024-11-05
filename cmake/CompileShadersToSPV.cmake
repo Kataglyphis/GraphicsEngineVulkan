@@ -1,13 +1,19 @@
-# compile glslc shaders 
+# compile glslc shaders
 # source: https://www.reddit.com/r/vulkan/comments/kbaxlz/what_is_your_workflow_when_compiling_shader_files/
 
-set(ShaderIncludes  -I ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/common/
-                    -I ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/brdf/
-                    -I ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/hostDevice/
-                    -I ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/
-                    -I ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/pushConstants/
-                    -I ${CMAKE_CURRENT_SOURCE_DIR}/include/scene/
-)
+set(ShaderIncludes
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/common/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/brdf/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/hostDevice/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/pushConstants/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/scene/)
 
 function(add_shader TARGET SHADER)
   find_program(GLSLC glslc)
@@ -22,7 +28,6 @@ function(add_shader TARGET SHADER)
   get_filename_component(current-output-dir ${current-output-path} DIRECTORY)
   file(MAKE_DIRECTORY ${current-output-dir})
 
-  
   add_custom_command(
     OUTPUT ${current-output-path}
     COMMAND ${GLSLC} --target-env=vulkan1.3 ${current-shader-path} -o ${current-output-path} ${ShaderIncludes}

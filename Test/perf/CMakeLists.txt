@@ -1,5 +1,3 @@
-include(GoogleTest)
-
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
@@ -14,11 +12,11 @@ include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetTestFilters.cmake)
 
-set(COMPILE_TEST_SUITE compileTestSuite)
+set(PERF_TEST_SUITE perfTestSuite)
 
-add_executable( ${COMPILE_TEST_SUITE}
+add_executable( ${PERF_TEST_SUITE}
                 # all test specific files -- start
-                ${RENDERER_COMPILE_TEST_FILTER}
+                ${RENDERER_PERF_TEST_FILTER}
                 # all test specific files -- end
                 ${RASTER_SHADER_FILTER}
                 ${RAYTRACING_SHADER_FILTER}
@@ -40,7 +38,7 @@ add_executable( ${COMPILE_TEST_SUITE}
                 $<TARGET_OBJECTS:IMGUI>
 )
 
-target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC   ${PROJECT_INCLUDE_DIR}renderer
+target_include_directories(  ${PERF_TEST_SUITE} PUBLIC      ${PROJECT_INCLUDE_DIR}renderer
                                                             ${PROJECT_INCLUDE_DIR}renderer/pushConstants
                                                             ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
                                                             ${PROJECT_INCLUDE_DIR}vulkan_base
@@ -55,9 +53,9 @@ target_include_directories(  ${COMPILE_TEST_SUITE} PUBLIC   ${PROJECT_INCLUDE_DI
                                                             ${SHADER_SRC_DIR}hostDevice
 )
 
-target_include_directories(  ${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(  ${PERF_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    benchmark::benchmark
+target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       benchmark::benchmark
 																												benchmark::benchmark_main
                                                         ${CMAKE_DL_LIBS}
                                                         Threads::Threads
@@ -71,29 +69,19 @@ target_link_libraries( ${COMPILE_TEST_SUITE}  PUBLIC    benchmark::benchmark
                                                         ktx
 )
 
-target_link_libraries(${COMPILE_TEST_SUITE}   PRIVATE GSL)
-
-if(NOT WINDOWS_CI)
-	message(STATUS "WINDOWS_CI is OFF or not defined.")
-	gtest_discover_tests(   ${COMPILE_TEST_SUITE}
-													DISCOVERY_TIMEOUT 300
-	)
-else()
-	message(STATUS "WINDOWS_CI is OFF or not defined.")
-endif()
-
+target_link_libraries(${PERF_TEST_SUITE}   PRIVATE GSL)
 
 # disable all warnings for our test suite
 if(MSVC)
-  target_compile_options(${COMPILE_TEST_SUITE} INTERFACE /w)
+  target_compile_options(${PERF_TEST_SUITE} INTERFACE /w)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
+  target_compile_options(${PERF_TEST_SUITE} INTERFACE -w)
 else()
-  target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
+  target_compile_options(${PERF_TEST_SUITE} INTERFACE -w)
 endif()
 
 # make our sources available to testing framework
-add_custom_target(resourcefilesForCompileTestSuite ALL
+add_custom_target(resourcefilesForPerfTestSuite ALL
 	            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources 
                     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
                     ${CMAKE_SOURCE_DIR}/Resources 
@@ -115,8 +103,6 @@ if(NOT WINDOWS_CI)
 	message(STATUS "WINDOWS_CI is OFF or not defined.")
 	add_dependencies(resourcefilesForCompileTestSuite ${PROJECT_NAME})
 	
-	add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME})
-else()
-	add_dependencies(resourcefilesForCompileTestSuite ${COMPILE_TEST_SUITE})
+	add_dependencies(${PERF_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME})
 endif()
 
