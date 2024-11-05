@@ -43,7 +43,8 @@ jobs:
           libwayland-dev \
           libxkbcommon-dev \
           ninja-build \
-          ccache
+          ccache \
+          iwyu
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
       - name: Install Vulkan
