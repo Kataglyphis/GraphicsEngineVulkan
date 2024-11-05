@@ -66,4 +66,5 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
 )
 
 target_link_libraries(${PROJECT_NAME}   PRIVATE GSL
-																								spdlog::spdlog)
+																								spdlog::spdlog
+																								nlohmann_json::nlohmann_json)
