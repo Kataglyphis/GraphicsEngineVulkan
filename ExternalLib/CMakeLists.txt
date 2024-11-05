@@ -16,7 +16,8 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(benchmark)
-
+# Set the C++ standard specifically for Google Benchmark
+set_target_properties(benchmark PROPERTIES CXX_STANDARD 23)
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.
