@@ -9,6 +9,14 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+FetchContent_Declare(
+    benchmark
+    GIT_REPOSITORY https://github.com/google/benchmark.git
+    GIT_TAG v1.9.0
+)
+
+FetchContent_MakeAvailable(benchmark)
+
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.

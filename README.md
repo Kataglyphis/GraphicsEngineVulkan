@@ -109,6 +109,7 @@ Frequently tested under <br />
 * [tinygltf](https://github.com/syoyo/tinygltf)
 * [doxygen](https://www.doxygen.nl/index.html)
 * [gtest](https://github.com/google/googletest)
+* [gbenchmark](https://github.com/google/benchmark)
 * [cmake](https://cmake.org/)
 * [gsl](https://github.com/Microsoft/GSL)
 * [NSIS](https://nsis.sourceforge.io/Main_Page)
