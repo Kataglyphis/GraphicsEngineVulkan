@@ -1,12 +1,5 @@
 include(FetchContent)
 
-# specify the C/C++ standard
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-
 # include google test to project
 FetchContent_Declare(
   googletest
@@ -23,6 +16,9 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(benchmark)
+
+set(HAVE_CXX_FLAG_WERROR OFF)
+
 
 #include gsl
 # In this example we are picking a specific tag.
