@@ -54,7 +54,7 @@ macro(myproject_setup_options)
     option(myproject_ENABLE_CPPCHECK "Enable cpp-check analysis" ON)
     option(myproject_ENABLE_PCH "Enable precompiled headers" OFF)
     option(myproject_ENABLE_CACHE "Enable ccache" ON)
-		option(myproject_ENABLE_IWYU "Enable IWYU" ON)
+    option(myproject_ENABLE_IWYU "Enable IWYU" ON)
   endif()
 
   if(NOT PROJECT_IS_TOP_LEVEL)
@@ -105,30 +105,30 @@ macro(myproject_global_options)
 
   endif()
 
-	# control where the static and shared libraries are built so that on windows
-	# we don't need to tinker with the path to run the executable
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  # control where the static and shared libraries are built so that on windows
+  # we don't need to tinker with the path to run the executable
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
-	set(CMAKE_LINK_WHAT_YOU_USE TRUE)
+  set(CMAKE_LINK_WHAT_YOU_USE TRUE)
 
   if(myproject_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
     myproject_enable_ipo()
   endif()
 
-	if (myproject_ENABLE_IPO)
-		if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-			find_program(IWYU_PATH NAMES include-what-you-use iwyu)
-			if (IWYU_PATH)
-					set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
-					message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
-			else()
-					message(STATUS "Include-What-You-Use not found!")
-			endif()
+  if (myproject_ENABLE_IWYU)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		find_program(IWYU_PATH NAMES include-what-you-use iwyu)
+		if (IWYU_PATH)
+		    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
+		    message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
+		else()
+		    message(STATUS "Include-What-You-Use not found!")
 		endif()
 	endif()
+  endif()
 
   myproject_supports_sanitizers()
 
