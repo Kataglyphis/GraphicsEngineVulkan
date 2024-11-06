@@ -1,13 +1,18 @@
 include(FetchContent)
 
+
 # include google test to project
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/df1544bcee0c7ce35cd5ea0b3eb8cc81855a4140.zip
-)
+  )
+
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+
+# Disable warnings as errors for Google Benchmark
+set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     benchmark
@@ -16,9 +21,6 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(benchmark)
-
-# Set custom compile options and exclude -std=c++14
-target_compile_options(benchmark PRIVATE -std=c++2a)
 
 #include gsl
 # In this example we are picking a specific tag.
