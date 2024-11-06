@@ -17,9 +17,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(benchmark)
 
-set(HAVE_CXX_FLAG_WERROR OFF)
-
-
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.
