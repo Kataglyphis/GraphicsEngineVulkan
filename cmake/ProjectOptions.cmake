@@ -110,7 +110,7 @@ macro(myproject_global_options)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
-  # set(CMAKE_LINK_WHAT_YOU_USE TRUE)
+  set(CMAKE_LINK_WHAT_YOU_USE TRUE)
 
   if(myproject_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
@@ -214,6 +214,20 @@ macro(myproject_local_options)
       set(ENABLE_UBSAN_MINIMAL_RUNTIME TRUE)
     endif()
     myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
+  endif()
+
+  if (myproject_ENABLE_IWYU)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      find_program(IWYU_PATH NAMES include-what-you-use iwyu)
+      if (IWYU_PATH)
+          set_target_properties(myproject_options PROPERTIES
+            CXX_INCLUDE_WHAT_YOU_USE "${IWYU_PATH}"
+          )
+          message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
+      else()
+          message(STATUS "Include-What-You-Use not found!")
+      endif()
+    endif()
   endif()
 
   # include(cmake/Doxygen.cmake)
