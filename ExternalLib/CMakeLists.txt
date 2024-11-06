@@ -17,6 +17,9 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(benchmark)
 
+# Set custom compile options and exclude -std=c++14
+target_compile_options(benchmark PRIVATE -std=c++2a)
+
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.
