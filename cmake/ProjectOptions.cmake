@@ -102,7 +102,6 @@ macro(myproject_global_options)
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=c++2a -fcolor-diagnostics")
     set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=c++2a -fcolor-diagnostics")
-
   endif()
 
   # control where the static and shared libraries are built so that on windows
@@ -116,18 +115,6 @@ macro(myproject_global_options)
   if(myproject_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
     myproject_enable_ipo()
-  endif()
-
-  if (myproject_ENABLE_IWYU)
-	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		find_program(IWYU_PATH NAMES include-what-you-use iwyu)
-		if (IWYU_PATH)
-		    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
-		    message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
-		else()
-		    message(STATUS "Include-What-You-Use not found!")
-		endif()
-	endif()
   endif()
 
   myproject_supports_sanitizers()
@@ -229,6 +216,20 @@ macro(myproject_local_options)
     myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 
+
+  if (myproject_ENABLE_IWYU)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      find_program(IWYU_PATH NAMES include-what-you-use iwyu)
+      if (IWYU_PATH)
+          set_target_properties(myproject_options PROPERTIES
+            CXX_INCLUDE_WHAT_YOU_USE "${IWYU_PATH}"
+          )
+          message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
+      else()
+          message(STATUS "Include-What-You-Use not found!")
+      endif()
+    endif()
+  endif()
   # include(cmake/Doxygen.cmake)
   # enable_doxygen()
 
