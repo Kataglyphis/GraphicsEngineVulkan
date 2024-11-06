@@ -65,11 +65,12 @@ target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       ${CMAKE_DL_LIBS}
                                                         tinyobjloader
                                                         vma
                                                         ktx
+                                            PRIVATE benchmark::benchmark
+                                                    benchmark::benchmark_main
+                                                    GSL
 )
 
-target_link_libraries(${PERF_TEST_SUITE}   PRIVATE benchmark::benchmark
-                                                   benchmark::benchmark_main
-                                                   GSL)
+target_link_libraries(${PERF_TEST_SUITE}   )
 
 # disable all warnings for our test suite
 if(MSVC)

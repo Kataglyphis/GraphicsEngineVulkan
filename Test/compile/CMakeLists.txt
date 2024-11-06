@@ -70,15 +70,14 @@ target_link_libraries(
          tinyobjloader
          vma
          ktx
-         PRIVATE
          # enable compiler warnings
          myproject_warnings
+  PRIVATE
+         gtest_main
+         gtest
+         GSL
          # enable sanitizers
          myproject_options)
-
-target_link_libraries(${COMPILE_TEST_SUITE} PRIVATE gtest_main
-                                                    gtest
-                                                    GSL)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")
