@@ -1,6 +1,5 @@
 include(FetchContent)
 
-
 # include google test to project
 FetchContent_Declare(
   googletest
@@ -21,6 +20,10 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(benchmark)
+
+# Set the C++17 standard for the benchmark target
+set_target_properties(benchmark PROPERTIES CXX_STANDARD 17)
+set_target_properties(gtest PROPERTIES CXX_STANDARD 17)
 
 #include gsl
 # In this example we are picking a specific tag.
