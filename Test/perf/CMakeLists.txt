@@ -55,12 +55,10 @@ target_include_directories(  ${PERF_TEST_SUITE} PUBLIC      ${PROJECT_INCLUDE_DI
 
 target_include_directories(  ${PERF_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       benchmark::benchmark
-																												benchmark::benchmark_main
-                                                        ${CMAKE_DL_LIBS}
+target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       ${CMAKE_DL_LIBS}
                                                         Threads::Threads
                                                         Vulkan::Vulkan
-                                                        glfw 
+                                                        glfw
                                                         imgui 
                                                         stb
                                                         glm
@@ -69,7 +67,9 @@ target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       benchmark::benchmark
                                                         ktx
 )
 
-target_link_libraries(${PERF_TEST_SUITE}   PRIVATE GSL)
+target_link_libraries(${PERF_TEST_SUITE}   PRIVATE benchmark::benchmark
+                                                   benchmark::benchmark_main
+                                                   GSL)
 
 # disable all warnings for our test suite
 if(MSVC)

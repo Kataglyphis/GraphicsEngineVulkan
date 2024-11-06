@@ -60,9 +60,7 @@ target_include_directories(${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
 target_link_libraries(
   ${COMPILE_TEST_SUITE}
-  PUBLIC gtest_main
-         gtest
-         ${CMAKE_DL_LIBS}
+  PUBLIC ${CMAKE_DL_LIBS}
          Threads::Threads
          Vulkan::Vulkan
          glfw
@@ -77,7 +75,9 @@ target_link_libraries(
          # enable sanitizers
          myproject_options)
 
-target_link_libraries(${COMPILE_TEST_SUITE} PRIVATE GSL)
+target_link_libraries(${COMPILE_TEST_SUITE} PRIVATE gtest_main
+                                                    gtest
+                                                    GSL)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")
