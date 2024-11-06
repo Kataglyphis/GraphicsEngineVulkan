@@ -2,10 +2,10 @@ include(FetchContent)
 
 # specify the C/C++ standard
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED True)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # include google test to project
 FetchContent_Declare(
@@ -16,8 +16,6 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-set_target_properties(gtest PROPERTIES CXX_STANDARD 23)
-
 FetchContent_Declare(
     benchmark
     GIT_REPOSITORY https://github.com/google/benchmark.git
@@ -25,8 +23,7 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(benchmark)
-# Set the C++ standard specifically for Google Benchmark
-set_target_properties(benchmark PROPERTIES CXX_STANDARD 23)
+
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.
