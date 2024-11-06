@@ -23,26 +23,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(benchmark)
 
-# For IMGUI target
-set_target_properties(
-    benchmark
-    PROPERTIES
-    CXX_INCLUDE_WHAT_YOU_USE ""
-)
-
-# Similarly, for other external libraries
-set_target_properties(
-    benchmark_main
-    PROPERTIES
-    CXX_INCLUDE_WHAT_YOU_USE ""
-)
-
-set_target_properties(
-    gtest
-    PROPERTIES
-    CXX_INCLUDE_WHAT_YOU_USE ""
-)
-
 #include gsl
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.

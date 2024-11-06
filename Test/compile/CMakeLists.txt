@@ -70,6 +70,7 @@ target_link_libraries(
          tinyobjloader
          vma
          ktx
+         PRIVATE
          # enable compiler warnings
          myproject_warnings
          # enable sanitizers
