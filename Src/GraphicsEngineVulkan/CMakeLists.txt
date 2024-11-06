@@ -59,12 +59,14 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 tinyobjloader
                                                 vma
                                                 ktx
+                                        PRIVATE
+                                                GSL
+																								spdlog::spdlog
+																								nlohmann_json::nlohmann_json
                                                 # enable compiler warnings
                                                 myproject_warnings
                                                 # enable sanitizers
                                                 myproject_options
 )
 
-target_link_libraries(${PROJECT_NAME}   PRIVATE GSL
-																								spdlog::spdlog
-																								nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME}   PRIVATE )
