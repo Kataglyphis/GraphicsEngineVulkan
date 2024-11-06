@@ -19,6 +19,11 @@ FetchContent_Declare(
     GIT_TAG v1.9.0
 )
 
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 17)  # or 20, 23, etc.
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)  # optional, to disable compiler-specific extensions
+
 FetchContent_MakeAvailable(benchmark)
 
 #include gsl
