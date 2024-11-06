@@ -70,8 +70,6 @@ target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       ${CMAKE_DL_LIBS}
                                                     GSL
 )
 
-target_link_libraries(${PERF_TEST_SUITE}   )
-
 # disable all warnings for our test suite
 if(MSVC)
   target_compile_options(${PERF_TEST_SUITE} INTERFACE /w)

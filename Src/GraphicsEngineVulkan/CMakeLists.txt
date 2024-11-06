@@ -69,4 +69,16 @@ target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
                                                 myproject_options
 )
 
-target_link_libraries(${PROJECT_NAME}   PRIVATE )
+if (myproject_ENABLE_IWYU)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      find_program(IWYU_PATH NAMES include-what-you-use iwyu)
+      if (IWYU_PATH)
+          set_target_properties(${PROJECT_NAME} PROPERTIES
+            CXX_INCLUDE_WHAT_YOU_USE "${IWYU_PATH}"
+          )
+          message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
+      else()
+          message(STATUS "Include-What-You-Use not found!")
+      endif()
+    endif()
+  endif()
