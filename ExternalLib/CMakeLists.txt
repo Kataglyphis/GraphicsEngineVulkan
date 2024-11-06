@@ -1,5 +1,9 @@
 include(FetchContent)
 
+# Set the C++ standard for external projects
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+
 # include google test to project
 FetchContent_Declare(
   googletest
@@ -22,7 +26,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(benchmark)
 
 # Set the C++17 standard for the benchmark target
-set_target_properties(benchmark benchmark::benchmark_main PROPERTIES CXX_STANDARD 23)
+set_target_properties(benchmark PROPERTIES CXX_STANDARD 23)
+set_target_properties(benchmark_main PROPERTIES CXX_STANDARD 23)
 set_target_properties(gtest PROPERTIES CXX_STANDARD 23)
 
 #include gsl
