@@ -1,8 +1,6 @@
 include(FetchContent)
 
-# Set the C++ standard for external projects
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED YES)
+
 
 # include google test to project
 FetchContent_Declare(
@@ -25,10 +23,25 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(benchmark)
 
-# Set the C++17 standard for the benchmark target
-set_target_properties(benchmark PROPERTIES CXX_STANDARD 23)
-set_target_properties(benchmark_main PROPERTIES CXX_STANDARD 23)
-set_target_properties(gtest PROPERTIES CXX_STANDARD 23)
+# For IMGUI target
+set_target_properties(
+    benchmark
+    PROPERTIES
+    CXX_INCLUDE_WHAT_YOU_USE ""
+)
+
+# Similarly, for other external libraries
+set_target_properties(
+    benchmark_main
+    PROPERTIES
+    CXX_INCLUDE_WHAT_YOU_USE ""
+)
+
+set_target_properties(
+    gtest
+    PROPERTIES
+    CXX_INCLUDE_WHAT_YOU_USE ""
+)
 
 #include gsl
 # In this example we are picking a specific tag.
