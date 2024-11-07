@@ -14,6 +14,10 @@ include(cmake/SetTestFilters.cmake)
 
 set(PERF_TEST_SUITE perfTestSuite)
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 add_executable( ${PERF_TEST_SUITE}
                 # all test specific files -- start
                 ${RENDERER_PERF_TEST_FILTER}
@@ -65,6 +69,8 @@ target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       ${CMAKE_DL_LIBS}
                                                         tinyobjloader
                                                         vma
                                                         ktx
+                                                        myproject_options
+                                                        myproject_warnings
                                             PRIVATE benchmark::benchmark
                                                     benchmark::benchmark_main
                                                     GSL
