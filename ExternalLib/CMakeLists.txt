@@ -1,7 +1,8 @@
 include(FetchContent)
 
-set(CMAKE_CXX_STANDARD 23)  # or 20, for example
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# hotfix for issue: 
+# https://github.com/google/benchmark/pull/1875
+add_compile_options(-Wno-c++17-attribute-extensions)
 
 # include google test to project
 FetchContent_Declare(
@@ -28,8 +29,8 @@ add_subdirectory(GOOGLE_BENCHMARK)
 
 # hotfix for issue: 
 # https://github.com/google/benchmark/pull/1875
-target_compile_options(benchmark INTERFACE -Wno-c++17-extensions)
-target_compile_options(benchmark_main INTERFACE -Wno-c++17-extensions)
+target_compile_options(benchmark INTERFACE -Wno-c++17-attribute-extensions)
+target_compile_options(benchmark_main INTERFACE -Wno-c++17-attribute-extensions)
 
 FetchContent_Declare(GSL
     GIT_REPOSITORY "https://github.com/microsoft/GSL"
@@ -78,7 +79,7 @@ target_include_directories(ktx  SYSTEM
 
 add_subdirectory(GLFW)
 
-add_subdirectory(spdlog)
+add_subdirectory(SPDLOG)
 
 add_subdirectory(NLOHMANN_JSON)
 
