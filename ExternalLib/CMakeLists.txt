@@ -1,30 +1,30 @@
 include(FetchContent)
 
+set(CMAKE_CXX_STANDARD 23)  # or 20, for example
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # include google test to project
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/df1544bcee0c7ce35cd5ea0b3eb8cc81855a4140.zip
-  )
-
+)
+  
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
-
-# Disable warnings as errors for Google Benchmark
-set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
-
-FetchContent_Declare(
-    benchmark
-    GIT_REPOSITORY https://github.com/google/benchmark.git
-    GIT_TAG v1.9.0
-)
-
-# Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)  # or 20, 23, etc.
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)  # optional, to disable compiler-specific extensions
-
-FetchContent_MakeAvailable(benchmark)
+  
+  # # Disable warnings as errors for Google Benchmark
+  # set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
+  
+  # FetchContent_Declare(
+    #     benchmark
+    #     GIT_REPOSITORY https://github.com/google/benchmark.git
+    #     GIT_TAG v1.9.0
+    # )
+    
+    # FetchContent_MakeAvailable(benchmark)
+    
+add_subdirectory(GOOGLE_BENCHMARK)
 
 #include gsl
 # In this example we are picking a specific tag.

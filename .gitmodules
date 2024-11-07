@@ -23,3 +23,6 @@
 [submodule "ExternalLib/NLOHMANN_JSON"]
 	path = ExternalLib/NLOHMANN_JSON
 	url = https://github.com/nlohmann/json
+[submodule "ExternalLib/GOOGLE_BENCHMARK"]
+	path = ExternalLib/GOOGLE_BENCHMARK
+	url = git@github.com:google/benchmark.git
