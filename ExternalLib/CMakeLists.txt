@@ -26,9 +26,11 @@ FetchContent_MakeAvailable(googletest)
     
 add_subdirectory(GOOGLE_BENCHMARK)
 
-#include gsl
-# In this example we are picking a specific tag.
-# You can also pick a specific commit, if you need to.
+# hotfix for issue: 
+# https://github.com/google/benchmark/pull/1875
+target_compile_options(benchmark INTERFACE -Wno-c++17-extensions)
+target_compile_options(benchmark_main INTERFACE -Wno-c++17-extensions)
+
 FetchContent_Declare(GSL
     GIT_REPOSITORY "https://github.com/microsoft/GSL"
     GIT_TAG "v4.1.0"
