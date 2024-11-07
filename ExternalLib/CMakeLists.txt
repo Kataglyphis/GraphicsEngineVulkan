@@ -13,17 +13,6 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
-  
-  # # Disable warnings as errors for Google Benchmark
-  # set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
-  
-  # FetchContent_Declare(
-    #     benchmark
-    #     GIT_REPOSITORY https://github.com/google/benchmark.git
-    #     GIT_TAG v1.9.0
-    # )
-    
-    # FetchContent_MakeAvailable(benchmark)
     
 add_subdirectory(GOOGLE_BENCHMARK)
 
@@ -31,6 +20,16 @@ add_subdirectory(GOOGLE_BENCHMARK)
 # https://github.com/google/benchmark/pull/1875
 target_compile_options(benchmark INTERFACE -Wno-c++17-attribute-extensions)
 target_compile_options(benchmark_main INTERFACE -Wno-c++17-attribute-extensions)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "This is a Linux system.")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+      add_subdirectory(FUZZTEST)
+      if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+        set(FUZZTEST_FUZZING_MODE ON CACHE BOOL "" FORCE)
+      endif()
+    endif()
+endif()
 
 FetchContent_Declare(GSL
     GIT_REPOSITORY "https://github.com/microsoft/GSL"
