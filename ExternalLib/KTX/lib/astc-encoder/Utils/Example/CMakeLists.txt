@@ -32,17 +32,16 @@ project(astcencoder_example VERSION 1.0.0)
 #  *  Add "-DISA_SSE41:String=ON" and link against "astcenc-sse4.1-static"
 #  *  Add "-DISA_AVX2:String=ON" and link against "astcenc-avx2-static"
 #  *  Add "-DISA_NEON:String=ON" and link against "astcenc-neon-static"
-ExternalProject_Add(astcencoder
-    GIT_REPOSITORY https://github.com/ARM-software/astc-encoder
-    GIT_TAG main
-    CMAKE_CACHE_ARGS -DCLI:String=OFF
-    INSTALL_COMMAND "")
+ExternalProject_Add(
+  astcencoder
+  GIT_REPOSITORY https://github.com/ARM-software/astc-encoder
+  GIT_TAG main
+  CMAKE_CACHE_ARGS -DCLI:String=OFF
+  INSTALL_COMMAND "")
 
-ExternalProject_Get_property(astcencoder
-    SOURCE_DIR)
+ExternalProject_Get_Property(astcencoder SOURCE_DIR)
 
-ExternalProject_Get_property(astcencoder
-    BINARY_DIR)
+ExternalProject_Get_Property(astcencoder BINARY_DIR)
 
 # Build the command line
 add_executable(astcenc_example astc_api_example.cpp)
@@ -51,15 +50,9 @@ add_executable(astcenc_example astc_api_example.cpp)
 add_dependencies(astcenc_example astcencoder)
 
 # ... with astcencoder Source dir on the include path
-target_include_directories(astcenc_example
-    PRIVATE
-        ${SOURCE_DIR}/Source)
+target_include_directories(astcenc_example PRIVATE ${SOURCE_DIR}/Source)
 
 # ... with astcencoder Binary dir on the library path and as a library dep
-target_link_directories(astcenc_example
-    PRIVATE
-        ${BINARY_DIR}/Source)
+target_link_directories(astcenc_example PRIVATE ${BINARY_DIR}/Source)
 
-target_link_libraries(astcenc_example
-    PRIVATE
-        astcenc-native-static)
+target_link_libraries(astcenc_example PRIVATE astcenc-native-static)

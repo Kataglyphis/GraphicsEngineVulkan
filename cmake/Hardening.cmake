@@ -66,12 +66,12 @@ macro(
       set(NEW_COMPILE_OPTIONS "${NEW_COMPILE_OPTIONS} -fsanitize=undefined -fsanitize-minimal-runtime")
       set(NEW_LINK_OPTIONS "${NEW_LINK_OPTIONS} -fsanitize=undefined -fsanitize-minimal-runtime")
 
-      if(NOT ${global})
-        set(NEW_COMPILE_OPTIONS "${NEW_COMPILE_OPTIONS} -fno-sanitize-recover=undefined")
-        set(NEW_LINK_OPTIONS "${NEW_LINK_OPTIONS} -fno-sanitize-recover=undefined")
-      else()
-        message(STATUS "** not enabling -fno-sanitize-recover=undefined for global consumption")
-      endif()
+      # if(NOT ${global})
+      #   set(NEW_COMPILE_OPTIONS "${NEW_COMPILE_OPTIONS} -fno-sanitize-recover=undefined")
+      #   set(NEW_LINK_OPTIONS "${NEW_LINK_OPTIONS} -fno-sanitize-recover=undefined")
+      # else()
+      #   message(STATUS "** not enabling -fno-sanitize-recover=undefined for global consumption")
+      # endif()
 
       message(STATUS "*** ubsan minimal runtime enabled")
     else()

@@ -16,26 +16,46 @@
 #  ----------------------------------------------------------------------------
 
 if(${UNIVERSAL_BUILD})
-    if(${ISA_AVX2})
-        set(ISA_SIMD "avx2")
-    elseif(${ISA_SSE41})
-        set(ISA_SIMD "sse4.1")
-    elseif(${ISA_SSE2})
-        set(ISA_SIMD "sse2")
-    endif()
-    include(cmake_core.cmake)
+  if(${ISA_AVX2})
+    set(ISA_SIMD "avx2")
+  elseif(${ISA_SSE41})
+    set(ISA_SIMD "sse4.1")
+  elseif(${ISA_SSE2})
+    set(ISA_SIMD "sse2")
+  endif()
+  include(cmake_core.cmake)
 else()
-    set(ARTEFACTS native none neon avx2 sse4.1 sse2)
-    set(CONFIGS ${ISA_NATIVE} ${ISA_NONE} ${ISA_NEON} ${ISA_AVX2} ${ISA_SSE41} ${ISA_SSE2})
-    list(LENGTH ARTEFACTS ARTEFACTS_LEN)
-    math(EXPR ARTEFACTS_LEN "${ARTEFACTS_LEN} - 1")
+  set(ARTEFACTS
+      native
+      none
+      neon
+      avx2
+      sse4.1
+      sse2)
+  set(CONFIGS
+      ${ISA_NATIVE}
+      ${ISA_NONE}
+      ${ISA_NEON}
+      ${ISA_AVX2}
+      ${ISA_SSE41}
+      ${ISA_SSE2})
+  list(LENGTH ARTEFACTS ARTEFACTS_LEN)
+  math(EXPR ARTEFACTS_LEN "${ARTEFACTS_LEN} - 1")
 
-    foreach(INDEX RANGE ${ARTEFACTS_LEN})
-        list(GET ARTEFACTS ${INDEX} ARTEFACT)
-        list(GET CONFIGS ${INDEX} CONFIG)
-        if(${CONFIG})
-            set(ISA_SIMD ${ARTEFACT})
-            include(cmake_core.cmake)
-        endif()
-    endforeach()
+  foreach(INDEX RANGE ${ARTEFACTS_LEN})
+    list(
+      GET
+      ARTEFACTS
+      ${INDEX}
+      ARTEFACT)
+    list(
+      GET
+      CONFIGS
+      ${INDEX}
+      CONFIG)
+    if(${CONFIG})
+      set(ISA_SIMD ${ARTEFACT})
+      include(cmake_core.cmake)
+    endif()
+  endforeach()
 endif()
