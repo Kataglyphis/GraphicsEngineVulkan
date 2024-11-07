@@ -72,12 +72,13 @@ target_link_libraries(
          ktx
          # enable compiler warnings
          myproject_warnings
+         # enable sanitizers
+         myproject_options
   PRIVATE
          gtest_main
          gtest
          GSL
-         # enable sanitizers
-         myproject_options)
+)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")

@@ -25,3 +25,6 @@
 [submodule "ExternalLib/SPDLOG"]
 	path = ExternalLib/SPDLOG
 	url = https://github.com/gabime/spdlog
+[submodule "ExternalLib/FUZZTEST"]
+	path = ExternalLib/FUZZTEST
+	url = https://github.com/google/fuzztest
