@@ -187,6 +187,11 @@ pip install pyyaml
 pip install cmake-format
 cmake-format -c ./.cmake-format.yaml -i $(find cmake -name '*.cmake' -o -name 'CMakeLists.txt')
 ```
+# Format code files 
+
+```bash
+clang-format -i $(find include -name "*.cpp" -or -name "*.h" -or -name "*.hpp")
+```
 
 <!-- ROADMAP -->
 ## Roadmap

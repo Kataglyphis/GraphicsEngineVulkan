@@ -18,63 +18,63 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable( ${PERF_TEST_SUITE}
-                # all test specific files -- start
-                ${RENDERER_PERF_TEST_FILTER}
-                # all test specific files -- end
-                ${RASTER_SHADER_FILTER}
-                ${RAYTRACING_SHADER_FILTER}
-                ${COMMON_SHADER_FILTER}
-                ${POST_SHADER_FILTER}
-                ${BRDF_SHADER_FILTER}
-                ${PATH_TRACING_SHADER_FILTER}
-                ${RENDERER_FILTER}
-                ${PC_FILTER}
-                ${AS_FILTER}
-                ${SCENE_FILTER}
-                ${WINDOW_FILTER}
-                ${MEMORY_FILTER}
-                ${COMMON_FILTER}
-                ${GUI_FILTER}
-                ${UTIL_FILTER}
-                ${VULKAN_BASE_FILTER}
-                ${SHADER_HOST_DEVICE_FILTER}
-                $<TARGET_OBJECTS:IMGUI>
-)
+add_executable(
+  ${PERF_TEST_SUITE}
+  # all test specific files -- start
+  ${RENDERER_PERF_TEST_FILTER}
+  # all test specific files -- end
+  ${RASTER_SHADER_FILTER}
+  ${RAYTRACING_SHADER_FILTER}
+  ${COMMON_SHADER_FILTER}
+  ${POST_SHADER_FILTER}
+  ${BRDF_SHADER_FILTER}
+  ${PATH_TRACING_SHADER_FILTER}
+  ${RENDERER_FILTER}
+  ${PC_FILTER}
+  ${AS_FILTER}
+  ${SCENE_FILTER}
+  ${WINDOW_FILTER}
+  ${MEMORY_FILTER}
+  ${COMMON_FILTER}
+  ${GUI_FILTER}
+  ${UTIL_FILTER}
+  ${VULKAN_BASE_FILTER}
+  ${SHADER_HOST_DEVICE_FILTER}
+  $<TARGET_OBJECTS:IMGUI>)
 
-target_include_directories(  ${PERF_TEST_SUITE} PUBLIC      ${PROJECT_INCLUDE_DIR}renderer
-                                                            ${PROJECT_INCLUDE_DIR}renderer/pushConstants
-                                                            ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
-                                                            ${PROJECT_INCLUDE_DIR}vulkan_base
-                                                            ${PROJECT_INCLUDE_DIR}gui
-                                                            ${PROJECT_INCLUDE_DIR}common
-                                                            ${PROJECT_INCLUDE_DIR}scene
-                                                            ${PROJECT_INCLUDE_DIR}window
-                                                            ${PROJECT_INCLUDE_DIR}memory
-                                                            ${PROJECT_INCLUDE_DIR}util
-                                                            ${PROJECT_INCLUDE_DIR}app
-                                                            ${PROJECT_INCLUDE_DIR}
-                                                            ${SHADER_SRC_DIR}hostDevice
-)
+target_include_directories(
+  ${PERF_TEST_SUITE}
+  PUBLIC ${PROJECT_INCLUDE_DIR}renderer
+         ${PROJECT_INCLUDE_DIR}renderer/pushConstants
+         ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
+         ${PROJECT_INCLUDE_DIR}vulkan_base
+         ${PROJECT_INCLUDE_DIR}gui
+         ${PROJECT_INCLUDE_DIR}common
+         ${PROJECT_INCLUDE_DIR}scene
+         ${PROJECT_INCLUDE_DIR}window
+         ${PROJECT_INCLUDE_DIR}memory
+         ${PROJECT_INCLUDE_DIR}util
+         ${PROJECT_INCLUDE_DIR}app
+         ${PROJECT_INCLUDE_DIR}
+         ${SHADER_SRC_DIR}hostDevice)
 
-target_include_directories(  ${PERF_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(${PERF_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries( ${PERF_TEST_SUITE}  PUBLIC       ${CMAKE_DL_LIBS}
-                                                        Threads::Threads
-                                                        Vulkan::Vulkan
-                                                        glfw
-                                                        imgui 
-                                                        stb
-                                                        glm
-                                                        tinyobjloader
-                                                        vma
-                                                        ktx
-                                                        myproject_options
-                                                        myproject_warnings
-                                            PRIVATE benchmark::benchmark
-                                                    benchmark::benchmark_main
-                                                    GSL
-)
+target_link_libraries(
+  ${PERF_TEST_SUITE}
+  PUBLIC ${CMAKE_DL_LIBS}
+         Threads::Threads
+         Vulkan::Vulkan
+         glfw
+         imgui
+         stb
+         glm
+         tinyobjloader
+         vma
+         ktx
+         myproject_options
+         myproject_warnings
+  PRIVATE benchmark::benchmark benchmark::benchmark_main GSL)
 
 # disable all warnings for our test suite
 if(MSVC)
@@ -86,28 +86,23 @@ else()
 endif()
 
 # make our sources available to testing framework
-add_custom_target(resourcefilesForPerfTestSuite ALL
-	            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources 
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
-                    ${CMAKE_SOURCE_DIR}/Resources 
-                    ${CMAKE_BINARY_DIR}/Test/Resources
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
-                    ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/ 
-                    ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
-                    ${CMAKE_SOURCE_DIR}/include/renderer/ 
-                    ${CMAKE_BINARY_DIR}/Test/include/renderer
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
-                    ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants 
-                    ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
-                    ${CMAKE_SOURCE_DIR}/include/scene/ 
-                    ${CMAKE_BINARY_DIR}/Test/include/scene)
+add_custom_target(
+  resourcefilesForPerfTestSuite ALL
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Resources
+          ${CMAKE_BINARY_DIR}/Test/Resources
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/
+          ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/
+          ${CMAKE_BINARY_DIR}/Test/include/renderer
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants
+          ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/scene/
+          ${CMAKE_BINARY_DIR}/Test/include/scene)
 
 if(NOT WINDOWS_CI)
-	message(STATUS "WINDOWS_CI is OFF or not defined.")
-	add_dependencies(resourcefilesForCompileTestSuite ${PROJECT_NAME})
-	
-	add_dependencies(${PERF_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME})
-endif()
+  message(STATUS "WINDOWS_CI is OFF or not defined.")
+  add_dependencies(resourcefilesForCompileTestSuite ${PROJECT_NAME})
 
+  add_dependencies(${PERF_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME})
+endif()

@@ -14,6 +14,7 @@ using mat4 = glm::mat4;
 using uint = unsigned int;
 #endif
 
-struct PushConstantPost {
-  float aspect_ratio;
+struct PushConstantPost
+{
+    float aspect_ratio;
 };

@@ -75,11 +75,7 @@ target_link_libraries(
          myproject_warnings
          # enable sanitizers
          myproject_options
-  PRIVATE
-         gtest
-         gtest_main
-         GSL
-)
+  PRIVATE gtest gtest_main GSL)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")

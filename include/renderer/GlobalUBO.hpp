@@ -15,7 +15,8 @@ using uint = unsigned int;
 #endif
 
 // which render stage doesn't need view,projection ?
-struct GlobalUBO {
-  mat4 projection;
-  mat4 view;
+struct GlobalUBO
+{
+    mat4 projection;
+    mat4 view;
 };

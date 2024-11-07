@@ -4,7 +4,8 @@
 
 #include "VulkanBuffer.hpp"
 
-struct TopLevelAccelerationStructure {
-  VkAccelerationStructureKHR vulkanAS;
-  VulkanBuffer vulkanBuffer;
+struct TopLevelAccelerationStructure
+{
+    VkAccelerationStructureKHR vulkanAS;
+    VulkanBuffer vulkanBuffer;
 };

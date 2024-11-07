@@ -14,8 +14,9 @@ using mat4 = glm::mat4;
 using uint = unsigned int;
 #endif
 
-struct PushConstantPathTracing {
-  vec4 clearColor;
-  uint width;
-  uint height;
+struct PushConstantPathTracing
+{
+    vec4 clearColor;
+    uint width;
+    uint height;
 };

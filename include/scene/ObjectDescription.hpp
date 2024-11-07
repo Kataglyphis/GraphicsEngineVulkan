@@ -8,9 +8,10 @@
 #include <vulkan/vulkan.h>
 #endif
 
-struct ObjectDescription {
-  uint64_t vertex_address;
-  uint64_t index_address;
-  uint64_t material_index_address;
-  uint64_t material_address;
+struct ObjectDescription
+{
+    uint64_t vertex_address;
+    uint64_t index_address;
+    uint64_t material_index_address;
+    uint64_t material_address;
 };

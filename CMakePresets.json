@@ -24,6 +24,24 @@
 				"rhs": "Linux"
 			}
 		},
+    {
+			"name": "linux-RelWithDebInfo-clang",
+			"displayName": "Linux RelWithDebInfo Clang",
+			"description": "Go with Linux",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build/",
+			"installDir": "${sourceDir}/build/",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			}
+		},
 		{
 			"name": "linux-release-clang",
 			"displayName": "Linux Release Clang",

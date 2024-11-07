@@ -15,6 +15,7 @@ using uint = unsigned int;
 #endif
 
 // Push constant structure for the raster
-struct PushConstantRasterizer {
-  mat4 model;  // matrix of the instance
+struct PushConstantRasterizer
+{
+    mat4 model;// matrix of the instance
 };

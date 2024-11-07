@@ -21,7 +21,7 @@ macro(myproject_setup_options)
   cmake_dependent_option(
     myproject_ENABLE_GLOBAL_HARDENING
     "Attempt to push hardening options to built dependencies"
-    ON
+    OFF
     myproject_ENABLE_HARDENING
     OFF)
 
@@ -40,13 +40,13 @@ macro(myproject_setup_options)
     option(myproject_ENABLE_CPPCHECK "Enable cpp-check analysis" ON)
     option(myproject_ENABLE_PCH "Enable precompiled headers" OFF)
     option(myproject_ENABLE_CACHE "Enable ccache" ON)
-		option(myproject_ENABLE_IWYU "Enable IWYU" ON)
+    option(myproject_ENABLE_IWYU "Enable IWYU" ON)
   else()
     option(myproject_ENABLE_IPO "Enable IPO/LTO" ON)
     option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
-    option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN})
+    option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF) # ${SUPPORTS_ASAN}
     option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" ${SUPPORTS_UBSAN})
+    option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" OFF) # ${SUPPORTS_UBSAN}
     option(myproject_ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
     option(myproject_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
     option(myproject_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
@@ -100,8 +100,8 @@ macro(myproject_global_options)
     set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2 -DNDEBUG -fcolor-diagnostics")
     # https://clang.llvm.org/docs/ClangCommandLineReference.html
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=c++23 -fcolor-diagnostics") # -std=c++2a
-    set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=c++23 -fcolor-diagnostics") # -std=c++2a
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=c++2a -fcolor-diagnostics") # -std=c++2a
+    set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=c++2a -fcolor-diagnostics") # -std=c++2a
   endif()
 
   # control where the static and shared libraries are built so that on windows
@@ -216,18 +216,16 @@ macro(myproject_local_options)
     myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 
-  if (myproject_ENABLE_IWYU)
-   if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-     find_program(IWYU_PATH NAMES include-what-you-use iwyu)
-     if (IWYU_PATH)
-         set_target_properties(myproject_options PROPERTIES
-           CXX_INCLUDE_WHAT_YOU_USE "${IWYU_PATH}"
-         )
-         message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
-     else()
-         message(STATUS "Include-What-You-Use not found!")
-     endif()
-   endif()
+  if(myproject_ENABLE_IWYU)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      find_program(IWYU_PATH NAMES include-what-you-use iwyu)
+      if(IWYU_PATH)
+        set_target_properties(myproject_options PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${IWYU_PATH}")
+        message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
+      else()
+        message(STATUS "Include-What-You-Use not found!")
+      endif()
+    endif()
   endif()
 
   include(cmake/Doxygen.cmake)

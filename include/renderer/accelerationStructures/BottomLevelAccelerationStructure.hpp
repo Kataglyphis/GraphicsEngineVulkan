@@ -3,7 +3,8 @@
 
 #include "VulkanBuffer.hpp"
 
-struct BottomLevelAccelerationStructure {
-  VkAccelerationStructureKHR vulkanAS;
-  VulkanBuffer vulkanBuffer;
+struct BottomLevelAccelerationStructure
+{
+    VkAccelerationStructureKHR vulkanAS;
+    VulkanBuffer vulkanBuffer;
 };

@@ -14,6 +14,7 @@ using mat4 = glm::mat4;
 using uint = unsigned int;
 #endif
 
-struct PushConstantRaytracing {
-  vec4 clear_color;
+struct PushConstantRaytracing
+{
+    vec4 clear_color;
 };

@@ -10,75 +10,62 @@ include(../../cmake/filters/SetExternalLibsFilters.cmake)
 include(../../cmake/SetSourceGroups.cmake)
 
 # add the executable
-add_executable(${PROJECT_NAME}  ${RASTER_SHADER_FILTER}
-                                ${RAYTRACING_SHADER_FILTER}
-                                ${COMMON_SHADER_FILTER}
-                                ${POST_SHADER_FILTER}
-                                ${BRDF_SHADER_FILTER}
-                                ${PATH_TRACING_SHADER_FILTER}
-                                ${RENDERER_FILTER}
-                                ${PC_FILTER}
-                                ${AS_FILTER}
-                                ${SCENE_FILTER}
-                                ${WINDOW_FILTER}
-                                ${MEMORY_FILTER}
-                                ${COMMON_FILTER}
-                                ${APP_FILTER}
-                                ${GUI_FILTER}
-                                ${UTIL_FILTER}
-                                ${VULKAN_BASE_FILTER}
-                                ${MAIN_FILTER}
-                                ${SHADER_HOST_DEVICE_FILTER}
-                                # this is great; no CPPCHECK,CLANG_TIDY here
-                                $<TARGET_OBJECTS:IMGUI>
-)
+add_executable(
+  ${PROJECT_NAME}
+  ${RASTER_SHADER_FILTER}
+  ${RAYTRACING_SHADER_FILTER}
+  ${COMMON_SHADER_FILTER}
+  ${POST_SHADER_FILTER}
+  ${BRDF_SHADER_FILTER}
+  ${PATH_TRACING_SHADER_FILTER}
+  ${RENDERER_FILTER}
+  ${PC_FILTER}
+  ${AS_FILTER}
+  ${SCENE_FILTER}
+  ${WINDOW_FILTER}
+  ${MEMORY_FILTER}
+  ${COMMON_FILTER}
+  ${APP_FILTER}
+  ${GUI_FILTER}
+  ${UTIL_FILTER}
+  ${VULKAN_BASE_FILTER}
+  ${MAIN_FILTER}
+  ${SHADER_HOST_DEVICE_FILTER}
+  # this is great; no CPPCHECK,CLANG_TIDY here
+  $<TARGET_OBJECTS:IMGUI>)
 
-target_include_directories(${PROJECT_NAME} PUBLIC   ${PROJECT_INCLUDE_DIR}renderer
-																										${PROJECT_INCLUDE_DIR}renderer/pushConstants
-																										${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
-                                                    ${PROJECT_INCLUDE_DIR}vulkan_base
-                                                    ${PROJECT_INCLUDE_DIR}gui
-                                                    ${PROJECT_INCLUDE_DIR}common
-                                                    ${PROJECT_INCLUDE_DIR}scene
-                                                    ${PROJECT_INCLUDE_DIR}window
-                                                    ${PROJECT_INCLUDE_DIR}memory
-                                                    ${PROJECT_INCLUDE_DIR}util
-                                                    ${PROJECT_INCLUDE_DIR}app
-                                                    ${SHADER_SRC_DIR}hostDevice
-                                                    ${PROJECT_INCLUDE_DIR})
+target_include_directories(
+  ${PROJECT_NAME}
+  PUBLIC ${PROJECT_INCLUDE_DIR}renderer
+         ${PROJECT_INCLUDE_DIR}renderer/pushConstants
+         ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
+         ${PROJECT_INCLUDE_DIR}vulkan_base
+         ${PROJECT_INCLUDE_DIR}gui
+         ${PROJECT_INCLUDE_DIR}common
+         ${PROJECT_INCLUDE_DIR}scene
+         ${PROJECT_INCLUDE_DIR}window
+         ${PROJECT_INCLUDE_DIR}memory
+         ${PROJECT_INCLUDE_DIR}util
+         ${PROJECT_INCLUDE_DIR}app
+         ${SHADER_SRC_DIR}hostDevice
+         ${PROJECT_INCLUDE_DIR})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries(${PROJECT_NAME}   PUBLIC  ${CMAKE_DL_LIBS}
-                                                Threads::Threads
-                                                Vulkan::Vulkan
-                                                glfw 
-                                                imgui 
-                                                stb
-                                                glm
-                                                tinyobjloader
-                                                vma
-                                                ktx
-                                                # enable compiler warnings
-                                                myproject_warnings
-                                                # enable sanitizers
-                                                myproject_options
-                                        PRIVATE
-                                                GSL
-																								spdlog::spdlog
-																								nlohmann_json::nlohmann_json
-)
-
-# if (myproject_ENABLE_IWYU)
-#      if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-#        find_program(IWYU_PATH NAMES include-what-you-use iwyu)
-#        if (IWYU_PATH)
-#        #    set_target_properties(${PROJECT_NAME} PROPERTIES
-#        #      CXX_INCLUDE_WHAT_YOU_USE "${IWYU_PATH}"
-#        #     )
-#            message(STATUS "Include-What-You-Use found: ${IWYU_PATH}")
-#        else()
-#            message(STATUS "Include-What-You-Use not found!")
-#        endif()
-#      endif()
-#  endif()
+target_link_libraries(
+  ${PROJECT_NAME}
+  PUBLIC ${CMAKE_DL_LIBS}
+         Threads::Threads
+         Vulkan::Vulkan
+         glfw
+         imgui
+         stb
+         glm
+         tinyobjloader
+         vma
+         ktx
+         # enable compiler warnings
+         myproject_warnings
+         # enable sanitizers
+         myproject_options
+  PRIVATE GSL spdlog::spdlog nlohmann_json::nlohmann_json)
