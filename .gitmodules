@@ -16,8 +16,8 @@
 [submodule "ExternalLib/VULKAN_MEMORY_ALLOCATOR"]
 	path = ExternalLib/VULKAN_MEMORY_ALLOCATOR
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
-[submodule "ExternalLib/SPDLOG"]
-	path = ExternalLib/SPDLOG
+[submodule "ExternalLib/spdlog"]
+	path = ExternalLib/spdlog
 	url = https://github.com:gabime/spdlog.git
 [submodule "ExternalLib/NLOHMANN_JSON"]
 	path = ExternalLib/NLOHMANN_JSON
