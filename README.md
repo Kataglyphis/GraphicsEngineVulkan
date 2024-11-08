@@ -87,31 +87,31 @@ Frequently tested under <br />
 
 ### Key Features
 
-<!-- ❌  -->
-------------------------------------------------------------
-|          Feature                    |   Implement Status |  
-| ------------------------------------| :----------------: |
-| **__Render agnostic__**             |                    |
-| ------------------------------------| :----------------: |
-| Rasterizer                          |         ✔️         |
-| Raytracing                          |         ✔️         |
-| Path tracing                        |         ✔️         |
-| PBR support (UE4,disney,... etc.)   |         ✔️         |
-| .obj Model loading                  |         ✔️         |
-| Mip Mapping                         |         ✔️         |
-| ------------------------------------| :----------------: |
-| **__C++/CMake agnostic__**          |                    |
-| ------------------------------------| :----------------: |
-| Code coverage for Clang             |         ✔️         |
-| Advanced unit testing               |         🔶         |
-| Advanced performance testing        |         🔶         |
-| Advanced fuzz testing               |         🔶         |
-------------------------------------------------------------
+<div align="center">
 
-Legend:
- - ✔️- completed
- - 🔶- in progress 
- - ❌- not started  
+
+|            Category           |           Feature                      |  Implement Status  |
+|-------------------------------|----------------------------------------|:------------------:|
+|      **Render agnostic**      | Rasterizer                             |         ✔️          |
+|                               | Raytracing                             |         ✔️          |
+|                               | Path tracing                           |         ✔️          |
+|                               | PBR support (UE4, Disney, etc.)        |         ✔️          |
+|                               | .obj Model loading                     |         ✔️          |
+|                               | Mip Mapping                            |         ✔️          |
+|                               |                                        |                    |
+|      **C++/CMake agnostic**   | Code coverage for Clang                |         ✔️          |
+|                               | Advanced unit testing                  |         🔶         |
+|                               | Advanced performance testing           |         🔶         |
+|                               | Advanced fuzz testing                  |         🔶         |
+
+</div>
+
+**Legend:**
+- ✔️ - completed  
+- 🔶 - in progress  
+- ❌ - not started
+
+
 
 ### Built With
 
