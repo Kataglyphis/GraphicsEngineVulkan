@@ -88,7 +88,13 @@ Frequently tested under <br />
 ### Key Features
 
 <!-- ❌  -->
+------------------------------------------------------------
 |          Feature                    |   Implement Status |
+|                                     |   ✔️- completed    |
+|                                     |   🔶- in progress  |
+|                                     |   ❌- not started  |  
+| ------------------------------------| :----------------: |
+| **__Render agnostic__**             |                    |
 | ------------------------------------| :----------------: |
 | Rasterizer                          |         ✔️         |
 | Raytracing                          |         ✔️         |
@@ -96,6 +102,15 @@ Frequently tested under <br />
 | PBR support (UE4,disney,... etc.)   |         ✔️         |
 | .obj Model loading                  |         ✔️         |
 | Mip Mapping                         |         ✔️         |
+| ------------------------------------| :----------------: |
+| **__C++/CMake agnostic__**          |                    |
+| ------------------------------------| :----------------: |
+| Code coverage for Clang             |         ✔️         |
+| Advanced unit testing               |         🔶         |
+| Advanced performance testing        |         🔶         |
+| Advanced fuzz testing               |         🔶         |
+------------------------------------------------------------
+
 
 ### Built With
 
@@ -109,9 +124,11 @@ Frequently tested under <br />
 * [doxygen](https://www.doxygen.nl/index.html)
 * [gtest](https://github.com/google/googletest)
 * [gbenchmark](https://github.com/google/benchmark)
+* [google fuzztest](https://github.com/google/fuzztest)
 * [cmake](https://cmake.org/)
 * [gsl](https://github.com/Microsoft/GSL)
 * [NSIS](https://nsis.sourceforge.io/Main_Page)
+* [nlohmann_json](https://github.com/nlohmann/json)
 * [SPDLOG](https://github.com/gabime/spdlog)
 ### Useful tools (you might also considering :) )
 
