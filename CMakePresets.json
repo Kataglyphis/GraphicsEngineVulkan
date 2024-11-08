@@ -14,6 +14,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_BUILD_TYPE": "Debug",
 				"CMAKE_C_COMPILER": "clang",
 				"CMAKE_CXX_COMPILER": "clang++"
@@ -32,6 +33,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
 				"CMAKE_C_COMPILER": "clang",
 				"CMAKE_CXX_COMPILER": "clang++"
@@ -50,6 +52,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_BUILD_TYPE": "Release",
 				"CMAKE_C_COMPILER": "clang",
 				"CMAKE_CXX_COMPILER": "clang++"
@@ -68,6 +71,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_BUILD_TYPE": "Debug",
 				"CMAKE_C_COMPILER": "gcc",
 				"CMAKE_CXX_COMPILER": "g++"
@@ -86,6 +90,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_BUILD_TYPE": "Release",
 				"CMAKE_C_COMPILER": "gcc",
 				"CMAKE_CXX_COMPILER": "g++"
@@ -103,6 +108,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_C_COMPILER": "cl",
 				"CMAKE_CXX_COMPILER": "cl"
 			},
@@ -123,6 +129,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_C_COMPILER": "clang-cl",
 				"CMAKE_CXX_COMPILER": "clang-cl",
 				"CMAKE_BUILD_TYPE": "Debug"
@@ -150,6 +157,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_C_COMPILER": "clang-cl",
 				"CMAKE_CXX_COMPILER": "clang-cl",
 				"CMAKE_BUILD_TYPE": "Release"
@@ -177,6 +185,7 @@
 			"binaryDir": "${sourceDir}/build/",
 			"installDir": "${sourceDir}/build/",
 			"cacheVariables": {
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
 				"CMAKE_C_COMPILER": "clang-cl",
 				"CMAKE_CXX_COMPILER": "clang-cl",
 				"WINDOWS_CI": "ON"
