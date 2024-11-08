@@ -89,10 +89,7 @@ Frequently tested under <br />
 
 <!-- ❌  -->
 ------------------------------------------------------------
-|          Feature                    |   Implement Status |
-|                                     |   ✔️- completed    |
-|                                     |   🔶- in progress  |
-|                                     |   ❌- not started  |  
+|          Feature                    |   Implement Status |  
 | ------------------------------------| :----------------: |
 | **__Render agnostic__**             |                    |
 | ------------------------------------| :----------------: |
@@ -111,6 +108,10 @@ Frequently tested under <br />
 | Advanced fuzz testing               |         🔶         |
 ------------------------------------------------------------
 
+Legend:
+ - ✔️- completed
+ - 🔶- in progress 
+ - ❌- not started  
 
 ### Built With
 
