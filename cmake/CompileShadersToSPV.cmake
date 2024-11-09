@@ -5,7 +5,9 @@ set(ShaderIncludes
     -I
     ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/common/
     -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/brdf/
+    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/pbr/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/pbr/brdf/
     -I
     ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/hostDevice/
     -I
