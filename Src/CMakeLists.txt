@@ -1,1 +1,2 @@
+add_subdirectory(GraphicsEngineOpenGL)
 add_subdirectory(GraphicsEngineVulkan)
