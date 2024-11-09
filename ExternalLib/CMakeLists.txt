@@ -14,12 +14,21 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
     
+# We will not need to test benchmark lib itself.
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Disable benchmark testing as we don't need it.")
+# We will not need to test benchmark lib itself.
+set(BENCHMARK_INSTALL_DOCS OFF CACHE BOOL "Disable benchmark testing as we don't need it.")
+# We will not need to install benchmark since we link it statically.
+set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "Disable benchmark install to avoid overwriting vendor install.")
+set(BENCHMARK_USE_BUNDLED_GTEST OFF CACHE BOOL "Disable the bundled GTest usage.")
+
 add_subdirectory(GOOGLE_BENCHMARK)
 
 # hotfix for issue: 
 # https://github.com/google/benchmark/pull/1875
 target_compile_options(benchmark INTERFACE -Wno-c++17-attribute-extensions)
 target_compile_options(benchmark_main INTERFACE -Wno-c++17-attribute-extensions)
+
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   message(STATUS "This is a Linux system.")
