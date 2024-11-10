@@ -26,9 +26,9 @@ set(IMGUI_FILTER
 
 # ---- GLAD FILTER  --- BEGIN
 set(EXTERNAL_LIB_GLAD_SRC_DIR ${EXTERNAL_LIB_SRC_DIR}GLAD/)
-set(GLAD_FILTER ${GLAD_FILTER}
+set(GLAD_FILTER
+    ${GLAD_FILTER}
     ${EXTERNAL_LIB_GLAD_SRC_DIR}include/glad/glad.h
     ${EXTERNAL_LIB_GLAD_SRC_DIR}include/KHR/khrplatform.h
-    ${EXTERNAL_LIB_GLAD_SRC_DIR}src/glad.c
-)
+    ${EXTERNAL_LIB_GLAD_SRC_DIR}src/glad.c)
 # ---- GLAD FILTER  --- END
