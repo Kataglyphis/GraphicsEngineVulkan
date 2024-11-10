@@ -14,10 +14,6 @@ include(cmake/SetTestFilters.cmake)
 
 set(PERF_TEST_SUITE perfTestSuite)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 add_executable(
   ${PERF_TEST_SUITE}
   # all test specific files -- start

@@ -223,6 +223,15 @@ I have two tests suites.
 
 2. Commit Test Suite: This gets executed on every push. More expensive tests are allowed :) 
 
+## Static Analyzers
+
+```bash
+clang --analyze --output-format html $(find Src -name '*.cpp' -o -name '*.cc')
+scan-build cmake --build .
+clang-tidy -p=./build/compile_commands.json  $(find Src -name '*.cpp' -o -name '*.cc')
+
+```
+
 # Format cmake files
 
 ```bash

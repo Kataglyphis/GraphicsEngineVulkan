@@ -29,6 +29,7 @@ macro(myproject_setup_options)
 
   if(NOT PROJECT_IS_TOP_LEVEL OR myproject_PACKAGING_MAINTAINER_MODE)
     option(myproject_ENABLE_IPO "Enable IPO/LTO" ON)
+    option(myproject_ENABLE_STATIC_ANALYZER "Enable Static Analyzer" OFF)
     option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
     option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF)
     option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
@@ -43,6 +44,7 @@ macro(myproject_setup_options)
     option(myproject_ENABLE_IWYU "Enable IWYU" ON)
   else()
     option(myproject_ENABLE_IPO "Enable IPO/LTO" ON)
+    option(myproject_ENABLE_STATIC_ANALYZER "Enable Static Analyzer" OFF)
     option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
     option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF) # ${SUPPORTS_ASAN}
     option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
@@ -60,6 +62,7 @@ macro(myproject_setup_options)
   if(NOT PROJECT_IS_TOP_LEVEL)
     mark_as_advanced(
       myproject_ENABLE_IPO
+      myproject_ENABLE_STATIC_ANALYZER 
       myproject_WARNINGS_AS_ERRORS
       myproject_ENABLE_SANITIZER_ADDRESS
       myproject_ENABLE_SANITIZER_LEAK
@@ -116,7 +119,7 @@ macro(myproject_global_options)
     include(cmake/InterproceduralOptimization.cmake)
     myproject_enable_ipo()
   endif()
-
+  
   myproject_supports_sanitizers()
 
   if(myproject_ENABLE_HARDENING AND myproject_ENABLE_GLOBAL_HARDENING)
@@ -230,6 +233,24 @@ macro(myproject_local_options)
 
   include(cmake/Doxygen.cmake)
   enable_doxygen()
+
+  if(myproject_ENABLE_STATIC_ANALYZER )
+    if(MSVC)
+      target_compile_options(${project_name} INTERFACE /analyze)
+      target_link_libraries(${project_name} INTERFACE /analyze)
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+     target_compile_options(myproject_options INTERFACE -fanalyzer)
+     target_link_libraries(myproject_options INTERFACE -fanalyzer)
+      # https://clang.llvm.org/docs/UsersManual.html
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
+    #target_compile_options(myproject_options INTERFACE --analyze)
+      #target_link_libraries(myproject_options INTERFACE --analyze)
+      # https://clang.llvm.org/docs/ClangCommandLineReference.html
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      #target_compile_options(myproject_options INTERFACE --analyze --analyzer-output html)
+      #target_link_libraries(myproject_options INTERFACE --analyze --analyzer-output html)
+    endif()
+  endif()
 
   # include(cmake/Speedup.cmake)
 
