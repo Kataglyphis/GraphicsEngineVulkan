@@ -58,10 +58,12 @@ else()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
 endif()
 
-add_subdirectory(Test/commit)
-add_subdirectory(Test/compile)
-add_subdirectory(Test/perf)
-add_subdirectory(Test/fuzz)
+if(BUILD_TESTING)
+  add_subdirectory(Test/commit)
+  add_subdirectory(Test/compile)
+  add_subdirectory(Test/perf)
+  add_subdirectory(Test/fuzz)
+endif()
 
 # for correct library output needed
 install(
