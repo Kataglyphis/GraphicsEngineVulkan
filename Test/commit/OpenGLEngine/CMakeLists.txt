@@ -14,10 +14,10 @@ include(${PROJECT_SRC_DIR}cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetTestFilters.cmake)
 
-set (COMMIT_TEST_SUITE commitTestSuite)
+set (COMMIT_TEST_SUITE_OPENGL commitTestSuite)
 
 add_executable(
-        ${COMMIT_TEST_SUITE}
+        ${COMMIT_TEST_SUITE_OPENGL}
         # all test specific files -- start
         ${RENDERER_COMMIT_TEST_FILTER}
         # all test specific files -- end
@@ -52,26 +52,26 @@ add_executable(
         $<TARGET_OBJECTS:GLAD>
 )
 
-target_include_directories(${COMMIT_TEST_SUITE}         PUBLIC ${PROJECT_INCLUDE_DIR}Src
-                                                ${PROJECT_INCLUDE_DIR}Src/camera
-                                                ${PROJECT_INCLUDE_DIR}Src/compute
-                                                ${PROJECT_INCLUDE_DIR}Src/renderer
-                                                ${PROJECT_INCLUDE_DIR}Src/renderer/loading_screen
-                                                ${PROJECT_INCLUDE_DIR}Src/renderer/deferred
-                                                ${PROJECT_INCLUDE_DIR}Src/debug
-                                                ${PROJECT_INCLUDE_DIR}Src/window
-                                                ${PROJECT_INCLUDE_DIR}Src/scene
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/atmospheric_effects/clouds
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/light
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/light/directional_light
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/light/point_light
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/shadows
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/sky_box
-                                                ${PROJECT_INCLUDE_DIR}Src/scene/texture
-                                                ${PROJECT_INCLUDE_DIR}Src/gui
-                                                ${PROJECT_INCLUDE_DIR}Src/util
+target_include_directories(${COMMIT_TEST_SUITE}         PUBLIC ${PROJECT_INCLUDE_DIR}
+                                                ${PROJECT_INCLUDE_DIR}camera
+                                                ${PROJECT_INCLUDE_DIR}compute
+                                                ${PROJECT_INCLUDE_DIR}renderer
+                                                ${PROJECT_INCLUDE_DIR}renderer/loading_screen
+                                                ${PROJECT_INCLUDE_DIR}renderer/deferred
+                                                ${PROJECT_INCLUDE_DIR}debug
+                                                ${PROJECT_INCLUDE_DIR}window
+                                                ${PROJECT_INCLUDE_DIR}scene
+                                                ${PROJECT_INCLUDE_DIR}scene/atmospheric_effects/clouds
+                                                ${PROJECT_INCLUDE_DIR}scene/light
+                                                ${PROJECT_INCLUDE_DIR}scene/light/directional_light
+                                                ${PROJECT_INCLUDE_DIR}scene/light/point_light
+                                                ${PROJECT_INCLUDE_DIR}scene/shadows
+                                                ${PROJECT_INCLUDE_DIR}scene/sky_box
+                                                ${PROJECT_INCLUDE_DIR}scene/texture
+                                                ${PROJECT_INCLUDE_DIR}gui
+                                                ${PROJECT_INCLUDE_DIR}util
                                                 ${PROJECT_INCLUDE_DIR}Resources/Shaders/hostDevice
-                                                        ${OPENGL_INCLUDE_DIRS})
+                                                ${OPENGL_INCLUDE_DIRS})
 
 target_include_directories(${COMMIT_TEST_SUITE} PRIVATE ${OPENGL_INCLUDE_DIRS})
 
@@ -79,6 +79,7 @@ target_link_libraries(${COMMIT_TEST_SUITE}      PUBLIC  gtest_main
                                                         ${CMAKE_DL_LIBS} # for imgui
                                                         Threads::Threads
                                                         ${OPENGL_LIBRARIES}
+                                                        Vulkan::Vulkan
                                                         glfw
                                                         imgui
                                                         stb 

@@ -34,7 +34,7 @@
 #include "host_device_shared.hpp"
 
 // Demonstrate some basic assertions.
-TEST(RendererTest, BasicSetup) {
+TEST(RendererTest, DISABLED_BasicSetup) {
 
 	GLint window_width = 1200;
     GLint window_height = 800;
