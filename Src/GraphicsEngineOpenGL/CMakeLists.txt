@@ -69,7 +69,7 @@ target_include_directories(
          ${PROJECT_INCLUDE_DIR}util
          ${SHADER_SRC_DIR}hostDevice)
 
-target_include_directories(${OpenGlEnigneTargetName} PRIVATE ${OPENGL_INCLUDE_DIRS})
+target_include_directories(${OpenGlEnigneTargetName} PRIVATE ${OPENGL_INCLUDE_DIRS} ${Vulkan_INCLUDE_DIRS})
 
 target_link_libraries(
   ${OpenGlEnigneTargetName}
@@ -77,6 +77,7 @@ target_link_libraries(
          ${CMAKE_DL_LIBS}
          Threads::Threads
          ${OPENGL_LIBRARIES}
+         Vulkan::Vulkan
          glfw
          imgui
          stb
