@@ -7,7 +7,8 @@
 namespace ShaderIncludes {
 
 std::vector<std::string> shaderIncludeRelativeResourcesPaths = {
-    "Shaders/brdf/",
+    "Shaders/pbr/",
+    "Shaders/pbr/brdf/",
     "Shaders/common/",
     "Shaders/hostDevice/",
     "renderer/",

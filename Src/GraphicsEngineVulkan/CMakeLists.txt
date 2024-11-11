@@ -4,10 +4,10 @@ set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../include/)
 set(EXTERNAL_LIB_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}../../ExternalLib/)
 set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Resources/Shaders/)
 
-include(../../cmake/filters/SetShaderFilters.cmake)
-include(../../cmake/filters/SetProjectFilters.cmake)
-include(../../cmake/filters/SetExternalLibsFilters.cmake)
-include(../../cmake/SetSourceGroups.cmake)
+include(cmake/filters/SetShaderFilters.cmake)
+include(cmake/filters/SetProjectFilters.cmake)
+include(cmake/SetSourceGroups.cmake)
+include(cmake/filters/SetExternalLibsFilters.cmake)
 
 # add the executable
 add_executable(
@@ -17,6 +17,7 @@ add_executable(
   ${COMMON_SHADER_FILTER}
   ${POST_SHADER_FILTER}
   ${BRDF_SHADER_FILTER}
+  ${PBR_SHADER_FILTER}
   ${PATH_TRACING_SHADER_FILTER}
   ${RENDERER_FILTER}
   ${PC_FILTER}
