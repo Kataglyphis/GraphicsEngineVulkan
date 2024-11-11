@@ -29,7 +29,7 @@ TEST(HelloTestCommit, BasicAssertions)
     EXPECT_EQ(7 * 6, 42);
 }
 
-// TEST(SetUp, DISABLED_blob)
+// TEST(Integration, DISABLED_VulkanEngine)
 // {
 //   EXPECT_EQ(7 * 6, 42);
 // 	int window_width = 1200;
