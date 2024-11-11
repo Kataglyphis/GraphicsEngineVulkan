@@ -11,9 +11,10 @@
   <a href="https://jonasheinle.de"><img src="images/vulkan-logo.png" alt="VulkanEngine" width="200"></a>
   <a href="https://jonasheinle.de"><img src="images/Engine_logo.png" alt="VulkanEngine" width="200"></a>
   <a href="https://jonasheinle.de"><img src="images/glm_logo.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jonasheinle.de"><img src="images/Opengl-logo.png" alt="OpenGLEngine" width="200"></a>
 </h1>
 
-<h4 align="center">A graphics engine built on top of Vulkan <a href="https://jonasheinle.de" target="_blank"></a>.</h4>
+<h4 align="center">A graphics engine built on top of Vulkan+OpenGL <a href="https://jonasheinle.de" target="_blank"></a>.</h4>
 
 [![Linux build + tests + code coverage](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Linux.yml)
 [![Windows build](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml/badge.svg)](https://github.com/Kataglyphis/GraphicsEngineVulkan/actions/workflows/Windows.yml)
@@ -69,9 +70,18 @@
 
 <h1 align="center">
   <br>
-  <a href="https://jonasheinle.de"><img src="images/Screenshot1.png" alt="VulkanEngine" width="400"></a>
-  <a href="https://jonasheinle.de"><img src="images/Screenshot2.png" alt="VulkanEngine" width="400"></a>
-  <a href="https://jonasheinle.de"><img src="images/Screenshot3.png" alt="VulkanEngine" width="700"></a>
+  <a href="https://jonasheinle.de"><img src="images/VulkanEngine/Screenshot1.png" alt="VulkanEngine" width="400"></a>
+  <a href="https://jonasheinle.de"><img src="images/VulkanEngine/Screenshot2.png" alt="VulkanEngine" width="400"></a>
+  <a href="https://jonasheinle.de"><img src="images/VulkanEngine/Screenshot3.png" alt="VulkanEngine" width="700"></a>
+</h1>
+
+<h1 align="center">
+  <br>
+  <a href="https://jonasheinle.de"><img src="images/OpenGLEngine/Screenshot1.png" alt="VulkanEngine" width="600"></a>
+  <a href="https://jonasheinle.de"><img src="images/OpenGLEngine/Screenshot2.png" alt="VulkanEngine" width="600"></a>
+  <br>
+  <a href="https://jonasheinle.de"><img src="images/OpenGLEngine/Screenshot3.png" alt="VulkanEngine" width="200"></a>
+  <a href="https://jonasheinle.de"><img src="images/OpenGLEngine/Screenshot4.png" alt="VulkanEngine" width="200"></a>
 </h1>
 
 <!-- [![Kataglyphis Engine][product-screenshot1]](https://jotrockenmitlocken.de)
@@ -90,19 +100,33 @@ Frequently tested under <br />
 <div align="center">
 
 
-|            Category           |           Feature                      |  Implement Status  |
-|-------------------------------|----------------------------------------|:------------------:|
-|      **Render agnostic**      | Rasterizer                             |         ✔️          |
-|                               | Raytracing                             |         ✔️          |
-|                               | Path tracing                           |         ✔️          |
-|                               | PBR support (UE4, Disney, etc.)        |         ✔️          |
-|                               | .obj Model loading                     |         ✔️          |
-|                               | Mip Mapping                            |         ✔️          |
-|                               |                                        |                    |
-|      **C++/CMake agnostic**   | Code coverage for Clang                |         ✔️          |
-|                               | Advanced unit testing                  |         🔶         |
-|                               | Advanced performance testing           |         🔶         |
-|                               | Advanced fuzz testing                  |         🔶         |
+|            Category           |           Feature                             |  Implement Status  |
+|-------------------------------|-----------------------------------------------|:------------------:|
+|  **Vulkan Render agnostic**   | Rasterizer                                    |         ✔️         |
+|                               | Raytracing                                    |         ✔️         |
+|                               | Path tracing                                  |         ✔️         |
+|                               | PBR support (UE4, Disney, etc.)               |         ✔️         |
+|                               | .obj Model loading                            |         ✔️         |
+|                               | Mip Mapping                                   |         ✔️         |
+|  **OpenGL Render agnostic**   |                                               |                   |
+|                               | Directional Lights                            |         ✔️         |
+|                               | Point Lights                                  |         ✔️         |
+|                               | Spot Lights                                   |         ✔️         |
+|                               | Directional Shadow Mapping                    |         ✔️         |
+|                               | Omni-Directional Shadow Mapping               |         ✔️         |
+|                               | Cascaded Shadow Mapping                       |         ✔️         |
+|                               | Cloud system                                  |         ✔️         |
+|                               | 3D-worley noise generation                    |         ✔️         |
+|                               | .obj Model loading                            |         ✔️         |
+|                               | PBR support (UE4,disney,phong, etc.)          |         ✔️         |
+|                               | Support for `#include` directives in shaders. |         ✔️         |
+|                               | Sky box                                       |         ✔️         |
+|                               | Supporting compute shader                     |         ✔️         |
+|                               | On the fly 3D worley/perlin noise creation    |         ✔️         |
+|      **C++/CMake agnostic**   | Code coverage for Clang                       |         ✔️         |
+|                               | Advanced unit testing                         |         🔶        |
+|                               | Advanced performance testing                  |         🔶        |
+|                               | Advanced fuzz testing                         |         🔶        |
 
 </div>
 
@@ -116,6 +140,8 @@ Frequently tested under <br />
 ### Built With
 
 * [Vulkan 1.3](https://www.vulkan.org/)
+* [OpenGL 4.6](https://www.opengl.org//)
+* [GLAD](https://glad.dav1d.de/)
 * [glm](https://github.com/g-truc/glm)
 * [glfw](https://www.glfw.org/)
 * [tinyobjloader](https://github.com/tinyobjloader/tinyobjloader)
@@ -197,6 +223,15 @@ I have two tests suites.
 
 2. Commit Test Suite: This gets executed on every push. More expensive tests are allowed :) 
 
+## Static Analyzers
+
+```bash
+clang --analyze --output-format html $(find Src -name '*.cpp' -o -name '*.cc')
+scan-build cmake --build .
+clang-tidy -p=./build/compile_commands.json  $(find Src -name '*.cpp' -o -name '*.cc')
+
+```
+
 # Format cmake files
 
 ```bash
@@ -251,14 +286,38 @@ But here in general some good sources of information:
 
 Thanks for free 3D Models: 
 * [Morgan McGuire, Computer Graphics Archive, July 2017 (https://casual-effects.com/data)](http://casual-effects.com/data/)
+
 * [Viking room](https://sketchfab.com/3d-models/viking-room-a49f1b8e4f5c4ecf9e1fe7d81915ad38)
+
+* [Loading Screen Image](https://www.golem.de/news/raumfahrt-spacex-macht-sicherheitstest-bei-hoechster-belastung-2001-146124.html)
+
 
 ## Literature 
 
 Some very helpful literature, tutorials, etc. 
 
+* [View Frustum Culling](http://www.lighthouse3d.com/tutorials/view-frustum-culling/geometric-approach-extracting-the-planes/)
+
 CMake/C++
 * [Cpp best practices](https://github.com/cpp-best-practices/cppbestpractices)
+
+OpenGL 
+* [learnopengl.com](https://learnopengl.com/)
+* [ogldev.org](https://ogldev.org/)
+* [Cascaded Shadow Maps](https://ahbejarano.gitbook.io/lwjglgamedev/chapter26)
+* [Compute Shader in OpenGL](https://antongerdelan.net/opengl/compute.html)
+
+Clouds
+* [pbr-book](https://www.pbr-book.org/)
+* [Inigo Quilez](https://iquilezles.org)
+* [Shadertoy Horizon Zero Dawn](https://www.shadertoy.com/view/WddSDr)
+* [Sebastian Lague](https://m.youtube.com/watch?v=4QOcCGI6xOU&t=97s)
+* [Horizon Zero Dawn](http://advances.realtimerendering.com/s2015/The%20Real-time%20Volumetric%20Cloudscapes%20of%20Horizon%20-%20Zero%20Dawn%20-%20ARTR.pdf)
+* [Clouds and noise](https://thebookofshaders.com/12/)
+* [Shadertoy Clouds using 3D Perlin noise](https://www.shadertoy.com/view/XlKyRw)
+
+Noise
+* [Worley noise online demo](https://github.com/Erkaman/glsl-worley)
 
 Vulkan
 * [Udemy course by Ben Cook](https://www.udemy.com/share/102M903@JMHgpMsdMW336k2s5Ftz9FMx769wYAEQ7p6GMAPBsFuVUbWRgq7k2uY6qBCG6UWNPQ==/)

@@ -6,17 +6,13 @@ set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
 set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
 set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
-include(${WORKING_DIRECTORY}cmake/filters/SetShaderFilters.cmake)
-include(${WORKING_DIRECTORY}cmake/filters/SetProjectFilters.cmake)
-include(${WORKING_DIRECTORY}cmake/filters/SetExternalLibsFilters.cmake)
+include(${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/cmake/filters/SetShaderFilters.cmake)
+include(${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/cmake/filters/SetProjectFilters.cmake)
+include(${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetTestFilters.cmake)
 
 set(PERF_TEST_SUITE perfTestSuite)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(
   ${PERF_TEST_SUITE}
@@ -28,6 +24,7 @@ add_executable(
   ${COMMON_SHADER_FILTER}
   ${POST_SHADER_FILTER}
   ${BRDF_SHADER_FILTER}
+  ${PBR_SHADER_FILTER}
   ${PATH_TRACING_SHADER_FILTER}
   ${RENDERER_FILTER}
   ${PC_FILTER}
