@@ -3,8 +3,8 @@
 set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../../)
 
 # update current positions
-set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineOpenGL)
-set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineOpenGL)
+set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineOpenGL/)
+set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineOpenGL/)
 set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
 set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
@@ -14,7 +14,7 @@ include(${PROJECT_SRC_DIR}cmake/filters/SetExternalLibsFilters.cmake)
 
 include(cmake/SetTestFilters.cmake)
 
-set (COMMIT_TEST_SUITE_OPENGL commitTestSuite)
+set (COMMIT_TEST_SUITE_OPENGL commitTestSuiteOpenGL)
 
 add_executable(
         ${COMMIT_TEST_SUITE_OPENGL}
@@ -52,7 +52,7 @@ add_executable(
         $<TARGET_OBJECTS:GLAD>
 )
 
-target_include_directories(${COMMIT_TEST_SUITE}         PUBLIC ${PROJECT_INCLUDE_DIR}
+target_include_directories(${COMMIT_TEST_SUITE_OPENGL}         PUBLIC ${PROJECT_INCLUDE_DIR}
                                                 ${PROJECT_INCLUDE_DIR}camera
                                                 ${PROJECT_INCLUDE_DIR}compute
                                                 ${PROJECT_INCLUDE_DIR}renderer
@@ -71,11 +71,12 @@ target_include_directories(${COMMIT_TEST_SUITE}         PUBLIC ${PROJECT_INCLUDE
                                                 ${PROJECT_INCLUDE_DIR}gui
                                                 ${PROJECT_INCLUDE_DIR}util
                                                 ${PROJECT_INCLUDE_DIR}Resources/Shaders/hostDevice
-                                                ${OPENGL_INCLUDE_DIRS})
+                                                ${OPENGL_INCLUDE_DIRS}
+                                                ${SHADER_SRC_DIR}hostDevice)
 
-target_include_directories(${COMMIT_TEST_SUITE} PRIVATE ${OPENGL_INCLUDE_DIRS})
+target_include_directories(${COMMIT_TEST_SUITE_OPENGL} PRIVATE ${OPENGL_INCLUDE_DIRS} ${Vulkan_INCLUDE_DIRS})
 
-target_link_libraries(${COMMIT_TEST_SUITE}      PUBLIC  gtest_main
+target_link_libraries(${COMMIT_TEST_SUITE_OPENGL}      PUBLIC  gtest_main
                                                         ${CMAKE_DL_LIBS} # for imgui
                                                         Threads::Threads
                                                         ${OPENGL_LIBRARIES}
@@ -87,16 +88,16 @@ target_link_libraries(${COMMIT_TEST_SUITE}      PUBLIC  gtest_main
                                                         tinyobjloader
                                                         glad)
 
-target_link_libraries(${COMMIT_TEST_SUITE}   PRIVATE GSL)
+target_link_libraries(${COMMIT_TEST_SUITE_OPENGL}   PRIVATE GSL)
 
-gtest_discover_tests(   ${COMMIT_TEST_SUITE}
+gtest_discover_tests(   ${COMMIT_TEST_SUITE_OPENGL}
                         DISCOVERY_TIMEOUT 300)
 
 # disable all warnings for our test suite
 if(MSVC)
-  target_compile_options(${COMMIT_TEST_SUITE}  INTERFACE /w)
+  target_compile_options(${COMMIT_TEST_SUITE_OPENGL}  INTERFACE /w)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  target_compile_options(${COMMIT_TEST_SUITE}  INTERFACE -w)
+  target_compile_options(${COMMIT_TEST_SUITE_OPENGL}  INTERFACE -w)
 else()
-  target_compile_options(${COMMIT_TEST_SUITE}  INTERFACE -w)
+  target_compile_options(${COMMIT_TEST_SUITE_OPENGL }  INTERFACE -w)
 endif()

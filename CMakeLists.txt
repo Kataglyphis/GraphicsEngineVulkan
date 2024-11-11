@@ -58,11 +58,16 @@ else()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
 endif()
 
+include(CTest)
+
 if(BUILD_TESTING)
+  message(STATUS "Tests are enabled.!")
   add_subdirectory(Test/commit)
   add_subdirectory(Test/compile)
   add_subdirectory(Test/perf)
   add_subdirectory(Test/fuzz)
+else()
+  message(STATUS "Tests are disabled.!")
 endif()
 
 # for correct library output needed
