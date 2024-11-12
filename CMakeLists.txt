@@ -52,13 +52,12 @@ foreach(Shader ${PATH_TRACING_SHADER_FILTER})
 endforeach()
 
 if(NOT WINDOWS_CI)
+  include(CTest)
   enable_testing()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
 else()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
 endif()
-
-include(CTest)
 
 if(BUILD_TESTING)
   message(STATUS "Tests are enabled.!")

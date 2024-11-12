@@ -100,7 +100,6 @@ target_include_directories(glad     SYSTEM
 # https://stackoverflow.com/questions/49591804/clang-tidy-cmake-exclude-file-from-check/49591908#49591908
 # with this trick IMGUI will be excluded from time consuming static code analysis
 # we do not want to analyze imgui ...
-# include(cmake/CreateProjectFilesToTestLib.cmake)
 # and we will not to all this for our testing executable again :)
 add_library(
     IMGUI
