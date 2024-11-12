@@ -91,12 +91,12 @@ jobs:
           llvm-profdata merge -sparse ${{github.workspace}}/build/Test/compile/default.profraw -o ${{github.workspace}}/build/compileTestSuite.profdata
           llvm-cov report ${{github.workspace}}/build/compileTestSuite -instr-profile=${{github.workspace}}/build/compileTestSuite.profdata
           llvm-cov export ${{github.workspace}}/build/compileTestSuite -format=text -instr-profile=${{github.workspace}}/build/compileTestSuite.profdata > ${{github.workspace}}/build/coverage.json
-      - name: Run profiling
-        run: |
-          cd build
-          LLVM_PROFILE_FILE="${{github.workspace}}/build/engine.profraw" ./GraphicsEngine
-          llvm-profdata merge -sparse ${{github.workspace}}/build/engine.profraw -o ${{github.workspace}}/build/engine.profdata
-          llvm-cov show ./GraphicsEngine -instr-profile=${{github.workspace}}/build/engine.profdata -format=text
+      # - name: Run profiling
+      #   run: |
+      #     cd build
+      #     LLVM_PROFILE_FILE="${{github.workspace}}/build/engine.profraw" ./GraphicsEngine
+      #     llvm-profdata merge -sparse ${{github.workspace}}/build/engine.profraw -o ${{github.workspace}}/build/engine.profdata
+      #     llvm-cov show ./GraphicsEngine -instr-profile=${{github.workspace}}/build/engine.profdata -format=text
 
       - name: Codecov
         uses: codecov/codecov-action@v4.6.0
