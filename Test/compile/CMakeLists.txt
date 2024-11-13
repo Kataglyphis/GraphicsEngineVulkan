@@ -4,7 +4,7 @@ set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
 set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
-set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
+set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
 set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
 set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
@@ -101,12 +101,12 @@ add_custom_target(
           ${CMAKE_BINARY_DIR}/Test/Resources
   COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/
           ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/
-          ${CMAKE_BINARY_DIR}/Test/include/renderer
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants
-          ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/scene/
-          ${CMAKE_BINARY_DIR}/Test/include/scene)
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer
+          ${CMAKE_BINARY_DIR}/Test/Src/GraphicsEngineVulkan/renderer
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/pushConstants
+          ${CMAKE_BINARY_DIR}/Test//Src/GraphicsEngineVulkan/pushConstants
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Src/GraphicsEngineVulkan/scene/
+          ${CMAKE_BINARY_DIR}/Test/Src/GraphicsEngineVulkan/scene)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")
