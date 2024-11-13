@@ -10,7 +10,7 @@
 #define OPENGL_VERSION_MINOR "6"
 
 // change this path when installing
-//  "C:/Users/JSH/Documents/GitHub/GraphicsEngineVulkan/Resources/"
+//  "/home/jones/GraphicsEngineVulkan/Resources/"
 #define RELATIVE_RESOURCE_PATH "/../Resources/"
 
 #endif
