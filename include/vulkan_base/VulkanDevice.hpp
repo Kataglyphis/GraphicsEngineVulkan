@@ -20,6 +20,7 @@ class VulkanDevice
     VkQueue getComputeQueue() const { return compute_queue; };
     VkQueue getPresentationQueue() const { return presentation_queue; };
     SwapChainDetails getSwapchainDetails();
+    bool supportsHardwareAcceleratedRRT() { return deviceSupportsHardwareAcceleratedRRT; };
 
     void cleanUp();
 
@@ -38,6 +39,7 @@ class VulkanDevice
     VkQueue graphics_queue;
     VkQueue presentation_queue;
     VkQueue compute_queue;
+    bool deviceSupportsHardwareAcceleratedRRT = true;
 
     void get_physical_device();
     void create_logical_device();
@@ -74,4 +76,5 @@ class VulkanDevice
         VK_KHR_RAY_QUERY_EXTENSION_NAME
 
     };
+
 };
