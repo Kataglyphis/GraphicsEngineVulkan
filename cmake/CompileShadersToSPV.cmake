@@ -11,11 +11,11 @@ set(ShaderIncludes
     -I
     ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/hostDevice/
     -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/
     -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/pushConstants/
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/pushConstants/
     -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/scene/)
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/scene/)
 
 function(add_shader TARGET SHADER)
   find_program(GLSLC glslc)

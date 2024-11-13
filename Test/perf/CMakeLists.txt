@@ -2,7 +2,7 @@ set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
 set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
-set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
+set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
 set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
 set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 

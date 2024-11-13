@@ -82,7 +82,7 @@ install(DIRECTORY ExternalLib/IMGUI/misc/fonts/ DESTINATION ExternalLib/IMGUI/mi
 
 # we are using this dir strings for removing hard coded file locations
 # at c++ side
-configure_file(VulkanRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/VulkanRendererConfig.hpp")
+configure_file(VulkanRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/VulkanRendererConfig.hpp")
 configure_file(OpenGLRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineOpenGL/renderer/OpenGLRendererConfig.hpp")
 
 include(InstallRequiredSystemLibraries)
