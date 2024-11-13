@@ -84,24 +84,33 @@ VulkanRenderer::VulkanRenderer(Window *window, Scene *scene, GUI *gui, Camera *c
 
         updatePostDescriptorSets();
 
-        createRaytracingDescriptorPool();
-        createRaytracingDescriptorSetLayouts();
         std::vector<VkDescriptorSetLayout> layouts;
         layouts.push_back(sharedRenderDescriptorSetLayout);
-        layouts.push_back(raytracingDescriptorSetLayout);
-        raytracingStage.init(device.get(), layouts);
-        pathTracing.init(device.get(), layouts);
+        if(device->supportsHardwareAcceleratedRRT()) {
+            createRaytracingDescriptorPool();
+            createRaytracingDescriptorSetLayouts();
+            layouts.push_back(raytracingDescriptorSetLayout);
+            raytracingStage.init(device.get(), layouts);
+            pathTracing.init(device.get(), layouts);
+        }
 
         scene->loadModel(device.get(), graphics_command_pool);
         updateTexturesInSharedRenderDescriptorSet();
 
-        asManager.createASForScene(device.get(), graphics_command_pool, scene);
+        if(device->supportsHardwareAcceleratedRRT()) {
+            asManager.createASForScene(device.get(), graphics_command_pool, scene);
+        }
+
         create_object_description_buffer();
-        createRaytracingDescriptorSets();
-        updateRaytracingDescriptorSets();
+
+        if(device->supportsHardwareAcceleratedRRT()) {
+            createRaytracingDescriptorSets();
+            updateRaytracingDescriptorSets();
+        }
 
         gui->initializeVulkanContext(
           device.get(), instance.getVulkanInstance(), postStage.getRenderPass(), graphics_command_pool);
+        gui->setUserSelectionForRRT(device->supportsHardwareAcceleratedRRT());
 
     } catch (const std::runtime_error &e) {
         printf("ERROR: %s\n", e.what());
@@ -1102,8 +1111,9 @@ bool VulkanRenderer::checkChangedFramebufferSize()
         current_frame = 0;
 
         updatePostDescriptorSets();
-        updateRaytracingDescriptorSets();
-
+        if(device->supportsHardwareAcceleratedRRT()) {
+            updateRaytracingDescriptorSets();
+        }
         window->reset_framebuffer_has_changed();
 
         return true;

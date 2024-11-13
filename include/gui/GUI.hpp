@@ -25,6 +25,8 @@ class GUI
     GUISceneSharedVars getGuiSceneSharedVars() { return guiSceneSharedVars; };
     GUIRendererSharedVars &getGuiRendererSharedVars() { return guiRendererSharedVars; };
 
+    void setUserSelectionForRRT(bool rrtCapabilitiesAvailable);
+
     void render();
 
     void cleanUp();
@@ -43,4 +45,6 @@ class GUI
 
     GUISceneSharedVars guiSceneSharedVars;
     GUIRendererSharedVars guiRendererSharedVars;
+
+    bool renderUserSelectionForRRT = true;
 };
