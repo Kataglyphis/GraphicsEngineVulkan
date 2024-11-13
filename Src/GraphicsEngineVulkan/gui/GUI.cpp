@@ -25,6 +25,10 @@ void GUI::initializeVulkanContext(VulkanDevice *device,
     create_fonts_and_upload(graphics_command_pool);
 }
 
+void GUI::setUserSelectionForRRT(bool rrtCapabilitiesAvailable) {
+    renderUserSelectionForRRT = rrtCapabilitiesAvailable;
+}
+
 void GUI::render()
 {
     // Start the Dear ImGui frame
@@ -46,9 +50,11 @@ void GUI::render()
     static int e = 0;
     ImGui::RadioButton("Rasterizer", &e, 0);
     ImGui::SameLine();
-    ImGui::RadioButton("Raytracing", &e, 1);
-    ImGui::SameLine();
-    ImGui::RadioButton("Path tracing", &e, 2);
+    if(renderUserSelectionForRRT) {
+        ImGui::RadioButton("Raytracing", &e, 1);
+        ImGui::SameLine();
+        ImGui::RadioButton("Path tracing", &e, 2);
+    }
 
     switch (e) {
     case 0:
