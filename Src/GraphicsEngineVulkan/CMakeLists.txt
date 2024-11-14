@@ -9,6 +9,10 @@ include(cmake/filters/SetProjectFilters.cmake)
 include(cmake/SetSourceGroups.cmake)
 include(cmake/filters/SetExternalLibsFilters.cmake)
 
+file(GLOB_RECURSE VULKANRENDERER_SOURCES
+    "*.hpp"
+    "*.cpp")
+
 # add the executable
 add_executable(
   ${PROJECT_NAME}
@@ -19,21 +23,18 @@ add_executable(
   ${BRDF_SHADER_FILTER}
   ${PBR_SHADER_FILTER}
   ${PATH_TRACING_SHADER_FILTER}
-  ${RENDERER_FILTER}
-  ${PC_FILTER}
-  ${AS_FILTER}
-  ${SCENE_FILTER}
-  ${WINDOW_FILTER}
-  ${MEMORY_FILTER}
-  ${COMMON_FILTER}
-  ${APP_FILTER}
-  ${GUI_FILTER}
-  ${UTIL_FILTER}
-  ${VULKAN_BASE_FILTER}
-  ${MAIN_FILTER}
-  ${SHADER_HOST_DEVICE_FILTER}
+  ${VULKANRENDERER_SOURCES}
   # this is great; no CPPCHECK,CLANG_TIDY here
   $<TARGET_OBJECTS:IMGUI>)
+
+# # Recursively gather all include directories under PROJECT_INCLUDE_DIR
+# file(GLOB_RECURSE PROJECT_INCLUDE_DIRS ${PROJECT_INCLUDE_DIR}/*)
+
+# # Set include directories recursively for the target
+# target_include_directories(
+#   ${PROJECT_NAME}
+#   PUBLIC ${PROJECT_INCLUDE_DIR} ${PROJECT_INCLUDE_DIRS}
+# )
 
 target_include_directories(
   ${PROJECT_NAME}

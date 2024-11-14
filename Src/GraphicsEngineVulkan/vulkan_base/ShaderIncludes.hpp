@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include "spdlog/spdlog.h"
 
 namespace ShaderIncludes {
 
@@ -11,8 +12,6 @@ std::vector<std::string> shaderIncludeRelativeResourcesPaths = {
     "Shaders/pbr/brdf/",
     "Shaders/common/",
     "Shaders/hostDevice/",
-    "renderer/",
-    "renderer/pushConstants/",
 };
 
 std::vector<std::string> shaderIncludeRelativeIncludePaths = { "renderer/", "renderer/pushConstants/", "scene/" };
@@ -34,6 +33,8 @@ std::string getShaderIncludes()
         shaderIncludes << RELATIVE_INCLUDE_PATH;
         shaderIncludes << shaderIncludeRelativeIncludePaths[i];
     }
+
+    spdlog::info("The shader includes are the following: {}", shaderIncludes.str());
 
     return shaderIncludes.str();
 }

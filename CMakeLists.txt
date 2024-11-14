@@ -28,7 +28,10 @@ myproject_local_options()
 
 include(cmake/SystemLibDependencies.cmake)
 include(Src/GraphicsEngineVulkan/cmake/filters/SetExternalLibsFilters.cmake)
+set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/)
+include(Src/GraphicsEngineVulkan/cmake/filters/SetShaderFilters.cmake)
 add_subdirectory(ExternalLib)
+
 
 add_subdirectory(Src)
 
@@ -52,7 +55,7 @@ foreach(Shader ${PATH_TRACING_SHADER_FILTER})
 endforeach()
 
 if(NOT WINDOWS_CI)
-  include(CTest)
+include(CTest)
   enable_testing()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
 else()
