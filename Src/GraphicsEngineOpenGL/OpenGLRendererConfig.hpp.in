@@ -9,8 +9,4 @@
 #define OPENGL_VERSION_MAJOR "@OPENGL_VERSION_MAJOR@"
 #define OPENGL_VERSION_MINOR "@OPENGL_VERSION_MINOR@"
 
-// change this path when installing
-//  "${CMAKE_CURRENT_SOURCE_DIR}/Resources/"
-#define RELATIVE_RESOURCE_PATH "/../Resources/"
-
 #endif
