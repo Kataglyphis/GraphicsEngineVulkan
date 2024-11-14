@@ -2,7 +2,7 @@
   <br>
   <a href="https://jonasheinle.de"><img src="images/logo.png" alt="VulkanEngine" width="200"></a>
   <br>
-  Cataglyphis Renderer 
+  Kataglyphis Renderer 
   <br>
 </h1>
 
