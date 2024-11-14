@@ -21,6 +21,7 @@ function(add_shader TARGET SHADER)
   find_program(GLSLC glslc)
 
   set(current-shader-path ${SHADER}) #${CMAKE_CURRENT_SOURCE_DIR}/
+  message("Current shader path is: ${SHADER}")
   get_filename_component(a_dir "${current-shader-path}" PATH)
   get_filename_component(a_last_dir "${current-shader-path}" NAME)
 

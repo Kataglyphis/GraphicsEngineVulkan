@@ -90,10 +90,10 @@ add_custom_target(
           ${CMAKE_BINARY_DIR}/Test/Resources
   COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/
           ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/
-          ${CMAKE_BINARY_DIR}/Test/include/renderer
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants
-          ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/
+          ${CMAKE_BINARY_DIR}/Test//Src/GraphicsEngineVulkan/renderer
+  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}//Src/GraphicsEngineVulkan/renderer/pushConstants
+          ${CMAKE_BINARY_DIR}/Test//Src/GraphicsEngineVulkan/renderer/pushConstants
   COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/scene/
           ${CMAKE_BINARY_DIR}/Test/include/scene)
 
