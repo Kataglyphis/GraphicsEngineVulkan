@@ -48,12 +48,21 @@ string(REPLACE ";" " " ShaderIncludesString "${ShaderIncludes}")
 
 message("The shader include string is the following: ${ShaderIncludesString}")
 
+if(NOT MSVC)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     RELATIVE_RESOURCE_PATH="/../Resources/"
     RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
     RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
     ShaderIncludesString="${ShaderIncludesString}"
 )
+else()
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    RELATIVE_RESOURCE_PATH="/../../Resources/"
+    RELATIVE_INCLUDE_PATH="/../../Src/GraphicsEngineVulkan/"
+    RELATIVE_IMGUI_FONTS_PATH="/../../ExternalLib/IMGUI/misc/fonts/"
+    ShaderIncludesString="${ShaderIncludesString}"
+)
+endif()
 
 configure_file(VulkanRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/renderer/VulkanRendererConfig.hpp")
 

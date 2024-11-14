@@ -2,7 +2,9 @@ include(FetchContent)
 
 # hotfix for issue: 
 # https://github.com/google/benchmark/pull/1875
-add_compile_options(-Wno-c++17-attribute-extensions)
+if(NOT WIN32)
+  add_compile_options(-Wno-c++17-attribute-extensions)
+endif()
 
 # include google test to project
 FetchContent_Declare(
@@ -24,11 +26,12 @@ set(BENCHMARK_USE_BUNDLED_GTEST OFF CACHE BOOL "Disable the bundled GTest usage.
 
 add_subdirectory(GOOGLE_BENCHMARK)
 
+if(NOT WIN32)
 # hotfix for issue: 
 # https://github.com/google/benchmark/pull/1875
 target_compile_options(benchmark INTERFACE -Wno-c++17-attribute-extensions)
 target_compile_options(benchmark_main INTERFACE -Wno-c++17-attribute-extensions)
-
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   message(STATUS "This is a Linux system.")
