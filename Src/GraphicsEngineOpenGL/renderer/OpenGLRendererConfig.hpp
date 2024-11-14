@@ -9,8 +9,4 @@
 #define OPENGL_VERSION_MAJOR "4"
 #define OPENGL_VERSION_MINOR "6"
 
-// change this path when installing
-//  "/home/jones/GraphicsEngineVulkan/Resources/"
-#define RELATIVE_RESOURCE_PATH "/../Resources/"
-
 #endif

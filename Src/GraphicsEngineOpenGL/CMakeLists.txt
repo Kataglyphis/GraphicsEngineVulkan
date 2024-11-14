@@ -47,6 +47,13 @@ add_executable(
   ${COMMON_FILTER}
   ${APP_FILTER})
 
+target_compile_definitions(${OpenGlEnigneTargetName} PRIVATE
+    RELATIVE_RESOURCE_PATH="/../Resources/"
+)
+# we are using this dir strings for removing hard coded file locations
+# at c++ side
+configure_file(OpenGLRendererConfig.hpp.in "renderer/OpenGLRendererConfig.hpp")
+
 target_include_directories(
   ${OpenGlEnigneTargetName}
   PUBLIC ${PROJECT_INCLUDE_DIR}

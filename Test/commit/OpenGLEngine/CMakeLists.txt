@@ -52,6 +52,13 @@ add_executable(
         $<TARGET_OBJECTS:GLAD>
 )
 
+target_compile_definitions(${COMMIT_TEST_SUITE_OPENGL} PRIVATE
+    RELATIVE_RESOURCE_PATH="/../Resources/"
+)
+# we are using this dir strings for removing hard coded file locations
+# at c++ side
+configure_file(${PROJECT_SRC_DIR}/OpenGLRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/OpenGLRendererConfig.hpp")
+
 target_include_directories(${COMMIT_TEST_SUITE_OPENGL}         PUBLIC ${PROJECT_INCLUDE_DIR}
                                                 ${PROJECT_INCLUDE_DIR}camera
                                                 ${PROJECT_INCLUDE_DIR}compute

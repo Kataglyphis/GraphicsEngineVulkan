@@ -28,31 +28,9 @@ myproject_local_options()
 
 include(cmake/SystemLibDependencies.cmake)
 include(Src/GraphicsEngineVulkan/cmake/filters/SetExternalLibsFilters.cmake)
-set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/)
-include(Src/GraphicsEngineVulkan/cmake/filters/SetShaderFilters.cmake)
 add_subdirectory(ExternalLib)
 
-
 add_subdirectory(Src)
-
-# compile shaders as part of my cmake routine right away :)
-include(cmake/CompileShadersToSPV.cmake)
-
-foreach(Shader ${POST_SHADER_FILTER})
-  add_shader(${PROJECT_NAME} ${Shader})
-endforeach()
-
-foreach(Shader ${RAYTRACING_SHADER_FILTER})
-  add_shader(${PROJECT_NAME} ${Shader})
-endforeach()
-
-foreach(Shader ${RASTER_SHADER_FILTER})
-  add_shader(${PROJECT_NAME} ${Shader})
-endforeach()
-
-foreach(Shader ${PATH_TRACING_SHADER_FILTER})
-  add_shader(${PROJECT_NAME} ${Shader})
-endforeach()
 
 if(NOT WINDOWS_CI)
 include(CTest)
@@ -82,11 +60,6 @@ install(
 # keep in mind that install dir will be in front of this relative path ...
 install(DIRECTORY Resources/ DESTINATION Resources/)
 install(DIRECTORY ExternalLib/IMGUI/misc/fonts/ DESTINATION ExternalLib/IMGUI/misc/fonts/)
-
-# we are using this dir strings for removing hard coded file locations
-# at c++ side
-configure_file(VulkanRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/VulkanRendererConfig.hpp")
-configure_file(OpenGLRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/Src/GraphicsEngineOpenGL/renderer/OpenGLRendererConfig.hpp")
 
 include(InstallRequiredSystemLibraries)
 

@@ -39,6 +39,36 @@ add_executable(
   ${SHADER_HOST_DEVICE_FILTER}
   $<TARGET_OBJECTS:IMGUI>)
 
+  set(ShaderIncludes
+  -I
+  ${SHADER_SRC_DIR}common/
+  -I
+  ${SHADER_SRC_DIR}pbr/
+  -I
+  ${SHADER_SRC_DIR}pbr/brdf/
+  -I
+  ${SHADER_SRC_DIR}hostDevice/
+  -I
+  ${PROJECT_SRC_DIR}/renderer/
+  -I
+  ${PROJECT_SRC_DIR}/renderer/pushConstants/
+  -I
+  ${PROJECT_SRC_DIR}/scene/)
+  
+  # Join the paths into a single space-separated string
+  string(REPLACE ";" " " ShaderIncludesString "${ShaderIncludes}")
+  
+  message("The shader include string is the following: ${ShaderIncludesString}")
+  
+  target_compile_definitions(${PERF_TEST_SUITE} PRIVATE
+      RELATIVE_RESOURCE_PATH="/${WORKING_DIRECTORY}/Resources/"
+      RELATIVE_INCLUDE_PATH="/${WORKING_DIRECTORY}/Src/GraphicsEngineVulkan/"
+      RELATIVE_IMGUI_FONTS_PATH="/${WORKING_DIRECTORY}/ExternalLib/IMGUI/misc/fonts/"
+      ShaderIncludesString="${ShaderIncludesString}"
+  )
+
+configure_file(${PROJECT_SRC_DIR}/VulkanRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/VulkanRendererConfig.hpp")
+
 target_include_directories(
   ${PERF_TEST_SUITE}
   PUBLIC ${PROJECT_INCLUDE_DIR}renderer
@@ -71,7 +101,7 @@ target_link_libraries(
          ktx
          myproject_options
          myproject_warnings
-  PRIVATE benchmark::benchmark benchmark::benchmark_main GSL)
+  PRIVATE benchmark::benchmark benchmark::benchmark_main GSL spdlog::spdlog)
 
 # disable all warnings for our test suite
 if(MSVC)
@@ -80,26 +110,4 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   target_compile_options(${PERF_TEST_SUITE} INTERFACE -w)
 else()
   target_compile_options(${PERF_TEST_SUITE} INTERFACE -w)
-endif()
-
-# make our sources available to testing framework
-add_custom_target(
-  resourcefilesForPerfTestSuite ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Resources
-          ${CMAKE_BINARY_DIR}/Test/Resources
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/
-          ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Src/GraphicsEngineVulkan/renderer/
-          ${CMAKE_BINARY_DIR}/Test//Src/GraphicsEngineVulkan/renderer
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}//Src/GraphicsEngineVulkan/renderer/pushConstants
-          ${CMAKE_BINARY_DIR}/Test//Src/GraphicsEngineVulkan/renderer/pushConstants
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/scene/
-          ${CMAKE_BINARY_DIR}/Test/include/scene)
-
-if(NOT WINDOWS_CI)
-  message(STATUS "WINDOWS_CI is OFF or not defined.")
-  add_dependencies(resourcefilesForCompileTestSuite ${PROJECT_NAME})
-
-  add_dependencies(${PERF_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME})
 endif()

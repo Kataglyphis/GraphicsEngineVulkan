@@ -6,6 +6,8 @@
 #include "Utilities.hpp"
 #include "VulkanRendererConfig.hpp"
 
+#include "spdlog/spdlog.h"
+
 ShaderHelper::ShaderHelper() {}
 
 void ShaderHelper::compileShader(const std::string &shader_src_dir, const std::string &shader_name)
@@ -29,6 +31,7 @@ void ShaderHelper::compileShader(const std::string &shader_src_dir, const std::s
       << ShaderIncludes::getShaderIncludes();
     //<< log_stdout_and_stderr.str();
 
+    spdlog::info("The shader compile command is the following: {}", cmdShaderCompile.str());
     // std::cout << cmdShaderCompile.str().c_str();
 
     system(cmdShaderCompile.str().c_str());
