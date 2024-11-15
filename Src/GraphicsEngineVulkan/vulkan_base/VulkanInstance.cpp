@@ -9,7 +9,7 @@
 VulkanInstance::VulkanInstance()
 {
     if (ENABLE_VALIDATION_LAYERS && !check_validation_layer_support()) {
-        throw std::runtime_error("Validation layers requested, but not available!");
+        spdlog::error("Validation layers requested, but not available!");
     }
 
     // info about app
@@ -55,7 +55,7 @@ VulkanInstance::VulkanInstance()
 
     // check instance extensions supported
     if (!check_instance_extension_support(&instance_extensions)) {
-        throw std::runtime_error("VkInstance does not support required extensions!");
+        spdlog::error("VkInstance does not support required extensions!");
     }
 
     create_info.enabledExtensionCount = static_cast<uint32_t>(instance_extensions.size());
