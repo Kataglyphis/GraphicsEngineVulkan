@@ -52,7 +52,6 @@ VulkanRenderer::VulkanRenderer(Window *window, Scene *scene, GUI *gui, Camera *c
 {
     updateUniforms(scene, camera, window);
 
-    try {
         instance = VulkanInstance();
 
         VkDebugReportFlagsEXT debugReportFlags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
@@ -111,10 +110,6 @@ VulkanRenderer::VulkanRenderer(Window *window, Scene *scene, GUI *gui, Camera *c
         gui->initializeVulkanContext(
           device.get(), instance.getVulkanInstance(), postStage.getRenderPass(), graphics_command_pool);
         gui->setUserSelectionForRRT(device->supportsHardwareAcceleratedRRT());
-
-    } catch (const std::runtime_error &e) {
-        printf("ERROR: %s\n", e.what());
-    }
 }
 
 void VulkanRenderer::updateUniforms(Scene *scene, Camera *camera, Window *window)
@@ -192,7 +187,7 @@ void VulkanRenderer::drawFrame()
         return;
 
     } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-        throw std::runtime_error("Failed to acquire next image!");
+        spdlog::error("Failed to acquire next image!");
     }
 
     //// check if previous frame is using this image (i.e. there is its fence to
@@ -272,10 +267,10 @@ void VulkanRenderer::drawFrame()
         return;
 
     } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-        throw std::runtime_error("Failed to acquire next image!");
+        spdlog::error("Failed to acquire next image!");
     }
 
-    if (result != VK_SUCCESS) { throw std::runtime_error("Failed to submit to present queue!"); }
+    if (result != VK_SUCCESS) { spdlog::error("Failed to submit to present queue!"); }
 
     current_frame = (current_frame + 1) % MAX_FRAME_DRAWS;
 }
@@ -693,7 +688,7 @@ void VulkanRenderer::createSynchronization()
                 != VK_SUCCESS)
             || (vkCreateFence(device->getLogicalDevice(), &fence_create_info, nullptr, &in_flight_fences[i])
                 != VK_SUCCESS)) {
-            throw std::runtime_error("Failed to create a semaphore and/or fence!");
+            spdlog::error("Failed to create a semaphore and/or fence!");
         }
     }
 }

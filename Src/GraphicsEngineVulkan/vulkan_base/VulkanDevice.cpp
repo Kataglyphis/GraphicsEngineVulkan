@@ -70,7 +70,7 @@ void VulkanDevice::get_physical_device()
     vkEnumeratePhysicalDevices(instance->getVulkanInstance(), &device_count, nullptr);
 
     // if no devices available, then none support of Vulkan
-    if (device_count == 0) { throw std::runtime_error("Can not find GPU's that support Vulkan Instance!"); }
+    if (device_count == 0) { spdlog::error("Can not find GPU's that support Vulkan Instance!"); }
 
     // Get list of physical devices
     std::vector<VkPhysicalDevice> device_list(device_count);

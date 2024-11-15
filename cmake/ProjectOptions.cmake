@@ -18,6 +18,8 @@ endmacro()
 macro(myproject_setup_options)
   option(myproject_ENABLE_HARDENING "Enable hardening" OFF)
   option(myproject_ENABLE_COVERAGE "Enable coverage reporting" ON)
+  option(myproject_DISABLE_EXCEPTIONS "Disable C++ exceptions" ON)
+
   cmake_dependent_option(
     myproject_ENABLE_GLOBAL_HARDENING
     "Attempt to push hardening options to built dependencies"
@@ -74,7 +76,8 @@ macro(myproject_setup_options)
       myproject_ENABLE_CPPCHECK
       myproject_ENABLE_COVERAGE
       myproject_ENABLE_PCH
-      myproject_ENABLE_CACHE)
+      myproject_ENABLE_CACHE
+      myproject_DISABLE_EXCEPTIONS)
   endif()
 
 endmacro()
@@ -156,6 +159,16 @@ macro(myproject_local_options)
     ""
     ""
     "")
+
+  if(myproject_DISABLE_EXCEPTIONS)
+    if(MSVC)
+      target_compile_options(myproject_options INTERFACE /EHs-) # Disable exceptions
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+      target_compile_options(myproject_options INTERFACE -fno-exceptions)
+    else()
+      message(WARNING "Disabling exceptions is not supported for this compiler.")
+    endif()
+  endif()
 
   include(cmake/Sanitizers.cmake)
   myproject_enable_sanitizers(

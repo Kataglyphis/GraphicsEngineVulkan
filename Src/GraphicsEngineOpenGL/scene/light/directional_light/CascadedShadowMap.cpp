@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "bindings.hpp"
+#include "spdlog/spdlog.h"
 
 CascadedShadowMap::CascadedShadowMap()
     :
@@ -46,8 +47,7 @@ bool CascadedShadowMap::init(GLuint width, GLuint height, GLuint num_cascades) {
 
   int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
   if (status != GL_FRAMEBUFFER_COMPLETE) {
-    std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!";
-    throw 0;
+      spdlog::error("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
   }
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
