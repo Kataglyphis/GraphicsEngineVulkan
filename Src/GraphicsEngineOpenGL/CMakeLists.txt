@@ -48,13 +48,9 @@ add_executable(
   ${APP_FILTER})
 
 if(NOT MSVC)
-target_compile_definitions(${OpenGlEnigneTargetName} PRIVATE
-    RELATIVE_RESOURCE_PATH="/../Resources/"
-)
+  target_compile_definitions(${OpenGlEnigneTargetName} PRIVATE RELATIVE_RESOURCE_PATH="/../Resources/")
 else()
-target_compile_definitions(${OpenGlEnigneTargetName} PRIVATE
-    RELATIVE_RESOURCE_PATH="/../../Resources/"
-)
+  target_compile_definitions(${OpenGlEnigneTargetName} PRIVATE RELATIVE_RESOURCE_PATH="/../../Resources/")
 endif()
 
 # we are using this dir strings for removing hard coded file locations

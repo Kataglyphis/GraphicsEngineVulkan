@@ -64,7 +64,7 @@ macro(myproject_setup_options)
   if(NOT PROJECT_IS_TOP_LEVEL)
     mark_as_advanced(
       myproject_ENABLE_IPO
-      myproject_ENABLE_STATIC_ANALYZER 
+      myproject_ENABLE_STATIC_ANALYZER
       myproject_WARNINGS_AS_ERRORS
       myproject_ENABLE_SANITIZER_ADDRESS
       myproject_ENABLE_SANITIZER_LEAK
@@ -122,7 +122,7 @@ macro(myproject_global_options)
     include(cmake/InterproceduralOptimization.cmake)
     myproject_enable_ipo()
   endif()
-  
+
   myproject_supports_sanitizers()
 
   if(myproject_ENABLE_HARDENING AND myproject_ENABLE_GLOBAL_HARDENING)
@@ -247,16 +247,16 @@ macro(myproject_local_options)
   include(cmake/Doxygen.cmake)
   enable_doxygen()
 
-  if(myproject_ENABLE_STATIC_ANALYZER )
+  if(myproject_ENABLE_STATIC_ANALYZER)
     if(MSVC)
       target_compile_options(${project_name} INTERFACE /analyze)
       target_link_libraries(${project_name} INTERFACE /analyze)
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-     target_compile_options(myproject_options INTERFACE -fanalyzer)
-     target_link_libraries(myproject_options INTERFACE -fanalyzer)
+      target_compile_options(myproject_options INTERFACE -fanalyzer)
+      target_link_libraries(myproject_options INTERFACE -fanalyzer)
       # https://clang.llvm.org/docs/UsersManual.html
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
-    #target_compile_options(myproject_options INTERFACE --analyze)
+      #target_compile_options(myproject_options INTERFACE --analyze)
       #target_link_libraries(myproject_options INTERFACE --analyze)
       # https://clang.llvm.org/docs/ClangCommandLineReference.html
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
