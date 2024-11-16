@@ -1,26 +1,13 @@
 # compile glslc shaders
 # source: https://www.reddit.com/r/vulkan/comments/kbaxlz/what_is_your_workflow_when_compiling_shader_files/
 
-set(ShaderIncludes
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/common/
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/pbr/
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/pbr/brdf/
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/hostDevice/
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer/pushConstants/
-    -I
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/scene/)
+message("The shader inlcudes are the following: ${ShaderIncludes}")
 
 function(add_shader TARGET SHADER)
   find_program(GLSLC glslc)
 
   set(current-shader-path ${SHADER}) #${CMAKE_CURRENT_SOURCE_DIR}/
+  message("Current shader path is: ${SHADER}")
   get_filename_component(a_dir "${current-shader-path}" PATH)
   get_filename_component(a_last_dir "${current-shader-path}" NAME)
 

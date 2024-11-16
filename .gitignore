@@ -1,4 +1,9 @@
-dist/*
+dist
+.mypy_cache
+.conda
+build
+*.profraw
+
 
 # Prerequisites
 *.d
@@ -43,4 +48,5 @@ out/*
 Documents/doxygen/*
 
 # cmake configure file
-include/renderer/VulkanRendererConfig.hpp
+Src/GraphicsEngineOpenGL/renderer/VulkanRendererConfig.hpp
+Src/GraphicsEngineVulkan/renderer/OpenGLRendererConfig.hpp

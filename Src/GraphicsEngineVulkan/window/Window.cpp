@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "spdlog/spdlog.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -46,7 +47,9 @@ int Window::initialize()
         return 1;
     }
 
-    if (!glfwVulkanSupported()) { throw std::runtime_error("No Vulkan Supported!"); }
+    if (!glfwVulkanSupported()) {
+        spdlog::error("No Vulkan Supported!");
+    }
 
     // allow it to resize
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);

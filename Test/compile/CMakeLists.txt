@@ -4,7 +4,7 @@ set(WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # update current positions
 set(PROJECT_SRC_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
-set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}include/)
+set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
 set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
 set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
@@ -41,6 +41,49 @@ add_executable(
   ${SHADER_HOST_DEVICE_FILTER}
   $<TARGET_OBJECTS:IMGUI>)
 
+set(ShaderIncludes
+    -I
+    ${SHADER_SRC_DIR}common/
+    -I
+    ${SHADER_SRC_DIR}pbr/
+    -I
+    ${SHADER_SRC_DIR}pbr/brdf/
+    -I
+    ${SHADER_SRC_DIR}hostDevice/
+    -I
+    ${PROJECT_SRC_DIR}/renderer/
+    -I
+    ${PROJECT_SRC_DIR}/renderer/pushConstants/
+    -I
+    ${PROJECT_SRC_DIR}/scene/)
+
+# Join the paths into a single space-separated string
+string(
+  REPLACE ";"
+          " "
+          ShaderIncludesString
+          "${ShaderIncludes}")
+
+message("The shader include string is the following: ${ShaderIncludesString}")
+
+if(NOT MSVC)
+  target_compile_definitions(
+    ${COMPILE_TEST_SUITE}
+    PRIVATE RELATIVE_RESOURCE_PATH="/../Resources/"
+            RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
+            ShaderIncludesString="${ShaderIncludesString}")
+else()
+  target_compile_definitions(
+    ${COMPILE_TEST_SUITE}
+    PRIVATE RELATIVE_RESOURCE_PATH="/../../Resources/"
+            RELATIVE_INCLUDE_PATH="/../../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../../ExternalLib/IMGUI/misc/fonts/"
+            ShaderIncludesString="${ShaderIncludesString}")
+endif()
+
+configure_file(${PROJECT_SRC_DIR}/VulkanRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/VulkanRendererConfig.hpp")
+
 target_include_directories(
   ${COMPILE_TEST_SUITE}
   PUBLIC ${PROJECT_INCLUDE_DIR}renderer
@@ -75,7 +118,10 @@ target_link_libraries(
          myproject_warnings
          # enable sanitizers
          myproject_options
-  PRIVATE gtest_main gtest GSL)
+  PRIVATE gtest_main
+          gtest
+          GSL
+          spdlog::spdlog)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")
@@ -91,28 +137,4 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
 else()
   target_compile_options(${COMPILE_TEST_SUITE} INTERFACE -w)
-endif()
-
-# make our sources available to testing framework
-add_custom_target(
-  resourcefilesForCompileTestSuite ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Test/Resources
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/Resources
-          ${CMAKE_BINARY_DIR}/Test/Resources
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/ExternalLib/IMGUI/misc/fonts/
-          ${CMAKE_BINARY_DIR}/Test/ExternalLib/IMGUI/misc/fonts/
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/
-          ${CMAKE_BINARY_DIR}/Test/include/renderer
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/renderer/pushConstants
-          ${CMAKE_BINARY_DIR}/Test/include/renderer/pushConstants
-  COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/include/scene/
-          ${CMAKE_BINARY_DIR}/Test/include/scene)
-
-if(NOT WINDOWS_CI)
-  message(STATUS "WINDOWS_CI is OFF or not defined.")
-  add_dependencies(resourcefilesForCompileTestSuite ${PROJECT_NAME})
-
-  add_dependencies(${COMPILE_TEST_SUITE} resourcefilesForCompileTestSuite ${PROJECT_NAME})
-else()
-  add_dependencies(resourcefilesForCompileTestSuite ${COMPILE_TEST_SUITE})
 endif()

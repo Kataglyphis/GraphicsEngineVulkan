@@ -3,6 +3,7 @@
 #include "Utilities.hpp"
 #include <cmath>
 #include <stdexcept>
+#include "spdlog/spdlog.h"
 
 Texture::Texture() {}
 
@@ -114,7 +115,9 @@ stbi_uc *Texture::loadTextureData(const std::string &file_name, int *width, int 
     // std::string file_loc = "../Resources/Textures/" + file_name;
     stbi_uc *image = stbi_load(file_name.c_str(), width, height, &channels, STBI_rgb_alpha);
 
-    if (!image) { throw std::runtime_error("Failed to load a texture file! (" + file_name + ")"); }
+    if (!image) { 
+        spdlog::error("Failed to load a texture file! (" + file_name + ")"); 
+    }
 
     // calculate image size using given and known data
     *image_size = *width * *height * 4;
@@ -137,7 +140,7 @@ void Texture::generateMipMaps(VkPhysicalDevice physical_device,
     vkGetPhysicalDeviceFormatProperties(physical_device, image_format, &formatProperties);
 
     if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
-        throw std::runtime_error("Texture image format does not support linear blitting!");
+        spdlog::error("Texture image format does not support linear blitting!");
     }
 
     VkCommandBuffer command_buffer = commandBufferManager.beginCommandBuffer(device, command_pool);

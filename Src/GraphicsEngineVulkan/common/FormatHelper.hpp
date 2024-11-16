@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include "spdlog/spdlog.h"
+
 static VkFormat choose_supported_format(VkPhysicalDevice physical_device,
   const std::vector<VkFormat> &formats,
   VkImageTiling tiling,
@@ -26,5 +28,5 @@ static VkFormat choose_supported_format(VkPhysicalDevice physical_device,
         }
     }
 
-    throw std::runtime_error("Failed to find supported format!");
+    spdlog::error("Failed to find supported format!");
 }

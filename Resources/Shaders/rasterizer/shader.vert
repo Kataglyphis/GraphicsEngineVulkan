@@ -12,10 +12,10 @@
 
 #include "../hostDevice/host_device_shared_vars.hpp"
 
-#include "../../../include/renderer/GlobalUBO.hpp"
-#include "../../../include/renderer/SceneUBO.hpp"
+#include "../../../Src/GraphicsEngineVulkan/renderer/GlobalUBO.hpp"
+#include "../../../Src/GraphicsEngineVulkan/renderer/SceneUBO.hpp"
 
-#include "../../../include/renderer/pushConstants/PushConstantRasterizer.hpp"
+#include "../../../Src/GraphicsEngineVulkan/renderer/pushConstants/PushConstantRasterizer.hpp"
 
 layout (location = 0) in vec3 positions; 
 layout (location = 1) in vec3 normal;
