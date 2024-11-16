@@ -62,7 +62,7 @@ jobs:
           server: ${{ secrets.SERVER }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PW }}
-          local-dir: "./docs/build/html"
+          local-dir: "./docs/build/html/"
 
       - name: Install Vulkan
         run: |
