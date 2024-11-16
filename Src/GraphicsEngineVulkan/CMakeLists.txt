@@ -9,9 +9,11 @@ include(cmake/filters/SetProjectFilters.cmake)
 include(cmake/SetSourceGroups.cmake)
 include(cmake/filters/SetExternalLibsFilters.cmake)
 
-file(GLOB_RECURSE VULKANRENDERER_SOURCES
-    "*.hpp"
-    "*.cpp")
+file(
+  GLOB_RECURSE
+  VULKANRENDERER_SOURCES
+  "*.hpp"
+  "*.cpp")
 
 # add the executable
 add_executable(
@@ -28,40 +30,44 @@ add_executable(
   $<TARGET_OBJECTS:IMGUI>)
 
 set(ShaderIncludes
--I
-${SHADER_SRC_DIR}common/
--I
-${SHADER_SRC_DIR}pbr/
--I
-${SHADER_SRC_DIR}pbr/brdf/
--I
-${SHADER_SRC_DIR}hostDevice/
--I
-${CMAKE_CURRENT_SOURCE_DIR}/renderer/
--I
-${CMAKE_CURRENT_SOURCE_DIR}/renderer/pushConstants/
--I
-${CMAKE_CURRENT_SOURCE_DIR}/scene/)
+    -I
+    ${SHADER_SRC_DIR}common/
+    -I
+    ${SHADER_SRC_DIR}pbr/
+    -I
+    ${SHADER_SRC_DIR}pbr/brdf/
+    -I
+    ${SHADER_SRC_DIR}hostDevice/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer/pushConstants/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/scene/)
 
 # Join the paths into a single space-separated string
-string(REPLACE ";" " " ShaderIncludesString "${ShaderIncludes}")
+string(
+  REPLACE ";"
+          " "
+          ShaderIncludesString
+          "${ShaderIncludes}")
 
 message("The shader include string is the following: ${ShaderIncludesString}")
 
 if(NOT MSVC)
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    RELATIVE_RESOURCE_PATH="/../Resources/"
-    RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
-    RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
-    ShaderIncludesString="${ShaderIncludesString}"
-)
+  target_compile_definitions(
+    ${PROJECT_NAME}
+    PRIVATE RELATIVE_RESOURCE_PATH="/../Resources/"
+            RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
+            ShaderIncludesString="${ShaderIncludesString}")
 else()
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    RELATIVE_RESOURCE_PATH="/../../Resources/"
-    RELATIVE_INCLUDE_PATH="/../../Src/GraphicsEngineVulkan/"
-    RELATIVE_IMGUI_FONTS_PATH="/../../ExternalLib/IMGUI/misc/fonts/"
-    ShaderIncludesString="${ShaderIncludesString}"
-)
+  target_compile_definitions(
+    ${PROJECT_NAME}
+    PRIVATE RELATIVE_RESOURCE_PATH="/../../Resources/"
+            RELATIVE_INCLUDE_PATH="/../../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../../ExternalLib/IMGUI/misc/fonts/"
+            ShaderIncludesString="${ShaderIncludesString}")
 endif()
 
 configure_file(VulkanRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/renderer/VulkanRendererConfig.hpp")

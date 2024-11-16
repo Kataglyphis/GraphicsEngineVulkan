@@ -17,7 +17,11 @@ macro(
     list(APPEND NEW_CXX_DEFINITIONS -D_GLIBCXX_ASSERTIONS)
     message(STATUS "*** GLIBC++ Assertions (vector[], string[], ...) enabled")
 
-    list(APPEND NEW_COMPILE_OPTIONS -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3)
+    list(
+      APPEND
+      NEW_COMPILE_OPTIONS
+      -U_FORTIFY_SOURCE
+      -D_FORTIFY_SOURCE=3)
     message(STATUS "*** g++/clang _FORTIFY_SOURCE=3 enabled")
 
     #    check_cxx_compiler_flag(-fpie PIE)
@@ -64,8 +68,16 @@ macro(
                             MINIMAL_RUNTIME)
     if(MINIMAL_RUNTIME)
 
-      list(APPEND NEW_COMPILE_OPTIONS -fsanitize=undefined -fsanitize-minimal-runtime)
-      list(APPEND NEW_LINK_OPTIONS -fsanitize=undefined -fsanitize-minimal-runtime)
+      list(
+        APPEND
+        NEW_COMPILE_OPTIONS
+        -fsanitize=undefined
+        -fsanitize-minimal-runtime)
+      list(
+        APPEND
+        NEW_LINK_OPTIONS
+        -fsanitize=undefined
+        -fsanitize-minimal-runtime)
 
       if(NOT ${global})
         list(APPEND NEW_COMPILE_OPTIONS -fno-sanitize-recover=undefined)

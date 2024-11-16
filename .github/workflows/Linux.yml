@@ -50,13 +50,20 @@ jobs:
         run: sudo apt-get install libosmesa6-dev
       - name: Prepare python env for sphynx
         run: |
-          pip install sphinx
-          pip install sphinx-press-theme
-          pip install myst-parser
+          pip install -r requirements.txt
       - name: Create docs
         run: |
           cd docs 
           make html
+
+      - name: 📂 Sync files to dev domain
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SERVER }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PW }}
+          local-dir: "./docs/build/html"
+
       - name: Install Vulkan
         run: |
           wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
@@ -107,12 +114,3 @@ jobs:
           name: codecov-umbrella # optional
           fail_ci_if_error: false # optional (default = false)
           verbose: false # optional (default = false)
-
-      - name: 📂 Sync files to dev domain
-        if: github.ref == 'refs/heads/dev'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.SERVER }}
-          username: ${{ secrets.DEV_USERNAME }}
-          password: ${{ secrets.DEV_PW }}
-          local-dir: "./docs/build/html"

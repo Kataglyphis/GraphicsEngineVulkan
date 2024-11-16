@@ -41,33 +41,46 @@ add_executable(
   ${SHADER_HOST_DEVICE_FILTER}
   $<TARGET_OBJECTS:IMGUI>)
 
-  set(ShaderIncludes
-  -I
-  ${SHADER_SRC_DIR}common/
-  -I
-  ${SHADER_SRC_DIR}pbr/
-  -I
-  ${SHADER_SRC_DIR}pbr/brdf/
-  -I
-  ${SHADER_SRC_DIR}hostDevice/
-  -I
-  ${PROJECT_SRC_DIR}/renderer/
-  -I
-  ${PROJECT_SRC_DIR}/renderer/pushConstants/
-  -I
-  ${PROJECT_SRC_DIR}/scene/)
-  
-  # Join the paths into a single space-separated string
-  string(REPLACE ";" " " ShaderIncludesString "${ShaderIncludes}")
-  
-  message("The shader include string is the following: ${ShaderIncludesString}")
-  
-  target_compile_definitions(${COMPILE_TEST_SUITE} PRIVATE
-      RELATIVE_RESOURCE_PATH="/${WORKING_DIRECTORY}/Resources/"
-      RELATIVE_INCLUDE_PATH="/${WORKING_DIRECTORY}/Src/GraphicsEngineVulkan/"
-      RELATIVE_IMGUI_FONTS_PATH="/${WORKING_DIRECTORY}/ExternalLib/IMGUI/misc/fonts/"
-      ShaderIncludesString="${ShaderIncludesString}"
-  )
+set(ShaderIncludes
+    -I
+    ${SHADER_SRC_DIR}common/
+    -I
+    ${SHADER_SRC_DIR}pbr/
+    -I
+    ${SHADER_SRC_DIR}pbr/brdf/
+    -I
+    ${SHADER_SRC_DIR}hostDevice/
+    -I
+    ${PROJECT_SRC_DIR}/renderer/
+    -I
+    ${PROJECT_SRC_DIR}/renderer/pushConstants/
+    -I
+    ${PROJECT_SRC_DIR}/scene/)
+
+# Join the paths into a single space-separated string
+string(
+  REPLACE ";"
+          " "
+          ShaderIncludesString
+          "${ShaderIncludes}")
+
+message("The shader include string is the following: ${ShaderIncludesString}")
+
+if(NOT MSVC)
+  target_compile_definitions(
+    ${COMPILE_TEST_SUITE}
+    PRIVATE RELATIVE_RESOURCE_PATH="/../Resources/"
+            RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
+            ShaderIncludesString="${ShaderIncludesString}")
+else()
+  target_compile_definitions(
+    ${COMPILE_TEST_SUITE}
+    PRIVATE RELATIVE_RESOURCE_PATH="/../../Resources/"
+            RELATIVE_INCLUDE_PATH="/../../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../../ExternalLib/IMGUI/misc/fonts/"
+            ShaderIncludesString="${ShaderIncludesString}")
+endif()
 
 configure_file(${PROJECT_SRC_DIR}/VulkanRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/VulkanRendererConfig.hpp")
 
@@ -105,7 +118,10 @@ target_link_libraries(
          myproject_warnings
          # enable sanitizers
          myproject_options
-  PRIVATE gtest_main gtest GSL spdlog::spdlog)
+  PRIVATE gtest_main
+          gtest
+          GSL
+          spdlog::spdlog)
 
 if(NOT WINDOWS_CI)
   message(STATUS "WINDOWS_CI is OFF or not defined.")

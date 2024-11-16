@@ -1,4 +1,7 @@
-dist/*
+dist
+.mypy_cache
+.conda
+build
 
 # Prerequisites
 *.d
