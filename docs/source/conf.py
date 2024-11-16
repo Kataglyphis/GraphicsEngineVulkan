@@ -31,4 +31,10 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "press"
+html_theme_options = {
+    "palette": "dark",  # Set dark mode as default
+    "fixed_sidebar": True,
+}
 html_static_path = ["_static"]
+# Here we assume that the file is at _static/css/custom.css
+html_css_files = ["css/custom.css"]
