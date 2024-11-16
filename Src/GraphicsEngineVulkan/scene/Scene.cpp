@@ -1,6 +1,7 @@
 #include "Scene.hpp"
 #include "ObjLoader.hpp"
 #include "Utilities.hpp"
+#include "spdlog/spdlog.h"
 
 Scene::Scene() {}
 
@@ -34,7 +35,7 @@ void Scene::add_object_description(ObjectDescription object_description)
 void Scene::update_model_matrix(glm::mat4 model_matrix, int model_id)
 {
     if (model_id >= static_cast<int32_t>(getModelCount()) || model_id < 0) {
-        throw std::runtime_error("Wrong model id value!");
+        spdlog::error("Wrong model id value!");
     }
 
     model_list[model_id]->set_model(model_matrix);

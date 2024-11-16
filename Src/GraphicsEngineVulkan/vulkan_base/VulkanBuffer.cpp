@@ -42,7 +42,7 @@ void VulkanBuffer::create(VulkanDevice *device,
     // CPU side
     // */ VK_MEMORY_PROPERTY_HOST_COHERENT_BIT	/* data is placed straight into
     // buffer */);
-    if (memory_type_index < 0) { throw std::runtime_error("Failed to find suitable memory type!"); }
+    if (memory_type_index < 0) { spdlog::error("Failed to find suitable memory type!"); }
 
     memory_alloc_info.memoryTypeIndex = memory_type_index;
 

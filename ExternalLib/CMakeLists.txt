@@ -1,9 +1,5 @@
 include(FetchContent)
 
-# hotfix for issue: 
-# https://github.com/google/benchmark/pull/1875
-add_compile_options(-Wno-c++17-attribute-extensions)
-
 # include google test to project
 FetchContent_Declare(
   googletest
@@ -23,12 +19,6 @@ set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "Disable benchmark install to avoid 
 set(BENCHMARK_USE_BUNDLED_GTEST OFF CACHE BOOL "Disable the bundled GTest usage.")
 
 add_subdirectory(GOOGLE_BENCHMARK)
-
-# hotfix for issue: 
-# https://github.com/google/benchmark/pull/1875
-target_compile_options(benchmark INTERFACE -Wno-c++17-attribute-extensions)
-target_compile_options(benchmark_main INTERFACE -Wno-c++17-attribute-extensions)
-
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   message(STATUS "This is a Linux system.")
@@ -87,6 +77,10 @@ target_include_directories(ktx  SYSTEM
                                 KTX/include KTX/other_include/KHR)
 
 add_subdirectory(GLFW)
+
+if(myproject_DISABLE_EXCEPTIONS)
+  set(SPDLOG_NO_EXCEPTIONS ON CACHE BOOL "Disable SPDLOG exceptions.")
+endif()
 
 add_subdirectory(SPDLOG)
 
