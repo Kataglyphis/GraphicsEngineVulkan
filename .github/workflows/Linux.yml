@@ -62,7 +62,7 @@ jobs:
           server: ${{ secrets.SERVER }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PW }}
-          local-dir: "./docs/build/html"
+          local-dir: "./docs/build/html/"
 
       - name: Install Vulkan
         run: |
@@ -92,7 +92,7 @@ jobs:
         working-directory: ${{github.workspace}}/build/
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug -T test --output-on-failure -E SetUp.blob RendererTest.DISABLED_BasicSetup
+        run: ctest -C ${{env.BUILD_TYPE}} --verbose --extra-verbose --debug -T test --output-on-failure -E Integration.VulkanEngine RendererTest.BasicSetup
       - name: Build Code Coverage
         run: |
           llvm-profdata merge -sparse ${{github.workspace}}/build/Test/compile/default.profraw -o ${{github.workspace}}/build/compileTestSuite.profdata
