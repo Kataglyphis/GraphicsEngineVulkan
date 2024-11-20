@@ -16,6 +16,9 @@ set(AUTHOR "Jotrockenmitlocken")
 set(WINDOWS_CI
     OFF
     CACHE BOOL "Enable Windows CI build options")
+set(RUST_FEATURES
+ON
+CACHE BOOL "Enable Rust features in our project.")
 
 include(cmake/PreventInSourceBuilds.cmake)
 include(cmake/ProjectOptions.cmake)
