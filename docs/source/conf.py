@@ -14,7 +14,7 @@ release = "1.3"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["myst_parser"]
+extensions = ["breathe","myst_parser"]
 
 myst_enable_extensions = [
     "dollarmath",  # Enables dollar-based math syntax
@@ -22,6 +22,11 @@ myst_enable_extensions = [
     "colon_fence",  # Allows ::: for directives
     "deflist",  # Enables definition lists
 ]
+
+breathe_projects = {
+    "Kataglyphis-Renderer": "../../build/xml"
+}
+breathe_default_project = "Kataglyphis-Renderer"
 
 templates_path = ["_templates"]
 exclude_patterns = []
