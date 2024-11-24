@@ -15,6 +15,11 @@ file(
   "*.hpp"
   "*.cpp")
 
+if(RUST_FEATURES)
+  corrosion_import_crate(MANIFEST_PATH rusty_code/Cargo.toml)
+  corrosion_add_cxxbridge(rusty_bridge CRATE rusty_code MANIFEST_PATH rusty_code FILES lib.rs)
+endif()
+
 # add the executable
 add_executable(
   ${PROJECT_NAME}
@@ -53,6 +58,16 @@ string(
           "${ShaderIncludes}")
 
 message("The shader include string is the following: ${ShaderIncludesString}")
+
+if(RUST_FEATURES)
+target_compile_definitions(
+  ${PROJECT_NAME}
+  PRIVATE USE_RUST=1)
+else()
+target_compile_definitions(
+  ${PROJECT_NAME}
+  PRIVATE USE_RUST=0)
+endif()
 
 if(NOT MSVC)
   target_compile_definitions(
@@ -106,7 +121,13 @@ target_link_libraries(
          myproject_warnings
          # enable sanitizers
          myproject_options
-  PRIVATE GSL spdlog::spdlog nlohmann_json::nlohmann_json)
+  PRIVATE GSL spdlog::spdlog nlohmann_json::nlohmann_json rusty_bridge)
+
+if(RUST_FEATURES)
+target_link_libraries(
+  ${PROJECT_NAME}
+  PRIVATE rusty_bridge)
+endif()
 
 # compile shaders as part of my cmake routine right away :)
 include(cmake/CompileShadersToSPV.cmake)

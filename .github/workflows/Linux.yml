@@ -35,25 +35,11 @@ jobs:
           libglx-mesa0 \
           ninja-build \
           ccache \
-          iwyu
+          iwyu \ 
+          doxygen \
+          graphviz
       - name: Install for Offscreen Rendering on GLFW
         run: sudo apt-get install libosmesa6-dev
-      - name: Prepare python env for sphynx
-        run: |
-          pip install -r requirements.txt
-      - name: Create docs
-        run: |
-          cd docs 
-          make html
-
-      - name: 📂 Sync files to dev domain
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.SERVER }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PW }}
-          local-dir: "./docs/build/html/"
-
       - name: Install Vulkan
         run: |
           wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
@@ -94,6 +80,24 @@ jobs:
       #     LLVM_PROFILE_FILE="${{github.workspace}}/build/engine.profraw" ./GraphicsEngine
       #     llvm-profdata merge -sparse ${{github.workspace}}/build/engine.profraw -o ${{github.workspace}}/build/engine.profdata
       #     llvm-cov show ./GraphicsEngine -instr-profile=${{github.workspace}}/build/engine.profdata -format=text
+
+      - name: Prepare python env for sphynx
+        run: |
+          pip install -r requirements.txt
+      - name: Create docs
+        run: |
+          cd ${{github.workspace}}
+          doxygen Doxyfile
+          cd docs 
+          make html
+
+      - name: 📂 Sync files to dev domain
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SERVER }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PW }}
+          local-dir: "./docs/build/html/"
 
       - name: Codecov
         uses: codecov/codecov-action@v4.6.0

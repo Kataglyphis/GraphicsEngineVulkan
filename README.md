@@ -14,7 +14,8 @@
   <a href="https://jonasheinle.de"><img src="images/Opengl-logo.png" alt="OpenGLEngine" width="200"></a>
 </h1>
 
-<h4 align="center">A graphics engine built on top of Vulkan+OpenGL <a href="https://jonasheinle.de" target="_blank"></a>.</h4>
+<h4 align="center">A graphics engine built on top of Vulkan+OpenGL. Serves also as playground 
+for learning various best practices in Graphic APIs, CMake, Rust, ...<a href="https://jonasheinle.de" target="_blank"></a>.</h4>
 
 (see also [**__Official homepage__**](https://kataglyphisrenderer.jonasheinle.de))
 
@@ -87,16 +88,18 @@
   <a href="https://jonasheinle.de"><img src="images/OpenGLEngine/Screenshot4.png" alt="VulkanEngine" width="200"></a>
 </h1>
 
-<!-- [![Kataglyphis Engine][product-screenshot1]](https://jotrockenmitlocken.de)
-[![Kataglyphis Engine][product-screenshot2]](https://jotrockenmitlocken.de)
-[![Kataglyphis Engine][product-screenshot3]](https://jotrockenmitlocken.de) -->
+This project provides me a solid Vulkan/OpenGL renderer starting point for implementing 
+modern established rendering techniques and getting quickly started in own research topics.  
+As this project evolved it gained additional functionality:
 
-This project provides me a solid Vulkan renderer starting point
-for implementing modern established rendering techniques and getting quickly
-started in own research topics. 
-Frequently tested under <br /> 
+* collecting/using CMake best practices
+* collecting/using C++ best practices and testing new lang features :blush:
+* collecting experience in fuzzy/benchmark testing in C++
+* collecting experience in integrating :love_letter: Rust :love_letter: code in Cmake projects
+
+Frequently tested under   
 * [latest windows and ubuntu version]
-* [GCC/CLANG/MSVC] 
+* [GCC/CLANG/MSVC/CLANG-CL] 
 
 ### Key Features
 
@@ -111,7 +114,7 @@ Frequently tested under <br />
 |                               | PBR support (UE4, Disney, etc.)               |         ✔️         |
 |                               | .obj Model loading                            |         ✔️         |
 |                               | Mip Mapping                                   |         ✔️         |
-|  **OpenGL Render agnostic**   |                                               |                   |
+|  **OpenGL Render agnostic**   |                                               |                    |
 |                               | Directional Lights                            |         ✔️         |
 |                               | Point Lights                                  |         ✔️         |
 |                               | Spot Lights                                   |         ✔️         |
@@ -160,6 +163,7 @@ Frequently tested under <br />
 * [NSIS](https://nsis.sourceforge.io/Main_Page)
 * [nlohmann_json](https://github.com/nlohmann/json)
 * [SPDLOG](https://github.com/gabime/spdlog)
+
 ### Useful tools (you might also considering :) )
 
 * [cppcheck](https://cppcheck.sourceforge.io/)
@@ -180,8 +184,11 @@ Dependencies to libraries are stated above.<br />
 C++23 or higher required.<br />
 C17 or higher required.<br />
 CMake 3.28.3 or higher required.<br />
-> **_NOTE:_** This project relies on the new hardware capabilities for RRT.
 
+#### Optional
+* [Rust](https://www.rust-lang.org/)
+* [corrision-rs](https://github.com/corrosion-rs/corrosion)
+* [cxx](https://cxx.rs/)
 
 ### Installation
 
@@ -193,8 +200,11 @@ CMake 3.28.3 or higher required.<br />
 2. Then build your solution with [CMAKE] (https://cmake.org/) <br />
   Here the recommended way over command line after cloning the repo:<br />
   > **_NOTE:_** Here we use CmakePresets to simplify things. Consider using it too
-  or just build on a common way ... 
+  or just build on a common way.
   
+  For now the features in Rust are experimental. If you want to use them install
+  Rust and set `RUST_FEATURES=ON` on your CMake build.
+
   (for clarity: Assumption you are in the dir you have cloned the repo into)
   ```sh
   $ mkdir build ; cd build
@@ -310,8 +320,14 @@ Some very helpful literature, tutorials, etc.
 
 * [View Frustum Culling](http://www.lighthouse3d.com/tutorials/view-frustum-culling/geometric-approach-extracting-the-planes/)
 
+Rust
+* [Rust](https://www.rust-lang.org/)
+
 CMake/C++
 * [Cpp best practices](https://github.com/cpp-best-practices/cppbestpractices)
+* [Integrate Rust into CMake projects](https://github.com/trondhe/rusty_cmake)
+* [corrision-rs](https://github.com/corrosion-rs/corrosion)
+* [cxx](https://cxx.rs/)
 
 OpenGL 
 * [learnopengl.com](https://learnopengl.com/)
