@@ -12,3 +12,9 @@ Kataglyphis-Renderer documentation
    :caption: Contents:
 
    README.md
+
+Doxygen API Documentation
+=========================
+
+.. doxygenindex::
+   :project: Kataglyphis-Renderer
