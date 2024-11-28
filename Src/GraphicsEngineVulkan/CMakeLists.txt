@@ -18,6 +18,13 @@ file(
 if(RUST_FEATURES)
   corrosion_import_crate(MANIFEST_PATH rusty_code/Cargo.toml)
   corrosion_add_cxxbridge(rusty_bridge CRATE rusty_code MANIFEST_PATH rusty_code FILES lib.rs)
+  target_link_libraries(
+  rusty_bridge
+  PUBLIC 
+    # enable compiler warnings
+    myproject_warnings
+    # enable sanitizers
+    myproject_options)
 endif()
 
 # add the executable

@@ -18,7 +18,7 @@ endmacro()
 macro(myproject_setup_options)
   option(myproject_ENABLE_HARDENING "Enable hardening" OFF)
   option(myproject_ENABLE_COVERAGE "Enable coverage reporting" ON)
-  option(myproject_DISABLE_EXCEPTIONS "Disable C++ exceptions" ON)
+  option(myproject_DISABLE_EXCEPTIONS "Disable C++ exceptions" OFF)
 
   cmake_dependent_option(
     myproject_ENABLE_GLOBAL_HARDENING
@@ -161,8 +161,10 @@ macro(myproject_local_options)
     "")
 
   if(myproject_DISABLE_EXCEPTIONS)
-    if(MSVC)
+    if(WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
       target_compile_options(myproject_options INTERFACE /EHs-) # Disable exceptions
+    elseif(WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      target_compile_options(myproject_options INTERFACE /GX-) # Disable exceptions
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
       target_compile_options(myproject_options INTERFACE -fno-exceptions)
     else()
