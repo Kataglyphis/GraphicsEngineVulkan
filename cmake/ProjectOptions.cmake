@@ -18,7 +18,7 @@ endmacro()
 macro(myproject_setup_options)
   option(myproject_ENABLE_HARDENING "Enable hardening" OFF)
   option(myproject_ENABLE_COVERAGE "Enable coverage reporting" ON)
-  option(myproject_DISABLE_EXCEPTIONS "Disable C++ exceptions" OFF)
+  option(myproject_DISABLE_EXCEPTIONS "Disable C++ exceptions" ON)
 
   cmake_dependent_option(
     myproject_ENABLE_GLOBAL_HARDENING
@@ -85,7 +85,7 @@ endmacro()
 macro(myproject_global_options)
 
   # specify the C/C++ standard
-  set(CMAKE_CXX_STANDARD 23)
+  set(CMAKE_CXX_STANDARD 20)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
 
   set(CMAKE_C_STANDARD 17)
@@ -106,8 +106,8 @@ macro(myproject_global_options)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 -DNDEBUG -fcolor-diagnostics")
     # https://clang.llvm.org/docs/ClangCommandLineReference.html
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=c++2a -fcolor-diagnostics") # -std=c++2a
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=c++2a -fcolor-diagnostics") # -std=c++2a
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=cxx20 -fcolor-diagnostics") # -std=c++2a
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=cxx20 -fcolor-diagnostics") # -std=c++2a
   endif()
 
   # control where the static and shared libraries are built so that on windows
@@ -169,6 +169,12 @@ macro(myproject_local_options)
       target_compile_options(myproject_options INTERFACE -fno-exceptions)
     else()
       message(WARNING "Disabling exceptions is not supported for this compiler.")
+    endif()
+  else()
+    if(WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+      target_compile_options(myproject_options INTERFACE /EHs) # Enable exceptions
+    elseif(WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      target_compile_options(myproject_options INTERFACE /GX) # Enable exceptions
     endif()
   endif()
 
