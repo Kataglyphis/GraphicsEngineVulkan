@@ -17,14 +17,7 @@ file(
 
 if(RUST_FEATURES)
   corrosion_import_crate(MANIFEST_PATH rusty_code/Cargo.toml)
-  corrosion_add_cxxbridge(rusty_bridge CRATE rusty_code MANIFEST_PATH rusty_code FILES lib.rs)
-  target_link_libraries(
-  rusty_bridge
-  PUBLIC 
-    # enable compiler warnings
-    myproject_warnings
-    # enable sanitizers
-    myproject_options)
+  corrosion_add_cxxbridge(rusty_bridge CRATE rusty_code FILES lib.rs)
 endif()
 
 # add the executable
@@ -133,7 +126,7 @@ target_link_libraries(
 if(RUST_FEATURES)
 target_link_libraries(
   ${PROJECT_NAME}
-  PRIVATE rusty_bridge)
+  PUBLIC rusty_code)
 endif()
 
 # compile shaders as part of my cmake routine right away :)
