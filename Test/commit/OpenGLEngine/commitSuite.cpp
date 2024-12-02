@@ -12,22 +12,21 @@
 #include <memory>
 #include <string>
 
-#include "ObjLoader.hpp"
-#include "Rotation.hpp"
+#include "scene/ObjLoader.hpp"
+#include "scene/Rotation.hpp"
 #include "renderer/OpenGLRendererConfig.hpp"
-#include "GameObject.hpp"
+#include "scene/GameObject.hpp"
 
 #include "renderer/Renderer.hpp"
-#include "DebugApp.hpp"
+#include "debug/DebugApp.hpp"
 #include "gui/GUI.hpp"
-#include "LoadingScreen.hpp"
+#include "renderer/loading_screen/LoadingScreen.hpp"
 
 #include "util/File.hpp"
-#include "LoadingScreen.hpp"
 
 // all scene/game logic/ game object related stuff
-#include "scene/Camera.hpp"
-#include "DebugApp.hpp"
+#include "camera/Camera.hpp"
+#include "debug/DebugApp.hpp"
 #include "hostDevice/GlobalValues.hpp"
 #include "scene/Scene.hpp"
 #include "window/Window.hpp"

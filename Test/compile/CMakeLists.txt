@@ -8,32 +8,32 @@ set(PROJECT_INCLUDE_DIR ${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/)
 set(EXTERNAL_LIB_SRC_DIR ${WORKING_DIRECTORY}ExternalLib/)
 set(SHADER_SRC_DIR ${WORKING_DIRECTORY}Resources/Shaders/)
 
-include(${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/cmake/filters/SetShaderFilters.cmake)
-include(${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/cmake/filters/SetProjectFilters.cmake)
-include(${WORKING_DIRECTORY}Src/GraphicsEngineVulkan/cmake/filters/SetExternalLibsFilters.cmake)
+include(${PROJECT_SRC_DIR}cmake/filters/SetShaderFilters.cmake)
+include(${PROJECT_SRC_DIR}cmake/filters/SetProjectFilters.cmake)
+include(${PROJECT_SRC_DIR}/cmake/filters/SetExternalLibsFilters.cmake)
 
-include(cmake/SetTestFilters.cmake)
+file(
+  GLOB_RECURSE
+  RENDERER_COMPILE_TEST_FILTER
+  "*.cpp")
 
 set(COMPILE_TEST_SUITE compileTestSuite)
 
 file(
   GLOB_RECURSE
   VULKANRENDERER_SOURCES
-  RELATIVE ${PROJECT_SRC_DIR}
-  "*.cpp")
+  "${PROJECT_SRC_DIR}/*.cpp")
 
 file(
   GLOB_RECURSE
   SHADER_HEADERS
-  RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
+  "${SHADER_SRC_DIR}/*.hpp"
 )
 
 file(
   GLOB_RECURSE
   VULKANRENDERER_HEADERS
-  RELATIVE ${PROJECT_SRC_DIR}
-  "*.hpp"
+  "${PROJECT_SRC_DIR}/*.hpp"
 )
 
 # if(RUST_FEATURES)
@@ -74,11 +74,11 @@ message("The shader include string is the following: ${ShaderIncludesString}")
 
 if(RUST_FEATURES)
 target_compile_definitions(
-  ${PROJECT_NAME}
+  ${COMPILE_TEST_SUITE}
   PRIVATE USE_RUST=1)
 else()
 target_compile_definitions(
-  ${PROJECT_NAME}
+  ${COMPILE_TEST_SUITE}
   PRIVATE USE_RUST=0)
 endif()
 

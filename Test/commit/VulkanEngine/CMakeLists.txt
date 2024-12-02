@@ -23,21 +23,18 @@ file(
 file(
   GLOB_RECURSE
   VULKANRENDERER_SOURCES
-  RELATIVE ${PROJECT_SRC_DIR}
-  "*.cpp")
+  "${PROJECT_SRC_DIR}/*.cpp")
 
 file(
   GLOB_RECURSE
   SHADER_HEADERS
-  RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
+  "${SHADER_SRC_DIR}/*.hpp"
 )
 
 file(
   GLOB_RECURSE
   VULKANRENDERER_HEADERS
-  RELATIVE ${PROJECT_SRC_DIR}
-  "*.hpp"
+  "${PROJECT_SRC_DIR}/*.hpp"
 )
 
 # if(RUST_FEATURES)
@@ -78,11 +75,11 @@ message("The shader include string is the following: ${ShaderIncludesString}")
 
 if(RUST_FEATURES)
 target_compile_definitions(
-  ${PROJECT_NAME}
+  ${COMMIT_TEST_SUITE}
   PRIVATE USE_RUST=1)
 else()
 target_compile_definitions(
-  ${PROJECT_NAME}
+  ${COMMIT_TEST_SUITE}
   PRIVATE USE_RUST=0)
 endif()
 
