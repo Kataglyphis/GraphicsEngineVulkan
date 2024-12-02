@@ -13,35 +13,45 @@ include(${PROJECT_SRC_DIR}cmake/filters/SetShaderFilters.cmake)
 include(${PROJECT_SRC_DIR}cmake/filters/SetProjectFilters.cmake)
 include(${PROJECT_SRC_DIR}cmake/filters/SetExternalLibsFilters.cmake)
 
-include(cmake/SetTestFilters.cmake)
-
 set(COMMIT_TEST_SUITE commitTestSuite)
+
+file(
+  GLOB_RECURSE
+  RENDERER_COMMIT_TEST_FILTER
+  "*.cpp")
+
+file(
+  GLOB_RECURSE
+  VULKANRENDERER_SOURCES
+  RELATIVE ${PROJECT_SRC_DIR}
+  "*.cpp")
+
+file(
+  GLOB_RECURSE
+  SHADER_HEADERS
+  RELATIVE ${SHADER_SRC_DIR}
+  "*.hpp"
+)
+
+file(
+  GLOB_RECURSE
+  VULKANRENDERER_HEADERS
+  RELATIVE ${PROJECT_SRC_DIR}
+  "*.hpp"
+)
+
+# if(RUST_FEATURES)
+#   corrosion_import_crate(MANIFEST_PATH ${PROJECT_SRC_DIR}rusty_code/Cargo.toml)
+#   corrosion_add_cxxbridge(rusty_bridge_commit CRATE rusty_code FILES lib.rs)
+# endif()
 
 add_executable(
   ${COMMIT_TEST_SUITE}
-  # all test specific files -- start
-  ${RENDERER_COMMIT_TEST_FILTER}
-  # all test specific files -- end
-  ${RASTER_SHADER_FILTER}
-  ${RAYTRACING_SHADER_FILTER}
-  ${COMMON_SHADER_FILTER}
-  ${POST_SHADER_FILTER}
-  ${BRDF_SHADER_FILTER}
-  ${PATH_TRACING_SHADER_FILTER}
-  ${RENDERER_FILTER}
-  ${PC_FILTER}
-  ${AS_FILTER}
-  ${SCENE_FILTER}
-  ${WINDOW_FILTER}
-  ${MEMORY_FILTER}
-  ${COMMON_FILTER}
-  ${GUI_FILTER}
-  ${UTIL_FILTER}
-  ${VULKAN_BASE_FILTER}
-  ${SHADER_HOST_DEVICE_FILTER}
-  $<TARGET_OBJECTS:IMGUI>)
+)
 
 set(ShaderIncludes
+	-I
+    ${SHADER_SRC_DIR}
     -I
     ${SHADER_SRC_DIR}common/
     -I
@@ -66,6 +76,16 @@ string(
 
 message("The shader include string is the following: ${ShaderIncludesString}")
 
+if(RUST_FEATURES)
+target_compile_definitions(
+  ${PROJECT_NAME}
+  PRIVATE USE_RUST=1)
+else()
+target_compile_definitions(
+  ${PROJECT_NAME}
+  PRIVATE USE_RUST=0)
+endif()
+
 if(NOT MSVC)
   target_compile_definitions(
     ${COMMIT_TEST_SUITE}
@@ -84,21 +104,26 @@ endif()
 
 configure_file(${PROJECT_SRC_DIR}/VulkanRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/VulkanRendererConfig.hpp")
 
-target_include_directories(
-  ${COMMIT_TEST_SUITE}
-  PUBLIC ${PROJECT_INCLUDE_DIR}renderer
-         ${PROJECT_INCLUDE_DIR}renderer/pushConstants
-         ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
-         ${PROJECT_INCLUDE_DIR}vulkan_base
-         ${PROJECT_INCLUDE_DIR}gui
-         ${PROJECT_INCLUDE_DIR}common
-         ${PROJECT_INCLUDE_DIR}scene
-         ${PROJECT_INCLUDE_DIR}window
-         ${PROJECT_INCLUDE_DIR}memory
-         ${PROJECT_INCLUDE_DIR}util
-         ${PROJECT_INCLUDE_DIR}app
-         ${PROJECT_INCLUDE_DIR}
-         ${SHADER_SRC_DIR}hostDevice)
+target_sources(${COMMIT_TEST_SUITE}
+  PUBLIC 
+  ${RENDERER_COMMIT_TEST_FILTER}
+  ${RASTER_SHADER_FILTER}
+  ${RAYTRACING_SHADER_FILTER}
+  ${COMMON_SHADER_FILTER}
+  ${POST_SHADER_FILTER}
+  ${BRDF_SHADER_FILTER}
+  ${PBR_SHADER_FILTER}
+  ${PATH_TRACING_SHADER_FILTER}
+  ${VULKANRENDERER_SOURCES}
+  # this is great; no CPPCHECK,CLANG_TIDY here
+  $<TARGET_OBJECTS:IMGUI>
+  PUBLIC
+  FILE_SET HEADERS 
+  BASE_DIRS ${PROJECT_INCLUDE_DIR}
+            ${SHADER_SRC_DIR}
+  FILES ${VULKANRENDERER_HEADERS}
+        ${SHADER_HEADERS}
+)
 
 target_include_directories(${COMMIT_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
@@ -128,6 +153,13 @@ if(NOT WINDOWS_CI)
   gtest_discover_tests(${COMMIT_TEST_SUITE} DISCOVERY_TIMEOUT 300)
 else()
   message(STATUS "WINDOWS_CI is OFF or not defined.")
+endif()
+
+if(RUST_FEATURES)
+target_link_libraries(
+	${COMMIT_TEST_SUITE}
+	PUBLIC rusty_code
+)
 endif()
 
 # disable all warnings for our test suite
