@@ -20,6 +20,8 @@ file(
   RENDERER_COMMIT_TEST_FILTER
   "*.cpp")
 
+message("Render commit test filter is: ${RENDERER_COMMIT_TEST_FILTER}")
+
 file(
   GLOB_RECURSE
   VULKANRENDERER_SOURCES

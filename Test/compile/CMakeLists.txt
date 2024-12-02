@@ -17,6 +17,8 @@ file(
   RENDERER_COMPILE_TEST_FILTER
   "*.cpp")
 
+message("Render compile test suite files are: ${RENDERER_COMPILE_TEST_FILTER}")
+
 set(COMPILE_TEST_SUITE compileTestSuite)
 
 file(
