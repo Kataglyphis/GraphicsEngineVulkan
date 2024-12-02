@@ -19,7 +19,7 @@
 #include "frostbite.glsl"
 
 #include "SceneUBO.hpp"
-#include "ObjMaterial.hpp"
+#include "scene/ObjMaterial.hpp"
 #include "scene/Vertex.hpp"
 #include "ObjectDescription.hpp"
 

@@ -1,5 +1,5 @@
-#include "ShaderIncludes.hpp"
-#include "OpenGLRendererConfig.hpp"
+#include "renderer/ShaderIncludes.hpp"
+#include "renderer/OpenGLRendererConfig.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

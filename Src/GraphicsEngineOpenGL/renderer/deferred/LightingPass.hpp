@@ -5,14 +5,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
 
-#include "scene/Camera.hpp"
-#include "GBuffer.hpp"
+#include "scene/texture/Texture.hpp"
+#include "renderer/deferred/GBuffer.hpp"
 #include "LightingPassShaderProgram.hpp"
 //#include "Noise.hpp"
 
-#include "RenderPass.hpp"
-#include "Quad.hpp"
-//#include "RandomNumbers.hpp"
+#include "renderer/deferred/RenderPass.hpp"
+#include "scene/Quad.hpp"
+//#include "util/RandomNumbers.hpp"
 #include "scene/Scene.hpp"
 
 class LightingPass : public RenderPass {
