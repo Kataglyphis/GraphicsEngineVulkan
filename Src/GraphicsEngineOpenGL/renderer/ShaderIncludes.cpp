@@ -12,7 +12,7 @@
 #include <sstream>
 #include <filesystem>
 
-#include "File.hpp"
+#include "util/File.hpp"
 #include "spdlog/spdlog.h"
 
 // this method is setting all files we want to use in a shader per #include

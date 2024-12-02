@@ -181,7 +181,7 @@ Frequently tested under
 ### Prerequisites
 
 Dependencies to libraries are stated above.<br />
-C++23 or higher required.<br />
+C++20 or higher required.<br />
 C17 or higher required.<br />
 CMake 3.28.3 or higher required.<br />
 
@@ -249,6 +249,7 @@ clang-tidy -p=./build/compile_commands.json  $(find Src -name '*.cpp' -o -name '
 
 ```bash
 conda create -n cmake_formating python=3.10
+conda activate cmake_formating
 pip install pyyaml
 pip install cmake-format
 cmake-format -c ./.cmake-format.yaml -i $(find cmake -name '*.cmake' -o -name 'CMakeLists.txt')

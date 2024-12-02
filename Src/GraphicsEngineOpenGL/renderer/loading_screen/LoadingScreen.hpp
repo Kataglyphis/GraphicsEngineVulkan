@@ -1,7 +1,7 @@
 #pragma once
 #include "Quad.hpp"
 #include "ShaderProgram.hpp"
-#include "Texture.hpp"
+#include "scene/Texture.hpp"
 
 class LoadingScreen {
  public:

@@ -11,7 +11,7 @@
 //#include "RenderPassSceneDependend.hpp"
 #include "Rotation.hpp"
 #include "ViewFrustumCulling.hpp"
-#include "Window.hpp"
+#include "window/Window.hpp"
 
 class Scene {
  public:

@@ -19,18 +19,18 @@
 
 #include "Renderer.hpp"
 #include "DebugApp.hpp"
-#include "GUI.hpp"
+#include "gui/GUI.hpp"
 #include "LoadingScreen.hpp"
 
-#include "File.hpp"
+#include "util/File.hpp"
 #include "LoadingScreen.hpp"
 
 // all scene/game logic/ game object related stuff
-#include "Camera.hpp"
+#include "scene/Camera.hpp"
 #include "DebugApp.hpp"
 #include "GlobalValues.hpp"
-#include "Scene.hpp"
-#include "Window.hpp"
+#include "scene/Scene.hpp"
+#include "window/Window.hpp"
 #include "host_device_shared.hpp"
 
 // Demonstrate some basic assertions.

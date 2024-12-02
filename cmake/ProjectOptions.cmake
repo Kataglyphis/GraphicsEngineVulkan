@@ -85,7 +85,7 @@ endmacro()
 macro(myproject_global_options)
 
   # specify the C/C++ standard
-  set(CMAKE_CXX_STANDARD 20)
+  set(CMAKE_CXX_STANDARD 23)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
 
   set(CMAKE_C_STANDARD 17)
@@ -93,21 +93,21 @@ macro(myproject_global_options)
 
   # set build type specific flags
   if(MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /DEBUG /Od")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /DEBUG /Od /std:c++23")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /std:c++23")
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
     # https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -ggdb")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -std=c++23 -ggdb")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -std=c++23 -DNDEBUG")
     # https://clang.llvm.org/docs/UsersManual.html
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /O0 -fcolor-diagnostics")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 -DNDEBUG -fcolor-diagnostics")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /O0 /std:c++23 -fcolor-diagnostics")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /std:c++23 -DNDEBUG -fcolor-diagnostics")
     # https://clang.llvm.org/docs/ClangCommandLineReference.html
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=cxx20 -fcolor-diagnostics") # -std=c++2a
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=cxx20 -fcolor-diagnostics") # -std=c++2a
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb -std=c++23 -fcolor-diagnostics") # -std=c++2a
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -std=c++23 -fcolor-diagnostics") # -std=c++2a
   endif()
 
   # control where the static and shared libraries are built so that on windows

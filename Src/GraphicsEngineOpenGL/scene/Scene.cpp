@@ -1,4 +1,4 @@
-#include "Scene.hpp"
+#include "scene/Scene.hpp"
 
 #include "OpenGLRendererConfig.hpp"
 #include <sstream>

@@ -2,7 +2,7 @@
 
 #include "OmniDirShadowShaderProgram.hpp"
 #include "PointLight.hpp"
-#include "Scene.hpp"
+#include "scene/Scene.hpp"
 #include "RenderPassSceneDependend.hpp"
 
 class OmniShadowMapPass : public RenderPassSceneDependend {
