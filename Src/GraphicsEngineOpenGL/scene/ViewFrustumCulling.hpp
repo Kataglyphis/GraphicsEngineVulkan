@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "AABB.hpp"
-#include "Camera.hpp"
+#include "scene/Camera.hpp"
 #include "GlobalValues.hpp"
 
 class ViewFrustumCulling {

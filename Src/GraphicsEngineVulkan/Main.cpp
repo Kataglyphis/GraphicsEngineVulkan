@@ -1,4 +1,4 @@
-#include "App.hpp"
+#include "app/App.hpp"
 #include <iostream>
 
 extern "C" {

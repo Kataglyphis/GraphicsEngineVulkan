@@ -12,8 +12,27 @@ include(cmake/filters/SetExternalLibsFilters.cmake)
 file(
   GLOB_RECURSE
   VULKANRENDERER_SOURCES
-  "*.hpp"
   "*.cpp")
+
+file(
+  GLOB_RECURSE
+  SHADER_HEADERS
+  RELATIVE ${SHADER_SRC_DIR}
+  "*.hpp"
+)
+
+file(
+  GLOB_RECURSE
+  SHADER_SOURCES
+  RELATIVE ${SHADER_SRC_DIR}
+  "*.hpp"
+)
+
+file(
+  GLOB_RECURSE
+  VULKANRENDERER_HEADERS
+  "*.hpp"
+)
 
 if(RUST_FEATURES)
   corrosion_import_crate(MANIFEST_PATH rusty_code/Cargo.toml)
@@ -23,18 +42,11 @@ endif()
 # add the executable
 add_executable(
   ${PROJECT_NAME}
-  ${RASTER_SHADER_FILTER}
-  ${RAYTRACING_SHADER_FILTER}
-  ${COMMON_SHADER_FILTER}
-  ${POST_SHADER_FILTER}
-  ${BRDF_SHADER_FILTER}
-  ${PBR_SHADER_FILTER}
-  ${PATH_TRACING_SHADER_FILTER}
-  ${VULKANRENDERER_SOURCES}
-  # this is great; no CPPCHECK,CLANG_TIDY here
-  $<TARGET_OBJECTS:IMGUI>)
+)
 
 set(ShaderIncludes
+    -I
+    ${SHADER_SRC_DIR}
     -I
     ${SHADER_SRC_DIR}common/
     -I
@@ -43,6 +55,8 @@ set(ShaderIncludes
     ${SHADER_SRC_DIR}pbr/brdf/
     -I
     ${SHADER_SRC_DIR}hostDevice/
+    -I
+    ${CMAKE_CURRENT_SOURCE_DIR}/
     -I
     ${CMAKE_CURRENT_SOURCE_DIR}/renderer/
     -I
@@ -87,21 +101,25 @@ endif()
 
 configure_file(VulkanRendererConfig.hpp.in "${CMAKE_CURRENT_SOURCE_DIR}/renderer/VulkanRendererConfig.hpp")
 
-target_include_directories(
-  ${PROJECT_NAME}
-  PUBLIC ${PROJECT_INCLUDE_DIR}renderer
-         ${PROJECT_INCLUDE_DIR}renderer/pushConstants
-         ${PROJECT_INCLUDE_DIR}renderer/accelerationStructures
-         ${PROJECT_INCLUDE_DIR}vulkan_base
-         ${PROJECT_INCLUDE_DIR}gui
-         ${PROJECT_INCLUDE_DIR}common
-         ${PROJECT_INCLUDE_DIR}scene
-         ${PROJECT_INCLUDE_DIR}window
-         ${PROJECT_INCLUDE_DIR}memory
-         ${PROJECT_INCLUDE_DIR}util
-         ${PROJECT_INCLUDE_DIR}app
-         ${SHADER_SRC_DIR}hostDevice
-         ${PROJECT_INCLUDE_DIR})
+target_sources(${PROJECT_NAME}
+  PUBLIC 
+  ${RASTER_SHADER_FILTER}
+  ${RAYTRACING_SHADER_FILTER}
+  ${COMMON_SHADER_FILTER}
+  ${POST_SHADER_FILTER}
+  ${BRDF_SHADER_FILTER}
+  ${PBR_SHADER_FILTER}
+  ${PATH_TRACING_SHADER_FILTER}
+  ${VULKANRENDERER_SOURCES}
+  # this is great; no CPPCHECK,CLANG_TIDY here
+  $<TARGET_OBJECTS:IMGUI>
+  PUBLIC
+  FILE_SET HEADERS 
+  BASE_DIRS ${PROJECT_INCLUDE_DIR}
+            ${SHADER_SRC_DIR}
+  FILES ${VULKANRENDERER_HEADERS}
+        ${SHADER_HEADERS}
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
 

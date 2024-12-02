@@ -1,4 +1,4 @@
-#include "Camera.hpp"
+#include "scene/Camera.hpp"
 
 #include <GLFW/glfw3.h>
 

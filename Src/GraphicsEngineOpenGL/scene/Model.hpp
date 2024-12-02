@@ -6,8 +6,8 @@
 #include "Mesh.hpp"
 #include "ObjLoader.hpp"
 #include "ObjMaterial.hpp"
-#include "Vertex.hpp"
-#include "Texture.hpp"
+#include "scene/Vertex.hpp"
+#include "scene/Texture.hpp"
 
 class Model {
  public:

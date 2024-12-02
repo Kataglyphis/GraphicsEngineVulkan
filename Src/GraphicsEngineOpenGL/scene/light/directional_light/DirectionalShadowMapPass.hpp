@@ -2,7 +2,7 @@
 
 #include "DirectionalLight.hpp"
 #include "RenderPassSceneDependend.hpp"
-#include "Scene.hpp"
+#include "scene/Scene.hpp"
 #include "ShaderProgram.hpp"
 #include "ViewFrustumCulling.hpp"
 

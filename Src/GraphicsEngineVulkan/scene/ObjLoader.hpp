@@ -5,7 +5,7 @@
 
 #include "Model.hpp"
 #include "ObjMaterial.hpp"
-#include "Vertex.hpp"
+#include "scene/Vertex.hpp"
 
 class ObjLoader
 {

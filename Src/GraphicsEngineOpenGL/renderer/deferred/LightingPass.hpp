@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
 
-#include "Camera.hpp"
+#include "scene/Camera.hpp"
 #include "GBuffer.hpp"
 #include "LightingPassShaderProgram.hpp"
 //#include "Noise.hpp"
@@ -13,7 +13,7 @@
 #include "RenderPass.hpp"
 #include "Quad.hpp"
 //#include "RandomNumbers.hpp"
-#include "Scene.hpp"
+#include "scene/Scene.hpp"
 
 class LightingPass : public RenderPass {
  public:

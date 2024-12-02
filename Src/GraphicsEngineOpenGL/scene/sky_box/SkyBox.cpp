@@ -14,7 +14,7 @@
 #include <stb_image.h>
 
 #include "OpenGLRendererConfig.hpp"
-#include "Vertex.hpp"
+#include "scene/Vertex.hpp"
 #include "bindings.hpp"
 
 SkyBox::SkyBox() {
