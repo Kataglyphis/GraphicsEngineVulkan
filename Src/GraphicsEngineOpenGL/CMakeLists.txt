@@ -17,15 +17,7 @@ file(
 file(
   GLOB_RECURSE
   SHADER_HEADERS
-  RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
-)
-
-file(
-  GLOB_RECURSE
-  SHADER_SOURCES
-  RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
+  "${SHADER_SRC_DIR}/*.hpp"
 )
 
 file(

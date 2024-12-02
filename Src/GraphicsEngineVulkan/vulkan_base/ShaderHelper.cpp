@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "vulkan_base/ShaderHelper.hpp"
-#include "renderer/ShaderIncludes.hpp"
+#include "vulkan_base/ShaderIncludes.hpp"
 #include "common/Utilities.hpp"
 #include "renderer/VulkanRendererConfig.hpp"
 

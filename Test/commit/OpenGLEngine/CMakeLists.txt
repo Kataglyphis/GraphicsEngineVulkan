@@ -12,28 +12,30 @@ include(${PROJECT_SRC_DIR}cmake/filters/SetShaderFilters.cmake)
 include(${PROJECT_SRC_DIR}cmake/filters/SetProjectFilters.cmake)
 include(${PROJECT_SRC_DIR}cmake/filters/SetExternalLibsFilters.cmake)
 
-include(cmake/SetTestFilters.cmake)
-
 set(COMMIT_TEST_SUITE_OPENGL commitTestSuiteOpenGL)
 
 file(
   GLOB_RECURSE
   OPENGLRENDERER_SOURCES
-  RELATIVE ${PROJECT_SRC_DIR}
-  "*.cpp")
+  "${PROJECT_SRC_DIR}/*.cpp"
+)
+
+file(
+	GLOB_RECURSE
+	OPENGLRENDERER_COMMIT_TEST_SUITE_SOURCES
+	"*.cpp"
+)
 
 file(
   GLOB_RECURSE
-  SHADER_HEADERS
-  RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
+  SHADER_HEADERS 
+  "${SHADER_SRC_DIR}/*.hpp"
 )
 
 file(
   GLOB_RECURSE
   OPENGLRENDERER_HEADERS
-  RELATIVE ${PROJECT_SRC_DIR}
-  "*.hpp"
+  "${SHADER_SRC_DIR}/*.hpp"
 )
 
 add_executable(
@@ -51,7 +53,7 @@ configure_file(${PROJECT_SRC_DIR}/OpenGLRendererConfig.hpp.in "${PROJECT_SRC_DIR
 
 target_sources(${COMMIT_TEST_SUITE_OPENGL}
   PUBLIC 
-  ${OPENGL_RENDERER_COMMIT_TEST_FILTER}
+  ${OPENGLRENDERER_COMMIT_TEST_SUITE_SOURCES}
   ${PBR_SHADER_FILTER}
   ${BRDF_SHADER_FILTER}
   ${OPENGLRENDERER_SOURCES}
