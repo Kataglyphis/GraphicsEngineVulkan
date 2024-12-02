@@ -23,13 +23,6 @@ file(
 
 file(
   GLOB_RECURSE
-  SHADER_SOURCES
-  RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
-)
-
-file(
-  GLOB_RECURSE
   VULKANRENDERER_HEADERS
   "*.hpp"
 )
