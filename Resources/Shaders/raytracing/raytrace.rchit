@@ -20,7 +20,7 @@
 
 #include "SceneUBO.hpp"
 #include "renderer/pushConstants/PushConstantRayTracing.hpp"
-#include "ObjMaterial.hpp"
+#include "scene/ObjMaterial.hpp"
 #include "scene/Vertex.hpp"
 #include "ObjectDescription.hpp"
 

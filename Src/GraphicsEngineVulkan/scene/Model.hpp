@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "Mesh.hpp"
+#include "scene/Mesh.hpp"
 #include "scene/Texture.hpp"
 
 class Model

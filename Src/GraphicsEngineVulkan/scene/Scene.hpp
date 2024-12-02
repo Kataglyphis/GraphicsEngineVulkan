@@ -15,7 +15,7 @@
 
 #include "gui/GUI.hpp"
 #include "scene/GUISceneSharedVars.hpp"
-#include "Mesh.hpp"
+#include "scene/Mesh.hpp"
 #include "Model.hpp"
 
 #include "SceneConfig.hpp"

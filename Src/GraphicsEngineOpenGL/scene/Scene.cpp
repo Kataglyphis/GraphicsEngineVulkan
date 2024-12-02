@@ -1,6 +1,6 @@
 #include "scene/Scene.hpp"
 
-#include "OpenGLRendererConfig.hpp"
+#include "renderer/OpenGLRendererConfig.hpp"
 #include <sstream>
 #include <filesystem>
 

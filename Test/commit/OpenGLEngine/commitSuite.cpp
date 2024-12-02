@@ -14,10 +14,10 @@
 
 #include "ObjLoader.hpp"
 #include "Rotation.hpp"
-#include "OpenGLRendererConfig.hpp"
+#include "renderer/OpenGLRendererConfig.hpp"
 #include "GameObject.hpp"
 
-#include "Renderer.hpp"
+#include "renderer/Renderer.hpp"
 #include "DebugApp.hpp"
 #include "gui/GUI.hpp"
 #include "LoadingScreen.hpp"
@@ -28,10 +28,10 @@
 // all scene/game logic/ game object related stuff
 #include "scene/Camera.hpp"
 #include "DebugApp.hpp"
-#include "GlobalValues.hpp"
+#include "hostDevice/GlobalValues.hpp"
 #include "scene/Scene.hpp"
 #include "window/Window.hpp"
-#include "host_device_shared.hpp"
+#include "hostDevice/host_device_shared.hpp"
 
 // Demonstrate some basic assertions.
 TEST(RendererTest, BasicSetup) {

@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "scene/Scene.hpp"
-#include "scene/Texture.hpp"
+#include "scene/texture/Texture.hpp"
 #include "window/Window.hpp"
 
 class GUI {

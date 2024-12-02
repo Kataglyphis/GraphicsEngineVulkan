@@ -1,4 +1,4 @@
-#include "Mesh.hpp"
+#include "scene/Mesh.hpp"
 
 #include <cstring>
 #include <memory>

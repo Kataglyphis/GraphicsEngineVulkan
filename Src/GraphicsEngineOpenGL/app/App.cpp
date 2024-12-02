@@ -14,16 +14,16 @@
 
 #include "util/File.hpp"
 #include "gui/GUI.hpp"
-#include "LoadingScreen.hpp"
-#include "Renderer.hpp"
+#include "renderer/loading_screen/LoadingScreen.hpp"
+#include "renderer/Renderer.hpp"
 
 // all scene/game logic/ game object related stuff
-#include "scene/Camera.hpp"
-#include "DebugApp.hpp"
-#include "GlobalValues.hpp"
+#include "camera/Camera.hpp"
+#include "debug/DebugApp.hpp"
+#include "hostDevice/GlobalValues.hpp"
 #include "scene/Scene.hpp"
 #include "window/Window.hpp"
-#include "host_device_shared.hpp"
+#include "hostDevice/host_device_shared.hpp"
 
 int main() {
 

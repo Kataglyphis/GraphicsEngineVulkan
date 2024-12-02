@@ -2,7 +2,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "ObjMaterial.hpp"
+#include "scene/ObjMaterial.hpp"
 #include "scene/Vertex.hpp"
 
 class ObjLoader {
