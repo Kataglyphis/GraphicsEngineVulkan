@@ -1,6 +1,6 @@
 #pragma once
-#include "hostDevice/GlobalValues.hpp"
-#include "hostDevice/host_device_shared.hpp"
+#include "GlobalValues.hpp"
+#include "host_device_shared.hpp"
 
 // define all texture unit offsets to all textures
 #define MODEL_TEXTURES_SLOT 0
