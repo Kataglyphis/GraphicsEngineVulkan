@@ -12,43 +12,22 @@ include(${PROJECT_SRC_DIR}cmake/filters/SetShaderFilters.cmake)
 include(${PROJECT_SRC_DIR}cmake/filters/SetProjectFilters.cmake)
 include(${PROJECT_SRC_DIR}/cmake/filters/SetExternalLibsFilters.cmake)
 
-file(
-  GLOB_RECURSE
-  RENDERER_COMPILE_TEST_FILTER
-  "*.cpp")
+file(GLOB_RECURSE RENDERER_COMPILE_TEST_FILTER "*.cpp")
 
 message("Render compile test suite files are: ${RENDERER_COMPILE_TEST_FILTER}")
 
 set(COMPILE_TEST_SUITE compileTestSuite)
 
-file(
-  GLOB_RECURSE
-  VULKANRENDERER_SOURCES
-  "${PROJECT_SRC_DIR}/*.cpp")
+file(GLOB_RECURSE VULKANRENDERER_SOURCES "${PROJECT_SRC_DIR}/*.cpp")
 
-file(
-  GLOB_RECURSE
-  SHADER_HEADERS
-  "${SHADER_SRC_DIR}/*.hpp"
-)
+file(GLOB_RECURSE SHADER_HEADERS "${SHADER_SRC_DIR}/*.hpp")
 
-file(
-  GLOB_RECURSE
-  VULKANRENDERER_HEADERS
-  "${PROJECT_SRC_DIR}/*.hpp"
-)
+file(GLOB_RECURSE VULKANRENDERER_HEADERS "${PROJECT_SRC_DIR}/*.hpp")
 
-# if(RUST_FEATURES)
-#   corrosion_import_crate(MANIFEST_PATH ${PROJECT_SRC_DIR}rusty_code/Cargo.toml)
-#   corrosion_add_cxxbridge(rusty_bridge_compile CRATE rusty_code FILES lib.rs)
-# endif()
-
-add_executable(
-  ${COMPILE_TEST_SUITE}
-)
+add_executable(${COMPILE_TEST_SUITE})
 
 set(ShaderIncludes
-	-I
+    -I
     ${SHADER_SRC_DIR}
     -I
     ${SHADER_SRC_DIR}common/
@@ -75,21 +54,17 @@ string(
 message("The shader include string is the following: ${ShaderIncludesString}")
 
 if(RUST_FEATURES)
-target_compile_definitions(
-  ${COMPILE_TEST_SUITE}
-  PRIVATE USE_RUST=1)
+  target_compile_definitions(${COMPILE_TEST_SUITE} PRIVATE USE_RUST=1)
 else()
-target_compile_definitions(
-  ${COMPILE_TEST_SUITE}
-  PRIVATE USE_RUST=0)
+  target_compile_definitions(${COMPILE_TEST_SUITE} PRIVATE USE_RUST=0)
 endif()
 
 if(NOT MSVC)
   target_compile_definitions(
     ${COMPILE_TEST_SUITE}
-    PRIVATE RELATIVE_RESOURCE_PATH="/../Resources/"
-            RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
-            RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
+    PRIVATE RELATIVE_RESOURCE_PATH="/../../../Resources/"
+            RELATIVE_INCLUDE_PATH="/../../../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../../../ExternalLib/IMGUI/misc/fonts/"
             ShaderIncludesString="${ShaderIncludesString}")
 else()
   target_compile_definitions(
@@ -102,26 +77,27 @@ endif()
 
 configure_file(${PROJECT_SRC_DIR}/VulkanRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/VulkanRendererConfig.hpp")
 
-target_sources(${COMPILE_TEST_SUITE}
-  PUBLIC 
-  ${RENDERER_COMPILE_TEST_FILTER}
-  ${RASTER_SHADER_FILTER}
-  ${RAYTRACING_SHADER_FILTER}
-  ${COMMON_SHADER_FILTER}
-  ${POST_SHADER_FILTER}
-  ${BRDF_SHADER_FILTER}
-  ${PBR_SHADER_FILTER}
-  ${PATH_TRACING_SHADER_FILTER}
-  ${VULKANRENDERER_SOURCES}
-  # this is great; no CPPCHECK,CLANG_TIDY here
-  $<TARGET_OBJECTS:IMGUI>
-  PUBLIC
-  FILE_SET HEADERS 
-  BASE_DIRS ${PROJECT_INCLUDE_DIR}
-            ${SHADER_SRC_DIR}
-  FILES ${VULKANRENDERER_HEADERS}
-        ${SHADER_HEADERS}
-)
+target_sources(
+  ${COMPILE_TEST_SUITE}
+  PUBLIC ${RENDERER_COMPILE_TEST_FILTER}
+         ${RASTER_SHADER_FILTER}
+         ${RAYTRACING_SHADER_FILTER}
+         ${COMMON_SHADER_FILTER}
+         ${POST_SHADER_FILTER}
+         ${BRDF_SHADER_FILTER}
+         ${PBR_SHADER_FILTER}
+         ${PATH_TRACING_SHADER_FILTER}
+         ${VULKANRENDERER_SOURCES}
+         # this is great; no CPPCHECK,CLANG_TIDY here
+         $<TARGET_OBJECTS:IMGUI>
+  PUBLIC FILE_SET
+         HEADERS
+         BASE_DIRS
+         ${PROJECT_INCLUDE_DIR}
+         ${SHADER_SRC_DIR}
+         FILES
+         ${VULKANRENDERER_HEADERS}
+         ${SHADER_HEADERS})
 
 target_include_directories(${COMPILE_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
@@ -154,10 +130,7 @@ else()
 endif()
 
 if(RUST_FEATURES)
-target_link_libraries(
-	${COMPILE_TEST_SUITE}
-	PUBLIC rusty_code
-)
+  target_link_libraries(${COMPILE_TEST_SUITE} PUBLIC rusty_code)
 endif()
 
 # disable all warnings for our test suite

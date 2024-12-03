@@ -15,36 +15,29 @@ include(cmake/SetTestFilters.cmake)
 set(PERF_TEST_SUITE perfTestSuite)
 
 file(
-  GLOB_RECURSE
-  VULKANRENDERER_SOURCES
+  GLOB_RECURSE VULKANRENDERER_SOURCES
   RELATIVE ${PROJECT_SRC_DIR}
   "*.cpp")
 
 file(
-  GLOB_RECURSE
-  SHADER_HEADERS
+  GLOB_RECURSE SHADER_HEADERS
   RELATIVE ${SHADER_SRC_DIR}
-  "*.hpp"
-)
+  "*.hpp")
 
 file(
-  GLOB_RECURSE
-  VULKANRENDERER_HEADERS
+  GLOB_RECURSE VULKANRENDERER_HEADERS
   RELATIVE ${PROJECT_SRC_DIR}
-  "*.hpp"
-)
+  "*.hpp")
 
 # if(RUST_FEATURES)
 #   corrosion_import_crate(MANIFEST_PATH ${PROJECT_SRC_DIR}rusty_code/Cargo.toml)
 #   corrosion_add_cxxbridge(rusty_bridge_perf CRATE rusty_code FILES lib.rs)
 # endif()
 
-add_executable(
-  ${PERF_TEST_SUITE}
-)
+add_executable(${PERF_TEST_SUITE})
 
 set(ShaderIncludes
-	-I
+    -I
     ${SHADER_SRC_DIR}
     -I
     ${SHADER_SRC_DIR}common/
@@ -71,21 +64,17 @@ string(
 message("The shader include string is the following: ${ShaderIncludesString}")
 
 if(RUST_FEATURES)
-target_compile_definitions(
-  ${PROJECT_NAME}
-  PRIVATE USE_RUST=1)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE USE_RUST=1)
 else()
-target_compile_definitions(
-  ${PROJECT_NAME}
-  PRIVATE USE_RUST=0)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE USE_RUST=0)
 endif()
 
 if(NOT MSVC)
   target_compile_definitions(
     ${PERF_TEST_SUITE}
-    PRIVATE RELATIVE_RESOURCE_PATH="/../Resources/"
-            RELATIVE_INCLUDE_PATH="/../Src/GraphicsEngineVulkan/"
-            RELATIVE_IMGUI_FONTS_PATH="/../ExternalLib/IMGUI/misc/fonts/"
+    PRIVATE RELATIVE_RESOURCE_PATH="/../../Resources/"
+            RELATIVE_INCLUDE_PATH="/../../Src/GraphicsEngineVulkan/"
+            RELATIVE_IMGUI_FONTS_PATH="/../../ExternalLib/IMGUI/misc/fonts/"
             ShaderIncludesString="${ShaderIncludesString}")
 else()
   target_compile_definitions(
@@ -98,26 +87,27 @@ endif()
 
 configure_file(${PROJECT_SRC_DIR}/VulkanRendererConfig.hpp.in "${PROJECT_SRC_DIR}/renderer/VulkanRendererConfig.hpp")
 
-target_sources(${PERF_TEST_SUITE}
-  PUBLIC 
-  ${RENDERER_PERF_TEST_FILTER}
-  ${RASTER_SHADER_FILTER}
-  ${RAYTRACING_SHADER_FILTER}
-  ${COMMON_SHADER_FILTER}
-  ${POST_SHADER_FILTER}
-  ${BRDF_SHADER_FILTER}
-  ${PBR_SHADER_FILTER}
-  ${PATH_TRACING_SHADER_FILTER}
-  ${VULKANRENDERER_SOURCES}
-  # this is great; no CPPCHECK,CLANG_TIDY here
-  $<TARGET_OBJECTS:IMGUI>
-  PUBLIC
-  FILE_SET HEADERS 
-  BASE_DIRS ${PROJECT_INCLUDE_DIR}
-            ${SHADER_SRC_DIR}
-  FILES ${VULKANRENDERER_HEADERS}
-        ${SHADER_HEADERS}
-)
+target_sources(
+  ${PERF_TEST_SUITE}
+  PUBLIC ${RENDERER_PERF_TEST_FILTER}
+         ${RASTER_SHADER_FILTER}
+         ${RAYTRACING_SHADER_FILTER}
+         ${COMMON_SHADER_FILTER}
+         ${POST_SHADER_FILTER}
+         ${BRDF_SHADER_FILTER}
+         ${PBR_SHADER_FILTER}
+         ${PATH_TRACING_SHADER_FILTER}
+         ${VULKANRENDERER_SOURCES}
+         # this is great; no CPPCHECK,CLANG_TIDY here
+         $<TARGET_OBJECTS:IMGUI>
+  PUBLIC FILE_SET
+         HEADERS
+         BASE_DIRS
+         ${PROJECT_INCLUDE_DIR}
+         ${SHADER_SRC_DIR}
+         FILES
+         ${VULKANRENDERER_HEADERS}
+         ${SHADER_HEADERS})
 
 target_include_directories(${PERF_TEST_SUITE} PRIVATE ${Vulkan_INCLUDE_DIRS})
 
@@ -141,10 +131,7 @@ target_link_libraries(
           spdlog::spdlog)
 
 if(RUST_FEATURES)
-target_link_libraries(
-	${PERF_TEST_SUITE}
-	PUBLIC rusty_code
-)
+  target_link_libraries(${PERF_TEST_SUITE} PUBLIC rusty_code)
 endif()
 
 # disable all warnings for our test suite
