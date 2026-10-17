@@ -142,7 +142,7 @@ been committed to.
   `max(0.002 * (1 - N·L), 0.0005)` and `forward.slang` uses
   `clamp(0.002 * (1 - N·L) + 0.0005, 0.0005, 0.004)`, so the renderers disagree at grazing
   angles. Editing `forward.slang` regenerates the checked-in WGSL; the slangc floor that used
-  to block that is gone (OxidANT pin 5381dc1a).
+  to block that is gone (OxidANT pin efc0cdee).
 - **Drop the per-frame `update_raytracing_descriptor_set` call in `drawFrame`.** It runs on
   `.raytracing` only, and every state change that invalidates those descriptors already goes
   through `updateAllDescriptorSets`. Deleting it saves three descriptor writes per frame. CI

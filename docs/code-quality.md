@@ -89,7 +89,7 @@ failed; 11 of 18 files had drifted, and the sweep that fixed them is in
 
 **0 of 216** own sources under `Src/` and `Test/` differ from `.clang-format`
 (0 of 217 with `scripts/riscv64/fp16_helpers.c`), after the sweep in commit
-`d59d210f6f93254e131996dca666e582f3d3b40e`. The sweep ran clang-format **23.1.1** (LLVM commit
+`fb246fbcdae20e0d513c3133455c180f2faecd40`. The sweep ran clang-format **23.1.1** (LLVM commit
 `6dfe1677ab8dffbc6ec13d53a1e0215d75147689`, `/usr/local/llvm-target/bin` in
 `:latest`, the version `:winamd64` ships as `C:\llvm-patched`) over the 217
 files `Get-ProjectCppFiles` lists, reading each from the git index so a CRLF
@@ -107,7 +107,7 @@ of 217 by the pinned 23.1.1.
 The hub pin of 2026-10-10 moved the gate to 23.1.3, which reads the same: 0 of 217 in
 `:winamd64` and in `:latest`.
 
-Since hub 0b774f12 (2026-10-12) `.clang-format` sets `ReflowComments: Never`, so clang-format
+Since hub a5443e2c (2026-10-12) `.clang-format` sets `ReflowComments: Never`, so clang-format
 leaves comments as written and a long one stays one line. It also stopped aligning a `//` line
 under the trailing comment above it, so the three such pairs in `VulkanDevice.cpp` and
 `VulkanInstance.cpp` became one line each. 0 of 217 deviate in `:latest`.

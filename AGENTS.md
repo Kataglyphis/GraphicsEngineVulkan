@@ -22,7 +22,7 @@ these; the [Docs](#docs) table at the end is the full ownership index.
 | Bumping a submodule pin, or any dependency | `bash ./scripts/linux/renovate-local.sh` from WSL — see [Dependency upgrades](#dependency-upgrades-renovate-as-a-local-cli). Never a bare `git submodule update --remote` |
 | Releasing | A push to `main` releases `VERSION.txt`'s version once every lane is green; first raise it and give it a `CHANGELOG.md` section — see [What CI runs](#what-ci-runs-and-what-it-does-not) |
 | Pushing and expecting CI to tell you something | A push or PR runs Linux x64 (not on a docs-only commit) and the gates; the other four platform lanes run when a commit message asks with the ci token, or by hand — see [What CI runs](#what-ci-runs-and-what-it-does-not) |
-| Changing the Rust WebGPU renderer | `third_party/OxidANT/crates/webgpu_renderer` — that repo owns the renderer's docs too (decision D6): [`webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md), which the pin bump to `ee7e5a1b` made reachable in this checkout; [on the web](https://github.com/Kataglyphis/OxidANT/blob/HEAD/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) for a reader without the submodule |
+| Changing the Rust WebGPU renderer | `third_party/OxidANT/crates/webgpu_renderer` — that repo owns the renderer's docs too (decision D6): [`webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md), which the pin bump to `d68560fe` made reachable in this checkout; [on the web](https://github.com/Kataglyphis/OxidANT/blob/HEAD/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) for a reader without the submodule |
 | Touching the clouds subsystem | Pipeline shape, estimator, UBO/constants tables, queue ownership — [`docs/clouds.md`](docs/clouds.md) |
 
 ### Repo map
@@ -47,7 +47,7 @@ credit, the archive's SHA-256) and publishes its files as one reproducible `<nam
 release, `<name>-v<N>`. `Resources/assets.lock` pins each archive by SHA-256 and URL, and
 `cmake/FetchAssets.cmake` extracts it into `Resources/Models/<name>` at configure time, through a
 per-user cache (`KATAGLYPHIS_ASSET_CACHE`, else `kataglyphis-assets` under `%LOCALAPPDATA%` or
-`~/.cache`). The paths the engine loads did not move. Measured at `c610c76f`, the last commit that
+`~/.cache`). The paths the engine loads did not move. Measured at `7b77802e`, the last commit that
 tracked them: 633 MiB tracked, 518 MiB of it the 14 scene directories; after, 116 MiB, 62 of them
 `third_party/KTX`'s vendored test images.
 
@@ -81,11 +81,11 @@ What is left large: `Documents/GGD_Kit_milestone_document.pdf` (16 MiB, `linguis
 with two test fixtures in `large-files.allow` for the hub's `large-files` gate. The engine screenshots
 under `images/` (11 MiB), which nothing linked, went on 2026-10-17 (owner).
 
-**The history is rewritten next; LFS is still out.** The owner reversed the 2026-09-15 "no
-rewrite" on 2026-10-17: binary blobs of 500 KB and more that no branch tip holds leave the history
-of all ten family repositories once the pending patch releases are out, the scenes among them.
-AssetANT's published archives are then their only copy (its `source.commit` stops resolving), and
-a checkout follows with the hub's `git-adopt-rewritten-history.sh`.
+**The history was rewritten on 2026-10-17; LFS is still out.** The owner reversed the 2026-09-15
+"no rewrite" that day: binary blobs of 500 KB and more that no branch held left the history of all
+ten family repositories, the scenes among them, and this pack went from 1.24 GiB to 146 MiB.
+AssetANT's published archives are their only copy now (its `source.commit` names a commit from
+before), and a checkout from before follows with the hub's `git-adopt-rewritten-history.sh`.
 
 The **large-asset gate** at the bottom of `.gitignore` stays: DCC project files, archives and video
 are ignored repo-wide, heavy image formats under `Resources/`, and `Resources/**/*.obj` with the
@@ -96,7 +96,7 @@ goes to AssetANT.
 
 Two earlier passes already removed what was removable without touching history:
 a Blender autosave twin, a duplicate `dinosaurs.obj` and a 2022 Doxygen snapshot
-(`75328b2f`). Do not re-add them.
+(`2987c7a3`). Do not re-add them.
 
 ## What ANTfrastructure owns — links only
 
@@ -295,7 +295,7 @@ pwsh -ExecutionPolicy Bypass -File .\scripts\windows\Build-Windows.ps1 `
   runtime: `clang_rt.ubsan_standalone*` is built `MT_StaticRelease` (static CRT),
   and linking it against this project's `/MD`/`/MDd` dependency mix fails in
   lld-link with `/failifmismatch` on `RuntimeLibrary`/`_ITERATOR_DEBUG_LEVEL`
-  (verified 2026-07-16). Since hub `9108466e` (2026-09-07) `Sanitizers.cmake`
+  (verified 2026-07-16). Since hub `75645844` (2026-09-07) `Sanitizers.cmake`
   therefore builds UBSan without ASAN in trap mode (`-fsanitize-trap=undefined`):
   it links, but undefined behaviour is a fast-fail at the faulting instruction
   with no report
@@ -337,7 +337,7 @@ What you need in hand to not get burned:
   `bb-build-persistent`**; `-UseBindMount` opts into a bind mount instead
   (measured slower on this Dev Drive host — measure before switching).
 - **A reused container prunes stale sources before every build.** Since hub
-  `a092834e` (2026-08-02) `Invoke-ContainerBuild` deletes every top-level
+  `637d4a91` (2026-08-02) `Invoke-ContainerBuild` deletes every top-level
   directory under `C:\ws` except `build*`, `logs` and `sccache-local`, then
   streams the tree in again, so a file deleted on the host no longer keeps
   building there (a file deleted at the repo root is the exception: top-level
@@ -384,7 +384,7 @@ profiling job died with `sccache: error: Connection to server timed out` on each
 The hub's `Cache.cmake` therefore hands both compiler launchers its
 `linux/scripts/01-core/sccache-launcher.sh`, which retries once and then compiles
 directly, and says so in the log. BB did that swap itself in `cmake/ProjectOptions.cmake`
-until 2026-10-10; the hub has done it since 5710cf9e. That covers every Linux CMake build, the
+until 2026-10-10; the hub has done it since 716b5226. That covers every Linux CMake build, the
 riscv64 cross build included. The GCC presets use ccache, and Windows keeps
 `sccache.exe`: the hub has no guarded launcher for either.
 
@@ -675,8 +675,8 @@ render (~32 FPS ImGui overlay).
   the NVIDIA recipe and the golden-writing cautions are in
   [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
   "No synchronization frames available" on every golden was a FrameSync bug
-  (`62e56684`..`5c71d795`, August 2026), not the RDP session it was blamed on;
-  a commit in that range needs `5c71d795` before any golden can draw.
+  (`695db536`..`981244fd`, August 2026), not the RDP session it was blamed on;
+  a commit in that range needs `981244fd` before any golden can draw.
 - **Synchronization validation** catches missing/incorrect barriers that no
   pixel oracle can see (it found 10 real WRITE-AFTER-WRITE hazards in July
   2026). Run it after touching render passes, barriers, or frames-in-flight:
@@ -877,7 +877,7 @@ the eleven jobs did less work than that, so they share jobs now, and nothing was
 - `release` adds the docs, the wasm demo and their deploy on x64.
 
 Each part after the first runs whatever the one before it did (`if: !cancelled()`), and checks
-its own build's outcome, so a red step still names the check that failed. Measured on a5dccbfb
+its own build's outcome, so a red step still names the check that failed. Measured on f340258a
 against the three runs before it: x64 run 38424781404 took 215 job-minutes (was 248-255), 53 of
 them prologue (was 106-114); arm64 run 38424781448 took 173 (was 204-207), 39 of them prologue
 (was 64-68). The longest merged job (33.8 min, arm64 `sanitizers`) stays well under `clang-tests`.
@@ -916,7 +916,7 @@ emulator wrapper: the hub toolchain's `CMAKE_CROSSCOMPILING_EMULATOR` is a pass-
   contention; a heavy path-tracing test took 23 min at `-j1`). One 4-vCPU runner would need
   about a day: the eight shards that pass below add up to 10.4 h of ctest. The serial lane
   before the shards hit its 7200 s ceiling on `PathTracingAntiAliasesGeometricEdges` after
-  5 h (run 37229293578), and every run from d977113a on was cancelled, so the lane gave no
+  5 h (run 37229293578), and every run from 6fc0beb2 on was cancelled, so the lane gave no
   signal at all.
 - **The shards.** `linux-riscv64.yml` has a `schedule:` (Saturdays 01:43 UTC) and a
   `gpu-tests` input on `workflow_dispatch`. Either one skips the CPU job and fans out one
@@ -932,7 +932,7 @@ emulator wrapper: the hub toolchain's `CMAKE_CROSSCOMPILING_EMULATOR` is a pass-
     `AddedModelAppearsInPathTracing`, `ReloadedModelIsVisibleInPathTracing`) and for
     `RaytracingFrameSkipsTheRasterPass`, the costliest ray-traced one.
 
-  The first weekly run (38015523987, 2026-10-10, at 40d485f8), against a 360 min job:
+  The first weekly run (38015523987, 2026-10-10, at 4910c545), against a 360 min job:
 
   | Shard | ctest | Job | Result |
   | --- | --- | --- | --- |

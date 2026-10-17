@@ -65,8 +65,8 @@ Lizenz jeweils aus der LICENSE-Datei des lokalen FetchContent-Checkouts unter `b
 
 | Projekt | URL | Pin | Lizenz | Geprüfte Quelle |
 |---|---|---|---|---|
-| OxidANT | https://github.com/Kataglyphis/OxidANT | 3faeb3a1 (develop) | MIT (`LICENSE`, Copyright (c) 2025 Kataglyphis; `license = "MIT"` in `[workspace.package]`) | `third_party/OxidANT/LICENSE` + `third_party/OxidANT/Cargo.toml` |
-| ANTfrastructure | https://github.com/Kataglyphis/ANTfrastructure | 57ca2b14 | MIT laut `LICENSE` (Copyright (c) 2024 Jonas Heinle); 275 eigene Dateien tragen `SPDX-License-Identifier: MIT`, **25 wieder `Apache-2.0`** (siehe „Unverifiziert — zu prüfen“); OCI-Label `org.opencontainers.image.licenses="MIT"` in den drei Image-Definitionen, die eines setzen (`linux/Dockerfile.torch`, `windows/Dockerfile`, `windows/Dockerfile.torch`) | `third_party/ANTfrastructure/LICENSE` + SPDX-Header + OCI-Labels |
+| OxidANT | https://github.com/Kataglyphis/OxidANT | d610fb49 (develop) | MIT (`LICENSE`, Copyright (c) 2025 Kataglyphis; `license = "MIT"` in `[workspace.package]`) | `third_party/OxidANT/LICENSE` + `third_party/OxidANT/Cargo.toml` |
+| ANTfrastructure | https://github.com/Kataglyphis/ANTfrastructure | 7d819f77 | MIT laut `LICENSE` (Copyright (c) 2024 Jonas Heinle); 275 eigene Dateien tragen `SPDX-License-Identifier: MIT`, **25 wieder `Apache-2.0`** (siehe „Unverifiziert — zu prüfen“); OCI-Label `org.opencontainers.image.licenses="MIT"` in den drei Image-Definitionen, die eines setzen (`linux/Dockerfile.torch`, `windows/Dockerfile`, `windows/Dockerfile.torch`) | `third_party/ANTfrastructure/LICENSE` + SPDX-Header + OCI-Labels |
 
 ## Rust-Crate-Abhängigkeiten (`third_party/OxidANT/crates/webgpu_renderer/Cargo.toml`, `[dependencies]`)
 
@@ -148,8 +148,8 @@ Offen seit der Prüfung vom 2026-09-25:
 Am 2026-08-07 erledigt und daher aus dieser Liste entfernt:
 
 - **ANTfrastructure, fehlende LICENSE**: das Submodul führt inzwischen
-  eine `LICENSE`-Datei; der Pin oben ist zudem von `8687f0c7` auf den aktuellen
-  Stand `6d5b1af5` korrigiert.
+  eine `LICENSE`-Datei; der Pin oben ist zudem von `2ac69e95` auf den aktuellen
+  Stand `45709430` korrigiert.
 - **ANTfrastructure, MIT/Apache-Widerspruch**: aufgelöst zugunsten von
   **MIT**. Zuvor stand in `LICENSE` MIT, während 101 eigene Quelldateien
   `SPDX-License-Identifier: Apache-2.0` trugen und zwei der drei Image-Definitionen

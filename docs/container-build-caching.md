@@ -84,7 +84,7 @@ not relink, so the executables are legitimately older than the run.
   (`version: 10`); only the container's newer CMake can.
 - **A file deleted on the host no longer keeps building in the container.**
   That was reproduced on 2026-07-19 (tar extracts over the old tree and never
-  removes a file); since ANTfrastructure `a092834e` (2026-08-02) a reused
+  removes a file); since ANTfrastructure `637d4a91` (2026-08-02) a reused
   container is pruned before the sources stream in: every top-level directory
   under `C:\ws` except `build*` and the `KeepDirs` (`logs`, `sccache-local`) is
   deleted. Top-level files are only overwritten, so a file deleted at the repo

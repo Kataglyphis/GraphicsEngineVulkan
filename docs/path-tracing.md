@@ -1,7 +1,7 @@
 # Path Tracing
 
 State of the path-tracing mode after the 2026-07-22 overhaul (commits
-`4181e0da` → `110b1503`). Everything here describes **shipped** behaviour;
+`27fddfd8` → `81799ea2`). Everything here describes **shipped** behaviour;
 open work is listed at the end with its BACKLOG anchors.
 
 ## Pipeline shape
@@ -148,7 +148,7 @@ lifting the UNORM ceiling widened several of them dramatically):
   PT: on the shadow rig the darkest decile of a GUI-free crop must stay
   under 5% of the brightest decile's luminance. Measured 0 vs 244 with the
   fix, 41.6 vs 248 when `raytrace.rchit.slang` seeds its payload with the
-  unlit albedo (`d35e6212`).
+  unlit albedo (`e852ac99`).
 
 The instrument lessons these goldens were built on (ImGui panel coverage,
 measuring changed-pixel fractions in the panel-free right edge, dumping

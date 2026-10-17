@@ -27,7 +27,7 @@ the GitHub releases themselves.
   because the hub's arch gate refused that stub. The gate now reports an NSIS installer instead of
   failing it, and the `windows-11-arm` job installs it silently, checks that every installed binary
   is ARM64, starts `bin/GraphicsEngine.exe --version` from the install directory and uninstalls it again
-  (`installed-run-command`). The hub moves to 4cfaabcb. Owner rule of the same day: every release ships
+  (`installed-run-command`). The hub moves to 6ea38c48. Owner rule of the same day: every release ships
   Windows arm64 installers next to the x64 ones.
 
 ### Changed
