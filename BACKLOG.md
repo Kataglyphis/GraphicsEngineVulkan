@@ -93,13 +93,16 @@ still needs the host.
 
 ### CI and release
 
-- [ ] **`GoldenRender.EnablingCloudsChangesTheFrameAndAddsDetail` fails now and then on the arm64
-  device** (S–M). In `windows-arm64-cross.yml`'s *GPU suites + source checks (arm64, lavapipe)* it
-  stopped after 7 s with no assertion printed (release dry run 38879106284, 2026-10-16), and the
-  rerun of that job, same commit, passed; the lane's run on 2026-10-13 failed, the three since were
-  green. No failure message means a crash or a timeout of the case, not a pixel mismatch: run it on
-  `windows-11-arm` in a loop under lavapipe, with the log on, to see which. Until then it can stop
-  any release, since `release.yml` needs every lane green; a rerun of the failed jobs gets past it.
+- [ ] **Golden-render cases fail now and then on the arm64 device** (S–M). In
+  `windows-arm64-cross.yml`'s *GPU suites + source checks (arm64, lavapipe)*,
+  `EnablingCloudsChangesTheFrameAndAddsDetail` stopped after 7 s with no assertion printed (release
+  dry run 38879106284, 2026-10-16), and `DeferredMatchesForwardRoughly` died after 8 s right after
+  `ASManager: compacted 1 BLAS` (run 39033701859 attempt 1, 2026-10-17); each rerun, same commit,
+  passed, and the 15 GPU jobs since 2026-10-07 otherwise passed both cases. No failure message means
+  a crash or a timeout of the case, not a pixel mismatch: the job now sets WER LocalDumps for
+  `commitTestSuite.exe` and uploads `arm64-lavapipe-crash-dump-<attempt>` when it fails, so the next
+  crash names the frame. Until then it can stop any release, since `release.yml` needs every lane
+  green; a rerun of the failed jobs gets past it.
 - [ ] **Every test on every arch lane** (owner goal 2026-10-01; what is left of it).
   - **The Rust renderer tests run on Linux only.** Windows and riscv64 compile the crate
     (the bridge, the wasm demo) but leave `cargo test` to OxidANT's own lanes.
