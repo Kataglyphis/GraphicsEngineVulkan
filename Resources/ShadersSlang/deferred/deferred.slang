@@ -89,8 +89,9 @@ GBufferOut geometry_fs_main(RasterVsOut In, uint primitiveID : SV_PrimitiveID, b
 [[vk::binding(GBUFFER_MATERIAL_BINDING, 1)]] [[vk::input_attachment_index(GBUFFER_MATERIAL_BINDING)]] SubpassInput<float4> inMaterial;
 [[vk::binding(GBUFFER_DEPTH_BINDING, 1)]] [[vk::input_attachment_index(GBUFFER_DEPTH_BINDING)]] SubpassInput<float4> inDepth;
 
+// SV_VulkanVertexID: SV_VertexID subtracts BaseVertex, which needs draw parameters a Raspberry Pi 5's v3dv lacks.
 [shader("vertex")]
-FullscreenVsOut lighting_vs_main(uint vid : SV_VertexID)
+FullscreenVsOut lighting_vs_main(uint vid : SV_VulkanVertexID)
 {
     return fullscreen_vs(vid);
 }

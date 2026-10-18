@@ -19,8 +19,9 @@ struct VsOut
     float2 uv : TEXCOORD0;
 };
 
+// SV_VulkanVertexID: SV_VertexID subtracts BaseVertex, which needs draw parameters a Raspberry Pi 5's v3dv lacks.
 [shader("vertex")]
-VsOut vs_main(uint vid : SV_VertexID)
+VsOut vs_main(uint vid : SV_VulkanVertexID)
 {
     // Shared fullscreen-triangle vertex (no vertex buffer).
     FullscreenVsOut o = fullscreen_vs(vid);

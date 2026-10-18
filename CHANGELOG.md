@@ -12,6 +12,15 @@ the GitHub releases themselves.
 
 ## [Unreleased]
 
+### Fixed
+
+- **The engine draws on a Raspberry Pi 5** (2026-10-18). Its two fullscreen vertex shaders (`post`,
+  `deferred`'s lighting pass) read `SV_VertexID`, which Slang lowers to `gl_VertexIndex -
+  gl_BaseVertex`; `gl_BaseVertex` needs draw parameters, and Mesa's v3dv aborted at pipeline creation
+  (`Unknown intrinsic ... load_first_vertex`, exit 134). They read `SV_VulkanVertexID` now, the same
+  index for their `draw(3, 1, 0, 0)`. The 1.5.2 arm64 package with the two recompiled shaders renders
+  on himbeere2's desktop (Debian 13, v3dv).
+
 ### Changed
 - **The family's ant replaces the old logos** (2026-10-17, owner: one icon in every repository):
   `images/logo.png` in the README, and `Engine_logo.png`, `Engine_logo.bmp` and `faviconNew.ico`,
