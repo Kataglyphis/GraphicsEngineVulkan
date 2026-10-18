@@ -28,6 +28,17 @@ still needs the host.
 
 ### C++ Vulkan engine
 
+- [ ] **The engine aborts on a Raspberry Pi 5's GPU: `SV_VertexID` needs draw parameters v3dv lacks**
+  (M) — found 2026-10-18 on himbeere2 (Debian 13, Mesa v3dv, labwc on Wayland) with the 1.5.2
+  arm64 tarball. The package itself starts there (`--version` through its bundled loader, rc 0);
+  the window then dies at shader creation: `MESA: error: Unknown intrinsic: ... @load_first_vertex`,
+  exit 134. Slang lowers `SV_VertexID` the Direct3D way, `gl_VertexIndex - gl_BaseVertex`, and
+  `gl_BaseVertex` needs `shaderDrawParameters`, which `VulkanDevice.cpp` only requests when the
+  device offers it. Eight vertex entry points use `SV_VertexID` (`post`, `sky`, `ssao`, `bloom`,
+  `ibl`, `deferred`, `depth_resolve`, `occlusion_bbox`). Slang's `SV_VulkanVertexID` maps straight
+  to `gl_VertexIndex`, which equals it for every draw whose first vertex is 0; check each of
+  their draw calls before the switch. Done
+  when the golden renders still match and the 1.5.x arm64 package draws on himbeere2's desktop.
 - [ ] **The `.deb` installs its desktop entry where no desktop looks** (S) — found 2026-10-16:
   `CMakeLists.txt` installs `GraphicsEngine.desktop`, the AppStream file and the icons to the
   relative `usr/share/...`, which the `/usr` prefix turns into `/usr/usr/share/applications`, and
