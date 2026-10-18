@@ -20,6 +20,15 @@ the GitHub releases themselves.
   (`Unknown intrinsic ... load_first_vertex`, exit 134). They read `SV_VulkanVertexID` now, the same
   index for their `draw(3, 1, 0, 0)`. The 1.5.2 arm64 package with the two recompiled shaders renders
   on himbeere2's desktop (Debian 13, v3dv).
+- **The `.deb` puts the app in the desktop's menu, and ships no GLFW development files** (2026-10-18).
+  The desktop entry, the AppStream file and the icons were installed to a relative `usr/share/`, which
+  the `.deb`'s `/usr` prefix made `/usr/usr/share/...`, where no desktop looks; they go to `share/`
+  now, so the `.deb` has them in `/usr/share/` and CPack's AppImage still finds the entry by name.
+  GLFW's install rules put its headers, `libglfw3.a`, its CMake package and `glfw3.pc` into every
+  package (`/usr/include/GLFW`, `/usr/lib` in the `.deb`, a clash with `libglfw3-dev`);
+  `GLFW_INSTALL` is off, the engine links it statically. `scripts/linux/check-deb-layout.sh` reads
+  every lane's `.deb` after packaging (it fails on the 1.5.2 one with all four faults), and its
+  synthetic-deb suite runs with Linux x64.
 
 ### Changed
 - **The family's ant replaces the old logos** (2026-10-17, owner: one icon in every repository):

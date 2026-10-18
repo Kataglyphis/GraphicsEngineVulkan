@@ -29,9 +29,9 @@ permissions:
   contents: read
 
 jobs:
-  # Seconds on the bare runner: the collector release.yml runs on main, against uploads shaped like the lanes'.
+  # Seconds on the bare runner: the collector release.yml runs on main, and the .deb layout gate, against synthetic inputs.
   release-collector:
-    name: Release collector suite
+    name: Release collector and .deb layout suites
     runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
@@ -42,6 +42,9 @@ jobs:
 
       - name: collect-release-assets.sh against synthetic uploads
         run: bash scripts/linux/tests/test-collect-release-assets.sh
+
+      - name: check-deb-layout.sh against synthetic .debs
+        run: bash scripts/linux/tests/test-check-deb-layout.sh
 
   build-x64:
     uses: ./.github/workflows/reusable-linux.yml

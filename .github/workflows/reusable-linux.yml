@@ -512,6 +512,10 @@ jobs:
             --build-target package
           log-file: output.log
 
+      - name: The .deb's layout
+        if: matrix.part != 'docs'
+        run: for deb in "${BUILD_RELEASE_DIR}"/*.deb; do bash scripts/linux/check-deb-layout.sh "${deb}"; done
+
       - name: Upload Linux Packages (Clang only)
         if: matrix.part != 'docs'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

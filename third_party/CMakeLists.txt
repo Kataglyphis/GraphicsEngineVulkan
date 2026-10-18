@@ -379,6 +379,8 @@ FetchContent_MakeAvailable(GSL)
 _myproject_force_cache_bool(GLFW_BUILD_DOCS OFF "")
 _myproject_force_cache_bool(GLFW_BUILD_TESTS OFF "")
 _myproject_force_cache_bool(GLFW_BUILD_EXAMPLES OFF "")
+# Linked statically; its headers, archive and CMake package would ship in every package (and clash with libglfw3-dev).
+_myproject_force_cache_bool(GLFW_INSTALL OFF "")
 
 # These wrappers keep third-party headers as SYSTEM includes so our analysis and
 # warning settings stay focused on project code.

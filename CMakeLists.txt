@@ -159,18 +159,19 @@ set(_myproject_imgui_fonts
 
 install(FILES ${_myproject_imgui_fonts} DESTINATION third_party/IMGUI/misc/fonts/)
 if(UNIX AND NOT APPLE)
-  install(FILES docs/packaging/GraphicsEngine.desktop DESTINATION usr/share/applications)
+  # share/, not usr/share/: the .deb's /usr prefix completes it, and CPack's AppImage finds the entry by name.
+  install(FILES docs/packaging/GraphicsEngine.desktop DESTINATION share/applications)
   install(
     FILES docs/packaging/GraphicsEngine.appdata.xml
-    DESTINATION usr/share/metainfo
+    DESTINATION share/metainfo
     RENAME de.jonasheinle.GraphicsEngine.appdata.xml)
   install(
     FILES images/Engine_logo.png
-    DESTINATION usr/share/icons/hicolor/256x256/apps
+    DESTINATION share/icons/hicolor/256x256/apps
     RENAME Engine_logo.png)
   install(
     FILES images/Engine_logo.png
-    DESTINATION usr/share/icons/hicolor/256x256/apps
+    DESTINATION share/icons/hicolor/256x256/apps
     RENAME Engine_logo)
   install(
     FILES images/Engine_logo.png
