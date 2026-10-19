@@ -56,6 +56,12 @@ the GitHub releases themselves.
   microsoft/STL#6294 is closed (#6298, not yet in the image's VC Tools); the agentic loop needs
   OpenCode v2. `/plan` and `/execute` include the hub's task prompts instead of a copy, and
   `doc-dupes-hub.allow` turns the hub's `doc-dupes --against-hub` gate on.
+- **The site uses the family theme's `setup_theme()`** (2026-10-19) instead of loading DocumANTation's
+  frozen `conf_base.py` by path: Markdown links and GitHub heading anchors resolve on the site,
+  links to unpublished repository files go to GitHub, and the logo, favicon and title are the
+  family's. The `custom.css` symlink went; `beschleunigerballett.css` keeps the dark hero. The API
+  tree view's 176 dead anchors (Exhale links its labels with their case kept, docutils lowercases
+  the ids) now point at the ids.
 
 ## [1.5.2] - 2026-10-17
 

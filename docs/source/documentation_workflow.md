@@ -28,6 +28,16 @@ python -m sphinx -M html docs/source docs/build -E
 
 The site lands in `docs/build/html`.
 
+## Theme and links
+
+`conf.py` calls the family theme's `setup_theme()` (`sphinx_kataglyphis`, an editable install from
+the hub's nested DocumANTation, so run `git submodule update --init --recursive` first). It brings
+the brand CSS, the logo and favicon, and the link handling: a Markdown link to a page, with or
+without a `#heading`, resolves to the built page as it does on GitHub, and a link to a repository
+file the site does not publish goes to that file on GitHub. Rules only this site has go into
+`_static/css/beschleunigerballett.css`, in brand tokens. What the theme does:
+[`sphinx-book/README.md`](https://github.com/Kataglyphis/DocumANTation/blob/develop/docs-tooling/source_templates/sphinx-book/README.md).
+
 ## Optional C++ API Reference
 
 `conf.py` enables the API reference when it finds a Doxygen XML directory containing `index.xml` in one of these places:

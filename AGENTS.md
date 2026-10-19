@@ -168,13 +168,13 @@ cannot even read this repo's presets ([the trap](#build-system-overview)).
 
 **The repository and the CMake project are spelled differently, on purpose.** `GraphicsEngine` is
 the CMake project and executable name (`CMakeLists.txt:8`), matching `Src/GraphicsEngineVulkan/`;
-Sphinx (`docs/source/conf.py:96`) and Doxygen (`Doxyfile.in:45`) publish under
+Sphinx (`docs/source/conf.py:39`) and Doxygen (`Doxyfile.in:45`) publish under
 `BeschleunigerBallett`, the repository name. Build directories, preset names and the MSIX package
 (`Msix.PackageNameDefault` in `scripts/windows/Build-Windows.config.psd1`) follow the CMake name;
 nothing here is a leftover to be unified.
 
 The version is the repo-root **`VERSION.txt`**, read by `CMakeLists.txt:4` (into
-`project(... VERSION ...)` and the `PROJECT_VERSION` compile definition), `docs/source/conf.py:99`
+`project(... VERSION ...)` and the `PROJECT_VERSION` compile definition), `docs/source/conf.py:40`
 and `scripts/windows/Build-Windows.ps1` (the MSIX package version; a missing file is a hard error).
 Bump it with `bash ./scripts/linux/bump-version.sh <x.y.z>` and nothing else; no reader keeps a
 copy of the number.
@@ -854,9 +854,7 @@ proves a workflow is valid YAML, not valid Actions, and a bash quoting or undefi
 only surfaces when that line runs, an hour into a gcc build.
 
 - **`lint` is one `uses:` line** onto the lane ANTfrastructure publishes as a `workflow_call`
-  workflow, with `submodules: 'recursive'` (the hub's default: at depth 1 the tracked symlink
-  `docs/source/_static/css/custom.css` into the nested DocumANTation submodule dangles, and the
-  `*`-scoped ratchets refuse the tree, run 35015672838) and `ratchets: true`.
+  workflow, with `submodules: 'recursive'` (the hub's default) and `ratchets: true`.
 - **`powershell-lint`** is the Windows-native job (PSScriptAnalyzer plus the mandatory
   parse/AST-trap gate over `scripts/`), on `windows-2025` because that gate script resolves its own
   helper module by backslash path. It is deliberately **not** collapsed onto the hub's equivalent:

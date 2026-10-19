@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  # 'recursive': at depth 1 the docs/source/_static/css/custom.css symlink dangles and the '*' gates refuse the tree.
+  # 'recursive', the hub's default: a half-checked-out submodule would change what the secret scan sees.
   lint:
     name: shell + workflow + secret + config gates
     uses: Kataglyphis/ANTfrastructure/.github/workflows/lint-gates.yml@develop
