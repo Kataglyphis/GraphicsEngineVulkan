@@ -40,31 +40,15 @@ CODE_QUALITY_CMAKE_FORMAT_CONFIG=".cmake-format.yaml"
 
 # The hub's default bootstrap installs cmake-format from its pinned requirements, never this repo's requirements.txt.
 
-# The fleet formats with the pinned LLVM (owner, 2026-10-06); the image's PATH clang-format may still be the distro's.
-resolve_pinned_clang_format() {
-  local want candidate version
-  want="$(antfrastructure_version LLVM_RELEASE)"
-  for candidate in /usr/local/llvm-target/bin/clang-format "$(command -v clang-format || true)"; do
-    [[ -x "${candidate}" ]] || continue
-    version="$("${candidate}" --version)"
-    if grep -Eq "clang-format version ${want//./\\.}([^0-9.]|\$)" <<<"${version}"; then
-      PINNED_CLANG_FORMAT_DIR="$(dirname "${candidate}")"
-      info "clang-format: ${candidate} (${want}, the hub's LLVM_RELEASE)"
-      return 0
-    fi
-  done
-  err "No clang-format ${want} (the hub's LLVM_RELEASE) in /usr/local/llvm-target/bin or on PATH; another version formats differently"
-}
-
-# A failing gate since the 2026-10-06 sweep; the PATH prefix makes the hub's helper call the pinned binary.
+# A failing gate since the 2026-10-06 sweep, in the pinned LLVM (owner, 2026-10-06): PATH's may be the distro's.
 run_clang_format_check() {
-  resolve_pinned_clang_format
+  code_quality_require_pinned_clang_format
   local files=()
   mapfile -t files < <(code_quality_find_cpp_files "${FORMAT_SOURCE_ROOTS[@]}")
   [[ ${#files[@]} -gt 0 ]] || err "No C/C++ file under ${FORMAT_SOURCE_ROOTS[*]}: the format gate would grade nothing"
-  PATH="${PINNED_CLANG_FORMAT_DIR}:${PATH}" code_quality_check_clang_format "${files[@]}"
+  code_quality_check_clang_format "${files[@]}"
   if [[ "${CODE_QUALITY_CLANG_FORMAT_DEVIATIONS}" -gt 0 ]]; then
-    err "${CODE_QUALITY_CLANG_FORMAT_DEVIATIONS} file(s) deviate from .clang-format; rewrite them with ${PINNED_CLANG_FORMAT_DIR}/clang-format -i"
+    err "${CODE_QUALITY_CLANG_FORMAT_DEVIATIONS} file(s) deviate from .clang-format; rewrite them with ${CODE_QUALITY_CLANG_FORMAT} -i"
   fi
   return 0
 }
@@ -111,8 +95,8 @@ run_format_and_tidy() {
   fi
 
   if [[ ${#cpp_files[@]} -gt 0 ]]; then
-    resolve_pinned_clang_format
-    PATH="${PINNED_CLANG_FORMAT_DIR}:${PATH}" code_quality_run_clang_format "${cpp_files[@]}"
+    code_quality_require_pinned_clang_format
+    code_quality_run_clang_format "${cpp_files[@]}"
   fi
 
   code_quality_prepare_compile_db "${BUILD_DIR}"

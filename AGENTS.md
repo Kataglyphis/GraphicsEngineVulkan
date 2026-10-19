@@ -564,9 +564,9 @@ CON10, over the TUs that import no module) and the suggested cadence:
 **clang-format is a failing gate since 2026-10-06**, graded by the pinned LLVM's clang-format (the
 hub's `LLVM_RELEASE`, 23.1.3 since 2026-10-10) on both lanes: the Windows x64 lane's
 `Build-Windows.ps1` step and the Linux `static-analysis` job's
-`run-static-analysis-format.sh --only-format-check`, which prefers
-`/usr/local/llvm-target/bin/clang-format` because the image's PATH one may still be the distro's
-21.1.8 (it would flag 41 of the swept files). Both refuse any other version. The sweep commit is in
+`run-static-analysis-format.sh --only-format-check`. The hub picks and checks the binary
+(`Invoke-ClangFormatCheck`, `code_quality_require_pinned_clang_format`, since 2026-10-19), so a
+distro clang-format (21.1.8 flagged 41 of the swept files) never grades. The sweep commit is in
 `.git-blame-ignore-revs`; run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once per
 clone.
 

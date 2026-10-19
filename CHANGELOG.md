@@ -31,6 +31,14 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **The pinned clang-format is the hub's to find** (2026-10-19): `run-static-analysis-format.sh`
+  calls `code_quality_require_pinned_clang_format` instead of its own lookup and `PATH` prefix, and
+  `Build-Windows.ps1` no longer reads `LLVM_RELEASE` out of `versions.env`: the hub's
+  `Invoke-ClangFormatCheck` requires `LLVM_WINDOWS_VERSION` by default (23.1.3, as `LLVM_RELEASE`).
+  In `:latest` the gate takes `/usr/local/llvm-target/bin/clang-format` 23.1.3, passes the 217
+  files, fails a planted deviation and refuses `LLVM_RELEASE=99.9.9`; in `:winamd64`
+  `Build-Windows.ps1 -SkipBuild` passes the same 217 and `LLVM_WINDOWS_VERSION=99.9.9` refuses
+  `C:\llvm-patched`'s 23.1.3.
 - **`scripts/linux/lib/common.sh` loads the hub's core modules, with no fallbacks** (2026-10-19):
   `logging.sh`, `platform.sh`, `verify.sh`, `parallelism.sh`, `vulkan-env.sh`, `tool-checks.sh` and
   `load-versions-env.sh` through `antfrastructure_source`. Its own module search (`source_module`,

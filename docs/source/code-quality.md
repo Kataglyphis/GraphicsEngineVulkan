@@ -60,21 +60,22 @@ cannot parse fails the step.
 
 **The clang-format check is a failing gate** since 2026-10-06, after the sweep
 below. Both lanes run `clang-format --dry-run -Werror`, fail on one deviating
-file, and refuse a clang-format whose version is not the hub's `LLVM_RELEASE`
+file, and refuse a clang-format of another release than the pinned LLVM's
 (in `third_party/ANTfrastructure/linux/scripts/01-core/versions.env`): the
-fleet formats with the pinned LLVM (owner decision, 2026-10-06).
+fleet formats with the pinned LLVM (owner decision, 2026-10-06). Since
+2026-10-19 the hub picks and checks the binary on both lanes.
 
 - **Windows**: `Build-Windows.ps1`'s *clang-format check* step, which the x64
   lane's `Invoke-WindowsLane.ps1` runs since it stopped passing `-SkipFormat`
   (the arm64 cross lane still skips it: formatting does not depend on the
-  target). The PATH clang-format already is the pinned one
-  (`C:\llvm-patched\bin\clang-format.exe`).
+  target). The hub's `Invoke-ClangFormatCheck` requires `LLVM_WINDOWS_VERSION`
+  of the PATH clang-format, the image's `C:\llvm-patched\bin\clang-format.exe`.
 - **Linux**: the `static-analysis` job's first step,
   `run-static-analysis-format.sh --only-format-check`, over `Src`, `Test` and
-  `scripts/riscv64`, the 217 files `Get-ProjectCppFiles` gives Windows. It
-  prefers `/usr/local/llvm-target/bin/clang-format`: the image's `/usr/bin`
-  one is still the distro's 21.1.8 until the hub switches it, and 21.1.8 flags
-  41 of the swept files.
+  `scripts/riscv64`, the 217 files `Get-ProjectCppFiles` gives Windows. The
+  hub's `code_quality_require_pinned_clang_format` takes the first
+  `LLVM_RELEASE` clang-format of `/usr/local/llvm-target/bin` and PATH, so a
+  distro one (21.1.8 flagged 41 of the swept files) never grades.
 
 Rewrite locally with `Build-Windows.ps1 -ApplyFormat` or the pinned binary's
 `-i` (`run-static-analysis-format.sh` uses it too).

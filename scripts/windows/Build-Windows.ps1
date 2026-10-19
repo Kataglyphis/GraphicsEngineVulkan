@@ -237,11 +237,9 @@ try {
         Invoke-ClangFormatStep -Context $context -WorkspacePath $workspacePath
       } | Out-Null
     } else {
-      # The pinned LLVM keeps Linux grading the same bytes.
+      # The hub requires its LLVM_WINDOWS_VERSION clang-format, so Linux grades the same bytes.
       Invoke-BuildStep -Context $context -StepName 'clang-format check' -Critical -Script {
-        $versionsEnv = Join-Path $workspacePath 'third_party\ANTfrastructure\linux\scripts\01-core\versions.env'
-        $llvmRelease = ((Get-Content $versionsEnv | Where-Object { $_ -match '^LLVM_RELEASE=' }) -replace '^LLVM_RELEASE=', '').Trim()
-        Invoke-ClangFormatCheck -Context $context -WorkspacePath $workspacePath -FailOnDeviation -ExpectedVersion $llvmRelease
+        Invoke-ClangFormatCheck -Context $context -WorkspacePath $workspacePath -FailOnDeviation
       } | Out-Null
     }
   }
