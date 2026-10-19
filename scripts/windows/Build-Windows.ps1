@@ -72,54 +72,22 @@ $workspacePath = Resolve-WorkspacePath -Path $workspaceRoot
 
 $logDir = Get-OrDefault $env:BUILD_LOG_DIR (Get-ConfigValue -Config $config -Path 'Build.LogDir')
 
-function Get-EnvironmentVariableValue {
-  param([Parameter(Mandatory)][string]$Name)
-
-  $envItem = Get-Item -Path "Env:$Name" -ErrorAction SilentlyContinue
-  if ($null -eq $envItem) {
-    return $null
-  }
-
-  return $envItem.Value
-}
-
-function Get-BuildConfigurationSpec {
-  param(
-    [Parameter(Mandatory)][string]$Name,
-    [Parameter(Mandatory)]$Config,
-    [Parameter(Mandatory)][string]$WorkspacePath
-  )
-
-  $configuration = Get-ConfigValue -Config $Config -Path "Build.Configurations.$Name"
-  if ($null -eq $configuration) {
-    throw "Build configuration '$Name' not found in $configPath"
-  }
-
-  $buildDir = Get-OrDefault (Get-EnvironmentVariableValue -Name $configuration['BuildDirEnv']) $configuration['BuildDir']
-  $preset = Get-OrDefault (Get-EnvironmentVariableValue -Name $configuration['PresetEnv']) $configuration['Preset']
-
-  return @{
-    BuildPath = Join-Path $WorkspacePath $buildDir
-    Preset = $preset
-  }
-}
-
 $availableConfigurations = @('msvc-debug', 'msvc-release', 'clangcl-debug', 'clangcl-profile', 'clangcl-release')
-$buildConfigurationSpecs = @{}
+$rows = @{}
 foreach ($configurationName in $availableConfigurations) {
-  $buildConfigurationSpecs[$configurationName] = Get-BuildConfigurationSpec -Name $configurationName -Config $config -WorkspacePath $workspacePath
+  $rows[$configurationName] = Get-BuildConfigurationRow -Config $config -Name $configurationName -ConfigPath $configPath
 }
 
-$buildPathMsvcDebug = $buildConfigurationSpecs['msvc-debug']['BuildPath']
-$presetMsvcDebug = $buildConfigurationSpecs['msvc-debug']['Preset']
-$buildPathMsvcRelease = $buildConfigurationSpecs['msvc-release']['BuildPath']
-$presetMsvcRelease = $buildConfigurationSpecs['msvc-release']['Preset']
-$buildPathClangDebug = $buildConfigurationSpecs['clangcl-debug']['BuildPath']
-$presetClangDebug = $buildConfigurationSpecs['clangcl-debug']['Preset']
-$buildPathClangProfile = $buildConfigurationSpecs['clangcl-profile']['BuildPath']
-$presetClangProfile = $buildConfigurationSpecs['clangcl-profile']['Preset']
-$buildPathClangRelease = $buildConfigurationSpecs['clangcl-release']['BuildPath']
-$presetClangRelease = $buildConfigurationSpecs['clangcl-release']['Preset']
+$buildPathMsvcDebug = Join-Path $workspacePath $rows['msvc-debug'].BuildDir
+$presetMsvcDebug = $rows['msvc-debug'].Preset
+$buildPathMsvcRelease = Join-Path $workspacePath $rows['msvc-release'].BuildDir
+$presetMsvcRelease = $rows['msvc-release'].Preset
+$buildPathClangDebug = Join-Path $workspacePath $rows['clangcl-debug'].BuildDir
+$presetClangDebug = $rows['clangcl-debug'].Preset
+$buildPathClangProfile = Join-Path $workspacePath $rows['clangcl-profile'].BuildDir
+$presetClangProfile = $rows['clangcl-profile'].Preset
+$buildPathClangRelease = Join-Path $workspacePath $rows['clangcl-release'].BuildDir
+$presetClangRelease = $rows['clangcl-release'].Preset
 
 $selectedConfigurations = Get-SelectedConfigurations -Configurations $Configurations -AvailableConfigurations $availableConfigurations
 
@@ -354,21 +322,10 @@ try {
 
     # The install tree plus its imported DLL closure runs on a clean machine; vulkan-1.dll is the GPU driver's, never shipped.
     Invoke-BuildStep -Context $context -StepName "Portable bundle ($TargetArch)" -Critical -Script {
-      $bundle = Join-Path $distArch 'bundle'
-      if (Test-Path $bundle) { Remove-BuildRoot -Context $context -Path $bundle | Out-Null }
-      Invoke-BuildExternal -Context $context -File 'cmake' -Parameters @('--install', $buildPathClangRelease, '--config', 'Release', '--prefix', $bundle) | Out-Null
-      $bundleBin = Join-Path $bundle 'bin'
-      $seeds = @(Get-ChildItem -LiteralPath $bundleBin -File | Where-Object { $_.Extension -in '.exe', '.dll' } | ForEach-Object FullName)
-      $copied = @(Copy-PeImportClosure -Path $seeds -SearchDirectory @(Get-ProductDllSearchPath -Arch $TargetArch) -Destination $bundleBin -Arch $TargetArch)
-      $packages = Join-Path $distArch 'packages'
-      if (Test-Path $packages) { Remove-BuildRoot -Context $context -Path $packages | Out-Null }
-      New-Item -ItemType Directory -Force -Path $packages | Out-Null
-      $installers = @(Get-ChildItem -LiteralPath $buildPathClangRelease -File | Where-Object { $_.Extension -in '.msi', '.zip' })
-      # NSIS names its installer like the MSI, the other .exe files are tests; arm64's is the same x86 stub, installed by the device job.
-      $installers += @($installers | ForEach-Object { Join-Path $buildPathClangRelease "$($_.BaseName).exe" } |
-          Select-Object -Unique | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Get-Item)
-      $installers | Copy-Item -Destination $packages
-      Write-BuildLog -Context $context -Message "Portable bundle $bundle; DLL closure: $(@($copied | ForEach-Object { Split-Path $_ -Leaf }) -join ', ')"
+      # packages\ gets the NSIS .exe too; arm64's is the same x86 stub, installed by the device job.
+      $result = New-PortableBundle -BuildDir $buildPathClangRelease -DistDir $distArch -Arch $TargetArch `
+        -Runner { param($File, [string[]]$Arguments) Invoke-BuildExternal -Context $context -File $File -Parameters $Arguments | Out-Null }
+      Write-BuildLog -Context $context -Message "Portable bundle $($result.Bundle); DLL closure: $($result.Added -join ', '); packages: $($result.Installers -join ', ')"
     } | Out-Null
 
     # Beside the product, not in it: the run job downloads both, and the hub grades this tree with the same arch gate.
@@ -440,12 +397,7 @@ try {
       $msixName = Get-OrDefault $env:MSIX_PACKAGE_NAME (Get-ConfigValue -Config $config -Path 'Msix.PackageNameDefault')
       $msixPublisher = Get-OrDefault $env:MSIX_PUBLISHER (Get-ConfigValue -Config $config -Path 'Msix.Publisher')
 
-      # Fatal here: without VERSION.txt the hub's Get-PackageVersion silently falls back to 0.0.1.0.
-      $versionFile = Join-Path $workspacePath 'VERSION.txt'
-      if (-not (Test-Path $versionFile)) {
-        throw "VERSION.txt not found at $versionFile - it is the source of the MSIX package version."
-      }
-      $msixVersion = Get-PackageVersion -WorkspacePath $workspacePath -Components 4
+      $msixVersion = Get-PackageVersion -WorkspacePath $workspacePath -VersionFile 'VERSION.txt' -Required
 
       $msixMinVersion = Get-OrDefault $env:MSIX_MIN_VERSION (Get-ConfigValue -Config $config -Path 'Msix.MinVersion')
 

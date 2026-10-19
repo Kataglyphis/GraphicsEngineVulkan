@@ -31,6 +31,15 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **`Build-Windows.ps1` takes its configuration rows, portable bundle and MSIX version from the
+  hub** (2026-10-19): `Get-BuildConfigurationRow` replaces its `Get-BuildConfigurationSpec`, and
+  `Build-Windows-Container.ps1`'s own table read, which now applies `BuildDirEnv`, hands a set one
+  to the container and throws on an unknown configuration instead of skipping it.
+  `New-PortableBundle` does the *Portable bundle* step through the build's logged runner, and
+  `Get-PackageVersion -VersionFile VERSION.txt -Required` replaces the `Test-Path` guard. In
+  `:winamd64` the rows match the old function with and without the `*Env` overrides, the version
+  reads 1.5.2.0 as before while a missing `VERSION.txt` throws, and on a CPack build the new step
+  returns one result object and writes the same bundle and packages as the old one.
 - **The pinned clang-format is the hub's to find** (2026-10-19): `run-static-analysis-format.sh`
   calls `code_quality_require_pinned_clang_format` instead of its own lookup and `PATH` prefix, and
   `Build-Windows.ps1` no longer reads `LLVM_RELEASE` out of `versions.env`: the hub's

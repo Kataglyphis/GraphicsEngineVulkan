@@ -692,8 +692,8 @@ executes too:
   `CONTAINER_SECRET_ENV` secret, as an `--env-file`, and `Build-Windows.ps1` reads them from the
   environment; `KATAGLYPHIS_CI_HAS_GPU` comes from the repository variable through `container-env`.
 - The product is `dist/windows-x64`, as arm64's is `dist/windows-arm64`: the portable bundle with
-  its DLL closure (the hub's `Get-ProductDllSearchPath`, both arches), the MSI, ZIP and NSIS
-  installer, and the MSIX, which now packs that bundle. It uploads as
+  its DLL closure (the hub's `New-PortableBundle` over `Get-ProductDllSearchPath`, both arches),
+  the MSI, ZIP and NSIS installer, and the MSIX, which now packs that bundle. It uploads as
   `BeschleunigerBallett-windows-x64`, which replaced `windows-installers-container` and its globs
   over `build-clangcl-release`.
 - `BuildIntegrity`'s three Windows-list tests read the lane script, not the workflow. The job's

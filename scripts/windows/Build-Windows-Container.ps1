@@ -46,13 +46,15 @@ if ($cmakeExe.Count -gt 0) {
 Write-Host "Configurations: $Configurations"
 $configurationList = @($Configurations -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 
-# Build directories, as named by the shared Build-Windows configuration model.
-$configModel = Import-PowerShellDataFile (Join-Path $PSScriptRoot 'Build-Windows.config.psd1')
-$buildDirs = @()
-foreach ($name in $configurationList) {
-  $spec = $configModel.Build.Configurations[$name]
-  if ($spec) { $buildDirs += $spec.BuildDir }
-}
+. (Join-Path $PSScriptRoot 'Resolve-BuildModule.ps1')
+Import-BuildModule 'WindowsConfig.Common'
+$configPath = Join-Path $PSScriptRoot 'Build-Windows.config.psd1'
+$configModel = Import-PowerShellDataFile $configPath
+$rows = @($configurationList | ForEach-Object { Get-BuildConfigurationRow -Config $configModel -Name $_ -ConfigPath $configPath })
+$buildDirs = @($rows | ForEach-Object BuildDir)
+# A host BuildDirEnv override goes into the container too, or its Build-Windows.ps1 builds a directory this run never collects.
+$containerEnv = @{ KATAGLYPHIS_KEEP_BUILD_ROOT = '1' }
+foreach ($row in $rows) { if ($row.Row['BuildDirEnv'] -and [Environment]::GetEnvironmentVariable($row.Row['BuildDirEnv'])) { $containerEnv[$row.Row['BuildDirEnv']] = $row.BuildDir } }
 
 # Arguments handed to the image entrypoint (VsDevCmd + ASAN runtime PATH, then %*).
 $buildCommand = {
@@ -77,7 +79,7 @@ $buildCommand = {
   -IncrementalDirs $buildDirs -IncrementalExclude @('cargo') `
   -OutputDirs (@('logs') + $buildDirs) -VerifyDirs $buildDirs `
   -OutboundExclude @('*/CMakeFiles', '*/_deps', '*/cargo', '*.obj', '*.lib', '*.ilk', '*.pcm', '*/corrosion') `
-  -CacheEnv @{ KATAGLYPHIS_KEEP_BUILD_ROOT = '1' } `
+  -CacheEnv $containerEnv `
   -UseBindMount:$UseBindMount -FreshContainer:$FreshContainer
 
 Write-Host 'Container build finished successfully.'
