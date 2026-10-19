@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # test-check-deb-layout.sh: check-deb-layout.sh against synthetic .debs, one per way the layout broke or could break.
-set -euo pipefail
+set -u
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/linux/lib/antfrastructure.sh
+source "${here}/../lib/antfrastructure.sh"
+_harness="$(antfrastructure_path linux/scripts/lib/test-harness.sh)" || exit 1
+# shellcheck source=third_party/ANTfrastructure/linux/scripts/lib/test-harness.sh
+source "${_harness}"
 gate="${here}/../check-deb-layout.sh"
 work="$(mktemp -d)"
 trap 'rm -rf "${work}"' EXIT
-fails=0
-check() {
-  if "${@:2}"; then printf 'ok    %s\n' "$1"; else printf 'FAIL  %s\n' "$1"; fails=$((fails + 1)); fi
-}
 
 # Builds <name>.deb from the good layout plus extra paths (+path) minus removed ones (-path).
 make_deb() {
@@ -25,7 +26,7 @@ make_deb() {
       *) mkdir -p "$(dirname "${root}/${entry#+}")" && printf 'x' > "${root}/${entry#+}" ;;
     esac
   done
-  dpkg-deb --root-owner-group -b "${root}" "${work}/${name}.deb" > /dev/null
+  dpkg-deb --root-owner-group -b "${root}" "${work}/${name}.deb" > /dev/null || exit 1
 }
 
 make_deb good
@@ -35,15 +36,16 @@ make_deb glfw-static +usr/lib/libglfw3.a
 make_deb glfw-config +usr/lib/cmake/glfw3/glfw3Config.cmake
 make_deb no-icon -usr/share/icons/hicolor/256x256/apps/Engine_logo.png
 
-check "the good layout passes" bash "${gate}" "${work}/good.deb"
-check "a desktop entry under /usr/usr fails" bash -c "! bash '${gate}' '${work}/doubled.deb' >/dev/null"
-check "GLFW's headers fail" bash -c "! bash '${gate}' '${work}/glfw-headers.deb' >/dev/null"
-check "GLFW's static library fails" bash -c "! bash '${gate}' '${work}/glfw-static.deb' >/dev/null"
-check "GLFW's CMake package fails" bash -c "! bash '${gate}' '${work}/glfw-config.deb' >/dev/null"
-check "a missing icon fails" bash -c "! bash '${gate}' '${work}/no-icon.deb' >/dev/null"
-
-if [ "${fails}" -gt 0 ]; then
-  printf '%d of the deb layout checks failed\n' "${fails}"
-  exit 1
-fi
-printf 'check-deb-layout: all checks passed\n'
+t_case "the good layout passes"
+t_assert_rc 0 bash "${gate}" "${work}/good.deb"
+t_case "a desktop entry under /usr/usr fails"
+t_assert_rc 1 bash "${gate}" "${work}/doubled.deb"
+t_case "GLFW's headers fail"
+t_assert_rc 1 bash "${gate}" "${work}/glfw-headers.deb"
+t_case "GLFW's static library fails"
+t_assert_rc 1 bash "${gate}" "${work}/glfw-static.deb"
+t_case "GLFW's CMake package fails"
+t_assert_rc 1 bash "${gate}" "${work}/glfw-config.deb"
+t_case "a missing icon fails"
+t_assert_rc 1 bash "${gate}" "${work}/no-icon.deb"
+t_summary
