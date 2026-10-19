@@ -62,6 +62,10 @@ the GitHub releases themselves.
   family's. The `custom.css` symlink went; `beschleunigerballett.css` keeps the dark hero. The API
   tree view's 176 dead anchors (Exhale links its labels with their case kept, docutils lowercases
   the ids) now point at the ids.
+- **The fourteen hand-written guides are on the site** (2026-10-19). `docs/*.md` (path tracing,
+  clouds, the shader pipeline, GPU golden testing, …) moved into `docs/source/` and its toctree,
+  where Sphinx never read them before. Every link and code pointer to them follows, the
+  `BuildIntegrity` checks that read their markers included; their links into the hub go to GitHub.
 
 ## [1.5.2] - 2026-10-17
 

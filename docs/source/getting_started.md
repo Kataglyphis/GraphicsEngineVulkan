@@ -113,7 +113,7 @@ pwsh -ExecutionPolicy Bypass -File .\scripts\windows\Build-Windows-Container.ps1
 
 - The script always uses Stevedore's `docker.exe`; `nerdctl` is not usable for builds or runs on Windows.
 - Process isolation is the default, so the container sees all host CPUs.
-- By default the sources stream into a reusable container via tar, and the build trees and logs stream back into the working tree; `-UseBindMount` bind-mounts the repo instead. On a Dev Drive the bind mount needs the container filesystem filters allow-listed once, elevated, then a reboot. The command, its one-quoted-argument trap, verification and revert: [`third_party/ANTfrastructure/docs/windows-container-build-performance.md`](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/windows-container-build-performance.md#transport-b--bind-mount-dev-drive-needs-setup). This repo's measured transport numbers and incremental-build wiring: `docs/container-build-caching.md` (on this Dev Drive host the tar-pipe measured faster than the bind mount; measure before switching).
+- By default the sources stream into a reusable container via tar, and the build trees and logs stream back into the working tree; `-UseBindMount` bind-mounts the repo instead. On a Dev Drive the bind mount needs the container filesystem filters allow-listed once, elevated, then a reboot. The command, its one-quoted-argument trap, verification and revert: [`third_party/ANTfrastructure/docs/windows-container-build-performance.md`](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/windows-container-build-performance.md#transport-b--bind-mount-dev-drive-needs-setup). This repo's measured transport numbers and incremental-build wiring: [`container-build-caching.md`](container-build-caching.md) (on this Dev Drive host the tar-pipe measured faster than the bind mount; measure before switching).
 - Builds are supported against the recorded submodule pins; restore them with `git submodule update --checkout --recursive`. The Windows scripts resolve PowerShell modules from the `third_party/ANTfrastructure` submodule first, then from this project's `scripts/windows/modules`, which holds no copy of an upstream module (see `scripts/windows/Resolve-BuildModule.ps1`). When bumping `third_party/FUZZTEST`, keep `ABSL_TAG` in `third_party/CMakeLists.txt` >= FuzzTest's own Abseil pin (see `AGENTS.md`).
 
 ## Packaging
@@ -146,7 +146,7 @@ CI fetches the certificate over WebDAV instead of committing it: `Build-Windows.
 
 Shaders are written in [Slang](https://shader-slang.com/) under
 `Resources/ShadersSlang/`. The build scripts compile them to SPIR-V (C++) and
-WGSL (Rust). Details: `docs/shader-build-pipeline.md`.
+WGSL (Rust). Details: [`shader-build-pipeline.md`](shader-build-pipeline.md).
 
 ## Troubleshooting
 

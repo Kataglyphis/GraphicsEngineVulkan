@@ -209,13 +209,13 @@ A clean run has zero `SKIP: no GPU` lines in the output.
 
 ## The verification loop for render/device changes
 
-The canonical per-unit verification pattern; `AGENTS.md` and `docs/cpp-renderer-improvements.md`
+The canonical per-unit verification pattern; `AGENTS.md` and `docs/source/cpp-renderer-improvements.md`
 link here. For a behaviour-preserving refactor of the record path, a pipeline, a device feature,
 an image transition, or the loader upload path:
 
 1. Build in the container: `scripts/windows/Build-Windows-Container.ps1
    -Configurations 'clangcl-debug'` (tar-pipe by default; a bind mount on a Dev Drive needs its
-   filters allow-listed and measured slower, see `docs/container-build-caching.md`).
+   filters allow-listed and measured slower, see `docs/source/container-build-caching.md`).
    **Fresh-container rule:** `-FreshContainer` (after deleting the local build tree) is required
    after ANY module-interface change, or stale BMIs can ASan-fault at member init. That covers
    `.ixx` member edits AND plain shared headers whose structs cross module boundaries
@@ -244,8 +244,8 @@ run the compile script once before the engine has anything to load
 
 ## Writing a new golden test — cautions learned the hard way
 
-The single home for these instrument cautions; `docs/cpp-renderer-improvements.md`,
-`docs/path-tracing.md` and the suite's one-line comments link here. The expensive mistakes:
+The single home for these instrument cautions; `docs/source/cpp-renderer-improvements.md`,
+`docs/source/path-tracing.md` and the suite's one-line comments link here. The expensive mistakes:
 
 - **A validation counter must start before the frames it judges.** The layer reports one
   message id ten times, then goes quiet (its `duplicate_message_limit`), and every sync hazard

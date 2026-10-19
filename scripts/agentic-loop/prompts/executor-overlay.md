@@ -69,7 +69,7 @@ adapter is present.
 ## Shaders
 
 If you touch any shader source, **recompile shaders** before trusting a rendered
-measurement. Stale SPIR-V is a known trap — see `docs/shader-build-pipeline.md`.
+measurement. Stale SPIR-V is a known trap — see `docs/source/shader-build-pipeline.md`.
 
 ## Blocked tasks in this repo
 

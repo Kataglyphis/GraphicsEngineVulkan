@@ -1,4 +1,4 @@
-// Structure only, never exact pixels; see docs/gpu-golden-testing.md § Writing a new golden test.
+// Structure only, never exact pixels; see docs/source/gpu-golden-testing.md § Writing a new golden test.
 
 #include "EngineLoadWait.hpp"
 #include "GoldenMetrics.hpp"
@@ -313,7 +313,7 @@ class ScopedGpuTimingJsonPath
     }
 };
 
-// run-riscv64-tests.sh sets "light", a QEMU frame budget; docs/gpu-golden-testing.md § The riscv64 light variant.
+// "light" is run-riscv64-tests.sh's QEMU frame budget; docs/source/gpu-golden-testing.md § The riscv64 light variant.
 int path_traced_history(int full_frames, int light_frames)
 {
     const char *value = std::getenv("KATAGLYPHIS_PT_GOLDEN_VARIANT");
@@ -379,7 +379,7 @@ TEST(GoldenRender, RendersNonBlankFrame)
                            << " distinct luminance levels present; the frame looks like a flat fill.";
 }
 
-// Disabled: writes PNGs and asserts nothing; see docs/gpu-golden-testing.md § Writing a new golden test.
+// Disabled: writes PNGs and asserts nothing; see docs/source/gpu-golden-testing.md § Writing a new golden test.
 TEST(GoldenRender, DISABLED_DumpsFrameToPng)
 {
     SKIP_WITHOUT_GPU();
@@ -498,7 +498,7 @@ TEST(GoldenRender, DISABLED_DumpsFrameToPng)
     write("-golden-order-delta", golden_delta);
 }
 
-// Disabled: measures what each PCF radius changes on the rig, behind MAX_PCF_RADIUS (docs/gpu-golden-testing.md).
+// Disabled: measures what each PCF radius changes on the rig (MAX_PCF_RADIUS, docs/source/gpu-golden-testing.md).
 TEST(GoldenRender, DISABLED_PcfRadiusSweepMeasuresTheShadowRig)
 {
     SKIP_WITHOUT_GPU();
@@ -2936,7 +2936,7 @@ TEST(GoldenRender, SwapchainRecreationKeepsRendering)
       << ", after=" << after_luma << ") - the recreated swapchain is not rendering the same scene.";
 }
 
-// A cross-frame hazard shows as a hang, not a pixel; see docs/clouds.md § Queue ownership and barriers.
+// A cross-frame hazard shows as a hang, not a pixel; see docs/source/clouds.md § Queue ownership and barriers.
 TEST(GoldenRender, CloudsAcrossManyFramesDoesNotLoseTheDevice)
 {
     SKIP_WITHOUT_GPU();

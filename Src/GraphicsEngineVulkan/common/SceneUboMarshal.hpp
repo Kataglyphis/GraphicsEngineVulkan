@@ -50,7 +50,7 @@ constexpr auto clampCloudMarchSteps(int numMarchSteps) -> int
 constexpr auto clampCloudLightMarchSteps(int numMarchStepsToLight) -> int
 { return std::clamp(numMarchStepsToLight, kMinCloudLightMarchSteps, kMaxCloudLightMarchSteps); }
 
-// Scalars: the global module fragment cannot name GUISceneSharedVars. See docs/clouds.md § UBO packing.
+// Scalars: the global module fragment cannot name GUISceneSharedVars. See docs/source/clouds.md § UBO packing.
 inline void fillSceneUboClouds(VulkanRendererInternals::SceneUBO &ubo,
   glm::vec3 meshScale,
   float densityMultiplier,

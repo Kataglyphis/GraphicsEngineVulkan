@@ -4,7 +4,7 @@ import emission;
 import material_rules;
 import normal_map;
 
-// Ray tracing callers must use the `_lod0` helpers. See docs/shader-sharing.md § What is wired today.
+// Ray tracing callers must use the `_lod0` helpers. See docs/source/shader-sharing.md § What is wired today.
 
 [vk::binding(TEXTURES_BINDING, 0)] Texture2D<float4> textures[MAX_TEXTURE_COUNT];
 [vk::binding(SAMPLER_BINDING, 0)] SamplerState textureSamplers[MAX_TEXTURE_COUNT];

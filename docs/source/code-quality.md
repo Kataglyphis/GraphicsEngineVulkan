@@ -2,7 +2,7 @@
 
 The commands, the scoping rules, the two clang-tidy traps and the cadence are
 generic and live upstream:
-[`ANTfrastructure / code-quality-tooling.md`](../third_party/ANTfrastructure/docs/code-quality-tooling.md).
+[`ANTfrastructure / code-quality-tooling.md`](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/code-quality-tooling.md).
 Read that first; this page carries only what is specific to **this** repo.
 
 The configs (`.clang-format`, `.clang-tidy`, `gcovr.cfg`) are ANTfrastructure's

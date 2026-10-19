@@ -59,18 +59,18 @@ Prerequisites, both platforms, the scenes, packaging and troubleshooting:
 | The C++ API reference (Doxygen, on the docs site) | [api/library_root](https://beschleunigerballette.jonasheinle.de/api/library_root.html) |
 | The WebGPU demo in the browser | [docs/source/webgpu_demo.md](docs/source/webgpu_demo.md) |
 | WSL2 with an NVIDIA GPU | [docs/source/wsl2_vulkan.rst](docs/source/wsl2_vulkan.rst) |
-| Shaders: the Slang to SPIR-V and WGSL build | [docs/shader-build-pipeline.md](docs/shader-build-pipeline.md) |
-| One Slang source for both renderers | [docs/shader-sharing.md](docs/shader-sharing.md) |
-| Model loading | [docs/model-loading.md](docs/model-loading.md) |
-| Path tracing | [docs/path-tracing.md](docs/path-tracing.md) |
-| Volumetric clouds | [docs/clouds.md](docs/clouds.md) |
-| GPU golden tests and synchronization validation | [docs/gpu-golden-testing.md](docs/gpu-golden-testing.md) |
-| clang-format, clang-tidy, cmake-format | [docs/code-quality.md](docs/code-quality.md) |
-| The container build's transports and caches | [docs/container-build-caching.md](docs/container-build-caching.md) |
-| The C++ engine's change log | [docs/cpp-renderer-improvements.md](docs/cpp-renderer-improvements.md) |
-| Colour-space audit | [docs/webgpu-srgb-audit.md](docs/webgpu-srgb-audit.md) |
+| Shaders: the Slang to SPIR-V and WGSL build | [docs/source/shader-build-pipeline.md](docs/source/shader-build-pipeline.md) |
+| One Slang source for both renderers | [docs/source/shader-sharing.md](docs/source/shader-sharing.md) |
+| Model loading | [docs/source/model-loading.md](docs/source/model-loading.md) |
+| Path tracing | [docs/source/path-tracing.md](docs/source/path-tracing.md) |
+| Volumetric clouds | [docs/source/clouds.md](docs/source/clouds.md) |
+| GPU golden tests and synchronization validation | [docs/source/gpu-golden-testing.md](docs/source/gpu-golden-testing.md) |
+| clang-format, clang-tidy, cmake-format | [docs/source/code-quality.md](docs/source/code-quality.md) |
+| The container build's transports and caches | [docs/source/container-build-caching.md](docs/source/container-build-caching.md) |
+| The C++ engine's change log | [docs/source/cpp-renderer-improvements.md](docs/source/cpp-renderer-improvements.md) |
+| Colour-space audit | [docs/source/webgpu-srgb-audit.md](docs/source/webgpu-srgb-audit.md) |
 | The Rust WebGPU renderer's roadmap (OxidANT) | [webgpu-renderer-roadmap.md](https://github.com/Kataglyphis/OxidANT/blob/develop/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) |
-| Third-party licences | [docs/LICENSES-README.md](docs/LICENSES-README.md) |
+| Third-party licences | [docs/source/LICENSES-README.md](docs/source/LICENSES-README.md) |
 | Literature: tutorials and papers behind the renderer | [docs/source/literature.md](docs/source/literature.md) |
 | Rules for agents and contributors, and every topic's one home | [AGENTS.md](AGENTS.md) |
 | What CI runs, and what it does not | [AGENTS.md § What CI runs](AGENTS.md#what-ci-runs-and-what-it-does-not) |

@@ -18,7 +18,7 @@ CTEST_RUN_USAGE_INTRO="Runs the BeschleunigerBallett test suite inside the Linux
 # Xvfb lets the GPU suites render on llvmpipe; xvfb-run hangs as PID 1, hence a child, not exec.
 if [[ "${1:-}" == "--virtual-display" ]]; then
   shift
-  # Sync validation rides along with the GPU suites: 921 s against 900 s on llvmpipe (docs/gpu-golden-testing.md).
+  # Sync validation rides along with the GPU suites: 921 s against 900 s on llvmpipe (docs/source/gpu-golden-testing.md).
   export VK_KHRONOS_VALIDATION_VALIDATE_SYNC=1
   xvfb-run -a -s "-screen 0 1920x1080x24" bash "${BASH_SOURCE[0]}" "$@"
   exit 0

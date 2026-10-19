@@ -100,7 +100,7 @@ mkdir -p "${GPU_SHIM_DIR}"
 info "[gpu] building the fp16 shim for shard ${RISCV64_GPU_SHARD}"
 "${RISCV64_CROSS_BIN}/riscv64-linux-gnu-clang" -shared -fPIC -O2 "${SCRIPT_DIR}/../riscv64/fp16_helpers.c" -o "${GPU_SHIM_DIR}/libkata_fp16_helpers.so"
 test -f "${GPU_SHIM_DIR}/libkata_fp16_helpers.so" || { err "[gpu] the shim did not build - refusing an unshimmed run"; exit 1; }
-# The full path-traced histories outrun 300 min on a slow runner; docs/gpu-golden-testing.md § The riscv64 light variant.
+# The full path-traced histories outrun 300 min on a slow runner; docs/source/gpu-golden-testing.md § The riscv64 light variant.
 export KATAGLYPHIS_PT_GOLDEN_VARIANT="${KATAGLYPHIS_PT_GOLDEN_VARIANT:-light}"
 info "[gpu] path-traced goldens: KATAGLYPHIS_PT_GOLDEN_VARIANT=${KATAGLYPHIS_PT_GOLDEN_VARIANT}"
 # --no-tests=error: a shard whose filter matches nothing must fail, not pass empty; -V keeps a passing test's log, variant line included.

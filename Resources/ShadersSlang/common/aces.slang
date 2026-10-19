@@ -11,7 +11,7 @@ float3 aces_tonemap(float3 x)
     return clamp((x * (a * x + b)) / (x * (c * x + d) + e), float3(0.0), float3(1.0));
 }
 
-// Exact IEC 61966-2-1 sRGB encode, not pow(x, 1/2.2), which is visibly wrong in the darks (docs/webgpu-srgb-audit.md).
+// Exact IEC 61966-2-1 sRGB encode; pow(x, 1/2.2) is visibly wrong in the darks (docs/source/webgpu-srgb-audit.md).
 float3 linear_to_srgb(float3 c)
 {
     float3 low = c * 12.92;

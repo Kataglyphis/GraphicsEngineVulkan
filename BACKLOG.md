@@ -1,7 +1,7 @@
 # BACKLOG
 
 The single list of open work across the project, sized commitments and unsized ideas
-together. Per-area status lives in `docs/` (`cpp-renderer-improvements.md`,
+together. Per-area status lives in `docs/source/` (`cpp-renderer-improvements.md`,
 `shader-sharing.md`) and, for the Rust WebGPU renderer, in OxidANT's
 `third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md`; this file is
 what is still to do. Finished work leaves this file; its history is in git.
@@ -18,7 +18,7 @@ history lives in git).
 **GPU verification is no longer blocked on the host.** Several entries used to wait for a
 console session on the RX 9070 XT. Since 2026-09-29 the Linux lane runs `GoldenRender.*` and
 `Integration.*` on llvmpipe, with sync validation since 2026-10-06, and Windows x64 runs its
-Release suite on lavapipe (`docs/gpu-golden-testing.md`). Run 37486873224 passed every test
+Release suite on lavapipe (`docs/source/gpu-golden-testing.md`). Run 37486873224 passed every test
 those entries named: the path-tracing, ray-tracing and cloud goldens and
 `Integration.RenderModesSelectableInGui`. Only an RX 9070 XT-specific fault still needs the
 host.
@@ -45,7 +45,7 @@ host.
   pass on llvmpipe in CI. Run
   `commitTestSuite.exe --gtest_filter='GoldenRender.PathTracing*:GoldenRender.GuiInputSweepNeverCrashesOrLosesTheDevice:Integration.RenderModesSelectableInGui'`
   on the host. Once it passes, retire the "Known issue" section of
-  `docs/gpu-golden-testing.md`, with the `excluded=3` count and the `--gtest_filter` line
+  `docs/source/gpu-golden-testing.md`, with the `excluded=3` count and the `--gtest_filter` line
   `buildIntegritySuite.cpp` pins in it.
 - **glTF loader gaps** (M/L): MASK alpha and `KHR_texture_transform` are done. Left:
   - *BLEND and sorting* (L): a sorted transparent pass through `PipelineBuilder`'s existing
@@ -105,7 +105,7 @@ host.
 - [ ] **Every test on every arch lane** (owner goal 2026-10-01; what is left of it).
   - **The Rust renderer tests run on Linux only.** Windows and riscv64 compile the crate
     (the bridge, the wasm demo) but leave `cargo test` to OxidANT's own lanes.
-  - **The GUI input sweep** stays out of every CI lane for time (`docs/gpu-golden-testing.md`).
+  - **The GUI input sweep** stays out of every CI lane for time (`docs/source/gpu-golden-testing.md`).
   - By design, not gaps: TSan is Linux-only (clang-cl has none), coverage is measured on
     Linux only, the Pester suites test Windows scripts on Windows x64,
     `FileReaderUnit.ReadersRefuseCharacterDevicesInsteadOfBlocking` is POSIX-only, and
@@ -131,7 +131,7 @@ committed to.
   tap against the centre texel's depth with one bias, so on a receiver sloped against the
   light the outer taps shadow it. On the shadow rig, lit surfaces far from any shadow darken
   from radius 2 (the default: 15 % of them by 3+ levels), growing with the radius
-  (docs/gpu-golden-testing.md § The PCF radius bound, measured). Offsetting each tap's
+  (docs/source/gpu-golden-testing.md § The PCF radius bound, measured). Offsetting each tap's
   reference depth by the receiver's depth slope removes it. The shadow goldens will move;
   `DISABLED_PcfRadiusSweepMeasuresTheShadowRig` shows the effect.
 - **Unify the two shadow-bias formulas.** `cascaded_shadow.slang` uses
@@ -198,7 +198,7 @@ committed to.
 ## Testing and performance
 
 - **Headless assertions for the shadow path** beyond the single darkened-pixel ratio, and for
-  the post-processing chain. Both need careful oracle design (`docs/gpu-golden-testing.md`
+  the post-processing chain. Both need careful oracle design (`docs/source/gpu-golden-testing.md`
   on why the tonemap is hard to isolate).
 - **Benchmarks still missing**: `record_commands` wall time per render mode at a fixed scene
   and camera, and the upload path (`createBufferAndUploadVectorOnDevice`) for a few payload
@@ -215,7 +215,7 @@ committed to.
   release: the only configuration where the benchmarks mean something, and it builds
   `perfTestSuite.exe`.
 - **Host-GPU sync validation** with `scripts/windows/Invoke-SyncValidation.ps1`
-  (`docs/gpu-golden-testing.md`). Linux and Windows x64 CI validate on llvmpipe/lavapipe on
+  (`docs/source/gpu-golden-testing.md`). Linux and Windows x64 CI validate on llvmpipe/lavapipe on
   every push; the script covers the real GPU.
 - **Release build**: the only configuration with logging compiled out and validation layers
   absent.
@@ -255,7 +255,7 @@ committed to.
   configure; measure before assuming it is free.
 - **Host `cmake` is 3.29 and cannot read `CMakePresets.json`** (`version: 10`), and host
   `ctest` cannot read the build trees; run the gtest executables directly.
-- **No host LLVM** (since 2026-09-25); `docs/code-quality.md`'s clang-tidy commands need one.
+- **No host LLVM** (since 2026-09-25); `docs/source/code-quality.md`'s clang-tidy commands need one.
 - **Swapchain screenshots read black while the desktop session is locked**, with no error.
   Take a control capture first. The offscreen capture path the goldens use is not affected.
 - **Restoring a file with `Move-Item` keeps its old mtime**, so ninja can skip the rebuild.

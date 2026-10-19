@@ -5,7 +5,7 @@ import material_fetch;
 import material_rules;
 import material_textures;
 
-// Ray-query path tracer, SPIR-V only (WebGPU has no ray query). See docs/path-tracing.md.
+// Ray-query path tracer, SPIR-V only (WebGPU has no ray query). See docs/source/path-tracing.md.
 
 struct PushConstantPathTracing
 {

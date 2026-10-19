@@ -8,7 +8,7 @@
   `TESTS: passed=<n> failed=<n> skipped=<n>` line; a failure, a skip or no pass at all exits 1. With the validation layer
   -StageTests puts in vulkan-layers\ beside the suite (x64), the Release suite validates, sync included, and a test that
   logs a VUID or SYNC-HAZARD fails. The Windows x64 lane's host step and the arm64 lane's GPU job call it (AGENTS.md
-  § What CI runs, docs/gpu-golden-testing.md).
+  § What CI runs, docs/source/gpu-golden-testing.md).
 #>
 [CmdletBinding()]
 param(
@@ -105,7 +105,7 @@ $layerJson = Join-Path $layerDir 'VkLayer_khronos_validation.json'
 $validating = Test-Path -LiteralPath $layerJson
 $layerKey = $null
 if ($validating) {
-  # An elevated loader ignores VK_ADD_LAYER_PATH, so the run registers the layer (docs/gpu-golden-testing.md).
+  # An elevated loader ignores VK_ADD_LAYER_PATH, so the run registers the layer (docs/source/gpu-golden-testing.md).
   $identity = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
   $elevated = $identity.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
   $layerKey = if ($elevated) { 'HKLM:\SOFTWARE\Khronos\Vulkan\ExplicitLayers' } else { 'HKCU:\SOFTWARE\Khronos\Vulkan\ExplicitLayers' }

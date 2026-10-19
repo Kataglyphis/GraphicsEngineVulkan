@@ -71,7 +71,7 @@ With no SVGs the generated page is a placeholder; the docs build does not fail.
 
 ## Authoring Guidelines
 
-- Keep the repository root README a short overview: what the project is, the quick start, and one row per guide ([the family's README rule](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/repository-family.md#the-readme-rule)). Everything else has a page here or in `docs/`.
+- Keep the repository root README a short overview: what the project is, the quick start, and one row per guide ([the family's README rule](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/repository-family.md#the-readme-rule)). Everything else has a page here.
 - Keep Sphinx pages task-focused and stable.
 - Prefer relative links inside the docs tree.
 - Treat generated artifacts as optional unless a page is about generated reference material.

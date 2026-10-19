@@ -7,6 +7,7 @@ Build and maintenance guide for BeschleunigerBallett.
 
 - Project overview and repository map
 - Build, run, packaging, and docs workflow
+- Engine guides: shaders, model loading, path tracing, clouds, GPU golden tests
 - Optional generated API and Graphviz reference material
 
 .. grid:: 2
@@ -60,6 +61,30 @@ Build and maintenance guide for BeschleunigerBallett.
    wsl2_vulkan
    webgpu_demo.md
    literature.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Engine guides
+
+   shader-build-pipeline.md
+   shader-sharing.md
+   model-loading.md
+   path-tracing.md
+   clouds.md
+   webgpu-srgb-audit.md
+   gpu-golden-testing.md
+   code-quality.md
+   container-build-caching.md
+   cpp-renderer-improvements.md
+   LICENSES-README.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Moved to OxidANT
+
+   webgpu-renderer-roadmap.md
+   webgpu-gltf-rust-plan.md
+   renderer-bounds-invariant.md
 
 .. The Exhale-generated API tree. The card above links to it, but a card is not
    a toctree: without this entry Sphinx warns "document isn't included in any

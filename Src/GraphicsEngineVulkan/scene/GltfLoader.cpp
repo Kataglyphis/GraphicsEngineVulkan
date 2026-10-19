@@ -625,7 +625,7 @@ bool GltfLoader::parseCpu(const std::string &modelFile)
     const auto fallbackMaterial = static_cast<unsigned int>(materials.size());
     materials.push_back(neutralMaterial());
 
-    // Must change together with gltf_loader.rs. See docs/model-loading.md § Which nodes a glTF load walks.
+    // Must change together with gltf_loader.rs. See docs/source/model-loading.md § Which nodes a glTF load walks.
     const cgltf_scene *scene =
       data->scene != nullptr ? data->scene : (data->scenes_count > 0 ? &data->scenes[0] : nullptr);
     if (scene != nullptr) {

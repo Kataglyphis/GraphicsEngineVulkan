@@ -6,7 +6,7 @@ BeschleunigerBallett is a renderer and graphics-engine playground for Vulkan, a 
 
 - Vulkan renderer (C++23 modules) with forward + deferred rasterization, ray tracing, path tracing, PBR, cascaded shadow maps (consumed by both lighting paths), skybox, volumetric clouds, OBJ and glTF 2.0/GLB loading, and mip mapping
 - VMA-backed memory, fence-synced uploads with a persistent staging buffer, a persisted `VkPipelineCache`, and fail-fast Vulkan error handling (exceptions are disabled project-wide)
-- Companion Rust WebGPU renderer (`third_party/OxidANT/crates/webgpu_renderer`): glTF 2.0/GLB, PBR + IBL, CSM, SSAO, bloom, skinning, animations, LOD — runs natively and in the browser; shares Slang shader sources with the C++ Vulkan renderer (see `docs/shader-sharing.md`)
+- Companion Rust WebGPU renderer (`third_party/OxidANT/crates/webgpu_renderer`): glTF 2.0/GLB, PBR + IBL, CSM, SSAO, bloom, skinning, animations, LOD — runs natively and in the browser; shares Slang shader sources with the C++ Vulkan renderer (see [`shader-sharing.md`](shader-sharing.md))
 - Tooling: CMake presets, CI, code coverage, benchmarking, fuzzing (targets for OBJ and glTF parsing, texture decoding, the shader-file reader and the scene config), packaging, Sphinx, Doxygen, Graphviz
 - Linux and Windows as the primary development targets
 
@@ -21,8 +21,8 @@ BeschleunigerBallett is a renderer and graphics-engine playground for Vulkan, a 
 | `scripts/windows/` | Windows build, run and validation helpers |
 | `scripts/agentic-loop/` | Planner/executor loop config, runners and prompt overlays |
 | `Test/` | Tests |
-| `docs/` | Engineering docs: roadmaps, audits, pipeline notes; see the Docs table in `AGENTS.md` for the full inventory |
-| `docs/source/` | Hand-written Sphinx pages |
+| `docs/source/` | This site: the guides, roadmaps, audits and pipeline notes; the Docs table in `AGENTS.md` lists them |
+| `docs/packaging/` | The Linux desktop entry and AppStream file the packages install |
 | `Documents/` | Generated PDF and other reference artifacts |
 | `third_party/` | Third-party dependencies and submodules |
 

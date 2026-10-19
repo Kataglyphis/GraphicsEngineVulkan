@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 from docutils.nodes import make_id
+from pygments.lexers.special import TextLexer
 
 # An editable install from the hub's DocumANTation submodule (requirements.txt).
 from sphinx_kataglyphis import setup_theme
@@ -118,3 +119,5 @@ def _exhale_tree_anchors(app, relative_path, parent_docname, content):
 
 def setup(app):
     app.connect("include-read", _exhale_tree_anchors)
+    # GitHub draws a mermaid fence (model-loading.md); the site shows its source instead of failing -W.
+    app.add_lexer("mermaid", TextLexer)

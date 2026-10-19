@@ -100,7 +100,7 @@ asan.log*
 .venv-docs/
 pipeline_cache/
 
-# slangc output from Build-SlangShaders.ps1; see docs/shader-sharing.md.
+# slangc output from Build-SlangShaders.ps1; see docs/source/shader-sharing.md.
 Resources/ShadersSlang/build/
 
 # gtest discovery JSON the container build drops in the repo root

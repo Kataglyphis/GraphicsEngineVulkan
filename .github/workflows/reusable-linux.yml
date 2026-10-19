@@ -91,7 +91,7 @@ jobs:
         with:
           key: ${{ runner.arch }}-clang-debug
 
-      # The only lane running the GPU suites (llvmpipe, both arches); the GUI sweep is excluded for time, docs/gpu-golden-testing.md.
+      # The only lane running the GPU suites (llvmpipe, both arches); the GUI sweep is excluded for time, docs/source/gpu-golden-testing.md.
       - name: Run Unit/Integration tests
         uses: Kataglyphis/ANTfrastructure/.github/actions/run-in-linux-container@develop
         with:

@@ -52,6 +52,6 @@ Read `AGENTS.md`. In particular, do not propose enabling exceptions
 
 ## Docs to reference rather than restate
 
-`docs/cpp-renderer-improvements.md` for engine change history,
-`docs/shader-build-pipeline.md` for anything shader-related,
-`docs/gpu-golden-testing.md` for render-output verification.
+`docs/source/cpp-renderer-improvements.md` for engine change history,
+`docs/source/shader-build-pipeline.md` for anything shader-related,
+`docs/source/gpu-golden-testing.md` for render-output verification.

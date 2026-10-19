@@ -17,7 +17,7 @@ export import kataglyphis.vulkan.mesh_range;
 
 export namespace Kataglyphis {
 
-/// docs/model-loading.md's map_Kd resolution rule: normalise `\` to `/` (a
+/// docs/source/model-loading.md's map_Kd resolution rule: normalise `\` to `/` (a
 /// Windows-authored .mtl must still resolve when the path is otherwise
 /// portable), then try `<baseDir>/<mapKd>` beside the .mtl, then
 /// `<baseDir>/textures/<mapKd>`; on neither existing, return the beside-the-

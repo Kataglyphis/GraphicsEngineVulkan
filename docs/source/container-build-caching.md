@@ -2,7 +2,7 @@
 
 How builds in *this repo* stay fast; `AGENTS.md` links here. The mechanism, its safety rails and
 the traps behind them are the hub's:
-[`windows-container-build-performance.md`](../third_party/ANTfrastructure/docs/windows-container-build-performance.md).
+[`windows-container-build-performance.md`](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/windows-container-build-performance.md).
 
 ## Measured here (2026-07-19, `clangcl-debug`)
 
@@ -22,7 +22,7 @@ dominant term. The incrementally built binaries passed 21/21 commit tests and
 transport but measured **slower** (2026-07-19): 32.7 s ninja / 159 s wall for the same no-change
 build, the build tree then sitting on the Dev Drive. `-UseBindMount` opts in; measure before
 switching
-([why, and when it inverts](../third_party/ANTfrastructure/docs/windows-container-build-performance.md#why-the-bind-mount-lost-here)).
+([why, and when it inverts](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/windows-container-build-performance.md#why-the-bind-mount-lost-here)).
 
 ## What is actually cached
 
@@ -50,7 +50,7 @@ measurement is in ANTfrastructure).
 `Build-Windows-Container.ps1` compares the executables in the container with those that reached the
 host and **fails the build** if the container produced none or one did not arrive; both halves
 once failed silently here
-([safety rails](../third_party/ANTfrastructure/docs/windows-container-build-performance.md#safety-rails-this-needs)).
+([safety rails](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/windows-container-build-performance.md#safety-rails-this-needs)).
 Do not "fix" that check.
 
 ## Gotchas

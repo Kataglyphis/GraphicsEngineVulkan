@@ -394,7 +394,7 @@ std::vector<std::string> collect_suite_test_names(const fs::path &tests_dir, con
     return names;
 }
 
-// The five integers of docs/gpu-golden-testing.md's golden-counts marker line.
+// The five integers of docs/source/gpu-golden-testing.md's golden-counts marker line.
 struct GoldenCountsMarker
 {
     int defined = 0;
@@ -479,7 +479,7 @@ std::optional<std::vector<std::pair<std::string, std::string>>> parse_golden_tes
     return std::vector<std::pair<std::string, std::string>>{};
 }
 
-// Names in docs/path-tracing.md's pt-goldens marker; std::nullopt if missing, malformed or empty, so deletion fails.
+// Names in docs/source/path-tracing.md's pt-goldens marker; nullopt if missing, malformed or empty, so deletion fails.
 std::optional<std::vector<std::string>> parse_pt_goldens_marker(const fs::path &doc_path)
 {
     const auto lines = readFileLines(doc_path);
@@ -1924,7 +1924,7 @@ TEST(BuildIntegrity, CheckedInWgslHasNoHandEdits)
       << joinViolations(hand_edits);
 }
 
-// CI backstop for docs/shader-build-pipeline.md § The combined WGSL emit needs slangc ≥ 2026.8.
+// CI backstop for docs/source/shader-build-pipeline.md § The combined WGSL emit needs slangc ≥ 2026.8.
 TEST(BuildIntegrity, CheckedInWgslVaryingStructsCarryLocations)
 {
     const fs::path repo_root = repoRoot();
@@ -5248,7 +5248,7 @@ TEST(BuildIntegrity, GoldenTestCountsInDocsMatchTheSuite)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "gpu-golden-testing.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "gpu-golden-testing.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -5308,13 +5308,13 @@ TEST(BuildIntegrity, GoldenTestCountsInDocsMatchTheSuite)
       << joinViolations(bare_copies);
 }
 
-// Pins docs/path-tracing.md's pt-goldens marker to the PathTracing and Raytraced goldens the suite defines.
+// Pins docs/source/path-tracing.md's pt-goldens marker to the PathTracing and Raytraced goldens the suite defines.
 TEST(BuildIntegrity, PathTracingDocMatchesTheGoldenSuite)
 {
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "path-tracing.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "path-tracing.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -5403,13 +5403,13 @@ std::optional<int> parse_max_texture_count_header(const fs::path &header_path)
     return std::nullopt;
 }
 
-// Pins docs/model-loading.md's max-texture-count marker to the header constant.
+// Pins docs/source/model-loading.md's max-texture-count marker to the header constant.
 TEST(BuildIntegrity, MaxTextureCountInDocsMatchesTheHeader)
 {
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "model-loading.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "model-loading.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -5452,8 +5452,8 @@ TEST(BuildIntegrity, SourceAndDocsCiteSymbolsNotLineNumbers)
         }
     };
 
-    scan_file(repo_root / "docs" / "model-loading.md");
-    scan_file(repo_root / "docs" / "clouds.md");
+    scan_file(repo_root / "docs" / "source" / "model-loading.md");
+    scan_file(repo_root / "docs" / "source" / "clouds.md");
 
     static constexpr std::array<const char *, 3> kSrcExtensions{ ".cpp", ".hpp", ".ixx" };
     std::error_code error;
@@ -5483,8 +5483,8 @@ TEST(BuildIntegrity, SourceAndDocsCiteSymbolsNotLineNumbers)
     EXPECT_TRUE(violations.empty())
       << violations.size()
       << " file:line location(s), including the same-file `:NNN` shorthand, across Src/, "
-         "Resources/ShadersSlang/, Test/ and docs/model-loading.md, which rot within days - cite the function or "
-         "member name instead:"
+         "Resources/ShadersSlang/, Test/ and docs/source/model-loading.md, which rot within days - cite the "
+         "function or member name instead:"
       << joinViolations(violations);
 }
 
@@ -5494,7 +5494,7 @@ TEST(BuildIntegrity, ModelLoadingDocDocumentsEveryObjMaterialMember)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "model-loading.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "model-loading.md";
     const auto doc_content = readFileText(doc_path);
     ASSERT_TRUE(doc_content.has_value()) << "could not open " << doc_path.string();
 
@@ -5561,7 +5561,7 @@ TEST(BuildIntegrity, ModelLoadingDocSrgbRowCoversEveryObjTextureDirective)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "model-loading.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "model-loading.md";
     const auto doc_content = readFileText(doc_path);
     ASSERT_TRUE(doc_content.has_value()) << "could not open " << doc_path.string();
 
@@ -5653,7 +5653,7 @@ TEST(BuildIntegrity, ShaderSharingDocCoversEveryKnownLoaderDivergence)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "shader-sharing.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "shader-sharing.md";
     const auto doc_content = readFileText(doc_path);
     ASSERT_TRUE(doc_content.has_value()) << "could not open " << doc_path.string();
 
@@ -5721,7 +5721,7 @@ TEST(BuildIntegrity, FormatDriftDenominatorMatchesTheTrackedSourceCount)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "code-quality.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "code-quality.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -5737,7 +5737,7 @@ TEST(BuildIntegrity, FormatDriftDenominatorMatchesTheTrackedSourceCount)
     EXPECT_EQ(static_cast<std::size_t>(*doc_value), actual_count)
       << doc_path.string() << "'s format-drift-denominator marker says " << *doc_value << " but Src/ + Test/ "
       << "currently contain " << actual_count
-      << " tracked C/C++ sources - re-run the clang-format drift measurement in docs/code-quality.md's \"Known "
+      << " tracked C/C++ sources - re-run the clang-format drift measurement in docs/source/code-quality.md's \"Known "
          "state\" section and update both the marker and the X-of-Y prose (this test only pins the "
          "denominator, not the deviating count).";
 }
@@ -5848,7 +5848,7 @@ TEST(BuildIntegrity, ShaderSharingDocMatchesTheManifestTargets)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "shader-sharing.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "shader-sharing.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -5912,7 +5912,7 @@ TEST(BuildIntegrity, SharedModuleTargetsTableMatchesTheImportGraph)
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
     const fs::path slang_root = slangRoot();
 
-    const fs::path doc_path = repo_root / "docs" / "shader-sharing.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "shader-sharing.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -6380,7 +6380,7 @@ TEST(BuildIntegrity, CloudBoxInverseIsFormedInTheShaderNotOnTheHost)
       << (clouds_match.empty() ? "" : clouds_match.str())
       << "\" - it is formed in clouds_main, not precomputed on the host";
 
-    const fs::path clouds_doc_path = repo_root / "docs" / "clouds.md";
+    const fs::path clouds_doc_path = repo_root / "docs" / "source" / "clouds.md";
     const auto clouds_doc_contents_opt = readFileText(clouds_doc_path);
     ASSERT_TRUE(clouds_doc_contents_opt.has_value()) << "missing " << clouds_doc_path.string();
     const std::string &clouds_doc_contents = *clouds_doc_contents_opt;
@@ -6443,7 +6443,7 @@ struct ParsedCloudUboRow
     std::string component;
 };
 
-// docs/clouds.md's cloud-ubo marker table; std::nullopt without the markers.
+// docs/source/clouds.md's cloud-ubo marker table; std::nullopt without the markers.
 std::optional<std::vector<ParsedCloudUboRow>> parse_cloud_ubo_doc_table(const fs::path &doc_path)
 {
     const auto lines = readFileLines(doc_path);
@@ -6476,7 +6476,7 @@ std::optional<std::vector<ParsedCloudUboRow>> parse_cloud_ubo_doc_table(const fs
     return rows;
 }
 
-// docs/clouds.md's cloud-constants marker table; std::nullopt without the markers.
+// docs/source/clouds.md's cloud-constants marker table; std::nullopt without the markers.
 std::optional<std::map<std::string, long long>> parse_cloud_constants_doc_table(const fs::path &doc_path)
 {
     const auto lines = readFileLines(doc_path);
@@ -6513,7 +6513,7 @@ TEST(BuildIntegrity, CloudsDocTablesMatchTheirSources)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "clouds.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "clouds.md";
     if (!fs::exists(doc_path)) {
         GTEST_SKIP() << "could not open " << doc_path.string() << " - not running from the repo root?";
     }
@@ -8659,7 +8659,7 @@ TEST(BuildIntegrity, RendererImprovementLogDoesNotAskForShippedWork)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "cpp-renderer-improvements.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "cpp-renderer-improvements.md";
     const fs::path renderer_path = repo_root / "Src" / "GraphicsEngineVulkan" / "renderer" / "VulkanRenderer.cpp";
 
     const auto doc_content_opt = readFileText(doc_path);
@@ -9430,7 +9430,7 @@ TEST(BuildIntegrity, TheTwoRasterGeometryPassesShareOneVertexStage)
     }
 }
 
-// TMin, TMax and the sky gradient assume a unit bounce direction (see docs/path-tracing.md's Bounce bullet).
+// TMin, TMax and the sky gradient assume a unit bounce direction (see docs/source/path-tracing.md's Bounce bullet).
 TEST(BuildIntegrity, PathTracingBounceDirectionIsNormalized)
 {
     const fs::path repo_root = repoRoot();
@@ -9466,7 +9466,7 @@ TEST(BuildIntegrity, ShaderSharingDocCoversEveryObjMaterialFieldPerShadingPath)
     ASSERT_GT(members.size(), 3U) << "found only " << members.size() << " ObjMaterial member(s) in "
                                   << scene_types_path.string() << " - the parser itself is broken";
 
-    const fs::path doc_path = repo_root / "docs" / "shader-sharing.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "shader-sharing.md";
     const auto doc_content = readFileText(doc_path);
     ASSERT_TRUE(doc_content.has_value()) << "could not open " << doc_path.string();
 
@@ -9887,7 +9887,7 @@ TEST(BuildIntegrity, KeyBindingsPanelListsEveryBinding)
       << joinViolations(missing_from_panel);
 }
 
-// Parses docs/cpp-renderer-improvements.md's `<!-- commit-suite-test-count: N -->` marker.
+// Parses docs/source/cpp-renderer-improvements.md's `<!-- commit-suite-test-count: N -->` marker.
 std::optional<int> parse_commit_suite_test_count_marker(const fs::path &doc_path)
 {
     const auto lines = readFileLines(doc_path);
@@ -9927,7 +9927,7 @@ TEST(BuildIntegrity, ImprovementLogQuotesTheCurrentCommitSuiteTestCount)
     const fs::path repo_root = repoRoot();
     ASSERT_FALSE(repo_root.empty()) << "could not locate the repository root";
 
-    const fs::path doc_path = repo_root / "docs" / "cpp-renderer-improvements.md";
+    const fs::path doc_path = repo_root / "docs" / "source" / "cpp-renderer-improvements.md";
     const auto marker_value = parse_commit_suite_test_count_marker(doc_path);
     ASSERT_TRUE(marker_value.has_value())
       << doc_path.string()

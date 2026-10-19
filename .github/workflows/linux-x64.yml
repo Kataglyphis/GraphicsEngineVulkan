@@ -11,7 +11,7 @@ on:
       - 'docs/**'
   pull_request:
     branches: [main, develop]
-  # Tests a docs-only fix the suite pins (docs/gpu-golden-testing.md's golden counts), which paths-ignore skips.
+  # Tests a docs-only fix the suite pins (docs/source/gpu-golden-testing.md's golden counts), which paths-ignore skips.
   workflow_dispatch:
     inputs:
       split-jobs:

@@ -13,17 +13,17 @@ Find your task, do the first action, read the doc. [Docs](#docs) and
 | --- | --- |
 | Building anything on Windows | `Build-Windows-Container.ps1` ([Fast path](#fast-path-windows-build-run-verify)). Never invoke CMake/Ninja/MSBuild on the host. |
 | Running the engine / seeing pixels | `scripts/windows/Invoke-ClangCl*.ps1` from the **repo root** ([Running on the Host](#running-on-the-host-windows)) |
-| Changing a shader | Edit `Resources/ShadersSlang/*.slang` + `shader-manifest.json`, run `Build-SlangShaders.ps1`, run one golden; no C++ rebuild ([`docs/shader-build-pipeline.md`](docs/shader-build-pipeline.md)) |
+| Changing a shader | Edit `Resources/ShadersSlang/*.slang` + `shader-manifest.json`, run `Build-SlangShaders.ps1`, run one golden; no C++ rebuild ([`docs/source/shader-build-pipeline.md`](docs/source/shader-build-pipeline.md)) |
 | Adding or changing a test | `Test/commit/VulkanEngine/` (CPU + GPU golden), `Test/fuzz/`, `Test/perf/`; always in scope ([Testing](#testing)) |
-| Touching render passes, barriers, frames-in-flight | Golden suites on the host GPU **and** `Invoke-SyncValidation.ps1` (Linux CI runs sync validation on llvmpipe): [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md) |
-| Refactoring the renderer / device path | The per-unit verification loop in [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md); log the change in [`docs/cpp-renderer-improvements.md`](docs/cpp-renderer-improvements.md) |
+| Touching render passes, barriers, frames-in-flight | Golden suites on the host GPU **and** `Invoke-SyncValidation.ps1` (Linux CI runs sync validation on llvmpipe): [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md) |
+| Refactoring the renderer / device path | The per-unit verification loop in [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md); log the change in [`docs/source/cpp-renderer-improvements.md`](docs/source/cpp-renderer-improvements.md) |
 | "My build produced nothing" / "my deleted file still builds" | `-FreshContainer`, and the delivery check that fails the build: [Container reuse and delivery](#containerized-windows-builds-stevedore) |
 | Writing a script, module, or general-purpose doc | Probably upstream: [Rule: Reusable Work Belongs in ANTfrastructure](#rule-reusable-work-belongs-in-antfrastructure). Check [What ANTfrastructure owns](#what-antfrastructure-owns--links-only) before writing a procedure that may exist |
 | Bumping a submodule pin, or any dependency | `bash ./scripts/linux/renovate-local.sh` from WSL ([Dependency upgrades](#dependency-upgrades-renovate-as-a-local-cli)); never a bare `git submodule update --remote` |
 | Releasing | A push to `main` releases `VERSION.txt`'s version once every lane is green; first raise it and give it a `CHANGELOG.md` section ([What CI runs](#what-ci-runs-and-what-it-does-not)) |
 | Pushing and expecting CI to tell you something | A push or PR runs Linux x64 (not on a docs-only commit) and the gates; the other four platform lanes run when a commit message asks with the ci token, or by hand ([What CI runs](#what-ci-runs-and-what-it-does-not)) |
 | Changing the Rust WebGPU renderer | `third_party/OxidANT/crates/webgpu_renderer`; that repo owns the renderer's docs too (decision D6): [`webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md), reachable in this checkout since the pin bump to `d68560fe`, or [on the web](https://github.com/Kataglyphis/OxidANT/blob/HEAD/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) without the submodule |
-| Touching the clouds subsystem | [`docs/clouds.md`](docs/clouds.md): pipeline shape, estimator, UBO/constants tables, queue ownership |
+| Touching the clouds subsystem | [`docs/source/clouds.md`](docs/source/clouds.md): pipeline shape, estimator, UBO/constants tables, queue ownership |
 
 ### Repo map
 
@@ -158,7 +158,7 @@ cannot even read this repo's presets ([the trap](#build-system-overview)).
    ([Running on the Host](#running-on-the-host-windows)); Profile/Release do not.
 4. **Changed rendering or the device path?** A green build proves nothing about behaviour: the GPU
    suites *skip* in the container. Run them on the host and follow the verification loop in
-   [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
+   [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md).
 
 ---
 
@@ -168,13 +168,13 @@ cannot even read this repo's presets ([the trap](#build-system-overview)).
 
 **The repository and the CMake project are spelled differently, on purpose.** `GraphicsEngine` is
 the CMake project and executable name (`CMakeLists.txt:8`), matching `Src/GraphicsEngineVulkan/`;
-Sphinx (`docs/source/conf.py:39`) and Doxygen (`Doxyfile.in:45`) publish under
+Sphinx (`project` in `docs/source/conf.py`) and Doxygen (`Doxyfile.in:45`) publish under
 `BeschleunigerBallett`, the repository name. Build directories, preset names and the MSIX package
 (`Msix.PackageNameDefault` in `scripts/windows/Build-Windows.config.psd1`) follow the CMake name;
 nothing here is a leftover to be unified.
 
 The version is the repo-root **`VERSION.txt`**, read by `CMakeLists.txt:4` (into
-`project(... VERSION ...)` and the `PROJECT_VERSION` compile definition), `docs/source/conf.py:40`
+`project(... VERSION ...)` and the `PROJECT_VERSION` compile definition), `docs/source/conf.py`
 and `scripts/windows/Build-Windows.ps1` (the MSIX package version; a missing file is a hard error).
 Bump it with `bash ./scripts/linux/bump-version.sh <x.y.z>` and nothing else; no reader keeps a
 copy of the number.
@@ -269,14 +269,14 @@ topic → owning document, so links survive upstream reorganising. This section'
 
 The two transports, the reused container's safety rails and why each exists are the hub's
 ([`windows-container-build-performance.md`](third_party/ANTfrastructure/docs/windows-container-build-performance.md#transports-how-to-set-up-both));
-this repo's numbers and wiring are in [`docs/container-build-caching.md`](docs/container-build-caching.md).
+this repo's numbers and wiring are in [`docs/source/container-build-caching.md`](docs/source/container-build-caching.md).
 What bites here:
 
 - The default transport is a tar-pipe into the reusable container `bb-build-persistent`;
   `-UseBindMount` measured slower on this Dev Drive host.
 - **`-FreshContainer` after a file deleted at the repo root** (the prune before each build removes
   stale top-level directories only) **and after ANY C++23 module-interface change** (the
-  fresh-container rule in [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md)).
+  fresh-container rule in [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md)).
 - The script **fails the build** when the container produced no executables or one did not reach
   the host. Do not "fix" that check.
 - It takes `-Configurations` (comma-separated), **not** `-Preset`.
@@ -324,8 +324,8 @@ C++ Vulkan renderer and **WGSL** for the Rust WebGPU renderer. The shader list i
 `shader-manifest.json`: add or retarget a shader there, never in the compile scripts. Compiled
 output is gitignored, so a fresh clone must run a compile script before the engine has anything to
 load. Build step, staleness rules, fast iteration:
-[`docs/shader-build-pipeline.md`](docs/shader-build-pipeline.md); sharing shader code between the
-renderers: [`docs/shader-sharing.md`](docs/shader-sharing.md).
+[`docs/source/shader-build-pipeline.md`](docs/source/shader-build-pipeline.md); sharing shader code between the
+renderers: [`docs/source/shader-sharing.md`](docs/source/shader-sharing.md).
 
 ## Rule: Reusable Work Belongs in ANTfrastructure
 
@@ -530,7 +530,7 @@ on the AMD RX 9070 XT: all four clang-cl builds render (~32 FPS ImGui overlay).
   arm64 on `windows-11-arm`; a skip fails the run). A Linux host with an NVIDIA GPU runs them in the
   image through CDI. The lavapipe install, the `LP_NATIVE_VECTOR_WIDTH=256` pin, the NVIDIA recipe
   (an ASan build needs `ASAN_OPTIONS=protect_shadow_gap=0`), the cwd requirement and the
-  golden-writing cautions: [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md). "No
+  golden-writing cautions: [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md). "No
   synchronization frames available" on every golden was a FrameSync bug (`695db536`..`981244fd`,
   August 2026), not the RDP session it was blamed on; a commit in that range needs `981244fd` before
   any golden can draw.
@@ -543,7 +543,7 @@ on the AMD RX 9070 XT: all four clang-cl builds render (~32 FPS ImGui overlay).
   It exits non-zero when the run log contains `SYNC-HAZARD`, and with the test executable's own code
   when the run itself fails. Linux CI runs sync validation on llvmpipe since 2026-10-06
   (`run-ctest.sh --virtual-display`); this script is the host-GPU and Windows run. Details:
-  [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
+  [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md).
 
 **Adding tests is always in scope.** No permission needed to improve or extend the suites; a change
 that fixes behaviour should generally arrive with a test that would have caught it. Prefer
@@ -555,7 +555,7 @@ sized commitments.
 **Formatting and static analysis**: the clang-format/clang-tidy/cmake-format commands, the host
 gotchas, the container-build behaviour (clang-format always runs, and clang-tidy too since hub
 CON10, over the TUs that import no module) and the suggested cadence:
-[`docs/code-quality.md`](docs/code-quality.md).
+[`docs/source/code-quality.md`](docs/source/code-quality.md).
 
 **clang-format is a failing gate since 2026-10-06**, graded by the pinned LLVM's clang-format (the
 hub's `LLVM_RELEASE`, 23.1.3 since 2026-10-10) on both lanes: the Windows x64 lane's
@@ -709,9 +709,9 @@ status from a shell (`gh`):
 `linux-x64.yml` and `linux-arm64.yml` both call `reusable-linux.yml`, so a fix to the x86 lane
 applies to ARM automatically. No CI lane has a hardware GPU: the Linux `clang-tests` job (both
 arches) runs the golden suites on llvmpipe (a CPU Vulkan device,
-[`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md)), both Windows lanes on lavapipe on the
+[`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md)), both Windows lanes on lavapipe on the
 runner. Both run synchronization validation there too (since 2026-10-06; Windows arm64 since the
-`:winarm64` of 2026-10-10): [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
+`:winarm64` of 2026-10-10): [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md).
 
 **Six Linux jobs per architecture, not eleven** (2026-10-13). Every job pays the host prologue,
 disk cleanup plus the image pull, before it builds anything: 8-9 min on x64 and 6-7 min on arm64
@@ -818,7 +818,7 @@ the host, builds the `linux-riscv64-cross` preset (Debug,
   The projection takes 190 s a frame, and 1.3 times that for a furnace frame at 16 bounces (the x64
   ratio); the fastest runners need about half. The x64 measurements behind each depth, with a
   negative control per test:
-  [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md) § The riscv64 light variant.
+  [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md) § The riscv64 light variant.
 
   Each shard cross-builds for itself (23-33 min before ctest starts), because the hub's reusable
   lane takes no build artifact; the 11 jobs restore the push lane's `riscv64-clang-debug` cache
@@ -937,12 +937,12 @@ OFF, so none of them fetches Kompute's `fmt`.
 - Clip-space y is down in Vulkan and up in WebGPU, so a fullscreen pass takes its uv from
   `fullscreen_vs` and inverts it with `fullscreen_uv_to_ndc` (`common/fullscreen.slang`, switched per
   target), never by hand: a copy mirrors one renderer, and a vertically symmetric scene hides it.
-  [`docs/shader-sharing.md`](docs/shader-sharing.md).
+  [`docs/source/shader-sharing.md`](docs/source/shader-sharing.md).
 - Model-loading architecture (the two loaders, the async parse/upload split, the multi-mesh flow):
-  [`docs/model-loading.md`](docs/model-loading.md).
+  [`docs/source/model-loading.md`](docs/source/model-loading.md).
 - Per-unit verification pattern (container build -> direct test exe -> validation run):
-  [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md). The chronological log of what changed
-  and why: [`docs/cpp-renderer-improvements.md`](docs/cpp-renderer-improvements.md). Do not restate
+  [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md). The chronological log of what changed
+  and why: [`docs/source/cpp-renderer-improvements.md`](docs/source/cpp-renderer-improvements.md). Do not restate
   either here; those documents are the source of truth.
 
 ## Code Conventions (PowerShell scripts)
@@ -1020,21 +1020,21 @@ rule above; its pages are listed in
 | `README.md` | The front page: what the project is, highlights, the quick start, one row per guide ([the family's README rule](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/repository-family.md#the-readme-rule)) |
 | `BACKLOG.md` | **All** open work: sized commitments, then unsized ideas and recurring chores |
 | `AGENTS.md` (this file) | How to build/test/run here, invariants, code conventions |
-| `docs/cpp-renderer-improvements.md` | C++ engine chronological change log |
-| `docs/model-loading.md` | Model-loading architecture: the two loaders, async parse/upload split, multi-mesh MeshRange flow |
-| `docs/webgpu-renderer-roadmap.md` | **Pointer only.** Rust WebGPU renderer status per feature; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) (decision D6) |
-| `docs/webgpu-gltf-rust-plan.md` | **Pointer only.** Original WebGPU + glTF Rust renderer plan (milestones 1–5), kept for the record; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md) |
-| `docs/shader-sharing.md` | Why/how one Slang source serves both renderers, where the two diverge, and which C++ shading path reads which `ObjMaterial` field |
-| `docs/shader-build-pipeline.md` | The Slang→SPIR-V/WGSL build step: build wiring, manifest, staleness rules, fast iteration |
-| `docs/webgpu-srgb-audit.md` | Colour-space decisions (no known deviations) |
-| `docs/code-quality.md` | clang-format / clang-tidy / cmake-format commands + cadence |
-| `docs/container-build-caching.md` | This repo's container transport numbers, sccache volume, incremental-build wiring |
-| `docs/gpu-golden-testing.md` | GPU golden test suites, skip-without-GPU behavior, the Linux CI run on llvmpipe, host verification loop, synchronization validation |
-| `docs/path-tracing.md` | Path-tracing mode: pipeline shape, estimator, NEE, accumulation |
-| `docs/clouds.md` | Volumetric clouds: pipeline shape, estimator, UBO/constants tables, queue ownership, compositing contract |
-| `docs/renderer-bounds-invariant.md` | **Pointer only.** WebGPU renderer bounds invariant; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md`](third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md) |
-| `docs/LICENSES-README.md` | Third-party license documentation |
-| `docs/source/` | Sphinx pages (`README.md`, `getting_started.md`, `documentation_workflow.md`, `webgpu_demo.md`, `wsl2_vulkan.rst`, `literature.md`, and `graphviz_files.rst`, which `graphviz_generator.py` writes during the docs build) |
+| `docs/source/cpp-renderer-improvements.md` | C++ engine chronological change log |
+| `docs/source/model-loading.md` | Model-loading architecture: the two loaders, async parse/upload split, multi-mesh MeshRange flow |
+| `docs/source/webgpu-renderer-roadmap.md` | **Pointer only.** Rust WebGPU renderer status per feature; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) (decision D6) |
+| `docs/source/webgpu-gltf-rust-plan.md` | **Pointer only.** Original WebGPU + glTF Rust renderer plan (milestones 1–5), kept for the record; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md) |
+| `docs/source/shader-sharing.md` | Why/how one Slang source serves both renderers, where the two diverge, and which C++ shading path reads which `ObjMaterial` field |
+| `docs/source/shader-build-pipeline.md` | The Slang→SPIR-V/WGSL build step: build wiring, manifest, staleness rules, fast iteration |
+| `docs/source/webgpu-srgb-audit.md` | Colour-space decisions (no known deviations) |
+| `docs/source/code-quality.md` | clang-format / clang-tidy / cmake-format commands + cadence |
+| `docs/source/container-build-caching.md` | This repo's container transport numbers, sccache volume, incremental-build wiring |
+| `docs/source/gpu-golden-testing.md` | GPU golden test suites, skip-without-GPU behavior, the Linux CI run on llvmpipe, host verification loop, synchronization validation |
+| `docs/source/path-tracing.md` | Path-tracing mode: pipeline shape, estimator, NEE, accumulation |
+| `docs/source/clouds.md` | Volumetric clouds: pipeline shape, estimator, UBO/constants tables, queue ownership, compositing contract |
+| `docs/source/renderer-bounds-invariant.md` | **Pointer only.** WebGPU renderer bounds invariant; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md`](third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md) |
+| `docs/source/LICENSES-README.md` | Third-party license documentation |
+| `docs/source/` | The site: every guide above and `README.md`, `getting_started.md`, `documentation_workflow.md`, `webgpu_demo.md`, `wsl2_vulkan.rst`, `literature.md`, plus `graphviz_files.rst`, which `graphviz_generator.py` writes during the docs build. A new page goes here and into `index.rst`'s toctree |
 | `scripts/agentic-loop/README.md` | Agentic loop consumer half: what this repo configures (and what deviates from upstream defaults), its two runners, its two prompt overlays; loop architecture and usage are upstream's |
 
 Keep docs, scripts and presets aligned: when you change build behaviour, update

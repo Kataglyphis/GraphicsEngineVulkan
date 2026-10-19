@@ -120,7 +120,7 @@ auto ObjLoader::uploadParsed() -> std::shared_ptr<Model>
 
 std::string Kataglyphis::resolveObjTexturePath(const std::string &baseDir, const std::string &mapKd)
 {
-    // See docs/model-loading.md § `map_Kd` texture path resolution.
+    // See docs/source/model-loading.md § `map_Kd` texture path resolution.
     std::string normalized_map_kd = mapKd;
     std::replace(normalized_map_kd.begin(), normalized_map_kd.end(), '\\', '/');
 

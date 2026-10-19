@@ -38,7 +38,7 @@
     "  scripts SKIP the combined emit and leave the checked-in WGSL untouched;",
     "  at or above it they emit and then hard-fail on any varying struct member",
     "  that carries neither @builtin nor @location. See",
-    "  docs/shader-build-pipeline.md."
+    "  docs/source/shader-build-pipeline.md."
   ],
   "minSlangcVersionForWgsl": "2026.8",
   "manifest": [

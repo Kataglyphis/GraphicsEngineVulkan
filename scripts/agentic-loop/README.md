@@ -131,7 +131,7 @@ The Windows quality gate is
 `-SkipBuild` clears the selected configurations, so it runs only the
 report-only clang-format check: not clang-tidy, a step of the `clangcl-debug`
 build, and not cmake-format, which runs only with `-ApplyFormat` (see
-[`docs/code-quality.md`](../../docs/code-quality.md)). On Linux it is
+[`docs/source/code-quality.md`](../../docs/source/code-quality.md)). On Linux it is
 [`scripts/linux/run-static-analysis-format.sh`](../linux/run-static-analysis-format.sh).
 
 ## The prompt overlays

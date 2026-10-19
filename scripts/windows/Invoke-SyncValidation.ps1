@@ -66,7 +66,7 @@ if (-not (Test-Path $LogDir)) {
 $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $logPath = Join-Path $LogDir "$timestamp.log"
 
-# Resources/ loads CWD-relative, so run from the repo root; see docs/gpu-golden-testing.md.
+# Resources/ loads CWD-relative, so run from the repo root; see docs/source/gpu-golden-testing.md.
 Invoke-VulkanValidationRun -ExecutablePath $ExecutablePath `
     -Arguments @("--gtest_filter=$GtestFilter") `
     -WorkingDirectory $repoRoot `

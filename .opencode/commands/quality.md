@@ -5,7 +5,7 @@ agent: executor
 Run code quality checks and fix any issues found.
 
 **Windows:** quality = clang-format and cmake-format; use the commands and
-scoping in `docs/code-quality.md`. clang-tidy needs the
+scoping in `docs/source/code-quality.md`. clang-tidy needs the
 `compile_commands.json` path-rewrite dance described there (the database is
 generated in-container with `C:/ws` paths, so a plain host run fails), and
 containerized builds never run it (`Build-Windows-Container.ps1` hard-codes

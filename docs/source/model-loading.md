@@ -3,7 +3,7 @@
 How a model file becomes drawable geometry in the Vulkan engine: the two
 loaders, the async parse/upload split that keeps the frame loop responsive, and
 the multi-mesh flow that turns one file into per-mesh draws. The chronological
-change log is `docs/cpp-renderer-improvements.md`.
+change log is `docs/source/cpp-renderer-improvements.md`.
 
 ## Two loaders, one shape
 

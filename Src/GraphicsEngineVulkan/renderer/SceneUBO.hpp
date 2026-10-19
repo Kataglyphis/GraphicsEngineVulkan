@@ -33,7 +33,7 @@ struct SceneUBO
     vec4 view_dir;
     vec4 cam_pos;
 
-    // Clouds: see docs/clouds.md § UBO packing.
+    // Clouds: see docs/source/clouds.md § UBO packing.
     vec4 cloudLightMarch;
     vec4 cloudMeshScale;
     vec4 cloudMeshOffset;
