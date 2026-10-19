@@ -50,9 +50,12 @@ prompt drift:
 [`.opencode/commands/`](../../.opencode/commands) stays hand-written and tracked:
 TUI commands, not role prompts. They give the OpenCode TUI `/plan`,
 `/execute`, `/build <preset>`, `/test` and `/quality` for driving single loop
-phases interactively. Install OpenCode with `scoop install opencode`
-(or `npm install -g opencode-ai`) and authenticate once with
-`opencode auth login`; the upstream prerequisites section omits that auth step.
+phases interactively; `/plan` and `/execute` include the hub's task prompts
+(`shared/agentic-loop/prompts/`) rather than a copy. The loop refuses OpenCode
+v1, which scoop and `opencode-ai` still install: install v2 and authenticate
+under it as
+[`windows-agentic-loop.md` § opencode v2](../../third_party/ANTfrastructure/docs/windows-agentic-loop.md#opencode-v2)
+says.
 
 ## Running it
 

@@ -48,6 +48,14 @@ the GitHub releases themselves.
   https, as the family's repositories and submodules do.
 - **`docs/LICENSES-README.md` is in English** (2026-10-19). Every licence, pin, version, path and
   date is unchanged; the translation changes no fact.
+- **The docs link the hub instead of restating it** (2026-10-19). `AGENTS.md` keeps this repo's
+  half of the CI rule, Renovate, the container transports, the sanitizer modules, the branch sync,
+  the history rewrite and the riscv64 lane, and links ANTfrastructure (pinned at a447ef3c) for the
+  rest; `docs/container-build-caching.md` keeps its measurements. Three stale facts went with it:
+  `--apply` rewrites `requirements.txt`, actions and CMake pins too, not only gitlinks;
+  microsoft/STL#6294 is closed (#6298, not yet in the image's VC Tools); the agentic loop needs
+  OpenCode v2. `/plan` and `/execute` include the hub's task prompts instead of a copy, and
+  `doc-dupes-hub.allow` turns the hub's `doc-dupes --against-hub` gate on.
 
 ## [1.5.2] - 2026-10-17
 
