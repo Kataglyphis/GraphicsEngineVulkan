@@ -1,69 +1,67 @@
 # BACKLOG
 
-The single list of open work across the whole project — sized commitments and
-unsized ideas together. Detailed per-area status lives in `docs/`
-(`cpp-renderer-improvements.md`, `shader-sharing.md`) and, for the Rust WebGPU
-renderer, in OxidANT's `third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md`;
-this file is what is still to do. Finished work leaves this file; its history is in git.
+The single list of open work across the project, sized commitments and unsized ideas
+together. Per-area status lives in `docs/` (`cpp-renderer-improvements.md`,
+`shader-sharing.md`) and, for the Rust WebGPU renderer, in OxidANT's
+`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md`; this file is
+what is still to do. Finished work leaves this file; its history is in git.
 
 Sizes: S (< half a day), M (a day-ish), L (multi-day), XL (multi-week).
-Checkbox items are sized and agreed; the prose sections below the fold are
-candidates that have not been sized yet. A candidate graduates by acquiring a
-size and a decision, or gets dropped.
+Checkbox items are sized and agreed; the prose sections below the fold are unsized
+candidates. A candidate graduates by acquiring a size and a decision, or gets dropped.
 
-Checkbox states: `- [ ]` actionable (the agentic loop's executor picks these
-up), `- [b]` blocked/parked (waiting on a prerequisite or an owner decision —
-the loop skips these and they do not count toward its pending-task queue),
-`- [x]` done (pruned automatically; history lives in git).
+Checkbox states: `- [ ]` actionable (the agentic loop's executor picks these up), `- [b]`
+blocked/parked (waiting on a prerequisite or an owner decision; the loop skips these and
+they do not count toward its pending-task queue), `- [x]` done (pruned automatically;
+history lives in git).
 
 **GPU verification is no longer blocked on the host.** Several entries used to wait for a
 console session on the RX 9070 XT. Since 2026-09-29 the Linux lane runs `GoldenRender.*` and
 `Integration.*` on llvmpipe, with sync validation since 2026-10-06, and Windows x64 runs its
 Release suite on lavapipe (`docs/gpu-golden-testing.md`). Run 37486873224 passed every test
 those entries named: the path-tracing, ray-tracing and cloud goldens and
-`Integration.RenderModesSelectableInGui`. Only a fault that is specific to the RX 9070 XT
-still needs the host.
+`Integration.RenderModesSelectableInGui`. Only an RX 9070 XT-specific fault still needs the
+host.
 
 ## Sized
 
 ### C++ Vulkan engine
 
 - [b] **Renderer-level RAII cleanup consolidation** (M, **blocked on being testable**) —
-  the stage-level work landed 2026-07-19. `VulkanRenderer`'s hand-ordered `cleanUp()` and
-  the device-lost special case in `App.cpp` are left: `App.cpp` skips `scene->cleanUp()` and
+  the stage-level work landed 2026-07-19. Left: `VulkanRenderer`'s hand-ordered `cleanUp()`
+  and the device-lost special case in `App.cpp`, which skips `scene->cleanUp()` and
   `gui->cleanUp()` when the device is lost. Device loss cannot be induced here, so removing
-  that guard would be an untestable change to the one path that only runs after something
-  has gone wrong. First add a way to simulate device loss (a device-simulation layer, or
-  fault injection behind a debug flag).
-  Related, and owned by this entry: `Scene`'s destructor undoes that guard. `scene` is
-  declared before `vulkan_renderer` (`App.cpp`), so `~Scene()` runs its `cleanUp()` after
-  `VulkanRenderer::cleanUp()` has destroyed the VMA allocator and the logical device. It is
-  benign only because the leaf `cleanUp()`s are idempotent.
+  that guard would be an untestable change to a path that only runs after a failure. First
+  add a way to simulate device loss (a device-simulation layer, or fault injection behind a
+  debug flag).
+  Related, owned by this entry: `Scene`'s destructor undoes that guard. `scene` is declared
+  before `vulkan_renderer` (`App.cpp`), so `~Scene()` runs its `cleanUp()` after
+  `VulkanRenderer::cleanUp()` has destroyed the VMA allocator and the logical device. Benign
+  only because the leaf `cleanUp()`s are idempotent.
 - [b] **Confirm on the RX 9070 XT that the path-tracing device loss is gone** (S, needs the
-  host GPU). The cause was found 2026-08-05: `path_tracing.slang`'s committed hit dropped the
+  host GPU). Cause found 2026-08-05: `path_tracing.slang`'s committed hit dropped the
   geometry index, so a hit on any mesh but a model's first read past mesh 0's index buffer.
   The kernel now adds `CommittedGeometryIndex()`, and the three tests that lost the device
   pass on llvmpipe in CI. Run
   `commitTestSuite.exe --gtest_filter='GoldenRender.PathTracing*:GoldenRender.GuiInputSweepNeverCrashesOrLosesTheDevice:Integration.RenderModesSelectableInGui'`
   on the host. Once it passes, retire the "Known issue" section of
-  `docs/gpu-golden-testing.md`, together with the `excluded=3` count and the
-  `--gtest_filter` line that `buildIntegritySuite.cpp` pins in it.
-- **glTF loader gaps** (M/L): MASK alpha and `KHR_texture_transform` are done. What is left:
+  `docs/gpu-golden-testing.md`, with the `excluded=3` count and the `--gtest_filter` line
+  `buildIntegritySuite.cpp` pins in it.
+- **glTF loader gaps** (M/L): MASK alpha and `KHR_texture_transform` are done. Left:
   - *BLEND and sorting* (L): a sorted transparent pass through `PipelineBuilder`'s existing
-    src-alpha blend state, with back-to-front ordering and a second draw list. Until then a
+    src-alpha blend state, back-to-front ordering and a second draw list. Until then a
     transparent glTF renders opaque. Defer until a real transparent asset needs it.
   - *texcoord index* (M/L): the engine `Vertex` carries a single `texture_coords`, so a second
     UV set means a `TEXCOORD_1` attribute in the vertex layout, every mesh vertex buffer,
     every shader that reads UVs and both loaders. Defer until a real dual-UV asset needs it.
-  - Adding a field to `ObjMaterial` crosses the C++/Slang module boundary. Cold-build after
-    it (delete the build tree and use `-FreshContainer`).
+  - Adding a field to `ObjMaterial` crosses the C++/Slang module boundary: cold-build after
+    it (delete the build tree, use `-FreshContainer`).
 - **Dynamic rendering + synchronization2 are hard-disabled** (L, `VulkanDevice.cpp`).
   Dynamic rendering would delete the framebuffer rebuild in `recreateSwapChain`, where the
-  image-count edge cases live. Test: run the whole golden suite under both paths behind a
-  toggle.
+  image-count edge cases live. Test: the whole golden suite under both paths behind a toggle.
 - **Incremental BLAS append** (M, an optimisation). `addModel` and `reloadModel` call
   `createASForScene`, which rebuilds every model's BLAS to add one. `createBLAS` is a batched
-  build (one scratch buffer and one compaction pass across all models), so an
+  build (one scratch buffer, one compaction pass across all models), so an
   `ASManager::appendBlas(model)` means extracting a single-model build path with its own
   scratch and compaction, then `createTLAS`. Guard it with the RT goldens and
   `GoldenRender.AddedModelAppearsInPathTracing`.
@@ -71,38 +69,39 @@ still needs the host.
 ### Rust WebGPU renderer (`third_party/OxidANT`)
 
 - [b] **Basis ETC1S/UASTC transcoding** (M, **blocked on a transcoder and a test asset**).
-  KTX2 BCn passthrough is done, and supercompressed files are rejected with a clear error
+  KTX2 BCn passthrough is done; supercompressed files are rejected with a clear error
   (`ktx2_loader.rs`). The viable transcoder is the `basis-universal` crate, a C++ binding,
-  and no Basis-compressed KTX2 test asset is in the repo. Do it as a deliberate cycle:
-  vendor `basis-universal`, generate an ETC1S and a UASTC `.ktx2` with `toktx`/`basisu`,
-  then transcode to a BCn `CompressedFormat` on desktop and to ETC2/ASTC on the web path.
+  and the repo has no Basis-compressed KTX2 test asset. Do it as a deliberate cycle: vendor
+  `basis-universal`, generate an ETC1S and a UASTC `.ktx2` with `toktx`/`basisu`, then
+  transcode to a BCn `CompressedFormat` on desktop and to ETC2/ASTC on the web path.
 - [b] **Indirect draws** (M, blocked on GPU occlusion culling producing draw arguments).
   With CPU-side instance counts, indirect draws add a buffer round trip for nothing.
 - [b] **WebXR** (XL) — parked.
 - [b] **Colosseum demo scene** (blocked on the owner): pick a licensed photogrammetry scan
   and keep the asset out of git. LOD is ready (set `lod_enabled` before `upload_scene`).
-  KTX2 is not, because Basis transcoding is missing (above).
+  KTX2 is not: Basis transcoding is missing (above).
 - [b] **Stop an empty tile from iterating every light** (blocked on a conservative sphere
   bound). `forward.slang`'s `punctual_lighting` falls back to all lights when a tile's
   binned count is 0, so empty screen costs up to 256 iterations per fragment. The fallback is
   load-bearing: `tile_rect_for_light`'s 7-point AABB under-covers a sphere's true screen
   silhouette by up to `D / sqrt(D² - r²)`, even with every point in front of the camera.
-  Near-plane straddling is already handled. Next step: a projection-aware sphere screen
-  bound (Mara & McGuire 2013), then a completeness test with unconstrained random ranges,
-  and only then remove the fallback.
+  Near-plane straddling is handled. Next: a projection-aware sphere screen bound (Mara &
+  McGuire 2013), then a completeness test with unconstrained random ranges, only then remove
+  the fallback.
 
 ### CI and release
 
 - [ ] **Golden-render cases fail now and then on the arm64 device** (S–M). In
   `windows-arm64-cross.yml`'s *GPU suites + source checks (arm64, lavapipe)*,
-  `EnablingCloudsChangesTheFrameAndAddsDetail` stopped after 7 s with no assertion printed (release
-  dry run 38879106284, 2026-10-16), and `DeferredMatchesForwardRoughly` died after 8 s right after
-  `ASManager: compacted 1 BLAS` (run 39033701859 attempt 1, 2026-10-17); each rerun, same commit,
-  passed, and the 15 GPU jobs since 2026-10-07 otherwise passed both cases. No failure message means
-  a crash or a timeout of the case, not a pixel mismatch: the job now sets WER LocalDumps for
-  `commitTestSuite.exe` and uploads `arm64-lavapipe-crash-dump-<attempt>` when it fails, so the next
-  crash names the frame. Until then it can stop any release, since `release.yml` needs every lane
-  green; a rerun of the failed jobs gets past it.
+  `EnablingCloudsChangesTheFrameAndAddsDetail` stopped after 7 s with no assertion printed
+  (release dry run 38879106284, 2026-10-16), and `DeferredMatchesForwardRoughly` died after
+  8 s right after `ASManager: compacted 1 BLAS` (run 39033701859 attempt 1, 2026-10-17). Each
+  rerun on the same commit passed, and the 15 GPU jobs since 2026-10-07 otherwise passed both
+  cases. No failure message means a crash or timeout of the case, not a pixel mismatch: the
+  job now sets WER LocalDumps for `commitTestSuite.exe` and uploads
+  `arm64-lavapipe-crash-dump-<attempt>` on failure, so the next crash names the frame. Until
+  then it can stop any release, since `release.yml` needs every lane green; rerunning the
+  failed jobs gets past it.
 - [ ] **Every test on every arch lane** (owner goal 2026-10-01; what is left of it).
   - **The Rust renderer tests run on Linux only.** Windows and riscv64 compile the crate
     (the bridge, the wasm demo) but leave `cargo test` to OxidANT's own lanes.
@@ -115,8 +114,8 @@ still needs the host.
 
 ---
 
-Everything below is **unsized**: ideas, owner decisions and recurring chores that have not
-been committed to.
+Everything below is **unsized**: ideas, owner decisions and recurring chores not yet
+committed to.
 
 ## Owner decisions
 
@@ -131,10 +130,10 @@ been committed to.
 - **A receiver-plane depth bias for the PCF taps.** `cascaded_shadow.slang` compares every
   tap against the centre texel's depth with one bias, so on a receiver sloped against the
   light the outer taps shadow it. On the shadow rig, lit surfaces far from any shadow darken
-  from radius 2 (the default: 15 % of them by 3+ levels) and the darkening grows with the
-  radius (docs/gpu-golden-testing.md § The PCF radius bound, measured). Offsetting each
-  tap's reference depth by the receiver's depth slope removes it. The shadow goldens will
-  move, and `DISABLED_PcfRadiusSweepMeasuresTheShadowRig` shows the effect.
+  from radius 2 (the default: 15 % of them by 3+ levels), growing with the radius
+  (docs/gpu-golden-testing.md § The PCF radius bound, measured). Offsetting each tap's
+  reference depth by the receiver's depth slope removes it. The shadow goldens will move;
+  `DISABLED_PcfRadiusSweepMeasuresTheShadowRig` shows the effect.
 - **Unify the two shadow-bias formulas.** `cascaded_shadow.slang` uses
   `max(0.002 * (1 - N·L), 0.0005)` and `forward.slang` uses
   `clamp(0.002 * (1 - N·L) + 0.0005, 0.0005, 0.004)`, so the renderers disagree at grazing
@@ -142,11 +141,11 @@ been committed to.
   to block that is gone (OxidANT pin efc0cdee).
 - **Drop the per-frame `update_raytracing_descriptor_set` call in `drawFrame`.** It runs on
   `.raytracing` only, and every state change that invalidates those descriptors already goes
-  through `updateAllDescriptorSets`. Deleting it saves three descriptor writes per frame. CI
-  now runs the RT goldens, so the change is checkable.
+  through `updateAllDescriptorSets`. Saves three descriptor writes per frame; CI runs the RT
+  goldens, so the change is checkable.
 - **`VulkanDevice` creates a queue on `compute_family` that it never retrieves.** Harmless
-  (a graphics+compute family always exists, so it equals `graphics_family`), and now
-  checkable in CI.
+  (a graphics+compute family always exists, so it equals `graphics_family`), and checkable in
+  CI.
 - **A `vkCheck()` helper** for the `auto r = device...createX(info); ASSERT_VULKAN(...);`
   idiom (52 sites, about 20 files). A whole-codebase sweep, so it wants a deliberate moment.
   Fold `PostStage.cpp`'s one C-style `createRenderPass` call into it.
@@ -156,14 +155,14 @@ been committed to.
 - **Animate the cloud volume** (needs a time uniform and a deterministic override for the
   goldens).
 - **`GUI*` is a mutable cross-cutting dependency**: `Scene` and `VulkanRenderer` both read
-  GUI state each frame. A settings struct owned by the app and passed by const reference
-  would decouple them.
+  GUI state each frame. An app-owned settings struct passed by const reference would
+  decouple them.
 - **A stage registry**, so adding a pass does not mean editing `VulkanRenderer`. (A
   `SwapchainTarget` extraction was investigated 2026-07-23 and rejected: recreation is
   inherently cross-cutting.)
 - **Prove the multi-object index arithmetic.** `GoldenRender.SecondModelLoadsAndRenders`
-  proves a second model loads and contributes pixels, but not that the index is right; that
-  needs two models whose materials differ enough to tell apart driver-independently.
+  proves a second model loads and contributes pixels, not that the index is right; that needs
+  two models whose materials differ enough to tell apart driver-independently.
 - Small, fold into the next change that touches the file:
   - `DeferredRasterizer` and `Rasterizer` index `descriptorSets[0]` without the
     empty-span guard `Clouds::recordComputeCommands` has.
@@ -177,18 +176,17 @@ been committed to.
 
 - **A non-uniform instance scale shades differently from the same node scale.** OxidANT's
   ignored test `a_non_uniform_instance_scale_shades_like_the_same_node_scale` differs in 987
-  pixels against a threshold of 40, reproduced on lavapipe. It is blocked in OxidANT because
-  the shader source lives here (`Resources/ShadersSlang/forward/forward.slang`). The vertex
+  pixels against a threshold of 40, reproduced on lavapipe. Blocked in OxidANT because the
+  shader source lives here (`Resources/ShadersSlang/forward/forward.slang`). The vertex
   stage's normal math reads right (the cofactor of the instance matrix times
   `prim.normal_matrix`), so look past the normal transform first: the shadow pass, the
   bounds. Fixing it here and dropping the `#[ignore]` in OxidANT closes OxidANT's BACKLOG row.
 - **Split `render_tonemapped`** (about 530 lines in `forward.rs`) and `ForwardRenderer::new`.
   It can silently reorder passes; `tests/headless.rs` and `tests/forward_ambient.rs` catch
-  that, and they run on llvmpipe in OxidANT's lanes now.
+  that, and they run on llvmpipe in OxidANT's lanes.
 - **`obj_to_gltf` drops `map_d`.** glTF has no opacity-texture slot, so matching the C++
   MASK cut-out means compositing `map_d`'s red channel into `map_Kd`'s alpha and writing a
-  new image, which adds an image decode/encode dependency to a converter that today only
-  rewrites paths.
+  new image: an image decode/encode dependency for a converter that only rewrites paths today.
 - **`qem.rs::into_primitive` drops morph targets without the comment** its sibling
   `lod.rs::simplify_primitive` carries. Harmless (morphed primitives are excluded from LOD).
 - **Render-graph v2**: automatic barrier placement and transient-resource aliasing, once the
@@ -214,7 +212,7 @@ been committed to.
 ## Recurring validation runs
 
 - **`clangcl-profile` (RelWithDebInfo)** after any perf-relevant change and before a
-  release. It is the only configuration where the benchmarks mean something, and it builds
+  release: the only configuration where the benchmarks mean something, and it builds
   `perfTestSuite.exe`.
 - **Host-GPU sync validation** with `scripts/windows/Invoke-SyncValidation.ps1`
   (`docs/gpu-golden-testing.md`). Linux and Windows x64 CI validate on llvmpipe/lavapipe on
@@ -233,9 +231,8 @@ been committed to.
   runtime comes from Microsoft's ASan DLL, and `initializeValueProfRuntimeRecord`
   dereferences a bad pointer (run 36997000491). Coverage stays OFF on Windows; revisit when
   the runtime matches the compiler or value profiling can be turned off.
-- **`bugprone-unchecked-optional-access` is off for `Test/`**, because clang-tidy 23.1.1
-  segfaults in its dataflow on gtest bodies. Re-enable it once an LLVM release fixes the
-  crash.
+- **`bugprone-unchecked-optional-access` is off for `Test/`**: clang-tidy 23.1.1 segfaults in
+  its dataflow on gtest bodies. Re-enable it once an LLVM release fixes the crash.
 - **Coverage is clang-only** (Linux). GCC and Windows contribute nothing to Codecov.
 - **The `windows-clang-release-wix` package preset is still unbuilt.** If WiX packaging
   moves to ClangCL, `x64-Clang-Windows-Release`, which exists only for it, can go too.

@@ -16,19 +16,19 @@ Build and maintenance guide for BeschleunigerBallett.
       :link: README
       :link-type: doc
 
-      Understand the renderer scope, repository layout, and platform targets.
+      Renderer scope, repository layout and platform targets.
 
    .. grid-item-card:: Getting Started
       :link: getting_started
       :link-type: doc
 
-      Clone, configure, build, test, and run the project on Linux or Windows.
+      Clone, configure, build, test and run on Linux or Windows.
 
    .. grid-item-card:: Documentation Workflow
       :link: documentation_workflow
       :link-type: doc
 
-      Build the Sphinx site, enable API docs, and regenerate Graphviz content.
+      Build the Sphinx site, enable API docs, regenerate Graphviz content.
 
    .. grid-item-card:: Graphviz Architecture
       :link: graphviz_files
@@ -40,7 +40,7 @@ Build and maintenance guide for BeschleunigerBallett.
       :link: api/library_root
       :link-type: doc
 
-      Open the C++ API entry page. When Doxygen XML is available, this page is replaced by the generated reference.
+      The C++ API entry page; with Doxygen XML available, the generated reference replaces it.
 
    .. grid-item-card:: WebGPU Demo (live)
       :link: webgpu_demo
@@ -61,11 +61,10 @@ Build and maintenance guide for BeschleunigerBallett.
    webgpu_demo.md
    literature.md
 
-.. The Exhale-generated API tree. The card above links to it, but a card is
-   not a toctree, so without this entry Sphinx reports "document isn't
-   included in any toctree" for api/library_root - and with warnings as
-   errors that fails the docs build. Hidden because the card is the intended
-   entry point; this only gives the generated pages a parent.
+.. The Exhale-generated API tree. The card above links to it, but a card is not
+   a toctree: without this entry Sphinx warns "document isn't included in any
+   toctree" for api/library_root, which -W turns into a failed build. Hidden:
+   the card is the entry point; this only gives the generated pages a parent.
 .. toctree::
    :maxdepth: 2
    :hidden:

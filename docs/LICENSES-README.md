@@ -1,6 +1,12 @@
 # Licences of the open-source dependencies
 
-The tables below list the open-source dependencies this repository uses (as of 2026-08-02; on 2026-09-25 the submodule pins and crate versions that had moved since were updated and their licences read from disk again). Verification: the list was checked against `git submodule status`, `third_party/CMakeLists.txt` (FetchContent), the vendored sources under `third_party/` and `third_party/OxidANT/crates/webgpu_renderer/Cargo.toml`; every licence entry comes from the licence file cited, read on disk, or from the `license` field of the Cargo metadata, not from assumptions. For legally binding terms, the cited licence file itself is authoritative.
+The open-source dependencies this repository uses, with their licences. The list was checked against `git submodule status`, `third_party/CMakeLists.txt` (FetchContent), the vendored sources under `third_party/` and `third_party/OxidANT/crates/webgpu_renderer/Cargo.toml`. Every licence entry comes from the cited licence file, read on disk, or from the `license` field of the Cargo metadata, not from assumptions. For legally binding terms, the cited licence file itself is authoritative.
+
+Created in the repository on request. Verification history:
+
+- **2026-08-02**: last full verification against the disk; the Rust crate licences also against `cargo metadata --format-version 1 --locked` in the `:latest-cross` container (full crates.io registry).
+- **2026-09-25**: the pins that had moved since (imgui, glfw, nlohmann/json, google/benchmark, OxidANT, ANTfrastructure) and the crate versions (log, wgpu, pollster, glam, egui, egui-wgpu, egui-winit) updated, their licences read from disk again; the other rows unchanged.
+- **2026-10-07**: the pins of imgui, nlohmann/json, google/benchmark, spdlog, abseil-cpp, Microsoft GSL and OxidANT and glam 0.34.1 updated; the licence files of the four submodules are unchanged across the moved ranges (`git diff` empty). That evening nlohmann/json moved to 367336c83 and Microsoft GSL to v5.0.1; `LICENSE.MIT` and GSL's `LICENSE` are unchanged across both ranges.
 
 ## Git submodules under `third_party/` (shipped)
 
@@ -26,11 +32,10 @@ The tables below list the open-source dependencies this repository uses (as of 2
 |---|---|---|---|
 | KTX (KTX-Software, partly vendored: `include/`, `lib/`, `other_include/`) | https://github.com/KhronosGroup/KTX-Software | Apache-2.0 (SPDX header in `include/ktx.h` and in 98 files under `lib/`) | `third_party/KTX/include/ktx.h` |
 
-KTX: KTX-Software's full `LICENSE.md` is **not** vendored
-(`third_party/KTX/LICENSE.md` does not exist). The embedded third-party components
-under `third_party/KTX/lib/` were therefore verified one by one from the files on
-disk, some from vendored licence files, some from the licence header of the source
-file itself:
+KTX-Software's full `LICENSE.md` is **not** vendored
+(`third_party/KTX/LICENSE.md` does not exist), so the third-party components
+embedded under `third_party/KTX/lib/` were verified one by one on disk, from a
+vendored licence file or from the source file's own licence header:
 
 | Component | Licence | File checked (each under `third_party/KTX/lib/`) |
 |---|---|---|
@@ -45,12 +50,14 @@ file itself:
 | dfdutils (Khronos) | Apache-2.0; individual files taken from MIT projects are MIT | `dfdutils/LICENSE.adoc`; full texts in `dfdutils/LICENSES/{Apache-2.0,MIT}.txt` |
 
 `etcdec.cxx` is the only component in the whole tree that is not under an
-OSI-approved licence. For redistribution, the wording of the SLA in its file header
-is authoritative.
+OSI-approved licence. For redistribution, the wording of the SLA in its file
+header is authoritative.
 
 ## Build-time dependencies via FetchContent (`third_party/CMakeLists.txt`, not checked in)
 
-Each licence was read from the LICENSE file of the local FetchContent checkout under `build*/\_deps/`.
+Each licence was read from the LICENSE file of the local FetchContent checkout
+under `build*/_deps/`. Those checkouts are not checked in; the paths record
+which file was actually read.
 
 | Project | URL | Pin | Licence (per licence file) | File checked |
 |---|---|---|---|---|
@@ -72,30 +79,30 @@ Each licence was read from the LICENSE file of the local FetchContent checkout u
 
 Versions per `third_party/OxidANT/Cargo.lock`.
 
-**Source of the licence entries:** the `license` field of the Cargo metadata, which
-is exactly the field the crate published on crates.io. For the rows whose version
-has not changed since 2026-08-02, it was read for the exact version in `Cargo.lock`
-on 2026-08-02 in the `:latest-cross` container of the time (which held the full
-registry; the host cache was incomplete, because the crate builds run in the
-container) with:
+**Source of the licence entries:** the `license` field of the Cargo metadata,
+exactly the field the crate published on crates.io, copied unchanged (hence,
+for example, the old separator in `pollster`). No entry comes from a README, a
+neighbouring version or a guess.
 
-```sh
-cargo metadata --format-version 1 --locked   # CARGO_HOME=/cargo-cache
-```
+- **Rows unchanged since 2026-08-02**: read for the exact version in
+  `Cargo.lock` on 2026-08-02 in the `:latest-cross` container of the time
+  (volume `cargo-cache`; it held the full registry, while the host cache was
+  incomplete because the crate builds run in the container) with the command
+  below. The `source` of every package was checked as well; all are
+  `registry+https://github.com/rust-lang/crates.io-index`.
 
-The `source` of every package was checked as well; all are
-`registry+https://github.com/rust-lang/crates.io-index`. No entry comes from a
-README, a neighbouring version or a guess. The licence expressions are copied
-unchanged from the metadata field (hence, for example, the old separator in
-`pollster`).
+  ```sh
+  cargo metadata --format-version 1 --locked   # CARGO_HOME=/cargo-cache
+  ```
 
-The rows updated on 2026-09-25 (a new lock version) come from the same `license`
-field, read in the `Cargo.toml` of the exact version in the host's registry cache
-(`scoop/persist/rustup/.cargo/registry/src`) or, for the patched `egui-winit`, in
-the vendored `third_party/OxidANT/third_party/egui-winit-0.36.2/Cargo.toml`
-(`[patch.crates-io]` in `third_party/OxidANT/Cargo.toml`). `egui` and `egui-wgpu`
-0.36.2 are not in that cache; their entry was read from 0.36.1 (see "Unverified,
-to check").
+- **Rows updated on 2026-09-25** (a new lock version): the same `license`
+  field, read in the `Cargo.toml` of the exact version in the host's registry
+  cache (`scoop/persist/rustup/.cargo/registry/src`) or, for the patched
+  `egui-winit`, in the vendored
+  `third_party/OxidANT/third_party/egui-winit-0.36.2/Cargo.toml`
+  (`[patch.crates-io]` in `third_party/OxidANT/Cargo.toml`). `egui` and
+  `egui-wgpu` 0.36.2 are not in that cache; their entry was read from 0.36.1
+  (see "Unverified, to check").
 
 | Crate | Version (lock) | Licence (`license` field) | Source checked |
 |---|---|---|---|
@@ -119,10 +126,10 @@ Notes on single entries:
 - **winit 0.30.13** and **ktx2 0.5.0** are *not* dual-licensed but plain
   Apache-2.0, unlike the other crates in this table.
 - **bevy_mikktspace 1.0.0** is a compound expression: the vendored MikkTSpace C
-  code is under Zlib, the Rust part dual MIT/Apache-2.0; both conditions apply at
-  once (`AND`).
-- **pollster 1.0.1** uses the deprecated slash notation `Apache-2.0/MIT`; it means a
-  choice (equivalent to `Apache-2.0 OR MIT`).
+  code is under Zlib, the Rust part dual MIT/Apache-2.0; both conditions apply
+  at once (`AND`).
+- **pollster 1.0.1** uses the deprecated slash notation `Apache-2.0/MIT`; it
+  means a choice (equivalent to `Apache-2.0 OR MIT`).
 
 ## Toolchain (build time, not shipped)
 
@@ -134,47 +141,44 @@ Notes on single entries:
 
 Open since the check of 2026-09-25:
 
-- **ANTfrastructure, the MIT/Apache contradiction is back**: `LICENSE` says MIT,
-  275 of its own files carry `SPDX-License-Identifier: MIT`, but 25 of its own files
-  carry `SPDX-License-Identifier: Apache-2.0` again, together with "All rights
-  reserved." (among them `windows/scripts/host/*.ps1`, `windows/scripts/build/Build-*All.ps1`,
+- **ANTfrastructure, the MIT/Apache contradiction is back**: `LICENSE` says MIT
+  and 275 of its own files carry `SPDX-License-Identifier: MIT`, but 25 of its
+  own files carry `SPDX-License-Identifier: Apache-2.0` again, together with
+  "All rights reserved." (among them `windows/scripts/host/*.ps1`,
+  `windows/scripts/build/Build-*All.ps1`,
   `windows/scripts/modules/WindowsSourceBuild.Common.psm1`,
   `.claude/hooks/guard-destructive-deletes.*`). To be fixed in ANTfrastructure,
   not here.
-- **egui / egui-wgpu 0.36.2**: the `license` field was read from 0.36.1, because
-  0.36.2 is not in the host cache; confirm it for the exact version with
-  `cargo metadata --locked` in the container.
+- **egui / egui-wgpu 0.36.2**: the `license` field was read from 0.36.1,
+  because 0.36.2 is not in the host cache; confirm it for the exact version
+  with `cargo metadata --locked` in the container.
 
-Resolved on 2026-08-07 and therefore removed from this list:
+Resolved on 2026-08-07:
 
 - **ANTfrastructure, missing LICENSE**: the submodule now carries a `LICENSE`
-  file; the pin above was also corrected from `2ac69e95` to the then current
+  file; its pin was also corrected from `2ac69e95` to the then current
   `45709430`.
 - **ANTfrastructure, MIT/Apache contradiction**: resolved in favour of **MIT**.
-  Before, `LICENSE` said MIT while 101 of its own source files carried
-  `SPDX-License-Identifier: Apache-2.0` and two of the three image definitions set
-  the OCI label `Apache-2.0`. All three places say MIT now; the phrase "All rights
-  reserved.", which contradicts MIT, was removed from the headers. Not touched:
+  `LICENSE` said MIT while 101 of its own source files carried
+  `SPDX-License-Identifier: Apache-2.0` and two of the three image definitions
+  set the OCI label `Apache-2.0`. All three places say MIT now, and the phrase
+  "All rights reserved.", which contradicts MIT, left the headers. Not touched:
   `linux/webserver/dist/assets/NOTICES` and `docs/deps/deps.json`, which state
-  third-party licences (among them Apache 2.0 for LLVM, TVM, OpenCV, Vulkan SDK)
-  and stay correct.
+  third-party licences (among them Apache 2.0 for LLVM, TVM, OpenCV, Vulkan
+  SDK) and stay correct.
 
-Resolved on 2026-08-02 and therefore removed from this list:
+Resolved on 2026-08-02:
 
 - The 11 previously unverified Rust crates (env_logger, wgpu, winit, pollster,
-  glam, gltf, bevy_mikktspace, egui, egui-wgpu, egui-winit, ktx2) are now verified
-  from `cargo metadata` in the container; see the crate table above.
-- `anyhow`, `log` and `bytemuck` are now verified for the **exact** lock version
-  instead of a neighbouring cached version; their licence expressions did not
+  glam, gltf, bevy_mikktspace, egui, egui-wgpu, egui-winit, ktx2), verified
+  from `cargo metadata` in the container (crate table above).
+- `anyhow`, `log` and `bytemuck`, verified for the **exact** lock version
+  instead of a neighbouring cached one; their licence expressions did not
   change.
-- The embedded third-party parts in `third_party/KTX/lib/` are verified one by one
-  from the files on disk; see the table in the section "Vendored sources".
+- The embedded third-party parts in `third_party/KTX/lib/`, verified one by
+  one from the files on disk (table under "Vendored sources").
 
 ## Notes
 
 - Removed since the state of 2026-03-26: **glad** (no `third_party/glad` submodule any more, no glad or OpenGL loader references under `Src/`) and **KTX as a submodule** (now partly vendored, see above).
 - Kompute is built only with `KATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND=ON` (a demo, not part of the engine, in no package). Since 2026-10-06 only the Linux CI job `clang-tests` does that, and it also starts the playground; Kompute then fetches fmt 11.0.0 through FetchContent.
-- The `build*/_deps/` paths are local checkouts (not checked in); they record which file was actually read for the verification. For the Rust crates, their place is taken by the registry in the `:latest-cross` container of the time (volume `cargo-cache`, `CARGO_HOME=/cargo-cache`), from which `cargo metadata` read the `license` field on 2026-08-02, or, for the rows updated on 2026-09-25, by the host's registry cache.
-
----
-Created in the repository on request; last fully verified against the disk on 2026-08-02, the Rust crate licences additionally against `cargo metadata --format-version 1 --locked` in the `:latest-cross` container (full crates.io registry) on 2026-08-02. On 2026-09-25 the pins that had moved since (imgui, glfw, nlohmann/json, google/benchmark, OxidANT, ANTfrastructure) and the crate versions (log, wgpu, pollster, glam, egui, egui-wgpu, egui-winit) were updated and their licences read from disk again; the other rows are unchanged. On 2026-10-07 the pins of imgui, nlohmann/json, google/benchmark, spdlog, abseil-cpp, Microsoft GSL and OxidANT and glam 0.34.1 were updated; the licence files of the four submodules are unchanged across the moved ranges (`git diff` empty). That evening nlohmann/json moved to 367336c83 and Microsoft GSL to v5.0.1; `LICENSE.MIT` and GSL's `LICENSE` are unchanged across both ranges.

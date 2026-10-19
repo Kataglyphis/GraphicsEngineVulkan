@@ -5,12 +5,12 @@ planner writes tasks, a cheap executor implements them, and builds, tests and
 quality gates run on a cadence.
 
 **The loop's logic is not in this directory.** It lives in the ANTfrastructure
-submodule — `windows/scripts/modules/WindowsAgenticLoop.Common.psm1` and
-`linux/scripts/lib/agentic-loop.sh`. What is here is the thin consumer half:
-one config, two runners, two prompt overlays. Everything generic (queue
-discipline, the blocked-task protocol, model tiering, retries, build-failure
-fixing) is documented upstream and deliberately not repeated here — this file
-used to restate it, and the restatement is what went stale.
+submodule: `windows/scripts/modules/WindowsAgenticLoop.Common.psm1` and
+`linux/scripts/lib/agentic-loop.sh`. Here is the thin consumer half: one
+config, two runners, two prompt overlays. Everything generic (queue discipline,
+the blocked-task protocol, model tiering, retries, build-failure fixing) is
+documented upstream and not repeated here: this file used to restate it, and
+the restatement went stale.
 
 ## Upstream docs
 
@@ -35,26 +35,24 @@ Both runners are the upstream templates
 with only the loop name changed and, on the Bash side, the library sourced
 through [`scripts/linux/lib/antfrastructure.sh`](../linux/lib/antfrastructure.sh)
 instead of a `third_party` literal. Keep them that way: no prompt text and no
-build-config list belongs in a runner — hard-coding either is what let the
-Windows and Linux copies drift apart once already.
+build-config list in a runner. Hard-coding either let the Windows and Linux
+copies drift apart once already.
 
 The two overlays are the **only** prompt text this repo owns. At start-up the
 loop composes ANTfrastructure's shared role prompt plus the overlay into one text
-and delivers it to both engines: `claude` gets it as a temp file behind
-`--append-system-prompt-file`, and `opencode` gets it as a **generated**
-`.opencode/agents/<role>.md`, because opencode takes no prompt file on its
-command line. `.opencode/agents/` is therefore gitignored and never edited by
-hand — see
-[adopting-in-a-new-project.md § 4](../../third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#4-the-agentic-loop)
-for why a tracked copy is the wrong cure for prompt drift.
+for both engines: `claude` gets a temp file behind
+`--append-system-prompt-file`; `opencode` takes no prompt file on its command
+line, so it gets a **generated** `.opencode/agents/<role>.md`. `.opencode/agents/`
+is gitignored and never edited by hand; why a tracked copy is the wrong cure for
+prompt drift:
+[adopting-in-a-new-project.md § 4](../../third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#4-the-agentic-loop).
 
 [`.opencode/commands/`](../../.opencode/commands) stays hand-written and tracked:
-those are TUI commands, not role prompts. They give the OpenCode TUI `/plan`,
+TUI commands, not role prompts. They give the OpenCode TUI `/plan`,
 `/execute`, `/build <preset>`, `/test` and `/quality` for driving single loop
-phases interactively. OpenCode itself is installed via `scoop install opencode`
-(or `npm install -g opencode-ai`) and authenticated once with
-`opencode auth login` — the upstream prerequisites section covers the other
-tools but does not name that auth step.
+phases interactively. Install OpenCode with `scoop install opencode`
+(or `npm install -g opencode-ai`) and authenticate once with
+`opencode auth login`; the upstream prerequisites section omits that auth step.
 
 ## Running it
 
@@ -67,54 +65,49 @@ pwsh -File .\scripts\agentic-loop\Invoke-AgenticLoop.ps1
 ```
 
 `-Engine`, `-DryRun`, `-MaxIterations`, `-SkipBuild`, `-SkipTests`,
-`-SkipQuality`, `-PlannerOnly`, `-ExecutorOnly` (and their `--kebab-case`
-equivalents on the Bash side) map one-to-one onto the module parameters
-documented in
+`-SkipQuality`, `-PlannerOnly`, `-ExecutorOnly` (`--kebab-case` on the Bash
+side) map one-to-one onto the module parameters in
 [`windows-agentic-loop.md`](../../third_party/ANTfrastructure/docs/windows-agentic-loop.md).
 
 ## What this repo configures
 
-The config also restates several upstream defaults on purpose, to pin them
-against upstream drift — the bullets below say which values actually deviate.
-The key-by-key reference is upstream in
+The config restates several upstream defaults on purpose, to pin them against
+upstream drift; the bullets say which values deviate. Key-by-key reference:
 [`windows-agentic-loop.md`](../../third_party/ANTfrastructure/docs/windows-agentic-loop.md).
 
-- `engine: "claude"` (upstream default: `opencode`), with
-  `plannerModel: claude-opus-5`, `plannerFallbackModel: claude-fable-5` for
-  when Opus is overloaded, and `executorModel: claude-sonnet-5`. The
-  `opencode` engine stays configured as an alternative (GLM 5.2 planner,
-  DeepSeek v4 Flash executor).
-- `fullMatrixEveryNIterations: 5` (default 0 = no sweeps) — the full-matrix
-  sweep cadence. The other cadences (`buildEveryNTasks: 3`,
-  `qualityEveryNTasks: 5`, `refactorEveryNIterations: 3`) pin the defaults.
+- `engine: "claude"` (upstream default: `opencode`): `plannerModel: claude-opus-5`,
+  `plannerFallbackModel: claude-fable-5` for when Opus is overloaded,
+  `executorModel: claude-sonnet-5`. The `opencode` engine stays configured as an
+  alternative (GLM 5.2 planner, DeepSeek v4 Flash executor).
+- `fullMatrixEveryNIterations: 5` (default 0 = no sweeps): the full-matrix
+  sweep cadence. `buildEveryNTasks: 3`, `qualityEveryNTasks: 5` and
+  `refactorEveryNIterations: 3` pin the defaults.
 - `plannerTimeoutSeconds: 1800`, `executorTimeoutSeconds: 3600` (default 0 =
-  no timeout) — per-role wall-clock timeouts; the executor value also covers
-  the build fixer. The config's generic `timeoutSeconds: 1200` is dead while
-  both per-role values are set: `Get-AgentTimeoutForRole` only falls through
-  to it for a role whose own timeout is 0.
+  no timeout): per-role wall-clock timeouts; the executor value also covers
+  the build fixer. The generic `timeoutSeconds: 1200` is dead while both are
+  set: `Get-AgentTimeoutForRole` falls through to it only for a role whose own
+  timeout is 0.
 - `agentRetryDelaySeconds: 30` (default 20). `agentRetries: 2`,
   `fixBuildFailures: true` and `maxConsecutiveBuildFailures: 3` pin the
   defaults.
-- `plannerAllowedTools: "Read Glob Grep Edit(BACKLOG.md) Bash(git:*) PowerShell(git:*)"`
-  — the planner reads the whole tree but writes only the backlog. The executor
-  runs with `bypassPermissions` (the upstream default, restated because it is
-  a trust statement: this is a trusted repo).
-- `build.windowsTestCommand` / `build.linuxTestCommand` (no upstream default)
-  — the fallback test command for any matrix entry without its own
-  `testCommand`. Both point at the debug build's ctest; see the matrix bullet
-  below for the consequence.
-- `logging.logDir: logs/agentic-loop` (pins the default) — one timestamped log
-  per run, carrying all agent, build, test and quality output.
+- `plannerAllowedTools: "Read Glob Grep Edit(BACKLOG.md) Bash(git:*) PowerShell(git:*)"`:
+  the planner reads the whole tree but writes only the backlog. The executor
+  runs with `bypassPermissions` (the upstream default, restated as a trust
+  statement: this is a trusted repo).
+- `build.windowsTestCommand` / `build.linuxTestCommand` (no upstream default):
+  the fallback test command for a matrix entry without its own `testCommand`.
+  Both run the debug build's ctest; see the matrix bullet for the consequence.
+- `logging.logDir: logs/agentic-loop` (pins the default): one timestamped log
+  per run, with all agent, build, test and quality output.
 - The `buildMatrix` maps this repo's presets to their build dirs and `ctest`
   commands: `clangcl-debug` (ASAN), `clangcl-profile`, `clangcl-release` on
   Windows; `linux-debug-asan-clang`, `linux-debug-tsan-clang`,
   `linux-profile-clang`, `linux-release-clang` on Linux. The release entries
-  carry `testCommand: null`, which does **not** skip tests — the module falls
-  back to `build.windowsTestCommand` / `build.linuxTestCommand`, and both are
-  set here, so the release lane currently re-runs the debug build's ctest.
-  `null` only means "no tests" in a config that leaves both fallback keys
-  unset; if the release lanes are meant to be build-only, those two keys must
-  be nulled as well.
+  carry `testCommand: null`, which does **not** skip tests: the module falls
+  back to `build.windowsTestCommand` / `build.linuxTestCommand`, both set here,
+  so the release lane re-runs the debug build's ctest. `null` means "no tests"
+  only when both fallback keys are unset; to make the release lanes build-only,
+  null those two keys as well.
 
 ## Build and quality commands
 
@@ -130,29 +123,28 @@ Linux builds go through
 [`scripts/linux/cmake-configure-build.sh`](../linux/cmake-configure-build.sh),
 natively or in a Rancher Desktop container.
 
-The quality gate on Windows is
+The Windows quality gate is
 `Build-Windows.ps1 -Configurations clangcl-debug -SkipBuild -SkipTests -SkipPerfTests -SkipMsix`.
-`-SkipBuild` clears the selected configurations, so this runs only the
-report-only clang-format check: not clang-tidy, which is a step of the
-`clangcl-debug` build, and not cmake-format, which runs only with
-`-ApplyFormat` (see [`docs/code-quality.md`](../../docs/code-quality.md)). On
-Linux it is
+`-SkipBuild` clears the selected configurations, so it runs only the
+report-only clang-format check: not clang-tidy, a step of the `clangcl-debug`
+build, and not cmake-format, which runs only with `-ApplyFormat` (see
+[`docs/code-quality.md`](../../docs/code-quality.md)). On Linux it is
 [`scripts/linux/run-static-analysis-format.sh`](../linux/run-static-analysis-format.sh).
 
 ## The prompt overlays
 
 The overlays are declared once, in the config's top-level `promptOverlays`
-block (engine-agnostic, because both engines are fed the same composition);
-the composition and delivery mechanics are upstream in
+block (engine-agnostic: both engines get the same composition); composition
+and delivery are upstream in
 [`agentic-loop-build-matrix.md`](../../third_party/ANTfrastructure/docs/agentic-loop-build-matrix.md).
-The overlays carry only what is true of *this* renderer:
+They carry only what is true of *this* renderer:
 
-- [`prompts/planner-overlay.md`](prompts/planner-overlay.md) — which `BACKLOG.md`
-  heading a task belongs under, which preset a task should name (`clangcl-debug`
+- [`prompts/planner-overlay.md`](prompts/planner-overlay.md): which `BACKLOG.md`
+  heading a task belongs under, which preset a task names (`clangcl-debug`
   for iteration, `clangcl-profile` for benchmarks, `clangcl-release` for
   packaging), and the conventions a proposed task must never violate: no
   exceptions, `PipelineBuilder` for pipelines, VMA for buffer/image memory.
-- [`prompts/executor-overlay.md`](prompts/executor-overlay.md) — the exact build
+- [`prompts/executor-overlay.md`](prompts/executor-overlay.md): the exact build
   commands, why a container build needs a container-native `--build-dir`, why
   Windows tests run the delivered executable from the repo root instead of
   `ctest --test-dir` (the container build's CTest metadata carries container

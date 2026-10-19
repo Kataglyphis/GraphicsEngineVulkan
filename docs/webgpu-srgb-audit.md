@@ -3,11 +3,8 @@
 Phase A closing item: every texture and attachment in
 `crates/webgpu_renderer`, its color space, and why. Rule of thumb: *color*
 data is sRGB-encoded and decoded by the hardware on sample; *data* maps and
-all render math stay linear.
-
-Despite the name, this table now also carries the C++/Vulkan engine's one
-swapchain row (below), added 2026-08-04 once it turned out to have the same
-bug as the web canvas case.
+all render math stay linear. The last row is the C++/Vulkan engine's
+swapchain, added 2026-08-04 because it had the web canvas's bug.
 
 | Resource | Format | Space | Rationale |
 | --- | --- | --- | --- |
@@ -27,25 +24,21 @@ bug as the web canvas case.
 | egui overlay | surface format | matches target | egui-wgpu handles its own color management |
 | C++/Vulkan swapchain | UNORM (`SwapchainChoices.hpp::chooseBestSurfaceFormat` prefers `eR8G8B8A8Unorm`/`eB8G8R8A8Unorm`) | sRGB | Same bug as the web canvas case: no hardware encode on present, so `post/post.slang` and `skybox/skybox.slang` (the only two shaders that write the swapchain directly) apply `linear_to_srgb` themselves. Fixed 2026-08-04 |
 
-**No known deviations.** The web swapchain caveat was closed on 2026-07-20; the
-equivalent C++/Vulkan swapchain caveat was closed on 2026-08-04.
+**No known deviations**: both swapchain caveats are closed (web 2026-07-20,
+C++/Vulkan 2026-08-04).
 
-**KTX2 container vs. material usage.** glTF usage always decides the GPU
-format for a block-compressed texture (base colour/emissive are sRGB;
-normal/metallic-roughness/occlusion are linear), never the KTX2 container's
-declared vkFormat. If a KTX2's `*_SRGB_BLOCK`/`*_UNORM_BLOCK` vkFormat
-disagrees with how the material uses it, `create_compressed_texture`
-(`render/texture.rs`) logs a `log::warn!` naming the texture, the declared
-space and the used one — usage still wins, but the mismatch is no longer
-silent.
+**The exact piecewise transfer function, not `pow(x, 1/2.2)`.** The
+approximation is visibly wrong in the darks and would make the web build differ
+from native, the class of bug this table exists to prevent. The web encode is
+guarded by `non_srgb_target_is_gamma_encoded_like_an_srgb_one`
+(`crates/webgpu_renderer/tests/headless.rs`): it renders one scene to an sRGB
+and a non-sRGB target and asserts their mean byte values agree within 2
+levels. Without the encode it fails at 177.17 vs 127.77, a 49-level gap: the
+"slightly dark on web" symptom, quantified.
 
-The fix is guarded by `non_srgb_target_is_gamma_encoded_like_an_srgb_one`
-(`crates/webgpu_renderer/tests/headless.rs`), which renders the same scene to
-an sRGB and a non-sRGB target and asserts their mean byte values agree within
-2 levels. Verified to fail without the encode: 177.17 vs 127.77, a 49-level
-gap — which is the "slightly dark on web" symptom, quantified.
-
-Note the shader uses the exact piecewise transfer function, not
-`pow(x, 1/2.2)`. The approximation is visibly wrong in the darks and would
-make the web build differ from native, which is precisely the class of bug
-this table exists to prevent.
+**KTX2 container vs. material usage.** glTF usage decides a block-compressed
+texture's GPU format (base colour/emissive sRGB; normal/metallic-roughness/
+occlusion linear), never the KTX2 container's declared vkFormat. When a KTX2's
+`*_SRGB_BLOCK`/`*_UNORM_BLOCK` vkFormat disagrees with the material's use,
+`create_compressed_texture` (`render/texture.rs`) logs a `log::warn!` naming
+the texture, the declared space and the used one; usage still wins.

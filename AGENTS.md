@@ -6,24 +6,24 @@ C++23/C17, CMake presets, optional Rust).
 
 ## Start here: routing
 
-Find your task, do the first action, read the doc. Everything below expands on
-these; the [Docs](#docs) table at the end is the full ownership index.
+Find your task, do the first action, read the doc. [Docs](#docs) and
+[What ANTfrastructure owns](#what-antfrastructure-owns--links-only) are the full ownership index.
 
 | If you are doing this | Start with |
 | --- | --- |
-| Building anything on Windows | `Build-Windows-Container.ps1` — see [Fast path](#fast-path-windows-build-run-verify). Never invoke CMake/Ninja/MSBuild on the host. |
-| Running the engine / seeing pixels | `scripts/windows/Invoke-ClangCl*.ps1` from the **repo root** — see [Running on the Host](#running-on-the-host-windows) |
-| Changing a shader | Edit `Resources/ShadersSlang/*.slang` + `shader-manifest.json`, run `Build-SlangShaders.ps1`, run one golden. No C++ rebuild. [`docs/shader-build-pipeline.md`](docs/shader-build-pipeline.md) |
-| Adding or changing a test | `Test/commit/VulkanEngine/` (CPU + GPU golden), `Test/fuzz/`, `Test/perf/`. Always in scope — see [Testing](#testing) |
-| Touching render passes, barriers, frames-in-flight | Golden suites on the host GPU **and** `Invoke-SyncValidation.ps1` (Linux CI runs sync validation on llvmpipe) — [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md) |
+| Building anything on Windows | `Build-Windows-Container.ps1` ([Fast path](#fast-path-windows-build-run-verify)). Never invoke CMake/Ninja/MSBuild on the host. |
+| Running the engine / seeing pixels | `scripts/windows/Invoke-ClangCl*.ps1` from the **repo root** ([Running on the Host](#running-on-the-host-windows)) |
+| Changing a shader | Edit `Resources/ShadersSlang/*.slang` + `shader-manifest.json`, run `Build-SlangShaders.ps1`, run one golden; no C++ rebuild ([`docs/shader-build-pipeline.md`](docs/shader-build-pipeline.md)) |
+| Adding or changing a test | `Test/commit/VulkanEngine/` (CPU + GPU golden), `Test/fuzz/`, `Test/perf/`; always in scope ([Testing](#testing)) |
+| Touching render passes, barriers, frames-in-flight | Golden suites on the host GPU **and** `Invoke-SyncValidation.ps1` (Linux CI runs sync validation on llvmpipe): [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md) |
 | Refactoring the renderer / device path | The per-unit verification loop in [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md); log the change in [`docs/cpp-renderer-improvements.md`](docs/cpp-renderer-improvements.md) |
-| "My build produced nothing" / "my deleted file still builds" | [Container reuse and delivery](#containerized-windows-builds-stevedore) — `-FreshContainer`, and the delivery check that fails the build |
-| Writing a script, module, or general-purpose doc | Probably belongs upstream — [Rule: Reusable Work Belongs in ANTfrastructure](#rule-reusable-work-belongs-in-antfrastructure). Check [What ANTfrastructure owns](#what-antfrastructure-owns--links-only) before writing a procedure that may already exist |
-| Bumping a submodule pin, or any dependency | `bash ./scripts/linux/renovate-local.sh` from WSL — see [Dependency upgrades](#dependency-upgrades-renovate-as-a-local-cli). Never a bare `git submodule update --remote` |
-| Releasing | A push to `main` releases `VERSION.txt`'s version once every lane is green; first raise it and give it a `CHANGELOG.md` section — see [What CI runs](#what-ci-runs-and-what-it-does-not) |
-| Pushing and expecting CI to tell you something | A push or PR runs Linux x64 (not on a docs-only commit) and the gates; the other four platform lanes run when a commit message asks with the ci token, or by hand — see [What CI runs](#what-ci-runs-and-what-it-does-not) |
-| Changing the Rust WebGPU renderer | `third_party/OxidANT/crates/webgpu_renderer` — that repo owns the renderer's docs too (decision D6): [`webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md), which the pin bump to `d68560fe` made reachable in this checkout; [on the web](https://github.com/Kataglyphis/OxidANT/blob/HEAD/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) for a reader without the submodule |
-| Touching the clouds subsystem | Pipeline shape, estimator, UBO/constants tables, queue ownership — [`docs/clouds.md`](docs/clouds.md) |
+| "My build produced nothing" / "my deleted file still builds" | `-FreshContainer`, and the delivery check that fails the build: [Container reuse and delivery](#containerized-windows-builds-stevedore) |
+| Writing a script, module, or general-purpose doc | Probably upstream: [Rule: Reusable Work Belongs in ANTfrastructure](#rule-reusable-work-belongs-in-antfrastructure). Check [What ANTfrastructure owns](#what-antfrastructure-owns--links-only) before writing a procedure that may exist |
+| Bumping a submodule pin, or any dependency | `bash ./scripts/linux/renovate-local.sh` from WSL ([Dependency upgrades](#dependency-upgrades-renovate-as-a-local-cli)); never a bare `git submodule update --remote` |
+| Releasing | A push to `main` releases `VERSION.txt`'s version once every lane is green; first raise it and give it a `CHANGELOG.md` section ([What CI runs](#what-ci-runs-and-what-it-does-not)) |
+| Pushing and expecting CI to tell you something | A push or PR runs Linux x64 (not on a docs-only commit) and the gates; the other four platform lanes run when a commit message asks with the ci token, or by hand ([What CI runs](#what-ci-runs-and-what-it-does-not)) |
+| Changing the Rust WebGPU renderer | `third_party/OxidANT/crates/webgpu_renderer`; that repo owns the renderer's docs too (decision D6): [`webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md), reachable in this checkout since the pin bump to `d68560fe`, or [on the web](https://github.com/Kataglyphis/OxidANT/blob/HEAD/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) without the submodule |
+| Touching the clouds subsystem | [`docs/clouds.md`](docs/clouds.md): pipeline shape, estimator, UBO/constants tables, queue ownership |
 
 ### Repo map
 
@@ -31,80 +31,77 @@ these; the [Docs](#docs) table at the end is the full ownership index.
 | --- | --- |
 | `Src/GraphicsEngineVulkan/` | The C++ Vulkan engine (`app`, `renderer`, `vulkan_base`, `memory`, `scene`, `gui`, `window`, `common`) |
 | `Src/shared/`, `Src/KomputePlayground/` | Renderer-agnostic frontend/scene/imgui/util code; the Kompute compute playground |
-| `Test/commit/VulkanEngine/` | The main gtest suite (`commitTestSuite.exe`) — CPU suites plus `GoldenRender.*` / `Integration.*` |
+| `Test/commit/VulkanEngine/` | The main gtest suite (`commitTestSuite.exe`): CPU suites plus `GoldenRender.*` / `Integration.*` |
 | `Test/compile/`, `Test/fuzz/`, `Test/perf/` | Compile-time checks, FuzzTest targets, Google Benchmark suite (`perfTestSuite`) |
 | `Resources/ShadersSlang/` | All shaders (Slang) + `shader-manifest.json`; compiled output under `build/` is gitignored |
 | `third_party/OxidANT/crates/` | The Rust side, incl. `webgpu_renderer` and `gui` |
 | `third_party/ANTfrastructure/` | The submodule that owns every reusable script, module and doc (see the rule below) |
 | `scripts/windows/`, `scripts/linux/`, `scripts/agentic-loop/` | Thin project wrappers over ANTfrastructure drivers + this project's payload |
-| `cmake/` | This project's build **policy** only: `ProjectOptions.cmake` (options, exceptions, CRT, C++23, modules-mandatory), `CPackOptions.cmake`, `SystemLibDependencies.cmake`, `FetchAssets.cmake` (the scenes, see [Large tracked assets](#large-tracked-assets)). The reusable modules live in ANTfrastructure — see [CMake modules](#cmake-modules-antfrastructure-first-local-override-wins) |
+| `cmake/` | This project's build **policy** only: `ProjectOptions.cmake` (options, exceptions, CRT, C++23, modules-mandatory), `CPackOptions.cmake`, `SystemLibDependencies.cmake`, `FetchAssets.cmake` (the scenes, [Large tracked assets](#large-tracked-assets)). The reusable modules are ANTfrastructure's ([CMake modules](#cmake-modules-antfrastructure-first-local-override-wins)) |
 
 ### Large tracked assets
 
 **The scenes are not tracked; they are [AssetANT](https://github.com/Kataglyphis/AssetANT)
 release assets** (owner, 2026-10-17). AssetANT keeps each scene's metadata in git (origin, license,
 credit, the archive's SHA-256) and publishes its files as one reproducible `<name>.tar.xz` per
-release, `<name>-v<N>`. `Resources/assets.lock` pins each archive by SHA-256 and URL, and
-`cmake/FetchAssets.cmake` extracts it into `Resources/Models/<name>` at configure time, through a
+release, `<name>-v<N>`. `Resources/assets.lock` pins each archive by SHA-256 and URL;
+`cmake/FetchAssets.cmake` extracts it into `Resources/Models/<name>` at configure time through a
 per-user cache (`KATAGLYPHIS_ASSET_CACHE`, else `kataglyphis-assets` under `%LOCALAPPDATA%` or
-`~/.cache`). The paths the engine loads did not move. Measured at `7b77802e`, the last commit that
-tracked them: 633 MiB tracked, 518 MiB of it the 14 scene directories; after, 116 MiB, 62 of them
+`~/.cache`). The paths the engine loads did not move. At `7b77802e`, the last commit that tracked
+them: 633 MiB tracked, 518 MiB of it the 14 scene directories; after, 116 MiB, 62 of them
 `third_party/KTX`'s vendored test images.
 
 - **A configure fetches two**: `crytek-sponza` (the Release default, the one scene the packages
   install, two goldens) and `Dinosaurs` (the Debug default, the golden scene, four `ObjParseUnit`
-  fixtures, the renderer comparisons). `KATAGLYPHIS_DEFAULT_ASSETS` in the module names them;
-  `-DKATAGLYPHIS_FETCH_ALL_ASSETS=ON` adds the other twelve for the model picker, and
+  fixtures, the renderer comparisons), named by `KATAGLYPHIS_DEFAULT_ASSETS` in the module.
+  `-DKATAGLYPHIS_FETCH_ALL_ASSETS=ON` adds the other twelve for the model picker;
   `-DKATAGLYPHIS_FETCH_ASSETS=OFF` fetches nothing (the tests that read a scene then skip or fail).
-- **Without a configure**, `cmake -P cmake/FetchAssets.cmake` does the same. `Build-Windows-Container.ps1`
-  runs it on the host, so a run from the repo root finds the scenes, and the arm64 lane runs it
-  before its host-side lavapipe suites; x64's comes from the container's configure, whose
-  bind-mounted workspace the host reads (the `windows-2025` runner has no `cmake` on `PATH`).
+- **Without a configure**: `cmake -P cmake/FetchAssets.cmake`. `Build-Windows-Container.ps1` runs it
+  on the host, so a run from the repo root finds the scenes; the arm64 lane runs it before its
+  host-side lavapipe suites. x64 reads the scenes the container's configure fetched into the
+  bind-mounted workspace (the `windows-2025` runner has no `cmake` on `PATH`).
 - **A fetched directory holds `.assetant-sha256`**: the archive's hash and how many files it
   extracted. Only a stamp matching both makes the fetch a no-op, so a tree whose files went while
   the ignored stamp stayed is extracted again (checking out a commit that still tracked the scenes
   does exactly that). A scene directory without a stamp stops the configure instead of being
   overwritten. The packages leave the stamp out.
 - **A changed scene is a new AssetANT release and a new lock line.** A published archive never
-  changes, and the fetch deletes a download whose hash differs and stops.
+  changes; the fetch deletes a download whose hash differs and stops.
 - **What stays tracked**: the test fixtures (`GltfTest/`, `ShadowTest/`, `Plane/`, `VikingRoom/`,
   and the loose `plane` and `suzanne` the perf suite parses) and `Resources/Textures/`, which the
   packages install whole: `Skybox/DOOM2016`, the one skybox the renderer loads, and the three
   1-pixel defaults (1.4 MiB). `Loading_Screen/`, the duplicated `space` skybox, `brick.png` and
   `dirt.png` (12.6 MiB, read by nothing) went on 2026-10-17.
 - **The WebGPU demo is built, not tracked**: `scripts/linux/docs-build-web.sh` compiles it into
-  the ignored `docs/source/_webgpu_demo/` for every docs build, which CI's docs deploy runs. A
-  build without `wasm-bindgen` publishes the docs without the demo (a warning in CI) instead of
-  the 8 MiB snapshot that was committed until 2026-10-17.
+  the ignored `docs/source/_webgpu_demo/` on every docs build, which CI's docs deploy runs. Without
+  `wasm-bindgen` the docs publish without the demo (a warning in CI); until 2026-10-17 an 8 MiB
+  snapshot was committed instead.
 
-What is left large: `Documents/GGD_Kit_milestone_document.pdf` (16 MiB, `linguist-vendored`), frozen
-with two test fixtures in `large-files.allow` for the hub's `large-files` gate. The engine screenshots
+Still large: `Documents/GGD_Kit_milestone_document.pdf` (16 MiB, `linguist-vendored`), frozen with
+two test fixtures in `large-files.allow` for the hub's `large-files` gate. The engine screenshots
 under `images/` (11 MiB), which nothing linked, went on 2026-10-17 (owner).
 
 **The history was rewritten on 2026-10-17; LFS is still out.** The owner reversed the 2026-09-15
 "no rewrite" that day: binary blobs of 500 KB and more that no branch held left the history of all
 ten family repositories, the scenes among them, and this pack went from 1.24 GiB to 146 MiB.
-AssetANT's published archives are their only copy now (its `source.commit` names a commit from
-before), and a checkout from before follows with the hub's `git-adopt-rewritten-history.sh`.
+AssetANT's published archives are now the scenes' only copy (its `source.commit` names a commit
+from before); a checkout from before follows with the hub's `git-adopt-rewritten-history.sh`.
 
 The **large-asset gate** at the bottom of `.gitignore` stays: DCC project files, archives and video
 are ignored repo-wide, heavy image formats under `Resources/`, and `Resources/**/*.obj` with the
-five tracked meshes listed back. Every directory under `Resources/Models/` is ignored except the four
-fixture directories, which also keeps the fetched scenes out of `git status`. A fixture that
-genuinely belongs: `git add -f <path>`, then a `!` line in `.gitignore` and a mention here; a scene
-goes to AssetANT.
-
-Two earlier passes already removed what was removable without touching history:
-a Blender autosave twin, a duplicate `dinosaurs.obj` and a 2022 Doxygen snapshot
-(`2987c7a3`). Do not re-add them.
+five tracked meshes listed back. Every directory under `Resources/Models/` except the four fixture
+directories is ignored, which also keeps the fetched scenes out of `git status`. A fixture that
+genuinely belongs: `git add -f <path>`, a `!` line in `.gitignore` and a mention here; a scene goes
+to AssetANT. Earlier passes removed, without touching history, a Blender autosave twin, a duplicate
+`dinosaurs.obj` and a 2022 Doxygen snapshot (`2987c7a3`). Do not re-add them.
 
 ## What ANTfrastructure owns — links only
 
-Every topic below lives in `third_party/ANTfrastructure` and is consumed from
-there. **This file does not restate any of it**, and neither should the next
-procedure written here: if your topic is in this table, write one sentence of
-orientation and link — upstream's own instruction to consumers,
-[`docs/INDEX.md` § If you are about to write a procedure in a consumer repo](third_party/ANTfrastructure/docs/INDEX.md#if-you-are-about-to-write-a-procedure-in-a-consumer-repo).
+Every topic below lives in `third_party/ANTfrastructure` and is consumed from there. **This file
+does not restate any of it**: for a topic in this table, write one sentence of orientation and
+link (upstream's instruction to consumers,
+[`docs/INDEX.md` § If you are about to write a procedure in a consumer repo](third_party/ANTfrastructure/docs/INDEX.md#if-you-are-about-to-write-a-procedure-in-a-consumer-repo)).
+This repo's own pages are in [Docs](#docs).
 
 | Topic | Upstream document |
 | --- | --- |
@@ -114,101 +111,83 @@ orientation and link — upstream's own instruction to consumers,
 | Searching the tree: `rg`, not `grep -r` | [the hub rule, Searching](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/AGENTS.md#searching-the-tree-ripgrep-rg) |
 | Wiring another project to any of this: the loop, both container flows, launchers, CI actions | [`adopting-in-a-new-project.md`](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md) |
 | The one file a consumer must own itself, and why (`Resolve-BuildModule.ps1`) | [adopting § 1](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#1-the-one-file-that-cannot-live-here) |
-| Agentic loop: architecture, engines, config keys, prompt composition | [adopting § 4](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#4-the-agentic-loop), [`windows-agentic-loop.md`](third_party/ANTfrastructure/docs/windows-agentic-loop.md) |
+| Agentic loop: architecture, engines, config keys, prompt composition; the `WindowsAgenticLoop.Common` module API + config reference | [adopting § 4](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#4-the-agentic-loop), [`windows-agentic-loop.md`](third_party/ANTfrastructure/docs/windows-agentic-loop.md) |
 | Build matrix config, sanitizer env vars, the full matrix sweep | [`agentic-loop-build-matrix.md`](third_party/ANTfrastructure/docs/agentic-loop-build-matrix.md) |
 | Calling conventions every consumer wrapper follows (`#requires`, strict mode, sourcing the hub) | [adopting § 8](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#8-calling-conventions-what-every-consumer-looks-like) |
 | The Windows container image: build sequence, Stevedore setup, invariants | [`windows-builds.md`](third_party/ANTfrastructure/docs/windows-builds.md) |
-| Building inside the image: transports, reuse pattern, safety rails | [`windows-container-build-performance.md`](third_party/ANTfrastructure/docs/windows-container-build-performance.md) |
+| Building inside the image: **both transports and how to set each one up** (§ Transports), the reusable-container pattern and its safety rails, why sccache cannot cache a C++23 modules build, why a named volume cannot be a CMake build directory, the Windows path limit that silently truncates tar transfers, `docker exec` bypassing the entrypoint, the wcifs teardown lock | [`windows-container-build-performance.md`](third_party/ANTfrastructure/docs/windows-container-build-performance.md) |
+| sccache shared with the other build hosts: this host's dufs plus an S3 bucket, handed to the reusable container's `docker exec` by name so the key reaches no command line, and the fallback when the bucket stalls; the bucket's server | [`windows-build-resources.md` § Two cache levels](third_party/ANTfrastructure/docs/windows-build-resources.md#two-cache-levels), [`linux/sccache-s3/README.md`](third_party/ANTfrastructure/linux/sccache-s3/README.md) |
 | Windows arm64 cross builds: the `:winarm64` bundle, the arch gate, why Release, Profile and the Debug (ASan) build, the `container-ci-windows.yml` caller contract | [`windows-cross-builds.md`](third_party/ANTfrastructure/docs/windows-cross-builds.md) |
 | Running the Linux image locally: nerdctl, cargo cache volume, build-dir rules | [`rancher-desktop-linux-containers.md`](third_party/ANTfrastructure/docs/rancher-desktop-linux-containers.md) |
 | Which CI lanes run when; the `[build-win]` / `[build-arm]` commit-message opt-ins (this repo dropped both on 2026-09-24) | [`ci-build-triggers.md`](third_party/ANTfrastructure/docs/ci-build-triggers.md) |
 | Dependency upgrades family-wide: Renovate as a local CLI, what `--apply` moves and what it refuses | [`dependency-updates.md`](third_party/ANTfrastructure/docs/dependency-updates.md) |
 | Reading and fixing CI status from a shell with `gh` | [`github-cli-pipeline-monitoring.md`](third_party/ANTfrastructure/docs/github-cli-pipeline-monitoring.md) |
 | clang-format / clang-tidy / cmake-format rules, and the lint gates' contracts | [`code-quality-tooling.md`](third_party/ANTfrastructure/docs/code-quality-tooling.md) |
-| The shared CMake modules: what each provides, how they reach `CMAKE_MODULE_PATH` | [`cmake/README.md`](third_party/ANTfrastructure/cmake/README.md) |
-
-The [Docs](#docs) table at the end is the same list interleaved with this repo's
-own pages; this section is the upstream half on its own, so *"is there already a
-document for this?"* is one look rather than a scan.
+| The shared CMake modules: what each provides, how they reach `CMAKE_MODULE_PATH`, what stays project-local | [`cmake/README.md`](third_party/ANTfrastructure/cmake/README.md) |
 
 ---
 
 ## Fast path: Windows build, run, verify
 
-**When building on Windows, always use Stevedore (Docker) via the container
-build script.** Never invoke CMake, Ninja or MSBuild directly on the host — the
-host toolchain is not what CI builds with, and host `cmake` cannot even read
-this repo's presets (see below).
+**On Windows, always build in Stevedore (Docker) through the container build script.** Never invoke
+CMake, Ninja or MSBuild on the host: the host toolchain is not what CI builds with, and host `cmake`
+cannot even read this repo's presets ([the trap](#build-system-overview)).
 
-1. **Build** (`clangcl-debug` shown; the script defaults to all three clang-cl
-   configurations):
+1. **Build** (`clangcl-debug` shown; the script defaults to all three clang-cl configurations):
    ```pwsh
    pwsh -ExecutionPolicy Bypass -File .\scripts\windows\Build-Windows-Container.ps1 `
      -Configurations "clangcl-debug"
    ```
-   The build runs inside the reusable container `bb-build-persistent` and
-   **streams the finished build trees back into the working tree** — no
-   `docker cp` step is needed. Tests are skipped by default; pass `-RunTests`
-   to run the CPU suites in-container.
-
-2. **The artifacts are already on the host** at the build-directory root:
-   `build-clangcl-debug\GraphicsEngine.exe`, `commitTestSuite.exe`, the fuzz
-   executables, `compile_commands.json`, and `logs\`. (`bin\` holds only the
-   copied ASAN runtime DLL — the executables are one level up.) Other
-   configurations land in `build-clangcl-profile\` and `build-clangcl-release\`.
-
-3. **Run on the host** — containers have no swapchain, and the working
-   directory must be the **repo root** (`Resources/` is loaded via cwd-relative
-   paths):
+   The build runs in the reusable container `bb-build-persistent` and **streams the finished build
+   trees back into the working tree**; no `docker cp` step. Tests are skipped unless `-RunTests`
+   (the CPU suites, in-container).
+2. **The artifacts are on the host** at the build-directory root: `build-clangcl-debug\GraphicsEngine.exe`,
+   `commitTestSuite.exe`, the fuzz executables, `compile_commands.json`, and `logs\`. `bin\` holds
+   only the copied ASAN runtime DLL. Other configurations land in `build-clangcl-profile\` and
+   `build-clangcl-release\`.
+3. **Run on the host**: containers have no swapchain, and the working directory must be the **repo
+   root** (`Resources/` is loaded via cwd-relative paths):
    ```pwsh
    .\scripts\windows\Invoke-ClangClDebug.ps1        # ctest + fuzz exes + launch
    .\scripts\windows\Invoke-ClangClProfile.ps1
    .\scripts\windows\Invoke-ClangClRelease.ps1
    ```
-   Debug builds need the Vulkan validation layers installed on the host; see
-   [Running on the Host](#running-on-the-host-windows). Profile/Release do not.
-
-4. **If you changed rendering or the device path**, a green build proves
-   nothing about behaviour — the GPU suites *skip* in the container. Run them
-   on the host and follow the verification loop in
+   Debug builds need the Vulkan validation layers on the host
+   ([Running on the Host](#running-on-the-host-windows)); Profile/Release do not.
+4. **Changed rendering or the device path?** A green build proves nothing about behaviour: the GPU
+   suites *skip* in the container. Run them on the host and follow the verification loop in
    [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
 
 ---
 
 ## Build System Overview
 
-Everything is driven by `CMakePresets.json`. Do not invent ad-hoc CMake command
-lines; pick a preset.
+`CMakePresets.json` drives everything: pick a preset, never an ad-hoc CMake command line.
 
-**The repository and the CMake project are not spelled the same, on purpose.**
-`GraphicsEngine` is the CMake project and executable name (`CMakeLists.txt:8`),
-matching the source tree it builds, `Src/GraphicsEngineVulkan/`; Sphinx
-(`docs/source/conf.py:96`) and Doxygen (`Doxyfile.in:45`) both publish under
-`BeschleunigerBallett`, the repository name. Build directories, preset names and
-the MSIX package (`Msix.PackageNameDefault` in
-`scripts/windows/Build-Windows.config.psd1`) follow the CMake name; nothing here
-is a leftover to be unified.
+**The repository and the CMake project are spelled differently, on purpose.** `GraphicsEngine` is
+the CMake project and executable name (`CMakeLists.txt:8`), matching `Src/GraphicsEngineVulkan/`;
+Sphinx (`docs/source/conf.py:96`) and Doxygen (`Doxyfile.in:45`) publish under
+`BeschleunigerBallett`, the repository name. Build directories, preset names and the MSIX package
+(`Msix.PackageNameDefault` in `scripts/windows/Build-Windows.config.psd1`) follow the CMake name;
+nothing here is a leftover to be unified.
 
-The version behind both is the repo-root **`VERSION.txt`**, read by
-`CMakeLists.txt:4` (into `project(... VERSION ...)` and the `PROJECT_VERSION`
-compile definition), `docs/source/conf.py:99` and
-`scripts/windows/Build-Windows.ps1` (the MSIX package version, a hard error if
-the file is missing). Bump it with `bash ./scripts/linux/bump-version.sh <x.y.z>`
-and nothing else — no reader keeps a copy of the number.
+The version is the repo-root **`VERSION.txt`**, read by `CMakeLists.txt:4` (into
+`project(... VERSION ...)` and the `PROJECT_VERSION` compile definition), `docs/source/conf.py:99`
+and `scripts/windows/Build-Windows.ps1` (the MSIX package version; a missing file is a hard error).
+Bump it with `bash ./scripts/linux/bump-version.sh <x.y.z>` and nothing else; no reader keeps a
+copy of the number.
 
-> **Trap:** `cmake --list-presets` does **not** work on this host. The host
-> CMake (3.29) cannot read `CMakePresets.json` (`"version": 10`,
-> `cmakeMinimumRequired` 4.1) and fails with
-> `CMake Error: Could not read presets ... Unrecognized "version" field`
-> (verified 2026-08-02). Only the container's newer CMake can. Read the file, or
-> the table below — that error is not a broken checkout.
+> **Trap:** `cmake --list-presets` does **not** work on this host. The host CMake (3.29) cannot
+> read `CMakePresets.json` (`"version": 10`, `cmakeMinimumRequired` 4.1) and fails with
+> `CMake Error: Could not read presets ... Unrecognized "version" field` (verified 2026-08-02).
+> Only the container's CMake can. Read the file or the table below; the error is not a broken
+> checkout.
 
 ### Windows configurations (Build-Windows.ps1)
 
-`scripts/windows/Build-Windows.ps1` is the single entry point for Windows builds
-(the container script invokes it inside the image). Its `-Configurations` names
-(comma-separated) map to presets and build directories via
-`scripts/windows/Build-Windows.config.psd1`:
+`scripts/windows/Build-Windows.ps1` is the single entry point for Windows builds (the container
+script runs it in the image). Its comma-separated `-Configurations` names map to presets and build
+directories via `scripts/windows/Build-Windows.config.psd1`:
 
 | Configuration | Preset | Build dir | What you get |
 | --- | --- | --- | --- |
@@ -218,35 +197,31 @@ and nothing else — no reader keeps a copy of the number.
 | `msvc-debug` | `x64-MSVC-Windows-Debug` | `build-msvc-debug` | MSVC (cl) builds, optional steps |
 | `msvc-release` | `x64-MSVC-Windows-Release` | `build-msvc-release` | MSVC (cl) builds, optional steps |
 
-There is also an `x64-ClangCL-Windows-Debug-ASan` preset (AddressSanitizer
-without the fuzzing-mode extras; not wired into `Build-Windows.config.psd1`).
-Windows test presets (`test-<configure-preset>`) exist for exactly three ClangCL
-configurations: Debug, Debug-ASan and Profile (the other two, plus `default`, are
-Linux ones). The plain-Clang
-`x64-Clang-Windows-{Debug,Profile,RelWithDebInfo}` presets were removed in
-2026-07 as unused duplicates of the ClangCL set. `x64-Clang-Windows-Release`
-stays: the `windows-clang-release-wix` package preset builds on it.
+- `x64-ClangCL-Windows-Debug-ASan`: AddressSanitizer without the fuzzing-mode extras; not wired
+  into `Build-Windows.config.psd1`.
+- Windows test presets (`test-<configure-preset>`) exist for three ClangCL configurations only:
+  Debug, Debug-ASan and Profile (the other two, plus `default`, are Linux ones).
+- The plain-Clang `x64-Clang-Windows-{Debug,Profile,RelWithDebInfo}` presets went in 2026-07 as
+  unused duplicates of the ClangCL set. `x64-Clang-Windows-Release` stays: the
+  `windows-clang-release-wix` package preset builds on it.
 
 **Coverage stays OFF for the ClangCL presets** (`myproject_ENABLE_COVERAGE` in
-`x64-ClangCL-Windows-Base`). It was switched ON on 2026-10-01 (hub CON9: the image
-ships `clang_rt.profile`), and the Debug suite then died at process exit in the
-profile writer: with ASan active the profile runtime comes from Microsoft's ASan
-DLL, `initializeValueProfRuntimeRecord` dereferences a bad pointer
-(`InstrProfilingValue.c:327`), and `commitTestSuite.exe`/`compileTestSuite.exe`
-exited 1 after all 654 tests had passed (run 36997000491). No Windows step reads
-the `.profraw` files; the Linux lanes' `static-analysis` job is where coverage is measured.
-Revisit when the profile runtime matches the compiler or value profiling can be
-turned off. Profile keeps it OFF (`x64-ClangCL-Windows-RelWithDebInfo-Base`, so
-benchmarks stay uninstrumented) and Release never instruments
-(`myproject_enable_coverage`).
+`x64-ClangCL-Windows-Base`). Switched ON on 2026-10-01 (hub CON9: the image ships
+`clang_rt.profile`), the Debug suite died at process exit in the profile writer: with ASan the
+profile runtime comes from Microsoft's ASan DLL, `initializeValueProfRuntimeRecord` dereferences a
+bad pointer (`InstrProfilingValue.c:327`), and `commitTestSuite.exe`/`compileTestSuite.exe` exited 1
+after all 654 tests had passed (run 36997000491). No Windows step reads the `.profraw` files;
+coverage is measured in the Linux lanes' `static-analysis` job. Revisit when the profile runtime
+matches the compiler or value profiling can be turned off. Profile keeps it OFF
+(`x64-ClangCL-Windows-RelWithDebInfo-Base`, so benchmarks stay uninstrumented) and Release never
+instruments (`myproject_enable_coverage`).
 
-**No `find`/`count`/`remove` on a defaulted-`==` struct under ClangCL.** The
-image's MSVC STL 14.51 takes its vectorized path for any type clang calls
-trivially equality-comparable, then `static_assert`s (`unexpected size`) unless
-the type is 1, 2, 4 or 8 bytes (microsoft/STL#6294, open). Run 36052511207 stopped
-there on `findSampler`'s 24-byte `SamplerKey`. Use `find_if` with a predicate,
-which is a plain loop. The same gate guards `count`, `remove`, `remove_copy` and
-`replace` and their `ranges::` forms, so the rule covers them too.
+**No `find`/`count`/`remove` on a defaulted-`==` struct under ClangCL.** The image's MSVC STL 14.51
+takes its vectorized path for any type clang calls trivially equality-comparable, then
+`static_assert`s (`unexpected size`) unless the type is 1, 2, 4 or 8 bytes (microsoft/STL#6294,
+open). Run 36052511207 stopped there on `findSampler`'s 24-byte `SamplerKey`. Use `find_if` with a
+predicate, which is a plain loop. The same gate guards `count`, `remove`, `remove_copy`, `replace`
+and their `ranges::` forms.
 
 Typical full sweep (ASAN debug, profile, release):
 
@@ -258,184 +233,144 @@ pwsh -ExecutionPolicy Bypass -File .\scripts\windows\Build-Windows.ps1 `
 
 ### Sanitizer semantics (do not guess — this is how it actually works)
 
-- Sanitizer flags are applied **only to the Debug configuration**, and the guard
-  is in **one** place: every branch of `myproject_enable_sanitizers`
-  (`third_party/ANTfrastructure/cmake/Sanitizers.cmake`) emits its flags through
-  `$<$<CONFIG:Debug>:...>` — the GCC/Clang `-fsanitize=` pair, the clang-cl
-  compile/link/define set, and the MSVC `/fsanitize=` pair alike. Profile and
-  Release builds are never sanitized.
-- The *call site* is deliberately unconditional:
-  `myproject_apply_sanitizers(myproject_options)` in `cmake/ProjectOptions.cmake`
-  runs for every build type. That is not a contradiction of the line above and
-  not a bug to "fix" — the generator expressions one level down decide. A
-  `CMAKE_BUILD_TYPE` test around the call would only restate them.
-- ASAN defaults **ON** for Debug builds on Linux (GCC/Clang), MSVC and clang-cl;
-  UBSan on Linux and clang-cl only (plain MSVC has none). See
-  `myproject_default_debug_sanitizers` (ANTfrastructure's `SanitizerSupport.cmake`,
-  called from `cmake/ProjectOptions.cmake`); the `x64-MSVC-Windows-Debug` preset
-  switches ASAN off again.
+- Sanitizer flags apply **only to the Debug configuration**, guarded in **one** place: every branch
+  of `myproject_enable_sanitizers` (`third_party/ANTfrastructure/cmake/Sanitizers.cmake`) emits its
+  flags through `$<$<CONFIG:Debug>:...>`: the GCC/Clang `-fsanitize=` pair, the clang-cl
+  compile/link/define set and the MSVC `/fsanitize=` pair alike. Profile and Release builds are
+  never sanitized.
+- The *call site* is unconditional on purpose: `myproject_apply_sanitizers(myproject_options)` in
+  `cmake/ProjectOptions.cmake` runs for every build type, and the generator expressions one level
+  down decide. Not a bug to "fix": a `CMAKE_BUILD_TYPE` test around the call would only restate
+  them.
+- ASAN defaults **ON** for Debug builds on Linux (GCC/Clang), MSVC and clang-cl; UBSan on Linux and
+  clang-cl only (plain MSVC has none). See `myproject_default_debug_sanitizers` (ANTfrastructure's
+  `SanitizerSupport.cmake`, called from `cmake/ProjectOptions.cmake`); the `x64-MSVC-Windows-Debug`
+  preset switches ASAN off again.
 - Linux TSan presets (`linux-debug-tsan-clang` / `linux-debug-tsan-GNU`) set
-  `myproject_ENABLE_SANITIZER_THREAD=ON` and force
-  `myproject_ENABLE_SANITIZER_ADDRESS=OFF` (TSan and ASAN are mutually exclusive —
-  `Sanitizers.cmake` drops TSan if ASAN is on). **These are the only builds that
-  detect data races.**
-- **clang-cl does not support TSan** (`x86_64-pc-windows-msvc`):
-  `Sanitizers.cmake` warns and drops the request, producing a plain Debug binary.
-  A Windows `clangcl-tsan` preset existed for "preset parity" until 2026-07-20
-  and was removed — it silently built a duplicate of `clangcl-debug`, cost ~185 s
-  per full build, and its green runs read as evidence of race-freedom.
-- **On clang-cl, UBSan reports only together with ASAN.** With
-  ASAN on, the UBSan handlers are folded into `clang_rt.asan_dynamic` (release
-  CRT, `/MD`), and three places switch the whole Debug build to the release CRT,
-  keyed on `myproject_ENABLE_SANITIZER_ADDRESS`: the `/MDd` strip (ANTfrastructure's
-  `CompilerBuildFlags.cmake`, handed the option by `cmake/ProjectOptions.cmake`),
-  the `CMAKE_MSVC_RUNTIME_LIBRARY` override in `cmake/ProjectOptions.cmake`, and
-  the Rust-bridge `CXXFLAGS` in `Src/CMakeLists.txt`
-  (`_myproject_configure_windows_rust_crate`). There is no `/MD` standalone UBSan
-  runtime: `clang_rt.ubsan_standalone*` is built `MT_StaticRelease` (static CRT),
-  and linking it against this project's `/MD`/`/MDd` dependency mix fails in
-  lld-link with `/failifmismatch` on `RuntimeLibrary`/`_ITERATOR_DEBUG_LEVEL`
-  (verified 2026-07-16). Since hub `75645844` (2026-09-07) `Sanitizers.cmake`
-  therefore builds UBSan without ASAN in trap mode (`-fsanitize-trap=undefined`):
-  it links, but undefined behaviour is a fast-fail at the faulting instruction
-  with no report
+  `myproject_ENABLE_SANITIZER_THREAD=ON` and force `myproject_ENABLE_SANITIZER_ADDRESS=OFF` (TSan
+  and ASAN are mutually exclusive; `Sanitizers.cmake` drops TSan if ASAN is on). **These are the
+  only builds that detect data races.**
+- **clang-cl does not support TSan** (`x86_64-pc-windows-msvc`): `Sanitizers.cmake` warns and drops
+  the request, producing a plain Debug binary. A Windows `clangcl-tsan` preset existed for "preset
+  parity" until 2026-07-20: it silently built a duplicate of `clangcl-debug`, cost ~185 s per full
+  build, and its green runs read as evidence of race-freedom.
+- **On clang-cl, UBSan reports only together with ASAN.** With ASAN on, the UBSan handlers are
+  folded into `clang_rt.asan_dynamic` (release CRT, `/MD`), and three places switch the whole Debug
+  build to the release CRT, keyed on `myproject_ENABLE_SANITIZER_ADDRESS`: the `/MDd` strip
+  (ANTfrastructure's `CompilerBuildFlags.cmake`, handed the option by `cmake/ProjectOptions.cmake`),
+  the `CMAKE_MSVC_RUNTIME_LIBRARY` override in `cmake/ProjectOptions.cmake`, and the Rust-bridge
+  `CXXFLAGS` in `Src/CMakeLists.txt` (`_myproject_configure_windows_rust_crate`). There is no `/MD`
+  standalone UBSan runtime: `clang_rt.ubsan_standalone*` is built `MT_StaticRelease` (static CRT),
+  and linking it against this project's `/MD`/`/MDd` dependency mix fails in lld-link with
+  `/failifmismatch` on `RuntimeLibrary`/`_ITERATOR_DEBUG_LEVEL` (verified 2026-07-16). So since hub
+  `75645844` (2026-09-07) `Sanitizers.cmake` builds UBSan without ASAN in trap mode
+  (`-fsanitize-trap=undefined`): it links, but undefined behaviour is a fast-fail at the faulting
+  instruction with no report
   ([`windows-clang-cl-sanitizers.md`](third_party/ANTfrastructure/docs/windows-clang-cl-sanitizers.md)).
-  So on Windows: for UBSan reports, keep UBSan alongside ASAN.
+  On Windows, keep UBSan alongside ASAN for UBSan reports.
 
 ## Containerized Windows Builds (Stevedore)
 
-Windows builds run inside the ANTfrastructure developer image
-`ghcr.io/kataglyphis/kataglyphis_beschleuniger:winamd64` (clang-cl, CMake, Ninja,
-Vulkan SDK, Rust, sccache — everything preinstalled). CI does exactly this
-(`.github/workflows/windows-x64.yml`, which runs `scripts/windows/Invoke-WindowsLane.ps1`
-in the container through the hub's `container-ci-windows.yml`).
+Windows builds run in the ANTfrastructure developer image
+`ghcr.io/kataglyphis/kataglyphis_beschleuniger:winamd64` (clang-cl, CMake, Ninja, Vulkan SDK, Rust,
+sccache preinstalled). CI does exactly this: `.github/workflows/windows-x64.yml` runs
+`scripts/windows/Invoke-WindowsLane.ps1` in the container through the hub's
+`container-ci-windows.yml`.
 
-**All Windows-container knowledge lives in ANTfrastructure** — do not restate it
-here. When you do not know which document owns a topic, start at
-[`third_party/ANTfrastructure/docs/INDEX.md`](third_party/ANTfrastructure/docs/INDEX.md),
-which maps topic → owning document; linking through it keeps these references
-valid when upstream reorganises. For this section, three documents cover it:
+**All Windows-container knowledge lives in ANTfrastructure; do not restate it here.** Start at
+[`third_party/ANTfrastructure/docs/INDEX.md`](third_party/ANTfrastructure/docs/INDEX.md), which maps
+topic → owning document, so links survive upstream reorganising. This section's three documents
+(the image; building inside it; the shared sccache) are rows of
+[What ANTfrastructure owns](#what-antfrastructure-owns--links-only).
 
-- [`third_party/ANTfrastructure/docs/windows-builds.md`](third_party/ANTfrastructure/docs/windows-builds.md)
-  — the image itself: build sequence, Stevedore setup, invariants.
-- [`third_party/ANTfrastructure/docs/windows-container-build-performance.md`](third_party/ANTfrastructure/docs/windows-container-build-performance.md)
-  — building *inside* it: **both transports and how to set each one up**
-  (§ Transports), the reusable-container pattern and its safety rails, why
-  sccache cannot cache a C++23 modules build, why a named volume cannot be a
-  CMake build directory, the Windows path limit that silently truncates tar
-  transfers, `docker exec` bypassing the entrypoint, and the wcifs teardown
-  lock.
-- [`third_party/ANTfrastructure/docs/windows-build-resources.md` § Two cache levels](third_party/ANTfrastructure/docs/windows-build-resources.md#two-cache-levels)
-  — sccache shared with the other build hosts: this host's dufs plus an S3 bucket, handed
-  to the reusable container's `docker exec` by name, so the key reaches no command line,
-  and the fallback when the bucket stalls. The bucket's server:
-  [`linux/sccache-s3/README.md`](third_party/ANTfrastructure/linux/sccache-s3/README.md).
+What bites here (detail, this repo's measured numbers, the `KATAGLYPHIS_KEEP_BUILD_ROOT=1` contract
+and the `cargo/` exclusions: [`docs/container-build-caching.md`](docs/container-build-caching.md)):
 
-What you need in hand to not get burned:
-
-- Default transport is a **tar-pipe into the reusable container
-  `bb-build-persistent`**; `-UseBindMount` opts into a bind mount instead
-  (measured slower on this Dev Drive host — measure before switching).
-- **A reused container prunes stale sources before every build.** Since hub
-  `637d4a91` (2026-08-02) `Invoke-ContainerBuild` deletes every top-level
-  directory under `C:\ws` except `build*`, `logs` and `sccache-local`, then
-  streams the tree in again, so a file deleted on the host no longer keeps
-  building there (a file deleted at the repo root is the exception: top-level
-  files are overwritten, not pruned). `-FreshContainer` is still required after
-  ANY C++23 module-interface change (see the fresh-container rule in
+- The default transport is a **tar-pipe into the reusable container `bb-build-persistent`**;
+  `-UseBindMount` opts into a bind mount (measured slower on this Dev Drive host: measure before
+  switching).
+- **A reused container prunes stale sources before every build** (hub `637d4a91`, 2026-08-02):
+  `Invoke-ContainerBuild` deletes every top-level directory under `C:\ws` except `build*`, `logs`
+  and `sccache-local`, then streams the tree in again. Top-level files are only overwritten, so a
+  file deleted at the repo root keeps building. `-FreshContainer` is still required after ANY C++23
+  module-interface change (the fresh-container rule in
   [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md)).
-- **A green build is not proof anything was produced or delivered.** Both halves
-  have failed silently here. The script compares the executables present in the
-  container against those that reached the host and **fails the build** if the
-  container produced none, or if any did not arrive. Do not "fix" that check.
+- **A green build is not proof anything was produced or delivered**; both halves have failed
+  silently here. The script **fails the build** if the container produced no executables or any did
+  not reach the host. Do not "fix" that check.
 - The script takes `-Configurations` (comma-separated), **not** `-Preset`.
 - Reset a wedged incremental build with `docker rm -f bb-build-persistent`.
 
-This repo's measured numbers, the `KATAGLYPHIS_KEEP_BUILD_ROOT=1` contract, the
-`cargo/` exclusions and the rest of the wiring:
-[`docs/container-build-caching.md`](docs/container-build-caching.md).
-
 ## Linux Builds
 
-`scripts/linux/cmake-configure-build.sh` wraps configure+build
-(`--preset linux-debug-clang`, `--build-dir build`, …). TSan is selected by
-preset only (`linux-debug-tsan-clang`, `linux-debug-tsan-GNU`) — there is no
-script flag for it; `--use-thread-sanitizer` errors out on purpose rather than
-silently no-op'ing. There is also a `linux-debug-asan-clang` preset
-(AddressSanitizer + UBSan, used in CI and fuzz-test integration). Coverage,
-ctest, perf, static-analysis and wasm wrappers live next to it; Vulkan SDK env
-can be injected with `--vulkan-setup-script`.
+`scripts/linux/cmake-configure-build.sh` wraps configure+build (`--preset linux-debug-clang`,
+`--build-dir build`, …). TSan is selected by preset only (`linux-debug-tsan-clang`,
+`linux-debug-tsan-GNU`): `--use-thread-sanitizer` errors out on purpose rather than silently
+no-op'ing. `linux-debug-asan-clang` is AddressSanitizer + UBSan (CI and fuzz-test integration).
+Coverage, ctest, perf, static-analysis and wasm wrappers live next to it; `--vulkan-setup-script`
+injects a Vulkan SDK env.
 
-The Slang precompile is `cmake-configure-build.sh`'s pre-build hook and a
-failure there is **fatal** (use `--allow-prebuild-failure` only deliberately —
-a silent `|| warn` once left CI green with no SPIR-V at all).
+The Slang precompile is `cmake-configure-build.sh`'s pre-build hook, and a failure there is
+**fatal**. Use `--allow-prebuild-failure` only deliberately: a silent `|| warn` once left CI green
+with no SPIR-V at all.
 
-**Nothing injects `--gcc-toolchain` any more** (retired 2026-09-29, hub CON37).
-In the family image a bare `clang`/`clang++` selects the image's GCC through the
-`<triple>-clang{,++}.cfg` beside the compiler, and the image's `LD_LIBRARY_PATH`
-carries that GCC's runtime. clang-tidy included: since the 2026-09-30
-`:latest` (hub CON39) a cfg pair sits beside the `/usr/bin` links as well, so
-LibTooling, which looks beside the compile DB's `/usr/bin/clang++`, selects
-`/opt/gcc-16.2.0` too and `run-static-analysis-format.sh` passes it nothing.
+**Nothing injects `--gcc-toolchain` any more** (retired 2026-09-29, hub CON37). In the family image
+a bare `clang`/`clang++` selects the image's GCC through the `<triple>-clang{,++}.cfg` beside the
+compiler, and the image's `LD_LIBRARY_PATH` carries that GCC's runtime. clang-tidy too: since the
+2026-09-30 `:latest` (hub CON39) a cfg pair sits beside the `/usr/bin` links as well, so LibTooling,
+which looks beside the compile DB's `/usr/bin/clang++`, selects `/opt/gcc-16.2.0` and
+`run-static-analysis-format.sh` passes it nothing.
 
-**sccache runs through the hub's guarded launcher on Linux** (since 2026-10-06). A
-bare sccache fails every compile once its server is unreachable: run 37509585546's
-profiling job died with `sccache: error: Connection to server timed out` on each one.
-The hub's `Cache.cmake` therefore hands both compiler launchers its
-`linux/scripts/01-core/sccache-launcher.sh`, which retries once and then compiles
-directly, and says so in the log. BB did that swap itself in `cmake/ProjectOptions.cmake`
-until 2026-10-10; the hub has done it since 716b5226. That covers every Linux CMake build, the
-riscv64 cross build included. The GCC presets use ccache, and Windows keeps
+**sccache runs through the hub's guarded launcher on Linux** (since 2026-10-06). A bare sccache
+fails every compile once its server is unreachable: run 37509585546's profiling job died with
+`sccache: error: Connection to server timed out` on each one. The hub's `Cache.cmake` therefore
+hands both compiler launchers its `linux/scripts/01-core/sccache-launcher.sh`, which retries once,
+then compiles directly and says so in the log. BB made that swap itself in
+`cmake/ProjectOptions.cmake` until 2026-10-10; the hub has since 716b5226. It covers every Linux
+CMake build, the riscv64 cross build included. The GCC presets use ccache and Windows keeps
 `sccache.exe`: the hub has no guarded launcher for either.
 
 ### Running the Linux build locally (Rancher Desktop)
 
-Two things that will bite you locally, both documented with the full recipe in
+Two local traps, with the full recipe in
 [ANTfrastructure § Persisting the cargo cache](third_party/ANTfrastructure/docs/rancher-desktop-linux-containers.md#persisting-the-cargo-cache):
-pass `--build-dir /tmp/...` (a build dir on the bind-mounted host tree breaks
-FetchContent renames and cargo cleanup), and `--cargo-cache-dir` at a named
-volume so Rust dependencies survive the container.
+pass `--build-dir /tmp/...` (a build dir on the bind-mounted host tree breaks FetchContent renames
+and cargo cleanup), and point `--cargo-cache-dir` at a named volume so Rust dependencies survive the
+container.
 
 ## Shaders: Slang (unified SPIR-V + WGSL)
 
-All shaders are Slang under `Resources/ShadersSlang/`, compiled ahead of time
-to **SPIR-V** for the C++ Vulkan renderer and **WGSL** for the Rust WebGPU
-renderer. The shader list is data, in `shader-manifest.json` — add or retarget a
-shader by editing the JSON, never by editing the compile scripts. Compiled
-output is gitignored, so a fresh clone must run a compile script before the
-engine has anything to load. Build step, staleness rules, and fast shader
-iteration: [`docs/shader-build-pipeline.md`](docs/shader-build-pipeline.md);
-sharing shader code between the two renderers:
-[`docs/shader-sharing.md`](docs/shader-sharing.md).
+All shaders are Slang under `Resources/ShadersSlang/`, compiled ahead of time to **SPIR-V** for the
+C++ Vulkan renderer and **WGSL** for the Rust WebGPU renderer. The shader list is data in
+`shader-manifest.json`: add or retarget a shader there, never in the compile scripts. Compiled
+output is gitignored, so a fresh clone must run a compile script before the engine has anything to
+load. Build step, staleness rules, fast iteration:
+[`docs/shader-build-pipeline.md`](docs/shader-build-pipeline.md); sharing shader code between the
+renderers: [`docs/shader-sharing.md`](docs/shader-sharing.md).
 
 ## Rule: Reusable Work Belongs in ANTfrastructure
 
-**Before writing a script, module, or doc here, ask whether another project
-could use it. If yes, it goes into `third_party/ANTfrastructure` and
-this repo consumes it — never a copy.**
+**Before writing a script, module, or doc here, ask whether another project could use it. If yes,
+it goes into `third_party/ANTfrastructure` and this repo consumes it — never a copy.**
 
-That is the local form of the rule ANTfrastructure states canonically as *"would
-this still be true in a different project?"*. Which side of the line a given
-thing falls on — PowerShell, Bash, container or Windows-container knowledge, a
-trap learned the hard way — is settled there, with the worked splits and the
+This is the local form of ANTfrastructure's canonical *"would this still be true in a different
+project?"*. Which side a given thing falls on (PowerShell, Bash, container or Windows-container
+knowledge, a trap learned the hard way) is settled there, with the worked splits and the
 three-broken-copies case that motivated the rule:
 [`INDEX.md` § Where does a piece of knowledge belong?](third_party/ANTfrastructure/docs/INDEX.md#where-does-a-piece-of-knowledge-belong).
-The destinations, so the link is not a scavenger hunt: `windows/scripts/modules/`
-for PowerShell, `linux/scripts/lib/` or `linux/scripts/01-core/` for Bash,
-`docs/` for everything else.
+Destinations: `windows/scripts/modules/` for PowerShell, `linux/scripts/lib/` or
+`linux/scripts/01-core/` for Bash, `docs/` for everything else.
 
-What stays here: engine code, shaders, this project's presets, and the
-*payload* the shared drivers execute (build-directory names,
-`Build-Windows.ps1` arguments, project-specific exclusions, the Slang
-precompile hook) — plus `Resolve-BuildModule.ps1` itself, the bootstrap that
-*finds* ANTfrastructure and therefore cannot live inside it
+What stays here: engine code, shaders, this project's presets, the *payload* the shared drivers
+execute (build-directory names, `Build-Windows.ps1` arguments, project-specific exclusions, the
+Slang precompile hook), and `Resolve-BuildModule.ps1`, the bootstrap that *finds* ANTfrastructure
+and so cannot live in it
 ([adopting § 1](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#1-the-one-file-that-cannot-live-here)).
 
 ### The wrapper map
 
-Almost every script under `scripts/` is a thin consumer. **When you need to know
-what one actually does, read the upstream driver, not the wrapper** — the
-wrapper only supplies this project's payload.
+Almost every script under `scripts/` is a thin consumer. **To know what one does, read the upstream
+driver, not the wrapper**: the wrapper only supplies this project's payload.
 
 | This repo | Upstream driver (in `third_party/ANTfrastructure/`) |
 | --- | --- |
@@ -461,117 +396,99 @@ wrapper only supplies this project's payload.
 | `scripts/windows/tests/Repo.GeneratedArtifacts.Tests.ps1` | `windows/scripts/modules/WindowsRepoHygiene.Common.psm1` → `Get-TrackedIgnoredFile` (the pin-drift half — `Get-SubmodulePinDrift`, `Get-SubmoduleStatusLine`, `Test-SubmoduleCommitReachable` — is consumed by the hub's own suite, see § Critical Invariant: Submodule Pins) |
 | `cmake/ProjectOptions.cmake` | `cmake/*.cmake` (see [`cmake/README.md`](third_party/ANTfrastructure/cmake/README.md) there) |
 
-`Invoke-ClangClDebug.ps1` is the exception: it keeps its own flow because it
-orchestrates CTest and the fuzz executables before launching — but it still
-takes `Resolve-AppExecutablePath` from `WindowsAppRunner.Common`.
+`Invoke-ClangClDebug.ps1` is the exception: it keeps its own flow, because it orchestrates CTest and
+the fuzz executables before launching, but still takes `Resolve-AppExecutablePath` from
+`WindowsAppRunner.Common`.
 
 ### CMake modules (ANTfrastructure first, local override wins)
 
-The root `CMakeLists.txt` puts **`cmake/` then
-`third_party/ANTfrastructure/cmake/`** on `CMAKE_MODULE_PATH`, and
-every module is included **by name** — `include(Sanitizers)`, never
-`include(cmake/Sanitizers.cmake)`. That indirection is the whole point: a module
-can live in either directory without its callers changing, and a project that
-needs to override an upstream module just drops a same-named file in `cmake/`.
+The root `CMakeLists.txt` puts **`cmake/` then `third_party/ANTfrastructure/cmake/`** on
+`CMAKE_MODULE_PATH`, and every module is included **by name** (`include(Sanitizers)`, never
+`include(cmake/Sanitizers.cmake)`). That is the point: a module can live in either directory
+without its callers changing, and a same-named file in `cmake/` overrides an upstream module.
 
 Upstream: the modules listed in
 [`third_party/ANTfrastructure/cmake/README.md`](third_party/ANTfrastructure/cmake/README.md).
+Local, because each encodes **this project's policy** rather than a reusable mechanism:
 
-Local, because each encodes **this project's policy** rather than a reusable
-mechanism:
-
-- `cmake/ProjectOptions.cmake` — the option surface and its defaults, C++23,
-  exceptions always off, C++ modules mandatory (a hard `FATAL_ERROR`, not a
-  fallback). It composes the upstream modules; it does not duplicate them.
-- `cmake/CPackOptions.cmake` — packaging metadata and branding.
-- `cmake/SystemLibDependencies.cmake` — this engine's system dependencies.
-- `cmake/FetchAssets.cmake` — this engine's scenes: its lock, its default set, its destination. The
-  cached download-verify-extract half would serve any consumer of AssetANT, so it moves to
+- `cmake/ProjectOptions.cmake`: the option surface and its defaults, C++23, exceptions always off,
+  C++ modules mandatory (a hard `FATAL_ERROR`, not a fallback). It composes the upstream modules;
+  it does not duplicate them.
+- `cmake/CPackOptions.cmake`: packaging metadata and branding.
+- `cmake/SystemLibDependencies.cmake`: this engine's system dependencies.
+- `cmake/FetchAssets.cmake`: this engine's scenes (its lock, its default set, its destination). The
+  cached download-verify-extract half would serve any AssetANT consumer, so it moves to
   ANTfrastructure's `cmake/` when a second one appears.
 
-**The clang-cl `-fms-compatibility-version` pin moved upstream** into
-`CompilerBuildFlags.cmake` as `MYPROJECT_CLANG_CL_MS_COMPATIBILITY_VERSION`
-(default `19.51.36231`). It names the VC Tools version ANTfrastructure's Windows
-image ships, so the pin and the toolchain that motivates it now live in the same
-repo — bump them together. Override the cache variable to build against a
-different VC Tools.
+**The clang-cl `-fms-compatibility-version` pin is upstream**, in `CompilerBuildFlags.cmake` as
+`MYPROJECT_CLANG_CL_MS_COMPATIBILITY_VERSION` (default `19.51.36231`). It names the VC Tools version
+ANTfrastructure's Windows image ships, so pin and toolchain live in one repo: bump them together.
+Override the cache variable to build against a different VC Tools.
 
 ### PowerShell module resolution (ANTfrastructure first, vendored fallback)
 
-`Build-Windows.ps1`, the run helpers and the Pester tests resolve PowerShell
-modules through `scripts/windows/Resolve-BuildModule.ps1`
-(`Resolve-BuildModulePath` / `Import-BuildModule`): ANTfrastructure's
-`windows/scripts/modules/` first, then the project-specific fallback
-**`scripts/windows/modules/`**. `Resolve-BuildModule.ps1` is a **verbatim copy**
-of upstream's `shared/windows/templates/Resolve-BuildModule.ps1` — sync it,
-never hand-edit it ([adopting § 1](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#1-the-one-file-that-cannot-live-here)).
+`Build-Windows.ps1`, the run helpers and the Pester tests resolve PowerShell modules through
+`scripts/windows/Resolve-BuildModule.ps1` (`Resolve-BuildModulePath` / `Import-BuildModule`):
+ANTfrastructure's `windows/scripts/modules/` first, then the project-specific fallback
+**`scripts/windows/modules/`**.
 
-**The vendored fallback directory holds no copy of anything upstream, and a
-Pester case asserts it stays that way** — `Compare-Renderer.Common.psm1` is the
-only thing in it, because it is this project's own. Which module moved upstream
-when, and what became a parameter in the move, is in the commit history; there
-is no CHANGELOG.md here and this file is not one.
-
-One trap is worth carrying locally because it bites at the call site:
-`Import-BuildModule` imports `WindowsScripts.Shared` unconditionally, whether or
-not you list it. That is not belt-and-braces — a nested `Import-Module` inside a
-`.psm1` binds into *that module's* private scope and never reaches the importing
-session, so a script that imports only `WindowsBuild.Common` would otherwise get
-`Write-BuildLog` but **not** `Resolve-WorkspacePath`. The conventions around it
-are upstream's: [adopting § 8](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#8-calling-conventions-what-every-consumer-looks-like).
+- **The two bootstrap copies are body-mode assets.** Below their header,
+  `scripts/linux/lib/antfrastructure.sh` and `scripts/windows/Resolve-BuildModule.ps1` must equal
+  the hub templates (`shared/windows/templates/Resolve-BuildModule.ps1` for the latter) byte for
+  byte (`sync-shared-config.sh --check`). Re-copy them from the templates after an upstream change;
+  never edit them here
+  ([adopting § 1](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#1-the-one-file-that-cannot-live-here)).
+- **The fallback directory holds no copy of anything upstream, and a Pester case asserts it**:
+  `Compare-Renderer.Common.psm1`, this project's own, is the only thing in it. Which module moved
+  upstream when, and what became a parameter in the move, is in the commit history; this file is
+  not a log.
+- **`Import-BuildModule` imports `WindowsScripts.Shared` unconditionally**, listed or not. A nested
+  `Import-Module` inside a `.psm1` binds into *that module's* private scope and never reaches the
+  importing session, so a script importing only `WindowsBuild.Common` would get `Write-BuildLog`
+  but **not** `Resolve-WorkspacePath`. The conventions around it are upstream's:
+  [adopting § 8](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#8-calling-conventions-what-every-consumer-looks-like).
 
 ### Shipping a change that spans both repos
 
-Both repos are committed and pushed together, ANTfrastructure **first** (CI
-resolves its composite actions at `@develop`), and the submodule pin is bumped in
-the same change.
-
-**Adopting any of this in another project** — the loop, both container flows,
-the launchers, the CI actions — is a checklist upstream:
-[`adopting-in-a-new-project.md`](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md).
-Read it before hand-rolling equivalents elsewhere.
+Commit and push both repos together, ANTfrastructure **first** (CI resolves its composite actions
+at `@develop`), with the submodule pin bumped in the same change. **Adopting any of this in another
+project** (the loop, both container flows, the launchers, the CI actions) is upstream's checklist,
+[`adopting-in-a-new-project.md`](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md):
+read it before hand-rolling equivalents elsewhere.
 
 ## Critical Invariant: Submodule Pins
 
-Builds are only supported against the **recorded submodule gitlinks** — the commits CI
-builds green. `git submodule update --checkout --recursive` restores every pin. If a
-drifted submodule is what you actually want, update the gitlink AND fix the fallout in
-the same change.
+Builds are only supported against the **recorded submodule gitlinks**, the commits CI builds green.
+`git submodule update --checkout --recursive` restores every pin. If a drifted submodule is what you
+actually want, update the gitlink AND fix the fallout in the same change.
 
 The opposite move, for local work on the newest code, is
-`bash third_party/ANTfrastructure/linux/scripts/git-sync-branches.sh` (`--dry-run`
-first): this repo and every submodule, third-party ones included, go to the tip
-of their `branch =`, fast-forward only; `--owned-only` leaves the third-party ones
-pinned. It commits no gitlink, so what it moved shows as `+` until the gitlinks are
-committed, innermost repo first, and the next `git submodule update` puts it back.
-FUZZTEST stays on a release because `.gitmodules` declares
-`branch = release_<date>` for it; move that line to take a newer one.
-Details: [`adopting-in-a-new-project.md` § *Putting every checkout on its branch*](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#putting-every-checkout-on-its-branch).
+`bash third_party/ANTfrastructure/linux/scripts/git-sync-branches.sh` (`--dry-run` first): this repo
+and every submodule, third-party ones included, go to the tip of their `branch =`, fast-forward
+only; `--owned-only` leaves the third-party ones pinned. It commits no gitlink: what it moved shows
+as `+` until the gitlinks are committed, innermost repo first, and the next `git submodule update`
+puts it back. FUZZTEST stays on a release because `.gitmodules` declares `branch = release_<date>`
+for it; move that line to take a newer one. Details:
+[`adopting-in-a-new-project.md` § *Putting every checkout on its branch*](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#putting-every-checkout-on-its-branch).
 
-Known coupling to watch when bumping pins:
+**Coupling to watch when bumping pins:** `third_party/FUZZTEST` pins its own Abseil LTS (`absl_TAG`
+in `cmake/BuildDependencies.cmake`); this repo's `ABSL_TAG` in `third_party/CMakeLists.txt` is
+declared first and wins, so it must stay >= the FuzzTest pin or configure fails with missing
+`absl::*` targets (observed: `absl::random_mocking_access`). This repo is at `20260817.0`, FuzzTest
+at `20260526.0` (2026-10-07).
 
-- `third_party/FUZZTEST` pins its own Abseil LTS (`absl_TAG` in
-  `cmake/BuildDependencies.cmake`); this repo's `ABSL_TAG` in
-  `third_party/CMakeLists.txt` is declared first and wins, so it must stay >= the
-  FuzzTest pin or configure fails with missing `absl::*` targets (observed:
-  `absl::random_mocking_access`). This repo is at `20260817.0`, FuzzTest at
-  `20260526.0` (2026-10-07).
-
-Drift itself is guarded by ANTfrastructure's repo-agnostic suite,
-`third_party/ANTfrastructure/shared/windows/tests/Submodule.Pins.Tests.ps1`, run
-by its own always-on workflow, `.github/workflows/submodule-pins.yml` — push
-and PR on `main`/`develop`, no `[build-win]` opt-in and **no `paths-ignore`**,
-because an invariant that only runs when somebody remembers to type a marker is
-not a gate, and neither is one a path filter can silence (it used to live in
-`windows-x64.yml` and inherited that file's `'**.md'`/`docs/**` filter, so a commit
-that moved a gitlink alongside a docs page went unchecked). For **every** configured submodule it
-asserts the tree is checked out, sits at its recorded gitlink, and is pinned to
-a commit reachable from its remote (a pin on no remote branch cannot be
-restored by a fresh clone). This repo's own copy of the suite was deleted once
-the hub pin carried the promoted one; do not re-add a local fork. To run it by
-hand: `$env:ANTFRASTRUCTURE_PIN_CHECK_REPO_ROOT = $PWD; Invoke-Pester
-third_party/ANTfrastructure/shared/windows/tests/Submodule.Pins.Tests.ps1`. It
-does **not** check the Abseil version coupling above — that one is on you.
+**Drift is guarded by ANTfrastructure's repo-agnostic suite**,
+`third_party/ANTfrastructure/shared/windows/tests/Submodule.Pins.Tests.ps1`, run by its own
+always-on workflow `.github/workflows/submodule-pins.yml`: push and PR on `main`/`develop`, no
+`[build-win]` opt-in and **no `paths-ignore`**. An invariant that runs only when somebody remembers a
+marker is not a gate, nor is one a path filter can silence: inside `windows-x64.yml` it inherited
+the `'**.md'`/`docs/**` filter, so a commit that moved a gitlink alongside a docs page went
+unchecked. For **every** configured submodule it asserts the tree is checked out, sits at its
+recorded gitlink, and is pinned to a commit reachable from its remote (a pin on no remote branch
+cannot be restored by a fresh clone). This repo's own copy of the suite was deleted once the hub pin
+carried the promoted one; do not re-add a local fork. By hand:
+`$env:ANTFRASTRUCTURE_PIN_CHECK_REPO_ROOT = $PWD; Invoke-Pester third_party/ANTfrastructure/shared/windows/tests/Submodule.Pins.Tests.ps1`.
+It does **not** check the Abseil coupling above; that one is on you.
 
 ### Dependency upgrades: Renovate as a local CLI
 
@@ -583,151 +500,121 @@ bash ./scripts/linux/renovate-local.sh --apply --dry-run  # the plan
 bash ./scripts/linux/renovate-local.sh --apply            # move the gitlinks
 ```
 
-Run it from WSL — there is no node on the Windows host. How it behaves there
-(why `--apply` is git rather than Renovate, the `git.exe` switch it makes for
-you over a Windows checkout, that nothing is staged or committed either way) is
-upstream's, not this repo's:
-[`dependency-updates.md`](third_party/ANTfrastructure/docs/dependency-updates.md).
-
-What is true of **this** repo: it moves gitlinks, and only submodules that declare a `branch =`. Any other
-manager (`--managers`) is report-only; `requirements.txt` is one of those. `.github/renovate.json` is
-read by this CLI and by nothing else: the Renovate GitHub App is installed on no
-repository in this family and will not be (owner decision, 2026-09-09).
-Rationale, the full local workflow and the GitHub-token variant:
+Run it from WSL: there is no node on the Windows host. It moves gitlinks, and only for submodules
+that declare a `branch =`; every other manager (`--managers`) is report-only, `requirements.txt`
+among them. `.github/renovate.json` is read by this CLI and nothing else: the Renovate GitHub App is
+installed on no repository in this family and will not be (owner decision, 2026-09-09). How it
+behaves on WSL (why `--apply` is git rather than Renovate, the `git.exe` switch it makes for you over
+a Windows checkout, that nothing is staged or committed either way), the rationale, the full local
+workflow and the GitHub-token variant are upstream's:
 [`third_party/ANTfrastructure/docs/dependency-updates.md`](third_party/ANTfrastructure/docs/dependency-updates.md).
 
 ## Running on the Host (Windows)
 
-Containers cannot present a swapchain — run the built binaries on the bare host,
-from the **repo root** as working directory (`scripts/windows/Invoke-ClangCl*.ps1`
-wrap this). Verified 2026-07-17 on the AMD RX 9070 XT: all four clang-cl builds
-render (~32 FPS ImGui overlay).
+Containers cannot present a swapchain: run the built binaries on the bare host, from the **repo
+root** as working directory (`scripts/windows/Invoke-ClangCl*.ps1` wrap this). Verified 2026-07-17
+on the AMD RX 9070 XT: all four clang-cl builds render (~32 FPS ImGui overlay).
 
-- **Debug builds require the Vulkan validation layers on the host** — without
-  them the app dies at startup with exit code `-1073740791` (`0xC0000409`,
-  vulkan.hpp assert after "Validation layers requested, but not available!").
-  Install the Vulkan SDK (`winget install VulkanSDK`; 1.4.350.0 is what
-  `Invoke-SyncValidation.ps1` defaults to), or point `VK_LAYER_PATH` at a directory
-  containing `VkLayer_khronos_validation.{dll,json}` (they can be extracted from
-  the ANTfrastructure image under
-  `C:\Users\ContainerAdministrator\scoop\apps\vulkan\current\Bin`).
-  Profile/Release builds run without validation layers, unless `KATAGLYPHIS_VULKAN_VALIDATION`
-  is set (the Windows x64 lane's lavapipe step does, with the layer staged beside the suite).
-- The ASAN debug binary needs `clang_rt.asan_dynamic-x86_64.dll`; the build
-  copies it next to `GraphicsEngine.exe`, and the run helpers set `ASAN_OPTIONS`
-  with a **relative** `log_path` (an absolute `C:\...` path breaks ASAN option
-  parsing at the drive-letter colon).
+- **Debug builds require the Vulkan validation layers on the host**; without them the app dies at
+  startup with exit code `-1073740791` (`0xC0000409`, vulkan.hpp assert after "Validation layers
+  requested, but not available!"). Install the Vulkan SDK (`winget install VulkanSDK`; 1.4.350.0 is
+  what `Invoke-SyncValidation.ps1` defaults to), or point `VK_LAYER_PATH` at a directory containing
+  `VkLayer_khronos_validation.{dll,json}` (extractable from the ANTfrastructure image under
+  `C:\Users\ContainerAdministrator\scoop\apps\vulkan\current\Bin`). Profile/Release builds run
+  without validation layers unless `KATAGLYPHIS_VULKAN_VALIDATION` is set (the Windows x64 lane's
+  lavapipe step sets it, with the layer staged beside the suite).
+- The ASAN debug binary needs `clang_rt.asan_dynamic-x86_64.dll`; the build copies it next to
+  `GraphicsEngine.exe`, and the run helpers set `ASAN_OPTIONS` with a **relative** `log_path` (an
+  absolute `C:\...` path breaks ASAN option parsing at the drive-letter colon).
 
 ## Testing
 
-- C++ tests: `ctest --test-dir <build-dir> --output-on-failure` (add `-C Debug` for
-  multi-config generators). `Build-Windows.ps1` runs them unless `-SkipTests`.
-  Host `ctest` cannot read a container-generated CMake tree — invoke the test
-  executable directly instead (`.\build-clangcl-debug\commitTestSuite.exe`).
-- Benchmarks: `clangcl-profile` builds `perfTestSuite.exe`; run via
-  `Build-Windows.ps1` without `-SkipPerfTests`. The Windows x64 lane runs it itself, as a
-  functional gate like Linux's: every benchmark must run, and one that reports
-  `error_occurred` (a model it cannot find) fails the lane; timings are never gated.
-  `scripts/windows/Compare-PerfBaseline.ps1`,
-  `Compare-RendererPixels.ps1` and `Compare-RendererTimings.ps1` are local-only
-  comparison tools (the Windows x64 lane's `Invoke-WindowsLane.ps1` runs the two
-  renderer comparisons in validation-only mode, where both exit 2 when they found
-  nothing to check: a warning on a GPU-less runner, never a pass;
-  `Compare-PerfBaseline.ps1` is not in CI at all).
-- PowerShell module tests: Pester suites under `scripts/windows/tests/`
-  (Pester 3.4 syntax; the `pester-tests` job of `.github/workflows/windows-x64.yml`
-  runs them with a pinned Pester 3.4.0 on every push and PR, like the rest of
-  Windows CI). **Only suites covering
-  project-specific behaviour belong here.** A suite for a module that lives
-  upstream goes upstream with it (2026-08-07); the eight that remain cover the
-  module-resolution bootstrap (`Resolve-BuildModule`), the preset, artifact and
-  shared-config guards (`CMakePresets.Integrity`, `Repo.GeneratedArtifacts`,
-  `SharedConfig.Drift`), the validation-layer runner (`Invoke-SyncValidation`)
-  and the three comparison tools (`Compare-PerfBaseline`,
+- **C++ tests**: `ctest --test-dir <build-dir> --output-on-failure` (add `-C Debug` for
+  multi-config generators); `Build-Windows.ps1` runs them unless `-SkipTests`. Host `ctest` cannot
+  read a container-generated CMake tree: run the test executable directly
+  (`.\build-clangcl-debug\commitTestSuite.exe`).
+- **Benchmarks**: `clangcl-profile` builds `perfTestSuite.exe`; `Build-Windows.ps1` runs it without
+  `-SkipPerfTests`. The Windows x64 lane runs it as a functional gate like Linux's: every benchmark
+  must run, one that reports `error_occurred` (a model it cannot find) fails the lane, and timings
+  are never gated. `scripts/windows/Compare-PerfBaseline.ps1`, `Compare-RendererPixels.ps1` and
+  `Compare-RendererTimings.ps1` are local comparison tools. The lane's `Invoke-WindowsLane.ps1` runs
+  the two renderer comparisons in validation-only mode, where both exit 2 when they found nothing to
+  check (a warning on a GPU-less runner, never a pass); `Compare-PerfBaseline.ps1` is not in CI at
+  all.
+- **Pester** suites under `scripts/windows/tests/` (Pester 3.4 syntax): the `pester-tests` job of
+  `.github/workflows/windows-x64.yml` runs them with a pinned Pester 3.4.0 whenever that lane runs.
+  **Only suites covering project-specific behaviour belong here**; a suite for an upstream module
+  goes upstream with it (2026-08-07). The eight left cover the module-resolution bootstrap
+  (`Resolve-BuildModule`), the preset, artifact and shared-config guards (`CMakePresets.Integrity`,
+  `Repo.GeneratedArtifacts`, `SharedConfig.Drift`), the validation-layer runner
+  (`Invoke-SyncValidation`) and the three comparison tools (`Compare-PerfBaseline`,
   `Compare-RendererPixels`, `Compare-RendererTimings`).
-- `scripts/windows/Test-AllConfigs.ps1` is a local one-shot gate: the three standard
-  Windows container builds plus the Linux TSan build (`-SkipLinux` drops the
-  latter). Not wired into CI.
-- ANTfrastructure's own suites (the modules this repo imports) run via
-  `third_party/ANTfrastructure/windows/scripts/tests/Invoke-Tests.ps1`
-  and need **Pester >= 5** (it fails rather than silently skipping without it;
-  `Install-Module Pester -MinimumVersion 5.7 -Scope CurrentUser -Force
-  -SkipPublisherCheck`). Run it after changing anything upstream — and note that
-  upstream has its own CI for them (its `windows-x64.yml`, "Windows x64 · script
-  tests", `windows-scripts.yml` until 2026-09-24), so a break there is caught
-  without waiting on this repo's 2-3 h Windows lane.
-- **GPU tests** (`GoldenRender.*`, `Integration.*`) skip in the Windows
-  container and run for real on the host GPU. Linux CI's `clang-tests` job (x64
-  and arm64) runs them on the image's llvmpipe under Xvfb (`run-ctest.sh --virtual-display`),
-  minus the GUI input sweep, which is too slow for a runner. Windows CI runs them
-  on lavapipe too, on the runner rather than in the image (the hub image carries its own
-    device since 2026-10-04, CON50, but a host-run suite needs the host's ICD):
-    `scripts/windows/Invoke-LavapipeTests.ps1` fetches a
-  pinned, SHA256-checked lavapipe and Khronos loader for the host's arch, registers
-  the ICD in HKLM (an elevated loader ignores `VK_DRIVER_FILES`) and runs each test in
-  its own process from the repo root, as ctest does. x64 runs it on the runner host
-  after the container build, arm64 on `windows-11-arm`; a skip fails the run.
-  The image sets `LP_NATIVE_VECTOR_WIDTH=256` (hub CON44): at arm64's
-  native 128 bits Mesa 26.0 lavapipe's BVH build corrupts memory. A Linux host
-  with an NVIDIA GPU runs the same suites in the image through CDI, but an ASan
-  build needs `ASAN_OPTIONS=protect_shadow_gap=0` there, or `vkCreateDevice`
-  fails with -3 as soon as ray tracing is enabled. Procedure, cwd requirement,
-  the NVIDIA recipe and the golden-writing cautions are in
-  [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
-  "No synchronization frames available" on every golden was a FrameSync bug
-  (`695db536`..`981244fd`, August 2026), not the RDP session it was blamed on;
-  a commit in that range needs `981244fd` before any golden can draw.
-- **Synchronization validation** catches missing/incorrect barriers that no
-  pixel oracle can see (it found 10 real WRITE-AFTER-WRITE hazards in July
-  2026). Run it after touching render passes, barriers, or frames-in-flight:
+- `scripts/windows/Test-AllConfigs.ps1` is a local one-shot gate: the three standard Windows
+  container builds plus the Linux TSan build (`-SkipLinux` drops the latter). Not in CI.
+- **ANTfrastructure's own suites** (the modules this repo imports) run via
+  `third_party/ANTfrastructure/windows/scripts/tests/Invoke-Tests.ps1` and need **Pester >= 5**
+  (it fails rather than skips without it:
+  `Install-Module Pester -MinimumVersion 5.7 -Scope CurrentUser -Force -SkipPublisherCheck`). Run it
+  after changing anything upstream. Upstream's own CI runs them too (its `windows-x64.yml`, "Windows
+  x64 · script tests", `windows-scripts.yml` until 2026-09-24), so a break there is caught without
+  this repo's 2-3 h Windows lane.
+- **GPU tests** (`GoldenRender.*`, `Integration.*`) skip in the Windows container and run for real
+  on the host GPU. Linux CI's `clang-tests` job (x64 and arm64) runs them on the image's llvmpipe
+  under Xvfb (`run-ctest.sh --virtual-display`), minus the GUI input sweep (too slow for a runner).
+  Both Windows lanes run them on lavapipe on the runner, outside the image
+  (`scripts/windows/Invoke-LavapipeTests.ps1`; x64 on the runner host after the container build,
+  arm64 on `windows-11-arm`; a skip fails the run). A Linux host with an NVIDIA GPU runs them in the
+  image through CDI. The lavapipe install, the `LP_NATIVE_VECTOR_WIDTH=256` pin, the NVIDIA recipe
+  (an ASan build needs `ASAN_OPTIONS=protect_shadow_gap=0`), the cwd requirement and the
+  golden-writing cautions: [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md). "No
+  synchronization frames available" on every golden was a FrameSync bug (`695db536`..`981244fd`,
+  August 2026), not the RDP session it was blamed on; a commit in that range needs `981244fd` before
+  any golden can draw.
+- **Synchronization validation** catches missing or incorrect barriers that no pixel oracle can see
+  (it found 10 real WRITE-AFTER-WRITE hazards in July 2026). Run it after touching render passes,
+  barriers, or frames-in-flight:
   ```pwsh
   pwsh -ExecutionPolicy Bypass -File .\scripts\windows\Invoke-SyncValidation.ps1
   ```
-  It exits non-zero when the run log contains `SYNC-HAZARD`, and with the test
-  executable's own code when the run itself fails. Linux CI runs sync validation
-  on llvmpipe since 2026-10-06 (`run-ctest.sh --virtual-display`); this script is the
-  host-GPU and Windows run — details in
+  It exits non-zero when the run log contains `SYNC-HAZARD`, and with the test executable's own code
+  when the run itself fails. Linux CI runs sync validation on llvmpipe since 2026-10-06
+  (`run-ctest.sh --virtual-display`); this script is the host-GPU and Windows run. Details:
   [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
 
-**Adding tests is always in scope.** You do not need permission to improve
-or extend the suites — a change that fixes behaviour should generally arrive
-with a test that would have caught it. Prefer assertions that survive driver
-and machine differences (structural pixel properties, invariants, ordering)
-over exact-value comparisons, and make GPU-dependent tests skip themselves
-when no adapter is present rather than fail. Ideas worth picking up live in
-[`BACKLOG.md`](BACKLOG.md), alongside the sized commitments.
+**Adding tests is always in scope.** No permission needed to improve or extend the suites; a change
+that fixes behaviour should generally arrive with a test that would have caught it. Prefer
+assertions that survive driver and machine differences (structural pixel properties, invariants,
+ordering) over exact-value comparisons, and make GPU-dependent tests skip themselves when no adapter
+is present rather than fail. Ideas worth picking up live in [`BACKLOG.md`](BACKLOG.md), beside the
+sized commitments.
 
-**Formatting and static analysis.** clang-format/clang-tidy/cmake-format
-commands, the host gotchas, the container-build behavior (clang-format always
-runs, and clang-tidy too since hub CON10, over the TUs that import no module), and the
-suggested cadence live in
+**Formatting and static analysis**: the clang-format/clang-tidy/cmake-format commands, the host
+gotchas, the container-build behaviour (clang-format always runs, and clang-tidy too since hub
+CON10, over the TUs that import no module) and the suggested cadence:
 [`docs/code-quality.md`](docs/code-quality.md).
 
-**clang-format is a failing gate since 2026-10-06**, graded by the pinned LLVM's
-clang-format (the hub's `LLVM_RELEASE`, 23.1.3 since 2026-10-10) on both lanes: the Windows x64 lane's
+**clang-format is a failing gate since 2026-10-06**, graded by the pinned LLVM's clang-format (the
+hub's `LLVM_RELEASE`, 23.1.3 since 2026-10-10) on both lanes: the Windows x64 lane's
 `Build-Windows.ps1` step and the Linux `static-analysis` job's
 `run-static-analysis-format.sh --only-format-check`, which prefers
-`/usr/local/llvm-target/bin/clang-format` because the image's PATH one may still be the
-distro's 21.1.8 (it would flag 41 of the swept files). Both refuse any other version. The
-sweep commit is listed in `.git-blame-ignore-revs`; run `git config blame.ignoreRevsFile
-.git-blame-ignore-revs` once per clone.
+`/usr/local/llvm-target/bin/clang-format` because the image's PATH one may still be the distro's
+21.1.8 (it would flag 41 of the swept files). Both refuse any other version. The sweep commit is in
+`.git-blame-ignore-revs`; run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once per
+clone.
 
-**Run more than the debug loop periodically.** `clangcl-debug` is the fast
-default, but `clangcl-profile` (optimized, and the only configuration where
-benchmarks mean anything) and a synchronization-validation pass each catch
-classes of problem the debug loop cannot. See [`BACKLOG.md`](BACKLOG.md) for
-what each one is for.
+**Run more than the debug loop periodically.** `clangcl-debug` is the fast default, but
+`clangcl-profile` (optimized, and the only configuration where benchmarks mean anything) and a
+synchronization-validation pass each catch classes of problem the debug loop cannot; what each is
+for: [`BACKLOG.md`](BACKLOG.md).
 
 <a id="there-is-no-windows-threadsanitizer"></a>
-**There is no Windows ThreadSanitizer.** Use the Linux
-`linux-debug-tsan-clang` preset, which CI runs, for race detection — see
-"Sanitizer semantics" above.
+**There is no Windows ThreadSanitizer.** For race detection use the Linux `linux-debug-tsan-clang`
+preset, which CI runs ("Sanitizer semantics" above).
 
-**`buildIntegritySuite` reads raw source, comments included.** It matches
-`[shader(`, `BENCHMARK(` and `kataglyphis_add_fuzz_test(` by substring, counts
-calls, and looks a few lines around `return;`, `.value` and filesystem calls. A
-comment that quotes such text can pass or fail a gate by itself, so grep the suite
-for a file's name before rewording a comment in it.
+**`buildIntegritySuite` reads raw source, comments included.** It matches `[shader(`, `BENCHMARK(`
+and `kataglyphis_add_fuzz_test(` by substring, counts calls, and looks a few lines around
+`return;`, `.value` and filesystem calls. A comment quoting such text can pass or fail a gate by
+itself, so grep the suite for a file's name before rewording a comment in it.
 
 **Fuzz targets** (`Test/fuzz/`):
 - **ASan.** On Linux the whole project builds with ASan (`linux-debug-asan-clang`). Abseil's
@@ -740,29 +627,27 @@ for a file's name before rewording a comment in it.
 - **Header order.** The two abseil random headers come before `fuzztest.h`. A force-include
   breaks the module compile step.
 
-**The two bootstrap copies are body-mode assets.** Below their header,
-`scripts/linux/lib/antfrastructure.sh` and `scripts/windows/Resolve-BuildModule.ps1`
-must equal the hub templates byte for byte (`sync-shared-config.sh --check`). Re-copy
-them from the templates after an upstream change; never edit them here.
-
 ## What CI runs, and what it does not
 
-**A push or PR runs Linux x64 and the gates; the other four platform lanes run on request**
-(owner rule 2026-10-15 for the whole family, ANTfrastructure's
-[`branch-and-release-strategy.md`](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/branch-and-release-strategy.md); this repo since 2026-10-16).
-`on-request.yml` reads `[ci <lane>]` in the pushed commit messages: `[ci windows]` runs both
-Windows lanes, `[ci arm64]` both arm64 ones, `[ci riscv64]` the riscv64 lane, `[ci all]` all
-four; each lane's Run workflow button (or `gh workflow run <lane>.yml --ref <branch>`) starts
-one by hand. A token in a commit message starts lanes, so never quote one in prose. Each
-lane's concurrency group is `<lane>-${{ github.ref }}-${{ github.workflow }}`, one per lane
-and caller, and a lane's badge shows only its runs started by hand. **Every push to `main` is a
-release** (`release.yml`): a version check (`VERSION.txt`'s version has a `CHANGELOG.md` section and
-no release yet), all five lanes once more, then `v<version>` with every lane's packages
-(`scripts/linux/collect-release-assets.sh`, its suite a job of `linux-x64.yml`), only when every lane
-is green; `gh workflow run release.yml --ref develop -f dry-run=true` proves it on `develop` without
-publishing. From 2026-09-24 to
-2026-10-16 every lane ran on every push; the `[build-win]` and `[build-arm]` opt-ins before
-that are gone. Linux x64 still skips a docs-only commit through `paths-ignore`:
+**A push or PR runs Linux x64 and the gates; the other four platform lanes run on request** (owner
+rule 2026-10-15 for the whole family, ANTfrastructure's
+[`branch-and-release-strategy.md`](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/branch-and-release-strategy.md);
+this repo since 2026-10-16). `on-request.yml` reads `[ci <lane>]` in the pushed commit messages:
+`[ci windows]` runs both Windows lanes, `[ci arm64]` both arm64 ones, `[ci riscv64]` the riscv64
+lane, `[ci all]` all four. A lane's Run workflow button (or
+`gh workflow run <lane>.yml --ref <branch>`) starts one by hand. A token in a commit message starts
+lanes, so never quote one in prose. Each lane's concurrency group is
+`<lane>-${{ github.ref }}-${{ github.workflow }}`, one per lane and caller, and a lane's badge shows
+only its runs started by hand.
+
+**Every push to `main` is a release** (`release.yml`): a version check (`VERSION.txt`'s version has
+a `CHANGELOG.md` section and no release yet), all five lanes once more, then `v<version>` with every
+lane's packages (`scripts/linux/collect-release-assets.sh`, its suite a job of `linux-x64.yml`),
+only when every lane is green. `gh workflow run release.yml --ref develop -f dry-run=true` proves it
+on `develop` without publishing.
+
+From 2026-09-24 to 2026-10-16 every lane ran on every push; the `[build-win]` and `[build-arm]`
+opt-ins before that are gone. Linux x64 still skips a docs-only commit through `paths-ignore`:
 
 | Lane | Workflow | Trigger |
 | --- | --- | --- |
@@ -772,160 +657,162 @@ that are gone. Linux x64 still skips a docs-only commit through `paths-ignore`:
 | Windows x64 (clang-cl container build of `clangcl-debug`, `clangcl-profile` and `clangcl-release`, CPU, compile and perf suites, fuzz seeds, renderer comparisons, packaging; then the GPU suites on lavapipe on the runner host; Pester) | `windows-x64.yml` → the hub's reusable `container-ci-windows.yml`; the container half is `scripts/windows/Invoke-WindowsLane.ps1` | on request (`on-request.yml`) or by hand |
 | Linux ARM64 | `linux-arm64.yml` → `reusable-linux.yml` | on request (`on-request.yml`) or by hand; deploys nothing (the deploy jobs need `runner == 'ubuntu-26.04'`) |
 | Linux riscv64 (cross build on amd64, Debug ctest under QEMU; the CPU suites on request, the GPU suites behind the fp16 shim in 11 weekly shards; see [The riscv64 lane](#the-riscv64-lane)) | `linux-riscv64.yml` → the hub's reusable `container-ci-riscv64.yml`; the container half is `scripts/linux/run-riscv64-tests.sh` | on request (`on-request.yml`) or by hand; the GPU shards on Saturdays and on dispatch with `gpu-tests` |
-| Windows ARM64 (cross build in the arm64 bundle, then a run on `windows-11-arm`, plus the Release commit suite there: `-StageTests` builds it with `KATAGLYPHIS_RELEASE_COMMIT_TESTS`, stages it with its shaders and test models (`Dinosaurs` included, which four `ObjParseUnit` tests parse) in `dist\windows-arm64-tests`, and the hub's `Invoke-StagedTests.ps1` runs it minus the GPU suites and the source-reading `BuildIntegrity.*` checks, hub CON43, plus the Profile perf suite and the Debug (ASan) suite the lane cross-builds too (its `/MDd` CRT and `ucrtbased.dll` come from the runner's own VS and SDK, neither is redistributable); the `gpu-suites` job runs the Release and perf suites on lavapipe from a checkout) | `windows-arm64-cross.yml` → the hub's reusable `container-ci-windows.yml` | on request (`on-request.yml`) or by hand | dda807b0 (ci(windows): the arm64 cross lane builds and runs the Debug (ASan) suite too)
+| Windows ARM64 (cross build in the arm64 bundle, then the Release commit suite, the Profile perf suite and the Debug (ASan) suite on `windows-11-arm`, dda807b0; below) | `windows-arm64-cross.yml` → the hub's reusable `container-ci-windows.yml` | on request (`on-request.yml`) or by hand |
 
-The top two are their own workflows rather than jobs inside the build lanes,
-and that is what makes "always" true. As tenants they inherited their host's
-`paths-ignore`, so a docs-only push got no secret scan and a commit that moved a
-gitlink next to a docs page got no pin check; `lint` also lived in
-`reusable-linux.yml` and therefore ran once per **caller**, grading the same
-runner-independent tree twice on every ARM run.
+The top two are their own workflows, not jobs inside the build lanes, which is what makes "always"
+true. As tenants they inherited their host's `paths-ignore`, so a docs-only push got no secret scan
+and a commit that moved a gitlink next to a docs page got no pin check; and `lint`, then in
+`reusable-linux.yml`, ran once per **caller**, grading the same runner-independent tree twice on
+every ARM run.
 
-**Known red on 2026-09-25, and not this repo's defect:** in `linux-arm64.yml` the
-two GNU jobs (`gcc + tests + coverage`, `gcc profiling + benchmarks`) stop at
-configure with `Could NOT find X11 (missing: X11_X11_LIB)` (run 36042437555). The
-arm64 image's GCC prints no multiarch triplet, so CMake never searches
-`/usr/lib/aarch64-linux-gnu`. It is fixed in hub source (ANTfrastructure backlog
-CON8) and reaches this lane with the next Linux `:latest`.
+**Known red on 2026-09-25, and not this repo's defect:** in `linux-arm64.yml` the two GNU jobs
+(`gcc + tests + coverage`, `gcc profiling + benchmarks`) stop at configure with
+`Could NOT find X11 (missing: X11_X11_LIB)` (run 36042437555): the arm64 image's GCC prints no
+multiarch triplet, so CMake never searches `/usr/lib/aarch64-linux-gnu`. Fixed in hub source
+(ANTfrastructure backlog CON8); it reaches this lane with the next Linux `:latest`.
 
 **The Windows ARM64 lane cross-builds, then runs** (owner decision 2026-09-25).
 `Build-Windows.ps1 -TargetArch arm64 -Configurations clangcl-release,clangcl-profile` runs in the
 family image's arm64 bundle (`:winarm64`) on an amd64 runner. On a cross build it:
 
-- refuses every other configuration: Debug links an x64-only ASan runtime and
-  runs FuzzTest's grammar generator at build time, and the MSVC presets pin x64.
-  clangcl-profile builds only with `-SkipPerfTests` (its benchmarks cannot run on
-  the amd64 host), into `build-clangcl-profile-arm64`, for `-StageTests` to stage
-  `perfTestSuite.exe`;
-- configures with the hub's `Get-CrossConfigureArgs -Corrosion -Vulkan`, so
-  Corrosion targets aarch64 and FindVulkan takes `Lib-ARM64/vulkan-1.lib` instead
-  of the pointer-size x64 `Lib`;
+- refuses every other configuration: Debug links an x64-only ASan runtime and runs FuzzTest's
+  grammar generator at build time, and the MSVC presets pin x64. clangcl-profile builds only with
+  `-SkipPerfTests` (its benchmarks cannot run on the amd64 host), into
+  `build-clangcl-profile-arm64`, for `-StageTests` to stage `perfTestSuite.exe`;
+- configures with the hub's `Get-CrossConfigureArgs -Corrosion -Vulkan`, so Corrosion targets
+  aarch64 and FindVulkan takes `Lib-ARM64/vulkan-1.lib` instead of the pointer-size x64 `Lib`;
 - builds into `build-clangcl-release-arm64`;
-- writes `dist/windows-arm64`: the portable bundle (the install tree plus its DLL
-  closure), the `aarch64` MSI and ZIP, and the arm64 MSIX (manifest token
-  `__MSIX_ARCH__`).
+- writes `dist/windows-arm64`: the portable bundle (the install tree plus its DLL closure), the
+  `aarch64` MSI and ZIP, and the arm64 MSIX (manifest token `__MSIX_ARCH__`).
 
-On `windows-11-arm` the commit suite runs whole, in two halves. The hub's run job
-runs `tests.json` (the CPU suites, plus `perfTestSuite.exe` as an `exitcode` entry);
-this repo's `gpu-suites` job checks the repo out, puts the staged shaders in it and runs
-the GPU suites on lavapipe plus the source-reading `BuildIntegrity.*` checks through
-`Invoke-LavapipeTests.ps1`, its own job because the hub's stops at 30 minutes. The image's
-runtime bundle as a whole (GStreamer, WebRTC, HailoRT, the Python wheels) is not this lane's to
-gate: since 2026-10-11 the hub proves it in its own `windows-arm64.yml`, so an image defect the
-renderer never touches cannot turn this lane red or skip its GPU suites.
+On `windows-11-arm` the commit suite runs whole, in two halves:
 
-The hub's `Hardening.cmake` links `/CETCOMPAT` on x64 only. The run job borrows the
-Khronos loader from LunarG's arm64 runtime, pinned by hash, and calls
-`GraphicsEngine.exe --version`. The engine imports `vulkan-1.dll`, which a device gets
-from its GPU driver and the GPU-less runner has not got. The bundle never ships the
-loader. The image, the arch gate over `dist/windows-arm64`, the upload and the run
-job are the hub's:
+- `-StageTests` builds the Release commit suite with `KATAGLYPHIS_RELEASE_COMMIT_TESTS` and stages it
+  with its shaders and test models (`Dinosaurs` included, which four `ObjParseUnit` tests parse) in
+  `dist\windows-arm64-tests`. The hub's run job runs `tests.json` through its
+  `Invoke-StagedTests.ps1` (hub CON43): the CPU suites (the commit suite minus the GPU suites and
+  the source-reading `BuildIntegrity.*` checks), `perfTestSuite.exe` (the Profile perf suite) as an
+  `exitcode` entry, and the Debug (ASan) suite the lane cross-builds too (dda807b0), whose `/MDd`
+  CRT and `ucrtbased.dll` come from the runner's own VS and SDK (neither is redistributable).
+- This repo's `gpu-suites` job checks the repo out, puts the staged shaders in it and runs the
+  Release suite's GPU suites on lavapipe plus the source-reading `BuildIntegrity.*` checks through
+  `Invoke-LavapipeTests.ps1`; its own job, because the hub's stops at 30 minutes.
+
+The image's runtime bundle as a whole (GStreamer, WebRTC, HailoRT, the Python wheels) is not this
+lane's to gate: since 2026-10-11 the hub proves it in its own `windows-arm64.yml`, so an image
+defect the renderer never touches cannot turn this lane red or skip its GPU suites.
+
+The hub's `Hardening.cmake` links `/CETCOMPAT` on x64 only. The run job borrows the Khronos loader
+from LunarG's arm64 runtime, pinned by hash, and calls `GraphicsEngine.exe --version`: the engine
+imports `vulkan-1.dll`, which a device gets from its GPU driver and the GPU-less runner has not got.
+The bundle never ships the loader. The image, the arch gate over `dist/windows-arm64`, the upload
+and the run job are the hub's:
 [`windows-cross-builds.md` § Consumer cross lanes](third_party/ANTfrastructure/docs/windows-cross-builds.md#consumer-cross-lanes-container-ci-windowsyml).
 
-**The Windows x64 lane is a thin caller too** (2026-09-26, the family's hub reusable
-lanes). `windows-x64.yml` names `scripts/windows/Invoke-WindowsLane.ps1`, which a local
-container run executes too: `Build-Windows.ps1 -Configurations clangcl-debug,clangcl-profile,clangcl-release`,
-the CPU-only suites (the GPU suites excluded by name), `compileTestSuite.exe`, the perf suite
-(`perfTestSuite.exe` from the repo root, as ctest's `perf_suite_runs`), every fuzz target's seed
-corpus (ten minutes each, where the old step had one 20-minute limit), and the renderer
-timing and pixel comparisons. Every check after the build runs, and the lane fails if any
-did. `-StageTests` leaves the Release commit suite in `dist/windows-x64-tests`, and the hub's
-`host-command` runs its GPU suites on lavapipe on the runner host after the container exits
-(`Invoke-LavapipeTests.ps1`, about an hour on 4 vCPUs). The WebDAV credentials and `MSIX_CERT_PASSWORD` reach the container through the hub's
-`CONTAINER_SECRET_ENV` secret, as an `--env-file`, and `Build-Windows.ps1` reads them from the
-environment; `KATAGLYPHIS_CI_HAS_GPU` comes from the repository variable through
-`container-env`. The product is `dist/windows-x64`, as arm64's is `dist/windows-arm64`: the
-portable bundle with its DLL closure (the hub's `Get-ProductDllSearchPath`, both arches), the
-MSI, ZIP and NSIS installer, and the MSIX, which now packs that bundle. It uploads as
-`BeschleunigerBallett-windows-x64`, which replaced `windows-installers-container` and its globs
-over `build-clangcl-release`. `BuildIntegrity`'s three Windows-list tests read the lane script,
-not the workflow. The job's check-run name moved with it, to
-`Build, test, package (x64) / build (amd64)`.
+**The Windows x64 lane is a thin caller too** (2026-09-26, the family's hub reusable lanes).
+`windows-x64.yml` names `scripts/windows/Invoke-WindowsLane.ps1`, which a local container run
+executes too:
 
-Workflow files follow the fleet naming convention (owner decision 2026-09-24):
-kebab-case, one file per platform + arch (`linux-x64.yml`, `linux-arm64.yml`, `linux-riscv64.yml`,
-`windows-x64.yml`, `windows-arm64-cross.yml`), repo-local reusables as `reusable-<platform>.yml`, and
-display names `<Platform> <Arch> · <what>`. The job ids are unchanged, so the
-check-run names a branch protection rule matches did not move; badge and
-`actions/workflows/<file>` URLs did.
+- `Build-Windows.ps1 -Configurations clangcl-debug,clangcl-profile,clangcl-release`, the CPU-only
+  suites (the GPU suites excluded by name), `compileTestSuite.exe`, the perf suite
+  (`perfTestSuite.exe` from the repo root, as ctest's `perf_suite_runs`), every fuzz target's seed
+  corpus (ten minutes each; the old step had one 20-minute limit), and the renderer timing and pixel
+  comparisons. Every check after the build runs, and the lane fails if any did.
+- `-StageTests` leaves the Release commit suite in `dist/windows-x64-tests`; the hub's
+  `host-command` runs its GPU suites on lavapipe on the runner host after the container exits
+  (`Invoke-LavapipeTests.ps1`, about an hour on 4 vCPUs).
+- The WebDAV credentials and `MSIX_CERT_PASSWORD` reach the container through the hub's
+  `CONTAINER_SECRET_ENV` secret, as an `--env-file`, and `Build-Windows.ps1` reads them from the
+  environment; `KATAGLYPHIS_CI_HAS_GPU` comes from the repository variable through `container-env`.
+- The product is `dist/windows-x64`, as arm64's is `dist/windows-arm64`: the portable bundle with
+  its DLL closure (the hub's `Get-ProductDllSearchPath`, both arches), the MSI, ZIP and NSIS
+  installer, and the MSIX, which now packs that bundle. It uploads as
+  `BeschleunigerBallett-windows-x64`, which replaced `windows-installers-container` and its globs
+  over `build-clangcl-release`.
+- `BuildIntegrity`'s three Windows-list tests read the lane script, not the workflow. The job's
+  check-run name moved with it, to `Build, test, package (x64) / build (amd64)`.
 
-To re-run a lane at the branch tip without a commit (a fix to a docs path the
-filter skips, say), use `workflow_dispatch` on `linux-x64.yml`,
-`linux-riscv64.yml`, `windows-x64.yml` or `windows-arm64-cross.yml` (`linux-arm64.yml` has none). The
-hub's trigger rules, including the opt-in markers other repos still use:
-[`ci-build-triggers.md`](third_party/ANTfrastructure/docs/ci-build-triggers.md).
-Reading pipeline status from a shell (`gh`):
+**Workflow names follow the fleet convention** (owner decision 2026-09-24): kebab-case, one file per
+platform + arch (`linux-x64.yml`, `linux-arm64.yml`, `linux-riscv64.yml`, `windows-x64.yml`,
+`windows-arm64-cross.yml`), repo-local reusables as `reusable-<platform>.yml`, display names
+`<Platform> <Arch> · <what>`. The job ids are unchanged, so the check-run names a branch protection
+rule matches did not move; badge and `actions/workflows/<file>` URLs did.
+
+To re-run a lane at the branch tip without a commit (say, a fix to a docs path the filter skips),
+use `workflow_dispatch` on `linux-x64.yml`, `linux-riscv64.yml`, `windows-x64.yml` or
+`windows-arm64-cross.yml` (`linux-arm64.yml` has none). The hub's trigger rules, including the
+opt-in markers other repos still use:
+[`ci-build-triggers.md`](third_party/ANTfrastructure/docs/ci-build-triggers.md). Reading pipeline
+status from a shell (`gh`):
 [`github-cli-pipeline-monitoring.md`](third_party/ANTfrastructure/docs/github-cli-pipeline-monitoring.md).
 
-`linux-x64.yml` and `linux-arm64.yml` both call `reusable-linux.yml`, so a fix
-to the x86 lane applies to ARM automatically. No CI lane has a hardware GPU: the
-Linux `clang-tests` job (both arches) runs the golden suites on llvmpipe (a CPU Vulkan device,
-[`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md)), both Windows lanes on lavapipe on
-the runner, and synchronization validation stays host-only.
+`linux-x64.yml` and `linux-arm64.yml` both call `reusable-linux.yml`, so a fix to the x86 lane
+applies to ARM automatically. No CI lane has a hardware GPU: the Linux `clang-tests` job (both
+arches) runs the golden suites on llvmpipe (a CPU Vulkan device,
+[`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md)), both Windows lanes on lavapipe on the
+runner. Both run synchronization validation there too (since 2026-10-06; Windows arm64 since the
+`:winarm64` of 2026-10-10): [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
 
-**Six Linux jobs per architecture, not eleven** (2026-10-13). Every job pays the host
-prologue before it builds anything: disk cleanup plus the image pull, 8-9 min on x64 and
-6-7 min on arm64 (runs 38402811139, 38368740921, 38265932848 and their arm64 twins). Six of
-the eleven jobs did less work than that, so they share jobs now, and nothing was dropped:
+**Six Linux jobs per architecture, not eleven** (2026-10-13). Every job pays the host prologue,
+disk cleanup plus the image pull, before it builds anything: 8-9 min on x64 and 6-7 min on arm64
+(runs 38402811139, 38368740921, 38265932848 and their arm64 twins). Six of the eleven jobs did less
+work than that, so they share jobs now; nothing was dropped:
 
 - `clang-tests`, `gcc` and the release build keep their own jobs.
-- `sanitizers` runs ASan + the fuzz seeds, then TSan. It empties the one compiler-cache
-  directory between the halves, so `X64-clang-asan` and `X64-clang-tsan` stay apart.
-- `static-analysis` runs the format check, one `linux-debug-clang` build for both coverage and
-  the analyzers (two jobs used to build that tree), then the Rust renderer tests and lints.
+- `sanitizers` runs ASan + the fuzz seeds, then TSan. It empties the one compiler-cache directory
+  between the halves, so `X64-clang-asan` and `X64-clang-tsan` stay apart.
+- `static-analysis` runs the format check, one `linux-debug-clang` build for both coverage and the
+  analyzers (two jobs used to build that tree), then the Rust renderer tests and lints.
 - `profiling` runs the clang profiling build and its benchmarks, then the gcc ones.
 - `release` adds the docs, the wasm demo and their deploy on x64.
 
-Each part after the first runs whatever the one before it did (`if: !cancelled()`), and checks
-its own build's outcome, so a red step still names the check that failed. Measured on f340258a
-against the three runs before it: x64 run 38424781404 took 215 job-minutes (was 248-255), 53 of
-them prologue (was 106-114); arm64 run 38424781448 took 173 (was 204-207), 39 of them prologue
-(was 64-68). The longest merged job (33.8 min, arm64 `sanitizers`) stays well under `clang-tests`.
+Each part after the first runs whatever the one before did (`if: !cancelled()`) and checks its own
+build's outcome, so a red step still names the check that failed. Measured on f340258a against the
+three runs before it: x64 run 38424781404 took 215 job-minutes (was 248-255), 53 of them prologue
+(was 106-114); arm64 run 38424781448 took 173 (was 204-207), 39 of them prologue (was 64-68). The
+longest merged job (33.8 min, arm64 `sanitizers`) stays well under `clang-tests`.
 
 **The old layout is one switch away.** Dispatching `linux-x64.yml` or `linux-arm64.yml` with
 `split-jobs` runs each merged job as a matrix of its parts: `asan`/`tsan`,
-`format`/`analysis`/`rust`, `clang`/`gcc`, and on x64 `release`/`docs`. That is eleven jobs on x64
-and ten on arm64, through the same steps. A push runs the merged jobs, whose matrix is the
-single part `all`.
+`format`/`analysis`/`rust`, `clang`/`gcc`, and on x64 `release`/`docs`; eleven jobs on x64 and ten
+on arm64, through the same steps. A push runs the merged jobs, whose matrix is the single part
+`all`.
 
 ### The riscv64 lane
 
-**Cross-built on amd64, tested under QEMU** (owner decision 2026-10-01, hub CON48): an
-emulated riscv64 build is 20-30x slower than native and would not fit a 6 h job.
-`linux-riscv64.yml` is one `uses:` onto the hub's `container-ci-riscv64.yml`; its
-container half, `scripts/linux/run-riscv64-tests.sh`, calls the hub's `riscv64_cross_env`,
-precompiles the Slang shaders on the host, builds the `linux-riscv64-cross` preset (Debug,
-`$env{RISCV64_CMAKE_TOOLCHAIN_FILE}`, `Rust_CARGO_TARGET=riscv64gc-unknown-linux-gnu`) and
-runs ctest. binfmt executes the riscv64 binaries, so gtest discovery and ctest need no
-emulator wrapper: the hub toolchain's `CMAKE_CROSSCOMPILING_EMULATOR` is a pass-through
-`/usr/bin/env`. The mechanism is the hub's:
+**Cross-built on amd64, tested under QEMU** (owner decision 2026-10-01, hub CON48): an emulated
+riscv64 build is 20-30x slower than native and would not fit a 6 h job. `linux-riscv64.yml` is one
+`uses:` onto the hub's `container-ci-riscv64.yml`. Its container half,
+`scripts/linux/run-riscv64-tests.sh`, calls the hub's `riscv64_cross_env`, precompiles the Slang
+shaders on the host, builds the `linux-riscv64-cross` preset (Debug,
+`$env{RISCV64_CMAKE_TOOLCHAIN_FILE}`, `Rust_CARGO_TARGET=riscv64gc-unknown-linux-gnu`) and runs
+ctest. binfmt executes the riscv64 binaries, so gtest discovery and ctest need no emulator wrapper:
+the hub toolchain's `CMAKE_CROSSCOMPILING_EMULATOR` is a pass-through `/usr/bin/env`. The mechanism
+is the hub's:
 [`riscv64-cross-test-lanes.md`](third_party/ANTfrastructure/docs/riscv64-cross-test-lanes.md).
 
-- **What runs:** 700 of the 703 Debug tests, against the image's riscv64 Vulkan loader,
-  GLFW and Rust renderer bridge; the GUI input sweep is excluded everywhere and two goldens
-  are disabled. A push runs the 658 CPU tests (523 s of ctest, 32 min end to end in run
-  38165366757), the weekly shards the 42 GPU tests. Measured 2026-10-01 on a 32-core host:
-  13 min end to end from a cold build at `-j8`, of which ctest is 415 s (serial, as in the
-  x64 lane).
+- **What runs:** 700 of the 703 Debug tests, against the image's riscv64 Vulkan loader, GLFW and
+  Rust renderer bridge; the GUI input sweep is excluded everywhere and two goldens are disabled. A
+  push runs the 658 CPU tests (523 s of ctest, 32 min end to end in run 38165366757), the weekly
+  shards the 42 GPU tests. Measured 2026-10-01 on a 32-core host: 13 min end to end from a cold
+  build at `-j8`, of which ctest is 415 s (serial, as in the x64 lane).
 - **The GPU suites run weekly, in shards** (owner decision 2026-10-06). `Integration.` and
   `GoldenRender.` run serially (`-j1`) under `xvfb-run` with the `libkata_fp16_helpers.so`
-  `LD_PRELOAD` built from `scripts/riscv64/fp16_helpers.c` (riscv64 glibc lacks the fp16
-  conversion helpers llvmpipe's ORC JIT calls). A shard log's `cannot be preloaded` lines
-  are noise from the x86_64 `ctest` and that `env`; the riscv64 test loads the shim. On a
-  32-core host the suites pass (35/40 measured 2026-10-03 at `-j8`, whose five misses were
-  contention; a heavy path-tracing test took 23 min at `-j1`). One 4-vCPU runner would need
-  about a day: the eight shards that pass below add up to 10.4 h of ctest. The serial lane
-  before the shards hit its 7200 s ceiling on `PathTracingAntiAliasesGeometricEdges` after
-  5 h (run 37229293578), and every run from 6fc0beb2 on was cancelled, so the lane gave no
-  signal at all.
-- **The shards.** `linux-riscv64.yml` has a `schedule:` (Saturdays 01:43 UTC) and a
-  `gpu-tests` input on `workflow_dispatch`. Either one skips the CPU job and fans out one
-  job per shard; `run-riscv64-tests.sh --list-gpu-shards` prints the matrix, so the list
-  has one home. A dispatch's `only-shards` input (comma-separated names from that list)
-  keeps only the shards it names, and a name off the list fails the step before any shard
-  starts. `RISCV64_GPU_SHARD` picks the shard inside the container:
-  - `raster`: every GPU test that is not in another shard (33 today, two of them
-    disabled), 90 min per test;
+  `LD_PRELOAD` built from `scripts/riscv64/fp16_helpers.c` (riscv64 glibc lacks the fp16 conversion
+  helpers llvmpipe's ORC JIT calls). A shard log's `cannot be preloaded` lines are noise from the
+  x86_64 `ctest` and that `env`; the riscv64 test loads the shim. On a 32-core host the suites pass
+  (35/40 measured 2026-10-03 at `-j8`; the five misses were contention; a heavy path-tracing test
+  took 23 min at `-j1`). One 4-vCPU runner would need about a day: the eight shards that pass below
+  add up to 10.4 h of ctest. The serial lane before the shards hit its 7200 s ceiling on
+  `PathTracingAntiAliasesGeometricEdges` after 5 h (run 37229293578), and every run from 6fc0beb2
+  on was cancelled, so the lane gave no signal at all.
+- **The shards.** `linux-riscv64.yml` has a `schedule:` (Saturdays 01:43 UTC) and a `gpu-tests`
+  input on `workflow_dispatch`. Either one skips the CPU job and fans out one job per shard;
+  `run-riscv64-tests.sh --list-gpu-shards` prints the matrix, so the list has one home. A
+  dispatch's `only-shards` input (comma-separated names from that list) keeps only the shards it
+  names, and a name off the list fails the step before any shard starts. `RISCV64_GPU_SHARD` picks
+  the shard inside the container:
+  - `raster`: every GPU test in no other shard (33 today, two of them disabled), 90 min per test;
   - `clouds`: the two cloud goldens, 150 min per test;
   - one solo shard each, 300 min, for the eight path-traced tests (the five
     `GoldenRender.PathTracing*`, `PathTracedMaskCardShowsItsCutout`,
@@ -948,23 +835,21 @@ emulator wrapper: the hub toolchain's `CMAKE_CROSSCOMPILING_EMULATOR` is a pass-
   | `AddedModelAppearsInPathTracing` | 300 min | 328 min | timed out |
   | `PathTracingPassesTheWhiteFurnaceTest` | 300 min | 327 min | timed out |
 
-  Under QEMU a raster golden costs 11-24x its x64 time, or one to five minutes when it does
-  little but start up; `RaytracingFrameSkipsTheRasterPass` cost 17x, the clouds 22-28x and
-  the path-traced tests 32-200x. The path-traced frame is what does not fit: on the shadow
-  rig (1200x768, 8 samples, up to 8 bounces) one took 98-189 s, against about 1 s on x64.
-  The runner decides where in that range. On the four shards whose frames can be timed, a
-  frame took 0.23-0.27 times that runner's own ninja build, and the same 693 build steps
-  ran 391-731 s across the eleven runners. A ceiling therefore has to assume about 190 s a
-  frame, and 300 min then hold about 90 frames. In that run
-  `PathTracingAntiAliasesGeometricEdges` rendered 87 (145 min, about 280 projected on the
-  slowest runner), and the three that timed out render 133, or 86 at 16 bounces for the
-  furnace: they pass on the fastest runners (180-220 min) and cannot on the slowest
-  (350-425 min).
+  Under QEMU a raster golden costs 11-24x its x64 time, or one to five minutes when it does little
+  but start up; `RaytracingFrameSkipsTheRasterPass` cost 17x, the clouds 22-28x and the path-traced
+  tests 32-200x. The path-traced frame is what does not fit: on the shadow rig (1200x768, 8 samples,
+  up to 8 bounces) one took 98-189 s, against about 1 s on x64. The runner decides where in that
+  range: on the four shards whose frames can be timed, a frame took 0.23-0.27 times that runner's
+  own ninja build, and the same 693 build steps ran 391-731 s across the eleven runners. A ceiling
+  therefore has to assume about 190 s a frame, and 300 min then hold about 90 frames. In that run
+  `PathTracingAntiAliasesGeometricEdges` rendered 87 (145 min, about 280 projected on the slowest
+  runner), and the three that timed out render 133, or 86 at 16 bounces for the furnace: they pass
+  on the fastest runners (180-220 min) and cannot on the slowest (350-425 min).
 
-  **So four path-traced goldens run a light variant on riscv64** (owner decision
-  2026-10-12). `run-riscv64-tests.sh` exports `KATAGLYPHIS_PT_GOLDEN_VARIANT=light` for the
-  GPU suites and runs ctest with `-V`; each of the four logs the variant it ran, and no
-  other lane sets it. They accumulate a shorter history and keep their thresholds:
+  **So four path-traced goldens run a light variant on riscv64** (owner decision 2026-10-12).
+  `run-riscv64-tests.sh` exports `KATAGLYPHIS_PT_GOLDEN_VARIANT=light` for the GPU suites and runs
+  ctest with `-V`; each of the four logs the variant it ran, and no other lane sets it. They
+  accumulate a shorter history and keep their thresholds:
 
   | Shard | Frames, full → light | Slowest runner, light |
   | --- | --- | --- |
@@ -973,59 +858,54 @@ emulator wrapper: the hub toolchain's `CMAKE_CROSSCOMPILING_EMULATOR` is a pass-
   | `PathTracingPassesTheWhiteFurnaceTest` | 86 → 46 | about 195 min |
   | `PathTracingAntiAliasesGeometricEdges` | 87 → 57 | about 185 min |
 
-  The projection takes 190 s a frame, and 1.3 times that for a furnace frame at 16 bounces
-  (the x64 ratio); the fastest runners need about half. The x64 measurements behind each
-  depth, with a negative control per test, are in
+  The projection takes 190 s a frame, and 1.3 times that for a furnace frame at 16 bounces (the x64
+  ratio); the fastest runners need about half. The x64 measurements behind each depth, with a
+  negative control per test:
   [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md) § The riscv64 light variant.
-  Each shard cross-builds for itself (23-33 min before ctest starts), because the hub's
-  reusable lane takes no build artifact; the 11 jobs restore the push lane's
-  `riscv64-clang-debug` cache and, off a push, never save it. The CPU and GPU runs sit in
-  different concurrency groups, so a push cannot cancel the weekly run.
-  `ctest --no-tests=error` fails a shard whose filter matches nothing, and an unknown shard
-  name stops before the build. `RISCV64_GPU_SHARD=all` is the old serial lane (CPU suites,
-  then every GPU test), for a local host.
+
+  Each shard cross-builds for itself (23-33 min before ctest starts), because the hub's reusable
+  lane takes no build artifact; the 11 jobs restore the push lane's `riscv64-clang-debug` cache
+  and, off a push, never save it. The CPU and GPU runs sit in different concurrency groups, so a
+  push cannot cancel the weekly run. `ctest --no-tests=error` fails a shard whose filter matches
+  nothing, and an unknown shard name stops before the build. `RISCV64_GPU_SHARD=all` is the old
+  serial lane (CPU suites, then every GPU test), for a local host.
   `GoldenRender.GuiInputSweepNeverCrashesOrLosesTheDevice` stays excluded everywhere.
-  No ASan, UBSan, TSan or coverage: the cross clang has no riscv64 compiler-rt. That is
-  also why `VulkanEngineCore`'s hard-wired Linux Debug `-fsanitize=address` skips a
-  cross build (`CMAKE_CROSSCOMPILING`), and the fuzz targets, which need ASan, skip
-  themselves. No cargo suite: OxidANT's own riscv64 lane tests that crate.
-- **The Vulkan hook is switched off there.** `source_vulkan_env` would source the
-  x86_64 SDK's `setup-env.sh` and undo `riscv64_cross_env`'s `/opt/vulkan/active` paths.
+- **No sanitizers, coverage or cargo suite.** No ASan, UBSan, TSan or coverage: the cross clang has
+  no riscv64 compiler-rt. That is also why `VulkanEngineCore`'s hard-wired Linux Debug
+  `-fsanitize=address` skips a cross build (`CMAKE_CROSSCOMPILING`), and the fuzz targets, which
+  need ASan, skip themselves. No cargo suite: OxidANT's own riscv64 lane tests that crate.
+- **The Vulkan hook is switched off there.** `source_vulkan_env` would source the x86_64 SDK's
+  `setup-env.sh` and undo `riscv64_cross_env`'s `/opt/vulkan/active` paths.
 
 ### The job bodies are ANTfrastructure's, resolved at `@develop`
 
-The workflows here are mostly wiring: the actual steps come from composite
-actions pulled straight from ANTfrastructure's `develop` branch (owner directive
-2026-09-25; `main` lags it and still names the retired `:latest-cross` image) —
-`prepare-linux-ci-host`, `run-in-linux-container`, `deploy-over-ftp`,
-`prepare-windows-container-host`, `run-in-windows-container`,
-`run-pester-suite` — and from three of its reusable workflows (`lint-gates.yml`,
-`submodule-pins.yml`, `container-ci-windows.yml`). **There is no pin: a push to
-ANTfrastructure `develop` changes this repo's CI on the next run**, which is why
-both repos ship together with ANTfrastructure first (see the rule above). When a
-lane fails inside a step whose `uses:` points at ANTfrastructure, read the action
-or workflow there — it is not defined here.
+The workflows here are mostly wiring. The steps come from composite actions pulled straight from
+ANTfrastructure's `develop` branch (owner directive 2026-09-25; `main` lags it and still names the
+retired `:latest-cross` image): `prepare-linux-ci-host`, `run-in-linux-container`,
+`deploy-over-ftp`, `prepare-windows-container-host`, `run-in-windows-container`,
+`run-pester-suite`; and from three of its reusable workflows (`lint-gates.yml`,
+`submodule-pins.yml`, `container-ci-windows.yml`). **There is no pin: a push to ANTfrastructure
+`develop` changes this repo's CI on the next run**, which is why both repos ship together with
+ANTfrastructure first (the rule above). A lane failing in a step whose `uses:` points at
+ANTfrastructure is defined there: read the action or workflow there.
 
 ### Lint gates (before anything builds)
 
-`.github/workflows/lint-gates.yml` is a workflow of its own, not a job inside a
-build lane. It pulls no image and builds nothing (~2 min), and it catches a
-class the rest of CI cannot: `yaml.safe_load` proves a workflow is valid YAML,
-not valid Actions, and a bash quoting or undefined-function bug only surfaces
-when that line finally runs — an hour into a gcc build.
+`.github/workflows/lint-gates.yml` is a workflow of its own, not a job in a build lane. It pulls no
+image and builds nothing (~2 min), and catches a class the rest of CI cannot: `yaml.safe_load`
+proves a workflow is valid YAML, not valid Actions, and a bash quoting or undefined-function bug
+only surfaces when that line runs, an hour into a gcc build.
 
-Its `lint` job is **one `uses:` line**: ANTfrastructure publishes the lane as a
-`workflow_call` workflow, and this repo passes `submodules: 'recursive'` (the
-hub's default: at depth 1 the tracked symlink `docs/source/_static/css/custom.css`
-into the nested DocumANTation submodule dangles, and the `*`-scoped ratchets
-refuse the tree, run 35015672838) and `ratchets: true`. It carries the Windows-native `powershell-lint` job too
-(PSScriptAnalyzer plus the mandatory parse/AST-trap gate over `scripts/`), on
-`windows-2025` because that gate script resolves its own helper module by
-backslash path. That one is deliberately **not** collapsed onto the hub's
-equivalent: the hub's passes `-FailOnAnalyzer` unconditionally, and this tree
-has one analyzer finding left (`$WebDavPassword` should be a `SecureString`),
-so adopting it today would make the lane red over a change to the build
-driver's public parameter contract. The file says so at the job.
+- **`lint` is one `uses:` line** onto the lane ANTfrastructure publishes as a `workflow_call`
+  workflow, with `submodules: 'recursive'` (the hub's default: at depth 1 the tracked symlink
+  `docs/source/_static/css/custom.css` into the nested DocumANTation submodule dangles, and the
+  `*`-scoped ratchets refuse the tree, run 35015672838) and `ratchets: true`.
+- **`powershell-lint`** is the Windows-native job (PSScriptAnalyzer plus the mandatory
+  parse/AST-trap gate over `scripts/`), on `windows-2025` because that gate script resolves its own
+  helper module by backslash path. It is deliberately **not** collapsed onto the hub's equivalent:
+  the hub's passes `-FailOnAnalyzer` unconditionally, and this tree has one analyzer finding left
+  (`$WebDavPassword` should be a `SecureString`), so adopting it would turn the lane red over a
+  change to the build driver's public parameter contract. The file says so at the job.
 
 **One command, and it is the same one CI runs:**
 
@@ -1033,177 +913,162 @@ driver's public parameter contract. The file says so at the job.
 bash ./scripts/linux/run-lint-gates.sh   # CI's seven: the six always-on gates, doc-links and the eight measurement gates
 ```
 
-The wrapper passes `--ratchets` itself since 2026-10-16; before that it ran six of the seven,
-and a local pass could still fail CI. The hub's consumer hook runs only the six always-on
-gates on every commit (the hub's script without `--ratchets`) once a clone opts in with
-`git config core.hooksPath third_party/ANTfrastructure/shared/linux/templates/git-hooks`,
-so run the wrapper before pushing a comment, size or shell change: the comment-size ratchet
-once failed `Lint gates` that way (run 37486873828). The doc-link gate reads the
-submodules, so a fresh clone needs `git submodule update --init` first.
+The wrapper passes `--ratchets` itself since 2026-10-16; before, it ran six of the seven, and a
+local pass could still fail CI. The hub's consumer hook runs only the six always-on gates on every
+commit (the hub's script without `--ratchets`) once a clone opts in with
+`git config core.hooksPath third_party/ANTfrastructure/shared/linux/templates/git-hooks`, so run the
+wrapper before pushing a comment, size or shell change: the comment-size ratchet once failed `Lint
+gates` that way (run 37486873828). The doc-link gate reads the submodules, so a fresh clone needs
+`git submodule update --init` first.
 
 That is the whole `lint` job, ratchets included. The wrapper hands this repo's root to
-ANTfrastructure's `linux/scripts/run-lint-gates.sh`, which owns the six gates
-(shell, workflows + CI image refs, secrets, python, shared-config drift,
-consumer pin-forwarding — the list and scopes are in that script's header) and
-the scaffolding around them; the binaries (shellcheck, actionlint, gitleaks) are
-ANTfrastructure's pinned, SHA-verified bootstraps, not a second set installed here.
-The bootstrap downloads once and caches, so only the first local run is slow.
+ANTfrastructure's `linux/scripts/run-lint-gates.sh`, which owns the six gates (shell, workflows + CI
+image refs, secrets, python, shared-config drift, consumer pin-forwarding; the list and scopes are
+in that script's header) and the scaffolding around them. The binaries (shellcheck, actionlint,
+gitleaks) are ANTfrastructure's pinned, SHA-verified bootstraps, not a second set installed here;
+they download once and cache, so only the first local run is slow.
 
-Four properties of that job are load-bearing. All four are asserted upstream
-rather than assumed here, so this is one line each plus the link to the
-reasoning:
+Four load-bearing properties of that job, each asserted upstream rather than assumed here:
 
-- **Scopes come from `git ls-files`, never a glob** — measured 2026-09-07, the
-  globs this replaced graded 19 of the 21 tracked scripts while reading as if
-  they graded all of them (`scripts/agentic-loop/Run-AgenticLoop.sh` and the
-  then-repo-root `bump-version.sh` were the two that fell through).
-- **The consumer root is passed explicitly**, because the gate scripts live
-  *inside* the submodule and a root inferred from their own location resolves to
-  ANTfrastructure: [`code-quality-tooling.md` § The scan-root contract](third_party/ANTfrastructure/docs/code-quality-tooling.md#the-scan-root-contract).
-- **An empty file list is a failure, not a pass** — upstream's phrasing is *zero
-  files is a refusal, not a green*: [`code-quality-tooling.md`](third_party/ANTfrastructure/docs/code-quality-tooling.md).
-- **The secret gate self-tests before it scans**, and matches its canary by path
-  rather than by outcome: [`code-quality-tooling.md` § The secret scan scans from inside the tree](third_party/ANTfrastructure/docs/code-quality-tooling.md#the-secret-scan-scans-from-inside-the-tree).
+- **Scopes come from `git ls-files`, never a glob**: measured 2026-09-07, the globs this replaced
+  graded 19 of the 21 tracked scripts while reading as if they graded all of them
+  (`scripts/agentic-loop/Run-AgenticLoop.sh` and the then-repo-root `bump-version.sh` fell
+  through).
+- **The consumer root is passed explicitly**, because the gate scripts live *inside* the submodule
+  and a root inferred from their own location resolves to ANTfrastructure:
+  [`code-quality-tooling.md` § The scan-root contract](third_party/ANTfrastructure/docs/code-quality-tooling.md#the-scan-root-contract).
+- **An empty file list is a failure, not a pass** (upstream: *zero files is a refusal, not a
+  green*): [`code-quality-tooling.md`](third_party/ANTfrastructure/docs/code-quality-tooling.md).
+- **The secret gate self-tests before it scans**, and matches its canary by path rather than by
+  outcome:
+  [`code-quality-tooling.md` § The secret scan scans from inside the tree](third_party/ANTfrastructure/docs/code-quality-tooling.md#the-secret-scan-scans-from-inside-the-tree).
 
-All gates run even after one fails, and the verdict is decided once at the
-end, so a triage round sees every finding instead of only the first.
+All gates run even after one fails, and the verdict is decided once at the end, so a triage round
+sees every finding instead of only the first.
 
-**`--ratchets` is on.** It adds `doc-links` plus the eight `--root` measurement
-gates (stdout-returns, masked assignments, trailing conditionals, comment size,
-code size, complexity, dead functions, shellcheck warnings). Four freeze files
-at the repo root hold what was over the line when the flag went on —
-`comment-size.allow`, `dead-functions.allow`, `trailing-conditional.allow`,
-`shellcheck-warnings.allow` — and each is **two-way**: a new offender fails, and
-so does a frozen row whose offender is gone. `doc-links` has no freeze file by
-design, so its findings are fixed, never frozen.
+**`--ratchets` is on.** It adds `doc-links` plus the eight `--root` measurement gates
+(stdout-returns, masked assignments, trailing conditionals, comment size, code size, complexity,
+dead functions, shellcheck warnings). Four freeze files at the repo root hold what was over the
+line when the flag went on (`comment-size.allow`, `dead-functions.allow`,
+`trailing-conditional.allow`, `shellcheck-warnings.allow`), and each is **two-way**: a new offender
+fails, and so does a frozen row whose offender is gone. `doc-links` has no freeze file by design: its
+findings are fixed, never frozen.
 
-Both Linux legs (x64 and arm64, since 2026-10-01) also run the Rust renderer crate's
-own test suite (`scripts/linux/run-cargo-tests.sh`, `cargo test -p
-kataglyphis_webgpu_renderer`) in the `static-analysis` job of `reusable-linux.yml`; its GPU tests
-find the image's lavapipe. On arm64 the script sets `LP_NATIVE_VECTOR_WIDTH=128` (since 2026-10-06): the
-image's 256 (hub CON44) serves this repo's BVH builds, and LLVM's AArch64 JIT aborted OxidANT's renderer
-tests on it about one run in five (`LLVM ERROR: Do not know how to split this operator's operand!`). Before
-this, the crate was compiled twice in this repo (the Rust bridge and the wasm
-demo) but its ~150 tests only ran in `OxidANT`'s own
-workflow — so edits made to `crates/webgpu_renderer` from this working tree
-got no test signal until the submodule was pushed separately.
+### Rust and Kompute in the Linux jobs
 
-The same job then lints the whole OxidANT workspace (since 2026-10-06):
-`scripts/linux/run-cargo-lints.sh` runs the hub's `cargo_fmt_clippy.sh`, `cargo fmt --all
---check` plus `cargo clippy --all-targets -- -D warnings`, and it fails the job like the
-tests do. Its clippy scope is OxidANT's own lane's (`ci-container-steps.sh fmt-clippy`):
-`--workspace --locked` with the `gstreamer` and `onnxruntime` features, never
-`--all-features`, because `gui_unix` needs GTK4 and the image has none. A pin that OxidANT's
-lane passed therefore passes here, and an edit to any crate from this tree gets a lint signal
-before the submodule is pushed. At the 2026-10-06 pin its clippy took 46 s in `:latest` from a
-cold target directory on a 32-core host.
+**Both Linux legs test the Rust renderer crate** (x64 and arm64, since 2026-10-01):
+`scripts/linux/run-cargo-tests.sh` (`cargo test -p kataglyphis_webgpu_renderer`) in the
+`static-analysis` job of `reusable-linux.yml`; its GPU tests find the image's lavapipe. On arm64 the
+script sets `LP_NATIVE_VECTOR_WIDTH=128` (since 2026-10-06): the image's 256 (hub CON44) serves this
+repo's BVH builds, and LLVM's AArch64 JIT aborted OxidANT's renderer tests on it about one run in
+five (`LLVM ERROR: Do not know how to split this operator's operand!`). Before this, the crate was
+compiled twice in this repo (the Rust bridge and the wasm demo) but its ~150 tests ran only in
+`OxidANT`'s own workflow, so edits to `crates/webgpu_renderer` from this working tree got no test
+signal until the submodule was pushed separately.
 
-`clang-tests` (both arches) is also the only build of `Src/KomputePlayground` (since
-2026-10-06): it configures with `-DKATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND=ON`, and its ctest step
-runs `KomputePlayground.ArrayMultiply` on llvmpipe with the other suites, so the demo cannot
-rot unseen again. Kompute comes from the `third_party/KOMPUTE` submodule and keeps exceptions
-on (its headers throw; the playground links neither `myproject_options` nor its
-`-fno-exceptions`), and the SDK's `glslangValidator` compiles the GLSL shader into the build
-tree. Every other build leaves the option OFF, so none of them fetches Kompute's `fmt`.
+**The same job lints the whole OxidANT workspace** (since 2026-10-06):
+`scripts/linux/run-cargo-lints.sh` runs the hub's `cargo_fmt_clippy.sh`, `cargo fmt --all --check`
+plus `cargo clippy --all-targets -- -D warnings`, and fails the job like the tests do. Its clippy
+scope is OxidANT's own lane's (`ci-container-steps.sh fmt-clippy`): `--workspace --locked` with the
+`gstreamer` and `onnxruntime` features, never `--all-features`, because `gui_unix` needs GTK4 and
+the image has none. A pin that OxidANT's lane passed therefore passes here, and an edit to any crate
+from this tree gets a lint signal before the submodule is pushed. At the 2026-10-06 pin its clippy
+took 46 s in `:latest` from a cold target directory on a 32-core host.
+
+**`clang-tests` (both arches) is the only build of `Src/KomputePlayground`** (since 2026-10-06): it
+configures with `-DKATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND=ON`, and its ctest step runs
+`KomputePlayground.ArrayMultiply` on llvmpipe with the other suites, so the demo cannot rot unseen
+again. Kompute comes from the `third_party/KOMPUTE` submodule and keeps exceptions on (its headers
+throw; the playground links neither `myproject_options` nor its `-fno-exceptions`), and the SDK's
+`glslangValidator` compiles the GLSL shader into the build tree. Every other build leaves the option
+OFF, so none of them fetches Kompute's `fmt`.
 
 ## Code Conventions (C++ engine)
 
 - **Exceptions are disabled project-wide** (`/EHs-`, `-fno-exceptions` in
   `cmake/ProjectOptions.cmake`; `VULKAN_HPP_NO_EXCEPTIONS` in
-  `Src/GraphicsEngineVulkan/CMakeLists.txt`): vulkan.hpp calls return
-  `ResultValue`; `throw`/`try` will not compile. `ASSERT_VULKAN(val, "msg")`
-  (`common/Utilities.hpp`) logs critical and aborts — use it on
-  creation/allocation calls only.
+  `Src/GraphicsEngineVulkan/CMakeLists.txt`): vulkan.hpp calls return `ResultValue`; `throw`/`try`
+  will not compile. `ASSERT_VULKAN(val, "msg")` (`common/Utilities.hpp`) logs critical and aborts;
+  use it on creation/allocation calls only.
 - Graphics pipelines are built via `kataglyphis.vulkan.pipeline_builder`
-  (`vulkan_base/PipelineBuilder.ixx`) — do not hand-roll the create-info chain.
+  (`vulkan_base/PipelineBuilder.ixx`); do not hand-roll the create-info chain.
 - Buffer/image memory goes through VMA (allocator owned by `VulkanDevice`);
-  `VulkanBuffer`/`VulkanImage` are move-only with destructor release
-  (`cleanUp()` remains for explicit early teardown and is idempotent).
-- A `VkPipelineCache` persists to `pipeline_cache/kataglyphis_pipeline.cache`
-  (gitignored, written on graceful shutdown only).
-- Slang emits `"main"` as the SPIR-V entry point name (not the Slang function
-  name), so all `pName` values in pipeline creation use `"main"`.
-- Clip-space y is down in Vulkan and up in WebGPU, so a fullscreen pass takes
-  its uv from `fullscreen_vs` and inverts it with `fullscreen_uv_to_ndc`
-  (`common/fullscreen.slang`, switched per target), never by hand: a copy
-  mirrors one renderer, and a vertically symmetric scene hides it.
+  `VulkanBuffer`/`VulkanImage` are move-only with destructor release (`cleanUp()` remains for
+  explicit early teardown and is idempotent).
+- A `VkPipelineCache` persists to `pipeline_cache/kataglyphis_pipeline.cache` (gitignored, written on
+  graceful shutdown only).
+- Slang emits `"main"` as the SPIR-V entry point name (not the Slang function name), so all `pName`
+  values in pipeline creation use `"main"`.
+- Clip-space y is down in Vulkan and up in WebGPU, so a fullscreen pass takes its uv from
+  `fullscreen_vs` and inverts it with `fullscreen_uv_to_ndc` (`common/fullscreen.slang`, switched per
+  target), never by hand: a copy mirrors one renderer, and a vertically symmetric scene hides it.
   [`docs/shader-sharing.md`](docs/shader-sharing.md).
-- Model-loading architecture (the two loaders, the async parse/upload split,
-  the multi-mesh flow): [`docs/model-loading.md`](docs/model-loading.md).
-- Per-unit verification pattern (container build -> direct test exe ->
-  validation run): [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md).
-  The chronological log of what changed and why:
-  [`docs/cpp-renderer-improvements.md`](docs/cpp-renderer-improvements.md).
-  Do not restate either here — those documents are the source of truth.
+- Model-loading architecture (the two loaders, the async parse/upload split, the multi-mesh flow):
+  [`docs/model-loading.md`](docs/model-loading.md).
+- Per-unit verification pattern (container build -> direct test exe -> validation run):
+  [`docs/gpu-golden-testing.md`](docs/gpu-golden-testing.md). The chronological log of what changed
+  and why: [`docs/cpp-renderer-improvements.md`](docs/cpp-renderer-improvements.md). Do not restate
+  either here; those documents are the source of truth.
 
 ## Code Conventions (PowerShell scripts)
 
 The rules are upstream's, recorded for every consumer in
-[`adopting-in-a-new-project.md`](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md).
-They are restated here because the next new script gets written in *this* repo,
-and the exceptions below are this repo's.
+[`adopting-in-a-new-project.md`](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md);
+they are restated here because the next new script gets written in *this* repo, and the exceptions
+below are this repo's.
 
-- **Every `.ps1` and `.psm1` declares `#requires -Version 7.0`**, and every
-  tracked file outside `third_party/` carries it — the rule, and why a version
-  header beats failing deep inside a pwsh-7 construct, are upstream's:
+- **Every `.ps1` and `.psm1` declares `#requires -Version 7.0`**, every tracked file outside
+  `third_party/` included. The rule, and why a version header beats failing deep inside a pwsh-7
+  construct:
   [adopting § 8](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#8-calling-conventions-what-every-consumer-looks-like).
-- **Executable scripts are PascalCase `Verb-Noun`, with a verb `Get-Verb`
-  approves** — `Build-Windows.ps1`, `Invoke-ClangClRelease.ps1`,
-  `Resolve-BuildModule.ps1`, `Test-AllConfigs.ps1`, `Compare-RendererPixels.ps1`.
-  Spell the case exactly when you reference one: Windows ignores it, but git
-  pathspecs, ripgrep globs and the Linux lane do not, so a lowercase spelling in
-  a doc or workflow matches nothing.
-- **Two shapes deliberately break the plain `Verb-Noun` mould, and are not bugs.** Pester suites are
-  `<Subject>.Tests.ps1` — mirroring the script under test where there is one
-  (`Resolve-BuildModule.Tests.ps1`, `Invoke-SyncValidation.Tests.ps1`), or naming
-  the repo property under test where there is not
-  (`Repo.GeneratedArtifacts.Tests.ps1`, `SharedConfig.Drift.Tests.ps1`,
-  `CMakePresets.Integrity.Tests.ps1`). Modules take the dotted noun form
-  `<Area>.Common.psm1` — `scripts/windows/modules/Compare-Renderer.Common.psm1`, matching
-  ANTfrastructure's `Windows<Area>.Common.psm1` — and export explicitly via
-  `Export-ModuleMember`.
-- **Bash is not renamed to match**: `Get-Verb` is a PowerShell notion, so the
-  shell scripts stay kebab-case (`scripts/linux/run-release.sh`,
-  `build-coverage-llvm.sh`). The lone exception is
-  `scripts/agentic-loop/Run-AgenticLoop.sh`, spelled to sit beside its
-  PowerShell twin `Invoke-AgenticLoop.ps1`.
+- **Executable scripts are PascalCase `Verb-Noun`, with a verb `Get-Verb` approves**:
+  `Build-Windows.ps1`, `Invoke-ClangClRelease.ps1`, `Resolve-BuildModule.ps1`,
+  `Test-AllConfigs.ps1`, `Compare-RendererPixels.ps1`. Spell the case exactly when you reference one:
+  Windows ignores it, but git pathspecs, ripgrep globs and the Linux lane do not, so a lowercase
+  spelling in a doc or workflow matches nothing.
+- **Two shapes break the plain `Verb-Noun` mould on purpose.** Pester suites are
+  `<Subject>.Tests.ps1`, mirroring the script under test where there is one
+  (`Resolve-BuildModule.Tests.ps1`, `Invoke-SyncValidation.Tests.ps1`), or naming the repo property
+  under test where there is not (`Repo.GeneratedArtifacts.Tests.ps1`, `SharedConfig.Drift.Tests.ps1`,
+  `CMakePresets.Integrity.Tests.ps1`). Modules take the dotted noun form `<Area>.Common.psm1`
+  (`scripts/windows/modules/Compare-Renderer.Common.psm1`, matching ANTfrastructure's
+  `Windows<Area>.Common.psm1`) and export explicitly via `Export-ModuleMember`.
+- **Bash is not renamed to match**: `Get-Verb` is a PowerShell notion, so the shell scripts stay
+  kebab-case (`scripts/linux/run-release.sh`, `build-coverage-llvm.sh`). The lone exception is
+  `scripts/agentic-loop/Run-AgenticLoop.sh`, spelled to sit beside its PowerShell twin
+  `Invoke-AgenticLoop.ps1`.
 
 ## Agentic Loop
 
-An autonomous planner/executor loop continuously improves the engine. The
-**planner** (expensive, powerful model) analyzes the codebase and writes
-detailed task entries to `BACKLOG.md`. The **executor** (cheap, fast model)
-drains the queue one task at a time, building and testing as it goes. The
-queue must be fully drained before the planner adds new tasks; tasks marked
-`- [b]` are blocked and do not count as pending.
+An autonomous planner/executor loop improves the engine. The **planner** (expensive, powerful
+model) analyzes the codebase and writes detailed task entries to `BACKLOG.md`; the **executor**
+(cheap, fast model) drains the queue one task at a time, building and testing as it goes. The queue
+must be fully drained before the planner adds new tasks; tasks marked `- [b]` are blocked and do
+not count as pending.
 
-Two engines are selectable via `engine` in
-`scripts/agentic-loop/AgenticLoop.config.json`, `-Engine`/`--engine`, or the
-`AGENTIC_ENGINE` env var: **`claude`** (default — Claude Code CLI, Opus 5
-planner with Fable 5 fallback, Sonnet executor) and **`opencode`** (GLM 5.2
-planner, DeepSeek v4 Flash executor). Both read the same role prompt, composed
-from ANTfrastructure's shared prompt plus this repo's overlays in
-`scripts/agentic-loop/prompts/`.
+Two engines, selected by `engine` in `scripts/agentic-loop/AgenticLoop.config.json`,
+`-Engine`/`--engine`, or the `AGENTIC_ENGINE` env var: **`claude`** (default: Claude Code CLI, Opus
+5 planner with Fable 5 fallback, Sonnet executor) and **`opencode`** (GLM 5.2 planner, DeepSeek v4
+Flash executor). Both read the same role prompt: ANTfrastructure's shared prompt plus this repo's
+overlays in `scripts/agentic-loop/prompts/`.
 
-**The loop itself is upstream** — `WindowsAgenticLoop.Common` (PowerShell) and
-`agentic-loop.sh` (Bash) own it, and both role prompts are single-sourced there
-too. Architecture, config keys and the module API:
+**The loop itself is upstream**: `WindowsAgenticLoop.Common` (PowerShell) and `agentic-loop.sh`
+(Bash) own it, and both role prompts are single-sourced there too. Architecture, config keys and
+the module API:
 [adopting § 4](third_party/ANTfrastructure/docs/adopting-in-a-new-project.md#4-the-agentic-loop) and
-[`windows-agentic-loop.md`](third_party/ANTfrastructure/docs/windows-agentic-loop.md); build matrix and
-sanitizer-aware tests:
+[`windows-agentic-loop.md`](third_party/ANTfrastructure/docs/windows-agentic-loop.md); build matrix
+and sanitizer-aware tests:
 [`agentic-loop-build-matrix.md`](third_party/ANTfrastructure/docs/agentic-loop-build-matrix.md).
 
-What this repo owns is a per-role **delta**:
-`scripts/agentic-loop/prompts/planner-overlay.md` and `executor-overlay.md`,
-declared in the config's top-level `promptOverlays` block. At start-up the loop
-composes the shared system prompt plus the overlay into one text and delivers it
-to `claude` via `--append-system-prompt-file`, and to `opencode` by regenerating
-`.opencode/agents/<role>.md` from the pinned hub (opencode takes no prompt file
-on its command line). **`.opencode/agents/` is therefore gitignored — edit the
-overlay, never the generated file.** Run the loop with
+This repo owns a per-role **delta**: `scripts/agentic-loop/prompts/planner-overlay.md` and
+`executor-overlay.md`, declared in the config's top-level `promptOverlays` block. At start-up the
+loop composes the shared system prompt plus the overlay into one text and delivers it to `claude`
+via `--append-system-prompt-file`, and to `opencode` by regenerating `.opencode/agents/<role>.md`
+from the pinned hub (opencode takes no prompt file on its command line). **`.opencode/agents/` is
+therefore gitignored: edit the overlay, never the generated file.** Run the loop with
 `scripts/agentic-loop/Invoke-AgenticLoop.ps1` (Windows, PowerShell 7+) or
-`scripts/agentic-loop/Run-AgenticLoop.sh` (Linux, needs `jq`); what this repo
-configures and where it deviates from upstream defaults:
+`scripts/agentic-loop/Run-AgenticLoop.sh` (Linux, needs `jq`). What this repo configures and where
+it deviates from upstream defaults:
 [`scripts/agentic-loop/README.md`](scripts/agentic-loop/README.md).
 
 ## Docs
@@ -1211,8 +1076,9 @@ configures and where it deviates from upstream defaults:
 **Write docs like a developer: short and precise** (owner, 2026-10-19). Say what a thing does,
 how to run it and what breaks; no filler, no marketing, no repetition.
 
-Each topic has exactly one home; link, do not copy. Reusable topics live in
-ANTfrastructure (see the rule above), project-specific ones here.
+Each topic has exactly one home; link, do not copy. Reusable topics live in ANTfrastructure (the
+rule above; its pages are listed in
+[What ANTfrastructure owns](#what-antfrastructure-owns--links-only)), project-specific ones here:
 
 | Where | Owns |
 | --- | --- |
@@ -1224,7 +1090,7 @@ ANTfrastructure (see the rule above), project-specific ones here.
 | `docs/webgpu-renderer-roadmap.md` | **Pointer only.** Rust WebGPU renderer status per feature; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) (decision D6) |
 | `docs/webgpu-gltf-rust-plan.md` | **Pointer only.** Original WebGPU + glTF Rust renderer plan (milestones 1–5), kept for the record; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md) |
 | `docs/shader-sharing.md` | Why/how one Slang source serves both renderers, where the two diverge, and which C++ shading path reads which `ObjMaterial` field |
-| `docs/shader-build-pipeline.md` | The Slang→SPIR-V/WGSL build step: manifest, staleness rules, fast iteration |
+| `docs/shader-build-pipeline.md` | The Slang→SPIR-V/WGSL build step: build wiring, manifest, staleness rules, fast iteration |
 | `docs/webgpu-srgb-audit.md` | Colour-space decisions (no known deviations) |
 | `docs/code-quality.md` | clang-format / clang-tidy / cmake-format commands + cadence |
 | `docs/container-build-caching.md` | This repo's container transport numbers, sccache volume, incremental-build wiring |
@@ -1234,18 +1100,8 @@ ANTfrastructure (see the rule above), project-specific ones here.
 | `docs/renderer-bounds-invariant.md` | **Pointer only.** WebGPU renderer bounds invariant; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md`](third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md) |
 | `docs/LICENSES-README.md` | Third-party license documentation |
 | `docs/source/` | Sphinx pages (`README.md`, `getting_started.md`, `documentation_workflow.md`, `webgpu_demo.md`, `wsl2_vulkan.rst`, `literature.md`, and `graphviz_files.rst`, which `graphviz_generator.py` writes during the docs build) |
-| `scripts/agentic-loop/README.md` | Agentic loop consumer half: what this repo configures (and what deviates from upstream defaults), its two runners, its two prompt overlays — loop architecture and usage live in the two ANTfrastructure docs below |
-| `third_party/ANTfrastructure/docs/windows-builds.md` | The Windows container image: build sequence, Stevedore setup, invariants |
-| `third_party/ANTfrastructure/docs/windows-container-build-performance.md` | Building inside the image: transports, reuse pattern, safety rails |
-| `third_party/ANTfrastructure/docs/rancher-desktop-linux-containers.md` | Running the Linux image locally: nerdctl, cargo cache volume, build-dir rules |
-| `third_party/ANTfrastructure/docs/ci-build-triggers.md` | Which CI lanes run when; the `[build-win]` / `[build-arm]` commit-message opt-ins (this repo dropped both on 2026-09-24) |
-| `third_party/ANTfrastructure/docs/dependency-updates.md` | Dependency upgrades family-wide: Renovate as a local CLI, what `--apply` moves and what it refuses |
-| `third_party/ANTfrastructure/docs/github-cli-pipeline-monitoring.md` | Reading and fixing CI status from a shell with `gh` |
-| `third_party/ANTfrastructure/docs/adopting-in-a-new-project.md` | Wiring another project to the loop, both container flows, launchers, CI actions |
-| `third_party/ANTfrastructure/docs/agentic-loop-build-matrix.md` | Build matrix config, sanitizer env vars, full matrix sweep |
-| `third_party/ANTfrastructure/docs/windows-agentic-loop.md` | WindowsAgenticLoop.Common module API + config reference |
-| `third_party/ANTfrastructure/cmake/README.md` | The shared CMake modules: how to put them on `CMAKE_MODULE_PATH`, what each provides, what stays project-local |
+| `scripts/agentic-loop/README.md` | Agentic loop consumer half: what this repo configures (and what deviates from upstream defaults), its two runners, its two prompt overlays; loop architecture and usage are upstream's |
 
-- Keep docs, scripts, and presets aligned: when you change build behavior, update
-  `docs/source/getting_started.md` and this file in the same change, and `README.md`
-  only when its quick start or highlights change.
+Keep docs, scripts and presets aligned: when you change build behaviour, update
+`docs/source/getting_started.md` and this file in the same change, and `README.md` only when its
+quick start or highlights change.

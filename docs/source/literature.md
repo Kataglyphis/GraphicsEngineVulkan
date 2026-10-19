@@ -1,6 +1,6 @@
 # Literature
 
-Some very helpful literature, tutorials, etc.
+Tutorials, books and papers behind the renderer.
 
 - [View Frustum Culling](http://www.lighthouse3d.com/tutorials/view-frustum-culling/geometric-approach-extracting-the-planes/)
 

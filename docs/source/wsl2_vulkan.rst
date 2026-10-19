@@ -1,15 +1,14 @@
 WSL2 — Vulkan (NVIDIA)
 ======================
 
-How to run Vulkan applications on an NVIDIA GPU in WSL2. If your application
-reports only ``llvmpipe`` (Mesa's software renderer), the NVIDIA Vulkan ICD is
-usually missing from the WSL distribution.
+Running Vulkan applications on an NVIDIA GPU in WSL2.
 
 Summary
 -------
 
+- Symptom: the application reports only ``llvmpipe`` (Mesa's software renderer).
 - Cause: the Vulkan loader loads only Mesa ICDs (e.g. ``lvp``/``llvmpipe``),
-  because the NVIDIA ICD is not installed or not found.
+  because the NVIDIA Vulkan ICD is not installed in the WSL distribution or not found.
 - Fix: install the matching headless/ICD package in WSL, restart WSL and check
   with ``vulkaninfo``.
 
@@ -31,7 +30,7 @@ Steps (Debian/Ubuntu-based distributions)
       sudo apt install vulkan-tools
       sudo apt install nvidia-driver-595
 
-2. Find the installed NVIDIA driver version (optional):
+2. Optionally, find the installed NVIDIA driver version:
 
    .. code-block:: bash
 
@@ -39,7 +38,7 @@ Steps (Debian/Ubuntu-based distributions)
 
       # Note the Driver Version (e.g. 595.97); package names often carry its major version.
 
-3. Install the matching headless/ICD package in WSL, here for driver version 595:
+3. Install the matching headless/ICD package, here for driver version 595:
 
    .. code-block:: bash
 
@@ -73,8 +72,8 @@ Steps (Debian/Ubuntu-based distributions)
 Temporary workaround
 --------------------
 
-If a vendor JSON exists but is not loaded by default, set ``VK_ICD_FILENAMES``
-to it for a test:
+A vendor JSON that exists but is not loaded by default can be forced for a test
+with ``VK_ICD_FILENAMES``:
 
 .. code-block:: bash
 

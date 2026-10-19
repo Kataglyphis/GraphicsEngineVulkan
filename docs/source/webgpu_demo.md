@@ -1,11 +1,9 @@
 # WebGPU Demo (Rust, in your browser)
 
-A live demo of the Rust `kataglyphis_webgpu_renderer` crate
-(`third_party/OxidANT/crates/webgpu_renderer`),
-compiled to WebAssembly and running on the WebGPU API — the same renderer
-that runs natively on Vulkan/DX12/Metal. It renders a glTF scene with the
-metallic-roughness PBR pipeline, directional shadow mapping (3×3 PCF), and
-ACES tonemapping from an HDR target.
+The Rust `kataglyphis_webgpu_renderer` crate (`third_party/OxidANT/crates/webgpu_renderer`)
+compiled to WebAssembly on the WebGPU API: the same renderer that runs natively on
+Vulkan/DX12/Metal. It renders a glTF scene with metallic-roughness PBR, directional shadow
+mapping (3×3 PCF) and ACES tonemapping from an HDR target.
 
 Requires a WebGPU-capable browser (Chrome/Edge 113+, Firefox 141+).
 
@@ -24,12 +22,10 @@ Open the demo full-page ↗
 
 ## About
 
-- **Features shipped**: the renderer is well past the original milestones —
-  the authoritative per-feature status (IBL, skybox, animation/skinning/morph
-  targets, egui overlay, bloom, SSAO, auto-exposure, LOD, GPU occlusion
-  culling, and more) is `webgpu-renderer-roadmap.md` in the repository that owns
-  the renderer, under `third_party/OxidANT/crates/webgpu_renderer/docs/`.
-- **Rebuild the demo**: `scripts/linux/docs-build-web.sh` compiles
-  `kataglyphis_webgpu_renderer` to wasm32, runs `wasm-bindgen`, and writes the
-  demo next to these pages before Sphinx runs (it is not tracked); the CI docs
-  deploy runs it, so the deployed demo always tracks the current renderer.
+- **Features shipped**: well past the original milestones. The authoritative per-feature status (IBL,
+  skybox, animation/skinning/morph targets, egui overlay, bloom, SSAO, auto-exposure, LOD, GPU
+  occlusion culling, and more) is `webgpu-renderer-roadmap.md` in the renderer's own repository,
+  under `third_party/OxidANT/crates/webgpu_renderer/docs/`.
+- **Rebuild the demo**: `scripts/linux/docs-build-web.sh` compiles `kataglyphis_webgpu_renderer`
+  to wasm32, runs `wasm-bindgen` and writes the demo (untracked) next to these pages before
+  Sphinx runs. The CI docs deploy runs it, so the deployed demo tracks the current renderer.
