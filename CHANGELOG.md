@@ -31,6 +31,15 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **`scripts/linux/lib/common.sh` loads the hub's core modules, with no fallbacks** (2026-10-19):
+  `logging.sh`, `platform.sh`, `verify.sh`, `parallelism.sh`, `vulkan-env.sh`, `tool-checks.sh` and
+  `load-versions-env.sh` through `antfrastructure_source`. Its own module search (`source_module`,
+  `have_module`), the logging fallback, `get_build_jobs` and `antfrastructure_version` are gone:
+  the bootstrap fails without the hub, so none of them could run. `cmake-configure-build.sh` and
+  `run-debug.sh` read `VULKAN_VERSION` with `load_versions_env` in a subshell, so an exported
+  `VULKAN_VERSION` now also picks `cmake-configure-build.sh`'s default setup script. In `:latest`
+  the old and the new library define the same helpers, and the hub's `cmake_build_jobs 4000`
+  (7), the default Vulkan setup script and `run-debug.sh`'s SDK version come out the same.
 - **The generated-artifacts suite is the hub's** (2026-10-19): `windows-x64.yml`'s `pester-tests`
   job runs `third_party/ANTfrastructure/shared/windows/tests/Repo.GeneratedArtifacts.Tests.ps1` over
   the pathspecs in `scripts/windows/generated-artifacts.txt`, and this repo's copy of the suite is

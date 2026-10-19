@@ -17,12 +17,10 @@ scripts/linux/run-debug.sh	app_runner_env_hook
 scripts/linux/run-debug.sh	app_runner_post_vulkan_hook
 scripts/linux/run-release.sh	app_runner_env_hook
 
-# scripts/linux/lib/common.sh is this repo's own shell library, and these three
-# are its public helpers: no wrapper in the tree calls them today. Frozen rather
-# than deleted in the pass that turned --ratchets on, because removing a library
-# entry point is its own change with its own verification - and get_build_jobs
-# was explicitly kept when the bootstrap fallbacks were retired. The rows are
-# two-way, so each one goes the day it gains a caller or is deleted.
-scripts/linux/lib/common.sh	get_build_jobs
+# scripts/linux/lib/common.sh's two path helpers. The hub's lib/app-runner.sh:80
+# calls get_project_root through `declare -F`, like the hooks above; get_script_root
+# has no caller and stays frozen until it gains one or is deleted. get_build_jobs
+# went on 2026-10-19: without it the hub's cmake-build.sh takes the same
+# compute_jobs_with_mem_cap value from parallelism.sh.
 scripts/linux/lib/common.sh	get_project_root
 scripts/linux/lib/common.sh	get_script_root

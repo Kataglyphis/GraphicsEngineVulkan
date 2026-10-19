@@ -9,9 +9,13 @@ source "${SCRIPT_DIR}/lib/common.sh"
 # Not a third_party literal: antfrastructure_source honours ANTFRASTRUCTURE_DIR.
 antfrastructure_source linux/scripts/lib/cmake-build.sh
 
+# In a subshell: load_versions_env exports every pin, and CMake reads CMAKE_POLICY_VERSION_MINIMUM from the environment.
+vulkan_version="$(load_versions_env "$(antfrastructure_path linux/scripts/01-core/versions.env)" && printf '%s' "${VULKAN_VERSION:-}")"
+[[ -n "${vulkan_version}" ]] || err "No VULKAN_VERSION in the environment or the hub's versions.env"
+
 CMAKE_BUILD_DEFAULT_PRESET="linux-debug-clang"
 CMAKE_BUILD_DEFAULT_BUILD_DIR="build"
-CMAKE_BUILD_DEFAULT_VULKAN_SETUP_SCRIPT="/opt/vulkan/$(antfrastructure_version VULKAN_VERSION)/setup-env.sh"
+CMAKE_BUILD_DEFAULT_VULKAN_SETUP_SCRIPT="/opt/vulkan/${vulkan_version}/setup-env.sh"
 CMAKE_BUILD_DEFAULT_MB_PER_JOB="4000"  # 4GB RAM per parallel job
 CMAKE_BUILD_PREBUILD_LABEL="Slang shader precompilation"
 CMAKE_BUILD_USAGE_INTRO="Configures and builds BeschleunigerBallett inside the Linux container image."

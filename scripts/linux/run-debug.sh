@@ -34,10 +34,10 @@ install_vulkan_via_antfrastructure() {
     return 1
   fi
 
-  local ver="${VULKAN_VERSION:-}"
-  if [[ -z "${ver}" ]]; then
-    ver="$(antfrastructure_version VULKAN_VERSION)" || return 1
-  fi
+  local ver
+  # The environment's VULKAN_VERSION wins over versions.env's; a subshell keeps the other pins out of the app's environment.
+  ver="$(load_versions_env "$(antfrastructure_path linux/scripts/01-core/versions.env)" && printf '%s' "${VULKAN_VERSION:-}")" || return 1
+  [[ -n "${ver}" ]] || return 1
   info "Attempting to install Vulkan SDK ${ver} using ${sd} (may require sudo and take several minutes)"
   # Run the helper; it contains its own privilege escalation where needed
   if bash "${sd}" --vulkan-version "${ver}" vulkan; then
