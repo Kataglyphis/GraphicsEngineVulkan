@@ -1232,7 +1232,7 @@ ANTfrastructure (see the rule above), project-specific ones here.
 | `docs/path-tracing.md` | Path-tracing mode: pipeline shape, estimator, NEE, accumulation |
 | `docs/clouds.md` | Volumetric clouds: pipeline shape, estimator, UBO/constants tables, queue ownership, compositing contract |
 | `docs/renderer-bounds-invariant.md` | **Pointer only.** WebGPU renderer bounds invariant; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md`](third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md) |
-| `docs/LICENSES-README.md` | Third-party license documentation (German) |
+| `docs/LICENSES-README.md` | Third-party license documentation |
 | `docs/source/` | Sphinx pages (`README.md`, `getting_started.md`, `documentation_workflow.md`, `webgpu_demo.md`, `wsl2_vulkan.rst`, `literature.md`, and `graphviz_files.rst`, which `graphviz_generator.py` writes during the docs build) |
 | `scripts/agentic-loop/README.md` | Agentic loop consumer half: what this repo configures (and what deviates from upstream defaults), its two runners, its two prompt overlays — loop architecture and usage live in the two ANTfrastructure docs below |
 | `third_party/ANTfrastructure/docs/windows-builds.md` | The Windows container image: build sequence, Stevedore setup, invariants |

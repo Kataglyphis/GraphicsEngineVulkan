@@ -1,181 +1,180 @@
-# Lizenzübersicht der Open-Source-Abhängigkeiten
+# Licences of the open-source dependencies
 
-Die folgenden Tabellen listen die im Repository genutzten Open-Source-Abhängigkeiten auf (Stand: 2026-08-02; am 2026-09-25 die seither bewegten Submodul-Pins und Crate-Versionen nachgezogen und deren Lizenzangaben erneut von der Festplatte gelesen). Verifikation: Diese Liste wurde gegen `git submodule status`, `third_party/CMakeLists.txt` (FetchContent), die gevendorten Quellen unter `third_party/` sowie `third_party/OxidANT/crates/webgpu_renderer/Cargo.toml` abgeglichen; jede Lizenzangabe stammt aus der jeweils zitierten, auf der Festplatte gelesenen Lizenzdatei bzw. dem `license`-Feld der Cargo-Metadaten — nicht aus Annahmen. Für rechtsverbindliche Angaben ist immer die zitierte Lizenzdatei selbst maßgeblich.
+The tables below list the open-source dependencies this repository uses (as of 2026-08-02; on 2026-09-25 the submodule pins and crate versions that had moved since were updated and their licences read from disk again). Verification: the list was checked against `git submodule status`, `third_party/CMakeLists.txt` (FetchContent), the vendored sources under `third_party/` and `third_party/OxidANT/crates/webgpu_renderer/Cargo.toml`; every licence entry comes from the licence file cited, read on disk, or from the `license` field of the Cargo metadata, not from assumptions. For legally binding terms, the cited licence file itself is authoritative.
 
-## Git-Submodule unter `third_party/` (mitgeliefert)
+## Git submodules under `third_party/` (shipped)
 
-| Projekt | URL | Pin | Lizenz (laut Lizenzdatei) | Geprüfte Datei |
+| Project | URL | Pin | Licence (per licence file) | File checked |
 |---|---|---|---|---|
 | tinyobjloader | https://github.com/tinyobjloader/tinyobjloader | v2.0.0rc10-73-g45636bd | MIT | `third_party/TINY_OBJ_LOADER/LICENSE` |
 | glm | https://github.com/g-truc/glm | 6f14f479 | Dual: "The Happy Bunny License or MIT License" | `third_party/GLM/copying.txt` |
 | imgui | https://github.com/ocornut/imgui | v1.92.9b-112-gf502f9c98 | MIT | `third_party/IMGUI/LICENSE.txt` |
-| stb | https://github.com/nothings/stb | 2c980bb5 | Dual: MIT oder Public Domain (nach Wahl) | `third_party/STB/LICENSE` |
-| glfw | https://github.com/glfw/glfw | 3.5.1-1-g92dcf4ce | Zlib/libpng-Lizenztext | `third_party/GLFW/LICENSE.md` |
-| Vulkan Memory Allocator (VMA) | https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator | 3aa92122 | MIT-Lizenztext (Copyright AMD) | `third_party/VULKAN_MEMORY_ALLOCATOR/LICENSE.txt` |
+| stb | https://github.com/nothings/stb | 2c980bb5 | Dual: MIT or public domain (your choice) | `third_party/STB/LICENSE` |
+| glfw | https://github.com/glfw/glfw | 3.5.1-1-g92dcf4ce | zlib/libpng licence text | `third_party/GLFW/LICENSE.md` |
+| Vulkan Memory Allocator (VMA) | https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator | 3aa92122 | MIT licence text (Copyright AMD) | `third_party/VULKAN_MEMORY_ALLOCATOR/LICENSE.txt` |
 | nlohmann/json | https://github.com/nlohmann/json | v3.11.3-695-g367336c83 | MIT | `third_party/NLOHMANN_JSON/LICENSE.MIT` |
 | google/benchmark | https://github.com/google/benchmark | v1.9.5-143-g39a78e3 | Apache-2.0 | `third_party/GOOGLE_BENCHMARK/LICENSE` |
-| spdlog | https://github.com/gabime/spdlog | v1.17.0-53-gd6c93f38 | MIT; enthält gebündeltes {fmt} (MIT) | `third_party/SPDLOG/LICENSE`; `third_party/SPDLOG/include/spdlog/fmt/bundled/fmt.license.rst` |
-| google/fuzztest | https://github.com/google/fuzztest | 704efb34 (2026-06-29) | Apache-2.0; zusätzliche Lucent-Notiz für `fuzztest/internal/domains/rune.*` | `third_party/FUZZTEST/LICENSE` |
-| kompute (nur optionales Playground, `KATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND`) | https://github.com/KomputeProject/kompute | v0.9.0-99-g267e019 | Apache-2.0 | `third_party/KOMPUTE/LICENSE` |
-| cgltf | https://github.com/jkuhlmann/cgltf | v1.15-11-g85cd623 | MIT-Lizenztext (Copyright Johannes Kuhlmann) | `third_party/cgltf/LICENSE` |
+| spdlog | https://github.com/gabime/spdlog | v1.17.0-53-gd6c93f38 | MIT; contains a bundled {fmt} (MIT) | `third_party/SPDLOG/LICENSE`; `third_party/SPDLOG/include/spdlog/fmt/bundled/fmt.license.rst` |
+| google/fuzztest | https://github.com/google/fuzztest | 704efb34 (2026-06-29) | Apache-2.0; an additional Lucent notice for `fuzztest/internal/domains/rune.*` | `third_party/FUZZTEST/LICENSE` |
+| kompute (only the optional playground, `KATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND`) | https://github.com/KomputeProject/kompute | v0.9.0-99-g267e019 | Apache-2.0 | `third_party/KOMPUTE/LICENSE` |
+| cgltf | https://github.com/jkuhlmann/cgltf | v1.15-11-g85cd623 | MIT licence text (Copyright Johannes Kuhlmann) | `third_party/cgltf/LICENSE` |
 | tomlplusplus | https://github.com/marzer/tomlplusplus | v3.4.0-50-g1e8829b | MIT | `third_party/tomlplusplus/LICENSE` |
 
-## Gevendorte Quellen (kein Submodul)
+## Vendored sources (no submodule)
 
-| Projekt | URL | Lizenz (laut Datei-Headern) | Geprüfte Datei(en) |
+| Project | URL | Licence (per file headers) | File(s) checked |
 |---|---|---|---|
-| KTX (KTX-Software, Teil-Vendoring: `include/`, `lib/`, `other_include/`) | https://github.com/KhronosGroup/KTX-Software | Apache-2.0 (SPDX-Header in `include/ktx.h` und in 98 Dateien unter `lib/`) | `third_party/KTX/include/ktx.h` |
+| KTX (KTX-Software, partly vendored: `include/`, `lib/`, `other_include/`) | https://github.com/KhronosGroup/KTX-Software | Apache-2.0 (SPDX header in `include/ktx.h` and in 98 files under `lib/`) | `third_party/KTX/include/ktx.h` |
 
-Hinweis KTX: Die vollständige `LICENSE.md` von KTX-Software ist **nicht** mitvendort
-(`third_party/KTX/LICENSE.md` existiert nicht). Die eingebetteten
-Third-Party-Komponenten unter `third_party/KTX/lib/` wurden deshalb einzeln aus den
-Dateien auf der Festplatte verifiziert — teils aus mitvendorten Lizenzdateien, teils
-aus dem Lizenzkopf der Quelldatei selbst:
+KTX: KTX-Software's full `LICENSE.md` is **not** vendored
+(`third_party/KTX/LICENSE.md` does not exist). The embedded third-party components
+under `third_party/KTX/lib/` were therefore verified one by one from the files on
+disk, some from vendored licence files, some from the licence header of the source
+file itself:
 
-| Komponente | Lizenz | Geprüfte Datei (jeweils unter `third_party/KTX/lib/`) |
+| Component | Licence | File checked (each under `third_party/KTX/lib/`) |
 |---|---|---|
-| basisu (Encoder + Transcoder) | Apache-2.0 (Copyright Binomial LLC) | `basisu/LICENSE` (voller Apache-2.0-Text); Lizenzkopf in `basisu/encoder/basisu_enc.cpp` und `basisu/transcoder/basisu_transcoder.cpp`. Die REUSE-Texte `basisu/LICENSES/{Apache-2.0,BSD,Zlib}.txt` liegen für die Unterkomponenten bei. |
-| zstd (in basisu gebündelt) | BSD-3-Clause; der Dateikopf nennt zusätzlich GPLv2 zur Wahl ("You may select, at your option, one of the above-listed licenses") | `basisu/zstd/LICENSE` (BSD-Text, Copyright Facebook, Inc.); Kopf von `basisu/zstd/zstd.c` |
-| LodePNG | Zlib-Lizenztext (Copyright 2005-2019 Lode Vandevenne) | Lizenzkopf in `basisu/encoder/lodepng.h` |
-| jpgd | Public Domain (Rich Geldreich) | Lizenzkopf in `basisu/encoder/jpgd.h` |
-| stb_image / stb_image_write | Dual: MIT ("ALTERNATIVE A") oder Public Domain/Unlicense ("ALTERNATIVE B"), nach Wahl | Lizenzblock am Dateiende von `astc-encoder/Source/stb_image.h` und `astc-encoder/Source/stb_image_write.h` |
-| tinyexr | BSD-3-Clause (Copyright 2014-2019 Syoyo Fujita und Beitragende) | Lizenzkopf in `astc-encoder/Source/tinyexr.h` |
-| etcdec.cxx | **Keine OSI-Lizenz**: "Ericsson Texture Compression Codec Software License Agreement" — eine nicht-exklusive, nicht übertragbare, kostenlose, unbefristete, weltweite Einzellizenz mit eigenen Bedingungen | Lizenzkopf in `etcdec.cxx` |
-| astc-encoder (Arm) | Apache-2.0 | SPDX-Header `// SPDX-License-Identifier: Apache-2.0` in `astc-encoder/Source/astcenc.h`. Hinweis: die in `astc-encoder/README.md` referenzierte `LICENSE.txt` ist nicht mitvendort. |
-| dfdutils (Khronos) | Apache-2.0, einzelne aus MIT-Projekten übernommene Dateien MIT | `dfdutils/LICENSE.adoc`; Volltexte in `dfdutils/LICENSES/{Apache-2.0,MIT}.txt` |
+| basisu (encoder + transcoder) | Apache-2.0 (Copyright Binomial LLC) | `basisu/LICENSE` (full Apache-2.0 text); licence header in `basisu/encoder/basisu_enc.cpp` and `basisu/transcoder/basisu_transcoder.cpp`. The REUSE texts `basisu/LICENSES/{Apache-2.0,BSD,Zlib}.txt` cover the subcomponents. |
+| zstd (bundled in basisu) | BSD-3-Clause; the file header also offers GPLv2 ("You may select, at your option, one of the above-listed licenses") | `basisu/zstd/LICENSE` (BSD text, Copyright Facebook, Inc.); header of `basisu/zstd/zstd.c` |
+| LodePNG | zlib licence text (Copyright 2005-2019 Lode Vandevenne) | licence header in `basisu/encoder/lodepng.h` |
+| jpgd | Public domain (Rich Geldreich) | licence header in `basisu/encoder/jpgd.h` |
+| stb_image / stb_image_write | Dual: MIT ("ALTERNATIVE A") or public domain/Unlicense ("ALTERNATIVE B"), your choice | licence block at the end of `astc-encoder/Source/stb_image.h` and `astc-encoder/Source/stb_image_write.h` |
+| tinyexr | BSD-3-Clause (Copyright 2014-2019 Syoyo Fujita and contributors) | licence header in `astc-encoder/Source/tinyexr.h` |
+| etcdec.cxx | **No OSI licence**: "Ericsson Texture Compression Codec Software License Agreement", a non-exclusive, non-transferable, free, perpetual, worldwide single licence with its own terms | licence header in `etcdec.cxx` |
+| astc-encoder (Arm) | Apache-2.0 | SPDX header `// SPDX-License-Identifier: Apache-2.0` in `astc-encoder/Source/astcenc.h`. The `LICENSE.txt` that `astc-encoder/README.md` refers to is not vendored. |
+| dfdutils (Khronos) | Apache-2.0; individual files taken from MIT projects are MIT | `dfdutils/LICENSE.adoc`; full texts in `dfdutils/LICENSES/{Apache-2.0,MIT}.txt` |
 
-Zu beachten: `etcdec.cxx` ist die einzige Komponente im gesamten Baum, die nicht
-unter einer OSI-anerkannten Lizenz steht. Für Redistribution ist der Wortlaut der
-SLA im Dateikopf maßgeblich.
+`etcdec.cxx` is the only component in the whole tree that is not under an
+OSI-approved licence. For redistribution, the wording of the SLA in its file header
+is authoritative.
 
-## Build-Zeit-Abhängigkeiten via FetchContent (`third_party/CMakeLists.txt`, nicht im Repo eingecheckt)
+## Build-time dependencies via FetchContent (`third_party/CMakeLists.txt`, not checked in)
 
-Lizenz jeweils aus der LICENSE-Datei des lokalen FetchContent-Checkouts unter `build*/\_deps/` gelesen.
+Each licence was read from the LICENSE file of the local FetchContent checkout under `build*/\_deps/`.
 
-| Projekt | URL | Pin | Lizenz (laut Lizenzdatei) | Geprüfte Datei |
+| Project | URL | Pin | Licence (per licence file) | File checked |
 |---|---|---|---|---|
 | abseil-cpp | https://github.com/abseil/abseil-cpp | 20260817.0 (`ABSL_TAG`) | Apache-2.0 | `build-clangcl-profile/_deps/abseil-cpp-src/LICENSE` |
-| googletest (nur `BUILD_TESTING`) | https://github.com/google/googletest | v1.18.0 (Tag-Archiv) | BSD-3-Clause-Lizenztext (Copyright Google Inc.) | `build-clangcl-profile/_deps/googletest-src/LICENSE` |
+| googletest (only with `BUILD_TESTING`) | https://github.com/google/googletest | v1.18.0 (tag archive) | BSD-3-Clause licence text (Copyright Google Inc.) | `build-clangcl-profile/_deps/googletest-src/LICENSE` |
 | Microsoft GSL | https://github.com/microsoft/GSL | v5.0.1 | MIT | `build-clangcl-profile/_deps/gsl-src/LICENSE` |
-| Corrosion (nur `RUST_FEATURES`, Build-Tool) | https://github.com/corrosion-rs/corrosion | c4786e7a (Commit; v0.6.1 fehlen spätere Fixes) | MIT | `build-clangcl-profile/_deps/corrosion-src/LICENSE` |
-| ANTLR4 C++ Runtime (transitiv via FuzzTest) | https://github.com/antlr/antlr4 | von FuzzTest gepinnt | BSD-3-Clause-Lizenztext (The ANTLR Project) | `build-linux-local/_deps/antlr_cpp-src/LICENSE.txt` |
-| RE2 (transitiv via FuzzTest) | https://github.com/google/re2 | von FuzzTest gepinnt | BSD-3-Clause-Lizenztext (The RE2 Authors) | `build-linux-local/_deps/re2-src/LICENSE` |
+| Corrosion (only with `RUST_FEATURES`, build tool) | https://github.com/corrosion-rs/corrosion | c4786e7a (a commit; v0.6.1 lacks later fixes) | MIT | `build-clangcl-profile/_deps/corrosion-src/LICENSE` |
+| ANTLR4 C++ runtime (transitive, via FuzzTest) | https://github.com/antlr/antlr4 | pinned by FuzzTest | BSD-3-Clause licence text (The ANTLR Project) | `build-linux-local/_deps/antlr_cpp-src/LICENSE.txt` |
+| RE2 (transitive, via FuzzTest) | https://github.com/google/re2 | pinned by FuzzTest | BSD-3-Clause licence text (The RE2 Authors) | `build-linux-local/_deps/re2-src/LICENSE` |
 
-## Interne / projekt-spezifische Submodule
+## Internal, project-specific submodules
 
-| Projekt | URL | Pin | Lizenz | Geprüfte Quelle |
+| Project | URL | Pin | Licence | Source checked |
 |---|---|---|---|---|
 | OxidANT | https://github.com/Kataglyphis/OxidANT | d610fb49 (develop) | MIT (`LICENSE`, Copyright (c) 2025 Kataglyphis; `license = "MIT"` in `[workspace.package]`) | `third_party/OxidANT/LICENSE` + `third_party/OxidANT/Cargo.toml` |
-| ANTfrastructure | https://github.com/Kataglyphis/ANTfrastructure | 7d819f77 | MIT laut `LICENSE` (Copyright (c) 2024 Jonas Heinle); 275 eigene Dateien tragen `SPDX-License-Identifier: MIT`, **25 wieder `Apache-2.0`** (siehe „Unverifiziert — zu prüfen“); OCI-Label `org.opencontainers.image.licenses="MIT"` in den drei Image-Definitionen, die eines setzen (`linux/Dockerfile.torch`, `windows/Dockerfile`, `windows/Dockerfile.torch`) | `third_party/ANTfrastructure/LICENSE` + SPDX-Header + OCI-Labels |
+| ANTfrastructure | https://github.com/Kataglyphis/ANTfrastructure | 7d819f77 | MIT per `LICENSE` (Copyright (c) 2024 Jonas Heinle); 275 of its own files carry `SPDX-License-Identifier: MIT`, **25 carry `Apache-2.0` again** (see "Unverified, to check"); OCI label `org.opencontainers.image.licenses="MIT"` in the three image definitions that set one (`linux/Dockerfile.torch`, `windows/Dockerfile`, `windows/Dockerfile.torch`) | `third_party/ANTfrastructure/LICENSE` + SPDX headers + OCI labels |
 
-## Rust-Crate-Abhängigkeiten (`third_party/OxidANT/crates/webgpu_renderer/Cargo.toml`, `[dependencies]`)
+## Rust crate dependencies (`third_party/OxidANT/crates/webgpu_renderer/Cargo.toml`, `[dependencies]`)
 
-Versionen laut `third_party/OxidANT/Cargo.lock`.
+Versions per `third_party/OxidANT/Cargo.lock`.
 
-**Quelle der Lizenzangaben:** das `license`-Feld der
-Cargo-Metadaten — also genau das Feld, das die Crate auf crates.io veröffentlicht
-hat. Für die Zeilen, deren Version seit 2026-08-02 unverändert ist, wurde es für
-die exakte Version aus `Cargo.lock` am 2026-08-02 im damaligen
-`:latest-cross`-Container gelesen (dort lag die vollständige Registry; der Host-Cache
-war unvollständig, weil die Crate-Builds im Container laufen) mit:
+**Source of the licence entries:** the `license` field of the Cargo metadata, which
+is exactly the field the crate published on crates.io. For the rows whose version
+has not changed since 2026-08-02, it was read for the exact version in `Cargo.lock`
+on 2026-08-02 in the `:latest-cross` container of the time (which held the full
+registry; the host cache was incomplete, because the crate builds run in the
+container) with:
 
 ```sh
 cargo metadata --format-version 1 --locked   # CARGO_HOME=/cargo-cache
 ```
 
-Für jedes Paket wurde zusätzlich `source` geprüft; alle stehen auf
-`registry+https://github.com/rust-lang/crates.io-index`. Kein Eintrag stammt aus
-einem README, einer benachbarten Version oder einer Vermutung. Die Schreibweise
-der Lizenzausdrücke ist unverändert aus dem Metadatenfeld übernommen (daher z. B.
-das alte Trennzeichen bei `pollster`).
+The `source` of every package was checked as well; all are
+`registry+https://github.com/rust-lang/crates.io-index`. No entry comes from a
+README, a neighbouring version or a guess. The licence expressions are copied
+unchanged from the metadata field (hence, for example, the old separator in
+`pollster`).
 
-Die am 2026-09-25 nachgezogenen Zeilen (neue Lock-Version) stammen aus demselben
-`license`-Feld, gelesen im `Cargo.toml` der exakten Version im Registry-Cache des
-Hosts (`scoop/persist/rustup/.cargo/registry/src`) bzw., für den gepatchten
-`egui-winit`, im gevendorten `third_party/OxidANT/third_party/egui-winit-0.36.2/Cargo.toml`
-(`[patch.crates-io]` in `third_party/OxidANT/Cargo.toml`). `egui` und `egui-wgpu`
-0.36.2 liegen dort nicht vor; ihr Eintrag ist an 0.36.1 gelesen (siehe
-„Unverifiziert — zu prüfen“).
+The rows updated on 2026-09-25 (a new lock version) come from the same `license`
+field, read in the `Cargo.toml` of the exact version in the host's registry cache
+(`scoop/persist/rustup/.cargo/registry/src`) or, for the patched `egui-winit`, in
+the vendored `third_party/OxidANT/third_party/egui-winit-0.36.2/Cargo.toml`
+(`[patch.crates-io]` in `third_party/OxidANT/Cargo.toml`). `egui` and `egui-wgpu`
+0.36.2 are not in that cache; their entry was read from 0.36.1 (see "Unverified,
+to check").
 
-| Crate | Version (Lock) | Lizenz (`license`-Feld) | Geprüfte Quelle |
+| Crate | Version (lock) | Licence (`license` field) | Source checked |
 |---|---|---|---|
-| anyhow | 1.0.104 | MIT OR Apache-2.0 | `cargo metadata` (exakte Lock-Version, Container) |
-| log | 0.4.34 | MIT OR Apache-2.0 | `Cargo.toml` der exakten Lock-Version (Host-Cache, 2026-09-25) |
-| bytemuck | 1.25.2 | Zlib OR Apache-2.0 OR MIT | `cargo metadata` (exakte Lock-Version, Container) |
-| env_logger | 0.11.11 | MIT OR Apache-2.0 | `cargo metadata` (exakte Lock-Version, Container) |
-| wgpu | 30.0.1 | MIT OR Apache-2.0 | `Cargo.toml` der exakten Lock-Version (Host-Cache, 2026-09-25) |
-| winit | 0.30.13 | Apache-2.0 | `cargo metadata` (exakte Lock-Version, Container) |
-| pollster | 1.0.1 | Apache-2.0/MIT | `Cargo.toml` der exakten Lock-Version (Host-Cache, 2026-09-25) |
-| glam | 0.34.1 | MIT OR Apache-2.0 | `license`-Feld der exakten Lock-Version auf crates.io (2026-10-07) |
-| gltf | 1.4.1 | MIT OR Apache-2.0 | `cargo metadata` (exakte Lock-Version, Container) |
-| bevy_mikktspace | 1.0.0 | Zlib AND (MIT OR Apache-2.0) | `cargo metadata` (exakte Lock-Version, Container) |
-| egui | 0.36.2 | MIT OR Apache-2.0 | `Cargo.toml` von 0.36.1 (Host-Cache, 2026-09-25); 0.36.2 selbst nicht gelesen |
-| egui-wgpu | 0.36.2 | MIT OR Apache-2.0 | `Cargo.toml` von 0.36.1 (Host-Cache, 2026-09-25); 0.36.2 selbst nicht gelesen |
-| egui-winit | 0.36.2 (gevendorter Patch) | MIT OR Apache-2.0 | `third_party/OxidANT/third_party/egui-winit-0.36.2/Cargo.toml` (2026-09-25) |
-| ktx2 | 0.5.0 | Apache-2.0 | `cargo metadata` (exakte Lock-Version, Container) |
+| anyhow | 1.0.104 | MIT OR Apache-2.0 | `cargo metadata` (exact lock version, container) |
+| log | 0.4.34 | MIT OR Apache-2.0 | `Cargo.toml` of the exact lock version (host cache, 2026-09-25) |
+| bytemuck | 1.25.2 | Zlib OR Apache-2.0 OR MIT | `cargo metadata` (exact lock version, container) |
+| env_logger | 0.11.11 | MIT OR Apache-2.0 | `cargo metadata` (exact lock version, container) |
+| wgpu | 30.0.1 | MIT OR Apache-2.0 | `Cargo.toml` of the exact lock version (host cache, 2026-09-25) |
+| winit | 0.30.13 | Apache-2.0 | `cargo metadata` (exact lock version, container) |
+| pollster | 1.0.1 | Apache-2.0/MIT | `Cargo.toml` of the exact lock version (host cache, 2026-09-25) |
+| glam | 0.34.1 | MIT OR Apache-2.0 | `license` field of the exact lock version on crates.io (2026-10-07) |
+| gltf | 1.4.1 | MIT OR Apache-2.0 | `cargo metadata` (exact lock version, container) |
+| bevy_mikktspace | 1.0.0 | Zlib AND (MIT OR Apache-2.0) | `cargo metadata` (exact lock version, container) |
+| egui | 0.36.2 | MIT OR Apache-2.0 | `Cargo.toml` of 0.36.1 (host cache, 2026-09-25); 0.36.2 itself not read |
+| egui-wgpu | 0.36.2 | MIT OR Apache-2.0 | `Cargo.toml` of 0.36.1 (host cache, 2026-09-25); 0.36.2 itself not read |
+| egui-winit | 0.36.2 (vendored patch) | MIT OR Apache-2.0 | `third_party/OxidANT/third_party/egui-winit-0.36.2/Cargo.toml` (2026-09-25) |
+| ktx2 | 0.5.0 | Apache-2.0 | `cargo metadata` (exact lock version, container) |
 
-Hinweise zu einzelnen Einträgen:
+Notes on single entries:
 
-- **winit 0.30.13** und **ktx2 0.5.0** sind *nicht* dual lizenziert, sondern reines
-  Apache-2.0 — anders als die übrigen Crates dieser Tabelle.
-- **bevy_mikktspace 1.0.0** ist ein zusammengesetzter Ausdruck: der gevendorte
-  MikkTSpace-C-Code steht unter Zlib, der Rust-Anteil dual MIT/Apache-2.0; beide
-  Bedingungen gelten gleichzeitig (`AND`).
-- **pollster 1.0.1** verwendet die veraltete Slash-Schreibweise `Apache-2.0/MIT`;
-  gemeint ist eine Wahlmöglichkeit (entspricht `Apache-2.0 OR MIT`).
+- **winit 0.30.13** and **ktx2 0.5.0** are *not* dual-licensed but plain
+  Apache-2.0, unlike the other crates in this table.
+- **bevy_mikktspace 1.0.0** is a compound expression: the vendored MikkTSpace C
+  code is under Zlib, the Rust part dual MIT/Apache-2.0; both conditions apply at
+  once (`AND`).
+- **pollster 1.0.1** uses the deprecated slash notation `Apache-2.0/MIT`; it means a
+  choice (equivalent to `Apache-2.0 OR MIT`).
 
-## Toolchain (Build-Zeit, nicht mit ausgeliefert)
+## Toolchain (build time, not shipped)
 
-| Tool | Herkunft | Lizenz |
+| Tool | Origin | Licence |
 |---|---|---|
-| slangc (Slang-Shader-Compiler) | Aus dem installierten Vulkan SDK (`VULKAN_SDK\Bin` bzw. `PATH`), siehe `scripts/windows/Build-SlangShaders.ps1` / `scripts/linux/compile-slang-shaders.sh`; nicht im Repo gevendort | Toolchain, nicht mitgeliefert; Lizenz nicht aus dem Repo verifizierbar |
+| slangc (Slang shader compiler) | From the installed Vulkan SDK (`VULKAN_SDK\Bin` or `PATH`), see `scripts/windows/Build-SlangShaders.ps1` / `scripts/linux/compile-slang-shaders.sh`; not vendored in the repository | Toolchain, not shipped; licence not verifiable from the repository |
 
-## Unverifiziert — zu prüfen
+## Unverified, to check
 
-Offen seit der Prüfung vom 2026-09-25:
+Open since the check of 2026-09-25:
 
-- **ANTfrastructure, MIT/Apache-Widerspruch ist zurück**: `LICENSE` sagt MIT,
-  275 eigene Dateien tragen `SPDX-License-Identifier: MIT`, aber 25 eigene Dateien
-  tragen wieder `SPDX-License-Identifier: Apache-2.0` samt „All rights
-  reserved." (u. a. `windows/scripts/host/*.ps1`, `windows/scripts/build/Build-*All.ps1`,
+- **ANTfrastructure, the MIT/Apache contradiction is back**: `LICENSE` says MIT,
+  275 of its own files carry `SPDX-License-Identifier: MIT`, but 25 of its own files
+  carry `SPDX-License-Identifier: Apache-2.0` again, together with "All rights
+  reserved." (among them `windows/scripts/host/*.ps1`, `windows/scripts/build/Build-*All.ps1`,
   `windows/scripts/modules/WindowsSourceBuild.Common.psm1`,
-  `.claude/hooks/guard-destructive-deletes.*`). Zu beheben in ANTfrastructure,
-  nicht hier.
-- **egui / egui-wgpu 0.36.2**: das `license`-Feld ist an 0.36.1 gelesen, weil
-  0.36.2 nicht im Host-Cache liegt; mit `cargo metadata --locked` im Container
-  für die exakte Version bestätigen.
+  `.claude/hooks/guard-destructive-deletes.*`). To be fixed in ANTfrastructure,
+  not here.
+- **egui / egui-wgpu 0.36.2**: the `license` field was read from 0.36.1, because
+  0.36.2 is not in the host cache; confirm it for the exact version with
+  `cargo metadata --locked` in the container.
 
-Am 2026-08-07 erledigt und daher aus dieser Liste entfernt:
+Resolved on 2026-08-07 and therefore removed from this list:
 
-- **ANTfrastructure, fehlende LICENSE**: das Submodul führt inzwischen
-  eine `LICENSE`-Datei; der Pin oben ist zudem von `2ac69e95` auf den aktuellen
-  Stand `45709430` korrigiert.
-- **ANTfrastructure, MIT/Apache-Widerspruch**: aufgelöst zugunsten von
-  **MIT**. Zuvor stand in `LICENSE` MIT, während 101 eigene Quelldateien
-  `SPDX-License-Identifier: Apache-2.0` trugen und zwei der drei Image-Definitionen
-  das OCI-Label `Apache-2.0` setzten. Alle drei Stellen sagen jetzt MIT; die
-  MIT-widersprüchliche Formel „All rights reserved." wurde aus den Headern
-  entfernt. Nicht angefasst: `linux/webserver/dist/assets/NOTICES` und
-  `docs/deps/deps.json` — das sind Fremdlizenzangaben (u. a. Apache 2.0 für
-  LLVM, TVM, OpenCV, Vulkan SDK) und bleiben inhaltlich korrekt.
+- **ANTfrastructure, missing LICENSE**: the submodule now carries a `LICENSE`
+  file; the pin above was also corrected from `2ac69e95` to the then current
+  `45709430`.
+- **ANTfrastructure, MIT/Apache contradiction**: resolved in favour of **MIT**.
+  Before, `LICENSE` said MIT while 101 of its own source files carried
+  `SPDX-License-Identifier: Apache-2.0` and two of the three image definitions set
+  the OCI label `Apache-2.0`. All three places say MIT now; the phrase "All rights
+  reserved.", which contradicts MIT, was removed from the headers. Not touched:
+  `linux/webserver/dist/assets/NOTICES` and `docs/deps/deps.json`, which state
+  third-party licences (among them Apache 2.0 for LLVM, TVM, OpenCV, Vulkan SDK)
+  and stay correct.
 
-Am 2026-08-02 erledigt und daher aus dieser Liste entfernt:
+Resolved on 2026-08-02 and therefore removed from this list:
 
-- Die 11 zuvor unverifizierten Rust-Crates (env_logger, wgpu, winit, pollster,
-  glam, gltf, bevy_mikktspace, egui, egui-wgpu, egui-winit, ktx2) sind jetzt aus
-  `cargo metadata` im Container verifiziert — siehe Crate-Tabelle oben.
-- `anyhow`, `log` und `bytemuck` sind jetzt für die **exakte** Lock-Version
-  belegt statt für eine benachbarte gecachte Version; die Lizenzausdrücke sind
-  dabei unverändert geblieben.
-- Die eingebetteten Third-Party-Anteile in `third_party/KTX/lib/` sind einzeln
-  aus den Dateien auf der Festplatte belegt — siehe die Tabelle im Abschnitt
-  "Gevendorte Quellen".
+- The 11 previously unverified Rust crates (env_logger, wgpu, winit, pollster,
+  glam, gltf, bevy_mikktspace, egui, egui-wgpu, egui-winit, ktx2) are now verified
+  from `cargo metadata` in the container; see the crate table above.
+- `anyhow`, `log` and `bytemuck` are now verified for the **exact** lock version
+  instead of a neighbouring cached version; their licence expressions did not
+  change.
+- The embedded third-party parts in `third_party/KTX/lib/` are verified one by one
+  from the files on disk; see the table in the section "Vendored sources".
 
-## Hinweise
+## Notes
 
-- Entfernt gegenüber Stand 2026-03-26: **glad** (kein `third_party/glad`-Submodul mehr vorhanden, keine glad-/OpenGL-Loader-Referenzen unter `Src/`) und **KTX als Submodul** (jetzt Teil-Vendoring, siehe oben).
-- Kompute wird nur mit `KATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND=ON` gebaut (Demo, nicht Teil der Engine, in keinem Paket). Das tut seit 2026-10-06 nur der Linux-CI-Job `clang-tests`, der das Playground auch startet; Kompute holt dabei fmt 11.0.0 per FetchContent.
-- Die `build*/_deps/`-Pfade sind lokale Checkouts (nicht eingecheckt); sie dokumentieren, welche Datei bei der Verifikation tatsächlich gelesen wurde. Für die Rust-Crates tritt an diese Stelle die Registry im damaligen `:latest-cross`-Container (Volume `cargo-cache`, `CARGO_HOME=/cargo-cache`), aus der `cargo metadata` am 2026-08-02 das `license`-Feld las, bzw. für die am 2026-09-25 nachgezogenen Zeilen der Registry-Cache des Hosts.
+- Removed since the state of 2026-03-26: **glad** (no `third_party/glad` submodule any more, no glad or OpenGL loader references under `Src/`) and **KTX as a submodule** (now partly vendored, see above).
+- Kompute is built only with `KATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND=ON` (a demo, not part of the engine, in no package). Since 2026-10-06 only the Linux CI job `clang-tests` does that, and it also starts the playground; Kompute then fetches fmt 11.0.0 through FetchContent.
+- The `build*/_deps/` paths are local checkouts (not checked in); they record which file was actually read for the verification. For the Rust crates, their place is taken by the registry in the `:latest-cross` container of the time (volume `cargo-cache`, `CARGO_HOME=/cargo-cache`), from which `cargo metadata` read the `license` field on 2026-08-02, or, for the rows updated on 2026-09-25, by the host's registry cache.
 
 ---
-Erstellt automatisch im Repository auf Anforderung; zuletzt vollständig gegen den Datenträger verifiziert am 2026-08-02 — die Rust-Crate-Lizenzen zusätzlich gegen `cargo metadata --format-version 1 --locked` im `:latest-cross`-Container (vollständige crates.io-Registry) am 2026-08-02. Am 2026-09-25 die seither bewegten Pins (imgui, glfw, nlohmann/json, google/benchmark, OxidANT, ANTfrastructure) und Crate-Versionen (log, wgpu, pollster, glam, egui, egui-wgpu, egui-winit) nachgezogen und deren Lizenzangaben erneut von der Festplatte gelesen; die übrigen Zeilen sind unverändert. Am 2026-10-07 die Pins imgui, nlohmann/json, google/benchmark, spdlog, abseil-cpp, Microsoft GSL und OxidANT sowie glam 0.34.1 nachgezogen; die Lizenzdateien der vier Submodule sind über die bewegten Bereiche unverändert (`git diff` leer). Am Abend desselben Tages nlohmann/json auf 367336c83 und Microsoft GSL auf v5.0.1 nachgezogen; `LICENSE.MIT` bzw. GSLs `LICENSE` sind über beide Bereiche unverändert.
+Created in the repository on request; last fully verified against the disk on 2026-08-02, the Rust crate licences additionally against `cargo metadata --format-version 1 --locked` in the `:latest-cross` container (full crates.io registry) on 2026-08-02. On 2026-09-25 the pins that had moved since (imgui, glfw, nlohmann/json, google/benchmark, OxidANT, ANTfrastructure) and the crate versions (log, wgpu, pollster, glam, egui, egui-wgpu, egui-winit) were updated and their licences read from disk again; the other rows are unchanged. On 2026-10-07 the pins of imgui, nlohmann/json, google/benchmark, spdlog, abseil-cpp, Microsoft GSL and OxidANT and glam 0.34.1 were updated; the licence files of the four submodules are unchanged across the moved ranges (`git diff` empty). That evening nlohmann/json moved to 367336c83 and Microsoft GSL to v5.0.1; `LICENSE.MIT` and GSL's `LICENSE` are unchanged across both ranges.

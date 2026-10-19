@@ -70,7 +70,7 @@ Prerequisites, both platforms, the scenes, packaging and troubleshooting:
 | The C++ engine's change log | [docs/cpp-renderer-improvements.md](docs/cpp-renderer-improvements.md) |
 | Colour-space audit | [docs/webgpu-srgb-audit.md](docs/webgpu-srgb-audit.md) |
 | The Rust WebGPU renderer's roadmap (OxidANT) | [webgpu-renderer-roadmap.md](https://github.com/Kataglyphis/OxidANT/blob/develop/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) |
-| Third-party licences (German) | [docs/LICENSES-README.md](docs/LICENSES-README.md) |
+| Third-party licences | [docs/LICENSES-README.md](docs/LICENSES-README.md) |
 | Literature: tutorials and papers behind the renderer | [docs/source/literature.md](docs/source/literature.md) |
 | Rules for agents and contributors, and every topic's one home | [AGENTS.md](AGENTS.md) |
 | What CI runs, and what it does not | [AGENTS.md § What CI runs](AGENTS.md#what-ci-runs-and-what-it-does-not) |

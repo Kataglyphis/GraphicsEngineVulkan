@@ -46,6 +46,8 @@ the GitHub releases themselves.
 - **`docs/source/wsl2_vulkan.rst` is in English** (2026-10-19), with every command and fact kept,
   and without the chat assistant's closing offer it ended with. `getting_started.md` clones over
   https, as the family's repositories and submodules do.
+- **`docs/LICENSES-README.md` is in English** (2026-10-19). Every licence, pin, version, path and
+  date is unchanged; the translation changes no fact.
 
 ## [1.5.2] - 2026-10-17
 
