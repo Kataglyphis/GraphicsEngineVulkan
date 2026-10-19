@@ -31,6 +31,10 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **OxidANT c4b2bad -> 20a03fb** (2026-10-19): the `oxidant` staticlib now builds OxidANT's ESP32
+  bridge on desktop (`kataglyphis_esp32`, `serialport` without libudev); the renderer crate changed
+  only in comments. In `:latest`, `linux-debug-clang` with the Kompute playground builds and ctest
+  passes 705 of 705, `GraphicsEngine` links no new library, and clippy plus rustfmt pass.
 - **`Build-Windows.ps1` takes its configuration rows, portable bundle and MSIX version from the
   hub** (2026-10-19): `Get-BuildConfigurationRow` replaces its `Get-BuildConfigurationSpec`, and
   `Build-Windows-Container.ps1`'s own table read, which now applies `BuildDirEnv`, hands a set one
