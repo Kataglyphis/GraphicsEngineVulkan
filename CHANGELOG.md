@@ -31,6 +31,12 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **The agentic-loop runners are watched copies of the hub's templates** (2026-10-19):
+  `.antfrastructure-shared.manifest` declares `agentic-loop-sh` and `agentic-loop-ps1`, and
+  `sync-shared-config.sh --check` compares their bodies. `Run-AgenticLoop.sh` takes the loop name
+  from the checkout's directory (`LOOP_NAME_OVERRIDE` wins) and sets `-euo pipefail` after its header,
+  so `--help` prints lines 2-29 (`head -29 | tail -28`), the same text as before;
+  `Invoke-AgenticLoop.ps1` gains the template's comment line. The previous copies fail the check.
 - **`test-check-deb-layout.sh` runs on the hub's `lib/test-harness.sh`** (2026-10-19): the same six
   cases as `t_assert_rc`, so a failing `.deb` must exit 1, not any non-zero code, and a miss prints
   the gate's output. `linux-x64.yml`'s `deb-layout` job fetches the hub submodule for it. In

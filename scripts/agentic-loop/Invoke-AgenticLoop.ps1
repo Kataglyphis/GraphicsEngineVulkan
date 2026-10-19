@@ -5,7 +5,7 @@
 .DESCRIPTION
   Thin wrapper over ANTfrastructure's WindowsAgenticLoop.Common. Prompts come from its
   shared/agentic-loop/prompts/*.md; hard-coding them here makes the platforms drift.
-.PARAMETER Engine  Engine override: claude | opencode (default: config .engine).
+.PARAMETER Engine  Engine override: claude | opencode (v2 CLI; default: config .engine).
 .PARAMETER DryRun  Print actions without executing.
 .PARAMETER MaxIterations  Override max iterations (0 = unlimited).
 .PARAMETER PlannerOnly  Run planner once and exit.
@@ -35,6 +35,7 @@ if (-not $config) { Write-Host "FATAL: Invalid JSON" -ForegroundColor Red; exit 
 
 Initialize-AgenticLoop -ConfigPath $configPath -RepoRoot $repoRoot -DryRun:$DryRun
 
+# Build configs and task prompts come from the module, not from this wrapper.
 try {
     Invoke-AgenticLoop -Config $config -Engine $Engine -RepoRoot $repoRoot `
         -MaxIterations:$MaxIterations -SkipBuild:$SkipBuild -SkipTests:$SkipTests `

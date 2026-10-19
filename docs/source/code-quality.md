@@ -6,7 +6,7 @@ generic and live upstream:
 Read that first; this page carries only what is specific to **this** repo.
 
 The configs (`.clang-format`, `.clang-tidy`, `gcovr.cfg`) are ANTfrastructure's
-too, copied in; `.antfrastructure-shared.manifest` lists the seven assets this
+too, copied in; `.antfrastructure-shared.manifest` lists the nine assets this
 repo takes. Edit them upstream in `shared/config/`, then run
 `Sync-SharedConfig.ps1 -RepoRoot . -Write`. `.cmake-format.yaml` also lives at
 this repo's root. The drift gate,

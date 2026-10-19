@@ -6,7 +6,7 @@
 #   bash third_party/ANTfrastructure/shared/config/sync-shared-config.sh --repo-root . --check
 #
 # An asset NOT listed here is this repo own and is never compared. This repo
-# takes all five configs unchanged, plus both bootstrap templates.
+# takes all five configs unchanged, both bootstrap templates and both loop runners.
 
 clang-format
 clang-tidy
@@ -15,3 +15,5 @@ gcovr
 pre-commit
 antfrastructure-sh
 resolve-build-module
+agentic-loop-sh
+agentic-loop-ps1

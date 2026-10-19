@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
 # ─────────────────────────────────────────────────────────────────────────
 # Agentic loop for BeschleunigerBallett (Linux / Rancher Desktop).
 #
@@ -12,7 +10,7 @@ set -euo pipefail
 #
 # Engines (config .engine, or --engine / AGENTIC_ENGINE):
 #   claude   — Claude Code CLI; models come from the config
-#   opencode — OpenCode CLI; models come from the config
+#   opencode — OpenCode v2 CLI (v1 is refused); models come from the config
 #
 # Usage:
 #   ./scripts/agentic-loop/Run-AgenticLoop.sh [options]
@@ -29,6 +27,7 @@ set -euo pipefail
 #   --executor-only      Drain the current queue and exit
 #   --help               Show this help
 # ─────────────────────────────────────────────────────────────────────────
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -52,7 +51,7 @@ while [[ $# -gt 0 ]]; do
     --planner-only)   export PLANNER_ONLY=true; shift ;;
     --executor-only)  export EXECUTOR_ONLY=true; shift ;;
     --help|-h)
-      head -31 "$0" | tail -28
+      head -29 "$0" | tail -28
       exit 0 ;;
     *) echo "Unknown option: $1"; exit 1 ;;
   esac
@@ -67,7 +66,7 @@ if [[ ! -f "$CONFIG_PATH" ]]; then
   exit 1
 fi
 
-init_agentic_loop "BeschleunigerBallett" "$REPO_ROOT"
+init_agentic_loop "${LOOP_NAME_OVERRIDE:-$(basename "$REPO_ROOT")}" "$REPO_ROOT"
 
 EXIT_CODE=0
 

@@ -30,13 +30,14 @@ the restatement went stale.
 | [`prompts/planner-overlay.md`](prompts/planner-overlay.md) | Project delta appended to ANTfrastructure's shared planner system prompt |
 | [`prompts/executor-overlay.md`](prompts/executor-overlay.md) | Project delta appended to ANTfrastructure's shared executor system prompt |
 
-Both runners are the upstream templates
-([`shared/agentic-loop/templates/`](../../third_party/ANTfrastructure/shared/agentic-loop/templates/README.md))
-with only the loop name changed and, on the Bash side, the library sourced
-through [`scripts/linux/lib/antfrastructure.sh`](../linux/lib/antfrastructure.sh)
-instead of a `third_party` literal. Keep them that way: no prompt text and no
-build-config list in a runner. Hard-coding either let the Windows and Linux
-copies drift apart once already.
+Both runners are watched copies of the upstream templates
+([`shared/agentic-loop/templates/`](../../third_party/ANTfrastructure/shared/agentic-loop/templates/README.md)):
+`agentic-loop-sh` and `agentic-loop-ps1` in
+[`.antfrastructure-shared.manifest`](../../.antfrastructure-shared.manifest), compared in body mode by
+`sync-shared-config.sh --check` in the lint gates. Only the leading header differs, and the Bash
+runner's `--help` range (`head -29 | tail -28`), which follows its header's length. Re-copy them
+after an upstream change; never edit the body here. Hard-coding prompt text or a build-config list
+in a runner let the Windows and Linux copies drift apart once already.
 
 The two overlays are the **only** prompt text this repo owns. At start-up the
 loop composes ANTfrastructure's shared role prompt plus the overlay into one text
