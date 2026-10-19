@@ -28,4 +28,4 @@ Open the demo full-page ↗
   under `third_party/OxidANT/crates/webgpu_renderer/docs/`.
 - **Rebuild the demo**: `scripts/linux/docs-build-web.sh` compiles `kataglyphis_webgpu_renderer`
   to wasm32, runs `wasm-bindgen` and writes the demo (untracked) next to these pages before
-  Sphinx runs. The CI docs deploy runs it, so the deployed demo tracks the current renderer.
+  Sphinx runs. CI's docs build runs it, so the published demo tracks the current renderer.

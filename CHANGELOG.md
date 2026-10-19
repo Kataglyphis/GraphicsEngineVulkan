@@ -31,6 +31,16 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **The docs site publishes through the hub's `build-docs.yml`** (2026-10-19). The x64 `release` job
+  uploads `docs/build/html/` as `bb-docs-site` after the wasm budget, and `linux-x64.yml`'s new `docs`
+  job hands it to the hub's reusable lane: the hub's `.htaccess` (HTTPS redirect, HSTS, the FTP state
+  file hidden) and 404 page go in, a dead internal link or anchor fails the job, and the upload runs
+  on a push to `develop` or `main` only. Before, the release job uploaded on every event but a
+  dispatch, pull requests included, with `continue-on-error: true`. The `SERVER`/`USERNAME`/`PW`
+  inputs left `reusable-linux.yml` and its callers (hub 89b098c9). `release.yml` downloads every
+  artifact of its run, so `collect-release-assets.sh` skips both uploads of the site; its suite
+  proves it. Built in `:latest` from an LF clone and staged by the hub's `docs-site.sh`: 486
+  documents, 0 dead links or anchors.
 - **The README is a short overview** (2026-10-19, owner: every README in the family): header,
   badges, one paragraph, six highlights, the quick start (cloned over https) and one row per guide,
   after ANTfrastructure's README rule. What left it moved into the docs: the scene licence table to

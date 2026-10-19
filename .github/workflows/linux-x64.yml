@@ -57,11 +57,21 @@ jobs:
       split-jobs: ${{ inputs.split-jobs || false }}
       runner: ubuntu-26.04
     secrets:
-      SERVER: ${{ secrets.SERVER }}
-      USERNAME: ${{ secrets.USERNAME }}
-      PW: ${{ secrets.PW }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       GHCR_PAT: ${{ secrets.GHCR_PAT }}
+
+  # The site the release job uploaded: the hub stages it, checks its links and publishes it from develop and main (hub docs-sites.md).
+  docs:
+    needs: build-x64
+    # A red test elsewhere in the build must not hold back the site; the site's own steps decide.
+    if: ${{ !cancelled() }}
+    uses: Kataglyphis/ANTfrastructure/.github/workflows/build-docs.yml@develop
+    with:
+      artifact: bb-docs-site
+    secrets:
+      FTP_SERVER: ${{ secrets.SERVER }}
+      FTP_USERNAME: ${{ secrets.USERNAME }}
+      FTP_PASSWORD: ${{ secrets.PW }}
 
   # Inside the image every library is present; the bare image base shows a missing one (hub linux-build-basics.md).
   clean-host-x64:

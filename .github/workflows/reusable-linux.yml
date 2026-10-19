@@ -14,12 +14,6 @@ on:
         type: boolean
         default: false
     secrets:
-      SERVER:
-        required: true
-      USERNAME:
-        required: true
-      PW:
-        required: true
       CODECOV_TOKEN:
         required: true
       GHCR_PAT:
@@ -473,7 +467,7 @@ jobs:
           script: bash ./scripts/linux/build-coverage-gcovr.sh
           log-file: output.log
 
-  # Release build + packages, then on x64 the docs + wasm demo + deploy
+  # Release build + packages, then on x64 the docs + wasm demo, uploaded as the bb-docs-site artifact
   release:
     name: ${{ matrix.part == 'docs' && 'docs + wasm demo' || (matrix.part == 'all' && inputs.runner == 'ubuntu-26.04') && 'release + package, docs + wasm demo' || 'release + package' }}
     runs-on: ${{ inputs.runner }}
@@ -551,20 +545,18 @@ jobs:
 
       - name: Enforce wasm demo size budget
         id: wasm-budget
-        # Fatal on purpose: a wasm bloat regression must block the deploy below.
+        # Fatal on purpose: a wasm bloat regression must keep the site below from being uploaded and published.
         if: ${{ !cancelled() && steps.web.outcome == 'success' }}
         uses: Kataglyphis/ANTfrastructure/.github/actions/run-in-linux-container@develop
         with:
           script: bash ./scripts/linux/wasm-size-budget.sh
 
-      - name: 📂 Sync files to domain
-        uses: Kataglyphis/ANTfrastructure/.github/actions/deploy-over-ftp@develop
-        # A manual dispatch (any branch) never deploys.
-        if: ${{ !cancelled() && steps.wasm-budget.outcome == 'success' && github.event_name != 'workflow_dispatch' }}
-        # A flaky docs FTP upload must not fail the build+test lane.
-        continue-on-error: true
+      # linux-x64.yml's docs job hands it to the hub's build-docs.yml, which checks its links and publishes it.
+      - name: Upload the docs site
+        if: ${{ !cancelled() && steps.wasm-budget.outcome == 'success' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          server: ${{ secrets.SERVER }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PW }}
-          local-dir: "./docs/build/html/"
+          name: bb-docs-site
+          path: docs/build/html/
+          include-hidden-files: true
+          if-no-files-found: error

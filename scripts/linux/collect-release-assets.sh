@@ -19,8 +19,8 @@ put() {
 
 for dir in "$artifacts"/*/; do
   name="$(basename "$dir")"
-  # Test bundles and results are no deliverable.
-  case "$name" in *-tests|*-test-results) continue ;; esac
+  # Test bundles, results and the docs site (linux-x64.yml's two uploads of it) are no deliverable.
+  case "$name" in *-tests|*-test-results|*-docs-site|docs-site-*) continue ;; esac
   # bundle/ ships as the zip CPack makes from it; its loose exe and dlls are no package.
   while IFS= read -r -d '' file; do
     put "$file" "$(basename "$file")"

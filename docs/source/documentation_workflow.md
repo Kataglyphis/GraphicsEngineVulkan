@@ -28,6 +28,17 @@ python -m sphinx -M html docs/source docs/build -E
 
 The site lands in `docs/build/html`.
 
+## Publishing
+
+CI builds the site in the x64 `release` job and publishes it through the hub's `build-docs.yml`, from
+a push to `develop` or `main` only ([AGENTS.md § The docs site](../../AGENTS.md#the-docs-site)). The
+hub's link gate fails the publish on any dead internal link or anchor in the built tree; run it on a
+local build first:
+
+```bash
+python3 third_party/ANTfrastructure/linux/scripts/verify_site_links.py docs/build/html
+```
+
 ## Theme and links
 
 `conf.py` calls the family theme's `setup_theme()` (`sphinx_kataglyphis`, an editable install from

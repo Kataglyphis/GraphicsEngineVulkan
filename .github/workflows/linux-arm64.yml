@@ -30,9 +30,6 @@ jobs:
       split-jobs: ${{ inputs.split-jobs || false }}
       runner: ubuntu-26.04-arm
     secrets:
-      SERVER: ${{ secrets.SERVER }}
-      USERNAME: ${{ secrets.USERNAME }}
-      PW: ${{ secrets.PW }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       GHCR_PAT: ${{ secrets.GHCR_PAT }}
 

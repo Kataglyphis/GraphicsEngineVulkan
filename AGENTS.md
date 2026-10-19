@@ -73,7 +73,7 @@ them: 633 MiB tracked, 518 MiB of it the 14 scene directories; after, 116 MiB, 6
   1-pixel defaults (1.4 MiB). `Loading_Screen/`, the duplicated `space` skybox, `brick.png` and
   `dirt.png` (12.6 MiB, read by nothing) went on 2026-10-17.
 - **The WebGPU demo is built, not tracked**: `scripts/linux/docs-build-web.sh` compiles it into
-  the ignored `docs/source/_webgpu_demo/` on every docs build, which CI's docs deploy runs. Without
+  the ignored `docs/source/_webgpu_demo/` on every docs build, which CI's release job runs. Without
   `wasm-bindgen` the docs publish without the demo (a warning in CI); until 2026-10-17 an 8 MiB
   snapshot was committed instead.
 
@@ -616,7 +616,7 @@ opt-ins before that are gone. Linux x64 still skips a docs-only commit through `
 | Submodule pins | `submodule-pins.yml` — one `uses:` of ANTfrastructure's reusable lane | always, no `paths-ignore` |
 | Linux x86_64 (build + test + coverage) | `linux-x64.yml` → `reusable-linux.yml` | always, minus `'**.md'`/`docs/**` |
 | Windows x64 (clang-cl container build of `clangcl-debug`, `clangcl-profile` and `clangcl-release`, CPU, compile and perf suites, fuzz seeds, renderer comparisons, packaging; then the GPU suites on lavapipe on the runner host; Pester) | `windows-x64.yml` → the hub's reusable `container-ci-windows.yml`; the container half is `scripts/windows/Invoke-WindowsLane.ps1` | on request (`on-request.yml`) or by hand |
-| Linux ARM64 | `linux-arm64.yml` → `reusable-linux.yml` | on request (`on-request.yml`) or by hand; deploys nothing (the deploy jobs need `runner == 'ubuntu-26.04'`) |
+| Linux ARM64 | `linux-arm64.yml` → `reusable-linux.yml` | on request (`on-request.yml`) or by hand; builds no docs site (the docs steps need `runner == 'ubuntu-26.04'`) |
 | Linux riscv64 (cross build on amd64, Debug ctest under QEMU; the CPU suites on request, the GPU suites behind the fp16 shim in 11 weekly shards; see [The riscv64 lane](#the-riscv64-lane)) | `linux-riscv64.yml` → the hub's reusable `container-ci-riscv64.yml`; the container half is `scripts/linux/run-riscv64-tests.sh` | on request (`on-request.yml`) or by hand; the GPU shards on Saturdays and on dispatch with `gpu-tests` |
 | Windows ARM64 (cross build in the arm64 bundle, then the Release commit suite, the Profile perf suite and the Debug (ASan) suite on `windows-11-arm`, dda807b0; below) | `windows-arm64-cross.yml` → the hub's reusable `container-ci-windows.yml` | on request (`on-request.yml`) or by hand |
 
@@ -724,7 +724,7 @@ work than that, so they share jobs now; nothing was dropped:
 - `static-analysis` runs the format check, one `linux-debug-clang` build for both coverage and the
   analyzers (two jobs used to build that tree), then the Rust renderer tests and lints.
 - `profiling` runs the clang profiling build and its benchmarks, then the gcc ones.
-- `release` adds the docs, the wasm demo and their deploy on x64.
+- `release` adds the docs and the wasm demo on x64, uploaded for [the docs site](#the-docs-site).
 
 Each part after the first runs whatever the one before did (`if: !cancelled()`) and checks its own
 build's outcome, so a red step still names the check that failed. Measured on f340258a against the
@@ -839,12 +839,28 @@ the host, builds the `linux-riscv64-cross` preset (Debug,
 The workflows here are mostly wiring. The steps come from composite actions pulled straight from
 ANTfrastructure's `develop` branch (owner directive 2026-09-25; `main` lags it and still names the
 retired `:latest-cross` image): `prepare-linux-ci-host`, `run-in-linux-container`,
-`deploy-over-ftp`, `prepare-windows-container-host`, `run-in-windows-container`,
-`run-pester-suite`; and from three of its reusable workflows (`lint-gates.yml`,
-`submodule-pins.yml`, `container-ci-windows.yml`). **There is no pin: a push to ANTfrastructure
-`develop` changes this repo's CI on the next run**, which is why both repos ship together with
-ANTfrastructure first (the rule above). A lane failing in a step whose `uses:` points at
-ANTfrastructure is defined there: read the action or workflow there.
+`compiler-cache-restore`, `compiler-cache-save`, `clean-host-package-check`, `requested-lanes`,
+`run-pester-suite`; and from five of its reusable workflows (`lint-gates.yml`,
+`submodule-pins.yml`, `container-ci-windows.yml`, `container-ci-riscv64.yml`, `build-docs.yml`).
+**There is no pin: a push to ANTfrastructure `develop` changes this repo's CI on the next run**,
+which is why both repos ship together with ANTfrastructure first (the rule above). A lane failing in
+a step whose `uses:` points at ANTfrastructure is defined there: read the action or workflow there.
+
+### The docs site
+
+**The release job builds it, the hub's `build-docs.yml` checks and publishes it** (2026-10-19). On
+x64 the `release` job generates the Doxygen XML, runs `scripts/linux/docs-build-web.sh` and the
+wasm budget, and uploads `docs/build/html/` as the `bb-docs-site` artifact. `linux-x64.yml`'s
+`docs` job (`needs: build-x64`, `if: !cancelled()`, so a red test elsewhere does not hold the site
+back) calls `build-docs.yml` with `artifact: bb-docs-site`: the hub's `.htaccess` and 404 page go
+in, a dead internal link or anchor fails the job (`verify_site_links.py`), and the upload runs only
+on a push to `develop` or `main`, never on a pull request or a dispatch. The `SERVER`, `USERNAME`
+and `PW` secrets map onto its `FTP_*`. `release.yml` downloads every artifact of its run, so
+`collect-release-assets.sh` skips both uploads of the site (`*-docs-site`, `docs-site-*`).
+
+What follows from living in `linux-x64.yml`: a docs-only push publishes nothing (`paths-ignore`),
+and a newer push to `develop` cancels the run, an upload in flight included. The workflow and
+its inputs: [`docs-sites.md`](third_party/ANTfrastructure/docs/docs-sites.md).
 
 ### Lint gates (before anything builds)
 

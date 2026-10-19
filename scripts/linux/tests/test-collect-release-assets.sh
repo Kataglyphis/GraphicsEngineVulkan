@@ -28,6 +28,10 @@ done
 printf 'nsis' > "${a}/BeschleunigerBallett-windows-x64/packages/${p}-Windows-x86_64-Release-Clang-23.1.3.exe"
 mkdir -p "${a}/BeschleunigerBallett-windows-arm64-tests/packages"
 printf 'msi' > "${a}/BeschleunigerBallett-windows-arm64-tests/packages/tests.msi"
+for site in bb-docs-site docs-site-docs; do
+  mkdir -p "${a}/${site}/_downloads"
+  printf 'zip' > "${a}/${site}/_downloads/examples.zip"
+done
 
 out="${work}/release"
 check "it collects" bash "${collect}" "${a}" "${out}"
@@ -36,6 +40,7 @@ check "each flatpak named for its arch" test -e "${out}/${p}-linux-x86_64.flatpa
 check "the MSI, zip and MSIX of both Windows arches" test "$(find "${out}" -maxdepth 1 \( -name '*.msi' -o -name '*.msix' -o -name '*.zip' \) | wc -l)" = 6
 check "the x64 installer, but no exe from a bundle" bash -c "test -e '${out}/${p}-Windows-x86_64-Release-Clang-23.1.3.exe' && ! test -e '${out}/GraphicsEngine.exe'"
 check "nothing from a test artifact" test ! -e "${out}/tests.msi"
+check "nothing from either docs site" test ! -e "${out}/examples.zip"
 check "relative paths, as release.yml passes them" bash -c "cd '${work}' && bash '${collect}' artifacts release-relative >/dev/null && test -e release-relative/GraphicsEngine_arm64.msix"
 
 mkdir -p "${a}/BeschleunigerBallett-windows-x64-copy/packages"
