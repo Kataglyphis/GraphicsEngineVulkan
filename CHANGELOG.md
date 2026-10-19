@@ -31,6 +31,11 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **The generated-artifacts suite is the hub's** (2026-10-19): `windows-x64.yml`'s `pester-tests`
+  job runs `third_party/ANTfrastructure/shared/windows/tests/Repo.GeneratedArtifacts.Tests.ps1` over
+  the pathspecs in `scripts/windows/generated-artifacts.txt`, and this repo's copy of the suite is
+  gone. Its `**/__pycache__/` matched no file in git; the list says `**/__pycache__/*`. Under Pester
+  3.4.0 the suite passes this tree (2/2) and fails a fixture repo with a tracked `__pycache__` file.
 - **The scenes come through the hub's fetcher** (2026-10-19, hub CON98): `cmake/FetchAssets.cmake`
   calls `kataglyphis_fetch_data(LOCK Resources/assets.lock DEST Resources/Models EXTRACT ONLY
   crytek-sponza Dinosaurs)`, without `ONLY` under `KATAGLYPHIS_FETCH_ALL_ASSETS`, so its own

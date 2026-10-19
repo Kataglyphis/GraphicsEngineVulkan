@@ -375,7 +375,7 @@ driver, not the wrapper**: the wrapper only supplies this project's payload.
 | `scripts/windows/Invoke-SyncValidation.ps1` | `windows/scripts/modules/WindowsVulkanValidation.Common.psm1` |
 | `scripts/agentic-loop/Invoke-AgenticLoop.ps1` / `scripts/agentic-loop/Run-AgenticLoop.sh` | `windows/scripts/modules/WindowsAgenticLoop.Common.psm1` / `linux/scripts/lib/agentic-loop.sh` |
 | `scripts/windows/Test-AllConfigs.ps1` | `windows/scripts/modules/WindowsBuildSweep.Common.psm1` → `Invoke-SweepStep`, `Test-LinuxContainerSupport`, `Invoke-InLinuxContainerBuild`, `Write-SweepSummary` |
-| `scripts/windows/tests/Repo.GeneratedArtifacts.Tests.ps1` | `windows/scripts/modules/WindowsRepoHygiene.Common.psm1` → `Get-TrackedIgnoredFile` (the pin-drift half — `Get-SubmodulePinDrift`, `Get-SubmoduleStatusLine`, `Test-SubmoduleCommitReachable` — is consumed by the hub's own suite, see § Critical Invariant: Submodule Pins) |
+| `scripts/windows/generated-artifacts.txt` | `shared/windows/tests/Repo.GeneratedArtifacts.Tests.ps1`, which reads its pathspecs from that file (run by `windows-x64.yml`'s `pester-tests` job) |
 | `cmake/ProjectOptions.cmake` | `cmake/*.cmake` (see [`cmake/README.md`](third_party/ANTfrastructure/cmake/README.md) there) |
 
 `Invoke-ClangClDebug.ps1` is the exception: it keeps its own flow, because it orchestrates CTest and
@@ -510,11 +510,13 @@ on the AMD RX 9070 XT: all four clang-cl builds render (~32 FPS ImGui overlay).
 - **Pester** suites under `scripts/windows/tests/` (Pester 3.4 syntax): the `pester-tests` job of
   `.github/workflows/windows-x64.yml` runs them with a pinned Pester 3.4.0 whenever that lane runs.
   **Only suites covering project-specific behaviour belong here**; a suite for an upstream module
-  goes upstream with it (2026-08-07). The eight left cover the module-resolution bootstrap
-  (`Resolve-BuildModule`), the preset, artifact and shared-config guards (`CMakePresets.Integrity`,
-  `Repo.GeneratedArtifacts`, `SharedConfig.Drift`), the validation-layer runner
-  (`Invoke-SyncValidation`) and the three comparison tools (`Compare-PerfBaseline`,
-  `Compare-RendererPixels`, `Compare-RendererTimings`).
+  goes upstream with it (2026-08-07). The seven left cover the module-resolution bootstrap
+  (`Resolve-BuildModule`), the preset and shared-config guards (`CMakePresets.Integrity`,
+  `SharedConfig.Drift`), the validation-layer runner (`Invoke-SyncValidation`) and the three
+  comparison tools (`Compare-PerfBaseline`, `Compare-RendererPixels`, `Compare-RendererTimings`).
+  The same job runs the hub's `shared/windows/tests/Repo.GeneratedArtifacts.Tests.ps1` over the
+  pathspecs in `scripts/windows/generated-artifacts.txt` (since 2026-10-19; a wildcard ending in `/`
+  matches nothing in git, so write `**/__pycache__/*`).
 - `scripts/windows/Test-AllConfigs.ps1` is a local one-shot gate: the three standard Windows
   container builds plus the Linux TSan build (`-SkipLinux` drops the latter). Not in CI.
 - **ANTfrastructure's own suites** (the modules this repo imports) run via
@@ -984,8 +986,7 @@ below are this repo's.
 - **Two shapes break the plain `Verb-Noun` mould on purpose.** Pester suites are
   `<Subject>.Tests.ps1`, mirroring the script under test where there is one
   (`Resolve-BuildModule.Tests.ps1`, `Invoke-SyncValidation.Tests.ps1`), or naming the repo property
-  under test where there is not (`Repo.GeneratedArtifacts.Tests.ps1`, `SharedConfig.Drift.Tests.ps1`,
-  `CMakePresets.Integrity.Tests.ps1`). Modules take the dotted noun form `<Area>.Common.psm1`
+  under test where there is not (`SharedConfig.Drift.Tests.ps1`, `CMakePresets.Integrity.Tests.ps1`). Modules take the dotted noun form `<Area>.Common.psm1`
   (`scripts/windows/modules/Compare-Renderer.Common.psm1`, matching ANTfrastructure's
   `Windows<Area>.Common.psm1`) and export explicitly via `Export-ModuleMember`.
 - **Bash is not renamed to match**: `Get-Verb` is a PowerShell notion, so the shell scripts stay

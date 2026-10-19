@@ -1,0 +1,7 @@
+# Generated output no commit may track; read by the hub's shared/windows/tests/Repo.GeneratedArtifacts.Tests.ps1.
+Testing/            # CTest run output
+docs/build/         # Sphinx output
+**/__pycache__/*
+*.profraw           # llvm coverage
+logs/
+pipeline_cache/

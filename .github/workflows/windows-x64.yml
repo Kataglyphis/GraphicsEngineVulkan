@@ -63,3 +63,10 @@ jobs:
         with:
           path: scripts/windows/tests
           version: '3.4.0'
+
+      # The hub's suite over scripts/windows/generated-artifacts.txt; it finds this repo through GITHUB_WORKSPACE.
+      - name: Run the hub's generated-artifacts suite
+        uses: Kataglyphis/ANTfrastructure/.github/actions/run-pester-suite@develop
+        with:
+          path: third_party/ANTfrastructure/shared/windows/tests/Repo.GeneratedArtifacts.Tests.ps1
+          version: '3.4.0'
