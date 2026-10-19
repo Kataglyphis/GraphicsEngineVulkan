@@ -43,6 +43,9 @@ the GitHub releases themselves.
   which the installers and the Linux desktop entry show. `faviconNew.ico` now holds 16 to 256 px,
   where it had 16 px only, and `Engine_logo.png` is 256 px, the size of the `hicolor/256x256`
   folder it is installed into (it was 200 px).
+- **`docs/source/wsl2_vulkan.rst` is in English** (2026-10-19), with every command and fact kept,
+  and without the chat assistant's closing offer it ended with. `getting_started.md` clones over
+  https, as the family's repositories and submodules do.
 
 ## [1.5.2] - 2026-10-17
 

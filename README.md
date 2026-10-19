@@ -58,7 +58,7 @@ Prerequisites, both platforms, the scenes, packaging and troubleshooting:
 | Building the docs site, the C++ API reference, Graphviz | [docs/source/documentation_workflow.md](docs/source/documentation_workflow.md) |
 | The C++ API reference (Doxygen, on the docs site) | [api/library_root](https://beschleunigerballette.jonasheinle.de/api/library_root.html) |
 | The WebGPU demo in the browser | [docs/source/webgpu_demo.md](docs/source/webgpu_demo.md) |
-| WSL2 with an NVIDIA GPU (German) | [docs/source/wsl2_vulkan.rst](docs/source/wsl2_vulkan.rst) |
+| WSL2 with an NVIDIA GPU | [docs/source/wsl2_vulkan.rst](docs/source/wsl2_vulkan.rst) |
 | Shaders: the Slang to SPIR-V and WGSL build | [docs/shader-build-pipeline.md](docs/shader-build-pipeline.md) |
 | One Slang source for both renderers | [docs/shader-sharing.md](docs/shader-sharing.md) |
 | Model loading | [docs/model-loading.md](docs/model-loading.md) |

@@ -1,91 +1,99 @@
-WSL2 — Vulkan (NVIDIA) benutzen
-================================
+WSL2 — Vulkan (NVIDIA)
+======================
 
-Dieser Abschnitt beschreibt kurze, praktische Schritte, um in WSL2 eine NVIDIA‑GPU für Vulkan‑Applikationen zu nutzen. Wenn nach dem Start deiner Anwendung nur "llvmpipe" (Mesa Software‑Renderer) angezeigt wird, fehlt üblicherweise der NVIDIA‑Vulkan‑ICD in der WSL‑Distribution.
+How to run Vulkan applications on an NVIDIA GPU in WSL2. If your application
+reports only ``llvmpipe`` (Mesa's software renderer), the NVIDIA Vulkan ICD is
+usually missing from the WSL distribution.
 
-Kurzüberblick
+Summary
+-------
+
+- Cause: the Vulkan loader loads only Mesa ICDs (e.g. ``lvp``/``llvmpipe``),
+  because the NVIDIA ICD is not installed or not found.
+- Fix: install the matching headless/ICD package in WSL, restart WSL and check
+  with ``vulkaninfo``.
+
+Prerequisites
 -------------
 
-- Ursache: Der Vulkan‑Loader lädt nur Mesa‑ICDs (z. B. `lvp`/`llvmpipe`) weil der NVIDIA‑ICD nicht installiert oder nicht auffindbar ist.
-- Lösung: das passende Headless/ICD‑Paket in WSL installieren, WSL neu starten und mit `vulkaninfo` verifizieren.
+- Windows: a current NVIDIA driver with WSL/WSLg support (Windows 11
+  recommended). ``nvidia-smi`` in WSL should list the card.
+- WSL distribution: ``apt`` (or its package manager), network access and root.
 
-Voraussetzungen
----------------
+Steps (Debian/Ubuntu-based distributions)
+-----------------------------------------
 
-- Windows‑Seite: aktueller NVIDIA Treiber mit WSL/WSLg‑Unterstützung (Windows 11 empfohlen). `nvidia-smi` sollte in WSL die Karte anzeigen.
-- WSL‑Distribution: Zugriff auf `apt` (oder entsprechender Paketmanager) und Netzwerk/Root‑Rechte.
+1. If needed, install the Vulkan tools (for ``vulkaninfo``):
 
-Schritt‑für‑Schritt (Debian/Ubuntu‑basierte Distros)
-------------------------------------------------------
+   .. code-block:: bash
 
-1. Falls nötig: Vulkan‑Tools installieren (für `vulkaninfo`):
+      sudo apt update
+      sudo apt install vulkan-tools
+      sudo apt install nvidia-driver-595
 
-.. code-block:: bash
+2. Find the installed NVIDIA driver version (optional):
 
-   sudo apt update
-   sudo apt install vulkan-tools
-   sudo apt install nvidia-driver-595
+   .. code-block:: bash
 
-2. Bestimme die installierte NVIDIA Treiber‑Version (optional):
+      nvidia-smi
 
-.. code-block:: bash
+      # Note the Driver Version (e.g. 595.97); package names often carry its major version.
 
-   nvidia-smi
+3. Install the matching headless/ICD package in WSL, here for driver version 595:
 
-   # Notiere die Driver Version (z. B. 595.97) — die Paketnamen enthalten oft die Hauptversionsnummer.
+   .. code-block:: bash
 
-3. Installiere das passende Headless/ICD‑Paket in WSL. Beispiel für Treiberversion 595:
+      # List the available headless packages
+      apt search nvidia-headless | sed -n '1,200p'
 
-.. code-block:: bash
+      # Example (replace it if your distribution shows other package names):
+      sudo apt install --reinstall nvidia-headless-595 nvidia-utils-595
 
-   # Suche verfügbare Headless‑Pakete
-   apt search nvidia-headless | sed -n '1,200p'
+      # Optional, if available:
+      sudo apt install libnvidia-gl-595 libnvidia-vulkan-595
 
-   # Beispiel (ersetzen, falls deine Distribution andere Paketnamen zeigt):
-   sudo apt install --reinstall nvidia-headless-595 nvidia-utils-595
+4. Shut WSL down completely (from Windows) and start it again:
 
-   # Optional, falls vorhanden:
-   sudo apt install libnvidia-gl-595 libnvidia-vulkan-595
+   .. code-block:: powershell
 
-4. Beende WSL vollständig (auf der Windows‑Seite) und starte es neu:
+      wsl --shutdown
 
-.. code-block:: powershell
+      # Then open WSL again (e.g. restart the terminal).
 
-   wsl --shutdown
+5. Check in WSL that the NVIDIA ICD is there and ``vulkaninfo`` shows the GPU:
 
-   # Dann WSL erneut öffnen (z. B. Terminal neu starten).
+   .. code-block:: bash
 
-5. Verifiziere in WSL, ob der NVIDIA‑ICD sichtbar ist und `vulkaninfo` die GPU zeigt:
+      ls -l /usr/share/vulkan/icd.d
+      vulkaninfo | grep -i 'Device Name' -A2
 
-.. code-block:: bash
+      # or the full output
+      vulkaninfo | head -n 60
 
-   ls -l /usr/share/vulkan/icd.d
-   vulkaninfo | grep -i 'Device Name' -A2
+Temporary workaround
+--------------------
 
-   # oder vollständige Ausgabe
-   vulkaninfo | head -n 60
-
-Temporärer Workaround
-----------------------
-
-Falls ein Vendor‑JSON bereits existiert, du ihn aber nicht als Standard geladen siehst, kannst du testweise die Variable `VK_ICD_FILENAMES` setzen:
+If a vendor JSON exists but is not loaded by default, set ``VK_ICD_FILENAMES``
+to it for a test:
 
 .. code-block:: bash
 
    export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia.json
    vulkaninfo | head -n 20
 
-Hinweise und Troubleshooting
-----------------------------
+Troubleshooting
+---------------
 
-- Wenn `nvidia-smi` in WSL funktioniert, aber trotzdem nur `llvmpipe` erscheint, fehlt höchstwahrscheinlich das Paket `libnvidia-vulkan-<version>` oder die ICD‑JSON in `/usr/share/vulkan/icd.d`.
-- In Container/VM‑Setups brauchst du zusätzlich GPU‑Passthrough oder das `nvidia-container-toolkit`.
-- Nach Paketänderungen immer `wsl --shutdown` aus Windows ausführen — ein gewöhnlicher WSL‑Neustart reicht nicht.
+- ``nvidia-smi`` works in WSL but only ``llvmpipe`` appears: most likely the
+  ``libnvidia-vulkan-<version>`` package or the ICD JSON in
+  ``/usr/share/vulkan/icd.d`` is missing.
+- Container and VM setups also need GPU passthrough or the
+  ``nvidia-container-toolkit``.
+- After changing packages, always run ``wsl --shutdown`` from Windows; an
+  ordinary WSL restart is not enough.
 
-Weiterführende Links
---------------------
+Links
+-----
 
-- NVIDIA WSL Dokumentation: https://developer.nvidia.com/wsl
-- Vulkan Loader & ICDs: https://github.com/KhronosGroup/Vulkan-Loader
-
-Wenn du möchtest, kann ich die exakten Paketnamen für deine Distribution suchen und die passenden `apt`‑Befehle vorschlagen — poste dazu einfach `nvidia-smi` und `lsb_release -a` falls du unsicher bist.
+- NVIDIA's WSL documentation: https://developer.nvidia.com/wsl
+- Vulkan loader and ICDs: https://github.com/KhronosGroup/Vulkan-Loader

@@ -15,7 +15,7 @@ Make sure these tools are available before you build the project:
 ## Clone the Repository
 
 ```bash
-git clone --branch develop --recurse-submodules git@github.com:Kataglyphis/BeschleunigerBallett.git
+git clone --branch develop --recurse-submodules https://github.com/Kataglyphis/BeschleunigerBallett.git
 cd BeschleunigerBallett
 ```
 
@@ -176,4 +176,4 @@ sudo apt install libvulkan1 vulkan-tools vulkan-validationlayers
 
 On Windows this shows up as Debug builds aborting at startup with exit code `-1073740791` (`0xC0000409`) right after logging `Validation layers requested, but not available!`. Install the Vulkan SDK (`winget install VulkanSDK`), or set `VK_LAYER_PATH` to a directory containing `VkLayer_khronos_validation.dll`/`.json`. Profile and Release builds run without validation layers. When running the AddressSanitizer Debug build manually, keep the `ASAN_OPTIONS` `log_path` relative (an absolute `C:\...` path breaks ASAN option parsing at the drive-letter colon) — the `Invoke-ClangClDebug.ps1` helper already handles this.
 
-In WSL2, a run that shows only `llvmpipe` (Mesa's software renderer) is missing the NVIDIA Vulkan ICD. Installing it and restarting WSL (`wsl --shutdown`), step by step and in German: [WSL2 — Vulkan (NVIDIA)](wsl2_vulkan.rst).
+In WSL2, a run that shows only `llvmpipe` (Mesa's software renderer) is missing the NVIDIA Vulkan ICD. Installing it and restarting WSL (`wsl --shutdown`), step by step: [WSL2 — Vulkan (NVIDIA)](wsl2_vulkan.rst).
