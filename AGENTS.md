@@ -602,8 +602,10 @@ riscv64 lane, and a lane's badge shows only its runs started by hand.
 
 **Every push to `main` is a release**
 ([the hub's release](third_party/ANTfrastructure/docs/branch-and-release-strategy.md#the-release)) of
-`VERSION.txt`'s version, with every lane's packages gathered by
-`scripts/linux/collect-release-assets.sh` (its suite is a job of `linux-x64.yml`).
+`VERSION.txt`'s version. `release.yml` calls the hub's
+[`release-publish.yml`](third_party/ANTfrastructure/docs/branch-and-release-strategy.md#the-reusable-release-workflow)
+twice: the version check before the lanes, and the job that collects every lane's packages with
+the hub's `collect-release-assets.sh` (its `collect:` block holds this repo's options) and tags.
 `gh workflow run release.yml --ref develop -f dry-run=true` proves it on `develop` without
 publishing.
 
@@ -855,8 +857,8 @@ wasm budget, and uploads `docs/build/html/` as the `bb-docs-site` artifact. `lin
 back) calls `build-docs.yml` with `artifact: bb-docs-site`: the hub's `.htaccess` and 404 page go
 in, a dead internal link or anchor fails the job (`verify_site_links.py`), and the upload runs only
 on a push to `develop` or `main`, never on a pull request or a dispatch. The `SERVER`, `USERNAME`
-and `PW` secrets map onto its `FTP_*`. `release.yml` downloads every artifact of its run, so
-`collect-release-assets.sh` skips both uploads of the site (`*-docs-site`, `docs-site-*`).
+and `PW` secrets map onto its `FTP_*`. `release.yml` downloads every artifact of its run, and
+the hub's collector skips both uploads of the site (`*-docs-site`, `docs-site-*`).
 
 What follows from living in `linux-x64.yml`: a docs-only push publishes nothing (`paths-ignore`),
 and a newer push to `develop` cancels the run, an upload in flight included. The workflow and

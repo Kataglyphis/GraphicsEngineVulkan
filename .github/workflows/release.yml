@@ -22,35 +22,16 @@ concurrency:
 jobs:
   # A minute, so a merge without a new version stops before hours of lanes; elsewhere only a dry run runs.
   version:
-    name: Version not released yet
     if: github.ref == 'refs/heads/main' || inputs.dry-run
-    runs-on: ubuntu-26.04
-    timeout-minutes: 10
+    # The called workflow's publish job asks for write; less makes GitHub reject the whole run.
     permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      # Only the hub, for its release script; the vendored libraries stay out.
-      - name: Fetch the hub
-        run: git submodule update --init --depth 1 third_party/ANTfrastructure
-
-      # A dry run goes on past a failed check, which then only says where a release would stop.
-      - name: VERSION.txt's version has a CHANGELOG section and no release yet
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-          DRY_RUN: ${{ inputs.dry-run }}
-        run: |
-          if ! bash third_party/ANTfrastructure/linux/scripts/06-packaging/publish-github-release.sh \
-              --version-file VERSION.txt --changelog CHANGELOG.md --name BeschleunigerBallett --check; then
-            [ "${DRY_RUN}" = true ] || exit 1
-            echo "::warning::a release from this commit would stop at the version check"
-          fi
+      contents: write
+    uses: Kataglyphis/ANTfrastructure/.github/workflows/release-publish.yml@develop
+    with:
+      stage: check
+      name: BeschleunigerBallett
+      version-file: VERSION.txt
+      dry-run: ${{ inputs.dry-run == true }}
 
   # The lanes on-request.yml calls, plus linux-x64; each grants what its lane's jobs ask for.
   linux-x64:
@@ -93,46 +74,26 @@ jobs:
 
   # needs: every lane, so one red or cancelled lane means no tag and no release.
   release:
-    name: Tag and publish the release
     needs: [linux-x64, linux-arm64, linux-riscv64, windows-x64, windows-arm64-cross]
-    runs-on: ubuntu-26.04
-    timeout-minutes: 20
     permissions:
       contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Fetch the hub
-        run: git submodule update --init --depth 1 third_party/ANTfrastructure
-
-      - name: Download every lane's uploads
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          path: artifacts
-
-      - name: Collect the packages
-        run: bash scripts/linux/collect-release-assets.sh artifacts release
-
-      - name: Dry run, what the release would carry
-        if: inputs.dry-run
-        run: |
-          {
-            echo "### Dry run: the release would carry these files"
-            echo '```'
-            (cd release && sha256sum -- * && du -ch -- * | tail -n 1)
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-          ls -la release
-
-      - name: Tag v<version> and publish
-        if: ${{ !inputs.dry-run }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: >-
-          bash third_party/ANTfrastructure/linux/scripts/06-packaging/publish-github-release.sh
-          --version-file VERSION.txt --changelog CHANGELOG.md --name BeschleunigerBallett --assets release
+    uses: Kataglyphis/ANTfrastructure/.github/workflows/release-publish.yml@develop
+    with:
+      stage: publish
+      name: BeschleunigerBallett
+      version-file: VERSION.txt
+      dry-run: ${{ inputs.dry-run == true }}
+      # CPack's packages, never the bundle/ they zip; test uploads are no deliverable, docs sites the hub skips.
+      collect: |
+        --skip *-tests
+        --skip *-test-results
+        --exclude */bundle/*
+        --include *.deb
+        --include *.AppImage
+        --include *.tar.gz
+        --include *.tgz
+        --include *.msi
+        --include *.msix
+        --include *.zip
+        --include *.exe
+        --flatpak-arch-from-suffix

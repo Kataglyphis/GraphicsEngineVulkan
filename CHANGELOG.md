@@ -31,6 +31,12 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **`release.yml` calls the hub's `release-publish.yml`** (2026-10-19, hub c3fc7585): `stage: check`
+  before the lanes, `stage: publish` after all five, with this repo's collector options in its
+  `collect:` block. `scripts/linux/collect-release-assets.sh` and its suite are gone, and so is the
+  suite's step in `linux-x64.yml`, whose job runs the `.deb` layout suite alone (`deb-layout`). Over
+  uploads shaped like this repo's, in `:latest`, the hub's collector with those options gathered
+  the same 15 files as the old script.
 - **The docs site publishes through the hub's `build-docs.yml`** (2026-10-19). The x64 `release` job
   uploads `docs/build/html/` as `bb-docs-site` after the wasm budget, and `linux-x64.yml`'s new `docs`
   job hands it to the hub's reusable lane: the hub's `.htaccess` (HTTPS redirect, HSTS, the FTP state
