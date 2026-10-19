@@ -1,10 +1,8 @@
 # Sphinx configuration: https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
-import re
 from pathlib import Path
 
-from docutils.nodes import make_id
 from pygments.lexers.special import TextLexer
 
 # An editable install from the hub's DocumANTation submodule (requirements.txt).
@@ -107,17 +105,6 @@ graphviz_output_format = "svg"
 suppress_warnings = ["duplicate_declaration.cpp"]
 
 
-# Exhale's tree view links its labels with their case kept; the ids docutils makes from them are lowercase.
-_EXHALE_TREE_LINK = re.compile(r'(href="[^"#]+\.html#)([^"]+)"')
-
-
-def _exhale_tree_anchors(app, relative_path, parent_docname, content):
-    """Point the tree views library_root includes at the ids docutils gives Exhale's labels."""
-    if relative_path.name.endswith("_view_hierarchy.rst.include"):
-        content[0] = _EXHALE_TREE_LINK.sub(lambda m: f'{m.group(1)}{make_id(m.group(2))}"', content[0])
-
-
 def setup(app):
-    app.connect("include-read", _exhale_tree_anchors)
     # GitHub draws a mermaid fence (model-loading.md); the site shows its source instead of failing -W.
     app.add_lexer("mermaid", TextLexer)

@@ -61,7 +61,8 @@ the GitHub releases themselves.
   links to unpublished repository files go to GitHub, and the logo, favicon and title are the
   family's. The `custom.css` symlink went; `beschleunigerballett.css` keeps the dark hero. The API
   tree view's 176 dead anchors (Exhale links its labels with their case kept, docutils lowercases
-  the ids) now point at the ids.
+  the ids) now point at the ids, through the theme's own hook since DocumANTation a58ae23 (hub
+  89b098c9); `conf.py`'s copy of it went.
 - **The fourteen hand-written guides are on the site** (2026-10-19). `docs/*.md` (path tracing,
   clouds, the shader pipeline, GPU golden testing, …) moved into `docs/source/` and its toctree,
   where Sphinx never read them before. Every link and code pointer to them follows, the
