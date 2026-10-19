@@ -59,6 +59,7 @@ Build and maintenance guide for BeschleunigerBallett.
    graphviz_files
    wsl2_vulkan
    webgpu_demo.md
+   literature.md
 
 .. The Exhale-generated API tree. The card above links to it, but a card is
    not a toctree, so without this entry Sphinx reports "document isn't

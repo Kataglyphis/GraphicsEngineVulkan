@@ -1213,7 +1213,7 @@ ANTfrastructure (see the rule above), project-specific ones here.
 
 | Where | Owns |
 | --- | --- |
-| `README.md` | Repo-level orientation, feature highlights |
+| `README.md` | The front page: what the project is, highlights, the quick start, one row per guide ([the family's README rule](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/repository-family.md#the-readme-rule)) |
 | `BACKLOG.md` | **All** open work: sized commitments, then unsized ideas and recurring chores |
 | `AGENTS.md` (this file) | How to build/test/run here, invariants, code conventions |
 | `docs/cpp-renderer-improvements.md` | C++ engine chronological change log |
@@ -1230,7 +1230,7 @@ ANTfrastructure (see the rule above), project-specific ones here.
 | `docs/clouds.md` | Volumetric clouds: pipeline shape, estimator, UBO/constants tables, queue ownership, compositing contract |
 | `docs/renderer-bounds-invariant.md` | **Pointer only.** WebGPU renderer bounds invariant; owned by OxidANT at [`third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md`](third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md) |
 | `docs/LICENSES-README.md` | Third-party license documentation (German) |
-| `docs/source/` | Sphinx pages (`README.md`, `getting_started.md`, `documentation_workflow.md`, `webgpu_demo.md`, `wsl2_vulkan.rst`, and `graphviz_files.rst`, which `graphviz_generator.py` writes during the docs build) |
+| `docs/source/` | Sphinx pages (`README.md`, `getting_started.md`, `documentation_workflow.md`, `webgpu_demo.md`, `wsl2_vulkan.rst`, `literature.md`, and `graphviz_files.rst`, which `graphviz_generator.py` writes during the docs build) |
 | `scripts/agentic-loop/README.md` | Agentic loop consumer half: what this repo configures (and what deviates from upstream defaults), its two runners, its two prompt overlays — loop architecture and usage live in the two ANTfrastructure docs below |
 | `third_party/ANTfrastructure/docs/windows-builds.md` | The Windows container image: build sequence, Stevedore setup, invariants |
 | `third_party/ANTfrastructure/docs/windows-container-build-performance.md` | Building inside the image: transports, reuse pattern, safety rails |
@@ -1244,4 +1244,5 @@ ANTfrastructure (see the rule above), project-specific ones here.
 | `third_party/ANTfrastructure/cmake/README.md` | The shared CMake modules: how to put them on `CMAKE_MODULE_PATH`, what each provides, what stays project-local |
 
 - Keep docs, scripts, and presets aligned: when you change build behavior, update
-  `README.md`, `docs/source/getting_started.md`, and this file in the same change.
+  `docs/source/getting_started.md` and this file in the same change, and `README.md`
+  only when its quick start or highlights change.

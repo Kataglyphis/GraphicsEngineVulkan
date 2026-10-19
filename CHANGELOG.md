@@ -31,6 +31,13 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **The README is a short overview** (2026-10-19, owner: every README in the family): header,
+  badges, one paragraph, six highlights, the quick start (cloned over https) and one row per guide,
+  after ANTfrastructure's README rule. What left it moved into the docs: the scene licence table to
+  `docs/source/getting_started.md` § Scenes, the full feature list, the repository map and the
+  roadmap to `docs/source/README.md`, the literature list to the new `docs/source/literature.md`,
+  and the WSL2 pointer to the troubleshooting section. Contributing, contact and licence are the
+  family page's (`docs/repository-family.md` in the hub).
 - **The family's ant replaces the old logos** (2026-10-17, owner: one icon in every repository):
   `images/logo.png` in the README, and `Engine_logo.png`, `Engine_logo.bmp` and `faviconNew.ico`,
   which the installers and the Linux desktop entry show. `faviconNew.ico` now holds 16 to 256 px,

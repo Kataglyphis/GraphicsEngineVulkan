@@ -8,263 +8,77 @@
   <h4>Experimental graphics engine and renderer playground for Vulkan, a Rust WebGPU sibling renderer, modern CMake, testing, packaging, and optional Rust integration.</h4>
 </div>
 
-<div align="center"> 
-  <br> 
-  <a href="https://jonasheinle.de"><img src="images/vulkan-logo.png" alt="VulkanEngine" width="200"></a>
-  <a href="https://jonasheinle.de"><img src="images/Engine_logo.png" alt="VulkanEngine" width="200"></a>
-  <a href="https://jonasheinle.de"><img src="images/glm_logo.png" alt="VulkanEngine" width="200"></a>
-</div>
-
-see also [**__Official homepage__**](https://beschleunigerballette.jonasheinle.de/). 
-
 [![Linux arm64 · build + test](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-arm64.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-arm64.yml)
 [![Linux x64 · build + test](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-x64.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-x64.yml)
 [![Linux riscv64 · cross build + test](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-riscv64.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-riscv64.yml)
 [![Windows x64 · build + test](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/windows-x64.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/windows-x64.yml)
 [![Windows arm64 · cross build + test](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/windows-arm64-cross.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/windows-arm64-cross.yml)
 [![Lint gates](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/lint-gates.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/lint-gates.yml)
-[![Submodule pins](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/submodule-pins.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/submodule-pins.yml)  
+[![Submodule pins](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/submodule-pins.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/submodule-pins.yml)
 [![CodeQL](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/github-code-scanning/codeql)
 [![Automatic Dependency Submission](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/dependency-graph/auto-submission/badge.svg)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/dependency-graph/auto-submission)
-[![TopLang](https://img.shields.io/github/languages/top/Kataglyphis/BeschleunigerBallett)]()  
+[![TopLang](https://img.shields.io/github/languages/top/Kataglyphis/BeschleunigerBallett)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=BX9AVVES2P9LN)
 [![Twitter](https://img.shields.io/twitter/follow/Cataglyphis_?style=social)](https://twitter.com/Cataglyphis_)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UC3LZiH4sZzzaVBCUV8knYeg?style=social)](https://www.youtube.com/channel/UC3LZiH4sZzzaVBCUV8knYeg)
 
-## Overview
+[**Docs site**](https://beschleunigerballette.jonasheinle.de/)
 
 BeschleunigerBallett is a renderer and graphics-engine playground used to explore modern graphics APIs and the surrounding engineering workflow. The repository combines a C++23-modules Vulkan engine, a companion Rust WebGPU renderer (native + browser), build automation, packaging, testing, documentation, and Rust integration.
 
 ## Highlights
 
-- Vulkan renderer (C++23 modules) with forward + deferred rasterization, ray tracing, path tracing, PBR, cascaded shadow maps (consumed by both lighting paths), skybox, volumetric clouds, OBJ and glTF 2.0/GLB loading, and mip mapping
-- VMA-backed memory, fence-synced uploads with a persistent staging buffer, a persisted `VkPipelineCache`, and fail-fast Vulkan error handling (exceptions are disabled project-wide)
-- Companion Rust WebGPU renderer (`third_party/OxidANT/crates/webgpu_renderer`): glTF 2.0/GLB, PBR + IBL, CSM, SSAO, bloom, skinning, animations, LOD — runs natively and in the browser; shares Slang shader sources with the C++ Vulkan renderer (see `docs/shader-sharing.md`)
-- Tooling around CMake presets, CI, code coverage, benchmarking, fuzzing (including a real OBJ-parsing fuzz target), packaging, Sphinx, Doxygen, and Graphviz
-- Linux and Windows as the primary development targets
+- **Vulkan renderer in C++23 modules:** forward and deferred rasterization, ray tracing, path tracing, PBR, cascaded shadow maps, skybox, volumetric clouds.
+- **Fail-fast engine plumbing:** VMA memory, fence-synced uploads, a persisted `VkPipelineCache`, exceptions disabled project-wide.
+- **A Rust WebGPU sibling renderer** from [OxidANT](https://github.com/Kataglyphis/OxidANT), native and [in the browser](https://beschleunigerballette.jonasheinle.de/webgpu_demo.html), on the same Slang shaders.
+- **OBJ and glTF 2.0/GLB scenes** from [AssetANT](https://github.com/Kataglyphis/AssetANT), pinned by SHA-256 in `Resources/assets.lock`.
+- **Five CI lanes:** Linux x64, arm64 and riscv64, Windows x64 and arm64; the GPU suites render on llvmpipe and lavapipe.
+- **Tooling:** CMake presets, coverage, benchmarks, fuzzing, CPack and MSIX packages, Sphinx and Doxygen docs.
 
-## Repository Layout
-
-| Path | Purpose |
-| --- | --- |
-| `Src/` | Engine and renderer source code |
-| `Resources/` | Shaders, textures, test models, and `assets.lock`, which pins the scenes (see [Scenes](#scenes)) |
-| `cmake/` | This project's CMake policy on top of ANTfrastructure's modules |
-| `scripts/linux/` | Linux build, test, coverage, analysis, and docs helpers |
-| `scripts/windows/` | Windows build, run and validation helpers |
-| `scripts/agentic-loop/` | Planner/executor loop config, runners and prompt overlays |
-| `Test/` | Tests |
-| `docs/` | Topic docs specific to this repo |
-| `docs/source/` | Hand-written Sphinx pages |
-| `Documents/` | Generated PDF and reference artifacts |
-| `third_party/` | Third-party dependencies and submodules |
-
-## Quick Start
-
-Search the tree with [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`):
-`winget install --id BurntSushi.ripgrep.MSVC -e --scope user` on Windows,
-`apt install ripgrep` on Linux.
-
-### Clone
+## Quick start
 
 ```bash
-git clone --branch develop --recurse-submodules git@github.com:Kataglyphis/BeschleunigerBallett.git
+git clone --recurse-submodules --branch develop https://github.com/Kataglyphis/BeschleunigerBallett.git
 cd BeschleunigerBallett
+cmake --preset linux-debug-clang && cmake --build build && ctest --test-dir build --output-on-failure
 ```
 
-### Configure and build with CMake presets
-
-```bash
-cmake --list-presets
-cmake --preset <preset-name>
-cmake --build build --config Debug
-ctest --test-dir build --output-on-failure
-```
-
-A host CMake older than 4.1 cannot read `CMakePresets.json` (`"version": 10`)
-and fails `cmake --list-presets` with `Unrecognized "version" field` — read
-the file itself, or the Windows configurations table in
-[AGENTS.md](AGENTS.md#windows-configurations-build-windowsps1), instead. On
-Windows, prefer `scripts/windows/Build-Windows-Container.ps1`, which builds
-inside a container that already has a new enough CMake.
-
-Full prerequisites, the per-platform workflows (Linux helper scripts, the Windows `Build-Windows.ps1` configurations, the containerized Stevedore build), packaging (CPack/MSIX), and troubleshooting live in [docs/source/getting_started.md](docs/source/getting_started.md).
+On Windows, build in the toolchain container instead (Stevedore):
+`pwsh -ExecutionPolicy Bypass -File .\scripts\windows\Build-Windows-Container.ps1`.
+Prerequisites, both platforms, the scenes, packaging and troubleshooting:
+[docs/source/getting_started.md](docs/source/getting_started.md).
 
 ## Documentation
 
-The repository ships two documentation entry points:
+| Topic | Read |
+| --- | --- |
+| Getting started: prerequisites, Linux, Windows, the container build, packaging, troubleshooting | [docs/source/getting_started.md](docs/source/getting_started.md) |
+| The scenes, how they are fetched, and their licences | [docs/source/getting_started.md § Scenes](docs/source/getting_started.md#scenes) |
+| Project overview: scope, repository map, roadmap | [docs/source/README.md](docs/source/README.md) |
+| Building the docs site, the C++ API reference, Graphviz | [docs/source/documentation_workflow.md](docs/source/documentation_workflow.md) |
+| The C++ API reference (Doxygen, on the docs site) | [api/library_root](https://beschleunigerballette.jonasheinle.de/api/library_root.html) |
+| The WebGPU demo in the browser | [docs/source/webgpu_demo.md](docs/source/webgpu_demo.md) |
+| WSL2 with an NVIDIA GPU (German) | [docs/source/wsl2_vulkan.rst](docs/source/wsl2_vulkan.rst) |
+| Shaders: the Slang to SPIR-V and WGSL build | [docs/shader-build-pipeline.md](docs/shader-build-pipeline.md) |
+| One Slang source for both renderers | [docs/shader-sharing.md](docs/shader-sharing.md) |
+| Model loading | [docs/model-loading.md](docs/model-loading.md) |
+| Path tracing | [docs/path-tracing.md](docs/path-tracing.md) |
+| Volumetric clouds | [docs/clouds.md](docs/clouds.md) |
+| GPU golden tests and synchronization validation | [docs/gpu-golden-testing.md](docs/gpu-golden-testing.md) |
+| clang-format, clang-tidy, cmake-format | [docs/code-quality.md](docs/code-quality.md) |
+| The container build's transports and caches | [docs/container-build-caching.md](docs/container-build-caching.md) |
+| The C++ engine's change log | [docs/cpp-renderer-improvements.md](docs/cpp-renderer-improvements.md) |
+| Colour-space audit | [docs/webgpu-srgb-audit.md](docs/webgpu-srgb-audit.md) |
+| The Rust WebGPU renderer's roadmap (OxidANT) | [webgpu-renderer-roadmap.md](https://github.com/Kataglyphis/OxidANT/blob/develop/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) |
+| Third-party licences (German) | [docs/LICENSES-README.md](docs/LICENSES-README.md) |
+| Literature: tutorials and papers behind the renderer | [docs/source/literature.md](docs/source/literature.md) |
+| Rules for agents and contributors, and every topic's one home | [AGENTS.md](AGENTS.md) |
+| What CI runs, and what it does not | [AGENTS.md § What CI runs](AGENTS.md#what-ci-runs-and-what-it-does-not) |
+| Build images, CI actions and shared scripts (ANTfrastructure) | [docs/INDEX.md](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/INDEX.md) |
+| Known work | [BACKLOG.md](BACKLOG.md) |
+| Changes | [CHANGELOG.md](CHANGELOG.md) |
 
-- this README for repository-level orientation
-- the Sphinx site under `docs/` for getting started, workflow notes, Graphviz output, and optional API reference material
+## Contributing and contact
 
-Each topic has exactly one home; the full topic-guide inventory is the Docs table in [AGENTS.md](AGENTS.md). Renderer-agnostic and Windows-container knowledge lives in the ANTfrastructure submodule so other projects can consume it (see the "Reusable Work Belongs in ANTfrastructure" rule there).
-
-To build the Sphinx HTML docs locally, see
-[docs/source/documentation_workflow.md](docs/source/documentation_workflow.md).
-
-If Doxygen XML is available, the Sphinx build automatically includes the generated C++ API reference. If no XML is present, the hand-written docs still build cleanly and the API page is a placeholder that says so (`docs/source/conf.py` writes it).
-
-## Tests and Analysis
-
-- `ctest` runs the configured test suite from the active build directory
-- `scripts/linux/run-ctest.sh` wraps Linux test execution
-- `scripts/linux/build-coverage-gcovr.sh` and `scripts/linux/build-coverage-llvm.sh` generate coverage reports
-- `scripts/linux/run-perf-suite.sh` runs performance-oriented checks
-- `scripts/windows/Build-Windows.ps1` can orchestrate formatting, tidy, builds, tests, and packaging
-- CI runs the commit suite on every arch lane: Linux x64 on every push, the others when a commit message asks with the ci token or by hand (riscv64 runs its GPU suites weekly, in shards); with no GPU on any runner, the GPU suites render on a CPU Vulkan device (llvmpipe on Linux, lavapipe on the Windows runners, `scripts/windows/Invoke-LavapipeTests.ps1`). What each lane runs and what it leaves out: [AGENTS.md § What CI runs](AGENTS.md#what-ci-runs-and-what-it-does-not)
-
-## Dependency Updates
-
-Submodule bumps go through `scripts/linux/renovate-local.sh`, not by hand; how
-and where to run it is in [AGENTS.md § Dependency upgrades](AGENTS.md#dependency-upgrades-renovate-as-a-local-cli)
-and the rationale in
-[`third_party/ANTfrastructure/docs/dependency-updates.md`](third_party/ANTfrastructure/docs/dependency-updates.md).
-
-## Packaging
-
-Linux binary packages (TGZ, DEB and, unless `CPACK_ENABLE_APPIMAGE=OFF`, an AppImage) are generated with CPack; the Windows release build can produce a signed MSIX. The workflows live in [docs/source/getting_started.md](docs/source/getting_started.md#packaging).
-
-## Shaders
-
-Shaders are written in [Slang](https://shader-slang.com/) under
-`Resources/ShadersSlang/` and compiled ahead of time by
-`scripts/windows/Build-SlangShaders.ps1` / `scripts/linux/compile-slang-shaders.sh`
-to SPIR-V and WGSL. See `docs/shader-build-pipeline.md` and AGENTS.md §
-Shaders, which walks the full pipeline.
-
-## Scenes
-
-The scenes are [AssetANT](https://github.com/Kataglyphis/AssetANT) release archives, not files in
-this repository: `Resources/assets.lock` pins each by SHA-256 and URL, and a configure fetches the
-two that the code, the tests and the packages read into `Resources/Models`, where the engine has
-always loaded them. `-DKATAGLYPHIS_FETCH_ALL_ASSETS=ON` fetches all fourteen for the model picker,
-and `cmake -P cmake/FetchAssets.cmake` fetches without configuring; details in
-[docs/source/getting_started.md](docs/source/getting_started.md#scenes). Each fetched scene carries
-its credit in `ATTRIBUTION.txt`, and AssetANT's `assets/<name>/asset.json` records where it came
-from and how its license was established.
-
-| Scene | Where | License |
-| --- | --- | --- |
-| `crytek-sponza` | AssetANT; fetched by default and installed with the packages | CC BY 3.0: © 2010 Frank Meinl, Crytek, after Marko Dabrovic's Sponza; corrections by Morgan McGuire |
-| `Dinosaurs` | AssetANT; fetched by default | unknown; the Triceratops mesh is named after joel3d.com |
-| `Sulo` | AssetANT; `KATAGLYPHIS_FETCH_ALL_ASSETS` | modelled by [Sulo456](https://github.com/Sulo456), published with his permission |
-| the other eleven | AssetANT; `KATAGLYPHIS_FETCH_ALL_ASSETS` | per scene, in AssetANT's README |
-| `VikingRoom` | tracked, a test fixture | CC BY 4.0: "Viking room" by nigelgoh on Sketchfab, the Vulkan Tutorial's copy with its material renamed |
-| `GltfTest`, `ShadowTest`, `Plane`, `plane.obj`, `suzanne.obj` | tracked, test fixtures | — |
-
-## Docker and Build Environments
-
-Containerized and reproducible environment details live in [ANTfrastructure](https://github.com/Kataglyphis/ANTfrastructure). On Windows the container runtime is [Stevedore](https://github.com/slonopotamus/stevedore); `scripts/windows/Build-Windows-Container.ps1` builds this project inside the prebuilt toolchain image (sources travel via a tar-pipe into a reusable container by default, `-UseBindMount` opts into a bind mount — see [`docs/container-build-caching.md`](docs/container-build-caching.md)), and `.github/workflows/windows-x64.yml` runs the same `Build-Windows.ps1` in the same image in CI (bind-mounted, one container per step).
-
-## Roadmap
-
-- Keep the renderer and tooling foundations healthy on Linux and Windows
-- Expand test, fuzz, and performance coverage
-- Continue documenting build, packaging, and API workflows
-- Keep generated reference material easy to reproduce locally
-
-All open work is consolidated in [`BACKLOG.md`](BACKLOG.md) — sized
-commitments first, then unsized ideas and recurring chores (perf tests,
-periodic profile/TSan/sync-validation runs).
-Renderer-specific plans and status live in `docs/`:
-`cpp-renderer-improvements.md` (C++ engine improvement campaign),
-`shader-sharing.md` (sharing shader code between both renderers) and
-`webgpu-srgb-audit.md` (color-space audit).
-The Rust WebGPU renderer's own plans moved to the repository that owns that
-renderer, `third_party/OxidANT/crates/webgpu_renderer/docs/`:
-[`webgpu-renderer-roadmap.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-renderer-roadmap.md) (status per feature),
-[`webgpu-gltf-rust-plan.md`](third_party/OxidANT/crates/webgpu_renderer/docs/webgpu-gltf-rust-plan.md) (the original glTF loading plan) and
-[`renderer-bounds-invariant.md`](third_party/OxidANT/crates/webgpu_renderer/docs/renderer-bounds-invariant.md) (the bounds rule).
-The `docs/` files of those three names here are pointers, not copies.
-
-## Contributing
-
-Contributions are welcome. A good change keeps code, docs, and build scripts aligned.
-
-1. Fork the project
-2. Create a feature branch
-3. Implement and test the change
-4. Update documentation when behavior or workflows change
-5. Open a pull request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Third-party Licenses
-
-See the full third-party license overview in [docs/LICENSES-README.md](docs/LICENSES-README.md).
-
-## Contact
-
-Jonas Heinle - [@Cataglyphis_](https://twitter.com/Cataglyphis_) - renderdude@jotrockenmitlocken.de
-
-Project link: [https://github.com/Kataglyphis/BeschleunigerBallett](https://github.com/Kataglyphis/BeschleunigerBallett)
-
-## Further Reading
-
-- [Official homepage](https://beschleunigerballette.jonasheinle.de/)
-- [ANTfrastructure](https://github.com/Kataglyphis/ANTfrastructure)
-- [API reference (Doxygen, on the deployed docs site)](https://beschleunigerballette.jonasheinle.de/api/library_root.html)
-- [Sphinx docs source](docs/source)
-
-## Literature 
-
-Some very helpful literature, tutorials, etc. 
-
-* [View Frustum Culling](http://www.lighthouse3d.com/tutorials/view-frustum-culling/geometric-approach-extracting-the-planes/)
-
-OpenGL 
-* [learnopengl.com](https://learnopengl.com/)
-* [ogldev.org](https://ogldev.org/)
-* [Cascaded Shadow Maps](https://ahbejarano.gitbook.io/lwjglgamedev/chapter26)
-* [Compute Shader in OpenGL](https://antongerdelan.net/opengl/compute.html)
-
-Clouds
-* [pbr-book](https://www.pbr-book.org/)
-* [Inigo Quilez](https://iquilezles.org)
-* [Shadertoy Horizon Zero Dawn](https://www.shadertoy.com/view/WddSDr)
-* [Sebastian Lague](https://m.youtube.com/watch?v=4QOcCGI6xOU&t=97s)
-* [Horizon Zero Dawn](http://advances.realtimerendering.com/s2015/The%20Real-time%20Volumetric%20Cloudscapes%20of%20Horizon%20-%20Zero%20Dawn%20-%20ARTR.pdf)
-* [Clouds and noise](https://thebookofshaders.com/12/)
-* [Shadertoy Clouds using 3D Perlin noise](https://www.shadertoy.com/view/XlKyRw)
-
-Noise
-* [Worley noise online demo](https://github.com/Erkaman/glsl-worley)
-
-Vulkan
-* [Udemy course by Ben Cook](https://www.udemy.com/share/102M903@JMHgpMsdMW336k2s5Ftz9FMx769wYAEQ7p6GMAPBsFuVUbWRgq7k2uY6qBCG6UWNPQ==/)
-* [Vulkan Tutorial](https://vulkan-tutorial.com/)
-* [Vulkan Raytracing Tutorial](https://developer.nvidia.com/rtx/raytracing/vkray)
-* [Vulkan Tutorial; especially chapter about integrating imgui](https://frguthmann.github.io/posts/vulkan_imgui/)
-* [NVidia Raytracing tutorial with Vulkan](https://nvpro-samples.github.io/vk_raytracing_tutorial_KHR/)
-* [Blog from Sascha Willems](https://www.saschawillems.de/)
-
-Physically Based Shading
-* [Advanced Global Illumination by Dutre, Bala, Bekaert](https://www.oreilly.com/library/view/advanced-global-illumination/9781439864951/)
-* [The Bible: PBR book](https://pbr-book.org/3ed-2018/Reflection_Models/Microfacet_Models)
-* [Real shading in Unreal engine 4](https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
-* [Physically Based Shading at Disney](https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf)
-* [RealTimeRendering](https://www.realtimerendering.com/)
-* [Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs](https://hal.inria.fr/hal-01024289/)
-* [Sampling the GGX Distribution of Visible Normals](https://pdfs.semanticscholar.org/63bc/928467d760605cdbf77a25bb7c3ad957e40e.pdf)
-
-Path tracing
-* [NVIDIA Path tracing Tutorial](https://github.com/nvpro-samples/vk_mini_path_tracer/blob/main/vk_mini_path_tracer/main.cpp)
-
-Docker
-* [Vulkan Minimal Docker setup](https://github.com/j3soon/docker-vulkan-runtime)
-* [scoop](https://scoop.sh/#/apps)
-* [Docker container windows GPU](https://learn.microsoft.com/de-de/virtualization/windowscontainers/deploy-containers/gpu-acceleration)
-* [Docker windows](https://hub.docker.com/r/microsoft/windows)
-
-## Common issues
-
-### WSL2 — Vulkan (NVIDIA)
-
-Wenn in WSL2 nach dem Start der Anwendung nur "llvmpipe" (Mesa Software‑Renderer) angezeigt wird, siehe die Troubleshooting‑Seite: [docs/source/wsl2_vulkan.rst](docs/source/wsl2_vulkan.rst) für Schritt‑für‑Schritt‑Anweisungen zur Installation des NVIDIA‑ICD und zum Neustart von WSL (`wsl --shutdown`).
-
-### Missing Vulkan validation layers
-
-If startup fails with `Validation layers requested, but not available!`, see the Troubleshooting section in [docs/source/getting_started.md](docs/source/getting_started.md#troubleshooting) (Linux packages, Windows exit code and `VK_LAYER_PATH`).
-
+BeschleunigerBallett is one of the [Kataglyphis repositories](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/repository-family.md),
+which share one way to contribute and one contact. Licence: MIT, see [LICENSE](LICENSE).

@@ -63,8 +63,8 @@ If no SVGs are present, the generated page stays as a helpful placeholder instea
 
 ## Authoring Guidelines
 
-- Keep the repository root README focused on orientation and quick-start information.
+- Keep the repository root README a short overview: what the project is, the quick start, and one row per guide ([the family's README rule](https://github.com/Kataglyphis/ANTfrastructure/blob/develop/docs/repository-family.md#the-readme-rule)). Everything else has a page here or in `docs/`.
 - Keep Sphinx pages task-focused and stable.
 - Prefer relative links inside the docs tree.
 - Treat generated artifacts as optional unless a page is explicitly about generated reference material.
-- When changing build or packaging flows, update both the root README and the affected Sphinx page in the same change.
+- When changing build or packaging flows, update the affected Sphinx page in the same change, and the root README only when its quick start or highlights change.

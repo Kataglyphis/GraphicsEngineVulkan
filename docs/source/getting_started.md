@@ -49,10 +49,22 @@ configure extracts the two the code, the tests and the packages read (`crytek-sp
 (`KATAGLYPHIS_ASSET_CACHE`, else `%LOCALAPPDATA%\kataglyphis-assets` or
 `~/.cache/kataglyphis-assets`). The paths the engine loads did not change.
 
-- `-DKATAGLYPHIS_FETCH_ALL_ASSETS=ON` fetches every locked scene, for the model picker.
+- `-DKATAGLYPHIS_FETCH_ALL_ASSETS=ON` fetches every locked scene (all fourteen), for the model picker.
 - `cmake -P cmake/FetchAssets.cmake` fetches without configuring (add the same `-D` before `-P` for all).
 - Offline, put each archive in the cache as `<sha256>-<name>.tar.xz`, or configure with
   `-DKATAGLYPHIS_FETCH_ASSETS=OFF` and go without the scenes and the tests that read them.
+
+Each fetched scene carries its credit in `ATTRIBUTION.txt`, and AssetANT's
+`assets/<name>/asset.json` records where it came from and how its license was established.
+
+| Scene | Where | License |
+| --- | --- | --- |
+| `crytek-sponza` | AssetANT; fetched by default and installed with the packages | CC BY 3.0: © 2010 Frank Meinl, Crytek, after Marko Dabrovic's Sponza; corrections by Morgan McGuire |
+| `Dinosaurs` | AssetANT; fetched by default | unknown; the Triceratops mesh is named after joel3d.com |
+| `Sulo` | AssetANT; `KATAGLYPHIS_FETCH_ALL_ASSETS` | modelled by [Sulo456](https://github.com/Sulo456), published with his permission |
+| the other eleven | AssetANT; `KATAGLYPHIS_FETCH_ALL_ASSETS` | per scene, in [AssetANT's README](https://github.com/Kataglyphis/AssetANT#the-assets) |
+| `VikingRoom` | tracked, a test fixture | CC BY 4.0: "Viking room" by nigelgoh on Sketchfab, the Vulkan Tutorial's copy with its material renamed |
+| `GltfTest`, `ShadowTest`, `Plane`, `plane.obj`, `suzanne.obj` | tracked, test fixtures | — |
 
 ## Linux Workflow
 
@@ -74,7 +86,7 @@ Useful adjacent scripts:
 
 ## Windows Workflow
 
-For Windows, use the orchestration script if you want configuration, build, formatting, and tests from one entry point. The available configurations are `msvc-debug`, `msvc-release`, `clangcl-debug` (Debug with ASAN/UBSan), `clangcl-profile` (RelWithDebInfo with benchmarks), and `clangcl-release`:
+For Windows, use the orchestration script if you want configuration, build, formatting, clang-tidy, tests, and packaging from one entry point. The available configurations are `msvc-debug`, `msvc-release`, `clangcl-debug` (Debug with ASAN/UBSan), `clangcl-profile` (RelWithDebInfo with benchmarks), and `clangcl-release`:
 
 ```pwsh
 # single configuration
@@ -163,3 +175,5 @@ sudo apt install libvulkan1 vulkan-tools vulkan-validationlayers
 ```
 
 On Windows this shows up as Debug builds aborting at startup with exit code `-1073740791` (`0xC0000409`) right after logging `Validation layers requested, but not available!`. Install the Vulkan SDK (`winget install VulkanSDK`), or set `VK_LAYER_PATH` to a directory containing `VkLayer_khronos_validation.dll`/`.json`. Profile and Release builds run without validation layers. When running the AddressSanitizer Debug build manually, keep the `ASAN_OPTIONS` `log_path` relative (an absolute `C:\...` path breaks ASAN option parsing at the drive-letter colon) — the `Invoke-ClangClDebug.ps1` helper already handles this.
+
+In WSL2, a run that shows only `llvmpipe` (Mesa's software renderer) is missing the NVIDIA Vulkan ICD. Installing it and restarting WSL (`wsl --shutdown`), step by step and in German: [WSL2 — Vulkan (NVIDIA)](wsl2_vulkan.rst).
