@@ -31,6 +31,14 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+- **The scenes come through the hub's fetcher** (2026-10-19, hub CON98): `cmake/FetchAssets.cmake`
+  calls `kataglyphis_fetch_data(LOCK Resources/assets.lock DEST Resources/Models EXTRACT ONLY
+  crytek-sponza Dinosaurs)`, without `ONLY` under `KATAGLYPHIS_FETCH_ALL_ASSETS`, so its own
+  download, hash, cache and stamp code is gone (245 lines to 36). A configure and `cmake -P` now need
+  Python 3.12+ on `PATH`: `:winamd64` and `:winarm64` have `C:\temp\cpython\PCbuild\amd64\python.exe`
+  (3.15.0), `:latest` `/opt/venv/bin/python3`. In all three images the old and the new module
+  extracted the same 44 files and stamps and each took the other's stamps as up to date; a real
+  `cmake --preset linux-debug-clang` in `:latest` fetched the same 44.
 - **The agentic-loop runners are watched copies of the hub's templates** (2026-10-19):
   `.antfrastructure-shared.manifest` declares `agentic-loop-sh` and `agentic-loop-ps1`, and
   `sync-shared-config.sh --check` compares their bodies. `Run-AgenticLoop.sh` takes the loop name

@@ -45,11 +45,14 @@ Find your task, do the first action, read the doc. [Docs](#docs) and
 release assets** (owner, 2026-10-17). AssetANT keeps each scene's metadata in git (origin, license,
 credit, the archive's SHA-256) and publishes its files as one reproducible `<name>.tar.xz` per
 release, `<name>-v<N>`. `Resources/assets.lock` pins each archive by SHA-256 and URL;
-`cmake/FetchAssets.cmake` extracts it into `Resources/Models/<name>` at configure time through a
-per-user cache (`KATAGLYPHIS_ASSET_CACHE`, else `kataglyphis-assets` under `%LOCALAPPDATA%` or
-`~/.cache`). The paths the engine loads did not move. At `7b77802e`, the last commit that tracked
-them: 633 MiB tracked, 518 MiB of it the 14 scene directories; after, 116 MiB, 62 of them
-`third_party/KTX`'s vendored test images.
+`cmake/FetchAssets.cmake` hands the lock to the hub's
+[`kataglyphis_fetch_data`](third_party/ANTfrastructure/docs/data-repositories.md#the-hubs-fetcher)
+(2026-10-19), whose `fetch-data-lock.py` extracts each archive into `Resources/Models/<name>` at
+configure time through a per-user cache (`KATAGLYPHIS_ASSET_CACHE`, else `kataglyphis-assets` under
+`%LOCALAPPDATA%` or `~/.cache`). Every configure and `cmake -P` therefore needs Python 3.12+ on
+`PATH`: `python` on Windows, `python3` elsewhere. The paths the engine loads did not move. At
+`7b77802e`, the last commit that tracked them: 633 MiB tracked, 518 MiB of it the 14 scene
+directories; after, 116 MiB, 62 of them `third_party/KTX`'s vendored test images.
 
 - **A configure fetches two**: `crytek-sponza` (the Release default, the one scene the packages
   install, two goldens) and `Dinosaurs` (the Debug default, the golden scene, four `ObjParseUnit`
@@ -58,7 +61,7 @@ them: 633 MiB tracked, 518 MiB of it the 14 scene directories; after, 116 MiB, 6
   `-DKATAGLYPHIS_FETCH_ASSETS=OFF` fetches nothing (the tests that read a scene then skip or fail).
 - **Without a configure**: `cmake -P cmake/FetchAssets.cmake`. `Build-Windows-Container.ps1` runs it
   on the host, so a run from the repo root finds the scenes; the arm64 lane runs it before its
-  host-side lavapipe suites. x64 reads the scenes the container's configure fetched into the
+  host-side lavapipe suites. Both need Python on that host's `PATH`. x64 reads the scenes the container's configure fetched into the
   bind-mounted workspace (the `windows-2025` runner has no `cmake` on `PATH`).
 - **A fetched directory holds `.assetant-sha256`**: the archive's hash and how many files it
   extracted. Only a stamp matching both makes the fetch a no-op, so a tree whose files went while
@@ -393,8 +396,7 @@ than a reusable mechanism:
 - `cmake/CPackOptions.cmake`: packaging metadata and branding.
 - `cmake/SystemLibDependencies.cmake`: this engine's system dependencies.
 - `cmake/FetchAssets.cmake`: this engine's scenes (its lock, its default set, its destination). The
-  cached download-verify-extract half would serve any AssetANT consumer, so it moves to
-  ANTfrastructure's `cmake/` when a second one appears.
+  cached download-verify-extract half is the hub's `kataglyphis_fetch_data` since 2026-10-19.
 
 **The clang-cl `-fms-compatibility-version` pin is upstream**, in `CompilerBuildFlags.cmake` as
 `MYPROJECT_CLANG_CL_MS_COMPATIBILITY_VERSION` (default `19.51.36231`). It names the VC Tools version

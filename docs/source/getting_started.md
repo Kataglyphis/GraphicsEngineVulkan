@@ -43,7 +43,9 @@ The scenes are not in the repository: `Resources/assets.lock` pins each one as a
 configure extracts the two the code, the tests and the packages read (`crytek-sponza` and
 `Dinosaurs`, about 33 MB) into `Resources/Models` through a per-user cache
 (`KATAGLYPHIS_ASSET_CACHE`, else `%LOCALAPPDATA%\kataglyphis-assets` or
-`~/.cache/kataglyphis-assets`). The paths the engine loads did not change.
+`~/.cache/kataglyphis-assets`). The fetcher is ANTfrastructure's Python script, so the configure
+needs Python 3.12 or newer on `PATH` (`python` on Windows, `python3` elsewhere). The paths the
+engine loads did not change.
 
 - `-DKATAGLYPHIS_FETCH_ALL_ASSETS=ON` fetches every locked scene (all fourteen), for the model picker.
 - `cmake -P cmake/FetchAssets.cmake` fetches without configuring (add the same `-D` before `-P` for all).
