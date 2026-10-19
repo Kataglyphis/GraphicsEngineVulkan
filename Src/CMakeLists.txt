@@ -1,11 +1,14 @@
 function(_myproject_configure_windows_rust_crate rust_target)
+  # setupapi and cfgmgr32: OxidANT's ESP32 bridge (serialport) enumerates COM ports; corrosion adds only std's libraries.
   target_link_libraries(
     ${rust_target}
     INTERFACE kernel32
               ntdll
               userenv
               ws2_32
-              dbghelp)
+              dbghelp
+              setupapi
+              cfgmgr32)
 
   set(_RUST_WINDOWS_DEBUG_CXXFLAGS "/MDd /D_DEBUG /D_ITERATOR_DEBUG_LEVEL=2")
   set(_RUST_WINDOWS_DEBUG_CFLAGS "/MDd /D_DEBUG")

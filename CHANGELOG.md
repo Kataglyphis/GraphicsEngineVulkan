@@ -14,6 +14,10 @@ the GitHub releases themselves.
 
 ### Fixed
 
+- **The Windows builds link again with OxidANT 20a03fb** (2026-10-19). Its ESP32 bridge enumerates COM
+  ports through `serialport`, which calls SetupAPI and CfgMgr32; corrosion links only the Rust standard
+  library's system libraries, so `GraphicsEngine.exe` failed with ten undefined `SetupDi*`/`CM_*`
+  symbols on x64 and arm64. `Src/CMakeLists.txt` adds `setupapi` and `cfgmgr32` to the crate's list.
 - **The engine draws on a Raspberry Pi 5** (2026-10-18). Its two fullscreen vertex shaders (`post`,
   `deferred`'s lighting pass) read `SV_VertexID`, which Slang lowers to `gl_VertexIndex -
   gl_BaseVertex`; `gl_BaseVertex` needs draw parameters, and Mesa's v3dv aborted at pipeline creation
