@@ -140,7 +140,7 @@ Artifacts land in the build directory: a TGZ, a DEB and an AppImage (`CPACK_ENAB
 
 The Windows release workflow can produce an MSIX package. It is signed when a PFX certificate sits at the repository root (the first `*.pfx` there, gitignored; without one the build warns and the MSIX stays unsigned), with the password from `MSIX_PFX_PASSWORD`, else `MSIX_CERT_PASSWORD`. The signing is ANTfrastructure's `Invoke-MsixPackage -Sign -SigningRoot <repo root>`.
 
-CI fetches the certificate over WebDAV instead of committing it: `Build-Windows.ps1 -WebDavHostname/-WebDavUsername/-WebDavPassword/-RemoteBasePath` (the "Build/Test/Package" step of `.github/workflows/windows-x64.yml`) drives ANTfrastructure's `windows/scripts/certificates/download_webdav_files.py` through the `WindowsWebDav.Common` module (`--extension .pfx`). Generating and importing certificates: ANTfrastructure `windows/scripts/certificates/README.md`.
+CI fetches the certificate over WebDAV instead of committing it: `Build-Windows.ps1 -WebDavHostname/-WebDavUsername/-WebDavPassword/-RemoteBasePath` (the "Build, test, package (x64)" job of `.github/workflows/windows-x64.yml`, which passes the `WEBDAV_*` secrets) drives ANTfrastructure's `windows/scripts/certificates/download_webdav_files.py` through the `WindowsWebDav.Common` module (`--extension .pfx`). Generating and importing certificates: ANTfrastructure `windows/scripts/certificates/README.md`.
 
 ## Shader Include Workflow
 

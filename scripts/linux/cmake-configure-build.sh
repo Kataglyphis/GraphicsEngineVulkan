@@ -16,7 +16,7 @@ CMAKE_BUILD_DEFAULT_MB_PER_JOB="4000"  # 4GB RAM per parallel job
 CMAKE_BUILD_PREBUILD_LABEL="Slang shader precompilation"
 CMAKE_BUILD_USAGE_INTRO="Configures and builds BeschleunigerBallett inside the Linux container image."
 
-# Every config needs the .spv on disk (loaded at runtime), so a failure is fatal; see docs/shader-sharing.md.
+# Every config needs the .spv on disk (loaded at runtime), so a failure is fatal; see docs/shader-build-pipeline.md.
 cmake_build_prebuild_hook() {
   bash "${SCRIPT_DIR}/compile-slang-shaders.sh"
 }
