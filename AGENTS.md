@@ -1208,6 +1208,9 @@ configures and where it deviates from upstream defaults:
 
 ## Docs
 
+**Write docs like a developer: short and precise** (owner, 2026-10-19). Say what a thing does,
+how to run it and what breaks; no filler, no marketing, no repetition.
+
 Each topic has exactly one home; link, do not copy. Reusable topics live in
 ANTfrastructure (see the rule above), project-specific ones here.
 
