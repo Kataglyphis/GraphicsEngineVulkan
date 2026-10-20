@@ -49,10 +49,12 @@ Import-BuildModule @(
   'WindowsTesting.Common',
   'WindowsTargetArch.Common'
 )
-# A hub pin older than the cross lanes lacks this module, so fail naming the commit it needs.
-try { Import-BuildModule @('WindowsCrossBundle.Common') } catch {
-  throw "This build needs ANTfrastructure's WindowsCrossBundle.Common (hub commit of 2026-09-25, third_party/ANTfrastructure/docs/windows-cross-builds.md); move third_party/ANTfrastructure to it or later. ($($_.Exception.Message))"
-}
+# A hub pin older than 3d26fac7 lacks commands this build calls late, so fail here naming the commit it needs.
+$hubFloor = 'This build needs ANTfrastructure 3d26fac7 (2026-10-19) or later; move third_party/ANTfrastructure to it.'
+try { Import-BuildModule @('WindowsCrossBundle.Common') } catch { throw "$hubFloor ($($_.Exception.Message))" }
+$missingHubCommands = @('Get-BuildConfigurationRow', 'New-PortableBundle', 'Get-PackageVersion') | Where-Object { -not (Get-Command $_ -ErrorAction SilentlyContinue) }
+if (-not $missingHubCommands -and -not (Get-Command Get-PackageVersion).Parameters.ContainsKey('VersionFile')) { $missingHubCommands = @('Get-PackageVersion -VersionFile') }
+if ($missingHubCommands) { throw "$hubFloor Missing: $($missingHubCommands -join ', ')." }
 $TargetArch = Get-WindowsTargetArch -Arch $TargetArch
 $isCross = Test-WindowsCrossTarget -Arch $TargetArch
 $packageArch = Get-WindowsPackageArch -Arch $TargetArch
