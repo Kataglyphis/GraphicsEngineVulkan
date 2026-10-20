@@ -91,6 +91,17 @@ host.
 
 ### CI and release
 
+- [ ] **Rust is always in, with no switch** (M, owner 2026-10-20: every Rust feature is mandatory, the
+  platform alone decides). Waits for OxidANT's switch-free develop, then with the OxidANT gitlink:
+  - drop the `RUST_FEATURES` option (`CMakeLists.txt:22-40`) and every `if(RUST_FEATURES)` in
+    `third_party/CMakeLists.txt:103-117,423-437` and `Src/CMakeLists.txt:56-80`, the `USE_RUST` define
+    (`Src/GraphicsEngineVulkan/CMakeLists.txt:49-53`) and `#if USE_RUST` in `Main.cpp:11-13`, the OFF preset
+    `x64-Clang-Windows-Release` (`CMakePresets.json:438`, its build/workflow presets and the Pester allowlist row),
+    the analyzer's `-DUSE_RUST=1`;
+  - import only the crate BB uses (the `native_only` cxx bridge), so the mandatory GStreamer, ORT and GUI stacks of
+    OxidANT's root library are not linked into GraphicsEngine;
+  - fix README.md:8, docs/source/README.md:3 and LICENSES-README.md:67, which call the Rust integration optional.
+  Done when every lane (Linux x64/arm64, riscv64, Windows x64/arm64, the wasm demo) is green.
 - [ ] **The WebGPU demo build fails silently on a CRLF checkout** (S, found 2026-10-20).
   `scripts/linux/docs-build-web.sh:27` reads wasm-bindgen's version with `grep '^name = "wasm-bindgen"$'`
   on `Cargo.lock`; on a Windows checkout with CRLF the `$` never matches, `wb_ver` stays empty and the
