@@ -91,6 +91,11 @@ host.
 
 ### CI and release
 
+- [ ] **The WebGPU demo build fails silently on a CRLF checkout** (S, found 2026-10-20).
+  `scripts/linux/docs-build-web.sh:27` reads wasm-bindgen's version with `grep '^name = "wasm-bindgen"$'`
+  on `Cargo.lock`; on a Windows checkout with CRLF the `$` never matches, `wb_ver` stays empty and the
+  demo is not built, with no error. CI checks out LF, so it is unaffected. Fix: strip `\r` before
+  matching (or parse the lock with `cargo metadata`), and fail loudly when the version is empty.
 - [ ] **Golden-render cases fail now and then on the arm64 device** (S–M). In
   `windows-arm64-cross.yml`'s *GPU suites + source checks (arm64, lavapipe)*,
   `EnablingCloudsChangesTheFrameAndAddsDetail` stopped after 7 s with no assertion printed
