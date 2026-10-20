@@ -18,25 +18,15 @@ struct TonemapUniforms
 // [adapted EV, target EV] from cs_reduce_exposure, the one exposure source (bloom reads it too).
 [vk::binding(5, 0)] StructuredBuffer<float> exposureState;
 
-// Same layout as fullscreen.slang's FullscreenVsOut.
-struct VsOut
-{
-    float4 svPosition : SV_Position;
-    float2 uv : TEXCOORD0;
-};
-
+// Returned directly: a copy into a local struct makes Slang emit FullscreenVsOut with two @location(0), which Tint rejects.
 [shader("vertex")]
-VsOut vs_main(uint vid : SV_VertexID)
+FullscreenVsOut vs_main(uint vid : SV_VertexID)
 {
-    FullscreenVsOut o = fullscreen_vs(vid);
-    VsOut r;
-    r.svPosition = o.svPosition;
-    r.uv = o.uv;
-    return r;
+    return fullscreen_vs(vid);
 }
 
 [shader("fragment")]
-float4 fs_main(VsOut In) : SV_Target
+float4 fs_main(FullscreenVsOut In) : SV_Target
 {
     float3 hdr = hdrTex.Sample(hdrSampler, In.uv).rgb;
     float3 bloom = bloomTex.Sample(hdrSampler, In.uv).rgb;

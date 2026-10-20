@@ -125,9 +125,10 @@ struct IblParams
 
 [vk::binding(0, 2)] ConstantBuffer<FrameUniforms> frame;
 
+// One group for the lights and their tile grid: WebGPU allows 4 bind groups (maxBindGroups), so no group 4.
 [vk::binding(0, 3)] StructuredBuffer<float4> punctualLights;
-[vk::binding(0, 4)] StructuredBuffer<uint2> tileLightGrid;
-[vk::binding(1, 4)] StructuredBuffer<uint> tileLightIndices;
+[vk::binding(1, 3)] StructuredBuffer<uint2> tileLightGrid;
+[vk::binding(2, 3)] StructuredBuffer<uint> tileLightIndices;
 
 // Shares set 1 binding 0 with iblParams: the forward and shadow pipelines use different bind-group layouts.
 [vk::binding(0, 1)] ConstantBuffer<uint4> shadowCascadeIndex;

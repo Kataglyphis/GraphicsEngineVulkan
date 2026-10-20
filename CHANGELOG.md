@@ -14,6 +14,16 @@ the GitHub releases themselves.
 
 ### Fixed
 
+- **The docs site's WebGPU demo draws again** (2026-10-20). Chrome refused the Rust renderer's
+  forward pipeline layout (`bindGroupLayoutCount (5) is larger than the maximum allowed (4)`) and its
+  tonemap shader (`'@location(0)' appears multiple times`), so the canvas stayed empty.
+  `forward/forward.slang` binds the tile light grid and its indices in set 3 beside the punctual
+  lights (bindings 1 and 2), not in set 4. `tonemap/tonemap.slang`'s `vs_main` returns
+  `FullscreenVsOut` itself: copied into a local struct, Slang emitted `FullscreenVsOut` as a plain
+  struct with `SV_Position` at `@location(0)`, which naga accepts and Tint does not.
+  `third_party/OxidANT` moves to 0e3f2dc, which carries the regenerated WGSL (slangc 2026.17
+  reproduces the other eight files byte for byte), the one group-3 bind group, WebGPU's default
+  limits on native and the demo's "PBR textures" scene loading from memory.
 - **The Windows builds link again with OxidANT 20a03fb** (2026-10-19). Its ESP32 bridge enumerates COM
   ports through `serialport`, which calls SetupAPI and CfgMgr32; corrosion links only the Rust standard
   library's system libraries, so `GraphicsEngine.exe` failed with ten undefined `SetupDi*`/`CM_*`
