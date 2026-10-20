@@ -356,7 +356,7 @@ driver, not the wrapper**: the wrapper only supplies this project's payload.
 
 | This repo | Upstream driver (in `third_party/ANTfrastructure/`) |
 | --- | --- |
-| `scripts/windows/Build-Windows-Container.ps1` | `windows/scripts/modules/WindowsContainerBuild.Reuse.psm1` → `Invoke-ContainerBuild` (+ `Get-ReusableBuildContainer`, `Copy-IntoBuildContainer`, `Copy-FromBuildContainer`, `Resolve-DockerExe`, `Get-ContainerIsolationArgs`, `Test-ContainerBindMount`, `Get-SccacheContainerEnv`, `Remove-BuildContainerSafe`) |
+| `scripts/windows/Build-Windows-Container.ps1` | `windows/scripts/build/Invoke-RepoContainerBuild.ps1` (→ `WindowsContainerBuild.Reuse.psm1`'s `Invoke-ContainerBuild`, `WindowsContainerImage.Common.psm1`'s `Get-CiImageReference`) |
 | `scripts/linux/cmake-configure-build.sh` | `linux/scripts/lib/cmake-build.sh` |
 | `scripts/windows/Build-SlangShaders.ps1` / `scripts/linux/compile-slang-shaders.sh` | `windows/scripts/modules/WindowsSlang.Common.psm1` → `Invoke-SlangShaderCompile` / `linux/scripts/lib/slang-compile.sh` |
 | `scripts/linux/run-ctest.sh` | `linux/scripts/lib/ctest-run.sh` |
