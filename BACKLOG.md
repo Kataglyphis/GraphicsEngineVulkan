@@ -111,6 +111,14 @@ host.
     `FileReaderUnit.ReadersRefuseCharacterDevicesInsteadOfBlocking` is POSIX-only, and
     riscv64 runs four path-traced goldens in their light variant: a shorter history, the
     same thresholds (AGENTS.md § The riscv64 lane).
+- [ ] **Three stale lines** (S, found 2026-10-19).
+  - AGENTS.md's wrapper map maps `Build-Windows-Container.ps1` to `WindowsContainerBuild.Reuse.psm1`'s
+    `Invoke-ContainerBuild`; the script runs the hub's `Invoke-RepoContainerBuild.ps1`.
+  - `Build-Windows.ps1`'s import guard names the hub of 2026-09-25, but the build calls
+    `Get-BuildConfigurationRow`, `New-PortableBundle` and `Get-PackageVersion -VersionFile`, which the hub
+    has since 2026-10-19, so an older pin fails later with a missing command.
+  - `Documents/packaging/WelcomeFile.txt` still says "an unique". Nothing reads it: the hub's `CPackCommon`
+    takes `docs/packaging/WelcomeFile.txt`, which 8dab691f fixed.
 
 ---
 
@@ -121,9 +129,6 @@ committed to.
 
 - **`pointShadowMap`** was removed as dead allocation. Re-add it, or the whole omni pass,
   when the point-light shadow feature is built.
-- **Docs placement.** The root `docs/*.md` dev references (roadmaps,
-  `cpp-renderer-improvements`, `shader-*`, the sRGB audit) are not on the published site.
-  Decide per doc whether it moves into `docs/source/` and the toctree.
 
 ## C++ engine ideas
 
