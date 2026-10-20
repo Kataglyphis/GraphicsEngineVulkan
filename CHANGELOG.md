@@ -35,6 +35,11 @@ the GitHub releases themselves.
   synthetic-deb suite runs with Linux x64.
 
 ### Changed
+
+- **The docs site keeps riding `linux-x64.yml`** (owner, 2026-10-20). It keeps `paths-ignore` for
+  docs-only commits and `cancel-in-progress` off `main`, so a docs-only commit publishes the site with
+  the next code push, and a newer push to `develop` can cancel a publish in flight; AGENTS.md § The
+  docs site records both as accepted. No workflow change.
 - **OxidANT c4b2bad -> 20a03fb** (2026-10-19): the `oxidant` staticlib now builds OxidANT's ESP32
   bridge on desktop (`kataglyphis_esp32`, `serialport` without libudev); the renderer crate changed
   only in comments. In `:latest`, `linux-debug-clang` with the Kompute playground builds and ctest

@@ -864,9 +864,10 @@ on a push to `develop` or `main`, never on a pull request or a dispatch. The `SE
 and `PW` secrets map onto its `FTP_*`. `release.yml` downloads every artifact of its run, and
 the hub's collector skips both uploads of the site (`*-docs-site`, `docs-site-*`).
 
-What follows from living in `linux-x64.yml`: a docs-only push publishes nothing (`paths-ignore`),
-and a newer push to `develop` cancels the run, an upload in flight included. The workflow and
-its inputs: [`docs-sites.md`](third_party/ANTfrastructure/docs/docs-sites.md).
+What follows from living in `linux-x64.yml`, which keeps `paths-ignore` for docs-only commits and
+`cancel-in-progress` off `main`: a docs-only commit publishes the site with the next code push, and
+a newer push to `develop` can cancel a publish in flight. The owner accepted both (2026-10-20). The
+workflow and its inputs: [`docs-sites.md`](third_party/ANTfrastructure/docs/docs-sites.md).
 
 ### Lint gates (before anything builds)
 
