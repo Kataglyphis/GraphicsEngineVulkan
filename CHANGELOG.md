@@ -36,6 +36,12 @@ the GitHub releases themselves.
 
 ### Changed
 
+- **Three stale lines** (2026-10-20). `Build-Windows.ps1`'s hub guard named the hub of 2026-09-25,
+  but the build calls `Get-BuildConfigurationRow`, `New-PortableBundle` and `Get-PackageVersion
+  -VersionFile`, which the hub has since 3d26fac7 (2026-10-19); it now names that commit and checks
+  the three before building. AGENTS.md's wrapper map gives `Build-Windows-Container.ps1` the hub's
+  `Invoke-RepoContainerBuild.ps1`, which it runs. `Documents/packaging/WelcomeFile.txt` is deleted:
+  the hub's `CPackCommon` reads only `docs/packaging/WelcomeFile.txt`.
 - **The docs site keeps riding `linux-x64.yml`** (owner, 2026-10-20). It keeps `paths-ignore` for
   docs-only commits and `cancel-in-progress` off `main`, so a docs-only commit publishes the site with
   the next code push, and a newer push to `develop` can cancel a publish in flight; AGENTS.md § The

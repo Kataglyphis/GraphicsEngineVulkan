@@ -120,15 +120,6 @@ host.
   the hub's `linux/webserver/templates/docs-site.htaccess` sets `nosniff` but has no
   `AddType application/wasm .wasm`, which its `flutter-web.htaccess` twin has (hub CON121 is the same check).
   Done when the published demo renders its scene in a WebGPU browser.
-- [ ] **Three stale lines** (S, found 2026-10-19).
-  - AGENTS.md's wrapper map maps `Build-Windows-Container.ps1` to `WindowsContainerBuild.Reuse.psm1`'s
-    `Invoke-ContainerBuild`; the script runs the hub's `Invoke-RepoContainerBuild.ps1`.
-  - `Build-Windows.ps1`'s import guard names the hub of 2026-09-25, but the build calls
-    `Get-BuildConfigurationRow`, `New-PortableBundle` and `Get-PackageVersion -VersionFile`, which the hub
-    has since 2026-10-19, so an older pin fails later with a missing command.
-  - `Documents/packaging/WelcomeFile.txt` still says "an unique". Nothing reads it: the hub's `CPackCommon`
-    takes `docs/packaging/WelcomeFile.txt`, which 8dab691f fixed.
-
 ---
 
 Everything below is **unsized**: ideas, owner decisions and recurring chores not yet
