@@ -111,6 +111,15 @@ host.
     `FileReaderUnit.ReadersRefuseCharacterDevicesInsteadOfBlocking` is POSIX-only, and
     riscv64 runs four path-traced goldens in their light variant: a shorter history, the
     same thresholds (AGENTS.md § The riscv64 lane).
+- [ ] **The WebGPU demo on the docs site does not work correctly** (S–M, owner report 2026-10-20).
+  The index card *WebGPU Demo (live)* (`docs/source/index.rst:46`, "Run the Rust WebGPU/glTF renderer
+  in your browser") runs OxidANT's `crates/webgpu_renderer` as wasm, built by
+  `scripts/linux/docs-build-web.sh` and published with the site. What fails is not recorded yet: open it
+  in Chrome, Edge and Firefox, note what renders and the console errors, then fix it where it breaks:
+  the renderer (OxidANT) or the build and serving (wasm/asset paths, MIME types). First lead, unverified:
+  the hub's `linux/webserver/templates/docs-site.htaccess` sets `nosniff` but has no
+  `AddType application/wasm .wasm`, which its `flutter-web.htaccess` twin has (hub CON121 is the same check).
+  Done when the published demo renders its scene in a WebGPU browser.
 - [ ] **Three stale lines** (S, found 2026-10-19).
   - AGENTS.md's wrapper map maps `Build-Windows-Container.ps1` to `WindowsContainerBuild.Reuse.psm1`'s
     `Invoke-ContainerBuild`; the script runs the hub's `Invoke-RepoContainerBuild.ps1`.
