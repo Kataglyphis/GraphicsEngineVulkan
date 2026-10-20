@@ -19,13 +19,18 @@ DOCS_BUILD_GENERATOR_SCRIPT="graphviz_generator.py"
 DOCS_BUILD_UV_VENV_CREATE_SCRIPT="${SCRIPT_DIR}/lib/uv-venv-create.sh"
 DOCS_BUILD_UV_INSTALL_REQUIREMENTS_SCRIPT="${SCRIPT_DIR}/lib/uv-install-requirements.sh"
 
+# tr: a CRLF checkout's lines end in \r, which the exact name match would never see.
+wasm_bindgen_lock_version() {
+    tr -d '\r' <"$1" | awk '$0 == "name = \"wasm-bindgen\"" { getline; if (sub(/^version = "/, "") && sub(/"$/, "")) print; exit }'
+}
+
 # Builds the demo the docs publish (nothing tracks it); wasm-bindgen-cli must match Cargo.lock exactly or it refuses to run.
 build_webgpu_wasm_demo() {
     local rpt="third_party/OxidANT"
     local demo="docs/source/_webgpu_demo/webgpu-demo"
     local wb_ver
-    wb_ver="$(grep -A1 '^name = "wasm-bindgen"$' "${rpt}/Cargo.lock" | grep '^version' | head -1 | sed -E 's/version = "(.*)"/\1/')"
-    [ -n "${wb_ver}" ] || return 1
+    wb_ver="$(wasm_bindgen_lock_version "${rpt}/Cargo.lock")"
+    [ -n "${wb_ver}" ] || err "No wasm-bindgen version in ${rpt}/Cargo.lock: wasm-bindgen-cli cannot be pinned, so the WebGPU demo cannot be built"
     ensure_wasm32_target &&
     { { command -v wasm-bindgen >/dev/null 2>&1 \
         && [ "$(wasm-bindgen --version 2>/dev/null | awk '{print $2}')" = "${wb_ver}" ]; } \

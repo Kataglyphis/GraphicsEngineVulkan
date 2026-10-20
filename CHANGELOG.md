@@ -14,6 +14,15 @@ the GitHub releases themselves.
 
 ### Fixed
 
+- **The WebGPU demo builds from a CRLF checkout, and a lock without its version stops the docs
+  build** (2026-10-20). `docs-build-web.sh` matched `name = "wasm-bindgen"` up to the line's end,
+  which a Windows checkout's `\r` never reaches, so it found no version and skipped the demo without
+  a word. `wasm_bindgen_lock_version` strips `\r` first; a `Cargo.lock` without a wasm-bindgen
+  version, or no `Cargo.lock`, fails the script with `No wasm-bindgen version in
+  third_party/OxidANT/Cargo.lock`. `scripts/linux/tests/test-docs-build-web.sh` runs the script
+  against LF, CRLF, pin-less and missing locks in `linux-x64.yml`'s bare-runner job, now *Script
+  suites*: 14 assertions, 9 of which fail on the old script. In `:latest` the old script skipped the
+  demo on a CRLF copy (exit 0); the new one built it there and on the LF checkout (wasm-bindgen 0.2.129).
 - **The docs site's WebGPU demo draws again** (2026-10-20). Chrome refused the Rust renderer's
   forward pipeline layout (`bindGroupLayoutCount (5) is larger than the maximum allowed (4)`) and its
   tonemap shader (`'@location(0)' appears multiple times`), so the canvas stayed empty.

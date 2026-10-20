@@ -102,11 +102,6 @@ host.
     OxidANT's root library are not linked into GraphicsEngine;
   - fix README.md:8, docs/source/README.md:3 and LICENSES-README.md:67, which call the Rust integration optional.
   Done when every lane (Linux x64/arm64, riscv64, Windows x64/arm64, the wasm demo) is green.
-- [ ] **The WebGPU demo build fails silently on a CRLF checkout** (S, found 2026-10-20).
-  `scripts/linux/docs-build-web.sh:27` reads wasm-bindgen's version with `grep '^name = "wasm-bindgen"$'`
-  on `Cargo.lock`; on a Windows checkout with CRLF the `$` never matches, `wb_ver` stays empty and the
-  demo is not built, with no error. CI checks out LF, so it is unaffected. Fix: strip `\r` before
-  matching (or parse the lock with `cargo metadata`), and fail loudly when the version is empty.
 - [ ] **Golden-render cases fail now and then on the arm64 device** (S–M). In
   `windows-arm64-cross.yml`'s *GPU suites + source checks (arm64, lavapipe)*,
   `EnablingCloudsChangesTheFrameAndAddsDetail` stopped after 7 s with no assertion printed

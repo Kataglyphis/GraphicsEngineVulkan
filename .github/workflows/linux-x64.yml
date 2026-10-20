@@ -29,9 +29,9 @@ permissions:
   contents: read
 
 jobs:
-  # Seconds on the bare runner: the .deb layout gate against synthetic .debs (the release collector's suite is the hub's).
+  # Seconds on the bare runner: two scripts against synthetic inputs (the release collector's suite is the hub's).
   deb-layout:
-    name: .deb layout suite
+    name: Script suites
     runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
@@ -46,6 +46,9 @@ jobs:
 
       - name: check-deb-layout.sh against synthetic .debs
         run: bash scripts/linux/tests/test-check-deb-layout.sh
+
+      - name: docs-build-web.sh's wasm-bindgen pin from LF, CRLF and pin-less Cargo.lock files
+        run: bash scripts/linux/tests/test-docs-build-web.sh
 
   build-x64:
     uses: ./.github/workflows/reusable-linux.yml

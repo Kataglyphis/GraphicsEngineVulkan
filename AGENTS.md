@@ -77,8 +77,9 @@ directories; after, 116 MiB, 62 of them `third_party/KTX`'s vendored test images
   `dirt.png` (12.6 MiB, read by nothing) went on 2026-10-17.
 - **The WebGPU demo is built, not tracked**: `scripts/linux/docs-build-web.sh` compiles it into
   the ignored `docs/source/_webgpu_demo/` on every docs build, which CI's release job runs. Without
-  `wasm-bindgen` the docs publish without the demo (a warning in CI); until 2026-10-17 an 8 MiB
-  snapshot was committed instead.
+  `wasm-bindgen` the docs publish without the demo (a warning in CI); without a wasm-bindgen version
+  in OxidANT's `Cargo.lock` the script stops, since 2026-10-20. Until 2026-10-17 an 8 MiB snapshot
+  was committed instead.
 
 Still large: `Documents/GGD_Kit_milestone_document.pdf` (16 MiB, `linguist-vendored`), frozen with
 two test fixtures in `large-files.allow` for the hub's `large-files` gate. The engine screenshots
