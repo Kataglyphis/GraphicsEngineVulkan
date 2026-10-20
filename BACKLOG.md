@@ -77,9 +77,14 @@ host.
 - [b] **Indirect draws** (M, blocked on GPU occlusion culling producing draw arguments).
   With CPU-side instance counts, indirect draws add a buffer round trip for nothing.
 - [b] **WebXR** (XL) — parked.
-- [b] **Colosseum demo scene** (blocked on the owner): pick a licensed photogrammetry scan
-  and keep the asset out of git. LOD is ready (set `lod_enabled` before `upload_scene`).
-  KTX2 is not: Basis transcoding is missing (above).
+- [b] **Colosseum demo scene** (blocked on the owner's download). Owner picked on 2026-10-20:
+  "Rome's Colosseum" by eyesCloud3D (<https://sketchfab.com/3d-models/romes-colosseum-4577eb4b21ac48ecba43e7944b4e1baf>,
+  CC BY 4.0): the whole building with arena, 208,520 triangles, one 8192² texture, glTF 2.0 without
+  Draco/meshopt/KTX2 (GLB 60.3 MB). Left: the owner downloads it (Sketchfab login) and asks the author
+  whether the drone video is theirs; then shrink the texture to 4K (KTX2/Basis is missing, above),
+  publish it through AssetANT with its `ATTRIBUTION.txt` line ("Rome's Colosseum" by eyesCloud3D, link,
+  CC BY 4.0, texture resized), add it to `Resources/assets.lock` and the scene list. LOD is ready
+  (set `lod_enabled` before `upload_scene`).
 - [b] **Stop an empty tile from iterating every light** (blocked on a conservative sphere
   bound). `forward.slang`'s `punctual_lighting` falls back to all lights when a tile's
   binned count is 0, so empty screen costs up to 256 iterations per fragment. The fallback is
