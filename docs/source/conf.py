@@ -53,6 +53,10 @@ setup_theme(
     html_css_files_extra=["css/beschleunigerballett.css"],
 )
 
+# The repository's own logo, in place of setup_theme()'s shared default.
+html_logo = "../../images/logo.svg"
+html_favicon = html_logo
+
 if doxygen_xml_dir is not None:
     breathe_projects = {"BeschleunigerBallett": str(doxygen_xml_dir)}
     breathe_default_project = "BeschleunigerBallett"

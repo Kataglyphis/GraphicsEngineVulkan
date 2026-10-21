@@ -61,6 +61,9 @@ the GitHub releases themselves.
   `Engine_logo.bmp` and `faviconNew.ico`, which the installers and the Linux desktop entry show,
   are rendered from it at their sizes (256, 256, 200 and 16 to 256 px).
 
+- **The docs site shows BeschleunigerBallett's own logo** (2026-10-21, owner): `docs/source/conf.py`
+  sets `html_logo` and `html_favicon` to `images/logo.svg` after `setup_theme()`, in place of the
+  theme's shared wireframe.
 - **Rust is always in, and the engine links only OxidANT's cxx bridge** (2026-10-21, owner
   2026-10-20: every Rust feature is mandatory). Gone: the `RUST_FEATURES` option, every
   `if(RUST_FEATURES)`, the `USE_RUST` define and `#if USE_RUST` in `Main.cpp`, the 15 presets'
