@@ -96,20 +96,6 @@ host.
 
 ### CI and release
 
-- [x] **Rust is always in, with no switch** (M, owner 2026-10-20: every Rust feature is mandatory, the
-  platform alone decides). Waits for OxidANT's switch-free develop, then with the OxidANT gitlink:
-  - drop the `RUST_FEATURES` option (`CMakeLists.txt:22-40`) and every `if(RUST_FEATURES)` in
-    `third_party/CMakeLists.txt:103-117,423-437` and `Src/CMakeLists.txt:56-80`, the `USE_RUST` define
-    (`Src/GraphicsEngineVulkan/CMakeLists.txt:49-53`) and `#if USE_RUST` in `Main.cpp:11-13`, the OFF preset
-    `x64-Clang-Windows-Release` (`CMakePresets.json:438`, its build/workflow presets and the Pester allowlist row),
-    the analyzer's `-DUSE_RUST=1`;
-  - import only the crate BB uses (the `native_only` cxx bridge), so the mandatory GStreamer, ORT and GUI stacks of
-    OxidANT's root library are not linked into GraphicsEngine;
-  - fix README.md:8, docs/source/README.md:3 and LICENSES-README.md:67, which call the Rust integration optional.
-  Done when every lane (Linux x64/arm64, riscv64, Windows x64/arm64, the wasm demo) is green.
-  Done 2026-10-21 in 7f54642c with OxidANT 6aa85f8 (`kataglyphis_cxx_bridge`, cxx only): every lane green on
-  7f54642c, Linux x64 run 39563988786 (wasm demo, docs, sanitizers included) and run 39563988870 (Linux arm64,
-  riscv64, Windows x64, Windows arm64 with its device and GPU jobs).
 - [ ] **Golden-render cases fail now and then on the arm64 device** (S–M). In
   `windows-arm64-cross.yml`'s *GPU suites + source checks (arm64, lavapipe)*,
   `EnablingCloudsChangesTheFrameAndAddsDetail` stopped after 7 s with no assertion printed
