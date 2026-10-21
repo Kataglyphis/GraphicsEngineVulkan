@@ -19,25 +19,12 @@ set(AUTHOR "Jonas Heinle")
 set(WINDOWS_CI
     OFF
     CACHE BOOL "Enable Windows CI build options")
-set(RUST_FEATURES
-    ON
-    CACHE BOOL "Enable Rust features in our project.")
 set(MYPROJECT_CMAKE_DEBUG_LOG
     OFF
     CACHE BOOL "Enable additional verbose CMake configure logging")
 
 # No --gcc-toolchain: the image's <triple>-clang++.cfg already selects its GCC for a bare clang.
 enable_language(CXX C)
-
-if(RUST_FEATURES)
-  message(STATUS "Rust features are enabled.")
-  if(MSVC)
-    message(STATUS "On a windows machine you must use MSVC when integrating rust features.")
-  endif()
-else()
-  message(STATUS "Rust features are disabled.")
-  message(STATUS "Your are going to use a non MSVC compiler on windows. Therefore no rust integration possible.")
-endif()
 
 # Local cmake/ comes first, so a same-named module there overrides ANTfrastructure's.
 set(KATAGLYPHIS_ANTFRASTRUCTURE_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/ANTfrastructure/cmake")

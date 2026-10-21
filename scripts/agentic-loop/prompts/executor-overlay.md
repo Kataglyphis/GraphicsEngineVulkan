@@ -6,7 +6,7 @@ this file automatically
 (`third_party/ANTfrastructure/shared/agentic-loop/system-prompts/executor.md`).
 Everything below is what is specific to **this** repo.
 
-This is a Vulkan graphics engine: C++23/C17, CMake presets, optional Rust WebGPU
+This is a Vulkan graphics engine: C++23/C17, CMake presets, a Rust WebGPU
 sibling renderer.
 
 ## Build commands

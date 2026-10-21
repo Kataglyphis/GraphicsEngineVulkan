@@ -114,10 +114,6 @@ Describe 'CMakePresets.json integrity' {
     }
 
     It 'gives every Windows configure preset a unique binaryDir' {
-        # The one deliberate shared build_release/ pair, named so a third sharer still fails.
-        $allowedSharedDir = "`${sourceDir}/build_release/"
-        $allowedSharers = @('x64-Clang-Windows-Release', 'x64-ClangCL-Windows-RelWithDebInfo')
-
         $windowsPresets = @($presets.configurePresets | Where-Object {
             (-not $_.hidden) -and $_.condition -and ($_.condition.rhs -eq 'Windows')
         })
@@ -134,15 +130,7 @@ Describe 'CMakePresets.json integrity' {
         $violations = @()
         foreach ($dir in $byDir.Keys) {
             $names = $byDir[$dir]
-            if ($names.Count -le 1) {
-                continue
-            }
-            if ($dir -eq $allowedSharedDir) {
-                $unexpected = @($names | Where-Object { $allowedSharers -notcontains $_ })
-                if ($unexpected.Count -gt 0) {
-                    $violations += "$dir shared by $($names -join ', ') (unexpected: $($unexpected -join ', '))"
-                }
-            } else {
+            if ($names.Count -gt 1) {
                 $violations += "$dir shared by $($names -join ', ')"
             }
         }

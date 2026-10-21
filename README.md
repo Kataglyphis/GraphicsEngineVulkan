@@ -5,7 +5,7 @@
 
   <h1>BeschleunigerBallett</h1>
 
-  <h4>Experimental graphics engine and renderer playground for Vulkan, a Rust WebGPU sibling renderer, modern CMake, testing, packaging, and optional Rust integration.</h4>
+  <h4>Experimental graphics engine and renderer playground for Vulkan, a Rust WebGPU sibling renderer, modern CMake, testing, packaging, and Rust integration.</h4>
 </div>
 
 [![Linux arm64 · build + test](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-arm64.yml/badge.svg?branch=develop)](https://github.com/Kataglyphis/BeschleunigerBallett/actions/workflows/linux-arm64.yml)

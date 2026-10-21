@@ -46,12 +46,6 @@ kataglyphis_set_module_scan(VulkanEngineCore)
 # PUBLIC: every translation unit doing projection math needs Vulkan's clip conventions.
 target_compile_definitions(VulkanEngineCore PUBLIC GLM_FORCE_DEPTH_ZERO_TO_ONE GLM_FORCE_RADIANS)
 
-if(RUST_FEATURES)
-  target_compile_definitions(VulkanEngineCore PUBLIC USE_RUST=1)
-else()
-  target_compile_definitions(VulkanEngineCore PUBLIC USE_RUST=0)
-endif()
-
 kataglyphis_apply_runtime_compile_definitions(
   VulkanEngineCore
   RESOURCE_PATH_NON_MSVC
@@ -117,11 +111,9 @@ target_link_libraries(
          nlohmann_json::nlohmann_json
          tomlplusplus_modules)
 
-if(RUST_FEATURES)
-  # Ensure CXX bridge headers are generated before module scanning
-  add_dependencies(VulkanEngineCore oxidant_bridge)
-  target_link_libraries(VulkanEngineCore PUBLIC oxidant oxidant_bridge)
-endif()
+# The bridge's generated headers must exist before module scanning.
+add_dependencies(VulkanEngineCore oxidant_bridge)
+target_link_libraries(VulkanEngineCore PUBLIC kataglyphis_cxx_bridge oxidant_bridge)
 
 # Linux Debug ASan, except under TSan (mutually exclusive) and cross builds (no target ASan runtime).
 set(_kat_dbg_linux "$<AND:$<CONFIG:Debug>,$<PLATFORM_ID:Linux>>")

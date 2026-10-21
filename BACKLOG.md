@@ -246,8 +246,8 @@ committed to.
 - **`bugprone-unchecked-optional-access` is off for `Test/`**: clang-tidy 23.1.1 segfaults in
   its dataflow on gtest bodies. Re-enable it once an LLVM release fixes the crash.
 - **Coverage is clang-only** (Linux). GCC and Windows contribute nothing to Codecov.
-- **The `windows-clang-release-wix` package preset is still unbuilt.** If WiX packaging
-  moves to ClangCL, `x64-Clang-Windows-Release`, which exists only for it, can go too.
+- **The `windows-clang-release-wix` package preset is still unbuilt.** It builds on
+  `x64-ClangCL-Windows-Release` since 2026-10-21; no lane runs `cpack --preset` on it.
 
 ## Build-time costs and papercuts
 

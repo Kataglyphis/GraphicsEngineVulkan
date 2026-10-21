@@ -1,6 +1,6 @@
 # Project Overview
 
-BeschleunigerBallett is a renderer and graphics-engine playground for Vulkan, a companion Rust WebGPU renderer, modern CMake, testing, packaging and optional Rust integration. These pages cover the build and maintenance workflow around the engine, not only its rendering features.
+BeschleunigerBallett is a renderer and graphics-engine playground for Vulkan, a companion Rust WebGPU renderer, modern CMake, testing, packaging and Rust integration. These pages cover the build and maintenance workflow around the engine, not only its rendering features.
 
 ## What is in Scope?
 
@@ -31,7 +31,7 @@ BeschleunigerBallett is a renderer and graphics-engine playground for Vulkan, a 
 - C++23 and C17 toolchains
 - CMake 4.1 or newer
 - Vulkan SDK 1.4 compatible environment for Vulkan builds
-- Optional Rust toolchain for the experimental Rust-enabled build path
+- A Rust toolchain: every build links OxidANT's cxx bridge through Corrosion
 
 ## Roadmap
 

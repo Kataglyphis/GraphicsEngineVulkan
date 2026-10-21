@@ -55,6 +55,22 @@ the GitHub releases themselves.
 
 ### Changed
 
+- **Rust is always in, and the engine links only OxidANT's cxx bridge** (2026-10-21, owner
+  2026-10-20: every Rust feature is mandatory). Gone: the `RUST_FEATURES` option, every
+  `if(RUST_FEATURES)`, the `USE_RUST` define and `#if USE_RUST` in `Main.cpp`, the 15 presets'
+  `"RUST_FEATURES": "ON"`, the OFF preset `x64-Clang-Windows-Release` and its build preset
+  (`windows-clang-release-wix` packages `x64-ClangCL-Windows-Release` now, so the Pester suite allows
+  no shared Windows `binaryDir`), the analyzer's `-DUSE_RUST=1`, and `run-cargo-lints.sh`'s
+  `--features`, which OxidANT 3.0.0 refuses. `third_party/OxidANT` moves to 6aa85f8, whose
+  `crates/cxx_bridge` (`kataglyphis_cxx_bridge`) depends on `cxx` alone; Corrosion imports it instead
+  of the root `oxidant` staticlib, which links GStreamer and the ORT loader the engine never calls. So
+  `setupapi` and `cfgmgr32` (58f1f76a) leave the Windows link, and the header is
+  `oxidant_bridge/lib.h`. `RustBridgeUnit.CallsIntoRust` calls the bridge in every lane's commit suite.
+  In `:latest`: `linux-debug-clang` passes 706 ctest entries, `linux-debug-GNU` 663, the riscv64 cross
+  build 663 under QEMU; the release `GraphicsEngine` needs libvulkan, libstdc++, libgcc_s, libm and libc
+  alone, and the WebGPU demo builds (9 030 191 bytes, in budget). In `:winamd64` clangcl-debug passes
+  657 tests plus the compile suite, and the release `GraphicsEngine.exe` imports no SetupAPI, CfgMgr32
+  or GStreamer DLL; `:winarm64` cross-builds the arm64 release.
 - **Three stale lines** (2026-10-20). `Build-Windows.ps1`'s hub guard named the hub of 2026-09-25,
   but the build calls `Get-BuildConfigurationRow`, `New-PortableBundle` and `Get-PackageVersion
   -VersionFile`, which the hub has since 3d26fac7 (2026-10-19); it now names that commit and checks

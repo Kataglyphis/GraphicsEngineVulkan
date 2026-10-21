@@ -1,14 +1,11 @@
 function(_myproject_configure_windows_rust_crate rust_target)
-  # setupapi and cfgmgr32: OxidANT's ESP32 bridge (serialport) enumerates COM ports; corrosion adds only std's libraries.
   target_link_libraries(
     ${rust_target}
     INTERFACE kernel32
               ntdll
               userenv
               ws2_32
-              dbghelp
-              setupapi
-              cfgmgr32)
+              dbghelp)
 
   set(_RUST_WINDOWS_DEBUG_CXXFLAGS "/MDd /D_DEBUG /D_ITERATOR_DEBUG_LEVEL=2")
   set(_RUST_WINDOWS_DEBUG_CFLAGS "/MDd /D_DEBUG")
@@ -53,30 +50,27 @@ function(_myproject_configure_native_rust_crate rust_target)
   message(STATUS "Configured native corrosion: CC=${RUST_CC} CXX=${RUST_CXX} CXXFLAGS=${RUST_CXXFLAGS}")
 endfunction()
 
-if(RUST_FEATURES)
-  corrosion_import_crate(
-    MANIFEST_PATH
-    ../third_party/OxidANT/Cargo.toml
-    CRATE_TYPES
-    staticlib
-    CRATES
-    oxidant)
+# The bridge crate alone: OxidANT's root package links GStreamer and the ORT loader, which the engine never calls.
+corrosion_import_crate(
+  MANIFEST_PATH
+  ../third_party/OxidANT/Cargo.toml
+  CRATE_TYPES
+  staticlib
+  CRATES
+  kataglyphis_cxx_bridge)
 
-  if(WIN32)
-    _myproject_configure_windows_rust_crate(oxidant)
-  else()
-    _myproject_configure_native_rust_crate(oxidant)
-  endif()
-
-  # Keep the CXX bridge generated unconditionally so bridge headers are always available.
-  corrosion_add_cxxbridge(
-    oxidant_bridge
-    CRATE
-    oxidant
-    FILES
-    native_only.rs)
-
+if(WIN32)
+  _myproject_configure_windows_rust_crate(kataglyphis_cxx_bridge)
+else()
+  _myproject_configure_native_rust_crate(kataglyphis_cxx_bridge)
 endif()
+
+corrosion_add_cxxbridge(
+  oxidant_bridge
+  CRATE
+  kataglyphis_cxx_bridge
+  FILES
+  lib.rs)
 
 add_subdirectory(GraphicsEngineVulkan)
 # Off by default: kompute's headers throw, so the playground cannot use the no-exceptions options.

@@ -8,9 +8,7 @@ import kataglyphis.vulkan.app;
 #include <system_error>
 #include <vector>
 
-#if USE_RUST
-#include "oxidant_bridge/native_only.h"
-#endif
+#include "oxidant_bridge/lib.h"
 
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
@@ -103,14 +101,9 @@ auto main(int argc, char **argv) -> int
         }
     }
 
-#if USE_RUST
-    if (USE_RUST) {
-        const auto value = rusty_cxxbridge_integer();
-        std::cout << "A value given by the Rust bridge function " << value << "\n";
-        spdlog::default_logger_raw()->log(
-          spdlog::level::info, std::string("Rust extern value: ") + std::to_string(value));
-    }
-#endif
+    const auto value = rusty_cxxbridge_integer();
+    std::cout << "A value given by the Rust bridge function " << value << "\n";
+    spdlog::default_logger_raw()->log(spdlog::level::info, std::string("Rust extern value: ") + std::to_string(value));
 
     // No try/catch: exceptions are disabled project-wide and ASSERT_VULKAN aborts on fatal failures.
     const int result = Kataglyphis::App::run();

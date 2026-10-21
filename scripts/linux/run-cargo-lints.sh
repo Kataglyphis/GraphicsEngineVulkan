@@ -17,8 +17,8 @@ export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-target}"
 export CARGO_HOME="${CARGO_HOME:-/tmp/cargo-home}"
 mkdir -p "${CARGO_HOME}"
 
-# OxidANT's own gate (its ci-container-steps.sh fmt-clippy), so a pin it passed passes here; --all-features needs GTK4.
-export CARGO_CLIPPY_ARGS="${CARGO_CLIPPY_ARGS---workspace --locked --features kataglyphis_media?/gstreamer,kataglyphis_inference?/onnxruntime}"
+# OxidANT's own gate (its ci-container-steps.sh fmt-clippy), so a pin it passed passes here.
+export CARGO_CLIPPY_ARGS="${CARGO_CLIPPY_ARGS---workspace --locked}"
 
 info "cargo: $(command -v cargo) ($(cargo --version 2>/dev/null || echo 'version unavailable'))"
 

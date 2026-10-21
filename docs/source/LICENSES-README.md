@@ -64,7 +64,7 @@ which file was actually read.
 | abseil-cpp | https://github.com/abseil/abseil-cpp | 20260817.0 (`ABSL_TAG`) | Apache-2.0 | `build-clangcl-profile/_deps/abseil-cpp-src/LICENSE` |
 | googletest (only with `BUILD_TESTING`) | https://github.com/google/googletest | v1.18.0 (tag archive) | BSD-3-Clause licence text (Copyright Google Inc.) | `build-clangcl-profile/_deps/googletest-src/LICENSE` |
 | Microsoft GSL | https://github.com/microsoft/GSL | v5.0.1 | MIT | `build-clangcl-profile/_deps/gsl-src/LICENSE` |
-| Corrosion (only with `RUST_FEATURES`, build tool) | https://github.com/corrosion-rs/corrosion | c4786e7a (a commit; v0.6.1 lacks later fixes) | MIT | `build-clangcl-profile/_deps/corrosion-src/LICENSE` |
+| Corrosion (build tool) | https://github.com/corrosion-rs/corrosion | c4786e7a (a commit; v0.6.1 lacks later fixes) | MIT | `build-clangcl-profile/_deps/corrosion-src/LICENSE` |
 | ANTLR4 C++ runtime (transitive, via FuzzTest) | https://github.com/antlr/antlr4 | pinned by FuzzTest | BSD-3-Clause licence text (The ANTLR Project) | `build-linux-local/_deps/antlr_cpp-src/LICENSE.txt` |
 | RE2 (transitive, via FuzzTest) | https://github.com/google/re2 | pinned by FuzzTest | BSD-3-Clause licence text (The RE2 Authors) | `build-linux-local/_deps/re2-src/LICENSE` |
 

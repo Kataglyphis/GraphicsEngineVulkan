@@ -2,7 +2,7 @@
 
 Guidance for AI agents and new contributors working in BeschleunigerBallett
 (a Vulkan graphics-engine playground with a Rust WebGPU sibling renderer:
-C++23/C17, CMake presets, optional Rust).
+C++23/C17, CMake presets, Rust through Corrosion).
 
 ## Start here: routing
 
@@ -208,8 +208,9 @@ directories via `scripts/windows/Build-Windows.config.psd1`:
 - Windows test presets (`test-<configure-preset>`) exist for three ClangCL configurations only:
   Debug, Debug-ASan and Profile (the other two, plus `default`, are Linux ones).
 - The plain-Clang `x64-Clang-Windows-{Debug,Profile,RelWithDebInfo}` presets went in 2026-07 as
-  unused duplicates of the ClangCL set. `x64-Clang-Windows-Release` stays: the
-  `windows-clang-release-wix` package preset builds on it.
+  unused duplicates of the ClangCL set. `x64-Clang-Windows-Release`, a build without Rust, went
+  on 2026-10-21 (owner: Rust is always in); the `windows-clang-release-wix` package preset now
+  builds on `x64-ClangCL-Windows-Release`.
 
 **Coverage stays OFF for the ClangCL presets** (`myproject_ENABLE_COVERAGE` in
 `x64-ClangCL-Windows-Base`). Switched ON on 2026-10-01 (hub CON9: the image ships
@@ -756,7 +757,7 @@ the host, builds the `linux-riscv64-cross` preset (Debug,
 `Rust_CARGO_TARGET=riscv64gc-unknown-linux-gnu`) and runs ctest.
 
 - **What runs:** 700 of the 703 Debug tests, against the image's riscv64 Vulkan loader, GLFW and
-  Rust renderer bridge; the GUI input sweep is excluded everywhere and two goldens are disabled. A
+  Rust cxx bridge; the GUI input sweep is excluded everywhere and two goldens are disabled. A
   push runs the 658 CPU tests (523 s of ctest, 32 min end to end in run 38165366757), the weekly
   shards the 42 GPU tests. Measured 2026-10-01 on a 32-core host: 13 min end to end from a cold
   build at `-j8`, of which ctest is 415 s (serial, as in the x64 lane).
@@ -928,9 +929,8 @@ signal until the submodule was pushed separately.
 **The same job lints the whole OxidANT workspace** (since 2026-10-06):
 `scripts/linux/run-cargo-lints.sh` runs the hub's `cargo_fmt_clippy.sh`, `cargo fmt --all --check`
 plus `cargo clippy --all-targets -- -D warnings`, and fails the job like the tests do. Its clippy
-scope is OxidANT's own lane's (`ci-container-steps.sh fmt-clippy`): `--workspace --locked` with the
-`gstreamer` and `onnxruntime` features, never `--all-features`, because `gui_unix` needs GTK4 and
-the image has none. A pin that OxidANT's lane passed therefore passes here, and an edit to any crate
+scope is OxidANT's own lane's (`ci-container-steps.sh fmt-clippy`): `--workspace --locked`, since
+OxidANT has no Cargo features from 3.0.0. A pin that OxidANT's lane passed therefore passes here, and an edit to any crate
 from this tree gets a lint signal before the submodule is pushed. At the 2026-10-06 pin its clippy
 took 46 s in `:latest` from a cold target directory on a 32-core host.
 

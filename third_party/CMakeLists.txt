@@ -420,22 +420,20 @@ target_include_directories(IMGUI PRIVATE ${Vulkan_INCLUDE_DIRS})
 
 set_target_properties(IMGUI PROPERTIES CXX_CLANG_TIDY "" CXX_CPPCHECK "")
 
-if(RUST_FEATURES)
-  if(WIN32)
-    set(Rust_CARGO
-        "${CMAKE_SOURCE_DIR}/third_party/ANTfrastructure/windows/scripts/cargo-retry.cmd"
-        CACHE FILEPATH "Cargo wrapper used to retry transient Windows file-lock failures" FORCE)
-  endif()
-
-  # A commit, not v0.6.1: that tag lacks the CARGO_HOME and cxxbridge-cmd fixes; move to the first tag after it.
-  FetchContent_Declare(
-    Corrosion
-    GIT_REPOSITORY https://github.com/corrosion-rs/corrosion.git
-    GIT_TAG c4786e7ae2d5ade784aca29448df362c874ed04e)
-  FetchContent_MakeAvailable(Corrosion)
-
-  _myproject_find_or_install_cxxbridge(CXXBRIDGE)
+if(WIN32)
+  set(Rust_CARGO
+      "${CMAKE_SOURCE_DIR}/third_party/ANTfrastructure/windows/scripts/cargo-retry.cmd"
+      CACHE FILEPATH "Cargo wrapper used to retry transient Windows file-lock failures" FORCE)
 endif()
+
+# A commit, not v0.6.1: that tag lacks the CARGO_HOME and cxxbridge-cmd fixes; move to the first tag after it.
+FetchContent_Declare(
+  Corrosion
+  GIT_REPOSITORY https://github.com/corrosion-rs/corrosion.git
+  GIT_TAG c4786e7ae2d5ade784aca29448df362c874ed04e)
+FetchContent_MakeAvailable(Corrosion)
+
+_myproject_find_or_install_cxxbridge(CXXBRIDGE)
 
 option(KATAGLYPHIS_BUILD_KOMPUTE_PLAYGROUND
        "Build the Kompute playground and its kompute dependency (exceptions enabled; not part of the engine)" OFF)

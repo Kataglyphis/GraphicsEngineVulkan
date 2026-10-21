@@ -6,7 +6,7 @@
 - CMake 4.1 or newer
 - a Vulkan SDK installation for Vulkan-enabled builds
 - Python plus the packages from `requirements.txt` for the docs build (the formatting steps install their own pinned `cmake-format` from ANTfrastructure)
-- optionally Rust, for the experimental Rust path
+- Rust and cargo: every build links OxidANT's cxx bridge through Corrosion
 - network access for the first configure, which downloads the default scenes (see below)
 
 ## Clone the Repository

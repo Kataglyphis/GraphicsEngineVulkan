@@ -89,10 +89,10 @@ that fixed them is in `.git-blame-ignore-revs`.
 
 ## Known state (2026-10-06)
 
-<!-- format-drift-denominator: 216 -->
+<!-- format-drift-denominator: 217 -->
 
-**0 of 216** own sources under `Src/` and `Test/` differ from `.clang-format`
-(0 of 217 with `scripts/riscv64/fp16_helpers.c`), after the sweep in commit
+**0 of 217** own sources under `Src/` and `Test/` differ from `.clang-format`
+(0 of 218 with `scripts/riscv64/fp16_helpers.c`), after the sweep in commit
 `fb246fbcdae20e0d513c3133455c180f2faecd40`. It ran clang-format **23.1.1** (LLVM
 commit `6dfe1677ab8dffbc6ec13d53a1e0215d75147689`, `/usr/local/llvm-target/bin`
 in `:latest`, the version `:winamd64` ships as `C:\llvm-patched`) over the 217

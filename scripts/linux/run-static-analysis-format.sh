@@ -32,7 +32,6 @@ ANALYZE_SOURCE_ROOT="Src"
 
 # Plus the one C file outside them, so this gate grades the same files as the Windows check.
 FORMAT_SOURCE_ROOTS=(Src Test scripts/riscv64)
-ANALYZE_EXTRA_ARGS=(-DUSE_RUST=1)
 
 CODE_QUALITY_CMAKE_SEARCH_ROOT="."
 CODE_QUALITY_CMAKE_EXCLUDE_PATHS=('./build*/*' './.venv/*' './third_party/*')
@@ -141,7 +140,7 @@ run_clang_analyze_html() {
   fi
 
   info "Running clang++ --analyze (HTML output)..."
-  clang++ --analyze "${ANALYZE_EXTRA_ARGS[@]}" -Xanalyzer -analyzer-output=html "${src_cpp_files[@]}"
+  clang++ --analyze -Xanalyzer -analyzer-output=html "${src_cpp_files[@]}"
 }
 
 usage() {
