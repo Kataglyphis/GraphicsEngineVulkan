@@ -55,6 +55,10 @@ the GitHub releases themselves.
 
 ### Changed
 
+- **The README header shows BeschleunigerBallett's own logo, `images/logo.svg`** (2026-10-21,
+  owner): a ballerina ant in a tutu on the RGB hello triangle, from the family set
+  DocumANTation's `scripts/make_repo_logos.py` draws. `images/logo.png` is unchanged.
+
 - **Rust is always in, and the engine links only OxidANT's cxx bridge** (2026-10-21, owner
   2026-10-20: every Rust feature is mandatory). Gone: the `RUST_FEATURES` option, every
   `if(RUST_FEATURES)`, the `USE_RUST` define and `#if USE_RUST` in `Main.cpp`, the 15 presets'

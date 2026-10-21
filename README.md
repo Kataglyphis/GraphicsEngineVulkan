@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://jonasheinle.de">
-    <img src="images/logo.png" alt="logo" width="200" />
+    <img src="images/logo.svg" alt="BeschleunigerBallett logo: a ballerina ant on the RGB hello triangle" width="200" />
   </a>
 
   <h1>BeschleunigerBallett</h1>
