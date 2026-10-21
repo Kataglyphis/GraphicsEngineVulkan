@@ -57,7 +57,9 @@ the GitHub releases themselves.
 
 - **The README header shows BeschleunigerBallett's own logo, `images/logo.svg`** (2026-10-21,
   owner): a ballerina ant in a tutu on the RGB hello triangle, from the family set
-  DocumANTation's `scripts/make_repo_logos.py` draws. `images/logo.png` is unchanged.
+  DocumANTation's `scripts/make_repo_logos.py` draws. `images/logo.png`, and `Engine_logo.png`,
+  `Engine_logo.bmp` and `faviconNew.ico`, which the installers and the Linux desktop entry show,
+  are rendered from it at their sizes (256, 256, 200 and 16 to 256 px).
 
 - **Rust is always in, and the engine links only OxidANT's cxx bridge** (2026-10-21, owner
   2026-10-20: every Rust feature is mandatory). Gone: the `RUST_FEATURES` option, every
