@@ -14,6 +14,8 @@ the GitHub releases themselves.
 
 ### Fixed
 
+- Annotate the shared Slang source-root array consumed by the hub driver so
+  ShellCheck's warning ratchet retains its existing baseline after the migration.
 - **The WebGPU demo builds from a CRLF checkout, and a lock without its version stops the docs
   build** (2026-10-20). `docs-build-web.sh` matched `name = "wasm-bindgen"` up to the line's end,
   which a Windows checkout's `\r` never reaches, so it found no version and skipped the demo without
