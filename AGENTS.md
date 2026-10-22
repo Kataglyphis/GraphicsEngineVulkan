@@ -13,7 +13,7 @@ Find your task, do the first action, read the doc. [Docs](#docs) and
 | --- | --- |
 | Building anything on Windows | `Build-Windows-Container.ps1` ([Fast path](#fast-path-windows-build-run-verify)). Never invoke CMake/Ninja/MSBuild on the host. |
 | Running the engine / seeing pixels | `scripts/windows/Invoke-ClangCl*.ps1` from the **repo root** ([Running on the Host](#running-on-the-host-windows)) |
-| Changing a shader | Edit `Resources/ShadersSlang/*.slang` + `shader-manifest.json`, run `Build-SlangShaders.ps1`, run one golden; no C++ rebuild ([`docs/source/shader-build-pipeline.md`](docs/source/shader-build-pipeline.md)) |
+| Changing a shader | Edit Vulkan sources under `Resources/ShadersSlang/`, or shared/WebGPU sources in OxidANT's `shaders/`; run `Build-SlangShaders.ps1` and the affected renderer regression ([`docs/source/shader-build-pipeline.md`](docs/source/shader-build-pipeline.md)) |
 | Adding or changing a test | `Test/commit/VulkanEngine/` (CPU + GPU golden), `Test/fuzz/`, `Test/perf/`; always in scope ([Testing](#testing)) |
 | Touching render passes, barriers, frames-in-flight | Golden suites on the host GPU **and** `Invoke-SyncValidation.ps1` (Linux CI runs sync validation on llvmpipe): [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md) |
 | Refactoring the renderer / device path | The per-unit verification loop in [`docs/source/gpu-golden-testing.md`](docs/source/gpu-golden-testing.md); log the change in [`docs/source/cpp-renderer-improvements.md`](docs/source/cpp-renderer-improvements.md) |
@@ -33,7 +33,8 @@ Find your task, do the first action, read the doc. [Docs](#docs) and
 | `Src/shared/`, `Src/KomputePlayground/` | Renderer-agnostic frontend/scene/imgui/util code; the Kompute compute playground |
 | `Test/commit/VulkanEngine/` | The main gtest suite (`commitTestSuite.exe`): CPU suites plus `GoldenRender.*` / `Integration.*` |
 | `Test/compile/`, `Test/fuzz/`, `Test/perf/` | Compile-time checks, FuzzTest targets, Google Benchmark suite (`perfTestSuite`) |
-| `Resources/ShadersSlang/` | All shaders (Slang) + `shader-manifest.json`; compiled output under `build/` is gitignored |
+| `Resources/ShadersSlang/` | Vulkan/test Slang + `shader-manifest.json`, which imports OxidANT's shared/WebGPU manifest; compiled output under `build/` is gitignored |
+| `third_party/OxidANT/shaders/` | Canonical shared math and WebGPU Slang sources consumed by both renderers |
 | `third_party/OxidANT/crates/` | The Rust side, incl. `webgpu_renderer` and `gui` |
 | `third_party/ANTfrastructure/` | The submodule that owns every reusable script, module and doc (see the rule below) |
 | `scripts/windows/`, `scripts/linux/`, `scripts/agentic-loop/` | Thin project wrappers over ANTfrastructure drivers + this project's payload |
@@ -324,9 +325,10 @@ container.
 
 ## Shaders: Slang (unified SPIR-V + WGSL)
 
-All shaders are Slang under `Resources/ShadersSlang/`, compiled ahead of time to **SPIR-V** for the
-C++ Vulkan renderer and **WGSL** for the Rust WebGPU renderer. The shader list is data in
-`shader-manifest.json`: add or retarget a shader there, never in the compile scripts. Compiled
+Vulkan entry points and material modules live under `Resources/ShadersSlang/`; shared math and
+WebGPU Slang sources belong to `third_party/OxidANT/shaders/`. This repo's `shader-manifest.json`
+imports the owner's WGSL manifest, and both drivers resolve the two pinned source roots. Make
+WebGPU source/generated-WGSL changes in OxidANT and move its pin here. Compiled
 output is gitignored, so a fresh clone must run a compile script before the engine has anything to
 load. Build step, staleness rules, fast iteration:
 [`docs/source/shader-build-pipeline.md`](docs/source/shader-build-pipeline.md); sharing shader code between the

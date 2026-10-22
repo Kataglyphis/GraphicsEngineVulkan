@@ -30,7 +30,7 @@ BeschleunigerBallett is a renderer and graphics-engine playground used to explor
 
 - **Vulkan renderer in C++23 modules:** forward and deferred rasterization, ray tracing, path tracing, PBR, cascaded shadow maps, skybox, volumetric clouds.
 - **Fail-fast engine plumbing:** VMA memory, fence-synced uploads, a persisted `VkPipelineCache`, exceptions disabled project-wide.
-- **A Rust WebGPU sibling renderer** from [OxidANT](https://github.com/Kataglyphis/OxidANT), native and [in the browser](https://beschleunigerballette.jonasheinle.de/webgpu_demo.html), on the same Slang shaders.
+- **A Rust WebGPU sibling renderer** from [OxidANT](https://github.com/Kataglyphis/OxidANT), native and [in the browser](https://beschleunigerballette.jonasheinle.de/webgpu_demo.html), sharing the shader math owned in OxidANT's pinned `shaders/` tree.
 - **OBJ and glTF 2.0/GLB scenes** from [AssetANT](https://github.com/Kataglyphis/AssetANT), pinned by SHA-256 in `Resources/assets.lock`.
 - **Five CI lanes:** Linux x64, arm64 and riscv64, Windows x64 and arm64; the GPU suites render on llvmpipe and lavapipe.
 - **Tooling:** CMake presets, coverage, benchmarks, fuzzing, CPack and MSIX packages, Sphinx and Doxygen docs.

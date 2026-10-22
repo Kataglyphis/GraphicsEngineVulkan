@@ -55,6 +55,10 @@ the GitHub releases themselves.
 
 ### Changed
 
+- Shared shader math and WebGPU Slang sources now belong to OxidANT. The Vulkan build imports
+  its pinned manifest and source tree through ANTfrastructure's Slang drivers; source-integrity
+  gates inspect both owners without retaining local source copies.
+
 - **The README header shows BeschleunigerBallett's own logo, `images/logo.svg`** (2026-10-21,
   owner): a ballerina ant in a tutu on the RGB hello triangle, from the family set
   DocumANTation's `scripts/make_repo_logos.py` draws. `images/logo.png`, and `Engine_logo.png`,

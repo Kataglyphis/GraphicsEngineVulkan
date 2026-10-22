@@ -13,6 +13,33 @@ using Kataglyphis::TestSupport::joinViolations;
 using Kataglyphis::TestSupport::readFileLines;
 using Kataglyphis::TestSupport::readFileText;
 
+TEST(RepoFilesUnit, ReadsOwnedShadersWithoutALocalSourceCopy)
+{
+    using namespace Kataglyphis::TestSupport;
+    const auto logical = slangRoot() / "forward/forward.slang";
+    const auto owned = sharedSlangRoot() / "forward/forward.slang";
+    ASSERT_TRUE(std::filesystem::is_regular_file(owned));
+    EXPECT_FALSE(std::filesystem::exists(logical));
+    EXPECT_EQ(readFileText(logical), readFileText(owned));
+    EXPECT_EQ(shaderSourcePath(logical), owned);
+}
+
+TEST(RepoFilesUnit, SourceCorpusContainsVulkanAndThePinnedOwnersShaders)
+{
+    using namespace Kataglyphis::TestSupport;
+    std::error_code error;
+    const auto files = shaderSourceFiles(slangRoot(), error);
+    ASSERT_FALSE(error);
+    bool vulkan = false;
+    bool webgpu = false;
+    for (const auto &path : files) {
+        vulkan |= shaderRelativePath(path, slangRoot()) == "rasterizer/rasterizer.slang";
+        webgpu |= path == sharedSlangRoot() / "forward/forward.slang";
+    }
+    EXPECT_TRUE(vulkan);
+    EXPECT_TRUE(webgpu);
+}
+
 namespace {
 
 std::filesystem::path uniqueTempPath(const std::string &name) { return std::filesystem::temp_directory_path() / name; }
