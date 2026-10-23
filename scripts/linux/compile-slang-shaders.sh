@@ -17,6 +17,8 @@ antfrastructure_source linux/scripts/lib/slang-compile.sh
 # Paths only - the driver holds the behaviour.
 SLANG_COMPILE_MANIFEST="${SLANG_ROOT}/shader-manifest.json"
 SLANG_COMPILE_SOURCE_ROOT="${SLANG_ROOT}"
+# shellcheck disable=SC2034 # Read by the sourced hub compiler's import and freshness checks.
+SLANG_COMPILE_EXTRA_SOURCE_ROOTS=("${REPO_ROOT}/third_party/OxidANT/shaders")
 SLANG_COMPILE_SPIRV_OUTPUT_ROOT="${BUILD_ROOT}/spirv"
 SLANG_COMPILE_WGSL_OUTPUT_ROOT="${BUILD_ROOT}/wgsl"
 SLANG_COMPILE_COMBINED_OUTPUT_DIR="${BUILD_ROOT}"

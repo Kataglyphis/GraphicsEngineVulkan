@@ -12,6 +12,12 @@ the Rust side its combined WGSL emit replaces the crates' hand-written WGSL;
 their `include_str!` calls are unchanged and now read Slang-emitted text.
 `histogram.wgsl` is the one deliberate holdout (WGSL fallback policy below).
 
+**Ownership:** OxidANT's `shaders/` owns all WebGPU Slang entry points and the
+shared `aces`, `brdf`, `noise`, `fullscreen` and `sky_model` modules. This repo
+consumes them through `third_party/OxidANT/shaders`; Vulkan entry points and
+Vulkan-specific material modules stay in `Resources/ShadersSlang/`. OxidANT
+can compile and check its generated WGSL without a superproject checkout.
+
 ## Why Slang (not GLSL, not naga/WGSL-as-source)
 
 WGSL used to be the shared-math source, translated by `naga` into GLSL the C++
@@ -44,7 +50,7 @@ Slang is module- and entry-point-centric: a no-entry-point math module cannot
 be emitted to GLSL/WGSL text, and imported functions are name-mangled in the
 emit, so sharing goes through Slang's module system, not textual `#include`:
 
-- **Shared math** lives in modules under `Resources/ShadersSlang/common/`. Four
+- **Shared math** lives under `third_party/OxidANT/shaders/common/`. Four
   (`aces.slang`, `brdf.slang`, `noise.slang`, `fullscreen.slang`) are imported
   on both targets, so both renderers share them. The rest are shared within one
   target: all but `sky_model.slang` on the C++/SPIR-V side, across its raster,

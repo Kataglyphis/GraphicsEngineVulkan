@@ -22,6 +22,7 @@ Import-BuildModule @('WindowsSlang.Common')
 Invoke-SlangShaderCompile `
     -ManifestPath (Join-Path $slangRoot 'shader-manifest.json') `
     -SourceRoot $slangRoot `
+    -AdditionalSourceRoots @((Join-Path $scriptRoot 'third_party\OxidANT\shaders')) `
     -SpirvOutputRoot (Join-Path $buildRoot 'spirv') `
     -WgslOutputRoot (Join-Path $buildRoot 'wgsl') `
     -CombinedOutputDir $buildRoot `

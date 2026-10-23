@@ -5,7 +5,9 @@ restating it.
 
 ## How it works
 
-Shaders are [Slang](https://shader-slang.com/) under `Resources/ShadersSlang/`.
+Shaders are [Slang](https://shader-slang.com/) in two pinned source trees:
+Vulkan entry points and material modules under `Resources/ShadersSlang/`, and
+shared math plus WebGPU entry points under `third_party/OxidANT/shaders/`.
 The build scripts (`scripts/windows/Build-SlangShaders.ps1`,
 `scripts/linux/compile-slang-shaders.sh`) compile each `.slang` file to:
 
@@ -49,7 +51,7 @@ fallback policy in [`shader-sharing.md`](shader-sharing.md).
 ## Staleness rules
 
 An output is reused only when it is newer than its source **and** every
-`.slang` file under the Slang tree **and** `shader-manifest.json` itself
+`.slang` file under either source tree **and** both manifests
 (conservative: an import or manifest edit rebuilds every dependent). The
 compile scripts walk the manifest and recompile only stale entries.
 
@@ -71,15 +73,25 @@ ANTfrastructure), not a smarter mtime comparison here.
 
 ## The manifest is data, in one place
 
-`Resources/ShadersSlang/shader-manifest.json` holds the shader list (source
-file, entry point, stage, targets), the combined-WGSL copy map and the
-depth-texture patch table. BOTH compile scripts read it (PS via
+`Resources/ShadersSlang/shader-manifest.json` owns the Vulkan list and imports
+`third_party/OxidANT/shaders/shader-manifest.json` through `wgslManifest`.
+OxidANT owns the WebGPU list, combined-WGSL destinations, compiler floor and
+depth-texture patches. `wgslDestinationPrefix` resolves those destinations
+under the pinned submodule. Both compile scripts read that composition (PS via
 `ConvertFrom-Json`, bash via `python3`, which is required and fails loud when
 missing; `jq` is *not* in the ANTfrastructure Linux image). Add or retarget a
 shader by editing the JSON, never the scripts: before this the two scripts had
 drifted four ways, including Linux silently skipping compilation when slangc
 was absent. `_comment` fields in the JSON carry the rationale that used to be
 code comments.
+
+OxidANT can regenerate its WGSL independently with its own
+`scripts/linux/compile-slang-shaders.sh` or `scripts/windows/Build-SlangShaders.ps1`.
+Its `--check` / `-Check` mode regenerates into a temporary tree and rejects drift
+from committed WGSL; Linux `fmt-clippy` runs that check. Make WebGPU shader changes
+there, commit the source and generated output together, then move this repo's
+OxidANT pin. The source-integrity gates resolve both trees and retain the same
+logical shader paths and checks.
 
 ## The combined WGSL emit needs slangc ≥ 2026.8
 
