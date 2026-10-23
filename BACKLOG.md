@@ -28,7 +28,7 @@ host.
 ### C++ Vulkan engine
 
 - [b] **Renderer-level RAII cleanup consolidation** (M, **blocked on being testable**) —
-  the stage-level work landed 2026-07-19. Left: `VulkanRenderer`'s hand-ordered `cleanUp()`
+  `VulkanRenderer`'s hand-ordered `cleanUp()`
   and the device-lost special case in `App.cpp`, which skips `scene->cleanUp()` and
   `gui->cleanUp()` when the device is lost. Device loss cannot be induced here, so removing
   that guard would be an untestable change to a path that only runs after a failure. First
@@ -47,7 +47,7 @@ host.
   on the host. Once it passes, retire the "Known issue" section of
   `docs/source/gpu-golden-testing.md`, with the `excluded=3` count and the `--gtest_filter` line
   `buildIntegritySuite.cpp` pins in it.
-- **glTF loader gaps** (M/L): MASK alpha and `KHR_texture_transform` are done. Left:
+- **glTF loader gaps** (M/L):
   - *BLEND and sorting* (L): a sorted transparent pass through `PipelineBuilder`'s existing
     src-alpha blend state, back-to-front ordering and a second draw list. Until then a
     transparent glTF renders opaque. Defer until a real transparent asset needs it.
@@ -74,8 +74,9 @@ host.
   and the repo has no Basis-compressed KTX2 test asset. Do it as a deliberate cycle: vendor
   `basis-universal`, generate an ETC1S and a UASTC `.ktx2` with `toktx`/`basisu`, then
   transcode to a BCn `CompressedFormat` on desktop and to ETC2/ASTC on the web path.
-- [b] **Indirect draws** (M, blocked on GPU occlusion culling producing draw arguments).
-  With CPU-side instance counts, indirect draws add a buffer round trip for nothing.
+- [b] **Indirect draws** (M, blocked until GPU culling emits indirect draw arguments).
+  Current culling reads visibility back to the CPU and the render pass still calls
+  `draw_indexed`; GPU-generated arguments must replace that readback first.
 - [b] **WebXR** (XL) — parked.
 - [b] **Colosseum demo scene** (blocked on the owner's download). Owner picked on 2026-10-20:
   "Rome's Colosseum" by eyesCloud3D (<https://sketchfab.com/3d-models/romes-colosseum-4577eb4b21ac48ecba43e7944b4e1baf>,
@@ -86,7 +87,8 @@ host.
   CC BY 4.0, texture resized), add it to `Resources/assets.lock` and the scene list. LOD is ready
   (set `lod_enabled` before `upload_scene`).
 - [b] **Stop an empty tile from iterating every light** (blocked on a conservative sphere
-  bound). `forward.slang`'s `punctual_lighting` falls back to all lights when a tile's
+  bound). `third_party/OxidANT/shaders/forward/forward.slang`'s `punctual_lighting`
+  falls back to all lights when a tile's
   binned count is 0, so empty screen costs up to 256 iterations per fragment. The fallback is
   load-bearing: `tile_rect_for_light`'s 7-point AABB under-covers a sphere's true screen
   silhouette by up to `D / sqrt(D² - r²)`, even with every point in front of the camera.
@@ -135,11 +137,12 @@ committed to.
   (docs/source/gpu-golden-testing.md § The PCF radius bound, measured). Offsetting each tap's
   reference depth by the receiver's depth slope removes it. The shadow goldens will move;
   `DISABLED_PcfRadiusSweepMeasuresTheShadowRig` shows the effect.
-- **Unify the two shadow-bias formulas.** `cascaded_shadow.slang` uses
-  `max(0.002 * (1 - N·L), 0.0005)` and `forward.slang` uses
+- **Unify the two shadow-bias formulas.** `Resources/ShadersSlang/common/cascaded_shadow.slang`
+  uses `max(0.002 * (1 - N·L), 0.0005)` and
+  `third_party/OxidANT/shaders/forward/forward.slang` uses
   `clamp(0.002 * (1 - N·L) + 0.0005, 0.0005, 0.004)`, so the renderers disagree at grazing
-  angles. Editing `forward.slang` regenerates the checked-in WGSL; the slangc floor that used
-  to block that is gone (OxidANT pin efc0cdee).
+  angles. Change the WebGPU formula in OxidANT, regenerate its committed WGSL, validate both
+  renderers, then update this repo's OxidANT pin.
 - **Drop the per-frame `update_raytracing_descriptor_set` call in `drawFrame`.** It runs on
   `.raytracing` only, and every state change that invalidates those descriptors already goes
   through `updateAllDescriptorSets`. Saves three descriptor writes per frame; CI runs the RT
@@ -175,13 +178,6 @@ committed to.
 
 ## Rust renderer ideas (OxidANT)
 
-- **A non-uniform instance scale shades differently from the same node scale.** OxidANT's
-  ignored test `a_non_uniform_instance_scale_shades_like_the_same_node_scale` differs in 987
-  pixels against a threshold of 40, reproduced on lavapipe. Blocked in OxidANT because the
-  shader source lives here (`Resources/ShadersSlang/forward/forward.slang`). The vertex
-  stage's normal math reads right (the cofactor of the instance matrix times
-  `prim.normal_matrix`), so look past the normal transform first: the shadow pass, the
-  bounds. Fixing it here and dropping the `#[ignore]` in OxidANT closes OxidANT's BACKLOG row.
 - **Split `render_tonemapped`** (about 530 lines in `forward.rs`) and `ForwardRenderer::new`.
   It can silently reorder passes; `tests/headless.rs` and `tests/forward_ambient.rs` catch
   that, and they run on llvmpipe in OxidANT's lanes.
